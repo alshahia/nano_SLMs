@@ -4,6 +4,9 @@ __pycache__/
 *.pyc
 *.log.bak
 
+# Secrets (never commit real keys)
+.env
+
 # Raw JSONL is regenerable via scripts/prepare_data.py (keep packed .bin)
 data/*/raw/
 
@@ -22,5 +25,9 @@ runs/pilot/checkpoint-2000/
 runs/pilot/checkpoint-2500/
 runs/pilot/checkpoint-3000/
 
-# Future target-run artifacts (tracked selectively when they exist)
-runs/target/
+# Target run (M3): weights stay local by decision — the ~900 MB M3 model does
+# not fit free LFS (~790 MB of 1 GB used). Metrics, logs, and small final-dir
+# files stay tracked.
+runs/target/checkpoint-*/
+runs/target/final/model.safetensors
+runs/target/*.log

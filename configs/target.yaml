@@ -11,16 +11,18 @@ model:
   heads: 16
   kv_heads: 4
   ffn: 3072
-  ctx: 512
+  ctx: 1024
   dropout: 0.0
   tie_embeddings: true
 
 data:
+  # the-stack-v2 is gated; bare 'code_search_net' no longer resolves on the Hub
+  # (moved under a namespace). CodeSearchNet python = 150k real GitHub functions,
+  # verified streaming (2026-09). Evol-Instruct is the ungated fallback.
   dataset_candidates:
-    - name: bigcode/the-stack-v2
+    - name: code-search-net/code_search_net
       config: python
-    - name: code_search_net
-      config: python
+    - name: nickrosh/Evol-Instruct-Code-80k-v1
   rows: 150000
   val_fraction: 0.02
   dedupe: true
@@ -32,13 +34,15 @@ data:
 train:
   output_dir: runs/target
   final_dir: runs/target/final
-  max_steps: 10000
+  # 5000 steps @ ctx 1024 = 164M tokens (same budget as 10k @ 512; VRAM probe
+  # 2025-11: seq 1024 peak 4.24 GB allocated / 4.4 GB reserved on RTX 3000 6 GB).
+  max_steps: 5000
   batch: 1
-  eval_batch: 4
+  eval_batch: 2             # 2x1024 = pilot's 4x512 eval tile; keeps mid-train eval VRAM safe on 6 GB
   accum: 32
   lr: 4.0e-4
   scheduler: cosine
-  warmup_steps: 300
+  warmup_steps: 150
   weight_decay: 0.1
   max_grad_norm: 1.0
   logging_steps: 50
