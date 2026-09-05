@@ -42,6 +42,26 @@ Prompts are truncated so prompt + generation stays inside the 512-token
 training context. Give the model a code prefix, not a question: it was
 trained on raw code text and will continue the prefix.
 
+## Web search helper (Exa)
+
+`exa_search.py` (project root) wraps the Exa API for any agent or script; the
+key lives in `.env` as `EXA_API_KEY` (gitignored). Needs the venv
+(`exa-py 2.20.0` installed there). `exa_search.bat` is the wrapper for quick
+use - and safe for automation (no pause).
+
+```powershell
+& .\.venv\Scripts\python.exe exa_search.py search "Latest news on Nvidia" --num 5
+exa_search.bat search "GPU inference startups" --type deep --json
+exa_search.bat contents https://exa.ai https://docs.exa.ai --max-chars 4000
+exa_search.bat answer "What makes some LLMs better than others?"
+```
+
+- Default output is a compact digest; `--json` prints the full machine payload.
+- Search returns highlights by default (token-friendly); `--text`/`--max-chars`
+  for page text; `--type auto|fast|instant|deep-lite|deep|deep-reasoning`.
+- Programmatic: `from exa_search import exa_search, exa_contents, exa_answer`
+  -> plain dicts. Full reference: `exa_search.py --help`.
+
 ## Auto-checkpoint / auto-resume (the hard requirement, PLAN.md §5.3)
 `train.py` scans `runs/<phase>/` for `checkpoint-*` on every start and resumes
 automatically from the newest one -- re-running the same command after a crash
@@ -55,3 +75,4 @@ or kill continues the run with no flags. Rolling checkpoints keep
 - `src/` model factory + packed dataset
 - `scripts/` prepare_data, tokenize_data, train, eval, infer, vram_probe, sanity_check
 - `data/`, `runs/` artifacts (gitignored)
+- `exa_search.py` + `exa_search.bat` web-search helper (Exa API, key in `.env`)
