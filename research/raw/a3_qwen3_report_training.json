@@ -1,0 +1,57 @@
+{
+  "kind": "answer",
+  "question": "Summarize the Qwen3 Technical Report (arXiv 2505.09388): pretraining (36 trillion tokens, three stages), the four-stage post-training pipeline (long chain-of-thought SFT, reasoning RL, thinking-mode fusion SFT, general RL), and how small Qwen3 models (0.6B-8B) were trained via strong-to-weak distillation from larger Qwen3 flagships.",
+  "model": "exa",
+  "answer": "Qwen3 models are trained via a three-stage pretraining process on 36 trillion tokens across 119 languages [1][2][3]. Stage 1 (30T tokens, 4K sequence length) builds general knowledge [1][2][3]. Stage 2 (5T tokens, 4K length) focuses on STEM, coding, and reasoning [1][2][3]. Stage 3 expands the context length to 32K using high-quality long-context corpora [1][2][4].\n\nPost-training involves four stages to unify thinking and non-thinking modes [2][5][6]:\n1. Long-CoT Cold Start: Supervised fine-tuning on complex reasoning problems [2][3].\n2. Reasoning RL: GRPO-based optimization for reasoning quality [7][5].\n3. Thinking Mode Fusion: SFT combining thinking and non-thinking data, introducing chat template flags (/think, /no think) [7][5].\n4. General RL: Preference alignment across diverse tasks [2][6].\n\nSmaller Qwen3 models (0.6B–14B) and the 30B-A3B MoE model use strong-to-weak distillation from flagship teachers (32B or 235B-A22B) [1][7][3]. This two-phase process involves off-policy response distillation and on-policy logit alignment, requiring roughly 1/10 the GPU hours of the full four-stage pipeline [7][5][8].",
+  "citations": [
+    {
+      "title": "Qwen3 Technical Report",
+      "url": "https://arxiv.org/html/2505.09388",
+      "published_date": "2025-05-14T00:00:00.000Z",
+      "author": "An Yang, Anfeng Li, Baosong Yang, Beichen Zhang, Binyuan Hui, Bo Zheng, et al."
+    },
+    {
+      "title": "Qwen3: Think Deeper, Act Faster | Qwen",
+      "url": "https://web.archive.org/web/20251007201538/https:/qwenlm.github.io/blog/qwen3/",
+      "published_date": "2025-04-28T20:00:00.000Z",
+      "author": "Qwen Team"
+    },
+    {
+      "title": "Qwen3 Technical Report",
+      "url": "https://cdn.jsdelivr.net/gh/yanfeng98/paper-is-all-you-need/papers/00069-Qwen3_Technical_Report.pdf"
+    },
+    {
+      "title": "Qwen3 - Unified Models for Thinking and Non-Thinking",
+      "url": "https://debuggercafe.com/qwen3-unified-models-for-thinking-and-non-thinking/",
+      "published_date": "2025-07-07T00:00:00.000Z",
+      "author": "Sovit Ranjan Rath"
+    },
+    {
+      "title": "Qwen3 Technical Report — Compute-Structure AI History",
+      "url": "https://ai-papers.xuzou.cn/papers/qwen3_2025"
+    },
+    {
+      "title": "Qwen3 Technical Report - Awesome AI Papers",
+      "url": "https://awesome.papernotes.org/en/era5_genai_explosion/2025_qwen3/",
+      "published_date": "2026-05-17T00:00:00.000Z",
+      "author": "papernotes.org"
+    },
+    {
+      "title": "Qwen3 Technical Report — Paper Graph",
+      "url": "https://paper-graph-ui.vercel.app/p/llm-systems/2505.09388-Qwen3-Technical-Report",
+      "published_date": "2025-05-14T00:00:00.000Z"
+    },
+    {
+      "title": "Qwen3 Technical Report: Analysis, Review & Summary | Paperium",
+      "url": "https://paperium.net/article/en/3380/qwen3-technical-report",
+      "published_date": "2025-12-01T14:27:50.000Z",
+      "author": "Paperium.net"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-05T20:54:25.724387+00:00"
+}

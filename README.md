@@ -76,3 +76,8 @@ or kill continues the run with no flags. Rolling checkpoints keep
 - `scripts/` prepare_data, tokenize_data, train, eval, infer, vram_probe, sanity_check
 - `data/`, `runs/` artifacts (gitignored)
 - `exa_search.py` + `exa_search.bat` web-search helper (Exa API, key in `.env`)
+- `research/` web-research notes + raw Exa payloads (`research/qwen3_8_flash_next_research.md` =
+  Qwen3.8-Flash-Next study; batch driver `scripts/exa_research.py`;
+  `crosscheck_flashnext_vs_pipeline.md` = findings checked against the running pipeline;
+  `c12_distillation_report.md` = C12 distillation deep-dive mapped to the S/P/T ladder;
+  `c12_distillation_plan.md` = ready-to-execute distillation plan (post-M3, user-gated))

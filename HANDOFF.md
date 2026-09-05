@@ -21,7 +21,7 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | M0 smoke (12.3M) | **DONE — PASSED** | loss 10.4→4.95 in 200 steps; kill at ~step 100 → relaunch resumed at exactly 101/200, zero flags; rotation works (limit 3); artifacts in runs/smoke/final (train_summary.json, eval_report.json); eval_loss 4.7926, ppl 120.6 |
 | M1 VRAM probe (226.5M target config) | **DONE — PASSED** | peak 4.24 GB allocated / 4.4 reserved @ 2214 tok/s → target APPROVED for M3; no 8-bit Adam needed; headroom for ctx 1024 |
 | M2 pilot (100.7M) | **DONE — PASSED** | 3000/3000 with auto-resume from checkpoint-1000; eval_loss 2.206→1.161 monotonic (final ppl 3.19); no OOM (peak ~3.3 GB of 6 GB); locally-syntactic samples; artifacts in runs/pilot/final (train_summary.json, eval_report.json) |
-| M3 target (226.5M) | **IN PROGRESS** — launched 2026-09-05 | ctx 1024 probe-approved on 6 GB (4.24/4.4 GB peak); CodeSearchNet data 47.9M train tok; fresh start confirmed; pace ~9.6–12.7 s/it (~3,400 tok/s), ETA ~13–14 h; see §3b |
+| M3 target (226.5M) | **IN PROGRESS** — launched 2026-09-05 | ctx 1024 probe-approved on 6 GB (4.24/4.4 GB peak); CodeSearchNet data 47.9M train tok; fresh start confirmed; pace at launch ~9.6–12.7 s/it; 2026-09-06 re-measure 23.7 s/it → ETA ≈ 33 h (finish ≈ 2026-09-07 morning); see §3b |
 
 ## 3. M2 pilot run — how to check / resume / finish
 
@@ -76,6 +76,11 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 - Live at launch: ~9.6–12.7 s/it (~3,400 tok/s) → ETA ~13–14 h; GPU ~4.9 GB
   used, 81 °C — normal throttling regime, no OOM. Watch the first eval
   (step 500) for eval-batch VRAM headroom.
+- 2026-09-06 correction (cross-check: research/crosscheck_flashnext_vs_pipeline.md):
+  sustained pace is 23.7 s/it (≈1,380 tok/s) — total ≈ 33 h, completion ≈ 2026-09-07
+  morning; the launch tok/s estimate was optimistic. 00:07 snapshot: step 106, loss
+  8.06→5.60, still in LR warmup, grad_norm 1.27–1.39 (clip 1.0 engaging pre-warmup,
+  normal); GPU 77 % / 4.96 GB / 75 °C.
 - Artifacts policy (user decision): the M3 model (~900 MB safetensors) stays
   LOCAL — free LFS cannot fit it (see §7). Progress: TensorBoard events in
   runs/target/logs/ (transformers 5.16.1 prints no console loss lines; read
@@ -196,6 +201,15 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 3. Upgrade path (user-approved only): pilot data quality (ungated raw code or
    the-stack-v2 with token), Flash-Next/GDN hybrid architecture experiments
    (resources/ notes are pseudo-code — PLAN.md A7 says plain GQA first).
+4. C12 distillation stage (planned 2026-09-06, user-gated after M3): plan at
+   research/c12_distillation_plan.md, rationale at
+   research/c12_distillation_report.md. Tier 1 = Evol-Instruct trace SFT of the
+   M3 model (scripts/sft.py + configs/sft_t1.yaml are created at execution;
+   the §5.3 auto-resume contract applies). Tier 2 = on-policy logit alignment;
+   Tier 3 = intra-ladder KD (tests the ~1/10 GPU-hour claim on our ladder).
+   Why: the pipeline currently ends at pretraining — no SFT/distill stage exists
+   (crosscheck row C12). T never saw Evol-Instruct, so it is contamination-free
+   SFT data for the M3 model.
 
 ## 9. Conventions
 

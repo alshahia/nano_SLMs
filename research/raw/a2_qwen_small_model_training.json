@@ -1,0 +1,54 @@
+{
+  "kind": "answer",
+  "question": "How does Alibaba's Qwen team train their small language models (0.5B-4B)? Do they use distillation from larger Qwen flagships, and what does the full training recipe look like (pretraining, SFT, reinforcement learning)?",
+  "model": "exa",
+  "answer": "The Alibaba Qwen team trains its small models (0.5B-4B) using a strong-to-weak distillation pipeline that leverages larger flagships as teachers [1][2]. This process bypasses the intensive multistage reinforcement learning (RL) used for flagship models in favor of computationally efficient knowledge transfer [2].\n\nThe training recipe involves two primary components:\n\nBlack-box and white-box distillation: Teams use proprietary models like Qwen-max or GPT-4, and open-weight flagships like Qwen2.5-72B-Instruct, as teachers [1][3]. Teachers generate high-quality, CoT-augmented instruction-response pairs to form a synthetic training dataset [1]. White-box distillation further improves performance by minimizing divergence between teacher and student logits (e.g., using KLD or top-K token probability matching) [1][3].\n\nPost-training: Student models undergo supervised fine-tuning (SFT) on the distilled, augmented datasets [1]. For models like Qwen3-4B, this distillation pipeline includes both off-policy and on-policy strategies to maximize instruction-following and reasoning capabilities [2]. While flagship models undergo extensive multistage RL (SFT, DPO, GRPO), smaller models focus on inheriting these behaviors via distillation to maintain efficiency [4][2].",
+  "citations": [
+    {
+      "title": "DistilQwen2.5: Industrial Practices of Training Distilled Open Lightweight Language Models",
+      "url": "https://aclanthology.org/2025.acl-industry.4.pdf",
+      "published_date": "2025-01-01T00:00:00.000Z",
+      "author": "Chengyu Wang, Junbing Yan, Yuanhao Yue, Jun Huang"
+    },
+    {
+      "title": "Qwen3 4B | Open Laboratory",
+      "url": "https://openlaboratory.com/models/qwen3-4b/"
+    },
+    {
+      "title": "EasyDistill: A Comprehensive Toolkit for Effective Knowledge Distillation of Large Language Models",
+      "url": "https://arxiv.org/html/2505.20888v2"
+    },
+    {
+      "title": "Qwen2.5 Technical Report",
+      "url": "https://doi.org/10.48550/arxiv.2412.15115",
+      "published_date": "2024-12-19T00:00:00.000Z",
+      "author": "Qwen, :, Yang An, Baosong Yang, Beichen Zhang, Binyuan Hui, et al."
+    },
+    {
+      "title": "AgenticQwen: Training Small Agentic Language Models with Dual Data Flywheels for Industrial-Scale Tool Use",
+      "url": "https://aclanthology.org/2026.acl-industry.37.pdf",
+      "published_date": "2026-01-01T00:00:00.000Z",
+      "author": "Yuanjie Lyu, Chengyu Wang, Haonan Zheng, Yuanhao Yue, Junbing Yan, Ming Wang, et al."
+    },
+    {
+      "title": "Build & Deploy DistilQwen2 via Knowledge Distillation - Platform for AI - Alibaba Cloud - Platform For AI - Alibaba Cloud Documentation Center",
+      "url": "https://www.alibabacloud.com/help/doc-detail/2859036.html"
+    },
+    {
+      "title": "Extended Abstract",
+      "url": "https://cs224r.stanford.edu/spring_2025/projects/pdfs/CS224R_final_report__2_%20(4).pdf"
+    },
+    {
+      "title": "Qwen2.5 Explained: Alibaba's Open LLM Family, 0.5B to 72B — Research Papers",
+      "url": "https://researchpapers.dev/en/papers/qwen2-5/",
+      "published_date": "2024-12-19T00:00:00.000Z",
+      "author": "Alibaba Qwen Team · Paper published 2024-12-19 · 4 min read"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-05T20:51:11.021325+00:00"
+}

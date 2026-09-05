@@ -1,0 +1,141 @@
+On the Design of Qwen3.8-Next Architecture: Evaluation, Efficiency, and Training Stability
+
+# On the Design of Qwen3.8-Next Architecture: Evaluation, Efficiency, and Training Stability 
+
+ Qwen Team 
+
+###### Abstract
+
+We describe the architecture and ablations of Qwen3.8-Flash-Next, a sparse mixture-of-experts model with 125B parameters, 6B activated per token, and additional 51B parameters of n-gram embedding tables held off the accelerator. On fourteen pre-training benchmarks the model leads the 397B-A17B predecessor on eight and trails it on the rest by at most 2.6 points, at 1/3 the activated parameters, 1/3 the training tokens, and roughly 1/9 the training FLOPs. Token mixing uses a layer-wise hybrid of Gated DeltaNet (GDN) and global attention, with one full-attention layer in every four; at continued-pretraining time those full-attention layers are replaced by Qwen Sparse Attention (QSA), which scores context at micro-block granularity with a compressed lightweight indexer. The residual stream is widened to four branches and read through an elementwise gate, a design we call the Gated Residual (GR). Capacity is added outside the backbone by a single n-gram embedding layer whose tables are prefetched from host memory. We evaluate every candidate change along three axes: loss together with downstream benchmarks; the cost of the change in training, prefill and decode; and its effect on the optimal hyperparameters and training stability. Loss and downstream accuracy do not always move together: enlarging the n-gram vocabulary lowers loss monotonically while downstream accuracy saturates. The architecture and the Muon optimizer together shift the optimal learning rate and batch size upwards, render batch-size warmup unnecessary, and substantially improve stability under stress tests. Loss, benchmarks, efficiency and stability form one design problem. Solved jointly, they yield a recipe that is simultaneously more efficient, more capable and more stable.
+
+## 1 Introduction
+
+Qwen3.8-Flash-Next is a sparse mixture-of-experts model with 125B total parameters, 6B activated per token, and additional 51B parameters of n-gram embedding tables held off the accelerator. The design goal is to retain the quality of the previous generation’s 397B-A17B flagship (Qwen Team, 2026) at a fraction of its compute budget. On fourteen pre-training benchmarks spanning knowledge, STEM, reasoning, coding and multilingual ability, the resulting base model leads that predecessor on eight and trails it on the remaining six by at most $2.62.6$ points (Tab. 11), while activating roughly a third as many parameters per token and training on roughly a third as many tokens, for about a ninth of the training FLOPs.
+
+An architectural change touches three things at once: what the model can do on downstream tasks, what it costs to train and to serve, and whether the training run remains optimal and stable at scale. We therefore evaluate every candidate change along three axes: loss together with downstream benchmarks; the cost of the change in training, prefill and decode; and its effect on the optimal hyperparameters and on training stability. Loss, benchmarks, efficiency and stability form one design problem, and we report each on its own terms. Throughout this report, we highlight where the three axes disagree and the design choices those disagreements led to.
+
+Four architectural components carry the design, each addressing a distinct bottleneck. Token mixing uses a layer-wise hybrid of Gated DeltaNet (GDN) (Yang et al., 2024) and global attention: the recurrent layers compress the prefix into a fixed-size state at linear cost, while one full-attention layer in every four retains the direct token-level retrieval that no finite-state memory reproduces exactly (§ 2.1.1). At continued-pretraining time those full-attention layers are replaced by Qwen Sparse Attention (QSA), which follows the sparse-attention route of Liu et al. (2025a) but scores context at micro-block granularity with a compressed lightweight indexer, so that the cost of indexing itself falls with sequence length. The residual stream is widened to four branches (Baykal et al., 2023; Zhu et al., 2024) and read through an elementwise gate, a design we call Gated Residual (GR) (§ 2.2): widening adds capacity to the residual path, and the gate decides how that capacity is spent, while also supplying the rescaling that keeps training stable. Capacity is further added outside the backbone by a single n-gram embedding layer (Google DeepMind, 2025; Cheng et al., 2026) whose tables are prefetched from host memory (§ 2.3), scaling parameter count with negligible additional per-token FLOPs and latency.
+
+##### Evaluation.
+
+Loss and downstream accuracy do not always move together, and we observe disagreements in both directions. Enlarging the n-gram vocabulary lowers loss monotonically while downstream accuracy saturates, and under a fixed parameter budget the loss optimum diverges from the accuracy optimum (Tab. 9, Tab. 8). Conversely, predicting the residual read and write weights from the residual state yields only a marginal loss reduction but a clear benchmark gain (§ 2.2). Other disagreements surface late: restricting each block to the two highest-gated residual branches is almost free in pre-training loss yet degrades with further training (§ 2.2), and removing positional encoding from the full-attention layers is indistinguishable during pre-training but affects generation quality at later stages (§ 2.1.1). In the sections that follow, where loss and benchmarks move together we report loss alone, for brevity.
+
+Figure 1: Qwen3.8-Flash-Next architecture. Token mixing alternates three GDN layers with one QSA layer per block of four. Every sublayer reads and writes through GR, which widens the residual stream and gates the read elementwise. An n-gram embedding layer at Layer 2 scales capacity off the accelerator via host-memory prefetching. The MTP module reuses QSA indices across speculative decoding steps. 
+
+##### Efficiency.
+
+We evaluate cost separately in training, prefill and decode. In training, FlashQLA achieves a $22$–$3×3\times$ forward and roughly $2×2\times$ backward speedup over the Triton baseline on GPUs (§ 2.1.1). Muon introduces its own engineering costs: its per-parameter FLOPs depend on matrix shape rather than parameter count, so the data-parallel gradient buffer is repartitioned by estimated orthogonalization cost; and its step fragments into many small kernels once fused parameters are split, so the step is captured in a CUDA graph (§ 3.1). We set the Newton–Schulz iteration to 8 steps, favouring the additional stability under stress. At inference, prefill is dominated by attention over the whole context, which QSA addresses by compressing the key sequence by a factor $rr$, reducing indexer cost from $O⁡(n2)O(n^{2})$ to $O⁡(n2/r)O(n^{2}/r)$. Decode is dominated by memory traffic, which is why the GDN layers keep a fixed-size recurrent state, the GR drops the branch-mixing operator $HresH_{\mathrm{res}}$, and the residual state supports FP8 storage. At a context length of 1M, QSA is $7.6×7.6\times$ faster than dense attention in prefill and $4.9×4.9\times$ faster in decode at the kernel level.
+
+##### Optimization.
+
+Muon (Jordan et al., 2024) is applied to the two-dimensional weights that act as linear maps; the input and n-gram embeddings, output head, MoE router and the low-rank projections of GR stay on AdamW, where orthogonalization is either impractical or unhelpful (§ 3.1). Fused parameters are split before orthogonalization, since orthogonalizing a concatenated matrix mixes singular directions across unrelated sub-blocks (§ 3.1). The new architecture and optimizer also shift the optimal hyperparameters, so we refit the scaling law (Kaplan et al., 2020) used for the Qwen3.5 series (§ 3.2). The new scaling law predicts a larger batch size and learning rate; both predictions are verified separately and confirmed. The larger batch size improves parallel throughput at scale, and the larger learning rate improves convergence. Ramping the batch size over early training ends no better than starting at the target and costs $18.8%18.8\%$ more optimizer steps, so we do not use it (§ 3.2).
+
+##### Training Stability.
+
+We verify training stability under stress tests that reproduce large-scale instabilities at moderate model scale by raising the learning rate (Wortsman et al., 2023) and keeping a constant learning rate. The criterion is that the new recipe must be at least as stable as the generation it replaces under equal stress. At four times the optimal learning rate, the previous structure spikes frequently, whereas the new recipe remains stable throughout (§ 3.3). Isolating the gate in GR on a single-variable pair confirms it as a key contributor to the stability margin over the Qwen3.5 architecture. As a direct result of these stability enhancements, the full-scale training of Qwen3.8-Flash-Next proceeded smoothly without a single loss spike or anomalous fluctuation in gradient norms, without relying on explicit clipping methods such as qk-clip (Kimi Team, 2025) or SwiGLU-clip (Agarwal et al., 2025).
+
+##### Organization.
+
+§ 2.1.1 and § 2.1.2 describe token mixing. § 2.2 covers the gated residual, § 2.3 the n-gram embedding layer, § 3.1 the optimizer, § 3.2 the hyperparameter scaling and § 3.3 the stability stress test. Evaluation of the resulting base and post-trained models follows.
+
+#### 2.1.1 GDN Hybrid Architecture
+
+Figure 2: The Gated DeltaNet token mixer. The projected query, key, and value streams pass through short causal convolutions; queries and keys are L2-normalized before the gated delta recurrence. The decay gate $αt\alpha_{t}$ and write gate $βt\beta_{t}$ control the recurrent update, while a sigmoid output gate modulates the zero-centered RMS-normalized output.
+
+##### Motivation.
+
+Full self-attention provides direct content-based access to every preceding token, but its token-mixing cost grows quadratically with sequence length and its key–value (KV) cache grows linearly during autoregressive generation (Vaswani et al., 2017). Sliding-window attention (SWA) replaces global access with a bounded local receptive field, reducing both computation and cache consumption. However, information outside the window can only propagate indirectly through depth. This creates a tension between efficient local processing and persistent content-dependent memory.
+
+We address this tension with a layer-wise hybrid of Gated DeltaNet (GDN) (Yang et al., 2024) and global attention. GDN compresses the prefix into a fixed-size recurrent state and updates that state according to the current content, while the interleaved global-attention layers retain direct token-level retrieval that is difficult for any finite-state recurrent memory to reproduce exactly.
+
+This design choice is consistent with the architecture ablation reported in Tab. 1. Relative to the full-attention Transformer baseline, the GDN-hybrid model improves 8 of the 9 selected benchmarks. Relative to the SWA-hybrid, it is stronger on seven of the nine benchmarks. These results motivate a hybrid design, but they do not by themselves isolate which architectural component causes each improvement.
+
+##### Gated Delta Recurrence.
+
+Linear attention can be interpreted as a fast-weight memory that stores key–value associations in a matrix state (Schlag et al., 2021). For each head, let $𝒒t,𝒌t∈ℝdk\bm{q}_{t},\bm{k}_{t}\in\mathbb{R}^{d_{k}}$ and $𝒗t∈ℝdv\bm{v}_{t}\in\mathbb{R}^{d_{v}}$. Following the implementation convention, GDN maintains a state $𝑺t∈ℝdk×dv\bm{S}_{t}\in\mathbb{R}^{d_{k}\times d_{v}}$, which is the transpose of the state convention used in the original formulation, and applies the gated delta rule (Yang et al., 2024):
+
+$𝑺~t−1\displaystyle\widetilde{\bm{S}}_{t-1}$
+
+$=αt​𝑺t−1,\displaystyle=\alpha_{t}\bm{S}_{t-1},$
+
+(1)
+
+$𝒆t\displaystyle\bm{e}_{t}$
+
+$=𝒗t−𝑺~t−1⊤​𝒌t,\displaystyle=\bm{v}_{t}-\widetilde{\bm{S}}_{t-1}^{\top}\bm{k}_{t},$
+
+(2)
+
+$𝑺t\displaystyle\bm{S}_{t}$
+
+$=𝑺~t−1+βt​𝒌t​𝒆t⊤,\displaystyle=\widetilde{\bm{S}}_{t-1}+\beta_{t}\bm{k}_{t}\bm{e}_{t}^{\top},$
+
+(3)
+
+$𝒚t\displaystyle\bm{y}_{t}$
+
+$=𝑺t⊤​𝒒t,\displaystyle=\bm{S}_{t}^{\top}\bm{q}_{t},$
+
+(4)
+
+where $αt∈(0,1)\alpha_{t}\in(0,1)$ is a data-dependent decay and $βt∈(0,1)\beta_{t}\in(0,1)$ controls the delta update. Equivalently,
+
+$𝑺t=αt​(𝑰−βt​𝒌t​𝒌t⊤)​𝑺t−1+βt​𝒌t​𝒗t⊤.\bm{S}_{t}=\alpha_{t}\left(\bm{I}-\beta_{t}\bm{k}_{t}\bm{k}_{t}^{\top}\right)\bm{S}_{t-1}+\beta_{t}\bm{k}_{t}\bm{v}_{t}^{\top}.$
+
+(5)
+
+The two gates play complementary roles. The decay $αt\alpha_{t}$ globally controls the lifetime of the existing state, whereas the delta term first estimates the value already associated with $𝒌t\bm{k}_{t}$ and writes only the residual error. Consequently, repeated or similar keys update an existing association instead of accumulating unbounded outer products. This targeted erase-and-write operation distinguishes GDN from purely additive linear attention.
+
+##### GDN Parameterization.
+
+Given the normalized residual-stream input $𝒙t∈ℝd\bm{x}_{t}\in\mathbb{R}^{d}$, GDN computes content features using learned projections followed by a short depthwise causal convolution:
+
+$𝒒t\displaystyle\bm{q}_{t}$
+
+$=L2Norm⁡(SiLU⁡(ShortConv⁡(𝑾q​𝒙t))),\displaystyle=\operatorname{L2Norm}\left(\operatorname{SiLU}\left(\operatorname{ShortConv}(\bm{W}_{q}\bm{x}_{t})\right)\right),$
+
+(6)
+
+$𝒌t\displaystyle\bm{k}_{t}$
+
+$=L2Norm⁡(SiLU⁡(ShortConv⁡(𝑾k​𝒙t))),\displaystyle=\operatorname{L2Norm}\left(\operatorname{SiLU}\left(\operatorname{ShortConv}(\bm{W}_{k}\bm{x}_{t})\right)\right),$
+
+(7)
+
+$𝒗t\displaystyle\bm{v}_{t}$
+
+$=SiLU⁡(ShortConv⁡(𝑾v​𝒙t)).\displaystyle=\operatorname{SiLU}\left(\operatorname{ShortConv}(\bm{W}_{v}\bm{x}_{t})\right).$
+
+(8)
+
+Short convolution supplies an explicit local inductive bias before information is compressed into the recurrent state. L2 normalization bounds the magnitudes of $𝒒\bm{q}$/$𝒌\bm{k}$ and stabilizes the rank-one delta transition.
+
+The write strength and decay are parameterized as
+
+$βt\displaystyle\beta_{t}$
+
+$=σ⁡(𝑾β​𝒙t),\displaystyle=\sigma(\bm{W}_{\beta}\bm{x}_{t}),$
+
+(9)
+
+$αt\displaystyle\alpha_{t}$
+
+$=exp⁡[−exp⁡(𝑨)​softplus⁡(𝑾α​𝒙t+𝒃α)].\displaystyle=\exp\left[-\exp(\bm{A})\operatorname{softplus}(\bm{W}_{\alpha}\bm{x}_{t}+\bm{b}_{\alpha})\right].$
+
+(10)
+
+After applying the recurrence independently across heads, the head outputs are normalized and modulated by an input-dependent output gate:
+
+$𝒐t=𝑾o​[σ⁡(𝑾z​𝒙t)⊙RMSNorm⁡(𝒚t)].\bm{o}_{t}=\bm{W}_{o}\left[\sigma(\bm{W}_{z}\bm{x}_{t})\odot\operatorname{RMSNorm}(\bm{y}_{t})\right].$
+
+(11)
+
+Unlike the original GDN, which uses a SiLU output gate, we use the bounded sigmoid gate in Equation (11) and observe consistent improvements across our experiments. Following Qwen3-Next, we adopt zero-centered RMSNorm to constrain the growth of RMSNorm weights. The same formulation is consistently applied to all other RMSNorm layers used throughout the model. Figure 2 summarizes the complete GDN token-mixing path.
+
+At the model level, our hybrid architecture retains rotary position embeddings (RoPE) (Su et al., 2024) in its full-attention layers. RoPE and a NoPE variant without positional encoding show little difference during pretraining, but the NoPE variant exhibits a substantially higher rate of endless generation after post-training and is therefore more likely to fail to terminate. We place one such full-attention layer in every four layers, with the other three layers using GDN. This schedule strikes a favorable balance between efficiency and quality, while periodic full attention is particularly important for long-context performance.
+
+##### Kernel Efficiency.
+
+For efficiency, we optimize the GDN kernel with FlashQLA, a TileLang-based fused linear-attention kernel library. Across multiple settings on NVIDIA GPUs, FlashQLA achieves a $22$–$3×3\times$ forward 
+
+SOURCE_URL: https://arxiv.org/html/2608.30320

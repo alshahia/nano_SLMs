@@ -1,0 +1,194 @@
+
+
+ Qwen 
+ window.dataLayer = window.dataLayer || [];
+ function gtag(){window.dataLayer.push(arguments);}
+ gtag('consent', 'default', {
+ 'ad_storage': 'denied',
+ 'ad_user_data': 'denied',
+ 'ad_personalization': 'denied',
+ 'analytics_storage': 'denied',
+ 'wait_for_update': 500,
+ 'url_passthrough': true,
+ 'ads_data_redaction': true
+ });
+!(function () {var a = window.__ICE_APP_CONTEXT__ || {};var b = {"appData":null,"loaderData":{"layout":{"pageConfig":{}},"home":{"pageConfig":{}}},"routePath":"/home","matchedIds":["layout","home"],"documentOnly":true,"renderMode":"CSR"};for (var k in a) {b[k] = a[k]}window.__ICE_APP_CONTEXT__=b;})(); 
+ (function () {
+ var VIDEO = 'https://cloud.video.taobao.com/vod/2Sk0Z3eIgdp-lw0qfF6IEnxTVq2CI5PP8MSNZYBbg70.mp4';
+ var STORAGE_KEY = 'qwen_splash_seen';
+ // 素材版本标识：更换素材时同步修改，可让新素材重新展示
+ var MEDIA_KEY = '2Sk0Z3eIgdp-lw0qfF6IEnxTVq2CI5PP8MSNZYBbg70';
+ // 下架时间：到点后彻底不再展示（当前设置为 7 天有效期）
+ var END_TIME = Date.parse('2026-08-10T23:59:59+08:00');
+ var DURATION = 5000;
+
+ // 仅以下页面展示开屏视频：/（会重定向到 /home）、/home
+ var path = (location.pathname || '/').replace(/\/+$/, '') || '/';
+ path = path.toLowerCase();
+ var blogId = '';
+ try { blogId = new URLSearchParams(location.search).get('id') || ''; } catch (e) {}
+ var allowed = path === '/' || path === '/home';
+ if (!allowed) return;
+
+ try {
+ if (isNaN(END_TIME) || Date.now() > END_TIME) return;
+ // 调试：暂时关闭“只展示一次”，每次打开都展示；上线前取消下面两处注释即可恢复
+ // if (localStorage.getItem(STORAGE_KEY) === MEDIA_KEY) return;
+ } catch (e) { /* localStorage 不可用则正常展示 */ }
+
+ var overlay = document.createElement('div');
+ overlay.id = 'qwen-splash';
+ overlay.setAttribute(
+ 'style',
+ 'position:fixed;inset:0;z-index:99999;background:#fff;opacity:1;transition:opacity .3s ease;'
+ );
+
+ var video = document.createElement('video');
+ video.src = VIDEO;
+ video.muted = true;
+ video.autoplay = true;
+ // 纯视频：不循环、无控制条，播完停在最后一帧；pointer-events:none 屏蔽点击唤起原生控件/暂停
+ video.controls = false;
+ video.setAttribute('muted', '');
+ video.setAttribute('autoplay', '');
+ video.setAttribute('playsinline', '');
+ video.setAttribute('webkit-playsinline', '');
+ video.setAttribute('disablepictureinpicture', '');
+ video.setAttribute('style', 'width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;');
+
+ // 语言检测：与 src/locales 逻辑保持一致（localStorage 优先，其次浏览器语言）
+ var lang = '';
+ try { lang = localStorage.getItem('locale_lang') || ''; } catch (e) {}
+ if (!lang) {
+ var navLang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+ lang = navLang.indexOf('zh') === 0 ? 'zh-cn' : 'en';
+ }
+ var skipLabel = lang === 'zh-cn' ? '跳过' : 'Skip';
+ var detailLabel = lang === 'zh-cn' ? '查看详情' : 'Learn More';
+
+ // 右上角按钮组：查看详情 + 跳过
+ var btnGroup = document.createElement('div');
+ btnGroup.setAttribute(
+ 'style',
+ 'position:fixed;bottom:24px;right:24px;display:inline-flex;align-items:center;gap:12px;'
+ );
+
+ var detail = document.createElement('a');
+ detail.href = '/blog?id=qwen3.8';
+ detail.textContent = detailLabel;
+ detail.setAttribute(
+ 'style',
+ 'display:inline-flex;align-items:center;gap:6px;text-decoration:none;' +
+ 'padding:8px 16px;font-size:14px;line-height:1;color:#222222;cursor:pointer;' +
+ 'background:#fff;border:1px solid #fff;border-radius:999px;'
+ );
+
+ var skip = document.createElement('button');
+ skip.type = 'button';
+ skip.setAttribute(
+ 'style',
+ 'display:inline-flex;align-items:center;gap:6px;' +
+ 'padding:8px 16px;font-size:14px;line-height:1;color:#fff;cursor:pointer;' +
+ 'background:rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.35);border-radius:999px;'
+ );
+ var count = Math.round(DURATION / 1000);
+ skip.textContent = skipLabel + ' ' + count + 's';
+
+ btnGroup.appendChild(detail);
+ btnGroup.appendChild(skip);
+
+ overlay.appendChild(video);
+ overlay.appendChild(btnGroup);
+
+ function mount() {
+ (document.body || document.documentElement).appendChild(overlay);
+ }
+ if (document.body) {
+ mount();
+ } else {
+ document.addEventListener('DOMContentLoaded', mount);
+ }
+
+ // 调试：不写入已看过标记，保证每次打开都展示
+ // try { localStorage.setItem(STORAGE_KEY, MEDIA_KEY); } catch (e) {}
+
+ var closed = false;
+ var timer, ticker;
+ function close() {
+ if (closed) return;
+ closed = true;
+ clearTimeout(timer);
+ clearInterval(ticker);
+ overlay.style.opacity = '0';
+ setTimeout(function () {
+ if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+ }, 300);
+ }
+
+ skip.addEventListener('click', close);
+ // 视频自动播放被浏览器拦截时兜底：直接尝试播放，失败不影响倒计时关闭
+ try { var p = video.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {}
+ timer = setTimeout(close, DURATION);
+ ticker = setInterval(function () {
+ count -= 1;
+ skip.textContent = count > 0 ? skipLabel + ' ' + count + 's' : skipLabel;
+ }, 1000);
+ })();
+ 
+ var prodDomain = [
+ 'internal-qwenlm.alibaba-inc.com',
+ 'qwenlm.io',
+ 'chat.qwenlm.ai',
+ 'qwenlm.ai',
+ 'qwen.ai',
+ 'chat.qwen.ai',
+ 'qwenchat.com'
+ ];
+ var env = prodDomain.some((domain) => location.host === domain) ? 'prod' : 'pre';
+ (function (w, d, s, q, i) {
+ var cookies = d.cookie.split(';').map(function (item) {
+ return item.trim().split('=');
+ });
+ function getCookie(name) {
+ var item = cookies.find(function (item) {
+ return item[0] == name;
+ });
+ return item ? encodeURIComponent(item[1]) : '';
+ }
+ var aplusUrl =
+ env === 'pre'
+ ? 'https://pre-chat.qwen.ai/scripts/stat.js'
+ : 'https://chat.qwen.ai/scripts/stat.js';
+ w[q] = w[q] || [];
+ var f = d.getElementsByTagName(s)[0],
+ j = d.createElement(s);
+ j.async = true;
+ j.id = 'beacon-aplus';
+ j.setAttribute('exparams', 'aplus&sidx=aplusSidex&ckx=aplusCkx');
+ j.src = aplusUrl;
+ f.parentNode.insertBefore(j, f);
+ })(window, document, 'script', 'aplus_queue');
+ 
+ window.aes = new AES({
+ pid: env === 'prod' ? 'qwen-ai' : 'pre-qwen-ai',
+ env: env === 'prod' ? 'prod' : 'pre'
+ });
+ aes.use([
+ [
+ AESPluginAPI,
+ {
+ ignoreList: [
+ function (url, obj) {
+ return obj.status === 200;
+ }
+ ]
+ }
+ ],
+ [AESPluginJSError],
+ AESPluginResourceError,
+ AESPluginPerf,
+ AESPluginEventTiming
+ ]);
+!(function () {var a = window.__ICE_APP_CONTEXT__ || {};var b = {"appData":null,"loaderData":{"layout":{"pageConfig":{}},"home":{"pageConfig":{}}},"routePath":"/home","matchedIds":["layout","home"],"documentOnly":true,"renderMode":"CSR"};for (var k in a) {b[k] = a[k]}window.__ICE_APP_CONTEXT__=b;})();
+
+SOURCE_URL: https://qwen.ai/blog?id=qwen3.8-flash-next

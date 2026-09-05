@@ -1,0 +1,49 @@
+{
+  "kind": "answer",
+  "question": "What is Qwen3.8 Flash-Next (also written 'queen model 3.8')? How does it relate to Qwen3-Next's hybrid Gated DeltaNet + gated attention architecture, and how was it trained?",
+  "model": "exa",
+  "answer": "Qwen3.8-Flash-Next is a 125B-parameter multimodal Mixture-of-Experts (MoE) model released as an experimental architectural preview for Qwen4 [1][2][3]. It advances the Gated DeltaNet (GDN) and Gated Attention hybrid design established by Qwen3-Next by replacing standard gated attention with Qwen Sparse Attention (QSA) [1][4][3].\n\nThe architecture alternates three GDN layers—which compress history into a recurrent state—with one QSA layer for precise retrieval [4][3]. QSA improves efficiency by using a lightweight indexer to select context at the micro-block level rather than per token, reducing indexing overhead on long sequences [5][4]. The model also introduces Gated Residuals (GR) for stability and a 51B-parameter N-gram embedding table for capacity [1][2].\n\nTraining involved the Muon optimizer for linear maps and AdamW for routing and low-rank components, eliminating batch-size warmups in favor of direct target-batch training [4][2]. The process utilized a two-stage continued-pretraining approach: initial indexer warm-up (2B tokens) followed by joint backbone-and-indexer sparse training (200B tokens) [5].",
+  "citations": [
+    {
+      "title": "QwenLM/Qwen3.8-Flash-Next",
+      "url": "https://github.com/qwenlm/qwen3.8-flash-next"
+    },
+    {
+      "title": "Qwen/Qwen3.8-Flash-Next · Hugging Face",
+      "url": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next"
+    },
+    {
+      "title": "Qwen3.8-Flash-Next: Architecture, Memory & Inference Guide | IntuitionLabs",
+      "url": "https://intuitionlabs.ai/articles/qwen3-8-flash-next-architecture-memory"
+    },
+    {
+      "title": "Qwen3.8-Flash-Next: A New Architecture, Towards Ultimate Cost-Efficiency - Alibaba Cloud Community",
+      "url": "https://www.alibabacloud.com/blog/qwen3-8-flash-next-a-new-architecture-towards-ultimate-cost-efficiency_603501"
+    },
+    {
+      "title": "On the Design of Qwen3.8-Next Architecture: Evaluation, Efficiency, and Training Stability",
+      "url": "https://arxiv.org/html/2608.30320"
+    },
+    {
+      "title": "Qwen3.8-Flash-Next | NVIDIA NeMo AutoModel",
+      "url": "https://docs.nvidia.com/nemo/automodel/model-coverage/large-language-models/qwen/qwen3-8-flash-next"
+    },
+    {
+      "title": "Qwen3.8-Flash-Next — Architecture, Evals & Inference Performance | InferenceX",
+      "url": "https://inferencex.semianalysis.com/model/qwen-3-8-flash-next",
+      "author": "SemiAnalysis"
+    },
+    {
+      "title": "Experiment with Qwen3.8-Flash-Next 176B Model on NVIDIA GB300 NVL72 for Agentic Coding | NVIDIA Technical Blog",
+      "url": "https://developer.nvidia.com/blog/experiment-with-qwen3-8-flash-next-176b-model-on-nvidia-gb300-nvl72-for-agentic-coding/",
+      "published_date": "2026-08-26T17:07:12.000Z",
+      "author": "Rajath Narasimha"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-05T20:51:08.419360+00:00"
+}
