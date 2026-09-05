@@ -1,0 +1,59 @@
+# M3 target: ~250M params; run only after the M1 probe approves it (PLAN.md §3).
+name: target
+
+tokenizer:
+  name: codellama/CodeLlama-7b-hf
+  vocab_size: 32768
+
+model:
+  layers: 16
+  hidden: 1024
+  heads: 16
+  kv_heads: 4
+  ffn: 3072
+  ctx: 512
+  dropout: 0.0
+  tie_embeddings: true
+
+data:
+  dataset_candidates:
+    - name: bigcode/the-stack-v2
+      config: python
+    - name: code_search_net
+      config: python
+  rows: 150000
+  val_fraction: 0.02
+  dedupe: true
+  min_chars: 200
+  shard_tokens: 8000000
+  raw_dir: data/target/raw
+  tokens_dir: data/target/tokens
+
+train:
+  output_dir: runs/target
+  final_dir: runs/target/final
+  max_steps: 10000
+  batch: 1
+  eval_batch: 4
+  accum: 32
+  lr: 4.0e-4
+  scheduler: cosine
+  warmup_steps: 300
+  weight_decay: 0.1
+  max_grad_norm: 1.0
+  logging_steps: 50
+  eval_steps: 500
+  save_steps: 500
+  save_total_limit: 3
+  fp16: true
+  grad_ckpt: true
+  optim: adamw_torch          # 8-bit Adam is the M1-gated fallback
+  dataloader_num_workers: 0
+  seed: 42
+
+eval:
+  max_new_tokens: 64
+  prompts:
+    - "def fibonacci(n):"
+    - "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):"
+    - "class Stack:"

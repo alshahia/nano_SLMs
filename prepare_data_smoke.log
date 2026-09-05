@@ -1,0 +1,29 @@
+[prepare] trying dataset: TheGamingMahi/TinyCode
+[prepare] TheGamingMahi/TinyCode: 250/2000 rows
+[prepare] TheGamingMahi/TinyCode: 500/2000 rows
+[prepare] TheGamingMahi/TinyCode: 750/2000 rows
+[prepare] TheGamingMahi/TinyCode: 1000/2000 rows
+[prepare] TheGamingMahi/TinyCode: 1250/2000 rows
+[prepare] TheGamingMahi/TinyCode: 1500/2000 rows
+[prepare] TheGamingMahi/TinyCode: 1750/2000 rows
+[prepare] TheGamingMahi/TinyCode failed: CastError: Couldn't cast
+text: string
+language: string
+model: string
+temperature: double
+finish_reason: string
+metadata: string
+timestamp: string
+to
+{'text': Value('string'), 'language': Value('string'), 'model': Value('string'), 'temperature': Value('float64'), 'metadata': Json(decode=True), 'timestamp': Value('string')}
+because column names don't match
+[prepare] trying dataset: nickrosh/Evol-Instruct-Code-80k-v1
+[prepare] nickrosh/Evol-Instruct-Code-80k-v1: 250/2000 rows
+[prepare] nickrosh/Evol-Instruct-Code-80k-v1: 500/2000 rows
+[prepare] nickrosh/Evol-Instruct-Code-80k-v1: 750/2000 rows
+[prepare] nickrosh/Evol-Instruct-Code-80k-v1: 1000/2000 rows
+[prepare] nickrosh/Evol-Instruct-Code-80k-v1: 1250/2000 rows
+[prepare] nickrosh/Evol-Instruct-Code-80k-v1: 1500/2000 rows
+[prepare] nickrosh/Evol-Instruct-Code-80k-v1: 1750/2000 rows
+[prepare] nickrosh/Evol-Instruct-Code-80k-v1: 2000/2000 rows
+[prepare] OK nickrosh/Evol-Instruct-Code-80k-v1: 1960 train + 40 val rows

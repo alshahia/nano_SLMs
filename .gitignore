@@ -1,0 +1,26 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.log.bak
+
+# Raw JSONL is regenerable via scripts/prepare_data.py (keep packed .bin)
+data/*/raw/
+
+# Checkpoint optimizer states exceed GitHub LFS free quota (~1 GB):
+# full resume state stays local; pushed checkpoints carry model + trainer state.
+optimizer.pt
+
+# Smoke drill checkpoints (disposable; smoke/final is tracked)
+runs/smoke/checkpoint-*/
+
+# Pilot checkpoints other than the handoff resume point
+runs/pilot/checkpoint-*
+!runs/pilot/checkpoint-1000/
+runs/pilot/checkpoint-1500/
+runs/pilot/checkpoint-2000/
+runs/pilot/checkpoint-2500/
+runs/pilot/checkpoint-3000/
+
+# Future target-run artifacts (tracked selectively when they exist)
+runs/target/
