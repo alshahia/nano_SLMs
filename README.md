@@ -18,6 +18,10 @@ Full plan and milestones: `PLAN.md`.
 ```
 
 ## Ask / test the model (completion-style LM, no chat template)
+
+Double-click `ask_model.bat` (or run it from any terminal) for the interactive
+REPL; extra args pass through, e.g. `ask_model.bat --sample --max_new_tokens 128`.
+
 ```powershell
 # Standard eval: val loss + perplexity + the 3 config prompts
 # -> runs/<phase>/final/eval_report.json
