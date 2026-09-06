@@ -17,6 +17,12 @@ Full plan and milestones: `PLAN.md`. Agent docs map: `AGENTS.md`.
 & .\.venv\Scripts\python.exe scripts\vram_probe.py      --config configs\target.yaml   # M1
 ```
 
+One-command status over every phase (read-only; safe while a run is live):
+
+~~~powershell
+& .\.venv\Scripts\python.exe scripts\status.py
+~~~
+
 ## Ask / test the model (completion-style LM, no chat template)
 
 Double-click `ask_model.bat` (or run it from any terminal) for the interactive
@@ -113,7 +119,7 @@ or kill continues the run with no flags. Rolling checkpoints keep
 ## Layout
 - `configs/` per-phase YAML (model, data, train args)
 - `src/` model factory + packed dataset
-- `scripts/` prepare_data, tokenize_data, train, eval, infer, vram_probe, sanity_check, sft_data, sft, c12_preflight
+- `scripts/` prepare_data, tokenize_data, train, eval, infer, vram_probe, sanity_check, sft_data, sft, c12_preflight, status
 - `data/`, `runs/` artifacts (gitignored)
 - `exa_search.py` + `exa_search.bat` web-search helper (Exa API, key in `.env`)
 - `research/` web-research notes + raw Exa payloads (`research/qwen3_8_flash_next_research.md` =
