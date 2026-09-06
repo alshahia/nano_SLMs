@@ -45,7 +45,7 @@ nano_SLMs/
 ├─ runs/               <phase>/checkpoint-* · <phase>/final · <phase>/logs (TensorBoard)
 ├─ resources/          original user-supplied study notes (pseudo-code skeletons)
 ├─ research/           web-research notes + raw Exa payloads (c12 distillation plan/report)
-├─ checkpoint_backup/  untracked; obsolete machine-move handoff remnants (HANDOFF §3b) — not current
+├─ checkpoint_backup/  untracked; user-staged machine-move checkpoint zips (HANDOFF §3b) — check for a newer checkpoint-*.zip first
 └─ .venv/              uv-managed CPython 3.12.9 (never pip)
 ```
 
@@ -78,7 +78,7 @@ All Python runs through the venv — never bare `python`, never `pip`:
 1. Single Turing GPU (sm_75): **fp16 only** — never bf16; no flash-attn (PyTorch SDPA instead).
 2. transformers 5.16.1 API drift: no `logging_dir`/`save_safetensors` args; `processing_class=`;
    `eval_strategy=`; no console loss lines — read TensorBoard events instead (see MEMORY.md).
-3. Disk is scarce (~10 GB free on E:): checkpoint rotation (`save_total_limit=3`) +
+3. Disk headroom swings (~10 GB during the MUO4QK5 window; 36 GB at the TU09FBO step-2000 resume): checkpoint rotation (`save_total_limit=3`) +
    local-only weights policy; report before deleting anything.
 4. The bigcode datasets are gated; ungated fallbacks and the dataset-namespace
    moves are recorded in [MEMORY.md](./MEMORY.md).

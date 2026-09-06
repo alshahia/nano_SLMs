@@ -2,18 +2,21 @@
 
 Verified facts about the machine this repo trains on. Update this file the
 moment anything below changes (machine move, venv rebuild, version bump,
-disk event). Last verified: 2026-09-06 (doc-creation session; M3 fresh run active).
+disk event). Last verified: 2026-09-06 18:29 (M3 step-2000 resume session on TU09FBO).
 
 ## Machine
 
-- Windows; project root `E:\python projects\nano_SLMs`; drive E: ~10.1 GB
-  free / ~228.5 GB used at verification.
-- GPU: Quadro RTX 4000, 8 GB, driver 595.97 (nvidia-smi). Turing sm_75 →
-  **fp16 only**, no bf16, no flash-attn (SDPA instead).
-- Machine-move history: DESKTOP-MUO4QK5 (RTX 4000 8 GB) ↔ DESKTOP-TU09FBO
-  (RTX 3000 6 GB, driver 580.92). Current session = MUO4QK5. M2 ran on the
-  6 GB card; measured peaks there: pilot ~3.3 GB, target-config probe 4.24 GB
-  allocated / 4.4 GB reserved (seq 512 AND 1024).
+- Windows; project root `E:\python_projects\nano_SLMs` on TU09FBO (MUO4QK5
+  used `E:\python projects\nano_SLMs` — with a space; bundle trainer_state
+  paths carry the source machine's root, patch on arrival); drive E: 36.0 GB
+  free / 159.3 GB used (2026-09-06 18:29 probe).
+- Current session GPU: Quadro RTX 3000, 6 GB, driver 580.92 (nvidia-smi).
+  Turing sm_75 → **fp16 only**, no bf16, no flash-attn (SDPA instead).
+- Machine-move history: DESKTOP-MUO4QK5 (RTX 4000 8 GB, driver 595.97) ↔
+  DESKTOP-TU09FBO (RTX 3000 6 GB, driver 580.92). M3 ran fresh on MUO4QK5
+  (2026-09-06) and resumed at step 2000 on TU09FBO; M2 + the M3 probe ran on
+  the 6 GB card: pilot ~3.3 GB, target-config probe 4.24 GB allocated /
+  4.4 GB reserved (seq 512 AND 1024).
 - Thermal behavior: sustained training cycles 84–90 °C with SM-clock throttle;
   pace swings are normal (see MEMORY.md §Lessons).
 
@@ -36,9 +39,9 @@ See HANDOFF.md §4 — do not improvise. After any rebuild validate with
 
 | Capability | State |
 |---|---|
-| CUDA training | working — M0/M1/M2 PASSED; M3 in flight (step-500 PASSED) |
+| CUDA training | working — M0/M1/M2 PASSED; M3 resumed at step 2000/5000 on TU09FBO (best eval_loss 1.9972) |
 | Auto-resume | proven — M0 kill/resume drill; M2 resumed at exactly step 1001 |
-| Disk headroom | TIGHT: ~10.1 GB free vs ~10 GB M3 checkpoint need; rotation keeps ≤3 checkpoints; report before deleting anything |
+| Disk headroom | 36.0 GB free at the step-2000 resume (was ~10 GB on MUO4QK5); rotation keeps ≤3 checkpoints (~2.6 GB each, ~7.8 GB steady state); report before deleting anything |
 | Gated HF datasets | unavailable without a user-supplied HF_TOKEN (ungated fallbacks in MEMORY.md) |
 | Network | slow (~230 KB/s observed earlier) — never re-download what `data/*/tokens/*.bin` already holds |
 | LFS quota | ~790 MB of 1 GB used — no new >100 MB files to LFS; M3 weights local-only (user decision) |

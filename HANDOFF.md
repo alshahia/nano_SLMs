@@ -1,7 +1,8 @@
 # HANDOFF — nano_SLMs agent-to-agent continuation guide
 
 > Written for an agent resuming with fresh context on this machine
-> (E:\python projects\nano_SLMs). Read PLAN.md (the spec) first, then this.
+> (E:\python_projects\nano_SLMs on TU09FBO; MUO4QK5 uses E:\python projects\nano_SLMs
+> — with a space). Read PLAN.md (the spec) first, then this.
 
 ## 1. Mission
 
@@ -21,7 +22,7 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | M0 smoke (12.3M) | **DONE — PASSED** | loss 10.4→4.95 in 200 steps; kill at ~step 100 → relaunch resumed at exactly 101/200, zero flags; rotation works (limit 3); artifacts in runs/smoke/final (train_summary.json, eval_report.json); eval_loss 4.7926, ppl 120.6 |
 | M1 VRAM probe (226.5M target config) | **DONE — PASSED** | peak 4.24 GB allocated / 4.4 reserved @ 2214 tok/s → target APPROVED for M3; no 8-bit Adam needed; headroom for ctx 1024 |
 | M2 pilot (100.7M) | **DONE — PASSED** | 3000/3000 with auto-resume from checkpoint-1000; eval_loss 2.206→1.161 monotonic (final ppl 3.19); no OOM (peak ~3.3 GB of 6 GB); locally-syntactic samples; artifacts in runs/pilot/final (train_summary.json, eval_report.json) |
-| M3 target (226.5M) | **RESTARTED FRESH on MUO4QK5** (2026-09-06 10:56) — the TU09FBO bundle never arrived; user said start fresh | ctx 1024 probe-approved (4.24/4.4 GB peak); CodeSearchNet 47.9M tok; prior partial run (eval 2.2755 @1000 on TU09FBO) abandoned — its bundle/zip is OBSOLETE; fresh pace ~6 s/it → ETA ~9 h; eval 2.8567 @500 → **2.265 @1000** (matches the abandoned TU09FBO run's 2.2755 — determinism check); log train_target.log; see §3b |
+| M3 target (226.5M) | **RESUMED on TU09FBO at step 2000/5000** (2026-09-06 18:36, from the arrived MUO4QK5 bundle) — cadence now save+eval every 100, limit 3 | eval curve 2.8567 @500 → 2.265 @1000 → 2.0903 @1500 → **1.9972 @2000** (best; seed-42 determinism vs the abandoned TU09FBO run's 2.2755 @1000); log runs/target/train_resume.log; see §3b |
 
 ## 3. M2 pilot run — how to check / resume / finish
 
@@ -138,6 +139,30 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   20–25 s/it vs ~9.6–12.7 s/it uncapped. A proper high-watt adapter roughly
   halves the wall time. Eval-1000 at eval_batch 2 passed with no OOM
   (eval_runtime 165 s / 478 batches).
+- **2026-09-06 18:29–18:36: bundle ARRIVED on TU09FBO — M3 resumed here.**
+  User staged E:\python_projects\nano_SLMs\checkpoint_backup\checkpoint-2000.zip
+  (2.72 GB) + RESUME_ON_NEW_MACHINE.txt; extracted to
+  runs\target\checkpoint-2000\ (11 files verified, tar exit 0). Fixes
+  before relaunch: (1) patched trainer_state.json best_model_checkpoint —
+  the bundle carried MUO4QK5's absolute path (E:\python projects\..., with
+  a space); a stale path breaks load_best_model_at_end at training END and
+  defeats rotation's best-protection; (2) user decision: checkpoint cadence
+  500→**100 steps** (allowed 100–200) so a crash loses ≤100 steps; HF
+  requires save_steps to be a round multiple of eval_steps when
+  load_best_model_at_end is on, so eval_steps also 500→100 (eval ≈ 165 s on
+  this card, ~7% wall-time overhead; transformers logs an args-mismatch
+  warning at resume — expected, informational). Stale local
+  checkpoint-500/1000 (abandoned first TU09FBO run) stay until the first
+  save at 2100 auto-rotates them out (keeps best-2000 + 2100, ≤3 on disk).
+  checkpoint_backup/ is now gitignored (zip KEPT — second copy of the
+  step-2000 state). Remote synced d3c82c9→daf1d13 (15 commits from MUO4QK5:
+  their fresh M3 run to step 2292 + window milestones B–G). RELAUNCH
+  VERIFIED 18:36: log shows "[resume] found checkpoint-2000 -> auto-resume
+  enabled", bar continues at 2001/5000, GPU 5.3 GB with the python trainer
+  on compute apps; log = runs/target/train_resume.log. The old
+  nano_SLMs_m3_handoff\checkpoint-1000.zip on TU09FBO remains obsolete
+  (MUO4QK5's fresh run superseded it) — user-cleanup candidate, not
+  agent-deleted.
 
 ## 4. Environment (verified working)
 
@@ -245,7 +270,9 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
    seq 512 AND 1024 → ctx 1024 approved); ~~data prep~~ DONE (CodeSearchNet
    47.9M train tokens); ~~launch~~ DONE 2026-09-05 — training in progress
    (see §3b). Remaining: eval.py after completion; commit metrics + HANDOFF
-   final row (weights stay LOCAL per the LFS decision).
+   final row (weights stay LOCAL per the LFS decision). 2026-09-06 18:36:
+   resumed on TU09FBO from the arrived bundle at 2001/5000 (cadence now
+   save+eval 100 / limit 3; §3b).
 3. Upgrade path (user-approved only): pilot data quality (ungated raw code or
    the-stack-v2 with token), Flash-Next/GDN hybrid architecture experiments
    (resources/ notes are pseudo-code — PLAN.md A7 says plain GQA first).

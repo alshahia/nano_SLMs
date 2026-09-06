@@ -46,8 +46,13 @@ train:
   weight_decay: 0.1
   max_grad_norm: 1.0
   logging_steps: 50
-  eval_steps: 500
-  save_steps: 500
+  # User decision at the step-2000 resume: checkpoint every 100-200 steps to
+  # bound crash loss (100 ~ 40 min at the throttled pace); rotation keeps the
+  # best (eval_loss) + 2 latest, <=3 on disk. HF requires save_steps to be a
+  # round multiple of eval_steps when load_best_model_at_end is on, so eval
+  # moved 500 -> 100 to stay aligned with the tighter save cadence.
+  eval_steps: 100
+  save_steps: 100
   save_total_limit: 3
   fp16: true
   grad_ckpt: true

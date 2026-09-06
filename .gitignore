@@ -42,3 +42,7 @@ runs/sft_t1*/*.log
 # C12 Tier 2 teacher (Qwen3.5-0.8B judge, ~1.8 GB): local-only like the ladder
 # weights (LFS quota) - never commit data/teacher/.
 data/teacher/
+
+# Machine-move checkpoint zips the user stages here between machines (2.7 GB
+# archives; weights stay local per the LFS decision, HANDOFF section 7)
+checkpoint_backup/
