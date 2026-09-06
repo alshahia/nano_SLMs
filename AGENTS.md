@@ -65,6 +65,11 @@ All Python runs through the venv — never bare `python`, never `pip`:
 
 - `train.py` auto-resumes: after ANY crash/kill re-run the exact command —
   zero flags (the user's hard requirement, PLAN §5.3).
+- **Net/web research goes through the Exa helper** (root `exa_search.py` /
+  `exa_search.bat`; API key `EXA_API_KEY` in project-root `.env`, never
+  committed; batch mode `scripts/exa_research.py --tasks <file.json>` saves raw
+  payloads under `research/raw/`). The harness `web_search` tool failed
+  repeatedly here (2026-09-06) — prefer the helper.
 - Full usage (infer REPL, `ask_model.bat`, Exa web-search helper):
   [README.md](./README.md).
 

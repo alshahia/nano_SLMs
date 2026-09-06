@@ -1,0 +1,1 @@
+ConfigError: EXA_API_KEY is not set. Add it to E:\python projects\nano_SLMs\.env as EXA_API_KEY=<your key> (https://dashboard.exa.ai/api-keys).

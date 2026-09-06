@@ -38,3 +38,7 @@ runs/target/*.log
 runs/sft_t1*/checkpoint-*/
 runs/sft_t1*/final/model.safetensors
 runs/sft_t1*/*.log
+
+# C12 Tier 2 teacher (Qwen3.5-0.8B judge, ~1.8 GB): local-only like the ladder
+# weights (LFS quota) - never commit data/teacher/.
+data/teacher/

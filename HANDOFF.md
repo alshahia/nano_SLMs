@@ -258,6 +258,18 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
    instruction keys); infer.py gained --sft (template-wrapped prompting);
    configs/custom_example.yaml is a user-custom model/dataset template
    (sanity_check 4/4 PASS at 100.7M). README documents both workflows.
+   2026-09-06 afternoon (window work): peft 0.20.0 installed + LoRA design
+   doc (research/lora_peft_design.md - ladder = Llama arch, standard LoRA
+   targets; T r=16 = 4,849,664 trainable = 2.14pct, est ~2.0-2.5 GB;
+   implementation = TASKS row 10, user-gated). Tier 2 teacher re-picked by
+   the user to Qwen/Qwen3.5-0.8B - verified (24 text layers, vocab 248,320,
+   ctx 262k, chat template; transformers 5.16.1 loads
+   Qwen3_5ForConditionalGeneration natively) and DOWNLOADED to gitignored
+   data/teacher/ (1,688 MB / 29 files in ~3 min - network far faster than the
+   230 KB/s estimate; local AutoConfig load OK). exa-py 2.20.0 installed;
+   AGENTS.md section 3 now mandates the Exa helper for net research
+   (EXA_API_KEY .env still missing - user action). The 3 prep commits were
+   pushed (user-approved).
    Tier 2 = on-policy logit alignment;
    Tier 3 = intra-ladder KD (tests the ~1/10 GPU-hour claim on our ladder).
    Why: the pipeline currently ends at pretraining — no SFT/distill stage exists
