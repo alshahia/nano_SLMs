@@ -122,6 +122,14 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   2.0903 @1500 → 1.9972 @2000. Resume at ANY time with zero flags:
   `& .\.venv\Scripts\python.exe scripts\train.py --config
   configs\target.yaml` → continues at 2001/5000.
+- **2026-09-06 ~16:45: machine-move bundle built** (user request: resume from
+  another machine). `E:\python projects\nano_SLMs_m3_handoff\` →
+  `checkpoint-2000.zip` (2,722,110,988 B, STORED zip64, all 11 entries CRC-
+  verified, sha256 7124b1434810babfd93f9369c67f869f09c2c2fd7cd5534a7a0d87fc40aa2d9e)
+  + `RESUME_ON_NEW_MACHINE.txt` (clone → venv §4 → unzip into runs/target →
+  zero-flag train). Built by the reusable `scripts/bundle_checkpoint.py`
+  (--checkpoint ... --out ...; STORED zip64 + entry/size/CRC verify + chunked
+  sha256). Keep the zip OUT of git (2.7 GB; LFS quota decision §7).
 - Mid-run incidents worth knowing on the next machine: (1) Modern Standby
   froze the run ~1.6 h between steps 991→992 (system slept 05:31, resumed
   05:33; the CUDA context survived) — disable sleep-on-AC for long runs.
