@@ -21,7 +21,7 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | M0 smoke (12.3M) | **DONE — PASSED** | loss 10.4→4.95 in 200 steps; kill at ~step 100 → relaunch resumed at exactly 101/200, zero flags; rotation works (limit 3); artifacts in runs/smoke/final (train_summary.json, eval_report.json); eval_loss 4.7926, ppl 120.6 |
 | M1 VRAM probe (226.5M target config) | **DONE — PASSED** | peak 4.24 GB allocated / 4.4 reserved @ 2214 tok/s → target APPROVED for M3; no 8-bit Adam needed; headroom for ctx 1024 |
 | M2 pilot (100.7M) | **DONE — PASSED** | 3000/3000 with auto-resume from checkpoint-1000; eval_loss 2.206→1.161 monotonic (final ppl 3.19); no OOM (peak ~3.3 GB of 6 GB); locally-syntactic samples; artifacts in runs/pilot/final (train_summary.json, eval_report.json) |
-| M3 target (226.5M) | **RESTARTED FRESH on MUO4QK5** (2026-09-06 10:56) — the TU09FBO bundle never arrived; user said start fresh | ctx 1024 probe-approved (4.24/4.4 GB peak); CodeSearchNet 47.9M tok; prior partial run (eval 2.2755 @1000 on TU09FBO) abandoned — its bundle/zip is OBSOLETE; fresh pace ~6 s/it → ETA ~9 h; log train_target.log; see §3b |
+| M3 target (226.5M) | **RESTARTED FRESH on MUO4QK5** (2026-09-06 10:56) — the TU09FBO bundle never arrived; user said start fresh | ctx 1024 probe-approved (4.24/4.4 GB peak); CodeSearchNet 47.9M tok; prior partial run (eval 2.2755 @1000 on TU09FBO) abandoned — its bundle/zip is OBSOLETE; fresh pace ~6 s/it → ETA ~9 h; eval 2.8567 @500 → **2.265 @1000** (matches the abandoned TU09FBO run's 2.2755 — determinism check); log train_target.log; see §3b |
 
 ## 3. M2 pilot run — how to check / resume / finish
 
