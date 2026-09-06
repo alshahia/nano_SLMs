@@ -45,6 +45,10 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
    simple single-line pwsh commands.
 6. **Machine moves happen:** the venv rebuild recipe (HANDOFF §4) was proven
    once — keep it current in ENVIRONMENT.md.
+7. **CUDA_VISIBLE_DEVICES='' does NOT force CPU** in torch on Windows (empty
+   string still exposes the GPU — a 2026-09-06 sanity probe ran on GPU at
+   0.95 GB beside the live M3 run and fit; do not rely on '' to hide the
+   GPU — use -1 after verifying, or make the script CPU-explicit).
 
 ## Data-source knowledge (seeded from HANDOFF §6)
 

@@ -10,7 +10,7 @@ Spec: research/c12_distillation_plan.md (Tier 1). Decision log at the bottom.
 |---|---|---|
 | Tokenized SFT data | data/sft/evol/ds | 16,376 train + 400 val prompt-masked pairs (meta.json: 78,264 seen, 21% kept, ast-filter dropped 38%) |
 | Held-out instructions | data/sft/evol/val_instructions.jsonl | 400 rows (eval uses the first 50) |
-| SFT trainer | scripts/sft.py | auto-resume per PLAN §5.3; --pilot flag |
+| SFT trainer | scripts/sft.py | auto-resume per PLAN §5.3; --pilot writes to runs/sft_t1_pilot (isolated from the full run) |
 | Eval (instructions + forgetting guard) | scripts/eval.py | instruction eval + ast.parse pass-rate; sft_t1.yaml now carries data.tokens_dir so the CSN regression check runs |
 | Launch gate | scripts/c12_preflight.py | run first; dry-runnable pre-M3 (see §2) |
 | Config | configs/sft_t1.yaml | base runs/target/final; ctx 512; batch 1 x accum 16; lr 3e-5 cosine; warmup 100; eval+save 250; limit 3; fp16; grad-ckpt; seed 42 |
@@ -54,6 +54,8 @@ that §7 compares the SFT model against. Commit it (HANDOFF §8.2 pattern).
     & .\.venv\Scripts\python.exe scripts\sft.py --config configs\sft_t1.yaml --pilot
 
 - 5,000 pairs, 1 epoch = ~312 optimizer steps (eval+save at 250).
+- Output is ISOLATED: runs/sft_t1_pilot (checkpoints + final) - the full run
+  always starts clean in runs/sft_t1, no manual archiving.
 - First 100 steps: measure s/it and re-ETA (M3 lesson: pace swings are thermal -
   never kill a run for pace alone).
 - Expect grad_norm to settle <= ~0.6 x clip (the M2/M3 signature); zero NaNs.
@@ -62,16 +64,15 @@ that §7 compares the SFT model against. Commit it (HANDOFF §8.2 pattern).
 
 ## 5. Pilot gate, then archive the pilot dir
 
-    & .\.venv\Scripts\python.exe scripts\eval.py --config configs\sft_t1.yaml
+    & .\.venv\Scripts\python.exe scripts\eval.py --config configs\sft_t1.yaml --ckpt runs\sft_t1_pilot\final
 
-Read runs/sft_t1/final/train_summary.json + eval_report.json:
+Read runs/sft_t1_pilot/final/train_summary.json + eval_report.json:
 - eval_loss fell across the run; some ast pass-rate > 0; generations eyeball-sane.
 
 FAIL -> stop, debug, do NOT start the full run.
-PASS -> archive the pilot so the full run starts CLEAN (otherwise auto-resume would
-continue the pilot's checkpoints with a mismatched dataset and LR schedule):
-
-    Move-Item runs\sft_t1 runs\sft_t1_pilot
+PASS -> nothing to archive: sft.py --pilot isolates the pilot under
+runs/sft_t1_pilot, so the full run always starts CLEAN in runs/sft_t1
+(CPU e2e-verified 2026-09-06 on a tiny model).
 
 ## 6. Full SFT (~5-6 h)
 

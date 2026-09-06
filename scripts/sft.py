@@ -14,6 +14,10 @@ GATE (HANDOFF §8.2/§8.3): only run after M3 completes (runs/target/final
 exists) and never while another training run is live on the GPU.
 
 Run: .venv/Scripts/python scripts/sft.py --config configs/sft_t1.yaml [--pilot]
+--pilot isolates the plumbing-proof run: it writes checkpoints + final to
+<output_dir>_pilot (e.g. runs/sft_t1_pilot) so the FULL run always starts
+clean in output_dir (auto-resume would otherwise continue pilot checkpoints
+with a mismatched dataset/LR schedule).
 """
 import argparse
 import json
@@ -125,6 +129,15 @@ def main() -> None:
           f"grad_ckpt={t['grad_ckpt']}", flush=True)
 
     output_dir = ROOT / t["output_dir"]
+    final_dir = ROOT / t["final_dir"]
+    if args.pilot:
+        # Isolate the pilot: auto-resume scans output_dir for checkpoint-*, so
+        # pilot scratch must live OUTSIDE the full-run tree - otherwise the
+        # full run would resume into pilot checkpoints with a mismatched
+        # dataset and LR schedule. No manual Move-Item needed.
+        output_dir = output_dir.with_name(output_dir.name + "_pilot")
+        final_dir = output_dir / "final"
+        print(f"[sft] pilot output: {output_dir}", flush=True)
     os.environ.setdefault("TENSORBOARD_LOGGING_DIR", str(output_dir / "logs"))
     resume_from = find_latest_checkpoint(output_dir)
     if resume_from is not None:
@@ -175,7 +188,6 @@ def main() -> None:
     # §5.3.5 keep-final-forever: in-memory model is the BEST checkpoint
     # (load_best_model_at_end). Saved outside the save_total_limit rotation.
     model.config.use_cache = True
-    final_dir = ROOT / t["final_dir"]
     final_dir.mkdir(parents=True, exist_ok=True)
     trainer.save_model(str(final_dir))
     tok.save_pretrained(str(final_dir))

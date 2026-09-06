@@ -42,6 +42,46 @@ Prompts are truncated so prompt + generation stays inside the 512-token
 training context. Give the model a code prefix, not a question: it was
 trained on raw code text and will continue the prefix.
 
+## C12 SFT - instruction stage (runs after M3; research/c12_runbook.md has the full sequence)
+
+The pipeline gains an instruct model by fine-tuning the M3 base on teacher
+traces (Evol-Instruct). Everything is pre-built; the gate script blocks an
+early launch. Short form (the runbook owns the gates between steps):
+
+~~~powershell
+& .\.venv\Scripts\python.exe scripts\c12_preflight.py --pilot    # gate: must be all-PASS
+& .\.venv\Scripts\python.exe scripts\sft.py --config configs\sft_t1.yaml --pilot   # -> runs\sft_t1_pilot (isolated)
+& .\.venv\Scripts\python.exe scripts\eval.py --config configs\sft_t1.yaml --ckpt runs\sft_t1_pilot\final
+& .\.venv\Scripts\python.exe scripts\sft.py --config configs\sft_t1.yaml          # full run -> runs\sft_t1
+& .\.venv\Scripts\python.exe scripts\eval.py --config configs\sft_t1.yaml         # + ast.parse pass-rate
+~~~
+
+Instruct-style prompting (wraps the prompt in the config's data.template):
+
+~~~powershell
+& .\.venv\Scripts\python.exe scripts\infer.py --config configs\sft_t1.yaml --sft --prompt "Write a function that returns the nth Fibonacci number."
+~~~
+
+## Train your own model on your own data (custom configs)
+
+No code changes needed - every script is config-driven. Copy
+configs/custom_example.yaml to configs/<your_name>.yaml, edit the model
+dims / data sources / paths / steps, then run the standard pipeline
+(sanity_check -> prepare_data -> tokenize_data -> train -> eval -> infer,
+each with --config configs\<your_name>.yaml).
+
+- Data sources (data.dataset_candidates, tried in order): any ungated HF
+dataset (name:/config:) or YOUR LOCAL FILE (path:, relative to the repo
+root): .jsonl (one JSON object per line), .json (list), .txt (one row per
+line), .csv (text-ish column). Text keys are auto-detected (content, code,
+text, completion, output, answer, response, func_code_string, ...).
+- train.py auto-resumes per PLAN 5.3 and writes runs/<name>/final/.
+- While another training run owns the GPU, sanity_check still validates a
+new config (the FAIL gpu line is expected when the GPU is busy).
+- Instruction tuning on your own pairs: point data.dataset at a local
+.jsonl with instruction/response-like columns and run sft_data.py then
+sft.py (working example: data/custom_example/raw/selftest.yaml).
+
 ## Web search helper (Exa)
 
 `exa_search.py` (project root) wraps the Exa API for any agent or script; the
@@ -73,7 +113,7 @@ or kill continues the run with no flags. Rolling checkpoints keep
 ## Layout
 - `configs/` per-phase YAML (model, data, train args)
 - `src/` model factory + packed dataset
-- `scripts/` prepare_data, tokenize_data, train, eval, infer, vram_probe, sanity_check
+- `scripts/` prepare_data, tokenize_data, train, eval, infer, vram_probe, sanity_check, sft_data, sft, c12_preflight
 - `data/`, `runs/` artifacts (gitignored)
 - `exa_search.py` + `exa_search.bat` web-search helper (Exa API, key in `.env`)
 - `research/` web-research notes + raw Exa payloads (`research/qwen3_8_flash_next_research.md` =

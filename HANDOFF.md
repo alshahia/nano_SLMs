@@ -251,6 +251,13 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
    numbers: 16,376+400 pairs -> pilot ~312 steps (~1 h), full ~2,047 steps (~5-6 h);
    full-mode disk needs runs/target/checkpoint-* deleted post-M3 (user-approved,
    M2 precedent). TASKS.md row 4 owns live status.
+   2026-09-06 later the same window: sft.py --pilot now writes to
+   runs/sft_t1_pilot (ISOLATED - the full run always starts clean, no manual
+   archive step; CPU e2e-verified on a tiny model); prepare_data.py and
+   sft_data.py accept LOCAL files (custom-dataset support, generic text and
+   instruction keys); infer.py gained --sft (template-wrapped prompting);
+   configs/custom_example.yaml is a user-custom model/dataset template
+   (sanity_check 4/4 PASS at 100.7M). README documents both workflows.
    Tier 2 = on-policy logit alignment;
    Tier 3 = intra-ladder KD (tests the ~1/10 GPU-hour claim on our ladder).
    Why: the pipeline currently ends at pretraining — no SFT/distill stage exists

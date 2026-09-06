@@ -2,7 +2,7 @@
 
 Run: .venv/Scripts/python scripts/infer.py --config configs/pilot.yaml [--ckpt DIR]
      [--prompt TEXT ...] [--max_new_tokens N] [--sample] [--temperature T]
-     [--top_p P] [--top_k K]
+     [--top_p P] [--top_k K] [--sft]
 
 Greedy decode by default (deterministic); --sample adds temperature/top-p/top-k.
 With no --prompt, enters a REPL: type a code prefix per line, Enter generates,
@@ -27,6 +27,9 @@ def main() -> None:
     ap.add_argument("--config", required=True)
     ap.add_argument("--ckpt", default=None,
                     help="model dir; default runs/<name>/final")
+    ap.add_argument("--sft", action="store_true",
+                    help="wrap each prompt in the config's data.template "
+                         "(instruct-style prompting for SFT models)")
     ap.add_argument("--prompt", action="append", default=[],
                     help="prompt text; repeatable; omit for the REPL")
     ap.add_argument("--max_new_tokens", type=int, default=64)
@@ -64,6 +67,11 @@ def main() -> None:
         gen_kwargs.update(do_sample=False)
 
     def ask(prompt: str) -> None:
+        if args.sft:
+            tmpl = (cfg.get("data") or {}).get("template")
+            if not tmpl:
+                raise SystemExit("[infer] --sft needs data.template in the config")
+            prompt = tmpl.format(instruction=prompt)
         inputs = tok(prompt, return_tensors="pt", truncation=True,
                      max_length=room)
         inputs = {k: v.to(model.device) for k, v in inputs.items()}

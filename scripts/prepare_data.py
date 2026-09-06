@@ -3,6 +3,9 @@
 Streaming with a hard row cap keeps network usage bounded (slow-network
 constraint, PLAN.md §4.1). Candidates are tried in order; the first that
 yields enough rows wins and is recorded in raw/source.txt.
+Local files: a candidate of the form {path: <file>} is read directly (no
+network) - .jsonl (one JSON object per line), .json (list or {rows: [...]}),
+.txt (one row per line) or .csv (header row + text-ish columns).
 Run: .venv/Scripts/python scripts/prepare_data.py --config configs/smoke.yaml
 """
 import argparse
@@ -29,6 +32,35 @@ def text_of(example: dict) -> str:
     return ""
 
 
+def iter_local(path: Path):
+    """Yield dict rows from a local .jsonl/.json/.txt/.csv file (no network)."""
+    suffix = path.suffix.lower()
+    if suffix == ".jsonl":
+        with path.open(encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    yield json.loads(line)
+    elif suffix == ".json":
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if isinstance(data, dict):
+            data = data.get("rows", [data])
+        for row in data:
+            yield row
+    elif suffix == ".txt":
+        with path.open(encoding="utf-8") as f:
+            for line in f:
+                yield {"text": line.rstrip("\n")}
+    elif suffix == ".csv":
+        import csv
+        with path.open(encoding="utf-8", newline="") as f:
+            for row in csv.DictReader(f):
+                yield row
+    else:
+        raise ValueError(f"unsupported local file type {suffix!r} "
+                         "(supported: .jsonl .json .txt .csv)")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
@@ -53,10 +85,19 @@ def main() -> None:
 
     last_err = None
     for cand in d["dataset_candidates"]:
-        name, sub = cand["name"], cand.get("config")
+        if "path" in cand:
+            loc = Path(cand["path"])
+            if not loc.is_absolute():
+                loc = ROOT / loc
+            name, sub = f"local:{loc.name}", None
+        else:
+            name, sub = cand["name"], cand.get("config")
         print(f"[prepare] trying dataset: {name}" + (f" ({sub})" if sub else ""), flush=True)
         try:
-            ds = load_dataset(name, sub, split="train", streaming=True)
+            if "path" in cand:
+                ds = iter_local(loc)
+            else:
+                ds = load_dataset(name, sub, split="train", streaming=True)
             seen = set()
             written = 0
             f_train = out_train.open("w", encoding="utf-8")

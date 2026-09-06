@@ -1,7 +1,9 @@
-"""C12 Tier 1 data prep: Evol-Instruct teacher traces -> tokenized SFT dataset.
+"""C12 Tier 1 data prep: teacher traces -> tokenized SFT dataset.
 
-Streams nickrosh/Evol-Instruct-Code-80k-v1 (strong-model-generated
-instruction/response pairs - research/c12_distillation_report.md), filters
+Source = data.dataset: an HF dataset name (streamed; default
+nickrosh/Evol-Instruct-Code-80k-v1, strong-model-generated instruction/
+response pairs - research/c12_distillation_report.md) OR a local
+.jsonl/.json pairs file (repo-root path; custom-dataset support), filters
 (min_chars, dedupe, optional ast.parse quality pre-filter), splits 98/2, renders
 the fixed plain template (CodeLlama ships no chat template; plan §3.1),
 tokenizes with PROMPT MASKING (labels = -100 through the "### Response:" line;
@@ -30,6 +32,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 RESPONSE_KEYS = ("output", "response", "answer", "completion")
+INSTRUCTION_KEYS = ("instruction", "prompt", "question", "input")
 FENCE_RE = re.compile(r"```(?:[a-zA-Z0-9_+-]*)\n(.*?)```", re.DOTALL)
 
 
@@ -113,15 +116,45 @@ def main() -> None:
     ast_filter = bool(d.get("ast_filter", True))
 
     ds_name = d["dataset"]
-    print(f"[sft_data] streaming {ds_name} (target {n_target} accepted pairs, "
+    if ds_name.lower().endswith((".jsonl", ".json")):
+        # local pairs file (custom-dataset path): .jsonl with one JSON object
+        # per line, or .json holding a list / {"rows": [...]}
+        loc = Path(ds_name)
+        if not loc.is_absolute():
+            loc = ROOT / loc
+
+        def local_rows():
+            if loc.suffix.lower() == ".json":
+                data = json.loads(loc.read_text(encoding="utf-8"))
+                if isinstance(data, dict):
+                    data = data.get("rows", [data])
+                for row in data:
+                    yield row
+            else:
+                with loc.open(encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line:
+                            yield json.loads(line)
+
+        source = local_rows()
+        ds_name = f"local:{loc.name}"
+    else:
+        source = load_dataset(ds_name, split="train", streaming=True)
+    print(f"[sft_data] source={ds_name} (target {n_target} accepted pairs, "
           f"ast_filter={ast_filter})", flush=True)
     stats = {"seen": 0, "kept": 0, "drop_short": 0, "drop_instr": 0,
              "drop_dup": 0, "drop_ast": 0, "drop_long": 0}
     rows = []
     seen = set()
-    for ex in load_dataset(ds_name, split="train", streaming=True):
+    for ex in source:
         stats["seen"] += 1
-        instruction = (ex.get("instruction") or "").strip()
+        instruction = ""
+        for key in INSTRUCTION_KEYS:
+            v = ex.get(key)
+            if isinstance(v, str) and v.strip():
+                instruction = v.strip()
+                break
         response = ""
         for key in RESPONSE_KEYS:
             v = ex.get(key)
