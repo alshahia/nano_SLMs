@@ -21,7 +21,7 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | M0 smoke (12.3M) | **DONE — PASSED** | loss 10.4→4.95 in 200 steps; kill at ~step 100 → relaunch resumed at exactly 101/200, zero flags; rotation works (limit 3); artifacts in runs/smoke/final (train_summary.json, eval_report.json); eval_loss 4.7926, ppl 120.6 |
 | M1 VRAM probe (226.5M target config) | **DONE — PASSED** | peak 4.24 GB allocated / 4.4 reserved @ 2214 tok/s → target APPROVED for M3; no 8-bit Adam needed; headroom for ctx 1024 |
 | M2 pilot (100.7M) | **DONE — PASSED** | 3000/3000 with auto-resume from checkpoint-1000; eval_loss 2.206→1.161 monotonic (final ppl 3.19); no OOM (peak ~3.3 GB of 6 GB); locally-syntactic samples; artifacts in runs/pilot/final (train_summary.json, eval_report.json) |
-| M3 target (226.5M) | **IN PROGRESS** — launched 2026-09-05 | ctx 1024 probe-approved on 6 GB (4.24/4.4 GB peak); CodeSearchNet data 47.9M train tok; fresh start confirmed; pace at launch ~9.6–12.7 s/it; 2026-09-06 re-measure 23.7 s/it → ETA ≈ 33 h (finish ≈ 2026-09-07 morning); see §3b |
+| M3 target (226.5M) | **PAUSED at step 1000/5000** — user moved training to another machine (2026-09-06) | ctx 1024 probe-approved (4.24/4.4 GB peak); CodeSearchNet 47.9M tok; eval 2.81 @500 → **2.2755 @1000**; full checkpoint-1000 (2.6 GB) packaged for resume; see §3b |
 
 ## 3. M2 pilot run — how to check / resume / finish
 
@@ -50,7 +50,7 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   configs\pilot.yaml`. To re-run training it would no-op (max_steps reached;
   Trainer exits immediately from checkpoint-3000).
 
-## 3b. M3 target run — in progress (started 2026-09-05, DESKTOP-TU09FBO)
+## 3b. M3 target run — PAUSED at step 1000 (machine move 2026-09-06)
 
 - Config: configs/target.yaml — 16L, d1024, 16Q/4KV, ffn 3072, **ctx 1024**,
   226.5M params, fp16 + grad-checkpointing + SDPA, batch 1 × accum 32
@@ -90,6 +90,26 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   it resumes from the newest runs/target/checkpoint-* with zero flags.
 - Disk: user-approved deletion of runs/pilot/checkpoint-{2000,2500,3000}
   (3.4 GB) freed headroom; E: had ~16 GB free at launch (M3 needs ~10 GB).
+- **2026-09-06 ~07:55: user STOPPED the run (at step 1008) to resume training
+  on another machine.** Last saved state = **checkpoint-1000** — verified
+  complete BEFORE the kill: model.safetensors 864 MB + optimizer.pt 1.73 GB +
+  scheduler/scaler/rng/trainer_state + tokenizer (2,596 MB total), global_step
+  1000, epoch 0.68, best_metric 2.2755 @ this checkpoint, lr 3.705e-4.
+  Curve: eval_loss 2.81 @500 → 2.2755 @1000; train_loss 2.0937 @1000.
+- Handoff bundle for the new machine (local, NOT in git — LFS cannot fit it):
+  E:\python_projects\nano_SLMs_m3_handoff\checkpoint-1000.zip (2,377 MB,
+  zip64 via bsdtar, 12 entries = 11 files + dir) + RESUME_ON_NEW_MACHINE.txt.
+  Resume = clone repo (data/target/tokens already on GitHub), rebuild venv
+  (§4), extract zip into runs/target/, rerun the exact train command —
+  continues at step 1001/5000 with zero flags.
+- Mid-run incidents worth knowing on the next machine: (1) Modern Standby
+  froze the run ~1.6 h between steps 991→992 (system slept 05:31, resumed
+  05:33; the CUDA context survived) — disable sleep-on-AC for long runs.
+  (2) The GPU sat SW-power-capped at ~45 W / ~930 MHz most of the run
+  (battery drained 83%→75% while "on AC" → underpowered adapter); capped pace
+  20–25 s/it vs ~9.6–12.7 s/it uncapped. A proper high-watt adapter roughly
+  halves the wall time. Eval-1000 at eval_batch 2 passed with no OOM
+  (eval_runtime 165 s / 478 batches).
 
 ## 4. Environment (verified working)
 
