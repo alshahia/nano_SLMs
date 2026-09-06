@@ -32,6 +32,46 @@ def find_latest_checkpoint(output_dir: Path):
     return best[1] if best else None
 
 
+def _env_fingerprint(cfg) -> dict:
+    """Env fingerprint stamped into train_summary.json (Milestone B CPU part).
+
+    Additive-only fields so the auto-resume contract (PLAN.md 5.3) is never
+    affected; all lookups are guarded because a summary must never fail a run.
+    """
+    import platform
+    import subprocess
+    from datetime import datetime, timezone
+    from importlib.metadata import version
+
+    fp = {
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "python": platform.python_version(),
+        "platform": platform.platform(),
+    }
+    for pkg in ("torch", "transformers", "tokenizers", "datasets",
+                "accelerate", "peft", "bitsandbytes"):
+        try:
+            fp[pkg] = version(pkg)
+        except Exception:  # noqa: BLE001 - not installed is a valid state
+            fp[pkg] = None
+    try:
+        fp["git_commit"] = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"], cwd=str(ROOT),
+            capture_output=True, text=True, timeout=10, check=True,
+        ).stdout.strip() or None
+    except Exception:  # noqa: BLE001
+        fp["git_commit"] = None
+    try:
+        fp["gpu"] = subprocess.run(
+            ["nvidia-smi", "--query-gpu=name,memory.total", "--format=csv,noheader"],
+            capture_output=True, text=True, timeout=10, check=True,
+        ).stdout.strip().splitlines()[0]
+    except Exception:  # noqa: BLE001
+        fp["gpu"] = None
+    fp["resolved_config"] = cfg
+    return fp
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True, help="path to configs/<phase>.yaml")
@@ -124,6 +164,7 @@ def main() -> None:
         "best_checkpoint": trainer.state.best_model_checkpoint,
         "final_eval": final_metrics,
         "resumed_from": resume_from.name if resume_from is not None else None,
+        "env": _env_fingerprint(cfg),
     }
     (final_dir / "train_summary.json").write_text(json.dumps(summary, indent=2),
                                                   encoding="utf-8")

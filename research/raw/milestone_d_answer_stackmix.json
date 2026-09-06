@@ -1,0 +1,46 @@
+{
+  "kind": "answer",
+  "question": "For pretraining a small 100M-parameter code LLM, what is the smallest practical mix of bigcode/the-stack-v2 (or the-stack-smol) python data and starcoderdata that yields a useful dataset under ~3 GB raw download on disk? Include dedup, license filtering, rows-per-token estimates, and best streaming approach.",
+  "model": "exa",
+  "answer": "To pretrain a 100M-parameter model under a 3GB limit, use the-stack-smol, which provides a high-quality, pre-filtered subset of 30 languages, including Python [1]. It is specifically sized at ~2.6GB of text, fitting your constraint perfectly [1].\n\nFor loading, use Hugging Face streaming to avoid local storage overhead [2][1]:\n\n```python\nfrom datasets import load_dataset\n# Streaming Python subset specifically\nds = load_dataset(\"bigcode/the-stack-smol\", data_dir=\"data/python\", streaming=True)\n```\n\nThe-stack-smol includes near-deduplication and license filtering (permissive/no-license) via the BigCode pipeline [2][1]. For row-to-token estimates, note that the 300,000 total rows in the-stack-smol represent 0.1% of the original dataset, useful for rapid prototyping [1]. If you require larger volumes, switch to streaming the-stack-v2-train-smol-ids, but note that it requires specific SWH access credentials to fetch file contents [2][3]. Use the basic, stars, and fertility filters if you perform custom preprocessing on raw code [4].",
+  "citations": [
+    {
+      "title": "bigcode/the-stack-smol · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-smol"
+    },
+    {
+      "title": "bigcode/the-stack-v2 · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-v2"
+    },
+    {
+      "title": "bigcode/the-stack-v2-train-smol-ids · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-v2-train-smol-ids"
+    },
+    {
+      "title": "preprocessing/README.md",
+      "url": "https://github.com/bigcode-project/bigcode-dataset/blob/main/preprocessing/README.md"
+    },
+    {
+      "title": "bigcode/starcoderdata · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/starcoderdata"
+    },
+    {
+      "title": "StarCoder 2 and The Stack v2: The Next Generation",
+      "url": "https://arxiv.org/pdf/2402.19173"
+    },
+    {
+      "title": "bigcode/the-stack-dedup · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-dedup"
+    },
+    {
+      "title": "README.md · bigcode/the-stack-v2-train-full-ids at main",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-v2-train-full-ids/blob/main/README.md"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-06T12:09:24.165989+00:00"
+}

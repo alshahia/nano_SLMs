@@ -275,6 +275,28 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
    Both API keys (EXA + HF) now live in the gitignored .env (user-added); the
    teacher web-context search and the HF gated-repo probe were run to pre-fill
    milestone evidence.
+   2026-09-06 evening (window work, user GO on all of B-G): the CPU-safe parts
+   of TASKS rows 11-17 were executed beside the live M3 run. B: A/B arms
+   configs/pilot_ab_base|pilot_b8|pilot_b8_r2x16.yaml + protocol
+   research/milestone_b_8bit_ab.md + train.py env fingerprint into
+   train_summary.json (GPU arms + drills post-M3; bnb 0.50.2 confirmed
+   installed via metadata). C: scripts/mini_eval.py (16 tasks x 2 tests,
+   per-test subprocess+timeout; canned self-test 16/16; smoke-final CPU x2
+   identical 0.0000 - deterministic, base-model-expected) + status.py
+   tokens/sec + est-MFU lines (live: target ~3,033 tok/s recent, MFU 20.4%
+   fp32 / 4.4% fp16-tensor). D: research/pretrain_mix_proposal.md (stack-v2
+   impractical - blob-IDs only + 233 GB python subset; mix = 30% stack-smol +
+   55% starcoderdata-python + 10% CSN + 5% Evol ~ 134M tok; streaming plan,
+   24.8 GB headroom) + prepare_data.py .env loader (gated the-stack-smol
+   probe OK). E: research/c12_tier_order_decision.md (recommend Tier 3
+   before Tier 2 V1 + frozen judge rubric). F: scripts/backup_to_hub.py
+   dry-run PASS (manifest 7 files/387.8 MiB; upload BLOCKED on user repo
+   name). G1: research/gdn_sandbox_design.md (triton-free chunked
+   delta-rule path; S-scale gates; implementation post-M3). G2:
+   scripts/run_custom.py (dry-run PASS; GPU guard filters the Windows WDDM
+   desktop-context noise to real python compute - shows only the M3 PID).
+   All GPU validation deliberately staged post-M3; nothing co-ran with the
+   trainer.
    Tier 2 = on-policy logit alignment;
    Tier 3 = intra-ladder KD (tests the ~1/10 GPU-hour claim on our ladder).
    Why: the pipeline currently ends at pretraining — no SFT/distill stage exists

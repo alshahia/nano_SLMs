@@ -1,0 +1,81 @@
+{
+  "query": "bigcode the-stack-smol huggingface dataset languages size rows",
+  "kind": "search",
+  "num_results": 8,
+  "results": [
+    {
+      "id": "https://huggingface.co/datasets/bigcode/the-stack-smol",
+      "title": "bigcode/the-stack-smol · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-smol",
+      "highlights": [
+        "The Stack dataset is a collection of 3.1 TB of source code in 30 programming languages. We ask that you read and acknowledge the following points before using the dataset:\n...\nA small subset (~0.1%) of the-stack dataset, each programming language has 10,000 random samples from the original dataset. The dataset has 2.6GB of text (code).\n...\nThe dataset contains 30 programming languages:\n...\n```\n\"assembly\", \"batchfile\", \"c++\", \"c\", \"c-sharp\", \"cmake\", \"css\", \"dockerfile\", \"fortran\", \"go\", \"haskell\", \"html\", \"java\",\n\"javascript\", \"julia\", \"lua\", \"makefile\", \"markdown\", \"perl\", \"php\", \"powershell\", \"python\", \"ruby\", \"rust\", \n\"scala\", \"shell\", \"sql\", \"tex\", \"typescript\", \"visual-basic\"\n\n```\n...\nDatasetDict({\n    train: Dataset({\n        features: ['content', 'avg_line_length', 'max_line_length', 'alphanum_fraction', 'licenses', 'repository_name', 'path', 'size', 'lang'],\n        num_rows: 300000\n    })\n})\n\n```\n...\nDatasetDict({\n    train: Dataset({\n        features: ['content', 'avg_line_length', 'max_line_length', 'alphanum_fraction', 'licenses', 'repository_name', 'path', 'size', 'lang'],\n        num_rows: 10000\n    })\n})\n\n```"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/bigcode/the-stack-smol/blob/main/README.md",
+      "title": "README.md · bigcode/the-stack-smol at main",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-smol/blob/main/README.md",
+      "highlights": [
+        "extra_gated_prompt: >-\n  ## Terms of Use for The Stack\n\n  The Stack dataset is a collection of  3.1 TB of source code in 30 programming\n  languages. We ask that you read and acknowledge the following\n...\nbefore\n  using the dataset:\n\n  1\n...\nStack is a\n...\nof source code from repositories\n...\nlicenses. Any use of all or part of the code\n...\nin The Stack must abide\n  by the terms of the\n...\nA small subset (~0.1%) of the-stack dataset, each programming language has 10,000 random samples from the original dataset. The dataset has 2.6GB of text (code).\n...\nThe dataset contains 30 programming languages:\n...\n```\n\"assembly\", \"batchfile\", \"c++\", \"c\", \"c-sharp\", \"cmake\", \"css\", \"dockerfile\", \"fortran\", \"go\", \"haskell\", \"html\", \"java\",\n\"javascript\", \"julia\", \"lua\", \"makefile\", \"markdown\", \"perl\", \"php\", \"powershell\", \"python\", \"ruby\", \"rust\", \n\"scala\", \"shell\", \"sql\", \"tex\", \"typescript\", \"visual-basic\"\n\n```\n...\nload_dataset(\"bigcode/the-stack-smol\")\n...\nDatasetDict({\n    train: Dataset({\n        features: ['content', 'avg_line_length', 'max_line_length', 'alphanum_fraction', 'licenses', 'repository_name', 'path', 'size', 'lang'],\n        num_rows: 300000\n    })\n})\n\n```\n...\nYou can either load the whole dataset like above, or load a specific language such as python by specifying the folder directory:\n...\n```\nload_dataset(\"bigcode/the-stack-smol\", data_dir=\"data/python\")\n...\nDatasetDict({\n    train: Dataset({\n        features: ['content', 'avg_line_length', 'max_line_length', 'alphanum_fraction', 'licenses', 'repository_name', 'path', 'size', 'lang'],\n        num_rows: 10000\n    })\n})\n\n```"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/bigcode/the-stack-smol-xl",
+      "title": "bigcode/the-stack-smol-xl · Datasets at ...",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-smol-xl",
+      "highlights": [
+        "bigcode/the-stack-smol-xl · Datasets at Hugging Face\n...\nA small subset of the-stack dataset, with 87 programming languages, each has 10,000 random samples from the original dataset.\n...\nThe dataset contains 87 programming languages:\n...\nNumber of rows:\n...\n463,457\n...\nEstimated number of rows:\n...\n541,041"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/bigcode/the-stack-smol-xs",
+      "title": "bigcode/the-stack-smol-xs · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-smol-xs",
+      "highlights": [
+        "bigcode/the-stack-smol-xs · Datasets at Hugging Face\n...\nA small subset of the-stack dataset, with 87 programming languages, each has 100 random samples from the original dataset for visualization.\n...\nThe dataset contains 87 programming languages:\n...\nYou can specify which language you want to load, python is loaded by default:\n...\nDatasetDict({\n    train: Dataset({\n        features: ['content', 'lang', 'size', 'ext', 'max_stars_count', 'avg_line_length', 'max_line_length', 'alphanum_fraction'],\n        num_rows: 100\n    })\n})\n\n```\n...\nNumber of rows:\n...\n8,700"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/bigcode/the-stack-smol/tree/main",
+      "title": "bigcode/the-stack-smol at main",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-smol/tree/main",
+      "highlights": [
+        "Terms of Use for The Stack \\n The Stack dataset is a collection of 3.1 TB of source code in 30 programming languages. We ask that you read and acknowledge the following points before using the dataset: \\n \\n The Stack is a collection of source code from repositories with various licenses. Any use of all or part of the code gathered in The Stack must abide by the terms of the original licenses, including attribution clauses when relevant. We facilitate this by providing provenance information for each data point. \\n The Stack is regularly updated to enact validated data removal requests. By clicking on \\\"Access repository\\\", you agree to update your own version of The Stack to the most recent usable version specified by the maintainers in the following thread. If you have questions about dataset versions and allowed uses, please also ask them in the dataset’s community discussions. We will also notify users via email when the latest usable version changes. \\n To host, share, or otherwise provide access to The Stack dataset, you must include these Terms of Use and require users to agree to it. \\n \\n By clicking on \\\"Access repository\\\" below, you accept that your contact information (email address and username) can be shared with the dataset maintainers as well.\\n \\n\",\"classNames\":\"hf-sanitized hf-sanitized-fweEnat5PvyFaX-bKdjUT\"},\"gated\":\"auto\",\"isLoggedIn\":false,\"repoId\":\"bigcode/the-stack-smol\",\"repoType\":\"dataset\",\"requiresPaidPlan\":false}\">\n...\nThe Stack dataset is a collection of 3.1 TB of source code in 30 programming languages. We ask that you read and acknowledge the following points before using the dataset:"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/bigcode/the-stack",
+      "title": "bigcode/the-stack · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack",
+      "highlights": [
+        "The Stack dataset is a collection of source code in over 300 programming languages. We ask that you read and acknowledge the following points before using the dataset:\n...\n| Release | Description |\n| --- | --- |\n| v1.0 | Initial release of the Stack. Included 30 programming languages and 18 permissive licenses. Note: Three included licenses (MPL/EPL/LGPL) are considered weak copyleft licenses. The resulting near-deduplicated dataset is 3TB in size. |\n| v1.1 | The three copyleft licenses ((MPL/EPL/LGPL) were excluded and the list of permissive licenses extended to 193 licenses in total. The list of programming languages was increased from 30 to 358 languages. Also opt-out request submitted by 15.11.2022 were excluded from this verison of the dataset. The resulting near-deduplicated dataset is 6TB in size. |\n| v1.2 |\n...\nverison of\n...\nThe Stack contains over 6TB of permissively-licensed source code files covering 358 programming languages. The dataset was created as part of the BigCode Project, an open scientific collaboration working on the responsible development of Large Language Models for Code (Code LLMs). The Stack serves as a pre-training dataset for Code LLMs, i.e., code-generating AI systems which enable the synthesis of programs from natural language descriptions as well as other from code snippets.\n...\nThe following natural languages appear in the comments and docstrings from files in the dataset: EN, ZH, FR, PT, ES, RU, DE, KO, JA, UZ, IT, ID, RO, AR, FA, CA, HU, ML, NL, TR, TE, EL, EO, BN, LV, GL, PL, GU, CEB, IA, KN, SH, MK, UR, SV, LA, JKA, MY, SU, CS, MN. This kind of data is essential for applications such as documentation generation and natural-language-to-code translation.\n...\nThe dataset contains 358 programming languages. The full list can be found here.\n...\n# full dataset (3TB of data)\nds = load_dataset(\"bigcode/the-stack\", split=\"train\")\n...\n- `content`(string): the content of the file.\n- `size`(integer): size of the uncompressed file.\n- `lang`(string): the programming language.\n- `ext`(string): file extension\n- `avg_line_length`(float): the average line-length of the file.\n- `max_line_length`(integer): the maximum line-length of the file.\n- `alphanum_fraction`(float): the fraction of characters in the file that are alphabetical or numerical characters.\n...\n220.92M active GitHub repository names were collected from the event archives published between January 1st, 2015 and March 31st, 2022 on GHArchive. Only 137.36M of these repositories were public and accessible on GitHub – others were not accessible as they had been deleted by their owners. 51.76B files were downloaded from the public repositories on GitHub between November 2021 and June 2022. 5.28B files were unique. The uncompressed size of all stored files is 92.36TB.\n...\n20,003"
+      ]
+    },
+    {
+      "id": "https://www.bigcode-project.org/docs/about/the-stack/",
+      "title": "Datasets - BigCode",
+      "url": "https://www.bigcode-project.org/docs/about/the-stack/",
+      "published_date": "2020-11-16T00:00:00.000Z",
+      "highlights": [
+        "As part of the BigCode project, we released and will maintain The Stack, a 6.4 TB dataset of permissively licensed source code in 358 programming languages, along with a collection of datasets created through the course of research during the project.\n...\n| Release | Description |\n| --- | --- |\n| v1.0 | Initial release of the Stack. Included 30 programming languages and 18 permissive licenses. Note: Three included licenses (MPL/EPL/LGPL) are considered weak copyleft licenses. The resulting near-deduplicated dataset is 3TB in size. |\n| v1.1 | The three copyleft licenses (MPL/EPL/LGPL) were excluded and the list of permissive licenses extended to 193 licenses in total. The list of programming languages was increased from 30 to 358 languages. Also opt-out request submitted by 15.11.2022 were excluded from this ersion of the dataset. The resulting near-deduplicated dataset is 6TB in size. |"
+      ]
+    },
+    {
+      "id": "https://helix.app.nz/blog/datasets/bigcode--the-stack-smol",
+      "title": "The Stack Smol research report — Helix",
+      "url": "https://helix.app.nz/blog/datasets/bigcode--the-stack-smol",
+      "highlights": [
+        "Dataset Description A small subset (~0.1%) of the-stack dataset, each programming language has 10,000 random samples from the original dataset. The dataset has 2.6GB of text (code). Languages The dataset contains 30 programming languages: \"assembly\", \"batchfile\", \"c++\", \"c\", \"c-sharp\", \"cmake\", \"css\", \"dockerfile\", \"fortran\", \"go\", \"haskell\", \"html\", \"java\", \"javascript\", \"julia\", \"lua\", \"makefile\", \"markdown\", \"perl\", \"php\", \"powershell\", \"python\", \"ruby\", \"rust\"… See the full description on the dataset page: https://huggingface.co/datasets/bigcode/the-stack-smol.\n...\nInfer numeric,\n...\nGenerate a small set of defensive Plotly chart specifications\n...\nchart idea as a query link"
+      ]
+    }
+  ],
+  "search_time": 1968.7,
+  "cost_dollars": {
+    "total": 0.007,
+    "search": {
+      "neural": 0.007
+    },
+    "contents": null
+  },
+  "retrieved_at": "2026-09-06T12:09:16.380668+00:00"
+}

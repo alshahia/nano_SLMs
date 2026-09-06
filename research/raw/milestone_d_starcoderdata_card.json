@@ -1,0 +1,24 @@
+{
+  "urls": [
+    "https://huggingface.co/datasets/bigcode/starcoderdata"
+  ],
+  "kind": "contents",
+  "num_results": 1,
+  "results": [
+    {
+      "id": "https://huggingface.co/datasets/bigcode/starcoderdata",
+      "title": "bigcode/starcoderdata · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/starcoderdata",
+      "text": "bigcode/starcoderdata · Datasets at Hugging Face\n\n Datasets:\n\n## You need to agree to share your contact information to access this dataset\n\n## Terms of Use for The Stack\n\nThe Stack dataset is a collection of source code in over 300 programming languages. We ask that you read and acknowledge the following points before using the dataset:\n\n1. The Stack is a collection of source code from repositories with various licenses. Any use of all or part of the code gathered in The Stack must abide by the terms of the original licenses, including attribution clauses when relevant. We facilitate this by providing provenance information for each data point.\n2. The Stack is regularly updated to enact validated data removal requests. By clicking on \"Access repository\", you agree to update your own version of The Stack to the most recent usable version specified by the maintainers in the following thread. If you have questions about dataset versions and allowed uses, please also ask them in the dataset’s community discussions. We will also notify users via email when the latest usable version changes.\n3. To host, share, or otherwise provide access to The Stack dataset, you must include these Terms of Use and require users to agree to it.\n\nBy clicking on \"Access repository\" below, you accept that your contact information (email address and username) can be shared with the dataset maintainers as well. \n\n## Dataset description \n\nThis is the dataset used for training StarCoder and StarCoderBase. It contains 783GB of code in 86 programming languages, and includes 54GB GitHub Issues + 13GB Jupyter notebooks in scripts and text-code pairs, and 32GB of GitHub commits, which is approximately 250 Billion tokens.\n\n## Dataset creation \n\nThe creation and filtering of The Stack is explained in the original dataset, we additionally decontaminate and clean all 86 programming languages in the dataset, in addition to GitHub issues, Jupyter Notebooks and GitHub commits. We also apply near-deduplication and remove PII, all details are mentionned in our Paper: 💫 StarCoder, May The Source Be With You\n\n## How to use the dataset \n\n```python\nfrom datasets import load_dataset\n\n# to load python for example\nds = load_dataset(\"bigcode/starcoderdata\", data_dir=\"python\", split=\"train\")\n\n```\n\nGitHub issues, GitHub commits and Jupyter notebooks subsets have different columns from the rest so loading the entire dataset at once may fail, we suggest loading programming languages separatly from these categories. \n\n```\njupyter-scripts-dedup-filtered\njupyter-structured-clean-dedup\ngithub-issues-filtered-structured\ngit-commits-cleaned\n\n```\n\nDownloads last month\n\n20,483\n\n## Models trained or fine-tuned on bigcode/starcoderdata\n\n#### TinyLlama/TinyLlama-1.1B-Chat-v1.0\n\n Text Generation • 1B • Updated Mar 17, 2024 • 2.5M • • 1.7k \n\n#### TheBloke/TinyLlama-1.1B-Chat-v0.3-GPTQ"
+    }
+  ],
+  "search_time": 11.938425000058487,
+  "cost_dollars": {
+    "total": 0.001,
+    "search": null,
+    "contents": {
+      "text": 0.001
+    }
+  },
+  "retrieved_at": "2026-09-06T12:09:28.333505+00:00"
+}

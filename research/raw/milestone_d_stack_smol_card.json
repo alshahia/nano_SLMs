@@ -1,0 +1,24 @@
+{
+  "urls": [
+    "https://huggingface.co/datasets/bigcode/the-stack-smol"
+  ],
+  "kind": "contents",
+  "num_results": 1,
+  "results": [
+    {
+      "id": "https://huggingface.co/datasets/bigcode/the-stack-smol",
+      "title": "bigcode/the-stack-smol · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/bigcode/the-stack-smol",
+      "text": "bigcode/the-stack-smol · Datasets at Hugging Face\n\n## You need to agree to share your contact information to access this dataset\n\nThis repository is publicly accessible, but you have to accept the conditions to access its files and content.\n\n## Terms of Use for The Stack\n\nThe Stack dataset is a collection of 3.1 TB of source code in 30 programming languages. We ask that you read and acknowledge the following points before using the dataset:\n\n1. The Stack is a collection of source code from repositories with various licenses. Any use of all or part of the code gathered in The Stack must abide by the terms of the original licenses, including attribution clauses when relevant. We facilitate this by providing provenance information for each data point.\n2. The Stack is regularly updated to enact validated data removal requests. By clicking on \"Access repository\", you agree to update your own version of The Stack to the most recent usable version specified by the maintainers in the following thread. If you have questions about dataset versions and allowed uses, please also ask them in the dataset’s community discussions. We will also notify users via email when the latest usable version changes.\n3. To host, share, or otherwise provide access to The Stack dataset, you must include these Terms of Use and require users to agree to it.\n\nBy clicking on \"Access repository\" below, you accept that your contact information (email address and username) can be shared with the dataset maintainers as well.\n\nLog in or Sign Up to review the conditions and access this dataset content.\n\n## Dataset Description\n\nA small subset (~0.1%) of the-stack dataset, each programming language has 10,000 random samples from the original dataset. The dataset has 2.6GB of text (code).\n\n## Languages\n\nThe dataset contains 30 programming languages:\n\n```\n\"assembly\", \"batchfile\", \"c++\", \"c\", \"c-sharp\", \"cmake\", \"css\", \"dockerfile\", \"fortran\", \"go\", \"haskell\", \"html\", \"java\",\n\"javascript\", \"julia\", \"lua\", \"makefile\", \"markdown\", \"perl\", \"php\", \"powershell\", \"python\", \"ruby\", \"rust\", \n\"scala\", \"shell\", \"sql\", \"tex\", \"typescript\", \"visual-basic\"\n\n```\n\n## Dataset Structure\n\n```\nfrom datasets import load_dataset\nload_dataset(\"bigcode/the-stack-smol\")\n\nDatasetDict({\n    train: Dataset({\n        features: ['content', 'avg_line_length', 'max_line_length', 'alphanum_fraction', 'licenses', 'repository_name', 'path', 'size', 'lang'],\n        num_rows: 300000\n    })\n})\n\n```\n\n### How to use it\n\nYou can either load the whole dataset like above, or load a specific language such as python by specifying the folder directory:\n\n```\nload_dataset(\"bigcode/the-stack-smol\", data_dir=\"data/python\")\n\nDatasetDict({\n    train: Dataset({\n        features: ['content', 'avg_line_length', 'max_line_length', 'alphanum_fraction', 'licenses', 'repository_name', 'path', 'size', 'lang'],\n        num_rows: 10000\n    })\n})\n\n```\n\nCopy to bucket new\n\nDownloads last month\n\n32,216\n\nTotal file size:\n\n2.95 GB\n\n## Models trained or fine-tuned on bigcode/the-stack-smol\n\nText Generation • Updated Oct 6, 2023 • 121 • 19\n\nText Generation • Updated May 4 • 22 • 5\n\nText Generation • Updated Mar 19 • 19 • 4\n\nText Generation • Updated Apr 25, 2023 • 9\n\nText Generation • 2B • Updated Feb 3, 2025 • 9\n\nUpdated Apr 2, 2024 • 8\n\nBrowse 19 models trained on this dataset\n\n## Spaces using bigcode/the-stack-smol 5\n\n## Collection including bigcode/the-stack-smol\n\nCollectionDatasets and spaces related to The Stack! • 5 items • Updated Feb 27, 2024 • 7"
+    }
+  ],
+  "search_time": 10.008855999913067,
+  "cost_dollars": {
+    "total": 0.001,
+    "search": null,
+    "contents": {
+      "text": 0.001
+    }
+  },
+  "retrieved_at": "2026-09-06T12:09:26.930682+00:00"
+}

@@ -5,6 +5,11 @@ reports and TensorBoard curves; adds GPU + disk lines. Safe to run while a
 training run is live (it never writes anything under runs/).
 
 Run: .venv/Scripts/python scripts/status.py [--runs runs] [--curve 5]
+
+Milestone C: adds a per-phase throughput line (tokens/sec from TensorBoard
+event wall-times) + an indicative MFU estimate (6*N*tok/s vs hardware peak).
+MFU constants are datasheet-derived estimates - A/B decisions should use
+tokens/sec, which is hardware-independent.
 """
 import argparse
 import json
@@ -51,6 +56,100 @@ def curve_tail(logs_dir: Path, tag: str, n: int):
         return []
 
 
+def scalar_wall(logs_dir: Path, tag: str):
+    """[(step, value, wall_time)] for one scalar tag; [] when unavailable."""
+    if not logs_dir.is_dir():
+        return []
+    try:
+        from tensorboard.backend.event_processing.event_accumulator import (
+            EventAccumulator)
+        ea = EventAccumulator(str(logs_dir), size_guidance={"scalars": 500})
+        ea.Reload()
+        if tag not in ea.Tags()["scalars"]:
+            return []
+        return [(s.step, s.value, s.wall_time) for s in ea.Scalars(tag)]
+    except Exception:  # noqa: BLE001
+        return []
+
+
+def load_phase_cfg(phase_name: str):
+    """configs/<phase>.yaml for a run dir (dash/underscore both tried)."""
+    import yaml
+    for cand in (phase_name, phase_name.replace("-", "_")):
+        p = ROOT / "configs" / f"{cand}.yaml"
+        if p.is_file():
+            try:
+                return yaml.safe_load(p.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                return None
+    return None
+
+
+def estimate_params(model_cfg: dict, vocab: int) -> int:
+    """Param estimate matching src/model.py's GQA decoder (tied embeddings).
+
+    Verified against the measured finals: S=12.3M, P=100.7M, T=226.5M.
+    """
+    h = int(model_cfg["hidden"])
+    layers = int(model_cfg["layers"])
+    heads = int(model_cfg["heads"])
+    kv = int(model_cfg["kv_heads"])
+    ffn = int(model_cfg["ffn"])
+    hd = h // heads
+    attn = h * h + 2 * (h * kv * hd) + h * h
+    per_layer = attn + 3 * h * ffn + 2 * h
+    emb = vocab * h if model_cfg.get("tie_embeddings", True) else 2 * vocab * h
+    return layers * per_layer + emb + h
+
+
+# Quadro RTX 4000 (Turing TU104): ~7.1 TFLOPS FP32 (2x2304 CUDA cores at
+# ~1.55 GHz boost); datasheet "65.4 Tensor TFLOPS" includes 2:4 sparsity,
+# dense FP16 tensor peak is ~32.7 TFLOPS. Both are ESTIMATES - MFU is
+# indicative only; use tokens/sec for A/B decisions.
+PEAK_FP32 = 7.1e12
+PEAK_FP16_TENSOR_DENSE = 32.7e12
+
+
+def throughput_line(phase_dir: Path, cfg) -> str | None:
+    if not cfg:
+        return None
+    t, m = cfg.get("train") or {}, cfg.get("model") or {}
+    if not ("batch" in t and "accum" in t and "ctx" in m):
+        return None
+    evs = scalar_wall(phase_dir / "logs", "train/loss")
+    if len(evs) < 2:
+        return None
+    tokens_per_step = int(t["batch"]) * int(t["accum"]) * int(m["ctx"])
+
+    def rate(events):
+        dt = events[-1][2] - events[0][2]
+        ds = events[-1][0] - events[0][0]
+        if dt <= 0 or ds <= 0:
+            return None
+        return tokens_per_step * ds / dt
+
+    full = rate(evs)
+    recent = rate(evs[-10:]) if len(evs) >= 3 else None
+    if not full:
+        return None
+    vocab = int((cfg.get("tokenizer") or {}).get("vocab_size", 32768))
+    summ = load_json(phase_dir / "final" / "train_summary.json")
+    if summ and summ.get("params_m"):
+        n_params = float(summ["params_m"]) * 1e6
+        exact = "measured"
+    else:
+        n_params = estimate_params(m, vocab)
+        exact = "est"
+    parts = [f"{full:,.0f} tok/s (full run)"]
+    if recent:
+        parts.append(f"{recent:,.0f} tok/s (last 10 pts)")
+    mfu32 = 6 * n_params * full / PEAK_FP32
+    mfu16 = 6 * n_params * full / PEAK_FP16_TENSOR_DENSE
+    parts.append(f"est MFU {mfu32 * 100:.1f}% fp32 / {mfu16 * 100:.1f}% fp16-tensor "
+                 f"({exact} N={n_params / 1e6:.1f}M)")
+    return " | ".join(parts)
+
+
 def gpu_line():
     try:
         out = subprocess.run(
@@ -86,6 +185,7 @@ def main() -> None:
         if not phase_dir.is_dir() or phase_dir.name == "logs":
             continue
         print(f"[{phase_dir.name}]")
+        cfg = load_phase_cfg(phase_dir.name)
 
         latest = find_latest_checkpoint(phase_dir)
         if latest is not None:
@@ -119,6 +219,9 @@ def main() -> None:
                 print("  train/loss (tb)   : " + " ".join(f"{s}:{v}" for s, v in tl))
             if el:
                 print("  eval/loss  (tb)   : " + " ".join(f"{s}:{v}" for s, v in el))
+            thr = throughput_line(phase_dir, cfg)
+            if thr:
+                print("  throughput (tb)   : " + thr)
 
         final = phase_dir / "final"
         if final.is_dir():

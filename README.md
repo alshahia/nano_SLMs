@@ -23,6 +23,10 @@ One-command status over every phase (read-only; safe while a run is live):
 & .\.venv\Scripts\python.exe scripts\status.py
 ~~~
 
+The dashboard also prints per-phase throughput (tokens/sec from TensorBoard
+event wall-times) + an indicative MFU estimate - safe beside a live run.
+
+
 ## Ask / test the model (completion-style LM, no chat template)
 
 Double-click `ask_model.bat` (or run it from any terminal) for the interactive
@@ -88,6 +92,35 @@ new config (the FAIL gpu line is expected when the GPU is busy).
 .jsonl with instruction/response-like columns and run sft_data.py then
 sft.py (working example: data/custom_example/raw/selftest.yaml).
 
+## One-command custom chain (run_custom)
+
+Runs the whole standard pipeline against one config with stop-on-fail and a
+summary report (runs/<phase>/custom_chain.json). Steps: sanity_check ->
+prepare_data -> tokenize_data -> train -> eval; --from skips ahead; the
+train/eval steps REFUSE to start while another python compute process owns
+the GPU (the never-co-run rule; --allow_gpu_share overrides deliberately):
+
+~~~powershell
+& .\.venv\Scripts\python.exe scripts\run_custom.py --config configs\custom_example.yaml --dry-run   # plan only
+& .\.venv\Scripts\python.exe scripts\run_custom.py --config configs\custom_example.yaml             # full chain
+~~~
+
+## Execution-based mini-eval + off-site backup
+
+~~~powershell
+# Real pass@1: 16 tasks x 2 tests, per-test subprocess + timeout.
+# 'canned' proves the harness itself (must score 1.0); base models score ~0
+# pre-SFT - the harness measures post-SFT deltas. Use --device cpu while any
+# run is live.
+& .\.venv\Scripts\python.exe scripts\mini_eval.py --ckpt runs\<phase>\final --device cpu --model canned
+& .\.venv\Scripts\python.exe scripts\mini_eval.py --ckpt runs\<phase>\final --device cpu
+
+# Off-site backup of a final dir to a PRIVATE HF repo. Dry-run by default
+# (whoami + manifest only); real upload needs --repo <user>/<name> --execute
+# (user-approved repo id). Never uploads checkpoint-*/optimizer.pt.
+& .\.venv\Scripts\python.exe scripts\backup_to_hub.py --dir runs\pilot\final
+~~~
+
 ## Web search helper (Exa)
 
 `exa_search.py` (project root) wraps the Exa API for any agent or script; the
@@ -119,7 +152,7 @@ or kill continues the run with no flags. Rolling checkpoints keep
 ## Layout
 - `configs/` per-phase YAML (model, data, train args)
 - `src/` model factory + packed dataset
-- `scripts/` prepare_data, tokenize_data, train, eval, infer, vram_probe, sanity_check, sft_data, sft, c12_preflight, status
+- `scripts/` prepare_data, tokenize_data, train, eval, infer, vram_probe, sanity_check, sft_data, sft, c12_preflight, status, mini_eval, run_custom, backup_to_hub
 - `data/`, `runs/` artifacts (gitignored)
 - `exa_search.py` + `exa_search.bat` web-search helper (Exa API, key in `.env`)
 - `research/` web-research notes + raw Exa payloads (`research/qwen3_8_flash_next_research.md` =

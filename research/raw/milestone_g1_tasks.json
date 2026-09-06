@@ -1,0 +1,49 @@
+[
+  {
+    "kind": "search",
+    "slug": "milestone_g1_deltanet_pytorch_impl",
+    "query": "Gated DeltaNet chunkwise delta rule PyTorch reference implementation no triton linear attention",
+    "num": 8,
+    "type": "auto"
+  },
+  {
+    "kind": "search",
+    "slug": "milestone_g1_delta_rule_paper",
+    "query": "DeltaNet linear attention paper Yang 2024 chunkwise algorithm reference code pytorch",
+    "num": 8,
+    "type": "auto"
+  },
+  {
+    "kind": "search",
+    "slug": "milestone_g1_qwen3_next_hybrid_ratio",
+    "query": "Qwen3-Next hybrid Gated DeltaNet full attention ratio 3:1 architecture paper",
+    "num": 6,
+    "type": "auto"
+  },
+  {
+    "kind": "search",
+    "slug": "milestone_g1_gated_attention",
+    "query": "Qwen3-Next gated attention output gate sigmoid RMSNorm zero-centered",
+    "num": 6,
+    "type": "auto"
+  },
+  {
+    "kind": "search",
+    "slug": "milestone_g1_fp16_state_stability",
+    "query": "linear attention fp16 numerical stability fp32 state delta rule small model training",
+    "num": 6,
+    "type": "auto"
+  },
+  {
+    "kind": "search",
+    "slug": "milestone_g1_mamba_turing_sm75",
+    "query": "mamba ssm pytorch pure impl fp16 sm75 turing no triton",
+    "num": 6,
+    "type": "auto"
+  },
+  {
+    "kind": "answer",
+    "slug": "milestone_g1_hybrid_design_answer",
+    "query": "For an S-scale (~12M param) hybrid Gated DeltaNet + gated attention LLM trained on a single Quadro RTX 4000 (Turing sm_75, fp16 only, NO triton, NO flash-attn), what is the smallest, most reliable pure-PyTorch implementation path? Compare (a) chunkwise DeltaNet reference code vs (b) flash-linear-attention package vs (c) custom PyTorch chunked matmul. Which avoids triton, stays within 6 GB VRAM at ctx 256, and parameter-matches a plain GQA Llama baseline?"
+  }
+]

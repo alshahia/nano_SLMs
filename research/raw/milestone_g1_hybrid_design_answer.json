@@ -1,0 +1,46 @@
+{
+  "kind": "answer",
+  "question": "For an S-scale (~12M param) hybrid Gated DeltaNet + gated attention LLM trained on a single Quadro RTX 4000 (Turing sm_75, fp16 only, NO triton, NO flash-attn), what is the smallest, most reliable pure-PyTorch implementation path? Compare (a) chunkwise DeltaNet reference code vs (b) flash-linear-attention package vs (c) custom PyTorch chunked matmul. Which avoids triton, stays within 6 GB VRAM at ctx 256, and parameter-matches a plain GQA Llama baseline?",
+  "model": "exa",
+  "answer": "For your S-scale Gated DeltaNet, the smallest and most reliable path is using the PyTorch-native implementation provided within the Megatron-LM codebase [1]. It satisfies your constraints by being entirely pure-PyTorch, avoiding Triton, and specifically including a `torch_chunk_gated_delta_rule` function designed for deterministic operation [1].\n\nCompared to your other options:\n(a) The Megatron reference code is your best choice as it is designed for training stability and includes the required deterministic chunked implementation [1].\n(b) The flash-linear-attention (FLA) package, while faster and highly recommended for general use [2], relies on kernel-level optimizations that may conflict with your strict \"no Triton\" requirement depending on the specific backend dispatch [3][4].\n(c) Custom chunked matmul is unnecessary and risky; implementing the correct causal masking and gated decay recurrence for DeltaNet is non-trivial and prone to numerical errors compared to the validated Megatron reference [1].\n\nTo remain within 6 GB VRAM at context 256, ensure your batch size and head counts scale linearly with the model size to match the baseline GQA Llama architecture [1]. The Megatron-LM implementation allows you to explicitly set `deterministic_mode=True` to trigger the pure PyTorch path [1].",
+  "citations": [
+    {
+      "title": "megatron/core/ssm/gated_delta_net.py",
+      "url": "https://github.com/NVIDIA/Megatron-LM/blob/40b1fd37/megatron/core/ssm/gated_delta_net.py"
+    },
+    {
+      "title": "NVlabs/GatedDeltaNet",
+      "url": "https://github.com/NVlabs/GatedDeltaNet"
+    },
+    {
+      "title": "fla/ops/gated_delta_rule/chunk.py",
+      "url": "https://github.com/fla-org/flash-linear-attention/blob/main/fla/ops/gated_delta_rule/chunk.py"
+    },
+    {
+      "title": "fla/layers/gated_deltanet.py",
+      "url": "https://github.com/fla-org/flash-linear-attention/blob/78e4488f/fla/layers/gated_deltanet.py"
+    },
+    {
+      "title": "lit_gpt/gated_delta_net.py",
+      "url": "https://github.com/NVlabs/GatedDeltaNet/blob/main/lit_gpt/gated_delta_net.py"
+    },
+    {
+      "title": "fla/layers/delta_net.py at main · fla-org/flash-linear-attention",
+      "url": "https://github.com/fla-org/flash-linear-attention/blob/main/fla/layers/delta_net.py"
+    },
+    {
+      "title": "Mellonta/linear-attention-visualized",
+      "url": "https://github.com/Mellonta/linear-attention-visualized"
+    },
+    {
+      "title": "fla/ops/delta_rule/naive.py at 3c6f70d1 · fla-org/flash-linear-attention",
+      "url": "https://github.com/fla-org/flash-linear-attention/blob/3c6f70d1/fla/ops/delta_rule/naive.py"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-06T12:09:37.610801+00:00"
+}

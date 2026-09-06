@@ -20,6 +20,24 @@ os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+
+def _load_dotenv() -> None:
+    """Merge project-root .env into os.environ (real env vars win).
+
+    Gated HF sources (bigcode/the-stack-v2, the-stack-smol, starcoderdata -
+    terms already accepted) need HF_TOKEN; hf_hub/datasets do NOT read .env
+    themselves (MEMORY gotcha). Same pattern as exa_search.py.
+    """
+    env_path = ROOT / ".env"
+    if env_path.is_file():
+        from dotenv import dotenv_values
+        for key, val in dict(dotenv_values(env_path)).items():
+            if key and val is not None:
+                os.environ.setdefault(key, str(val).strip())
+
+
+_load_dotenv()
+
 TEXT_KEYS = ("content", "code", "text", "completion", "output", "answer",
              "response", "func_code_string")
 

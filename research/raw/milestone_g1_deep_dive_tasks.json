@@ -1,0 +1,20 @@
+[
+  {
+    "kind": "contents",
+    "slug": "milestone_g1_megatron_gdn",
+    "urls": ["https://github.com/NVIDIA/Megatron-LM/blob/40b1fd37/megatron/core/ssm/gated_delta_net.py", "https://github.com/fla-org/flash-linear-attention/blob/3c6f70d1/fla/ops/delta_rule/naive.py"],
+    "max_characters": 16000
+  },
+  {
+    "kind": "contents",
+    "slug": "milestone_g1_hybrid_ratio_details",
+    "urls": ["https://sebastianraschka.com/llm-architecture-gallery/hybrid-attention/", "https://lilting.ch/en/articles/qwen3-next-gated-attention-sink"],
+    "max_characters": 14000
+  },
+  {
+    "kind": "contents",
+    "slug": "milestone_g1_deltanet_scratch_ch04",
+    "urls": ["https://sebastianraschka.com/llms-from-scratch/ch04/08_deltanet/"],
+    "max_characters": 18000
+  }
+]
