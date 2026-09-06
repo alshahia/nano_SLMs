@@ -111,6 +111,17 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   checkpoint-1000.zip / RESUME_ON_NEW_MACHINE.txt on TU09FBO are obsolete —
   delete them there. The abandoned partial run's only useful residue is its
   TensorBoard events (committed under runs/target/logs/).
+- **2026-09-06 16:22: user asked to save the checkpoint and stop — done.**
+  Killed at step 2292 (PIDs 1820/8420, GPU verified released, log frozen at
+  2292). Saved state = **checkpoint-2000**, verified complete before the
+  kill: trainer_state global_step 2000, best_metric 1.9972, model +
+  optimizer + scheduler/scaler/rng + tokenizer (~2.5 GB); rotation holds
+  ckpt-1000/1500/2000. Steps 2001–2292 (~292 steps) are not in any
+  checkpoint — transformers saves on the 500-step cadence only, there is no
+  save-on-interrupt. Eval curve so far: 2.8567 @500 → 2.265 @1000 →
+  2.0903 @1500 → 1.9972 @2000. Resume at ANY time with zero flags:
+  `& .\.venv\Scripts\python.exe scripts\train.py --config
+  configs\target.yaml` → continues at 2001/5000.
 - Mid-run incidents worth knowing on the next machine: (1) Modern Standby
   froze the run ~1.6 h between steps 991→992 (system slept 05:31, resumed
   05:33; the CUDA context survived) — disable sleep-on-AC for long runs.
