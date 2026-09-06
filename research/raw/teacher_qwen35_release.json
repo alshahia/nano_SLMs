@@ -1,0 +1,89 @@
+{
+  "query": "Qwen3.5 Alibaba release 0.8B 24 layers March 2026",
+  "kind": "search",
+  "num_results": 8,
+  "results": [
+    {
+      "id": "https://huggingface.co/Qwen/Qwen3.5-0.8B",
+      "title": "Qwen/Qwen3.5-0.8B · Hugging Face",
+      "url": "https://huggingface.co/Qwen/Qwen3.5-0.8B",
+      "highlights": [
+        "# Qwen3.5-0.8B \n\n> This repository contains model weights and configuration files for the post-trained model in the Hugging Face Transformers format. \n> \n> These artifacts are compatible with Hugging Face Transformers, vLLM, SGLang, KTransformers, etc.\n> \n> In light of its parameter scale, the intended use cases are prototyping, task-specific fine-tuning, and other research or development purposes.\n...\n## Model Overview \n\n- Type: Causal Language Model with Vision Encoder\n- Training Stage: Pre-training & Post-training\n- Language Model\n\n- Number of Parameters: 0.8B\n- Hidden Dimension: 1024\n- Token Embedding: 248320 (Padded)\n- Number of Layers: 24\n- Hidden Layout: 6 × (3 × (Gated DeltaNet → FFN) → 1 × (Gated Attention → FFN))\n- Gated DeltaNet:\n...\n```bibtex\n@misc{qwen3.5,\n    title  = {{Qwen3.5}: Towards Native Multimodal Agents},\n    author = {{Qwen Team}},\n    month  = {February},\n    year   = {2026},\n    url    = {https://qwen.ai/blog?id=qwen3.5}\n}\n...\n## Model tree for Qwen/Qwen3.5-0.8B \n\n Finetuned\n...\n199 models"
+      ]
+    },
+    {
+      "id": "https://awesomeagents.ai/models/qwen-3-5-0-8b/",
+      "title": "Qwen3.5-0.8B | Awesome Agents",
+      "url": "https://awesomeagents.ai/models/qwen-3-5-0-8b/",
+      "published_date": "2026-03-02T00:00:00.000Z",
+      "author": "James Kowalski",
+      "highlights": [
+        "Qwen3.5-0.8B is the smallest natively multimodal model in the Qwen 3.5 family - 0.8B parameters handling text, images, and video with 262K context. MathVista 62.2, OCRBench 74.5. Apache 2.0.\n...\nBy James Kowalski• March 2, 2026• Updated April 8, 2026• 5 min read\n...\n| Specification | Details |\n| --- | --- |\n| Provider | Alibaba Cloud (Qwen) |\n| Model Family | Qwen 3.5 |\n| Architecture | Gated DeltaNet + Gated Attention (3:1 hybrid) |\n| Total Parameters | 0.8B |\n| Active Parameters | 0.8B (all - dense) |\n| Layers | 24 |\n| Hidden Dimension | 1,024 |\n| FFN Intermediate Dimension | 3,584 |\n| Attention Pattern | 6 x (3 x (Gated DeltaNet -> FFN) -> 1 x (Gated Attention -> FFN)) |\n| Gated DeltaNet Heads | 16 for V, 16 for QK; Head Dim: 128 |\n| Gated Attention Heads | 8 Q, 2 KV; Head Dim: 256; RoPE Dim: 64 |\n| Context Window | 262,144 tokens (native) |\n| Max Output | 65,536 tokens |\n| Input Modalities | Text, Image, Video |\n| Vocabulary | 248,320 tokens |\n| Languages | 201 |\n| Training | Multi-Token Prediction (MTP), strong-to-weak distillation |\n| Thinking Mode | Supported (non-thinking by default, thinking via `enable_thinking` API parameter) |\n| Release Date | March 2, 2026 |\n| License | Apache 2.0 |\n...\nThe 0.8B shares the 24-layer stack with the 2B but halves the hidden dimension (1,024 vs 2,048) and uses a smaller FFN (3,584 vs 6,144). The attention architecture is identical - same head dimensions, same 3:1 DeltaNet-to-Attention ratio.\n...\nApache 2.0 licensed and available on HuggingFace and ModelScope. A base model (Qwen3.5-0.8B-Base) and seven quantized variants are available."
+      ]
+    },
+    {
+      "id": "https://awesomeagents.ai/news/qwen-3-5-small-models-series/",
+      "title": "Qwen 3.5 Small Series Ships Four Models From 0.8B to 9B | Awesome Agents",
+      "url": "https://awesomeagents.ai/news/qwen-3-5-small-models-series/",
+      "published_date": "2026-03-02T14:30:00.000Z",
+      "author": "Daniel Okafor",
+      "highlights": [
+        "Alibaba completes the Qwen 3.5 lineup with four small models - 0.8B, 2B, 4B, and 9B - all natively multimodal, 262K context, Apache 2.0. The 9B outperforms last-gen Qwen3-30B and beats GPT-5-Nano on vision benchmarks.\n...\nBy Daniel Okafor• March 2, 2026• Updated April 8, 2026• 6 min read\n...\n- Alibaba releases four Qwen 3.5 small models - 0.8B, 2B, 4B, 9B - all Apache 2.0, natively multimodal, 262K context\n...\n- Qwen3.5-\n...\n-gen Qwen3-\n...\nB on most benchmarks and beats GPT-5-Nano on MMMU-Pro (70.1\n...\n> 🚀 Introducing the Qwen 3.5 Small Model Series Qwen3.5-0.8B · Qwen3.5-2B · Qwen3.5-4B · Qwen3.5-9B ✨ More intelligence, less compute.\n> \n> — Qwen (@Alibaba_Qwen) March 2, 2026\n...\nThe models span from 0.8B (runs on a phone) to 9B (a single consumer GPU), and every one of them is natively multimodal - text, images, and video from the same set of weights. No adapter bolted on. No separate\n...\nmodel. Just one architecture handling everything.\n...\n| Model | Parameters | Layers | Context | Thinking Mode | VRAM (BF16) |\n| --- | --- | --- | --- | --- | --- |\n| Qwen3.5-0.8B | 0.8B | 24 | 262K | Both (non-thinking default) | ~1.6 GB |\n| Qwen3.5-2B | 2B | 24 | 262K | Both | ~4 GB |\n| Qwen3.5-4B | 4B | 32 | 262K | Both | ~8 GB |\n| Qwen3.5-9B | 9B | 32 | 262K (1M ext.) | Both | ~18 GB |\n...\n| Model | Release | Type | Active Params |\n| --- | --- | --- | --- |\n| Qwen3.5-397B-A17B | Feb 16 | MoE (flagship) | 17B |\n| Qwen3.5-122B-A10B | Feb 24 | MoE | 10B |\n| Qwen3.5-35B-A3B | Feb 24 | MoE | 3B |\n| Qwen3.5-27B | Feb 24 | Dense | 27B |\n| Qwen3.5-Flash | Feb 24 | API | N/A |\n| Qwen3.5-9B | Mar 2 | Dense | 9B |\n| Qwen3.5-4B | Mar 2 | Dense | 4B |\n| Qwen3.5-2B | Mar 2 | Dense | 2B |\n| Qwen3.5-0.8B | Mar 2 | Dense | 0.8B |"
+      ]
+    },
+    {
+      "id": "https://www.marktechpost.com/2026/03/02/alibaba-just-released-qwen-3-5-small-models-a-family-of-0-8b-to-9b-parameters-built-for-on-device-applications/",
+      "title": "Alibaba just released Qwen 3.5 Small models: a family of 0.8B to 9B parameters built for on-device applications - MarkTechPost",
+      "url": "https://www.marktechpost.com/2026/03/02/alibaba-just-released-qwen-3-5-small-models-a-family-of-0-8b-to-9b-parameters-built-for-on-device-applications/",
+      "published_date": "2026-03-03T02:21:07.000Z",
+      "author": "Asif Razzaq",
+      "highlights": [
+        "Alibaba just released Qwen 3.5 Small models: a family of 0.8B to 9B parameters built for on-device applications - MarkTechPost\n...\n# Alibaba just released Qwen 3.5 Small models: a family of 0.8B to 9B parameters built for on-device applications\n...\nMarch 2, 2026\n...\nAlibaba’s Qwen team has released the Qwen3.5 Small Model Series, a collection of Large Language Models (LLMs) ranging from 0.8B to 9B parameters. While the industry trend has historically favored increasing parameter counts to achieve ‘frontier’ performance, this release focuses on ‘More Intelligence, Less Compute.‘ These models represent a shift toward deploying capable AI on consumer hardware and edge devices without the traditional trade-offs in reasoning or multimodality.\n...\nThe series is currently available on Hugging Face and ModelScope, including both Instruct and Base versions.\n...\nThe Qwen3.5 small series is categorized into four distinct tiers, each optimized for specific hardware constraints and latency requirements:\n...\n- Qwen3.5-0.8B and Qwen3.5-2B: These models are designed for high-throughput, low-latency applications on edge devices. By optimizing the dense token training process, these models provide a reduced VRAM footprint, making them compatible with mobile chips and IoT hardware.\n...\n- Qwen3.5-9B: The flagship of the small series, the 9B variant, focuses on reasoning and logic. It is specifically tuned to close the performance gap with models significantly larger (such as 30B+ parameter variants) through advanced training techniques.\n...\n| Model Size | Primary Use Case | Key Technical Feature |\n| --- | --- | --- |\n| 0.8B / 2B | Edge Devices / IoT | Low VRAM, high-speed inference |\n| 4B | Lightweight Agents | Native multimodal integration |\n| 9B | Reasoning & Logic | Scaled RL for frontier-closing performance |\n...\n- More Intelligence, Less Compute: The series (0.8B to 9B parameters) prioritizes architectural efficiency over raw parameter scale, enabling high-performance AI on consumer-grade hardware and edge devices.\n...\n- Optimized for Edge and IoT: The 0.8B and 2B models are developed for ultra-low latency and minimal VRAM footprints, making them ideal for local-first applications, mobile deployment, and privacy-sensitive environments."
+      ]
+    },
+    {
+      "id": "https://www.llmreference.com/model/qwen3.5-0.8b",
+      "title": "Qwen3.5-0.8B – 262k context, multimodal, open source | LLM Reference",
+      "url": "https://www.llmreference.com/model/qwen3.5-0.8b",
+      "published_date": "2026-03-02T00:00:00.000Z",
+      "highlights": [
+        "Qwen3.5-0.8B – 262k context, multimodal, open source | LLM Reference\n...\n# Qwen3.5-0.8B\n...\nReleased 2026-03-02\n...\n> Qwen3.5-0.8B is a released long context and vision model with open-source and 262k context; evaluate it while provider pricing coverage matures.\n...\nQwen3.5\n...\n2026-03-02\n...\n262k\n...\nAI research institute of Alibaba Group.\n...\nSmallest open-weight Qwen3.5 dense model for phone and edge deployment. Apache 2.0.\n...\nQwen3.5-0.8B is an open-source model in the Qwen3.5 family. The structured metadata tracks a 262k-token context window and multimodal input. No headline benchmark score is tracked for Qwen3.5-0.8B yet.\n...\nQwen3.5-0.8B has a context window of 262k\n...\nWhen was Qwen3.5-0.8B released\n...\nQwen3.5-0.8B was released on 2026-03-02."
+      ]
+    },
+    {
+      "id": "https://github.com/QwenLM/Qwen3.5?file=Qwen3.5",
+      "title": "QwenLM/Qwen3.5",
+      "url": "https://github.com/QwenLM/Qwen3.5?file=Qwen3.5",
+      "published_date": "2025-09-11T00:00:00.000Z",
+      "highlights": [
+        "- 2026-03-02: Qwen3.5-9B, Qwen3.5-4B, Qwen3.5-2B, and Qwen3.5-0.8B are now available on [Hugging Face Hub](https://huggingface.co/collections/Qwen/qwen35) and [ModelScope](https://www.modelscope.cn/collections/Qwen/Qwen35)!\n...\nface.co/collections/Q\n...\n- 2026-02-16: We release Qwen3.5. The first release includes a 397B-A17B MoE model. Read more on our [release blog](https://qwen.ai/blog?id=qwen3.5). More sizes are coming & Happy Chinese New Year!"
+      ]
+    },
+    {
+      "id": "https://news.aibase.com/news/25861",
+      "title": "Alibaba TONGYI Qwen Open Source Qwen3.5 Small Model Series: Multimodal Agent Can Run on Edge Devices",
+      "url": "https://news.aibase.com/news/25861",
+      "published_date": "2026-03-03T00:00:00.000Z",
+      "highlights": [
+        "Time : Mar 3, 2026 Read : 3 minute\n...\nThe Alibaba Qwen team officially launched the Qwen3.5 small model series today, including four lightweight models: Qwen3.5-0.8B, Qwen3.5-2B, Qwen3.5-4B, and Qwen3.5-9B, along with their corresponding base versions.\n...\nThese small models are all built on the unified powerful architecture of Qwen3.5, featuring native multimodal capabilities (supporting image-text processing), improved model structures, and scalable reinforcement learning training, achieving higher intelligence levels with fewer computing resources. 0.8B / 2B: Extremely compact and fast in inference, optimized for edge devices, making them ideal for mobile devices, IoT devices, and low-latency real-time interaction scenarios;\n...\nThe Qwen team stated that this series aims to better support academic research, rapid experimentation, and industrial-level practical innovation deployment. With this release, the Qwen3.5 family now covers a complete size gradient from 0.8B to 397B-A17B, further improving the open-source ecosystem. The models are now available on Hugging Face collection page: https://huggingface.co/collections/Qwen/qwen35"
+      ]
+    },
+    {
+      "id": "https://github.com/QwenLM/Qwen3.8",
+      "title": "Qwen3.8 is the large language model series developed by Qwen ... - GitHub",
+      "url": "https://github.com/QwenLM/Qwen3.8",
+      "highlights": [
+        "- 2026-03-02: Qwen3.5-9B, Qwen3.5-4B, Qwen3.5-2B, and Qwen3.5-0.8B are now available on [Hugging Face Hub](https://huggingface.co/collections/Qwen/qwen35) and [ModelScope](https://www.modelscope.cn/collections/Qwen/Qwen35)!\n...\n2026-0\n...\nQwen3.5\n...\nQwen3.\n...\nCheck out the\n...\ncards on [Hugging Face Hub\n...\nhuggingface.co/collections/Qwen/qwen\n...\n5) or [ModelScope\n...\n.modelscope.cn\n...\nQwen/Q\n...\n- 2026-02-16: We release Qwen3.5. The first release includes a 397B-A17B MoE model. Read more on our [release blog](https://qwen.ai/blog?id=qwen3.5). More sizes are coming & Happy Chinese New Year!"
+      ]
+    }
+  ],
+  "search_time": 1532.1,
+  "cost_dollars": {
+    "total": 0.007,
+    "search": {
+      "neural": 0.007
+    },
+    "contents": null
+  },
+  "retrieved_at": "2026-09-06T11:34:55.434655+00:00"
+}

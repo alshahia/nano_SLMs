@@ -270,6 +270,11 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
    AGENTS.md section 3 now mandates the Exa helper for net research
    (EXA_API_KEY .env still missing - user action). The 3 prep commits were
    pushed (user-approved).
+   2026-09-06 later: the recommendation menu (B/C/D/E/F/G) was approved as
+   TASKS milestone rows 11-17 - CREATED ONLY, none started (user instruction).
+   Both API keys (EXA + HF) now live in the gitignored .env (user-added); the
+   teacher web-context search and the HF gated-repo probe were run to pre-fill
+   milestone evidence.
    Tier 2 = on-policy logit alignment;
    Tier 3 = intra-ladder KD (tests the ~1/10 GPU-hour claim on our ladder).
    Why: the pipeline currently ends at pretraining — no SFT/distill stage exists
