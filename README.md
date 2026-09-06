@@ -1,7 +1,7 @@
 # nano_SLMs
 
 Small language-model training pipeline for a single 8 GB GPU (Quadro RTX 4000).
-Full plan and milestones: `PLAN.md`.
+Full plan and milestones: `PLAN.md`. Agent docs map: `AGENTS.md`.
 
 ## Environment
 - `.venv` (uv-managed): torch 2.14.0+cu126, transformers 5.16.1, datasets 5.0.1
