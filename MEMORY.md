@@ -78,6 +78,14 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
     multiple of eval_steps when load_best_model_at_end is on — cadence
     changes must move both keys together.
 
+11. **nvlddmkm Event 153 = GPU driver engine fault** — kills a CUDA run
+    instantly with python exit 1 (found 2026-09-06 19:07, killing the M3
+    resume mid-step before the step-2100 save). Distinct from Modern Standby
+    (freeze; process survives) and OOM (traceback says so). Recovery = rerun
+    the exact train command (auto-resume); identify it via the System log
+    (nvlddmkm 153). If it repeats, suspect the SW-power-capped hardware
+    state (underpowered adapter), not the training code.
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF

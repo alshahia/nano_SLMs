@@ -163,6 +163,18 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   nano_SLMs_m3_handoff\checkpoint-1000.zip on TU09FBO remains obsolete
   (MUO4QK5's fresh run superseded it) — user-cleanup candidate, not
   agent-deleted.
+- **2026-09-06 19:07: nvlddmkm Event 153 (GPU driver engine fault) killed
+  the resumed run** ~30 min in, mid-step (~2050s), BEFORE the 2100 save —
+  no checkpoint lost (500/1000/2000 intact; resume = exact command, ≤100
+  steps lost). Not sleep/standby (no Id 42/107 events), not OOM, no reboot:
+  the driver fault raised a CUDA error and python exited 1. GPU re-probed
+  healthy (CUDA sanity PASS: matmul OK) and the run was RELAUNCHED ~19:11
+  (auto-resume from checkpoint-2000 verified at 2001/5000; GPU 99% / 4.8 GB
+  / 45 W / 900 MHz — SW power cap still active; ~22 s/it early). A second
+  short-lived trainer (PID 26940, launched 19:08 from outside this session)
+  died pre-step and left a header-only tfevents file (removed). If 153
+  faults repeat: suspect the SW-power-capped hardware state (underpowered
+  adapter), not the training code — check System log for nvlddmkm.
 
 ## 4. Environment (verified working)
 
