@@ -201,11 +201,19 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 3. Upgrade path (user-approved only): pilot data quality (ungated raw code or
    the-stack-v2 with token), Flash-Next/GDN hybrid architecture experiments
    (resources/ notes are pseudo-code — PLAN.md A7 says plain GQA first).
-4. C12 distillation stage (planned 2026-09-06, user-gated after M3): plan at
-   research/c12_distillation_plan.md, rationale at
-   research/c12_distillation_report.md. Tier 1 = Evol-Instruct trace SFT of the
-   M3 model (scripts/sft.py + configs/sft_t1.yaml are created at execution;
-   the §5.3 auto-resume contract applies). Tier 2 = on-policy logit alignment;
+4. C12 distillation stage (planned 2026-09-06; Tier 1 user-approved; run-gated
+   on M3 completion §8.2): plan at research/c12_distillation_plan.md, rationale
+   at research/c12_distillation_report.md. Tier 1 = Evol-Instruct trace SFT of
+   the M3 model — IMPLEMENTED + CPU-validated 2026-09-06 while M3 trains:
+   scripts/sft_data.py (stream/filter/template/prompt-masking; tokenized
+   dataset at data/sft/evol/ds, stats in data/sft/evol/meta.json),
+   scripts/sft.py (Trainer + padding collator; §5.3 auto-resume contract
+   implemented; --pilot = 5k pairs, 1 epoch), configs/sft_t1.yaml (ctx 512,
+   accum 16, lr 3e-5 cosine, eval+save 250), eval.py extended with the
+   backward-compatible instruction eval (ast.parse pass-rate on held-out
+   instructions). Launch at gate:
+   & .\.venv\Scripts\python.exe scripts\sft.py --config configs\sft_t1.yaml --pilot
+   Tier 2 = on-policy logit alignment;
    Tier 3 = intra-ladder KD (tests the ~1/10 GPU-hour claim on our ladder).
    Why: the pipeline currently ends at pretraining — no SFT/distill stage exists
    (crosscheck row C12). T never saw Evol-Instruct, so it is contamination-free

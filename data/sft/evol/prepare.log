@@ -1,0 +1,138 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[sft_data] tokenizer=codellama/CodeLlama-7b-hf vocab=32017 pad_id=2 eos_id=2 ctx=512
+[sft_data] streaming nickrosh/Evol-Instruct-Code-80k-v1 (target 20400 accepted pairs, ast_filter=True)
+<unknown>:5: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:7: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:5: SyntaxWarning: invalid escape sequence '\s'
+[sft_data] 500/20400 pairs, stats={'seen': 2632, 'kept': 500, 'drop_short': 191, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 1131, 'drop_long': 810}
+<unknown>:7: SyntaxWarning: invalid escape sequence '\:'
+<unknown>:8: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:28: SyntaxWarning: invalid escape sequence '\.'
+<unknown>:14: SyntaxWarning: invalid escape sequence '\s'
+[sft_data] 1000/20400 pairs, stats={'seen': 5456, 'kept': 1000, 'drop_short': 380, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 2464, 'drop_long': 1612}
+<unknown>:28: SyntaxWarning: invalid escape sequence '\:'
+<unknown>:11: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:2: SyntaxWarning: invalid escape sequence '\|'
+<unknown>:13: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:26: SyntaxWarning: invalid escape sequence '\+'
+<unknown>:17: SyntaxWarning: invalid escape sequence '\,'
+[sft_data] 1500/20400 pairs, stats={'seen': 8288, 'kept': 1500, 'drop_short': 584, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 3756, 'drop_long': 2448}
+<unknown>:15: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:5: SyntaxWarning: invalid escape sequence '\;'
+<unknown>:31: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:33: SyntaxWarning: invalid escape sequence '\-'
+[sft_data] 2000/20400 pairs, stats={'seen': 11329, 'kept': 2000, 'drop_short': 819, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 5215, 'drop_long': 3295}
+<unknown>:6: SyntaxWarning: invalid escape sequence '\w'
+[sft_data] 2500/20400 pairs, stats={'seen': 14258, 'kept': 2500, 'drop_short': 1018, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 6569, 'drop_long': 4171}
+<unknown>:6: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:19: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:7: SyntaxWarning: invalid escape sequence '\:'
+<unknown>:19: SyntaxWarning: invalid escape sequence '\?'
+<unknown>:6: SyntaxWarning: invalid escape sequence '\|'
+<unknown>:3: SyntaxWarning: invalid escape sequence '\,'
+<unknown>:55: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:9: SyntaxWarning: invalid escape sequence '\:'
+<unknown>:3: SyntaxWarning: invalid escape sequence '\('
+[sft_data] 3000/20400 pairs, stats={'seen': 17175, 'kept': 3000, 'drop_short': 1227, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 7909, 'drop_long': 5039}
+<unknown>:35: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:67: SyntaxWarning: invalid escape sequence '\,'
+<unknown>:2: SyntaxWarning: invalid escape sequence '\,'
+<unknown>:8: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:15: SyntaxWarning: invalid escape sequence '\w'
+<unknown>:5: SyntaxWarning: invalid escape sequence '\ '
+<unknown>:18: SyntaxWarning: invalid escape sequence '\ '
+<unknown>:28: SyntaxWarning: invalid escape sequence '\ '
+<unknown>:39: SyntaxWarning: invalid escape sequence '\|'
+[sft_data] 3500/20400 pairs, stats={'seen': 19605, 'kept': 3500, 'drop_short': 1448, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 9001, 'drop_long': 5656}
+<unknown>:2: SyntaxWarning: invalid escape sequence '\/'
+[sft_data] 4000/20400 pairs, stats={'seen': 21182, 'kept': 4000, 'drop_short': 1722, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 9637, 'drop_long': 5823}
+[sft_data] 4500/20400 pairs, stats={'seen': 22755, 'kept': 4500, 'drop_short': 1996, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 10274, 'drop_long': 5985}
+[sft_data] 5000/20400 pairs, stats={'seen': 24522, 'kept': 5000, 'drop_short': 2303, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 11058, 'drop_long': 6161}
+[sft_data] 5500/20400 pairs, stats={'seen': 26221, 'kept': 5500, 'drop_short': 2599, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 11793, 'drop_long': 6329}
+<unknown>:5: SyntaxWarning: invalid escape sequence '\|'
+<unknown>:13: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:16: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:20: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:25: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:6: SyntaxWarning: invalid escape sequence '\s'
+[sft_data] 6000/20400 pairs, stats={'seen': 27855, 'kept': 6000, 'drop_short': 2866, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 12483, 'drop_long': 6506}
+<unknown>:4: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:1: SyntaxWarning: invalid escape sequence '\.'
+<unknown>:4: SyntaxWarning: invalid escape sequence '\,'
+[sft_data] 6500/20400 pairs, stats={'seen': 29678, 'kept': 6500, 'drop_short': 3187, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 13313, 'drop_long': 6678}
+<unknown>:2: SyntaxWarning: invalid escape sequence '\|'
+[sft_data] 7000/20400 pairs, stats={'seen': 31438, 'kept': 7000, 'drop_short': 3517, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 14054, 'drop_long': 6867}
+<unknown>:6: SyntaxWarning: invalid escape sequence '\,'
+[sft_data] 7500/20400 pairs, stats={'seen': 33090, 'kept': 7500, 'drop_short': 3782, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 14762, 'drop_long': 7046}
+<unknown>:36: SyntaxWarning: invalid escape sequence '\w'
+[sft_data] 8000/20400 pairs, stats={'seen': 34780, 'kept': 8000, 'drop_short': 4090, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 15460, 'drop_long': 7230}
+<unknown>:4: SyntaxWarning: invalid escape sequence '\|'
+[sft_data] 8500/20400 pairs, stats={'seen': 36503, 'kept': 8500, 'drop_short': 4369, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 16196, 'drop_long': 7438}
+<unknown>:8: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:18: SyntaxWarning: invalid escape sequence '\-'
+<unknown>:18: SyntaxWarning: invalid escape sequence '\W'
+[sft_data] 9000/20400 pairs, stats={'seen': 38204, 'kept': 9000, 'drop_short': 4675, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 16915, 'drop_long': 7614}
+<unknown>:25: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:35: SyntaxWarning: invalid escape sequence '\s'
+[sft_data] 9500/20400 pairs, stats={'seen': 40025, 'kept': 9500, 'drop_short': 4905, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 17673, 'drop_long': 7947}
+<unknown>:16: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:8: SyntaxWarning: invalid escape sequence '\s'
+[sft_data] 10000/20400 pairs, stats={'seen': 41876, 'kept': 10000, 'drop_short': 5108, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 18431, 'drop_long': 8337}
+<unknown>:5: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:7: SyntaxWarning: invalid escape sequence '\:'
+[sft_data] 10500/20400 pairs, stats={'seen': 44166, 'kept': 10500, 'drop_short': 5370, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 19516, 'drop_long': 8780}
+<unknown>:14: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:16: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:18: SyntaxWarning: invalid escape sequence '\.'
+<unknown>:29: SyntaxWarning: invalid escape sequence '\:'
+<unknown>:7: SyntaxWarning: invalid escape sequence '\,'
+<unknown>:2: SyntaxWarning: invalid escape sequence '\_'
+[sft_data] 11000/20400 pairs, stats={'seen': 46100, 'kept': 11000, 'drop_short': 5581, 'drop_instr': 0, 'drop_dup': 1, 'drop_ast': 20341, 'drop_long': 9177}
+<unknown>:9: SyntaxWarning: invalid escape sequence '\|'
+[sft_data] 11500/20400 pairs, stats={'seen': 48260, 'kept': 11500, 'drop_short': 5823, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 21345, 'drop_long': 9588}
+<unknown>:3: SyntaxWarning: invalid escape sequence '\,'
+<unknown>:16: SyntaxWarning: invalid escape sequence '\.'
+[sft_data] 12000/20400 pairs, stats={'seen': 50534, 'kept': 12000, 'drop_short': 6106, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 22376, 'drop_long': 10048}
+<unknown>:52: SyntaxWarning: invalid escape sequence '\.'
+<unknown>:57: SyntaxWarning: invalid escape sequence '\d'
+[sft_data] 12500/20400 pairs, stats={'seen': 52559, 'kept': 12500, 'drop_short': 6287, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 23303, 'drop_long': 10465}
+<unknown>:31: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:26: SyntaxWarning: invalid escape sequence '\s'
+[sft_data] 13000/20400 pairs, stats={'seen': 54611, 'kept': 13000, 'drop_short': 6508, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 24191, 'drop_long': 10908}
+<unknown>:5: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:7: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:8: SyntaxWarning: invalid escape sequence '\s'
+[sft_data] 13500/20400 pairs, stats={'seen': 56729, 'kept': 13500, 'drop_short': 6739, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 25138, 'drop_long': 11348}
+<unknown>:6: SyntaxWarning: invalid escape sequence '\d'
+<unknown>:28: SyntaxWarning: invalid decimal literal
+<unknown>:5: SyntaxWarning: invalid escape sequence '\('
+<unknown>:2: SyntaxWarning: invalid escape sequence '\_'
+[sft_data] 14000/20400 pairs, stats={'seen': 58945, 'kept': 14000, 'drop_short': 7336, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 25957, 'drop_long': 11648}
+<unknown>:2: SyntaxWarning: invalid escape sequence '\,'
+[sft_data] 14500/20400 pairs, stats={'seen': 62602, 'kept': 14500, 'drop_short': 9758, 'drop_instr': 1, 'drop_dup': 4, 'drop_ast': 26687, 'drop_long': 11652}
+<unknown>:2: SyntaxWarning: invalid escape sequence '\,'
+[sft_data] 15000/20400 pairs, stats={'seen': 66289, 'kept': 15000, 'drop_short': 12192, 'drop_instr': 1, 'drop_dup': 4, 'drop_ast': 27439, 'drop_long': 11653}
+<unknown>:2: SyntaxWarning: invalid escape sequence '\_'
+<unknown>:7: SyntaxWarning: invalid escape sequence '\s'
+<unknown>:8: SyntaxWarning: invalid escape sequence '\w'
+[sft_data] 15500/20400 pairs, stats={'seen': 70148, 'kept': 15500, 'drop_short': 14753, 'drop_instr': 2, 'drop_dup': 4, 'drop_ast': 28234, 'drop_long': 11655}
+<unknown>:4: SyntaxWarning: invalid escape sequence '\('
+<unknown>:5: SyntaxWarning: invalid escape sequence '\-'
+[sft_data] 16000/20400 pairs, stats={'seen': 73125, 'kept': 16000, 'drop_short': 16588, 'drop_instr': 3, 'drop_dup': 4, 'drop_ast': 28871, 'drop_long': 11659}
+<unknown>:5: SyntaxWarning: invalid escape sequence '\w'
+<unknown>:2: SyntaxWarning: invalid escape sequence '\,'
+<unknown>:2: SyntaxWarning: invalid escape sequence '\,'
+[sft_data] 16500/20400 pairs, stats={'seen': 76619, 'kept': 16500, 'drop_short': 18843, 'drop_instr': 3, 'drop_dup': 4, 'drop_ast': 29603, 'drop_long': 11666}
+<unknown>:2: SyntaxWarning: invalid escape sequence '\,'
+<unknown>:4: SyntaxWarning: invalid escape sequence '\.'
+<unknown>:5: SyntaxWarning: invalid escape sequence '\w'
+[sft_data] WARNING: stream ended early with 16776/20400 pairs
+
+Saving the dataset (0/1 shards):   0%|          | 0/16376 [00:00<?, ? examples/s]
+Saving the dataset (1/1 shards): 100%|##########| 16376/16376 [00:00<00:00, 429045.68 examples/s]
+Saving the dataset (1/1 shards): 100%|##########| 16376/16376 [00:00<00:00, 407597.72 examples/s]
+
+Saving the dataset (0/1 shards):   0%|          | 0/400 [00:00<?, ? examples/s]
+Saving the dataset (1/1 shards): 100%|##########| 400/400 [00:00<00:00, 94942.09 examples/s]
+Saving the dataset (1/1 shards): 100%|##########| 400/400 [00:00<00:00, 94942.09 examples/s]
+[sft_data] meta: {"dataset": "nickrosh/Evol-Instruct-Code-80k-v1", "tokenizer": "codellama/CodeLlama-7b-hf", "pad_token_id": 2, "eos_token_id": 2, "ctx": 512, "template": "### Instruction:\n{instruction}\n### Response:\n", "ast_filter": true, "min_chars": 200, "seen": 78264, "kept": 16776, "train_pairs": 16376, "val_pairs": 400, "stats": {"seen": 78264, "kept": 16776, "drop_short": 19898, "drop_instr": 4, "drop_dup": 4, "drop_ast": 29915, "drop_long": 11667}}

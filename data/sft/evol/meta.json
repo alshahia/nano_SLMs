@@ -1,0 +1,23 @@
+{
+  "dataset": "nickrosh/Evol-Instruct-Code-80k-v1",
+  "tokenizer": "codellama/CodeLlama-7b-hf",
+  "pad_token_id": 2,
+  "eos_token_id": 2,
+  "ctx": 512,
+  "template": "### Instruction:\n{instruction}\n### Response:\n",
+  "ast_filter": true,
+  "min_chars": 200,
+  "seen": 78264,
+  "kept": 16776,
+  "train_pairs": 16376,
+  "val_pairs": 400,
+  "stats": {
+    "seen": 78264,
+    "kept": 16776,
+    "drop_short": 19898,
+    "drop_instr": 4,
+    "drop_dup": 4,
+    "drop_ast": 29915,
+    "drop_long": 11667
+  }
+}
