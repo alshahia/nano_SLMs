@@ -59,7 +59,9 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 8. **DSH tool-arg hygiene:** tool args must be lossless JSON - never pass
    undefined-valued properties (e.g. timeoutMs left undefined inside the args
    object) or null where an object is expected; both hit 'binding arguments
-   must be lossless JSON' (2026-09-06). Build arg objects conditionally.
+   must be lossless JSON' (2026-09-06). Build arg objects conditionally. Same-day note: when a multi-edit batch fails midway, audit WHICH edits
+   applied before retrying - a 'failed' program had silently applied 3 of 5
+   edits, producing duplicate TASKS rows (caught by read-back verification).
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF
