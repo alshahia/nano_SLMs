@@ -31,3 +31,10 @@ runs/pilot/checkpoint-3000/
 runs/target/checkpoint-*/
 runs/target/final/model.safetensors
 runs/target/*.log
+
+# SFT run (C12 Tier 1): weights stay LOCAL — same LFS decision as M3 (~906 MB
+# fp32 model does not fit the free LFS quota). Summaries, reports, tokenizer
+# files and tfevents stay tracked. Covers the archived pilot dir too (sft_t1_pilot).
+runs/sft_t1*/checkpoint-*/
+runs/sft_t1*/final/model.safetensors
+runs/sft_t1*/*.log

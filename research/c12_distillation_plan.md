@@ -1,9 +1,13 @@
 # C12 application plan - distillation stage for nano_SLMs
 
-**STATUS: PLAN ONLY - nothing implemented.** Execution gated on (1) M3 completion + eval.py +
-metric commit (HANDOFF §8.2) and (2) explicit user approval (HANDOFF §8.3). While M3 is live this
-plan must not touch src/, configs/, or the training process (crosscheck hard rule) - everything
-below is created at execution time.
+**STATUS: Tier 1 IMPLEMENTED + LAUNCH-READY (2026-09-06).** User decision: prepare everything
+now, execute only after M3 completes (SFT from checkpoint-1000 was considered and DECLINED —
+20%-trained base, no co-run VRAM, double GPU cost; see research/c12_runbook.md decision log).
+Gate unchanged: (1) M3 completion (runs/target/final) + eval.py + metric commit (HANDOFF §8.2);
+(2) launch only per research/c12_runbook.md after scripts/c12_preflight.py passes. Prep-time
+deviations (user-approved, CPU-only, live M3 reads only configs/target.yaml): sft_t1.yaml gained
+data.tokens_dir (eval.py forgetting-guard fix), .gitignore gained sft_t1 weight rules,
+scripts/c12_preflight.py + research/c12_runbook.md created.
 
 Rationale: `research/c12_distillation_report.md`. Crosscheck context: row C12, action item 5.
 

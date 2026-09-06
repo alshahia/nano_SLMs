@@ -23,7 +23,12 @@ model:
 data:
   dataset: nickrosh/Evol-Instruct-Code-80k-v1   # ungated; teacher trace pairs
   raw_dir: data/sft/evol                        # source.txt, meta.json, prepare.log, val_instructions.jsonl
-  dataset_dir: data/sft/evol/ds                 # tokenized HF dataset (train/ + val/)
+  dataset_dir: data/sft/evol/ds
+  # CSN val shards for the forgetting-guard regression check (plan §3.3):
+  # eval.py --config configs/sft_t1.yaml packs these at model.ctx (1024) and the
+  # runbook compares runs/target/final vs runs/sft_t1/final val loss (<= +10-15%).
+  # Without this key eval.py raises KeyError - fixed 2026-09-06 (launch prep).
+  tokens_dir: data/target/tokens                 # tokenized HF dataset (train/ + val/)
   rows: 20000              # full-run accepted pairs; pilot uses sft.pilot_rows subset
   val_fraction: 0.02
   min_chars: 200           # on the response (mirrors prepare_data.py convention)

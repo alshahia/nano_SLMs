@@ -242,6 +242,15 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
    backward-compatible instruction eval (ast.parse pass-rate on held-out
    instructions). Launch at gate:
    & .\.venv\Scripts\python.exe scripts\sft.py --config configs\sft_t1.yaml --pilot
+   **LAUNCH-READY (2026-09-06, user decision: prepare now, run ONLY after M3 final):**
+   step-by-step runbook = research/c12_runbook.md (decision log included: SFT from
+   checkpoint-1000 was considered and DECLINED — undertrained base); gate script =
+   scripts/c12_preflight.py (run first; dry-runnable pre-M3 via
+   --base-model runs/target/checkpoint-500). configs/sft_t1.yaml now carries
+   data.tokens_dir (eval.py forgetting guard KeyError'd without it). Corrected
+   numbers: 16,376+400 pairs -> pilot ~312 steps (~1 h), full ~2,047 steps (~5-6 h);
+   full-mode disk needs runs/target/checkpoint-* deleted post-M3 (user-approved,
+   M2 precedent). TASKS.md row 4 owns live status.
    Tier 2 = on-policy logit alignment;
    Tier 3 = intra-ladder KD (tests the ~1/10 GPU-hour claim on our ladder).
    Why: the pipeline currently ends at pretraining — no SFT/distill stage exists
