@@ -22,10 +22,40 @@ def pair(instruction, code_lines):
     return {"instruction": instruction.strip(), "response": join_lines(code_lines)}
 
 
+def _strip_outer_parens(ex):
+    """Strip a single outer paren-wrap from an example.
+
+    Examples written as `('a', 'b')` or `(123,)` are meant to be passed
+    directly to the function, not wrapped again. Without this, the
+    instruction template `Example: `{FN}({EX})`` would double-wrap multi-arg
+    examples into `fn(('a', 'b'))`, which raises TypeError at runtime.
+
+    Only strips when the outer parens are balanced and contain at least one
+    top-level comma or are a single-element tuple like `(123,)`.
+    """
+    if not (ex.startswith('(') and ex.endswith(')')):
+        return ex
+    depth = 0
+    top_commas = 0
+    for c in ex:
+        if c == '(':
+            depth += 1
+        elif c == ')':
+            depth -= 1
+            if depth == 0 and c != ex[-1]:
+                return ex  # unbalanced; bail
+        elif c == ',' and depth == 1:
+            top_commas += 1
+    if top_commas >= 1 or ex.endswith(',)'):
+        return ex[1:-1].strip()
+    return ex
+
+
 def _expand(template, fn, ex):
+    ex_clean = _strip_outer_parens(ex)
     if isinstance(template, list):
-        return [line.replace("{FN}", fn).replace("{EX}", ex) for line in template]
-    return template.replace("{FN}", fn).replace("{EX}", ex)
+        return [line.replace("{FN}", fn).replace("{EX}", ex_clean) for line in template]
+    return template.replace("{FN}", fn).replace("{EX}", ex_clean)
 
 
 def topic(names, examples, body_tmpl, instr_tmpl):

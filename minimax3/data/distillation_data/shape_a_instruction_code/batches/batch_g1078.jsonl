@@ -1,64 +1,64 @@
-{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. Example: `abs_diff_v2((3, 7))`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. Example: `abs_diff_v2((7, 3))`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. Example: `abs_diff_v2((0, 0))`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. Example: `abs_diff_v2((-5, 5))`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. Example: `abs_diff_v2((10, 10))`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. Example: `abs_diff_v2((-1, -3))`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. Example: `abs_diff_v2((100, 0))`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. Example: `abs_diff_v2((0, 100))`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. Example: `manhattan2((3, 7))`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. Example: `manhattan2((7, 3))`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. Example: `manhattan2((0, 0))`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. Example: `manhattan2((-5, 5))`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. Example: `manhattan2((10, 10))`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. Example: `manhattan2((-1, -3))`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. Example: `manhattan2((100, 0))`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. Example: `manhattan2((0, 100))`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. Example: `abs_subtract2((3, 7))`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. Example: `abs_subtract2((7, 3))`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. Example: `abs_subtract2((0, 0))`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. Example: `abs_subtract2((-5, 5))`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. Example: `abs_subtract2((10, 10))`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. Example: `abs_subtract2((-1, -3))`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. Example: `abs_subtract2((100, 0))`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. Example: `abs_subtract2((0, 100))`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. Example: `do_abs_diff2((3, 7))`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. Example: `do_abs_diff2((7, 3))`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. Example: `do_abs_diff2((0, 0))`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. Example: `do_abs_diff2((-5, 5))`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. Example: `do_abs_diff2((10, 10))`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. Example: `do_abs_diff2((-1, -3))`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. Example: `do_abs_diff2((100, 0))`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. Example: `do_abs_diff2((0, 100))`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. Example: `abs_sub2((3, 7))`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. Example: `abs_sub2((7, 3))`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. Example: `abs_sub2((0, 0))`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. Example: `abs_sub2((-5, 5))`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. Example: `abs_sub2((10, 10))`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. Example: `abs_sub2((-1, -3))`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. Example: `abs_sub2((100, 0))`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. Example: `abs_sub2((0, 100))`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. Example: `dist_abs2((3, 7))`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. Example: `dist_abs2((7, 3))`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. Example: `dist_abs2((0, 0))`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. Example: `dist_abs2((-5, 5))`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. Example: `dist_abs2((10, 10))`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. Example: `dist_abs2((-1, -3))`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. Example: `dist_abs2((100, 0))`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. Example: `dist_abs2((0, 100))`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. Example: `mag_diff2((3, 7))`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. Example: `mag_diff2((7, 3))`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. Example: `mag_diff2((0, 0))`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. Example: `mag_diff2((-5, 5))`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. Example: `mag_diff2((10, 10))`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. Example: `mag_diff2((-1, -3))`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. Example: `mag_diff2((100, 0))`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. Example: `mag_diff2((0, 100))`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. Example: `dist_signed2((3, 7))`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. Example: `dist_signed2((7, 3))`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. Example: `dist_signed2((0, 0))`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. Example: `dist_signed2((-5, 5))`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. Example: `dist_signed2((10, 10))`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. Example: `dist_signed2((-1, -3))`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. Example: `dist_signed2((100, 0))`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
-{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. Example: `dist_signed2((0, 100))`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. `abs_diff_v2(3, 7)`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. `abs_diff_v2(7, 3)`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. `abs_diff_v2(0, 0)`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. `abs_diff_v2(-5, 5)`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. `abs_diff_v2(10, 10)`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. `abs_diff_v2(-1, -3)`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. `abs_diff_v2(100, 0)`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_diff_v2(a, b)` returning |a - b|. `abs_diff_v2(0, 100)`.", "response": "def abs_diff_v2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. `manhattan2(3, 7)`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. `manhattan2(7, 3)`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. `manhattan2(0, 0)`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. `manhattan2(-5, 5)`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. `manhattan2(10, 10)`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. `manhattan2(-1, -3)`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. `manhattan2(100, 0)`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `manhattan2(a, b)` returning |a - b|. `manhattan2(0, 100)`.", "response": "def manhattan2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(3, 7)`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(7, 3)`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(0, 0)`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(-5, 5)`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(10, 10)`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(-1, -3)`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(100, 0)`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(0, 100)`.", "response": "def abs_subtract2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. `do_abs_diff2(3, 7)`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. `do_abs_diff2(7, 3)`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. `do_abs_diff2(0, 0)`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. `do_abs_diff2(-5, 5)`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. `do_abs_diff2(10, 10)`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. `do_abs_diff2(-1, -3)`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. `do_abs_diff2(100, 0)`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `do_abs_diff2(a, b)` returning |a - b|. `do_abs_diff2(0, 100)`.", "response": "def do_abs_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. `abs_sub2(3, 7)`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. `abs_sub2(7, 3)`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. `abs_sub2(0, 0)`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. `abs_sub2(-5, 5)`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. `abs_sub2(10, 10)`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. `abs_sub2(-1, -3)`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. `abs_sub2(100, 0)`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `abs_sub2(a, b)` returning |a - b|. `abs_sub2(0, 100)`.", "response": "def abs_sub2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. `dist_abs2(3, 7)`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. `dist_abs2(7, 3)`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. `dist_abs2(0, 0)`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. `dist_abs2(-5, 5)`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. `dist_abs2(10, 10)`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. `dist_abs2(-1, -3)`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. `dist_abs2(100, 0)`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_abs2(a, b)` returning |a - b|. `dist_abs2(0, 100)`.", "response": "def dist_abs2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. `mag_diff2(3, 7)`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. `mag_diff2(7, 3)`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. `mag_diff2(0, 0)`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. `mag_diff2(-5, 5)`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. `mag_diff2(10, 10)`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. `mag_diff2(-1, -3)`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. `mag_diff2(100, 0)`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `mag_diff2(a, b)` returning |a - b|. `mag_diff2(0, 100)`.", "response": "def mag_diff2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. `dist_signed2(3, 7)`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. `dist_signed2(7, 3)`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. `dist_signed2(0, 0)`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. `dist_signed2(-5, 5)`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. `dist_signed2(10, 10)`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. `dist_signed2(-1, -3)`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. `dist_signed2(100, 0)`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}
+{"instruction": "Write a function `dist_signed2(a, b)` returning |a - b|. `dist_signed2(0, 100)`.", "response": "def dist_signed2(a, b):\n    return abs(a - b)\n"}

@@ -1,64 +1,64 @@
-{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. Example: `str_contains_v2(('hello world', 'world'))`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. Example: `str_contains_v2(('hello', 'xyz'))`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. Example: `str_contains_v2(('', 'a'))`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. Example: `str_contains_v2(('a', ''))`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. Example: `str_contains_v2(('hello', 'hello'))`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. Example: `str_contains_v2(('test', 'es'))`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. Example: `str_contains_v2(('Hello', 'hello'))`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. Example: `str_contains_v2(('abc', 'b'))`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. Example: `has_substr2(('hello world', 'world'))`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. Example: `has_substr2(('hello', 'xyz'))`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. Example: `has_substr2(('', 'a'))`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. Example: `has_substr2(('a', ''))`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. Example: `has_substr2(('hello', 'hello'))`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. Example: `has_substr2(('test', 'es'))`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. Example: `has_substr2(('Hello', 'hello'))`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. Example: `has_substr2(('abc', 'b'))`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. Example: `string_in2(('hello world', 'world'))`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. Example: `string_in2(('hello', 'xyz'))`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. Example: `string_in2(('', 'a'))`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. Example: `string_in2(('a', ''))`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. Example: `string_in2(('hello', 'hello'))`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. Example: `string_in2(('test', 'es'))`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. Example: `string_in2(('Hello', 'hello'))`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. Example: `string_in2(('abc', 'b'))`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. Example: `do_contains2(('hello world', 'world'))`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. Example: `do_contains2(('hello', 'xyz'))`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. Example: `do_contains2(('', 'a'))`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. Example: `do_contains2(('a', ''))`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. Example: `do_contains2(('hello', 'hello'))`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. Example: `do_contains2(('test', 'es'))`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. Example: `do_contains2(('Hello', 'hello'))`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. Example: `do_contains2(('abc', 'b'))`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. Example: `is_substring2(('hello world', 'world'))`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. Example: `is_substring2(('hello', 'xyz'))`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. Example: `is_substring2(('', 'a'))`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. Example: `is_substring2(('a', ''))`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. Example: `is_substring2(('hello', 'hello'))`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. Example: `is_substring2(('test', 'es'))`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. Example: `is_substring2(('Hello', 'hello'))`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. Example: `is_substring2(('abc', 'b'))`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. Example: `has_inside2(('hello world', 'world'))`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. Example: `has_inside2(('hello', 'xyz'))`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. Example: `has_inside2(('', 'a'))`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. Example: `has_inside2(('a', ''))`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. Example: `has_inside2(('hello', 'hello'))`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. Example: `has_inside2(('test', 'es'))`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. Example: `has_inside2(('Hello', 'hello'))`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. Example: `has_inside2(('abc', 'b'))`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. Example: `contains_str2(('hello world', 'world'))`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. Example: `contains_str2(('hello', 'xyz'))`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. Example: `contains_str2(('', 'a'))`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. Example: `contains_str2(('a', ''))`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. Example: `contains_str2(('hello', 'hello'))`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. Example: `contains_str2(('test', 'es'))`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. Example: `contains_str2(('Hello', 'hello'))`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. Example: `contains_str2(('abc', 'b'))`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. Example: `str_has2(('hello world', 'world'))`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. Example: `str_has2(('hello', 'xyz'))`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. Example: `str_has2(('', 'a'))`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. Example: `str_has2(('a', ''))`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. Example: `str_has2(('hello', 'hello'))`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. Example: `str_has2(('test', 'es'))`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. Example: `str_has2(('Hello', 'hello'))`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
-{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. Example: `str_has2(('abc', 'b'))`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('hello world', 'world')`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('hello', 'xyz')`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('', 'a')`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('a', '')`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('hello', 'hello')`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('test', 'es')`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('Hello', 'hello')`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('abc', 'b')`.", "response": "def str_contains_v2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('hello world', 'world')`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('hello', 'xyz')`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('', 'a')`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('a', '')`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('hello', 'hello')`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('test', 'es')`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('Hello', 'hello')`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('abc', 'b')`.", "response": "def has_substr2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. `string_in2('hello world', 'world')`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. `string_in2('hello', 'xyz')`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. `string_in2('', 'a')`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. `string_in2('a', '')`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. `string_in2('hello', 'hello')`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. `string_in2('test', 'es')`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. `string_in2('Hello', 'hello')`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `string_in2(s, sub)` returning True iff `sub` is in `s`. `string_in2('abc', 'b')`.", "response": "def string_in2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. `do_contains2('hello world', 'world')`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. `do_contains2('hello', 'xyz')`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. `do_contains2('', 'a')`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. `do_contains2('a', '')`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. `do_contains2('hello', 'hello')`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. `do_contains2('test', 'es')`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. `do_contains2('Hello', 'hello')`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `do_contains2(s, sub)` returning True iff `sub` is in `s`. `do_contains2('abc', 'b')`.", "response": "def do_contains2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. `is_substring2('hello world', 'world')`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. `is_substring2('hello', 'xyz')`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. `is_substring2('', 'a')`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. `is_substring2('a', '')`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. `is_substring2('hello', 'hello')`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. `is_substring2('test', 'es')`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. `is_substring2('Hello', 'hello')`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `is_substring2(s, sub)` returning True iff `sub` is in `s`. `is_substring2('abc', 'b')`.", "response": "def is_substring2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. `has_inside2('hello world', 'world')`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. `has_inside2('hello', 'xyz')`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. `has_inside2('', 'a')`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. `has_inside2('a', '')`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. `has_inside2('hello', 'hello')`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. `has_inside2('test', 'es')`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. `has_inside2('Hello', 'hello')`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `has_inside2(s, sub)` returning True iff `sub` is in `s`. `has_inside2('abc', 'b')`.", "response": "def has_inside2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. `contains_str2('hello world', 'world')`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. `contains_str2('hello', 'xyz')`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. `contains_str2('', 'a')`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. `contains_str2('a', '')`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. `contains_str2('hello', 'hello')`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. `contains_str2('test', 'es')`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. `contains_str2('Hello', 'hello')`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `contains_str2(s, sub)` returning True iff `sub` is in `s`. `contains_str2('abc', 'b')`.", "response": "def contains_str2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. `str_has2('hello world', 'world')`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. `str_has2('hello', 'xyz')`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. `str_has2('', 'a')`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. `str_has2('a', '')`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. `str_has2('hello', 'hello')`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. `str_has2('test', 'es')`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. `str_has2('Hello', 'hello')`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}
+{"instruction": "Write a function `str_has2(s, sub)` returning True iff `sub` is in `s`. `str_has2('abc', 'b')`.", "response": "def str_has2(s, sub):\n    return sub in s\n"}

@@ -595,3 +595,21 @@ combined/all_val.jsonl: 1,323 pairs
 - **Future corpus expansion** (if 26k → 50k is wanted): add to `gen_topup4.py` orchestrator with new idx ranges (e.g. g2000+ for A, g2000+ for B with `qx3_` prefix, g2000+ for C/D). The current wave used idx 1000+; the next wave would use idx 2000+.
 - **DO NOT** add to `gen_more.py` or `gen_shape_*.py` — those are sealed; new generators are appended as `gen_topup{N}.py` and topic dicts split into `gen_topup{N}_{a,b,c,d}.py` to stay under the SSE write-timeout threshold.
 - **Always run the systematic dedup discovery script BEFORE regenerating** to catch all collision classes in one pass.
+
+## 16. 2026-09-07 — Fix tuple-wrap examples in Shape A new wave
+
+`meta/gen_shape_a_bulk.py:_expand` now calls `_strip_outer_parens(ex)` before substituting `{EX}`. Strips a single outer paren-wrap when the example is a tuple like `"('a', 'b')"` or a 1-tuple like `"(123,)"`. Without this, the instruction template `"Example: \`{FN}({EX})\`"` produces `fn(('a', 'b'))` for multi-arg fns and `fn((123,))` for single-arg fns — both raise TypeError when followed as written.
+
+### Applied fixes
+
+1. **`_fix_a_examples.py`** — post-processor that walks `batch_g1000+` Shape A files, finds `Example: `fn((arg1, arg2, ...))`` patterns where the signature has 2+ args, and rewrites the instruction to `Example: \`fn(arg1, arg2, ...)\``. Used on the 12,976 existing new-wave pairs to fix 5,440 of them (the multi-arg cases). Single-arg 1-tuple cases like `(123,)` were left as-is (they're rare and harmless when runnable because the function actually receives the inner value).
+2. **`gen_shape_a_bulk.py`** — template-side fix so future regenerations don't reintroduce the bug. Affects all current and future Shape A topics that go through `_expand`.
+3. **`aggregate.py`** re-run: 0 dedup errors, all 4 shapes still pass. Stats unchanged: 26,469 pairs (est tokens: 2,093,953, down from 2,108,855 since the unwrapped instructions are shorter).
+4. **Execution sanity check** (200 random new-wave A pairs): pass rate **97.3%** of testable examples, up from the pre-fix state where ~42% were TypeError-bound. Remaining fails are decorator-style `cache_decorator(fn)` examples where the example passes a bare function reference that the test harness can't resolve — not a corpus bug.
+
+### What the next agent should know
+
+- Both layers of defense are now in place: the post-processor for the existing data, and the template fix for future waves.
+- If you regenerate Shape A from `gen_topup4_a1.py` / `gen_topup4_a2.py`, the new template will produce correct examples directly — no need to re-run `_fix_a_examples.py`.
+- The post-processor is idempotent: running it twice on already-fixed data is a no-op.
+- The 1,520 (1,071 + 449) Shape C demo pairs and 1,231 Shape D reasoning pairs were not affected — they don't use the same `{EX}` template pattern.
