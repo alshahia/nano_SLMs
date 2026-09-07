@@ -1,0 +1,1 @@
+{"instruction": "Show the Callable type hint in `type_hint_call`. (input: 5)", "response": "from typing import Callable\n\ndef type_hint_call(f: Callable[[int], int], x: int) -> int:\n    return f(x)\n\n# Bug was: `Callable[[int], int]` means a function taking int and returning int\n\n# pair: type_hint_call / 5\n"}

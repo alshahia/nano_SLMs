@@ -1,0 +1,1 @@
+{"instruction": "Show `copy.copy` in `copy_basic`. (input: [1, 2, 3])", "response": "import copy\n\ndef copy_basic(xs):\n    return copy.copy(xs)\n\n# Bug was: `copy.copy` is shallow; nested objects are shared\n\n# pair: copy_basic / [1, 2, 3]\n"}

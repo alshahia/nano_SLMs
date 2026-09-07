@@ -1,0 +1,15 @@
+{"text": "# qx2_perm :: (5, 2)\nimport math\n\ndef qx2_perm(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perm((5, 2)))\n"}
+{"text": "# qx2_perm :: (5, 5)\nimport math\n\ndef qx2_perm(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perm((5, 5)))\n"}
+{"text": "# qx2_perm :: (5, 0)\nimport math\n\ndef qx2_perm(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perm((5, 0)))\n"}
+{"text": "# qx2_perm :: (10, 3)\nimport math\n\ndef qx2_perm(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perm((10, 3)))\n"}
+{"text": "# qx2_perm :: (4, 1)\nimport math\n\ndef qx2_perm(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perm((4, 1)))\n"}
+{"text": "# qx2_permutations :: (5, 2)\nimport math\n\ndef qx2_permutations(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_permutations((5, 2)))\n"}
+{"text": "# qx2_permutations :: (5, 5)\nimport math\n\ndef qx2_permutations(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_permutations((5, 5)))\n"}
+{"text": "# qx2_permutations :: (5, 0)\nimport math\n\ndef qx2_permutations(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_permutations((5, 0)))\n"}
+{"text": "# qx2_permutations :: (10, 3)\nimport math\n\ndef qx2_permutations(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_permutations((10, 3)))\n"}
+{"text": "# qx2_permutations :: (4, 1)\nimport math\n\ndef qx2_permutations(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_permutations((4, 1)))\n"}
+{"text": "# qx2_perms :: (5, 2)\nimport math\n\ndef qx2_perms(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perms((5, 2)))\n"}
+{"text": "# qx2_perms :: (5, 5)\nimport math\n\ndef qx2_perms(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perms((5, 5)))\n"}
+{"text": "# qx2_perms :: (5, 0)\nimport math\n\ndef qx2_perms(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perms((5, 0)))\n"}
+{"text": "# qx2_perms :: (10, 3)\nimport math\n\ndef qx2_perms(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perms((10, 3)))\n"}
+{"text": "# qx2_perms :: (4, 1)\nimport math\n\ndef qx2_perms(n, k):\n    return math.perm(n, k)\n\nif __name__ == '__main__':\n    print(qx2_perms((4, 1)))\n"}

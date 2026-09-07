@@ -1,0 +1,1 @@
+{"instruction": "Show union syntax in `typing`. (input: '')", "response": "def typing(x):\n    return x\ntyping.__annotations__['x'] = int | str\n\n# Bug was: PEP 604 union syntax (int | str) is Py3.10+ — earlier use Union[int, str]\n\n# pair: typing / ''\n"}

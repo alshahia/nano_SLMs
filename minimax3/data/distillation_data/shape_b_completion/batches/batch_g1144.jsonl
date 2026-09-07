@@ -1,0 +1,15 @@
+{"text": "# qx2_cartesian :: ([1, 2], ['a', 'b'])\ndef qx2_cartesian(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cartesian(([1, 2], ['a', 'b'])))\n"}
+{"text": "# qx2_cartesian :: ([1], [1])\ndef qx2_cartesian(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cartesian(([1], [1])))\n"}
+{"text": "# qx2_cartesian :: ([], [1])\ndef qx2_cartesian(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cartesian(([], [1])))\n"}
+{"text": "# qx2_cartesian :: ([1, 2], [])\ndef qx2_cartesian(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cartesian(([1, 2], [])))\n"}
+{"text": "# qx2_cartesian :: ([1, 2, 3], ['x'])\ndef qx2_cartesian(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cartesian(([1, 2, 3], ['x'])))\n"}
+{"text": "# qx2_cross :: ([1, 2], ['a', 'b'])\ndef qx2_cross(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cross(([1, 2], ['a', 'b'])))\n"}
+{"text": "# qx2_cross :: ([1], [1])\ndef qx2_cross(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cross(([1], [1])))\n"}
+{"text": "# qx2_cross :: ([], [1])\ndef qx2_cross(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cross(([], [1])))\n"}
+{"text": "# qx2_cross :: ([1, 2], [])\ndef qx2_cross(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cross(([1, 2], [])))\n"}
+{"text": "# qx2_cross :: ([1, 2, 3], ['x'])\ndef qx2_cross(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_cross(([1, 2, 3], ['x'])))\n"}
+{"text": "# qx2_product :: ([1, 2], ['a', 'b'])\ndef qx2_product(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_product(([1, 2], ['a', 'b'])))\n"}
+{"text": "# qx2_product :: ([1], [1])\ndef qx2_product(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_product(([1], [1])))\n"}
+{"text": "# qx2_product :: ([], [1])\ndef qx2_product(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_product(([], [1])))\n"}
+{"text": "# qx2_product :: ([1, 2], [])\ndef qx2_product(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_product(([1, 2], [])))\n"}
+{"text": "# qx2_product :: ([1, 2, 3], ['x'])\ndef qx2_product(a, b):\n    return [(x, y) for x in a for y in b]\n\nif __name__ == '__main__':\n    print(qx2_product(([1, 2, 3], ['x'])))\n"}

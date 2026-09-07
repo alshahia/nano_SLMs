@@ -1,0 +1,15 @@
+{"text": "# qx2_drop :: ([1, 2, 3, 4], 1)\ndef qx2_drop(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_drop(([1, 2, 3, 4], 1)))\n"}
+{"text": "# qx2_drop :: ([1, 2, 3], 0)\ndef qx2_drop(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_drop(([1, 2, 3], 0)))\n"}
+{"text": "# qx2_drop :: ([1, 2, 3], 5)\ndef qx2_drop(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_drop(([1, 2, 3], 5)))\n"}
+{"text": "# qx2_drop :: ([], 3)\ndef qx2_drop(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_drop(([], 3)))\n"}
+{"text": "# qx2_drop :: ([1], 1)\ndef qx2_drop(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_drop(([1], 1)))\n"}
+{"text": "# qx2_skip_n :: ([1, 2, 3, 4], 1)\ndef qx2_skip_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_skip_n(([1, 2, 3, 4], 1)))\n"}
+{"text": "# qx2_skip_n :: ([1, 2, 3], 0)\ndef qx2_skip_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_skip_n(([1, 2, 3], 0)))\n"}
+{"text": "# qx2_skip_n :: ([1, 2, 3], 5)\ndef qx2_skip_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_skip_n(([1, 2, 3], 5)))\n"}
+{"text": "# qx2_skip_n :: ([], 3)\ndef qx2_skip_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_skip_n(([], 3)))\n"}
+{"text": "# qx2_skip_n :: ([1], 1)\ndef qx2_skip_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_skip_n(([1], 1)))\n"}
+{"text": "# qx2_tail_n :: ([1, 2, 3, 4], 1)\ndef qx2_tail_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_tail_n(([1, 2, 3, 4], 1)))\n"}
+{"text": "# qx2_tail_n :: ([1, 2, 3], 0)\ndef qx2_tail_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_tail_n(([1, 2, 3], 0)))\n"}
+{"text": "# qx2_tail_n :: ([1, 2, 3], 5)\ndef qx2_tail_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_tail_n(([1, 2, 3], 5)))\n"}
+{"text": "# qx2_tail_n :: ([], 3)\ndef qx2_tail_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_tail_n(([], 3)))\n"}
+{"text": "# qx2_tail_n :: ([1], 1)\ndef qx2_tail_n(xs, n):\n    return xs[n:]\n\nif __name__ == '__main__':\n    print(qx2_tail_n(([1], 1)))\n"}

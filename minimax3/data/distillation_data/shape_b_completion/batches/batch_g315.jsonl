@@ -1,0 +1,15 @@
+{"text": "# qx_gauss :: (0.0, 1.0)\nimport random\ndef qx_gauss(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gauss((0.0, 1.0)))\n"}
+{"text": "# qx_gauss :: (10.0, 2.0)\nimport random\ndef qx_gauss(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gauss((10.0, 2.0)))\n"}
+{"text": "# qx_gauss :: (-1, 0.1)\nimport random\ndef qx_gauss(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gauss((-1, 0.1)))\n"}
+{"text": "# qx_gauss :: (100, 15)\nimport random\ndef qx_gauss(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gauss((100, 15)))\n"}
+{"text": "# qx_gauss :: (0, 0.01)\nimport random\ndef qx_gauss(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gauss((0, 0.01)))\n"}
+{"text": "# qx_normal_dist :: (0.0, 1.0)\nimport random\ndef qx_normal_dist(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_normal_dist((0.0, 1.0)))\n"}
+{"text": "# qx_normal_dist :: (10.0, 2.0)\nimport random\ndef qx_normal_dist(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_normal_dist((10.0, 2.0)))\n"}
+{"text": "# qx_normal_dist :: (-1, 0.1)\nimport random\ndef qx_normal_dist(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_normal_dist((-1, 0.1)))\n"}
+{"text": "# qx_normal_dist :: (100, 15)\nimport random\ndef qx_normal_dist(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_normal_dist((100, 15)))\n"}
+{"text": "# qx_normal_dist :: (0, 0.01)\nimport random\ndef qx_normal_dist(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_normal_dist((0, 0.01)))\n"}
+{"text": "# qx_gaussian :: (0.0, 1.0)\nimport random\ndef qx_gaussian(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gaussian((0.0, 1.0)))\n"}
+{"text": "# qx_gaussian :: (10.0, 2.0)\nimport random\ndef qx_gaussian(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gaussian((10.0, 2.0)))\n"}
+{"text": "# qx_gaussian :: (-1, 0.1)\nimport random\ndef qx_gaussian(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gaussian((-1, 0.1)))\n"}
+{"text": "# qx_gaussian :: (100, 15)\nimport random\ndef qx_gaussian(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gaussian((100, 15)))\n"}
+{"text": "# qx_gaussian :: (0, 0.01)\nimport random\ndef qx_gaussian(mu, sigma):\n    return random.gauss(mu, sigma)\n\nif __name__ == '__main__':\n    print(qx_gaussian((0, 0.01)))\n"}

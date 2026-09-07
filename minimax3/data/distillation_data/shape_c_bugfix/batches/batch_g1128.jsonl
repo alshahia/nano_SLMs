@@ -1,0 +1,1 @@
+{"instruction": "Show the `__len__` method in `class_len`. (input: [1, 2, 3])", "response": "class C:\n    def __init__(self, xs):\n        self.xs = xs\n    def __len__(self):\n        return len(self.xs)\n\n# Bug was: `__len__` enables `len(obj)` and truthiness check\n\n# pair: class_len / [1, 2, 3]\n"}

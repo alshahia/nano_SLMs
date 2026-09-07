@@ -1,0 +1,1 @@
+{"instruction": "Show the dangerous `del` of a builtin in `del_list`. (input: 1)", "response": "def del_list():\n    del list\n\n# Bug was: `del list` removes the builtin from the local namespace; this is very rarely what you want\n\n# pair: del_list / 1\n"}

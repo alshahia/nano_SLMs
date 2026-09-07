@@ -1,0 +1,1 @@
+{"instruction": "Show why open without context manager leaks in `read_text`. Input: `'file.txt'`. (input: 'file.txt')", "response": "def read_text(path):\n    f = open(path)\n    data = f.read()\n    f.close()\n    return data\n\n# Bug was: if read() raises, file never closes — use `with open(...) as f:`\n\n# pair: read_text / 'file.txt'\n"}

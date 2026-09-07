@@ -1,0 +1,2 @@
+{"instruction": "Show the set membership test in `set_membership`. (input: {1, 2, 3})", "response": "def set_membership(s, x):\n    result = x in s\n    return result\n\n# Bug was: `in` on a set is O(1); on a list it's O(n). Choose the right container\n\n# pair: set_membership / {1, 2, 3}\n"}
+{"instruction": "Show the set membership test in `set_membership`. (input: 5)", "response": "def set_membership(s, x):\n    result = x in s\n    return result\n\n# Bug was: `in` on a set is O(1); on a list it's O(n). Choose the right container\n\n# pair: set_membership / 5\n"}

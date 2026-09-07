@@ -1,0 +1,1 @@
+{"instruction": "Show dataclass + __slots__ in `dcs`. (input: '')", "response": "from dataclasses import dataclass\n@dataclass\nclass dcs:\n    __slots__ = ('x',)\n    x: int\n\n# Bug was: dataclass + __slots__ works only if every field is in slots — easy to miss\n\n# pair: dcs / ''\n"}

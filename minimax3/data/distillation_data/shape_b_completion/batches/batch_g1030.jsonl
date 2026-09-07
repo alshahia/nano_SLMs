@@ -1,0 +1,15 @@
+{"text": "# qx2_lcm :: (4, 6)\nimport math\n\ndef qx2_lcm(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm((4, 6)))\n"}
+{"text": "# qx2_lcm :: (3, 5)\nimport math\n\ndef qx2_lcm(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm((3, 5)))\n"}
+{"text": "# qx2_lcm :: (12, 18)\nimport math\n\ndef qx2_lcm(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm((12, 18)))\n"}
+{"text": "# qx2_lcm :: (7, 7)\nimport math\n\ndef qx2_lcm(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm((7, 7)))\n"}
+{"text": "# qx2_lcm :: (1, 1)\nimport math\n\ndef qx2_lcm(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm((1, 1)))\n"}
+{"text": "# qx2_least_common :: (4, 6)\nimport math\n\ndef qx2_least_common(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_least_common((4, 6)))\n"}
+{"text": "# qx2_least_common :: (3, 5)\nimport math\n\ndef qx2_least_common(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_least_common((3, 5)))\n"}
+{"text": "# qx2_least_common :: (12, 18)\nimport math\n\ndef qx2_least_common(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_least_common((12, 18)))\n"}
+{"text": "# qx2_least_common :: (7, 7)\nimport math\n\ndef qx2_least_common(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_least_common((7, 7)))\n"}
+{"text": "# qx2_least_common :: (1, 1)\nimport math\n\ndef qx2_least_common(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_least_common((1, 1)))\n"}
+{"text": "# qx2_lcm_pair :: (4, 6)\nimport math\n\ndef qx2_lcm_pair(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm_pair((4, 6)))\n"}
+{"text": "# qx2_lcm_pair :: (3, 5)\nimport math\n\ndef qx2_lcm_pair(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm_pair((3, 5)))\n"}
+{"text": "# qx2_lcm_pair :: (12, 18)\nimport math\n\ndef qx2_lcm_pair(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm_pair((12, 18)))\n"}
+{"text": "# qx2_lcm_pair :: (7, 7)\nimport math\n\ndef qx2_lcm_pair(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm_pair((7, 7)))\n"}
+{"text": "# qx2_lcm_pair :: (1, 1)\nimport math\n\ndef qx2_lcm_pair(a, b):\n    return math.lcm(a, b)\n\nif __name__ == '__main__':\n    print(qx2_lcm_pair((1, 1)))\n"}

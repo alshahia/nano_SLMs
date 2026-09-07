@@ -1,0 +1,1 @@
+{"instruction": "Show the float sum precision issue in `sum_prec`. (input: [0.1] * 10)", "response": "def sum_prec(xs):\n    return sum(xs)\n\n# Bug was: `sum` of floats accumulates error; use `math.fsum` for precision\n\n# pair: sum_prec / [0.1] * 10\n"}

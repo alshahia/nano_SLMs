@@ -1,0 +1,1 @@
+{"instruction": "Show random for crypto in `token`. (input: '')", "response": "import random\ndef token():\n    return ''.join(random.choices('abcdef0123456789', k=32))\n\n# Bug was: random is predictable — use secrets.token_hex for security tokens\n\n# pair: token / ''\n"}

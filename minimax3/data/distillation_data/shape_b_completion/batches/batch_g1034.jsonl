@@ -1,0 +1,15 @@
+{"text": "# qx2_isfinite :: 1.0\nimport math\n\ndef qx2_isfinite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_isfinite(1.0))\n"}
+{"text": "# qx2_isfinite :: 0.0\nimport math\n\ndef qx2_isfinite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_isfinite(0.0))\n"}
+{"text": "# qx2_isfinite :: float('inf')\nimport math\n\ndef qx2_isfinite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_isfinite(float('inf')))\n"}
+{"text": "# qx2_isfinite :: float('-inf')\nimport math\n\ndef qx2_isfinite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_isfinite(float('-inf')))\n"}
+{"text": "# qx2_isfinite :: float('nan')\nimport math\n\ndef qx2_isfinite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_isfinite(float('nan')))\n"}
+{"text": "# qx2_is_finite :: 1.0\nimport math\n\ndef qx2_is_finite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_is_finite(1.0))\n"}
+{"text": "# qx2_is_finite :: 0.0\nimport math\n\ndef qx2_is_finite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_is_finite(0.0))\n"}
+{"text": "# qx2_is_finite :: float('inf')\nimport math\n\ndef qx2_is_finite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_is_finite(float('inf')))\n"}
+{"text": "# qx2_is_finite :: float('-inf')\nimport math\n\ndef qx2_is_finite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_is_finite(float('-inf')))\n"}
+{"text": "# qx2_is_finite :: float('nan')\nimport math\n\ndef qx2_is_finite(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_is_finite(float('nan')))\n"}
+{"text": "# qx2_finite_check :: 1.0\nimport math\n\ndef qx2_finite_check(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_finite_check(1.0))\n"}
+{"text": "# qx2_finite_check :: 0.0\nimport math\n\ndef qx2_finite_check(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_finite_check(0.0))\n"}
+{"text": "# qx2_finite_check :: float('inf')\nimport math\n\ndef qx2_finite_check(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_finite_check(float('inf')))\n"}
+{"text": "# qx2_finite_check :: float('-inf')\nimport math\n\ndef qx2_finite_check(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_finite_check(float('-inf')))\n"}
+{"text": "# qx2_finite_check :: float('nan')\nimport math\n\ndef qx2_finite_check(x):\n    return math.isfinite(x)\n\nif __name__ == '__main__':\n    print(qx2_finite_check(float('nan')))\n"}

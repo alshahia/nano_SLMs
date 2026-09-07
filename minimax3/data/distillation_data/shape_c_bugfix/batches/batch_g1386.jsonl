@@ -1,0 +1,1 @@
+{"instruction": "Show the chained ternary in `ternary_chain`. (input: 5)", "response": "def ternary_chain(x):\n    return 'big' if x > 10 else 'mid' if x > 0 else 'small'\n\n# Bug was: nested ternaries are valid but hard to read; prefer if/elif/else\n\n# pair: ternary_chain / 5\n"}

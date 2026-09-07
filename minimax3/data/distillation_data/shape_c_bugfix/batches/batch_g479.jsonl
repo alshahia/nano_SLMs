@@ -1,0 +1,1 @@
+{"instruction": "Show missing queue.join in `q`. (input: '')", "response": "import asyncio\nasync def q(producer, consumer):\n    q = asyncio.Queue()\n    await asyncio.gather(producer(q), consumer(q))\n\n# Bug was: queue.join() never called — workers may exit before all items processed\n\n# pair: q / ''\n"}

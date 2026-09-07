@@ -1,0 +1,1 @@
+{"instruction": "Show the deep-copy usage in `deep_copy`. (input: ([1, [2, 3]],))", "response": "import copy\ndef deep_copy(xs):\n    ys = copy.deepcopy(xs)\n    ys[0].append(99)\n    return xs\n\n# Bug was: `deepcopy` is needed for nested structures; this version works correctly\n\n# pair: deep_copy / ([1, [2, 3]],)\n"}

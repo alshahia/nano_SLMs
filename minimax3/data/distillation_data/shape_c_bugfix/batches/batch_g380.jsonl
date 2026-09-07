@@ -1,0 +1,1 @@
+{"instruction": "Show library calling logger directly in `lib_fn`. (input: '')", "response": "import logging\nlogger = logging.getLogger(__name__)\ndef lib_fn():\n    logger.warning('starting')\n    return do_work()\n\n# Bug was: lib configures logging — should only log; the app configures handlers\n\n# pair: lib_fn / ''\n"}

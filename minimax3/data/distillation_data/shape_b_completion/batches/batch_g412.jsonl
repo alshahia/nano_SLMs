@@ -1,0 +1,15 @@
+{"text": "# nth_pentagonal :: 1\ndef nth_pentagonal(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(nth_pentagonal(1))\n"}
+{"text": "# nth_pentagonal :: 2\ndef nth_pentagonal(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(nth_pentagonal(2))\n"}
+{"text": "# nth_pentagonal :: 3\ndef nth_pentagonal(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(nth_pentagonal(3))\n"}
+{"text": "# nth_pentagonal :: 10\ndef nth_pentagonal(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(nth_pentagonal(10))\n"}
+{"text": "# nth_pentagonal :: 100\ndef nth_pentagonal(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(nth_pentagonal(100))\n"}
+{"text": "# pentagonal_number :: 1\ndef pentagonal_number(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(pentagonal_number(1))\n"}
+{"text": "# pentagonal_number :: 2\ndef pentagonal_number(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(pentagonal_number(2))\n"}
+{"text": "# pentagonal_number :: 3\ndef pentagonal_number(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(pentagonal_number(3))\n"}
+{"text": "# pentagonal_number :: 10\ndef pentagonal_number(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(pentagonal_number(10))\n"}
+{"text": "# pentagonal_number :: 100\ndef pentagonal_number(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(pentagonal_number(100))\n"}
+{"text": "# penta_n :: 1\ndef penta_n(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(penta_n(1))\n"}
+{"text": "# penta_n :: 2\ndef penta_n(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(penta_n(2))\n"}
+{"text": "# penta_n :: 3\ndef penta_n(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(penta_n(3))\n"}
+{"text": "# penta_n :: 10\ndef penta_n(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(penta_n(10))\n"}
+{"text": "# penta_n :: 100\ndef penta_n(n):\n    return n * (3 * n - 1) // 2\n\nif __name__ == '__main__':\n    print(penta_n(100))\n"}

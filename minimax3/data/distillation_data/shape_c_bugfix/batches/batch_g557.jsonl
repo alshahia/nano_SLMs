@@ -1,0 +1,1 @@
+{"instruction": "Show inspect.getmembers trigger in `igm`. Input: `obj`. (input: obj)", "response": "import inspect\ndef igm(o):\n    return inspect.getmembers(o)\n\n# Bug was: getmembers triggers AttributeError for some objects — wrap with try/except\n\n# pair: igm / obj\n"}

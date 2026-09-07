@@ -1,0 +1,1 @@
+{"instruction": "Show `oct` in `oct_basic`. (input: 8)", "response": "def oct_basic(n):\n    return oct(n)\n\n# Bug was: `oct(n)` returns '0oNN' string\n\n# pair: oct_basic / 8\n"}

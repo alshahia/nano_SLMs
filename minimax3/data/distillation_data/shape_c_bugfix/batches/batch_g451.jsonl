@@ -1,0 +1,1 @@
+{"instruction": "Show __eq__ returning int in `cmp`. (input: '')", "response": "class cmp:\n    def __eq__(self, other):\n        return 1\n\n# Bug was: __eq__ should return bool (or coerced to bool) — returning int breaks `not equal` semantics\n\n# pair: cmp / ''\n"}

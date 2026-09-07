@@ -1,0 +1,15 @@
+{"text": "# qx_md5_hex :: 'hello'\nimport hashlib\ndef qx_md5_hex(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_hex('hello'))\n"}
+{"text": "# qx_md5_hex :: ''\nimport hashlib\ndef qx_md5_hex(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_hex(''))\n"}
+{"text": "# qx_md5_hex :: 'Python'\nimport hashlib\ndef qx_md5_hex(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_hex('Python'))\n"}
+{"text": "# qx_md5_hex :: 'café'\nimport hashlib\ndef qx_md5_hex(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_hex('café'))\n"}
+{"text": "# qx_md5_hex :: '1234567890'\nimport hashlib\ndef qx_md5_hex(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_hex('1234567890'))\n"}
+{"text": "# qx_hex_md5 :: 'hello'\nimport hashlib\ndef qx_hex_md5(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_md5('hello'))\n"}
+{"text": "# qx_hex_md5 :: ''\nimport hashlib\ndef qx_hex_md5(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_md5(''))\n"}
+{"text": "# qx_hex_md5 :: 'Python'\nimport hashlib\ndef qx_hex_md5(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_md5('Python'))\n"}
+{"text": "# qx_hex_md5 :: 'café'\nimport hashlib\ndef qx_hex_md5(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_md5('café'))\n"}
+{"text": "# qx_hex_md5 :: '1234567890'\nimport hashlib\ndef qx_hex_md5(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_md5('1234567890'))\n"}
+{"text": "# qx_md5_str :: 'hello'\nimport hashlib\ndef qx_md5_str(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_str('hello'))\n"}
+{"text": "# qx_md5_str :: ''\nimport hashlib\ndef qx_md5_str(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_str(''))\n"}
+{"text": "# qx_md5_str :: 'Python'\nimport hashlib\ndef qx_md5_str(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_str('Python'))\n"}
+{"text": "# qx_md5_str :: 'café'\nimport hashlib\ndef qx_md5_str(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_str('café'))\n"}
+{"text": "# qx_md5_str :: '1234567890'\nimport hashlib\ndef qx_md5_str(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_md5_str('1234567890'))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `uuid.uuid4` in `uuid_basic`. (input: 'hello')", "response": "import uuid\n\ndef uuid_basic():\n    return str(uuid.uuid4())\n\n# Bug was: `uuid4` is random; `uuid1` includes MAC and time\n\n# pair: uuid_basic / 'hello'\n"}

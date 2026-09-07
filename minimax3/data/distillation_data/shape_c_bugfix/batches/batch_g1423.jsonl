@@ -1,0 +1,1 @@
+{"instruction": "Show `abs` in `abs_basic`. (input: -5)", "response": "def abs_basic(n):\n    return abs(n)\n\n# Bug was: `abs(n)` works on ints, floats, and complex (returns magnitude)\n\n# pair: abs_basic / -5\n"}

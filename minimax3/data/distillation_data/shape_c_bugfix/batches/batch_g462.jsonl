@@ -1,0 +1,1 @@
+{"instruction": "Show pydantic v1 config syntax in `model`. (input: '')", "response": "from pydantic import BaseModel\nclass model(BaseModel):\n    name: str\n    Config = {'allow_population_by_field_name': True}\n\n# Bug was: pydantic v1 inner Config class replaced by `model_config = ConfigDict(...)` in v2\n\n# pair: model / ''\n"}

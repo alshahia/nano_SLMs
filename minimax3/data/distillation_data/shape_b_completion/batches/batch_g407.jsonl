@@ -1,0 +1,15 @@
+{"text": "# digit_product :: 0\ndef digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(digit_product(0))\n"}
+{"text": "# digit_product :: 9\ndef digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(digit_product(9))\n"}
+{"text": "# digit_product :: 123\ndef digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(digit_product(123))\n"}
+{"text": "# digit_product :: 999\ndef digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(digit_product(999))\n"}
+{"text": "# digit_product :: 111\ndef digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(digit_product(111))\n"}
+{"text": "# product_digits :: 0\ndef product_digits(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(product_digits(0))\n"}
+{"text": "# product_digits :: 9\ndef product_digits(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(product_digits(9))\n"}
+{"text": "# product_digits :: 123\ndef product_digits(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(product_digits(123))\n"}
+{"text": "# product_digits :: 999\ndef product_digits(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(product_digits(999))\n"}
+{"text": "# product_digits :: 111\ndef product_digits(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(product_digits(111))\n"}
+{"text": "# n_digit_product :: 0\ndef n_digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(n_digit_product(0))\n"}
+{"text": "# n_digit_product :: 9\ndef n_digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(n_digit_product(9))\n"}
+{"text": "# n_digit_product :: 123\ndef n_digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(n_digit_product(123))\n"}
+{"text": "# n_digit_product :: 999\ndef n_digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(n_digit_product(999))\n"}
+{"text": "# n_digit_product :: 111\ndef n_digit_product(n):\n    p = 1\n    for c in str(abs(n)):\n        p *= int(c)\n    return p\n\nif __name__ == '__main__':\n    print(n_digit_product(111))\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx_tax_inclusive :: (100.0, 0.05)\ndef qx_tax_inclusive(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_tax_inclusive((100.0, 0.05)))\n"}
+{"text": "# qx_tax_inclusive :: (50.0, 0.1)\ndef qx_tax_inclusive(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_tax_inclusive((50.0, 0.1)))\n"}
+{"text": "# qx_tax_inclusive :: (1000.0, 0.0825)\ndef qx_tax_inclusive(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_tax_inclusive((1000.0, 0.0825)))\n"}
+{"text": "# qx_tax_inclusive :: (99.99, 0.0)\ndef qx_tax_inclusive(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_tax_inclusive((99.99, 0.0)))\n"}
+{"text": "# qx_tax_inclusive :: (200, 0.07)\ndef qx_tax_inclusive(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_tax_inclusive((200, 0.07)))\n"}
+{"text": "# qx_total_with_tax :: (100.0, 0.05)\ndef qx_total_with_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_total_with_tax((100.0, 0.05)))\n"}
+{"text": "# qx_total_with_tax :: (50.0, 0.1)\ndef qx_total_with_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_total_with_tax((50.0, 0.1)))\n"}
+{"text": "# qx_total_with_tax :: (1000.0, 0.0825)\ndef qx_total_with_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_total_with_tax((1000.0, 0.0825)))\n"}
+{"text": "# qx_total_with_tax :: (99.99, 0.0)\ndef qx_total_with_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_total_with_tax((99.99, 0.0)))\n"}
+{"text": "# qx_total_with_tax :: (200, 0.07)\ndef qx_total_with_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_total_with_tax((200, 0.07)))\n"}
+{"text": "# qx_after_tax :: (100.0, 0.05)\ndef qx_after_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_after_tax((100.0, 0.05)))\n"}
+{"text": "# qx_after_tax :: (50.0, 0.1)\ndef qx_after_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_after_tax((50.0, 0.1)))\n"}
+{"text": "# qx_after_tax :: (1000.0, 0.0825)\ndef qx_after_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_after_tax((1000.0, 0.0825)))\n"}
+{"text": "# qx_after_tax :: (99.99, 0.0)\ndef qx_after_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_after_tax((99.99, 0.0)))\n"}
+{"text": "# qx_after_tax :: (200, 0.07)\ndef qx_after_tax(price, rate):\n    return price * (1 + rate)\n\nif __name__ == '__main__':\n    print(qx_after_tax((200, 0.07)))\n"}

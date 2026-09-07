@@ -1,0 +1,1 @@
+{"instruction": "Show `sys.exit` in `sys_exit`. (input: 0)", "response": "import sys\n\ndef sys_exit(code):\n    sys.exit(code)\n\n# Bug was: `sys.exit` raises SystemExit; non-zero code indicates error\n\n# pair: sys_exit / 0\n"}

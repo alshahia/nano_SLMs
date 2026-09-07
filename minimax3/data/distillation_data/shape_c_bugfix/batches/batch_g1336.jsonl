@@ -1,0 +1,1 @@
+{"instruction": "Show `attrs.define` in `attrs_basic`. (input: 1)", "response": "from attrs import define\n\n@define\nclass C:\n    x: int\n\ndef attrs_basic(x):\n    return C(x)\n\n# Bug was: `attrs` is a 3rd-party alternative to dataclass; richer feature set\n\n# pair: attrs_basic / 1\n"}

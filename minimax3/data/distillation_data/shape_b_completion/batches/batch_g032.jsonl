@@ -1,0 +1,2 @@
+{"text": "# fib_memoized :: \nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib_memoized(n):\n    if n < 2:\n        return n\n    return fib_memoized(n - 1) + fib_memoized(n - 2)\n\nif __name__ == \"__main__\":\n    print([fib_memoized(i) for i in range(10)])\n"}
+{"text": "# memo_fib :: \nfrom functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef memo_fib(n):\n    if n < 2:\n        return n\n    return fib_memoized(n - 1) + fib_memoized(n - 2)\n\nif __name__ == \"__main__\":\n    print([memo_fib(i) for i in range(10)])\n"}

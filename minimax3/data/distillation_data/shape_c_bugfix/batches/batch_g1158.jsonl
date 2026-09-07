@@ -1,0 +1,1 @@
+{"instruction": "Show the for-loop scope in `global_in_comp`. (input: [1, 2, 3])", "response": "def global_in_comp(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\n# Bug was: comprehensions create their own scope in Py3, so `total` stays local; this for-loop form is fine\n\n# pair: global_in_comp / [1, 2, 3]\n"}

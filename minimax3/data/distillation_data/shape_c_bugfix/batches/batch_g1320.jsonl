@@ -1,0 +1,1 @@
+{"instruction": "Show the modern generic syntax in `typing_new`. (input: [1, 2, 3])", "response": "def typing_new(xs: list[int]) -> int:\n    return sum(xs)\n\n# Bug was: `list[int]` works in Python 3.9+; older code uses `typing.List[int]`\n\n# pair: typing_new / [1, 2, 3]\n"}

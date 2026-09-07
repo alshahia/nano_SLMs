@@ -1,0 +1,1 @@
+{"instruction": "Show contextvars copy semantics in `cv`. (input: '')", "response": "import contextvars\ndef cv(ctx):\n    return ctx.run(lambda: ctx.get())\n\n# Bug was: Context.run copies context — but ContextVar.set on the copy doesn't propagate back\n\n# pair: cv / ''\n"}

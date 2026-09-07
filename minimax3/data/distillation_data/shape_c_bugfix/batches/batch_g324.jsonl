@@ -1,0 +1,1 @@
+{"instruction": "Show missing @abstractmethod in `shape`. (input: '')", "response": "from abc import ABC, abstractmethod\nclass shape(ABC):\n    def area(self):\n        return 0\n\n# Bug was: missing @abstractmethod on `area` — subclasses won't be forced to implement it\n\n# pair: shape / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `struct.calcsize` in `struct_size`. (input: 'hhl')", "response": "import struct\n\ndef struct_size(fmt):\n    return struct.calcsize(fmt)\n\n# Bug was: `calcsize` returns the byte size of the format string\n\n# pair: struct_size / 'hhl'\n"}

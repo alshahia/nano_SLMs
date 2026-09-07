@@ -1,0 +1,15 @@
+{"text": "# qx2_unique_count :: [1, 2, 2, 3]\nfrom collections import Counter\n\ndef qx2_unique_count(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_unique_count([1, 2, 2, 3]))\n"}
+{"text": "# qx2_unique_count :: [1, 1, 1]\nfrom collections import Counter\n\ndef qx2_unique_count(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_unique_count([1, 1, 1]))\n"}
+{"text": "# qx2_unique_count :: []\nfrom collections import Counter\n\ndef qx2_unique_count(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_unique_count([]))\n"}
+{"text": "# qx2_unique_count :: [1, 2, 3]\nfrom collections import Counter\n\ndef qx2_unique_count(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_unique_count([1, 2, 3]))\n"}
+{"text": "# qx2_unique_count :: [True, False]\nfrom collections import Counter\n\ndef qx2_unique_count(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_unique_count([True, False]))\n"}
+{"text": "# qx2_n_unique :: [1, 2, 2, 3]\nfrom collections import Counter\n\ndef qx2_n_unique(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_unique([1, 2, 2, 3]))\n"}
+{"text": "# qx2_n_unique :: [1, 1, 1]\nfrom collections import Counter\n\ndef qx2_n_unique(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_unique([1, 1, 1]))\n"}
+{"text": "# qx2_n_unique :: []\nfrom collections import Counter\n\ndef qx2_n_unique(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_unique([]))\n"}
+{"text": "# qx2_n_unique :: [1, 2, 3]\nfrom collections import Counter\n\ndef qx2_n_unique(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_unique([1, 2, 3]))\n"}
+{"text": "# qx2_n_unique :: [True, False]\nfrom collections import Counter\n\ndef qx2_n_unique(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_unique([True, False]))\n"}
+{"text": "# qx2_count_uniq :: [1, 2, 2, 3]\nfrom collections import Counter\n\ndef qx2_count_uniq(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_uniq([1, 2, 2, 3]))\n"}
+{"text": "# qx2_count_uniq :: [1, 1, 1]\nfrom collections import Counter\n\ndef qx2_count_uniq(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_uniq([1, 1, 1]))\n"}
+{"text": "# qx2_count_uniq :: []\nfrom collections import Counter\n\ndef qx2_count_uniq(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_uniq([]))\n"}
+{"text": "# qx2_count_uniq :: [1, 2, 3]\nfrom collections import Counter\n\ndef qx2_count_uniq(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_uniq([1, 2, 3]))\n"}
+{"text": "# qx2_count_uniq :: [True, False]\nfrom collections import Counter\n\ndef qx2_count_uniq(xs):\n    return len(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_uniq([True, False]))\n"}

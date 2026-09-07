@@ -1,0 +1,1 @@
+{"instruction": "Show missing return in `find_max_v1`. Input: `[1, 5, 3]`. (input: [1, 5, 3])", "response": "def find_max_v1(xs):\n    for x in xs:\n        if x > 10:\n            return x\n\n# Bug was: implicit None return when no x > 10 — caller crashes on arithmetic\n\n# pair: find_max_v1 / [1, 5, 3]\n"}

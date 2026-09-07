@@ -1,0 +1,15 @@
+{"text": "# qx_urlenc :: 'hello world'\nimport urllib.parse\ndef qx_urlenc(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_urlenc('hello world'))\n"}
+{"text": "# qx_urlenc :: 'a&b=c'\nimport urllib.parse\ndef qx_urlenc(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_urlenc('a&b=c'))\n"}
+{"text": "# qx_urlenc :: 'café'\nimport urllib.parse\ndef qx_urlenc(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_urlenc('café'))\n"}
+{"text": "# qx_urlenc :: '/path/with spaces'\nimport urllib.parse\ndef qx_urlenc(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_urlenc('/path/with spaces'))\n"}
+{"text": "# qx_urlenc :: '100%'\nimport urllib.parse\ndef qx_urlenc(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_urlenc('100%'))\n"}
+{"text": "# qx_url_encode :: 'hello world'\nimport urllib.parse\ndef qx_url_encode(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_url_encode('hello world'))\n"}
+{"text": "# qx_url_encode :: 'a&b=c'\nimport urllib.parse\ndef qx_url_encode(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_url_encode('a&b=c'))\n"}
+{"text": "# qx_url_encode :: 'café'\nimport urllib.parse\ndef qx_url_encode(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_url_encode('café'))\n"}
+{"text": "# qx_url_encode :: '/path/with spaces'\nimport urllib.parse\ndef qx_url_encode(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_url_encode('/path/with spaces'))\n"}
+{"text": "# qx_url_encode :: '100%'\nimport urllib.parse\ndef qx_url_encode(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_url_encode('100%'))\n"}
+{"text": "# qx_quote_safe :: 'hello world'\nimport urllib.parse\ndef qx_quote_safe(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_quote_safe('hello world'))\n"}
+{"text": "# qx_quote_safe :: 'a&b=c'\nimport urllib.parse\ndef qx_quote_safe(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_quote_safe('a&b=c'))\n"}
+{"text": "# qx_quote_safe :: 'café'\nimport urllib.parse\ndef qx_quote_safe(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_quote_safe('café'))\n"}
+{"text": "# qx_quote_safe :: '/path/with spaces'\nimport urllib.parse\ndef qx_quote_safe(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_quote_safe('/path/with spaces'))\n"}
+{"text": "# qx_quote_safe :: '100%'\nimport urllib.parse\ndef qx_quote_safe(s):\n    return urllib.parse.quote(s, safe='')\n\nif __name__ == '__main__':\n    print(qx_quote_safe('100%'))\n"}

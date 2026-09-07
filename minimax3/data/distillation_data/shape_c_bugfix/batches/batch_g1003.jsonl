@@ -1,0 +1,1 @@
+{"instruction": "Show the redundant `return` at the end of `show_msg`. (input: 'hello')", "response": "def show_msg(msg):\n    print(msg)\n    return\n\n# Bug was: stray `return None` at the end is implicit anyway; explicit `return` is fine but `print` doesn't need it\n\n# pair: show_msg / 'hello'\n"}

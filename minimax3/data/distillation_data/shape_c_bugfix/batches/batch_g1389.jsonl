@@ -1,0 +1,1 @@
+{"instruction": "Show the unary-minus precedence in `unary_minus`. (input: 5)", "response": "def unary_minus(x):\n    return -x * 2\n\n# Bug was: unary `-` binds tighter than `*`; result is `(-x) * 2`\n\n# pair: unary_minus / 5\n"}

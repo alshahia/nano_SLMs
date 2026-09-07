@@ -1,0 +1,1 @@
+{"instruction": "Show the lambda-as-default-argument pattern in `callable_def_arg`. (input: [1, 2, 3])", "response": "def callable_def_arg(xs, key=lambda x: x):\n    return sorted(xs, key=key)\n\n# Bug was: default lambda is fine (immutable); defaults are evaluated once at def time\n\n# pair: callable_def_arg / [1, 2, 3]\n"}

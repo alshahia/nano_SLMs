@@ -1,0 +1,1 @@
+{"instruction": "Show Flag misuse in `fl`. Input: `1`. (input: 1)", "response": "from enum import Flag, auto\nclass fl(Flag):\n    A = 1\n    B = auto()\n\n# Bug was: Flag members must be powers of 2 — auto() does this but explicit values don't\n\n# pair: fl / 1\n"}

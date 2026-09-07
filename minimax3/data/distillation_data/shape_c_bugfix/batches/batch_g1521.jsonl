@@ -1,0 +1,2 @@
+{"instruction": "Show `os.path.join` in `os_path_join2`. (input: 'a')", "response": "import os\n\ndef os_path_join2(*parts):\n    return os.path.join(*parts)\n\n# Bug was: `os.path.join` is the legacy API; `pathlib.Path` is modern\n\n# pair: os_path_join2 / 'a'\n"}
+{"instruction": "Show `os.path.join` in `os_path_join2`. (input: 'b')", "response": "import os\n\ndef os_path_join2(*parts):\n    return os.path.join(*parts)\n\n# Bug was: `os.path.join` is the legacy API; `pathlib.Path` is modern\n\n# pair: os_path_join2 / 'b'\n"}

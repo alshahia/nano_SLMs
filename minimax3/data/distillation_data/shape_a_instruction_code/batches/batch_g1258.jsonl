@@ -1,0 +1,64 @@
+{"instruction": "Write a function `is_str_lower(s)` returning True iff `s` is all lowercase. Example: `is_str_lower('hello')`.", "response": "def is_str_lower(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_str_lower(s)` returning True iff `s` is all lowercase. Example: `is_str_lower('Hello')`.", "response": "def is_str_lower(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_str_lower(s)` returning True iff `s` is all lowercase. Example: `is_str_lower('')`.", "response": "def is_str_lower(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_str_lower(s)` returning True iff `s` is all lowercase. Example: `is_str_lower('abc')`.", "response": "def is_str_lower(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_str_lower(s)` returning True iff `s` is all lowercase. Example: `is_str_lower('abc123')`.", "response": "def is_str_lower(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_str_lower(s)` returning True iff `s` is all lowercase. Example: `is_str_lower(' ')`.", "response": "def is_str_lower(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_str_lower(s)` returning True iff `s` is all lowercase. Example: `is_str_lower('a b c')`.", "response": "def is_str_lower(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_str_lower(s)` returning True iff `s` is all lowercase. Example: `is_str_lower('ALL CAPS')`.", "response": "def is_str_lower(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_lower_v2(s)` returning True iff `s` is all lowercase. Example: `is_lower_v2('hello')`.", "response": "def is_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_lower_v2(s)` returning True iff `s` is all lowercase. Example: `is_lower_v2('Hello')`.", "response": "def is_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_lower_v2(s)` returning True iff `s` is all lowercase. Example: `is_lower_v2('')`.", "response": "def is_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_lower_v2(s)` returning True iff `s` is all lowercase. Example: `is_lower_v2('abc')`.", "response": "def is_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_lower_v2(s)` returning True iff `s` is all lowercase. Example: `is_lower_v2('abc123')`.", "response": "def is_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_lower_v2(s)` returning True iff `s` is all lowercase. Example: `is_lower_v2(' ')`.", "response": "def is_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_lower_v2(s)` returning True iff `s` is all lowercase. Example: `is_lower_v2('a b c')`.", "response": "def is_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `is_lower_v2(s)` returning True iff `s` is all lowercase. Example: `is_lower_v2('ALL CAPS')`.", "response": "def is_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `all_lower_v2(s)` returning True iff `s` is all lowercase. Example: `all_lower_v2('hello')`.", "response": "def all_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `all_lower_v2(s)` returning True iff `s` is all lowercase. Example: `all_lower_v2('Hello')`.", "response": "def all_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `all_lower_v2(s)` returning True iff `s` is all lowercase. Example: `all_lower_v2('')`.", "response": "def all_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `all_lower_v2(s)` returning True iff `s` is all lowercase. Example: `all_lower_v2('abc')`.", "response": "def all_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `all_lower_v2(s)` returning True iff `s` is all lowercase. Example: `all_lower_v2('abc123')`.", "response": "def all_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `all_lower_v2(s)` returning True iff `s` is all lowercase. Example: `all_lower_v2(' ')`.", "response": "def all_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `all_lower_v2(s)` returning True iff `s` is all lowercase. Example: `all_lower_v2('a b c')`.", "response": "def all_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `all_lower_v2(s)` returning True iff `s` is all lowercase. Example: `all_lower_v2('ALL CAPS')`.", "response": "def all_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_check_v2(s)` returning True iff `s` is all lowercase. Example: `lower_check_v2('hello')`.", "response": "def lower_check_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_check_v2(s)` returning True iff `s` is all lowercase. Example: `lower_check_v2('Hello')`.", "response": "def lower_check_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_check_v2(s)` returning True iff `s` is all lowercase. Example: `lower_check_v2('')`.", "response": "def lower_check_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_check_v2(s)` returning True iff `s` is all lowercase. Example: `lower_check_v2('abc')`.", "response": "def lower_check_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_check_v2(s)` returning True iff `s` is all lowercase. Example: `lower_check_v2('abc123')`.", "response": "def lower_check_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_check_v2(s)` returning True iff `s` is all lowercase. Example: `lower_check_v2(' ')`.", "response": "def lower_check_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_check_v2(s)` returning True iff `s` is all lowercase. Example: `lower_check_v2('a b c')`.", "response": "def lower_check_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_check_v2(s)` returning True iff `s` is all lowercase. Example: `lower_check_v2('ALL CAPS')`.", "response": "def lower_check_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2('hello')`.", "response": "def islower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2('Hello')`.", "response": "def islower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2('')`.", "response": "def islower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2('abc')`.", "response": "def islower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2('abc123')`.", "response": "def islower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2(' ')`.", "response": "def islower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2('a b c')`.", "response": "def islower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2('ALL CAPS')`.", "response": "def islower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `check_lower_v2(s)` returning True iff `s` is all lowercase. Example: `check_lower_v2('hello')`.", "response": "def check_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `check_lower_v2(s)` returning True iff `s` is all lowercase. Example: `check_lower_v2('Hello')`.", "response": "def check_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `check_lower_v2(s)` returning True iff `s` is all lowercase. Example: `check_lower_v2('')`.", "response": "def check_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `check_lower_v2(s)` returning True iff `s` is all lowercase. Example: `check_lower_v2('abc')`.", "response": "def check_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `check_lower_v2(s)` returning True iff `s` is all lowercase. Example: `check_lower_v2('abc123')`.", "response": "def check_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `check_lower_v2(s)` returning True iff `s` is all lowercase. Example: `check_lower_v2(' ')`.", "response": "def check_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `check_lower_v2(s)` returning True iff `s` is all lowercase. Example: `check_lower_v2('a b c')`.", "response": "def check_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `check_lower_v2(s)` returning True iff `s` is all lowercase. Example: `check_lower_v2('ALL CAPS')`.", "response": "def check_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_p(s)` returning True iff `s` is all lowercase. Example: `lower_p('hello')`.", "response": "def lower_p(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_p(s)` returning True iff `s` is all lowercase. Example: `lower_p('Hello')`.", "response": "def lower_p(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_p(s)` returning True iff `s` is all lowercase. Example: `lower_p('')`.", "response": "def lower_p(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_p(s)` returning True iff `s` is all lowercase. Example: `lower_p('abc')`.", "response": "def lower_p(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_p(s)` returning True iff `s` is all lowercase. Example: `lower_p('abc123')`.", "response": "def lower_p(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_p(s)` returning True iff `s` is all lowercase. Example: `lower_p(' ')`.", "response": "def lower_p(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_p(s)` returning True iff `s` is all lowercase. Example: `lower_p('a b c')`.", "response": "def lower_p(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `lower_p(s)` returning True iff `s` is all lowercase. Example: `lower_p('ALL CAPS')`.", "response": "def lower_p(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2('hello')`.", "response": "def do_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2('Hello')`.", "response": "def do_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2('')`.", "response": "def do_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2('abc')`.", "response": "def do_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2('abc123')`.", "response": "def do_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2(' ')`.", "response": "def do_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2('a b c')`.", "response": "def do_lower_v2(s):\n    return s.islower()\n"}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2('ALL CAPS')`.", "response": "def do_lower_v2(s):\n    return s.islower()\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show struct format choice in `sp`. Input: `'I', 42`. (input: 'I', 42)", "response": "import struct\ndef sp(fmt, n):\n    return struct.pack(fmt, n)\n\n# Bug was: struct format 'I' is unsigned int (4 bytes); 'i' is signed — pick correctly\n\n# pair: sp / 'I', 42\n"}

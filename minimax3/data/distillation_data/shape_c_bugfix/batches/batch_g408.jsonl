@@ -1,0 +1,1 @@
+{"instruction": "Show GeneratorExit handling in `gc`. (input: '')", "response": "def gc():\n    try:\n        yield 1\n    except GeneratorExit:\n        print('closed')\n\n# Bug was: GeneratorExit must NOT return a value — re-raise or return\n\n# pair: gc / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the default `enumerate` start in `enum_default`. (input: ['a', 'b', 'c'])", "response": "def enum_default(xs):\n    for i, x in enumerate(xs):\n        print(i, x)\n\n# Bug was: default start is 0; use `start=1` for 1-based\n\n# pair: enum_default / ['a', 'b', 'c']\n"}

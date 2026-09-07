@@ -1,0 +1,15 @@
+{"text": "# qx2_find_sub :: ('hello world', 'world')\ndef qx2_find_sub(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_sub(('hello world', 'world')))\n"}
+{"text": "# qx2_find_sub :: ('hello', 'xyz')\ndef qx2_find_sub(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_sub(('hello', 'xyz')))\n"}
+{"text": "# qx2_find_sub :: ('', 'a')\ndef qx2_find_sub(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_sub(('', 'a')))\n"}
+{"text": "# qx2_find_sub :: ('hello', 'lo')\ndef qx2_find_sub(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_sub(('hello', 'lo')))\n"}
+{"text": "# qx2_find_sub :: ('hello', 'hello')\ndef qx2_find_sub(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_sub(('hello', 'hello')))\n"}
+{"text": "# qx2_str_find :: ('hello world', 'world')\ndef qx2_str_find(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_str_find(('hello world', 'world')))\n"}
+{"text": "# qx2_str_find :: ('hello', 'xyz')\ndef qx2_str_find(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_str_find(('hello', 'xyz')))\n"}
+{"text": "# qx2_str_find :: ('', 'a')\ndef qx2_str_find(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_str_find(('', 'a')))\n"}
+{"text": "# qx2_str_find :: ('hello', 'lo')\ndef qx2_str_find(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_str_find(('hello', 'lo')))\n"}
+{"text": "# qx2_str_find :: ('hello', 'hello')\ndef qx2_str_find(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_str_find(('hello', 'hello')))\n"}
+{"text": "# qx2_find_in :: ('hello world', 'world')\ndef qx2_find_in(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_in(('hello world', 'world')))\n"}
+{"text": "# qx2_find_in :: ('hello', 'xyz')\ndef qx2_find_in(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_in(('hello', 'xyz')))\n"}
+{"text": "# qx2_find_in :: ('', 'a')\ndef qx2_find_in(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_in(('', 'a')))\n"}
+{"text": "# qx2_find_in :: ('hello', 'lo')\ndef qx2_find_in(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_in(('hello', 'lo')))\n"}
+{"text": "# qx2_find_in :: ('hello', 'hello')\ndef qx2_find_in(s, sub):\n    return s.find(sub)\n\nif __name__ == '__main__':\n    print(qx2_find_in(('hello', 'hello')))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "The function `leaky_walrus` leaks walrus-assigned n. Make the assignment visible outside the if. (input: demo)", "response": "def leaky_walrus(xs):\n    if (n := len(xs)) > 0:\n        return n\n    return 0\n    # Bug was: walrus assigns in the if's scope; n is not visible after the if block returns.\n\n# pair: leaky_walrus / demo\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show asyncio lock leak in `alock`. (input: '')", "response": "import asyncio\nlock = asyncio.Lock()\nasync def alock():\n    await lock.acquire()\n    await do_work()\n\n# Bug was: missing release on exception — use `async with lock:`\n\n# pair: alock / ''\n"}

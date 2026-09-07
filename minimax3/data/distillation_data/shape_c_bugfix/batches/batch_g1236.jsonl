@@ -1,0 +1,2 @@
+{"instruction": "Show `textwrap.fill` in `str_fill`. (input: 'hello world')", "response": "import textwrap\n\ndef str_fill(s, width):\n    return textwrap.fill(s, width=width)\n\n# Bug was: `fill` wraps text and joins with newlines\n\n# pair: str_fill / 'hello world'\n"}
+{"instruction": "Show `textwrap.fill` in `str_fill`. (input: 5)", "response": "import textwrap\n\ndef str_fill(s, width):\n    return textwrap.fill(s, width=width)\n\n# Bug was: `fill` wraps text and joins with newlines\n\n# pair: str_fill / 5\n"}

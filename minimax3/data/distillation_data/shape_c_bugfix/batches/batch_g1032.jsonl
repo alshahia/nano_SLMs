@@ -1,0 +1,1 @@
+{"instruction": "Show the missing deep-copy in `deep_copy_missing`. (input: ([1, [2, 3]],))", "response": "def deep_copy_missing(xs):\n    ys = list(xs)\n    ys[0].append(99)\n    return xs\n\n# Bug was: nested list mutation leaks; use `copy.deepcopy(xs)`\n\n# pair: deep_copy_missing / ([1, [2, 3]],)\n"}

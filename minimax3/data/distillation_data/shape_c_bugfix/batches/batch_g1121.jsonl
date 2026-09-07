@@ -1,0 +1,1 @@
+{"instruction": "Show the format truncation in `format_spec_trunc`. (input: 'hello world')", "response": "def format_spec_trunc(s):\n    return f'{s:.5}'\n\n# Bug was: `.5` truncates strings to 5 chars; works for floats as decimals\n\n# pair: format_spec_trunc / 'hello world'\n"}

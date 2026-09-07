@@ -1,0 +1,15 @@
+{"text": "# qx2_now_iso :: '_'\nfrom datetime import date\n\ndef qx2_now_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_now_iso())\n"}
+{"text": "# qx2_now_iso :: '*'\nfrom datetime import date\n\ndef qx2_now_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_now_iso())\n"}
+{"text": "# qx2_now_iso :: '#'\nfrom datetime import date\n\ndef qx2_now_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_now_iso())\n"}
+{"text": "# qx2_now_iso :: '?'\nfrom datetime import date\n\ndef qx2_now_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_now_iso())\n"}
+{"text": "# qx2_now_iso :: '!'\nfrom datetime import date\n\ndef qx2_now_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_now_iso())\n"}
+{"text": "# qx2_today_iso :: '_'\nfrom datetime import date\n\ndef qx2_today_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_today_iso())\n"}
+{"text": "# qx2_today_iso :: '*'\nfrom datetime import date\n\ndef qx2_today_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_today_iso())\n"}
+{"text": "# qx2_today_iso :: '#'\nfrom datetime import date\n\ndef qx2_today_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_today_iso())\n"}
+{"text": "# qx2_today_iso :: '?'\nfrom datetime import date\n\ndef qx2_today_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_today_iso())\n"}
+{"text": "# qx2_today_iso :: '!'\nfrom datetime import date\n\ndef qx2_today_iso():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_today_iso())\n"}
+{"text": "# qx2_iso_today :: '_'\nfrom datetime import date\n\ndef qx2_iso_today():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_iso_today())\n"}
+{"text": "# qx2_iso_today :: '*'\nfrom datetime import date\n\ndef qx2_iso_today():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_iso_today())\n"}
+{"text": "# qx2_iso_today :: '#'\nfrom datetime import date\n\ndef qx2_iso_today():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_iso_today())\n"}
+{"text": "# qx2_iso_today :: '?'\nfrom datetime import date\n\ndef qx2_iso_today():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_iso_today())\n"}
+{"text": "# qx2_iso_today :: '!'\nfrom datetime import date\n\ndef qx2_iso_today():\n    return date.today().isoformat()\n\nif __name__ == '__main__':\n    print(qx2_iso_today())\n"}

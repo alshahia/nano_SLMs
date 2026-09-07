@@ -1,0 +1,1 @@
+{"instruction": "Show the safe slicing in `slice_oob`. (input: [1, 2, 3, 4, 5])", "response": "def slice_oob(xs, i, j):\n    return xs[i:j]\n\n# Bug was: slicing past the end is safe and just clips to the end\n\n# pair: slice_oob / [1, 2, 3, 4, 5]\n"}

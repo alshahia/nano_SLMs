@@ -1,0 +1,1 @@
+{"instruction": "Show map-as-list (Py2 thinking) in `mapped`. Input: `[1, 2, 3]`. (input: [1, 2, 3])", "response": "def mapped(xs):\n    m = map(str, xs)\n    return m[0]\n\n# Bug was: Py3 map returns iterator — no indexing. Wrap in list()\n\n# pair: mapped / [1, 2, 3]\n"}

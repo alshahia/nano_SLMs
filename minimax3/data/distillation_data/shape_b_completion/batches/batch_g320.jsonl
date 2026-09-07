@@ -1,0 +1,15 @@
+{"text": "# qx_factorial_iter :: 0\ndef qx_factorial_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_factorial_iter(0))\n"}
+{"text": "# qx_factorial_iter :: 1\ndef qx_factorial_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_factorial_iter(1))\n"}
+{"text": "# qx_factorial_iter :: 5\ndef qx_factorial_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_factorial_iter(5))\n"}
+{"text": "# qx_factorial_iter :: 10\ndef qx_factorial_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_factorial_iter(10))\n"}
+{"text": "# qx_factorial_iter :: 12\ndef qx_factorial_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_factorial_iter(12))\n"}
+{"text": "# qx_fact_iter :: 0\ndef qx_fact_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_fact_iter(0))\n"}
+{"text": "# qx_fact_iter :: 1\ndef qx_fact_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_fact_iter(1))\n"}
+{"text": "# qx_fact_iter :: 5\ndef qx_fact_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_fact_iter(5))\n"}
+{"text": "# qx_fact_iter :: 10\ndef qx_fact_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_fact_iter(10))\n"}
+{"text": "# qx_fact_iter :: 12\ndef qx_fact_iter(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_fact_iter(12))\n"}
+{"text": "# qx_iter_fact :: 0\ndef qx_iter_fact(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_iter_fact(0))\n"}
+{"text": "# qx_iter_fact :: 1\ndef qx_iter_fact(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_iter_fact(1))\n"}
+{"text": "# qx_iter_fact :: 5\ndef qx_iter_fact(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_iter_fact(5))\n"}
+{"text": "# qx_iter_fact :: 10\ndef qx_iter_fact(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_iter_fact(10))\n"}
+{"text": "# qx_iter_fact :: 12\ndef qx_iter_fact(n):\n    out = 1\n    for i in range(2, n + 1): out *= i\n    return out\n\nif __name__ == '__main__':\n    print(qx_iter_fact(12))\n"}

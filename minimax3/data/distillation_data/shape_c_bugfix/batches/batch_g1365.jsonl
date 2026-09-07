@@ -1,0 +1,1 @@
+{"instruction": "Show the late-binding closure in `closure_late_loop`. (input: 3)", "response": "def closure_late_loop():\n    funcs = []\n    for i in range(3):\n        funcs.append(lambda: i)\n    return funcs\n\n# Bug was: all closures see the same `i` (the final value); use default-arg trick\n\n# pair: closure_late_loop / 3\n"}

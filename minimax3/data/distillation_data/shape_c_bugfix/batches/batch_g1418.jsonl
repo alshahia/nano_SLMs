@@ -1,0 +1,1 @@
+{"instruction": "Show `ascii()` in `ascii_basic`. (input: 'café')", "response": "def ascii_basic(x):\n    return ascii(x)\n\n# Bug was: `ascii` escapes non-ASCII chars; useful for debugging\n\n# pair: ascii_basic / 'café'\n"}

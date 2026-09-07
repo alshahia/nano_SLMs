@@ -1,0 +1,1 @@
+{"instruction": "Show `unicodedata.category` in `ud_cat`. (input: 'A')", "response": "import unicodedata\n\ndef ud_cat(c):\n    return unicodedata.category(c)\n\n# Bug was: `category` returns the Unicode general category (e.g. 'Lu' for uppercase letter)\n\n# pair: ud_cat / 'A'\n"}

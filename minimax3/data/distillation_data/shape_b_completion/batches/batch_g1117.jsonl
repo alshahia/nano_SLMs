@@ -1,0 +1,15 @@
+{"text": "# qx2_sha1 :: 'hello'\nimport hashlib\n\ndef qx2_sha1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1('hello'))\n"}
+{"text": "# qx2_sha1 :: ''\nimport hashlib\n\ndef qx2_sha1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1(''))\n"}
+{"text": "# qx2_sha1 :: 'Python'\nimport hashlib\n\ndef qx2_sha1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1('Python'))\n"}
+{"text": "# qx2_sha1 :: 'café'\nimport hashlib\n\ndef qx2_sha1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1('café'))\n"}
+{"text": "# qx2_sha1 :: 'data'\nimport hashlib\n\ndef qx2_sha1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1('data'))\n"}
+{"text": "# qx2_sha1_hex :: 'hello'\nimport hashlib\n\ndef qx2_sha1_hex(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1_hex('hello'))\n"}
+{"text": "# qx2_sha1_hex :: ''\nimport hashlib\n\ndef qx2_sha1_hex(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1_hex(''))\n"}
+{"text": "# qx2_sha1_hex :: 'Python'\nimport hashlib\n\ndef qx2_sha1_hex(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1_hex('Python'))\n"}
+{"text": "# qx2_sha1_hex :: 'café'\nimport hashlib\n\ndef qx2_sha1_hex(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1_hex('café'))\n"}
+{"text": "# qx2_sha1_hex :: 'data'\nimport hashlib\n\ndef qx2_sha1_hex(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha1_hex('data'))\n"}
+{"text": "# qx2_hash1 :: 'hello'\nimport hashlib\n\ndef qx2_hash1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash1('hello'))\n"}
+{"text": "# qx2_hash1 :: ''\nimport hashlib\n\ndef qx2_hash1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash1(''))\n"}
+{"text": "# qx2_hash1 :: 'Python'\nimport hashlib\n\ndef qx2_hash1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash1('Python'))\n"}
+{"text": "# qx2_hash1 :: 'café'\nimport hashlib\n\ndef qx2_hash1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash1('café'))\n"}
+{"text": "# qx2_hash1 :: 'data'\nimport hashlib\n\ndef qx2_hash1(s):\n    return hashlib.sha1(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash1('data'))\n"}

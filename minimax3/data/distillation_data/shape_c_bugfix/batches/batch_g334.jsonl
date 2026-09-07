@@ -1,0 +1,1 @@
+{"instruction": "Show TypedDict total semantics in `user_dict`. (input: '')", "response": "from typing import TypedDict\nclass user_dict(TypedDict):\n    name: str\n    age: int\n    email: str\n\n# Bug was: TypedDict with no total= arg defaults to total=True — missing keys allowed at runtime\n\n# pair: user_dict / ''\n"}

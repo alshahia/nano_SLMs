@@ -1,0 +1,1 @@
+{"instruction": "Show walrus in lambda (Py<3.8). (input: '')", "response": "add = lambda x: (y := x * 2) + y\n\n# Bug was: walrus := not allowed in lambda expression bodies (until Py3.8+ had it but it errors at runtime)\n\n# pair: wl / ''\n"}

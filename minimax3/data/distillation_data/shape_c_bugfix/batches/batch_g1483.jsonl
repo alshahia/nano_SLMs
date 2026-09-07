@@ -1,0 +1,1 @@
+{"instruction": "Show the tuple destructuring on return in `destruct_ret`. (input: 5)", "response": "def destruct_ret():\n    return 1, 2, 3\n\ndef caller():\n    a, b, c = destruct_ret()\n    return a, b, c\n\n# Bug was: tuple destructuring is the natural receiver\n\n# pair: destruct_ret / 5\n"}

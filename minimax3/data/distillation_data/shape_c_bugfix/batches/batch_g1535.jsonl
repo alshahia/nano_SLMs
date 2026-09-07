@@ -1,0 +1,2 @@
+{"instruction": "Show `calendar.monthrange` in `cal_monthrange`. (input: 2024)", "response": "import calendar\n\ndef cal_monthrange(year, month):\n    return calendar.monthrange(year, month)\n\n# Bug was: `monthrange` returns (weekday_of_first, num_days)\n\n# pair: cal_monthrange / 2024\n"}
+{"instruction": "Show `calendar.monthrange` in `cal_monthrange`. (input: 2)", "response": "import calendar\n\ndef cal_monthrange(year, month):\n    return calendar.monthrange(year, month)\n\n# Bug was: `monthrange` returns (weekday_of_first, num_days)\n\n# pair: cal_monthrange / 2\n"}

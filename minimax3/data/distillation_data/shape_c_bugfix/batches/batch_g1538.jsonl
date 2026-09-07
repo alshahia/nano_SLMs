@@ -1,0 +1,1 @@
+{"instruction": "Show `tomllib.loads` in `tomllib_basic`. (input: 'key = \"value\"')", "response": "import tomllib\n\ndef tomllib_basic(s):\n    return tomllib.loads(s)\n\n# Bug was: `tomllib` (Py3.11+) parses TOML; `tomli` for older versions\n\n# pair: tomllib_basic / 'key = \"value\"'\n"}

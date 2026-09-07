@@ -1,0 +1,1 @@
+{"instruction": "Show `tomli.loads` in `tomli_basic`. (input: 'k = 1')", "response": "import tomli\n\ndef tomli_basic(s):\n    return tomli.loads(s)\n\n# Bug was: `tomli` is the 3rd-party backport of tomllib for Py<3.11\n\n# pair: tomli_basic / 'k = 1'\n"}

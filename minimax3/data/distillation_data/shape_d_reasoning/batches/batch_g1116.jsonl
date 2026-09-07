@@ -1,0 +1,3 @@
+{"instruction": "Max depth of [3, 9, 20, null, null, 15, 7] -> 3.", "response": "Recursive: 1 + max(left_depth, right_depth).\n\n```python\ndef max_depth(root):\n    if not root:\n        return 0\n    return 1 + max(max_depth(root.left), max_depth(root.right))\n```\n"}
+{"instruction": "Empty tree -> 0.", "response": "Recursive: 1 + max(left_depth, right_depth).\n\n```python\ndef max_depth(root):\n    if not root:\n        return 0\n    return 1 + max(max_depth(root.left), max_depth(root.right))\n```\n"}
+{"instruction": "Single node -> 1.", "response": "Recursive: 1 + max(left_depth, right_depth).\n\n```python\ndef max_depth(root):\n    if not root:\n        return 0\n    return 1 + max(max_depth(root.left), max_depth(root.right))\n```\n"}

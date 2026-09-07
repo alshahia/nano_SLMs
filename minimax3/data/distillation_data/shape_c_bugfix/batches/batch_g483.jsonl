@@ -1,0 +1,1 @@
+{"instruction": "Show TaskGroup misuse in `tg`. (input: '')", "response": "import asyncio\nasync def tg(coros):\n    tg = asyncio.TaskGroup()\n    for c in coros: tg.create_task(c)\n    return await tg\n\n# Bug was: missing `async with` — TaskGroup requires async with to manage exit\n\n# pair: tg / ''\n"}

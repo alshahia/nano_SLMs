@@ -1,0 +1,1 @@
+{"instruction": "Show `base64.urlsafe_b64decode` in `b64_urlsafe`. (input: 'aGVsbG8=')", "response": "import base64\n\ndef b64_urlsafe(s):\n    return base64.urlsafe_b64decode(s).decode()\n\n# Bug was: `urlsafe_b64decode` uses URL-safe alphabet (-_ instead of +/)\n\n# pair: b64_urlsafe / 'aGVsbG8='\n"}

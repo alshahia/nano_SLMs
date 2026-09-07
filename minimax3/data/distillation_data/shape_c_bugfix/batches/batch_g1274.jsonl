@@ -1,0 +1,1 @@
+{"instruction": "Show `memoryview` in `mv_basic`. (input: b'hello')", "response": "def mv_basic(data):\n    return memoryview(data)\n\n# Bug was: `memoryview` is a zero-copy view into binary data; useful for slicing large buffers\n\n# pair: mv_basic / b'hello'\n"}

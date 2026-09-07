@@ -1,0 +1,1 @@
+{"instruction": "Show `is` for lists in `is_same`. Input: `[], []`. (input: [], [])", "response": "def is_same(a, b):\n    return a is b\n\n# Bug was: two empty lists are never `is` — use == for value equality\n\n# pair: is_same / [], []\n"}

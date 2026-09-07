@@ -1,0 +1,15 @@
+{"text": "# count_consonants :: 'hello'\ndef count_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_consonants('hello'))\n"}
+{"text": "# count_consonants :: 'HELLO'\ndef count_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_consonants('HELLO'))\n"}
+{"text": "# count_consonants :: ''\ndef count_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_consonants(''))\n"}
+{"text": "# count_consonants :: 'aeiou'\ndef count_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_consonants('aeiou'))\n"}
+{"text": "# count_consonants :: 'Python programming'\ndef count_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_consonants('Python programming'))\n"}
+{"text": "# consonant_count :: 'hello'\ndef consonant_count(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(consonant_count('hello'))\n"}
+{"text": "# consonant_count :: 'HELLO'\ndef consonant_count(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(consonant_count('HELLO'))\n"}
+{"text": "# consonant_count :: ''\ndef consonant_count(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(consonant_count(''))\n"}
+{"text": "# consonant_count :: 'aeiou'\ndef consonant_count(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(consonant_count('aeiou'))\n"}
+{"text": "# consonant_count :: 'Python programming'\ndef consonant_count(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(consonant_count('Python programming'))\n"}
+{"text": "# n_consonants :: 'hello'\ndef n_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_consonants('hello'))\n"}
+{"text": "# n_consonants :: 'HELLO'\ndef n_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_consonants('HELLO'))\n"}
+{"text": "# n_consonants :: ''\ndef n_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_consonants(''))\n"}
+{"text": "# n_consonants :: 'aeiou'\ndef n_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_consonants('aeiou'))\n"}
+{"text": "# n_consonants :: 'Python programming'\ndef n_consonants(s):\n    return sum(1 for c in s.lower() if c.isalpha() and c not in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_consonants('Python programming'))\n"}

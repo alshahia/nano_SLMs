@@ -1,0 +1,1 @@
+{"instruction": "Show `os.path.dirname` in `os_path_dirname`. (input: '/a/b/c.txt')", "response": "import os.path\n\ndef os_path_dirname(p):\n    return os.path.dirname(p)\n\n# Bug was: `os.path.dirname` returns the parent dir\n\n# pair: os_path_dirname / '/a/b/c.txt'\n"}

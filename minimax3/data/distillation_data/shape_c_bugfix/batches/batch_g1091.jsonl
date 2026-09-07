@@ -1,0 +1,1 @@
+{"instruction": "Show the exception-swallow-by-pass in `exc_swallow`. (input: 'data')", "response": "def exc_swallow(s):\n    try:\n        return int(s)\n    except Exception:\n        pass\n\n# Bug was: implicit `return None` after pass; caller can't distinguish 'invalid' from 'valid 0'\n\n# pair: exc_swallow / 'data'\n"}

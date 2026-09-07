@@ -1,0 +1,2 @@
+{"instruction": "Show the substring `in` check in `str_membership`. (input: 'hello world')", "response": "def str_membership(s, sub):\n    return sub in s\n\n# Bug was: substring check `in` is O(n*m); acceptable for small strings\n\n# pair: str_membership / 'hello world'\n"}
+{"instruction": "Show the substring `in` check in `str_membership`. (input: 'world')", "response": "def str_membership(s, sub):\n    return sub in s\n\n# Bug was: substring check `in` is O(n*m); acceptable for small strings\n\n# pair: str_membership / 'world'\n"}

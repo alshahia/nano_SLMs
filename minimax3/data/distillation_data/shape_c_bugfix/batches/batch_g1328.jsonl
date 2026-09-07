@@ -1,0 +1,1 @@
+{"instruction": "Show `Never` in `typing_never`. (input: )", "response": "from typing import Never\n\ndef typing_never() -> Never:\n    raise SystemExit(1)\n\n# Bug was: `Never` is Py3.11+ synonym for `NoReturn`; also used in type narrowing\n\n# pair: typing_never /\n"}

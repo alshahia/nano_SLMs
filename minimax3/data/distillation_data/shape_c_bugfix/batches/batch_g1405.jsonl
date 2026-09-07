@@ -1,0 +1,1 @@
+{"instruction": "Show `dict.get` with default in `getattr_default`. (input: 'key')", "response": "def getattr_default(d, k):\n    return d.get(k, 'default')\n\n# Bug was: `dict.get(k, default)` returns the default if `k` is missing\n\n# pair: getattr_default / 'key'\n"}

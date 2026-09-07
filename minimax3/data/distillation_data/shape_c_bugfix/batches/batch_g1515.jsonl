@@ -1,0 +1,1 @@
+{"instruction": "Show `os.environ.get` in `os_environ`. (input: 'HOME')", "response": "import os\n\ndef os_environ(name):\n    return os.environ.get(name)\n\n# Bug was: `os.environ` is a dict-like mapping of environment variables\n\n# pair: os_environ / 'HOME'\n"}

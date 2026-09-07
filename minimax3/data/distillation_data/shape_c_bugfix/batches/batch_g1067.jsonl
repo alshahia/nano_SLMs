@@ -1,0 +1,1 @@
+{"instruction": "Show the empty-list `any` returns False in `any_empty`. (input: [])", "response": "def any_empty(xs):\n    return any(xs)\n\n# Bug was: `any([])` returns False; `all([])` returns True\n\n# pair: any_empty / []\n"}

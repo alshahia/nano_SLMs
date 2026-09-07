@@ -1,0 +1,1 @@
+{"instruction": "Show weakref to int in `weakint`. (input: '')", "response": "import weakref\ndef weakint():\n    return weakref.ref(42)\n\n# Bug was: weakref.ref only works on class instances, not builtins — TypeError\n\n# pair: weakint / ''\n"}

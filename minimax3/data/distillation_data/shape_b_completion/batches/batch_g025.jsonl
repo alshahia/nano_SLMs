@@ -1,0 +1,15 @@
+{"text": "# sum_list :: [1, 2, 3, 4, 5]\ndef sum_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_list([1, 2, 3, 4, 5]))\n"}
+{"text": "# sum_list :: []\ndef sum_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_list([]))\n"}
+{"text": "# sum_list :: [42]\ndef sum_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_list([42]))\n"}
+{"text": "# sum_list :: [-1, -2, -3]\ndef sum_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_list([-1, -2, -3]))\n"}
+{"text": "# sum_list :: [1.5, 2.5, 3.0]\ndef sum_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_list([1.5, 2.5, 3.0]))\n"}
+{"text": "# list_sum :: [1, 2, 3, 4, 5]\ndef list_sum(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(list_sum([1, 2, 3, 4, 5]))\n"}
+{"text": "# list_sum :: []\ndef list_sum(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(list_sum([]))\n"}
+{"text": "# list_sum :: [42]\ndef list_sum(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(list_sum([42]))\n"}
+{"text": "# list_sum :: [-1, -2, -3]\ndef list_sum(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(list_sum([-1, -2, -3]))\n"}
+{"text": "# list_sum :: [1.5, 2.5, 3.0]\ndef list_sum(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(list_sum([1.5, 2.5, 3.0]))\n"}
+{"text": "# sum_of_list :: [1, 2, 3, 4, 5]\ndef sum_of_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_of_list([1, 2, 3, 4, 5]))\n"}
+{"text": "# sum_of_list :: []\ndef sum_of_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_of_list([]))\n"}
+{"text": "# sum_of_list :: [42]\ndef sum_of_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_of_list([42]))\n"}
+{"text": "# sum_of_list :: [-1, -2, -3]\ndef sum_of_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_of_list([-1, -2, -3]))\n"}
+{"text": "# sum_of_list :: [1.5, 2.5, 3.0]\ndef sum_of_list(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\nif __name__ == \"__main__\":\n    print(sum_of_list([1.5, 2.5, 3.0]))\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_factorial :: 0\nimport math\n\ndef qx2_factorial(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_factorial(0))\n"}
+{"text": "# qx2_factorial :: 1\nimport math\n\ndef qx2_factorial(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_factorial(1))\n"}
+{"text": "# qx2_factorial :: 5\nimport math\n\ndef qx2_factorial(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_factorial(5))\n"}
+{"text": "# qx2_factorial :: 10\nimport math\n\ndef qx2_factorial(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_factorial(10))\n"}
+{"text": "# qx2_factorial :: 12\nimport math\n\ndef qx2_factorial(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_factorial(12))\n"}
+{"text": "# qx2_fact :: 0\nimport math\n\ndef qx2_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_fact(0))\n"}
+{"text": "# qx2_fact :: 1\nimport math\n\ndef qx2_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_fact(1))\n"}
+{"text": "# qx2_fact :: 5\nimport math\n\ndef qx2_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_fact(5))\n"}
+{"text": "# qx2_fact :: 10\nimport math\n\ndef qx2_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_fact(10))\n"}
+{"text": "# qx2_fact :: 12\nimport math\n\ndef qx2_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_fact(12))\n"}
+{"text": "# qx2_n_fact :: 0\nimport math\n\ndef qx2_n_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_n_fact(0))\n"}
+{"text": "# qx2_n_fact :: 1\nimport math\n\ndef qx2_n_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_n_fact(1))\n"}
+{"text": "# qx2_n_fact :: 5\nimport math\n\ndef qx2_n_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_n_fact(5))\n"}
+{"text": "# qx2_n_fact :: 10\nimport math\n\ndef qx2_n_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_n_fact(10))\n"}
+{"text": "# qx2_n_fact :: 12\nimport math\n\ndef qx2_n_fact(n):\n    return math.factorial(n)\n\nif __name__ == '__main__':\n    print(qx2_n_fact(12))\n"}

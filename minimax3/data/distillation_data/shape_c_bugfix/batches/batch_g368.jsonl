@@ -1,0 +1,1 @@
+{"instruction": "Show missing defaultdict in `group`. Input: `[('a', 1), ('b', 2), ('a', 3)]`. (input: [('a', 1), ('b', 2), ('a', 3)])", "response": "def group(pairs):\n    out = {}\n    for k, v in pairs:\n        out[k].append(v)\n    return out\n\n# Bug was: KeyError on first insert — use defaultdict(list) or setdefault\n\n# pair: group / [('a', 1), ('b', 2), ('a', 3)]\n"}

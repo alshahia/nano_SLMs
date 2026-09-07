@@ -1,0 +1,15 @@
+{"text": "# qx_clamp_int :: (5, 0, 10)\ndef qx_clamp_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_int((5, 0, 10)))\n"}
+{"text": "# qx_clamp_int :: (15, 0, 10)\ndef qx_clamp_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_int((15, 0, 10)))\n"}
+{"text": "# qx_clamp_int :: (-5, 0, 10)\ndef qx_clamp_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_int((-5, 0, 10)))\n"}
+{"text": "# qx_clamp_int :: (0, 0, 10)\ndef qx_clamp_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_int((0, 0, 10)))\n"}
+{"text": "# qx_clamp_int :: (10, 0, 10)\ndef qx_clamp_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_int((10, 0, 10)))\n"}
+{"text": "# qx_qx_clip_int :: (5, 0, 10)\ndef qx_qx_clip_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_int((5, 0, 10)))\n"}
+{"text": "# qx_qx_clip_int :: (15, 0, 10)\ndef qx_qx_clip_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_int((15, 0, 10)))\n"}
+{"text": "# qx_qx_clip_int :: (-5, 0, 10)\ndef qx_qx_clip_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_int((-5, 0, 10)))\n"}
+{"text": "# qx_qx_clip_int :: (0, 0, 10)\ndef qx_qx_clip_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_int((0, 0, 10)))\n"}
+{"text": "# qx_qx_clip_int :: (10, 0, 10)\ndef qx_qx_clip_int(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_int((10, 0, 10)))\n"}
+{"text": "# qx_qx_int_clamp :: (5, 0, 10)\ndef qx_qx_int_clamp(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_int_clamp((5, 0, 10)))\n"}
+{"text": "# qx_qx_int_clamp :: (15, 0, 10)\ndef qx_qx_int_clamp(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_int_clamp((15, 0, 10)))\n"}
+{"text": "# qx_qx_int_clamp :: (-5, 0, 10)\ndef qx_qx_int_clamp(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_int_clamp((-5, 0, 10)))\n"}
+{"text": "# qx_qx_int_clamp :: (0, 0, 10)\ndef qx_qx_int_clamp(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_int_clamp((0, 0, 10)))\n"}
+{"text": "# qx_qx_int_clamp :: (10, 0, 10)\ndef qx_qx_int_clamp(x, lo, hi):\n    return max(lo, min(hi, int(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_int_clamp((10, 0, 10)))\n"}

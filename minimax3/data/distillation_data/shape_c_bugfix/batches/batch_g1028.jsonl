@@ -1,0 +1,1 @@
+{"instruction": "Show the dict-aliasing mutation in `dict_alias`. (input: ({'a': 1},))", "response": "def dict_alias(d):\n    e = d\n    e['b'] = 2\n    return d\n\n# Bug was: dicts alias the same way lists do; `e = d` doesn't copy\n\n# pair: dict_alias / ({'a': 1},)\n"}

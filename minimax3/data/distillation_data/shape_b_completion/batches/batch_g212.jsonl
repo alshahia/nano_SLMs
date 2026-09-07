@@ -1,0 +1,15 @@
+{"text": "# csv_split :: 'a,b,c'\ndef csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(csv_split('a,b,c'))\n"}
+{"text": "# csv_split :: 'one,two'\ndef csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(csv_split('one,two'))\n"}
+{"text": "# csv_split :: 'hello,world,foo,bar'\ndef csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(csv_split('hello,world,foo,bar'))\n"}
+{"text": "# csv_split :: ''\ndef csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(csv_split(''))\n"}
+{"text": "# csv_split :: 'no,comma'\ndef csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(csv_split('no,comma'))\n"}
+{"text": "# naive_csv_split :: 'a,b,c'\ndef naive_csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(naive_csv_split('a,b,c'))\n"}
+{"text": "# naive_csv_split :: 'one,two'\ndef naive_csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(naive_csv_split('one,two'))\n"}
+{"text": "# naive_csv_split :: 'hello,world,foo,bar'\ndef naive_csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(naive_csv_split('hello,world,foo,bar'))\n"}
+{"text": "# naive_csv_split :: ''\ndef naive_csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(naive_csv_split(''))\n"}
+{"text": "# naive_csv_split :: 'no,comma'\ndef naive_csv_split(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(naive_csv_split('no,comma'))\n"}
+{"text": "# split_csv_line :: 'a,b,c'\ndef split_csv_line(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(split_csv_line('a,b,c'))\n"}
+{"text": "# split_csv_line :: 'one,two'\ndef split_csv_line(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(split_csv_line('one,two'))\n"}
+{"text": "# split_csv_line :: 'hello,world,foo,bar'\ndef split_csv_line(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(split_csv_line('hello,world,foo,bar'))\n"}
+{"text": "# split_csv_line :: ''\ndef split_csv_line(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(split_csv_line(''))\n"}
+{"text": "# split_csv_line :: 'no,comma'\ndef split_csv_line(line):\n    return line.split(',')\n\nif __name__ == '__main__':\n    print(split_csv_line('no,comma'))\n"}

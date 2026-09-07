@@ -1,0 +1,15 @@
+{"text": "# qx2_month_of :: '2026-09-07'\nfrom datetime import date\n\ndef qx2_month_of(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_month_of('2026-09-07'))\n"}
+{"text": "# qx2_month_of :: '2024-02-29'\nfrom datetime import date\n\ndef qx2_month_of(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_month_of('2024-02-29'))\n"}
+{"text": "# qx2_month_of :: '2000-01-01'\nfrom datetime import date\n\ndef qx2_month_of(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_month_of('2000-01-01'))\n"}
+{"text": "# qx2_month_of :: '1999-12-31'\nfrom datetime import date\n\ndef qx2_month_of(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_month_of('1999-12-31'))\n"}
+{"text": "# qx2_month_of :: '2025-07-04'\nfrom datetime import date\n\ndef qx2_month_of(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_month_of('2025-07-04'))\n"}
+{"text": "# qx2_get_month :: '2026-09-07'\nfrom datetime import date\n\ndef qx2_get_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_get_month('2026-09-07'))\n"}
+{"text": "# qx2_get_month :: '2024-02-29'\nfrom datetime import date\n\ndef qx2_get_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_get_month('2024-02-29'))\n"}
+{"text": "# qx2_get_month :: '2000-01-01'\nfrom datetime import date\n\ndef qx2_get_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_get_month('2000-01-01'))\n"}
+{"text": "# qx2_get_month :: '1999-12-31'\nfrom datetime import date\n\ndef qx2_get_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_get_month('1999-12-31'))\n"}
+{"text": "# qx2_get_month :: '2025-07-04'\nfrom datetime import date\n\ndef qx2_get_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_get_month('2025-07-04'))\n"}
+{"text": "# qx2_extract_month :: '2026-09-07'\nfrom datetime import date\n\ndef qx2_extract_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_extract_month('2026-09-07'))\n"}
+{"text": "# qx2_extract_month :: '2024-02-29'\nfrom datetime import date\n\ndef qx2_extract_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_extract_month('2024-02-29'))\n"}
+{"text": "# qx2_extract_month :: '2000-01-01'\nfrom datetime import date\n\ndef qx2_extract_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_extract_month('2000-01-01'))\n"}
+{"text": "# qx2_extract_month :: '1999-12-31'\nfrom datetime import date\n\ndef qx2_extract_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_extract_month('1999-12-31'))\n"}
+{"text": "# qx2_extract_month :: '2025-07-04'\nfrom datetime import date\n\ndef qx2_extract_month(s):\n    return date.fromisoformat(s).month\n\nif __name__ == '__main__':\n    print(qx2_extract_month('2025-07-04'))\n"}

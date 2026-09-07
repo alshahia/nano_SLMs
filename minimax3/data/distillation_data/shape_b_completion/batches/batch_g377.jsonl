@@ -1,0 +1,15 @@
+{"text": "# qx_int_to_bin :: 0\ndef qx_int_to_bin(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_int_to_bin(0))\n"}
+{"text": "# qx_int_to_bin :: 1\ndef qx_int_to_bin(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_int_to_bin(1))\n"}
+{"text": "# qx_int_to_bin :: 5\ndef qx_int_to_bin(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_int_to_bin(5))\n"}
+{"text": "# qx_int_to_bin :: 10\ndef qx_int_to_bin(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_int_to_bin(10))\n"}
+{"text": "# qx_int_to_bin :: 255\ndef qx_int_to_bin(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_int_to_bin(255))\n"}
+{"text": "# qx_qx_to_binary_qx :: 0\ndef qx_qx_to_binary_qx(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_to_binary_qx(0))\n"}
+{"text": "# qx_qx_to_binary_qx :: 1\ndef qx_qx_to_binary_qx(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_to_binary_qx(1))\n"}
+{"text": "# qx_qx_to_binary_qx :: 5\ndef qx_qx_to_binary_qx(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_to_binary_qx(5))\n"}
+{"text": "# qx_qx_to_binary_qx :: 10\ndef qx_qx_to_binary_qx(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_to_binary_qx(10))\n"}
+{"text": "# qx_qx_to_binary_qx :: 255\ndef qx_qx_to_binary_qx(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_to_binary_qx(255))\n"}
+{"text": "# qx_qx_int_to_binstr :: 0\ndef qx_qx_int_to_binstr(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_int_to_binstr(0))\n"}
+{"text": "# qx_qx_int_to_binstr :: 1\ndef qx_qx_int_to_binstr(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_int_to_binstr(1))\n"}
+{"text": "# qx_qx_int_to_binstr :: 5\ndef qx_qx_int_to_binstr(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_int_to_binstr(5))\n"}
+{"text": "# qx_qx_int_to_binstr :: 10\ndef qx_qx_int_to_binstr(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_int_to_binstr(10))\n"}
+{"text": "# qx_qx_int_to_binstr :: 255\ndef qx_qx_int_to_binstr(n):\n    if n == 0: return '0'\n    return bin(n)[2:] if n > 0 else '-' + bin(-n)[2:]\n\nif __name__ == '__main__':\n    print(qx_qx_int_to_binstr(255))\n"}

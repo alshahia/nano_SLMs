@@ -1,0 +1,1 @@
+{"instruction": "Show the regex pattern typo in `re_typo`. (input: 'hello world')", "response": "import re\ndef re_typo(s):\n    return re.match('helo', s) is not None\n\n# Bug was: regex `helo` won't match `hello`; typo in the pattern\n\n# pair: re_typo / 'hello world'\n"}

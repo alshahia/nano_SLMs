@@ -1,0 +1,1 @@
+{"instruction": "Show `random.seed` in `rand_seed`. (input: 42)", "response": "import random\n\ndef rand_seed(seed):\n    random.seed(seed)\n    return random.randint(0, 100)\n\n# Bug was: `random.seed` makes results reproducible\n\n# pair: rand_seed / 42\n"}

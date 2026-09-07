@@ -1,0 +1,1 @@
+{"instruction": "Show the dataclass field with default factory in `dc_field_def`. (input: 5)", "response": "from dataclasses import dataclass, field\n\n@dataclass\nclass C:\n    items: list = field(default_factory=list)\n\n# Bug was: mutable defaults need `field(default_factory=...)` not `=[]`\n\n# pair: dc_field_def / 5\n"}

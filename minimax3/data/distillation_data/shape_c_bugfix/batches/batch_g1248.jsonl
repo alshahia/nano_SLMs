@@ -1,0 +1,1 @@
+{"instruction": "Show `secrets.token_urlsafe` in `sc_urlsafe`. (input: 16)", "response": "import secrets\n\ndef sc_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\n# Bug was: `token_urlsafe` returns a URL-safe random string\n\n# pair: sc_urlsafe / 16\n"}

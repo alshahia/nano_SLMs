@@ -1,0 +1,15 @@
+{"text": "# qx2_abspath :: '.'\nimport os\n\ndef qx2_abspath(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abspath('.'))\n"}
+{"text": "# qx2_abspath :: 'foo'\nimport os\n\ndef qx2_abspath(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abspath('foo'))\n"}
+{"text": "# qx2_abspath :: './a'\nimport os\n\ndef qx2_abspath(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abspath('./a'))\n"}
+{"text": "# qx2_abspath :: '/tmp'\nimport os\n\ndef qx2_abspath(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abspath('/tmp'))\n"}
+{"text": "# qx2_abspath :: '..'\nimport os\n\ndef qx2_abspath(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abspath('..'))\n"}
+{"text": "# qx2_absolute :: '.'\nimport os\n\ndef qx2_absolute(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_absolute('.'))\n"}
+{"text": "# qx2_absolute :: 'foo'\nimport os\n\ndef qx2_absolute(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_absolute('foo'))\n"}
+{"text": "# qx2_absolute :: './a'\nimport os\n\ndef qx2_absolute(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_absolute('./a'))\n"}
+{"text": "# qx2_absolute :: '/tmp'\nimport os\n\ndef qx2_absolute(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_absolute('/tmp'))\n"}
+{"text": "# qx2_absolute :: '..'\nimport os\n\ndef qx2_absolute(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_absolute('..'))\n"}
+{"text": "# qx2_abs_path :: '.'\nimport os\n\ndef qx2_abs_path(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abs_path('.'))\n"}
+{"text": "# qx2_abs_path :: 'foo'\nimport os\n\ndef qx2_abs_path(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abs_path('foo'))\n"}
+{"text": "# qx2_abs_path :: './a'\nimport os\n\ndef qx2_abs_path(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abs_path('./a'))\n"}
+{"text": "# qx2_abs_path :: '/tmp'\nimport os\n\ndef qx2_abs_path(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abs_path('/tmp'))\n"}
+{"text": "# qx2_abs_path :: '..'\nimport os\n\ndef qx2_abs_path(p):\n    return os.path.abspath(p)\n\nif __name__ == '__main__':\n    print(qx2_abs_path('..'))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show inspect.ismethod bound vs unbound in `im`. Input: `obj.method`. (input: obj.method)", "response": "import inspect\ndef im(m):\n    return inspect.ismethod(m)\n\n# Bug was: bound vs unbound method semantics changed in Py3 — ismethod only true for bound\n\n# pair: im / obj.method\n"}

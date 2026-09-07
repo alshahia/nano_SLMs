@@ -1,0 +1,1 @@
+{"instruction": "Show `unicodedata.name` in `ud_name`. (input: 'A')", "response": "import unicodedata\n\ndef ud_name(c):\n    return unicodedata.name(c)\n\n# Bug was: `unicodedata.name` returns the Unicode name for a character\n\n# pair: ud_name / 'A'\n"}

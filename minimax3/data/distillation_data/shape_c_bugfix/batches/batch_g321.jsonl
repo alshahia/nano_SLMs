@@ -1,0 +1,1 @@
+{"instruction": "Show `try-else` semantic confusion in `process`. (input: [1, 2, 3])", "response": "def process(xs):\n    for x in xs:\n        try:\n            do(x)\n        except Exception:\n            continue\n    else:\n        print('all good')\n\n# Bug was: `else` on try runs when no exception — not what most people expect\n\n# pair: process / [1, 2, 3]\n"}

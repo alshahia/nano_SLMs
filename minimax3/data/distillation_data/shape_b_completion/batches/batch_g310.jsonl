@@ -1,0 +1,15 @@
+{"text": "# qx_token_urlsafe :: 16\nimport secrets\ndef qx_token_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_token_urlsafe(16))\n"}
+{"text": "# qx_token_urlsafe :: 8\nimport secrets\ndef qx_token_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_token_urlsafe(8))\n"}
+{"text": "# qx_token_urlsafe :: 32\nimport secrets\ndef qx_token_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_token_urlsafe(32))\n"}
+{"text": "# qx_token_urlsafe :: 1\nimport secrets\ndef qx_token_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_token_urlsafe(1))\n"}
+{"text": "# qx_token_urlsafe :: 64\nimport secrets\ndef qx_token_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_token_urlsafe(64))\n"}
+{"text": "# qx_make_urlsafe :: 16\nimport secrets\ndef qx_make_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_make_urlsafe(16))\n"}
+{"text": "# qx_make_urlsafe :: 8\nimport secrets\ndef qx_make_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_make_urlsafe(8))\n"}
+{"text": "# qx_make_urlsafe :: 32\nimport secrets\ndef qx_make_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_make_urlsafe(32))\n"}
+{"text": "# qx_make_urlsafe :: 1\nimport secrets\ndef qx_make_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_make_urlsafe(1))\n"}
+{"text": "# qx_make_urlsafe :: 64\nimport secrets\ndef qx_make_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_make_urlsafe(64))\n"}
+{"text": "# qx_random_urlsafe :: 16\nimport secrets\ndef qx_random_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_random_urlsafe(16))\n"}
+{"text": "# qx_random_urlsafe :: 8\nimport secrets\ndef qx_random_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_random_urlsafe(8))\n"}
+{"text": "# qx_random_urlsafe :: 32\nimport secrets\ndef qx_random_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_random_urlsafe(32))\n"}
+{"text": "# qx_random_urlsafe :: 1\nimport secrets\ndef qx_random_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_random_urlsafe(1))\n"}
+{"text": "# qx_random_urlsafe :: 64\nimport secrets\ndef qx_random_urlsafe(n):\n    return secrets.token_urlsafe(n)\n\nif __name__ == '__main__':\n    print(qx_random_urlsafe(64))\n"}

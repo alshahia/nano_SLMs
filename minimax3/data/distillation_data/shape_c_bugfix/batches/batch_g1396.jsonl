@@ -1,0 +1,1 @@
+{"instruction": "Show the falsy-int-zero in `truthy_int_zero`. (input: 0)", "response": "def truthy_int_zero(n):\n    if n:\n        return 'truthy'\n    return 'falsy'\n\n# Bug was: 0 is falsy; check explicitly with `== 0` if needed\n\n# pair: truthy_int_zero / 0\n"}

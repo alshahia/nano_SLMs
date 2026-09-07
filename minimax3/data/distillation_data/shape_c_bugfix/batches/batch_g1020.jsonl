@@ -1,0 +1,1 @@
+{"instruction": "Show the bool-vs-int comparison subtlety in `int_bool_cmp`. (input: True)", "response": "def int_bool_cmp(x):\n    return x == 1\n\n# Bug was: `True == 1` but `True is 1` is False; both `is` and `==` differ for bool-vs-int\n\n# pair: int_bool_cmp / True\n"}

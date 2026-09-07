@@ -1,0 +1,1 @@
+{"instruction": "Show `platform.machine` in `plat_machine`. (input: )", "response": "import platform\n\ndef plat_machine():\n    return platform.machine()\n\n# Bug was: `platform.machine()` returns 'x86_64', 'AMD64', etc.\n\n# pair: plat_machine /\n"}

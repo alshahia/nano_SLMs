@@ -1,0 +1,1 @@
+{"instruction": "Show the exhausted-iterator bug in `map_consume`. (input: [1, 2, 3])", "response": "def map_consume(xs):\n    m = map(str, xs)\n    return list(m) + list(m)\n\n# Bug was: `map` returns an iterator; second `list(m)` yields nothing\n\n# pair: map_consume / [1, 2, 3]\n"}

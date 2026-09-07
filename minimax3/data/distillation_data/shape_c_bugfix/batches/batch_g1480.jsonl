@@ -1,0 +1,1 @@
+{"instruction": "Show the safe None-default list in `safe_list_arg`. (input: 1)", "response": "def safe_list_arg(x, items=None):\n    if items is None:\n        items = []\n    items.append(x)\n    return items\n\n# Bug was: this is the canonical fix; `None` defaults are immutable\n\n# pair: safe_list_arg / 1\n"}

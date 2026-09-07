@@ -1,0 +1,1 @@
+{"instruction": "Show decorator-without-wraps in `repeater`. (input: 3)", "response": "def repeater(times):\n    def decorator(func):\n        def wrapper(*args):\n            return [func(*args) for _ in range(times)]\n        return wrapper\n    return decorator\n\n# Bug was: missing @functools.wraps(func) inside wrapper\n\n# pair: repeater / 3\n"}

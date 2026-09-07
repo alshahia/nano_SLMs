@@ -1,0 +1,1 @@
+{"instruction": "Show the format width on strings in `format_spec_width`. (input: 'hi')", "response": "def format_spec_width(s):\n    return f'{s:>10}'\n\n# Bug was: width applies to strings too; right-aligns in 10 chars\n\n# pair: format_spec_width / 'hi'\n"}

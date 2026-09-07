@@ -1,0 +1,1 @@
+{"instruction": "Show `os.remove` in `os_remove`. (input: 'file.txt')", "response": "import os\n\ndef os_remove(p):\n    os.remove(p)\n\n# Bug was: `os.remove` deletes a file; raises if missing\n\n# pair: os_remove / 'file.txt'\n"}

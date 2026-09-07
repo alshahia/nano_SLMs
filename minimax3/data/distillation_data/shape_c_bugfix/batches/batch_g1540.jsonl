@@ -1,0 +1,1 @@
+{"instruction": "Show `tomli_w.dumps` in `tomli_w`. (input: {'k': 1})", "response": "import tomli_w\n\ndef tomli_w(d):\n    return tomli_w.dumps(d)\n\n# Bug was: `tomli_w` is the writer; pairs with `tomli`\n\n# pair: tomli_w / {'k': 1}\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show backslash in f-string in `fmt`. (input: {'a': 1})", "response": "def fmt(d):\n    s = f'key=\\n{d[\"a\"]}'\n    return s\n\n# Bug was: backslash inside f-string expression is a SyntaxError — use outside the expression\n\n# pair: fmt / {'a': 1}\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show why raise <string> is a bug in `check_positive`. (input: -1)", "response": "def check_positive(n):\n    if n < 0:\n        raise 'n must be positive'\n    return n\n\n# Bug was: Python 3 requires `raise ValueError('msg')` — bare strings raise TypeError\n\n# pair: check_positive / -1\n"}

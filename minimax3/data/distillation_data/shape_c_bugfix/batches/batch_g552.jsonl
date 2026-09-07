@@ -1,0 +1,1 @@
+{"instruction": "Show reprlib truncation in `rl`. Input: `list(range(1000))`. (input: list(range(1000)))", "response": "import reprlib\ndef rl(x):\n    return reprlib.repr(x)\n\n# Bug was: reprlib.repr truncates long sequences — fine for logging but lossy for tests\n\n# pair: rl / list(range(1000))\n"}

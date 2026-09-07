@@ -1,0 +1,1 @@
+{"instruction": "Show missing check=True in `run_cmd2`. Input: `'false'`. (input: 'false')", "response": "import subprocess\ndef run_cmd2(cmd):\n    r = subprocess.run(cmd, shell=True)\n    return r.stdout\n\n# Bug was: never checks returncode — failed commands silently return empty stdout\n\n# pair: run_cmd2 / 'false'\n"}

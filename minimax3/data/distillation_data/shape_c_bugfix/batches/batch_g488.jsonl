@@ -1,0 +1,1 @@
+{"instruction": "Show gzip text mode in `gzt`. (input: '')", "response": "import gzip\ndef gzt(path):\n    with gzip.open(path, 'rt') as f:\n        return f.read()\n\n# Bug was: gzip.open in 'rt' mode requires encoding kwarg — defaults to locale\n\n# pair: gzt / ''\n"}

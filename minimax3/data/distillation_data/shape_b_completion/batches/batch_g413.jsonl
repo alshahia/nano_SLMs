@@ -1,0 +1,15 @@
+{"text": "# factorial_digits :: 0\nimport math\ndef factorial_digits(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_digits(0))\n"}
+{"text": "# factorial_digits :: 1\nimport math\ndef factorial_digits(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_digits(1))\n"}
+{"text": "# factorial_digits :: 5\nimport math\ndef factorial_digits(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_digits(5))\n"}
+{"text": "# factorial_digits :: 10\nimport math\ndef factorial_digits(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_digits(10))\n"}
+{"text": "# factorial_digits :: 100\nimport math\ndef factorial_digits(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_digits(100))\n"}
+{"text": "# digits_of_factorial :: 0\nimport math\ndef digits_of_factorial(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(digits_of_factorial(0))\n"}
+{"text": "# digits_of_factorial :: 1\nimport math\ndef digits_of_factorial(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(digits_of_factorial(1))\n"}
+{"text": "# digits_of_factorial :: 5\nimport math\ndef digits_of_factorial(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(digits_of_factorial(5))\n"}
+{"text": "# digits_of_factorial :: 10\nimport math\ndef digits_of_factorial(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(digits_of_factorial(10))\n"}
+{"text": "# digits_of_factorial :: 100\nimport math\ndef digits_of_factorial(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(digits_of_factorial(100))\n"}
+{"text": "# factorial_n_len :: 0\nimport math\ndef factorial_n_len(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_n_len(0))\n"}
+{"text": "# factorial_n_len :: 1\nimport math\ndef factorial_n_len(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_n_len(1))\n"}
+{"text": "# factorial_n_len :: 5\nimport math\ndef factorial_n_len(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_n_len(5))\n"}
+{"text": "# factorial_n_len :: 10\nimport math\ndef factorial_n_len(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_n_len(10))\n"}
+{"text": "# factorial_n_len :: 100\nimport math\ndef factorial_n_len(n):\n    return len(str(math.factorial(n)))\n\nif __name__ == '__main__':\n    print(factorial_n_len(100))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show gettext in library in `gtx`. (input: '')", "response": "import gettext\ngettext.bindtextdomain('myapp', '/locale')\ngettext.textdomain('myapp')\n_ = gettext.gettext\n\n# Bug was: bindtextdomain/textdomain in library affects global state — let app configure\n\n# pair: gtx / ''\n"}

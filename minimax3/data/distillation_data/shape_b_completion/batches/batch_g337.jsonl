@@ -1,0 +1,15 @@
+{"text": "# qx_split_bill :: (100, 4)\ndef qx_split_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_split_bill((100, 4)))\n"}
+{"text": "# qx_split_bill :: (50, 1)\ndef qx_split_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_split_bill((50, 1)))\n"}
+{"text": "# qx_split_bill :: (99.99, 3)\ndef qx_split_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_split_bill((99.99, 3)))\n"}
+{"text": "# qx_split_bill :: (0, 5)\ndef qx_split_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_split_bill((0, 5)))\n"}
+{"text": "# qx_split_bill :: (1000, 10)\ndef qx_split_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_split_bill((1000, 10)))\n"}
+{"text": "# qx_divide_bill :: (100, 4)\ndef qx_divide_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_divide_bill((100, 4)))\n"}
+{"text": "# qx_divide_bill :: (50, 1)\ndef qx_divide_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_divide_bill((50, 1)))\n"}
+{"text": "# qx_divide_bill :: (99.99, 3)\ndef qx_divide_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_divide_bill((99.99, 3)))\n"}
+{"text": "# qx_divide_bill :: (0, 5)\ndef qx_divide_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_divide_bill((0, 5)))\n"}
+{"text": "# qx_divide_bill :: (1000, 10)\ndef qx_divide_bill(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_divide_bill((1000, 10)))\n"}
+{"text": "# qx_bill_per_person :: (100, 4)\ndef qx_bill_per_person(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_bill_per_person((100, 4)))\n"}
+{"text": "# qx_bill_per_person :: (50, 1)\ndef qx_bill_per_person(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_bill_per_person((50, 1)))\n"}
+{"text": "# qx_bill_per_person :: (99.99, 3)\ndef qx_bill_per_person(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_bill_per_person((99.99, 3)))\n"}
+{"text": "# qx_bill_per_person :: (0, 5)\ndef qx_bill_per_person(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_bill_per_person((0, 5)))\n"}
+{"text": "# qx_bill_per_person :: (1000, 10)\ndef qx_bill_per_person(amount, n):\n    return amount / n\n\nif __name__ == '__main__':\n    print(qx_bill_per_person((1000, 10)))\n"}

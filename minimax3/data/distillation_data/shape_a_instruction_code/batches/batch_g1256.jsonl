@@ -1,0 +1,64 @@
+{"instruction": "Write a function `is_str_digit(s)` returning True iff `s` is all digits. Example: `is_str_digit('12345')`.", "response": "def is_str_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_str_digit(s)` returning True iff `s` is all digits. Example: `is_str_digit('12a')`.", "response": "def is_str_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_str_digit(s)` returning True iff `s` is all digits. Example: `is_str_digit('')`.", "response": "def is_str_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_str_digit(s)` returning True iff `s` is all digits. Example: `is_str_digit('0')`.", "response": "def is_str_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_str_digit(s)` returning True iff `s` is all digits. Example: `is_str_digit('  ')`.", "response": "def is_str_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_str_digit(s)` returning True iff `s` is all digits. Example: `is_str_digit('-1')`.", "response": "def is_str_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_str_digit(s)` returning True iff `s` is all digits. Example: `is_str_digit('+5')`.", "response": "def is_str_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_str_digit(s)` returning True iff `s` is all digits. Example: `is_str_digit('1.5')`.", "response": "def is_str_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `all_digits_v2(s)` returning True iff `s` is all digits. Example: `all_digits_v2('12345')`.", "response": "def all_digits_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `all_digits_v2(s)` returning True iff `s` is all digits. Example: `all_digits_v2('12a')`.", "response": "def all_digits_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `all_digits_v2(s)` returning True iff `s` is all digits. Example: `all_digits_v2('')`.", "response": "def all_digits_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `all_digits_v2(s)` returning True iff `s` is all digits. Example: `all_digits_v2('0')`.", "response": "def all_digits_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `all_digits_v2(s)` returning True iff `s` is all digits. Example: `all_digits_v2('  ')`.", "response": "def all_digits_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `all_digits_v2(s)` returning True iff `s` is all digits. Example: `all_digits_v2('-1')`.", "response": "def all_digits_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `all_digits_v2(s)` returning True iff `s` is all digits. Example: `all_digits_v2('+5')`.", "response": "def all_digits_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `all_digits_v2(s)` returning True iff `s` is all digits. Example: `all_digits_v2('1.5')`.", "response": "def all_digits_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_check_v2(s)` returning True iff `s` is all digits. Example: `digit_check_v2('12345')`.", "response": "def digit_check_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_check_v2(s)` returning True iff `s` is all digits. Example: `digit_check_v2('12a')`.", "response": "def digit_check_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_check_v2(s)` returning True iff `s` is all digits. Example: `digit_check_v2('')`.", "response": "def digit_check_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_check_v2(s)` returning True iff `s` is all digits. Example: `digit_check_v2('0')`.", "response": "def digit_check_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_check_v2(s)` returning True iff `s` is all digits. Example: `digit_check_v2('  ')`.", "response": "def digit_check_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_check_v2(s)` returning True iff `s` is all digits. Example: `digit_check_v2('-1')`.", "response": "def digit_check_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_check_v2(s)` returning True iff `s` is all digits. Example: `digit_check_v2('+5')`.", "response": "def digit_check_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_check_v2(s)` returning True iff `s` is all digits. Example: `digit_check_v2('1.5')`.", "response": "def digit_check_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digit_v2(s)` returning True iff `s` is all digits. Example: `is_digit_v2('12345')`.", "response": "def is_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digit_v2(s)` returning True iff `s` is all digits. Example: `is_digit_v2('12a')`.", "response": "def is_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digit_v2(s)` returning True iff `s` is all digits. Example: `is_digit_v2('')`.", "response": "def is_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digit_v2(s)` returning True iff `s` is all digits. Example: `is_digit_v2('0')`.", "response": "def is_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digit_v2(s)` returning True iff `s` is all digits. Example: `is_digit_v2('  ')`.", "response": "def is_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digit_v2(s)` returning True iff `s` is all digits. Example: `is_digit_v2('-1')`.", "response": "def is_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digit_v2(s)` returning True iff `s` is all digits. Example: `is_digit_v2('+5')`.", "response": "def is_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digit_v2(s)` returning True iff `s` is all digits. Example: `is_digit_v2('1.5')`.", "response": "def is_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('12345')`.", "response": "def is_digits(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('12a')`.", "response": "def is_digits(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('')`.", "response": "def is_digits(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('0')`.", "response": "def is_digits(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('  ')`.", "response": "def is_digits(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('-1')`.", "response": "def is_digits(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('+5')`.", "response": "def is_digits(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('1.5')`.", "response": "def is_digits(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `do_digit_v2(s)` returning True iff `s` is all digits. Example: `do_digit_v2('12345')`.", "response": "def do_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `do_digit_v2(s)` returning True iff `s` is all digits. Example: `do_digit_v2('12a')`.", "response": "def do_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `do_digit_v2(s)` returning True iff `s` is all digits. Example: `do_digit_v2('')`.", "response": "def do_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `do_digit_v2(s)` returning True iff `s` is all digits. Example: `do_digit_v2('0')`.", "response": "def do_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `do_digit_v2(s)` returning True iff `s` is all digits. Example: `do_digit_v2('  ')`.", "response": "def do_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `do_digit_v2(s)` returning True iff `s` is all digits. Example: `do_digit_v2('-1')`.", "response": "def do_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `do_digit_v2(s)` returning True iff `s` is all digits. Example: `do_digit_v2('+5')`.", "response": "def do_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `do_digit_v2(s)` returning True iff `s` is all digits. Example: `do_digit_v2('1.5')`.", "response": "def do_digit_v2(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_p(s)` returning True iff `s` is all digits. Example: `digit_p('12345')`.", "response": "def digit_p(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_p(s)` returning True iff `s` is all digits. Example: `digit_p('12a')`.", "response": "def digit_p(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_p(s)` returning True iff `s` is all digits. Example: `digit_p('')`.", "response": "def digit_p(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_p(s)` returning True iff `s` is all digits. Example: `digit_p('0')`.", "response": "def digit_p(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_p(s)` returning True iff `s` is all digits. Example: `digit_p('  ')`.", "response": "def digit_p(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_p(s)` returning True iff `s` is all digits. Example: `digit_p('-1')`.", "response": "def digit_p(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_p(s)` returning True iff `s` is all digits. Example: `digit_p('+5')`.", "response": "def digit_p(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `digit_p(s)` returning True iff `s` is all digits. Example: `digit_p('1.5')`.", "response": "def digit_p(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `check_digit(s)` returning True iff `s` is all digits. Example: `check_digit('12345')`.", "response": "def check_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `check_digit(s)` returning True iff `s` is all digits. Example: `check_digit('12a')`.", "response": "def check_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `check_digit(s)` returning True iff `s` is all digits. Example: `check_digit('')`.", "response": "def check_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `check_digit(s)` returning True iff `s` is all digits. Example: `check_digit('0')`.", "response": "def check_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `check_digit(s)` returning True iff `s` is all digits. Example: `check_digit('  ')`.", "response": "def check_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `check_digit(s)` returning True iff `s` is all digits. Example: `check_digit('-1')`.", "response": "def check_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `check_digit(s)` returning True iff `s` is all digits. Example: `check_digit('+5')`.", "response": "def check_digit(s):\n    return s.isdigit()\n"}
+{"instruction": "Write a function `check_digit(s)` returning True iff `s` is all digits. Example: `check_digit('1.5')`.", "response": "def check_digit(s):\n    return s.isdigit()\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show async gen aclose in `aiter`. (input: '')", "response": "async def aiter():\n    async for x in aiter_source():\n        yield x\n\nconsumer = aiter()\n[x async for x in consumer]\n\n# Bug was: aclose() never called on early break — async generator may leak resources\n\n# pair: aiter / ''\n"}

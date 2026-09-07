@@ -1,0 +1,1 @@
+{"instruction": "Show the `key` argument to `max` in `max_key`. (input: ['hello', 'a', 'world'])", "response": "def max_key(xs):\n    return max(xs, key=len)\n\n# Bug was: `key=len` makes `max` pick the longest string; works on any iterable\n\n# pair: max_key / ['hello', 'a', 'world']\n"}

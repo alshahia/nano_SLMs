@@ -1,0 +1,15 @@
+{"text": "# first_or_none :: [1, 2, 3]\ndef first_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(first_or_none([1, 2, 3]))\n"}
+{"text": "# first_or_none :: []\ndef first_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(first_or_none([]))\n"}
+{"text": "# first_or_none :: ['a']\ndef first_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(first_or_none(['a']))\n"}
+{"text": "# first_or_none :: [None]\ndef first_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(first_or_none([None]))\n"}
+{"text": "# first_or_none :: [1]\ndef first_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(first_or_none([1]))\n"}
+{"text": "# head_or_none :: [1, 2, 3]\ndef head_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(head_or_none([1, 2, 3]))\n"}
+{"text": "# head_or_none :: []\ndef head_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(head_or_none([]))\n"}
+{"text": "# head_or_none :: ['a']\ndef head_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(head_or_none(['a']))\n"}
+{"text": "# head_or_none :: [None]\ndef head_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(head_or_none([None]))\n"}
+{"text": "# head_or_none :: [1]\ndef head_or_none(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(head_or_none([1]))\n"}
+{"text": "# safe_first :: [1, 2, 3]\ndef safe_first(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(safe_first([1, 2, 3]))\n"}
+{"text": "# safe_first :: []\ndef safe_first(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(safe_first([]))\n"}
+{"text": "# safe_first :: ['a']\ndef safe_first(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(safe_first(['a']))\n"}
+{"text": "# safe_first :: [None]\ndef safe_first(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(safe_first([None]))\n"}
+{"text": "# safe_first :: [1]\ndef safe_first(xs):\n    return xs[0] if xs else None\n\nif __name__ == '__main__':\n    print(safe_first([1]))\n"}

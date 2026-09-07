@@ -1,0 +1,1 @@
+{"instruction": "Show that `sum([])` returns 0 in `sum_empty`. (input: [])", "response": "def sum_empty(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n\n# Bug was: an empty list sums to 0, not None; `sum([])` returns 0\n\n# pair: sum_empty / []\n"}

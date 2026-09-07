@@ -1,0 +1,15 @@
+{"text": "# is_sorted :: [1, 2, 3, 4]\ndef is_sorted(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(is_sorted([1, 2, 3, 4]))\n"}
+{"text": "# is_sorted :: [1, 1, 1]\ndef is_sorted(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(is_sorted([1, 1, 1]))\n"}
+{"text": "# is_sorted :: [4, 3, 2, 1]\ndef is_sorted(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(is_sorted([4, 3, 2, 1]))\n"}
+{"text": "# is_sorted :: []\ndef is_sorted(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(is_sorted([]))\n"}
+{"text": "# is_sorted :: [1]\ndef is_sorted(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(is_sorted([1]))\n"}
+{"text": "# sorted_check :: [1, 2, 3, 4]\ndef sorted_check(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(sorted_check([1, 2, 3, 4]))\n"}
+{"text": "# sorted_check :: [1, 1, 1]\ndef sorted_check(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(sorted_check([1, 1, 1]))\n"}
+{"text": "# sorted_check :: [4, 3, 2, 1]\ndef sorted_check(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(sorted_check([4, 3, 2, 1]))\n"}
+{"text": "# sorted_check :: []\ndef sorted_check(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(sorted_check([]))\n"}
+{"text": "# sorted_check :: [1]\ndef sorted_check(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(sorted_check([1]))\n"}
+{"text": "# ascending :: [1, 2, 3, 4]\ndef ascending(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(ascending([1, 2, 3, 4]))\n"}
+{"text": "# ascending :: [1, 1, 1]\ndef ascending(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(ascending([1, 1, 1]))\n"}
+{"text": "# ascending :: [4, 3, 2, 1]\ndef ascending(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(ascending([4, 3, 2, 1]))\n"}
+{"text": "# ascending :: []\ndef ascending(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(ascending([]))\n"}
+{"text": "# ascending :: [1]\ndef ascending(xs):\n    return all(xs[i] <= xs[i + 1] for i in range(len(xs) - 1))\n\nif __name__ == '__main__':\n    print(ascending([1]))\n"}

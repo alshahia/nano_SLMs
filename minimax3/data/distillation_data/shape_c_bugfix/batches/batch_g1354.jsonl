@@ -1,0 +1,1 @@
+{"instruction": "Show the `is`-vs-`==` on small ints in `iseq_int`. (input: 5)", "response": "def iseq_int(x):\n    return x is 5\n\n# Bug was: CPython interns small ints but `is` is identity check; use `==` for value\n\n# pair: iseq_int / 5\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the set comprehension in `set_comp`. (input: ['a', 'b', 'a', 'c', 'b'])", "response": "def set_comp(xs):\n    return {x for x in xs}\n\n# Bug was: set comprehensions deduplicate while building\n\n# pair: set_comp / ['a', 'b', 'a', 'c', 'b']\n"}

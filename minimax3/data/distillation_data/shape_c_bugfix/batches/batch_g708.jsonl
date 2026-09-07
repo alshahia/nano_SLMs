@@ -1,0 +1,1 @@
+{"instruction": "Show sum shadowing in `shadow_sum`. Input: `[1, 2, 3]`. (input: [1, 2, 3])", "response": "def shadow_sum(xs):\n    sum = 0\n    for x in xs: sum += x\n    return sum(xs)\n\n# Bug was: `sum` shadowed — TypeError on next call to builtin sum\n\n# pair: shadow_sum / [1, 2, 3]\n"}

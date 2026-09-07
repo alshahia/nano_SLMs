@@ -1,0 +1,15 @@
+{"text": "# qx_hamming_dist :: ('1010', '0101')\ndef qx_hamming_dist(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_hamming_dist(('1010', '0101')))\n"}
+{"text": "# qx_hamming_dist :: ('111', '111')\ndef qx_hamming_dist(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_hamming_dist(('111', '111')))\n"}
+{"text": "# qx_hamming_dist :: ('000', '111')\ndef qx_hamming_dist(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_hamming_dist(('000', '111')))\n"}
+{"text": "# qx_hamming_dist :: ('1', '0')\ndef qx_hamming_dist(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_hamming_dist(('1', '0')))\n"}
+{"text": "# qx_hamming_dist :: ('abc', 'abd')\ndef qx_hamming_dist(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_hamming_dist(('abc', 'abd')))\n"}
+{"text": "# qx_qx_hamming_distance :: ('1010', '0101')\ndef qx_qx_hamming_distance(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_hamming_distance(('1010', '0101')))\n"}
+{"text": "# qx_qx_hamming_distance :: ('111', '111')\ndef qx_qx_hamming_distance(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_hamming_distance(('111', '111')))\n"}
+{"text": "# qx_qx_hamming_distance :: ('000', '111')\ndef qx_qx_hamming_distance(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_hamming_distance(('000', '111')))\n"}
+{"text": "# qx_qx_hamming_distance :: ('1', '0')\ndef qx_qx_hamming_distance(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_hamming_distance(('1', '0')))\n"}
+{"text": "# qx_qx_hamming_distance :: ('abc', 'abd')\ndef qx_qx_hamming_distance(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_hamming_distance(('abc', 'abd')))\n"}
+{"text": "# qx_qx_bit_diff_count :: ('1010', '0101')\ndef qx_qx_bit_diff_count(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_bit_diff_count(('1010', '0101')))\n"}
+{"text": "# qx_qx_bit_diff_count :: ('111', '111')\ndef qx_qx_bit_diff_count(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_bit_diff_count(('111', '111')))\n"}
+{"text": "# qx_qx_bit_diff_count :: ('000', '111')\ndef qx_qx_bit_diff_count(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_bit_diff_count(('000', '111')))\n"}
+{"text": "# qx_qx_bit_diff_count :: ('1', '0')\ndef qx_qx_bit_diff_count(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_bit_diff_count(('1', '0')))\n"}
+{"text": "# qx_qx_bit_diff_count :: ('abc', 'abd')\ndef qx_qx_bit_diff_count(a, b):\n    return sum(x != y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx_qx_bit_diff_count(('abc', 'abd')))\n"}

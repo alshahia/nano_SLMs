@@ -1,0 +1,15 @@
+{"text": "# qx2_degrees :: 0\nimport math\n\ndef qx2_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_degrees(0))\n"}
+{"text": "# qx2_degrees :: 1.5707963267948966\nimport math\n\ndef qx2_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_degrees(1.5707963267948966))\n"}
+{"text": "# qx2_degrees :: 3.141592653589793\nimport math\n\ndef qx2_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_degrees(3.141592653589793))\n"}
+{"text": "# qx2_degrees :: 0.5\nimport math\n\ndef qx2_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_degrees(0.5))\n"}
+{"text": "# qx2_degrees :: 6.283185307179586\nimport math\n\ndef qx2_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_degrees(6.283185307179586))\n"}
+{"text": "# qx2_to_degrees :: 0\nimport math\n\ndef qx2_to_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_to_degrees(0))\n"}
+{"text": "# qx2_to_degrees :: 1.5707963267948966\nimport math\n\ndef qx2_to_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_to_degrees(1.5707963267948966))\n"}
+{"text": "# qx2_to_degrees :: 3.141592653589793\nimport math\n\ndef qx2_to_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_to_degrees(3.141592653589793))\n"}
+{"text": "# qx2_to_degrees :: 0.5\nimport math\n\ndef qx2_to_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_to_degrees(0.5))\n"}
+{"text": "# qx2_to_degrees :: 6.283185307179586\nimport math\n\ndef qx2_to_degrees(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_to_degrees(6.283185307179586))\n"}
+{"text": "# qx2_rad_to_deg :: 0\nimport math\n\ndef qx2_rad_to_deg(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_rad_to_deg(0))\n"}
+{"text": "# qx2_rad_to_deg :: 1.5707963267948966\nimport math\n\ndef qx2_rad_to_deg(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_rad_to_deg(1.5707963267948966))\n"}
+{"text": "# qx2_rad_to_deg :: 3.141592653589793\nimport math\n\ndef qx2_rad_to_deg(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_rad_to_deg(3.141592653589793))\n"}
+{"text": "# qx2_rad_to_deg :: 0.5\nimport math\n\ndef qx2_rad_to_deg(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_rad_to_deg(0.5))\n"}
+{"text": "# qx2_rad_to_deg :: 6.283185307179586\nimport math\n\ndef qx2_rad_to_deg(rad):\n    return rad * 180 / math.pi\n\nif __name__ == '__main__':\n    print(qx2_rad_to_deg(6.283185307179586))\n"}

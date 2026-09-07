@@ -1,0 +1,1 @@
+{"instruction": "Show dict mutation in `prune`. Input: `{'a': 1, 'b': 2}`. (input: {'a': 1, 'b': 2})", "response": "def prune(d):\n    for k in d:\n        if d[k] < 1:\n            del d[k]\n    return d\n\n# Bug was: RuntimeError: dictionary changed size during iteration\n\n# pair: prune / {'a': 1, 'b': 2}\n"}

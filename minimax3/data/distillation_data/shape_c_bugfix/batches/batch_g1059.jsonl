@@ -1,0 +1,1 @@
+{"instruction": "Show zip-unzip (transpose) in `zip_unzip`. (input: [(1, 'a'), (2, 'b'), (3, 'c')])", "response": "def zip_unzip(pairs):\n    a, b = zip(*pairs)\n    return list(a), list(b)\n\n# Bug was: `zip(*pairs)` is the transpose; tuples must be unpacked to lists explicitly\n\n# pair: zip_unzip / [(1, 'a'), (2, 'b'), (3, 'c')]\n"}

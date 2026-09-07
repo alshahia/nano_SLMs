@@ -1,0 +1,1 @@
+{"instruction": "Show `unicodedata.digit` in `ud_digit`. (input: '5')", "response": "import unicodedata\n\ndef ud_digit(c):\n    return unicodedata.digit(c)\n\n# Bug was: `unicodedata.digit` returns the digit value; raises ValueError on non-digits\n\n# pair: ud_digit / '5'\n"}

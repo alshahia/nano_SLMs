@@ -1,0 +1,1 @@
+{"instruction": "Show argparse no required in `argp`. (input: '')", "response": "import argparse\ndef argp():\n    p = argparse.ArgumentParser()\n    p.add_argument('--name')\n    args = p.parse_args()\n    return args.name\n\n# Bug was: missing required=True — name is optional and silently None\n\n# pair: argp / ''\n"}

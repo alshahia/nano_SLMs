@@ -1,0 +1,3 @@
+{"text": "# unique_in_order :: 'AAAABBBCCDAABBB'\ndef unique_in_order(s):\n    out = []\n    for ch in s:\n        if not out or out[-1] != ch:\n            out.append(ch)\n    return ''.join(out)\n\nif __name__ == '__main__':\n    print(unique_in_order('AAAABBBCCDAABBB'))\n"}
+{"text": "# unique_in_order :: 'abc'\ndef unique_in_order(s):\n    out = []\n    for ch in s:\n        if not out or out[-1] != ch:\n            out.append(ch)\n    return ''.join(out)\n\nif __name__ == '__main__':\n    print(unique_in_order('abc'))\n"}
+{"text": "# unique_in_order :: ''\ndef unique_in_order(s):\n    out = []\n    for ch in s:\n        if not out or out[-1] != ch:\n            out.append(ch)\n    return ''.join(out)\n\nif __name__ == '__main__':\n    print(unique_in_order(''))\n"}

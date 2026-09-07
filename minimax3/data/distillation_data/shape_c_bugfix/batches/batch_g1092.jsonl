@@ -1,0 +1,1 @@
+{"instruction": "Show the chained-exception pattern in `exc_log_reraise`. (input: 'data')", "response": "def exc_log_reraise(s):\n    try:\n        return int(s)\n    except ValueError as e:\n        raise RuntimeError('parse failed') from e\n\n# Bug was: chaining with `from e` preserves the original traceback\n\n# pair: exc_log_reraise / 'data'\n"}

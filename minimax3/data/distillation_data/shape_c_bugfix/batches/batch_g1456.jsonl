@@ -1,0 +1,1 @@
+{"instruction": "Show the generator-to-list in `gen_to_list`. (input: [1, 2, 3])", "response": "def gen_to_list(xs):\n    g = (x * x for x in xs)\n    return list(g)\n\n# Bug was: generator expression is lazy; `list()` materializes it\n\n# pair: gen_to_list / [1, 2, 3]\n"}

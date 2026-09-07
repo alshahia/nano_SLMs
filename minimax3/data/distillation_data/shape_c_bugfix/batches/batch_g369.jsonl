@@ -1,0 +1,1 @@
+{"instruction": "Show unescaped dot in regex in `match`. Input: `'a.b', 'axb'`. (input: 'a.b', 'axb')", "response": "import re\ndef match(pattern, s):\n    return re.match(pattern, s)\n\n# Bug was: '.' in regex matches any char — use re.escape(pattern) or r'\\.'\n\n# pair: match / 'a.b', 'axb'\n"}

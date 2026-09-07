@@ -1,0 +1,1 @@
+{"instruction": "Show the walrus operator in `walrus_repeat`. (input: [1, 2, 3, 4])", "response": "def walrus_repeat(xs):\n    n = len(xs)\n    if (n := len(xs)) > 2:\n        return n\n    return 0\n\n# Bug was: walrus `:=` assigns and returns the value in one expression\n\n# pair: walrus_repeat / [1, 2, 3, 4]\n"}

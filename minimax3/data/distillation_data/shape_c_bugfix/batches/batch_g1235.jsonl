@@ -1,0 +1,2 @@
+{"instruction": "Show `textwrap.shorten` in `str_shorten`. (input: 'hello world')", "response": "import textwrap\n\ndef str_shorten(s, n):\n    return textwrap.shorten(s, width=n)\n\n# Bug was: `shorten` truncates to width and adds ellipsis\n\n# pair: str_shorten / 'hello world'\n"}
+{"instruction": "Show `textwrap.shorten` in `str_shorten`. (input: 10)", "response": "import textwrap\n\ndef str_shorten(s, n):\n    return textwrap.shorten(s, width=n)\n\n# Bug was: `shorten` truncates to width and adds ellipsis\n\n# pair: str_shorten / 10\n"}

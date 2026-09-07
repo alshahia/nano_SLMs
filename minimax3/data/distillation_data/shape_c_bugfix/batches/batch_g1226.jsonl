@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.mkdir` in `path_mkdir`. (input: 'new_dir')", "response": "from pathlib import Path\n\ndef path_mkdir(d):\n    Path(d).mkdir(exist_ok=True)\n\n# Bug was: `mkdir(exist_ok=True)` avoids FileExistsError; `parents=True` creates intermediate dirs\n\n# pair: path_mkdir / 'new_dir'\n"}

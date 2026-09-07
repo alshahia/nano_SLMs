@@ -1,0 +1,1 @@
+{"instruction": "Show `typing.Protocol` in `typing_protocol`. (input: 'x')", "response": "from typing import Protocol\n\nclass HasX(Protocol):\n    x: str\n\ndef typing_protocol(obj: HasX) -> str:\n    return obj.x\n\n# Bug was: `Protocol` is structural typing; matches by attributes, not inheritance\n\n# pair: typing_protocol / 'x'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show that generators can receive via `.send()` in `send_gen`. (input: 0)", "response": "def send_gen():\n    x = yield\n    return x\n\n# Bug was: generators can receive values via `.send()`; first call returns None\n\n# pair: send_gen / 0\n"}

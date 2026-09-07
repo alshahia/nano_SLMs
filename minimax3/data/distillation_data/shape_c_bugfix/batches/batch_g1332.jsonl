@@ -1,0 +1,1 @@
+{"instruction": "Show `IntEnum` in `enum_int`. (input: 1)", "response": "from enum import IntEnum\n\nclass Color(IntEnum):\n    RED = 1\n    GREEN = 2\n\ndef enum_int(n):\n    return Color(n)\n\n# Bug was: `IntEnum` members are ints; `Color(1) == 1` is True\n\n# pair: enum_int / 1\n"}

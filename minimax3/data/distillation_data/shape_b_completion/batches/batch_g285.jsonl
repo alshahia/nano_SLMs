@@ -1,0 +1,15 @@
+{"text": "# argsort :: [3, 1, 4, 1, 5]\ndef argsort(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(argsort([3, 1, 4, 1, 5]))\n"}
+{"text": "# argsort :: []\ndef argsort(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(argsort([]))\n"}
+{"text": "# argsort :: [1]\ndef argsort(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(argsort([1]))\n"}
+{"text": "# argsort :: [1, 2, 3]\ndef argsort(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(argsort([1, 2, 3]))\n"}
+{"text": "# argsort :: [3, 2, 1]\ndef argsort(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(argsort([3, 2, 1]))\n"}
+{"text": "# sort_indices :: [3, 1, 4, 1, 5]\ndef sort_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(sort_indices([3, 1, 4, 1, 5]))\n"}
+{"text": "# sort_indices :: []\ndef sort_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(sort_indices([]))\n"}
+{"text": "# sort_indices :: [1]\ndef sort_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(sort_indices([1]))\n"}
+{"text": "# sort_indices :: [1, 2, 3]\ndef sort_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(sort_indices([1, 2, 3]))\n"}
+{"text": "# sort_indices :: [3, 2, 1]\ndef sort_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(sort_indices([3, 2, 1]))\n"}
+{"text": "# ordered_indices :: [3, 1, 4, 1, 5]\ndef ordered_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(ordered_indices([3, 1, 4, 1, 5]))\n"}
+{"text": "# ordered_indices :: []\ndef ordered_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(ordered_indices([]))\n"}
+{"text": "# ordered_indices :: [1]\ndef ordered_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(ordered_indices([1]))\n"}
+{"text": "# ordered_indices :: [1, 2, 3]\ndef ordered_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(ordered_indices([1, 2, 3]))\n"}
+{"text": "# ordered_indices :: [3, 2, 1]\ndef ordered_indices(xs):\n    return sorted(range(len(xs)), key=lambda i: xs[i])\n\nif __name__ == '__main__':\n    print(ordered_indices([3, 2, 1]))\n"}

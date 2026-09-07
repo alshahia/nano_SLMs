@@ -1,0 +1,15 @@
+{"text": "# qx2_factorials :: 0\ndef qx2_factorials(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_factorials(0))\n"}
+{"text": "# qx2_factorials :: 1\ndef qx2_factorials(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_factorials(1))\n"}
+{"text": "# qx2_factorials :: 5\ndef qx2_factorials(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_factorials(5))\n"}
+{"text": "# qx2_factorials :: 10\ndef qx2_factorials(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_factorials(10))\n"}
+{"text": "# qx2_factorials :: 12\ndef qx2_factorials(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_factorials(12))\n"}
+{"text": "# qx2_first_fact :: 0\ndef qx2_first_fact(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_first_fact(0))\n"}
+{"text": "# qx2_first_fact :: 1\ndef qx2_first_fact(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_first_fact(1))\n"}
+{"text": "# qx2_first_fact :: 5\ndef qx2_first_fact(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_first_fact(5))\n"}
+{"text": "# qx2_first_fact :: 10\ndef qx2_first_fact(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_first_fact(10))\n"}
+{"text": "# qx2_first_fact :: 12\ndef qx2_first_fact(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_first_fact(12))\n"}
+{"text": "# qx2_facts :: 0\ndef qx2_facts(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_facts(0))\n"}
+{"text": "# qx2_facts :: 1\ndef qx2_facts(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_facts(1))\n"}
+{"text": "# qx2_facts :: 5\ndef qx2_facts(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_facts(5))\n"}
+{"text": "# qx2_facts :: 10\ndef qx2_facts(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_facts(10))\n"}
+{"text": "# qx2_facts :: 12\ndef qx2_facts(n):\n    out = [1]\n    for i in range(1, n):\n        out.append(out[-1] * i)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_facts(12))\n"}

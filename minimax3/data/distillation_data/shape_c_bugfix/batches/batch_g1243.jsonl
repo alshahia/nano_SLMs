@@ -1,0 +1,1 @@
+{"instruction": "Show `base64.b64encode` in `b64_enc`. (input: 'hello')", "response": "import base64\n\ndef b64_enc(s):\n    return base64.b64encode(s.encode()).decode()\n\n# Bug was: `b64encode` takes bytes; encode to bytes first\n\n# pair: b64_enc / 'hello'\n"}

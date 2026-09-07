@@ -1,0 +1,2 @@
+{"instruction": "Show `complex()` in `complex_basic`. (input: 1)", "response": "def complex_basic(r, i):\n    return complex(r, i)\n\n# Bug was: `complex(r, i)` builds a complex number; `r` and `i` can be ints or floats\n\n# pair: complex_basic / 1\n"}
+{"instruction": "Show `complex()` in `complex_basic`. (input: 2)", "response": "def complex_basic(r, i):\n    return complex(r, i)\n\n# Bug was: `complex(r, i)` builds a complex number; `r` and `i` can be ints or floats\n\n# pair: complex_basic / 2\n"}

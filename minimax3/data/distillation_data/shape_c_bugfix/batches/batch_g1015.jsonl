@@ -1,0 +1,1 @@
+{"instruction": "Show the augment-assign semantics in `self_aug_assign`. (input: 5)", "response": "def self_aug_assign(x):\n    x = x + x\n    return x\n\n# Bug was: `x += x` doubles x; if you meant `x = x + 1` you have a different bug. In this case the operator works fine, but watch for `x = x + 1` accidentally doubling\n\n# pair: self_aug_assign / 5\n"}

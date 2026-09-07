@@ -1,0 +1,15 @@
+{"text": "# clamp :: (5, 0, 10)\ndef clamp(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clamp((5, 0, 10)))\n"}
+{"text": "# clamp :: (-1, 0, 10)\ndef clamp(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clamp((-1, 0, 10)))\n"}
+{"text": "# clamp :: (15, 0, 10)\ndef clamp(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clamp((15, 0, 10)))\n"}
+{"text": "# clamp :: (0, 0, 10)\ndef clamp(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clamp((0, 0, 10)))\n"}
+{"text": "# clamp :: (10, 0, 10)\ndef clamp(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clamp((10, 0, 10)))\n"}
+{"text": "# clip_value :: (5, 0, 10)\ndef clip_value(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clip_value((5, 0, 10)))\n"}
+{"text": "# clip_value :: (-1, 0, 10)\ndef clip_value(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clip_value((-1, 0, 10)))\n"}
+{"text": "# clip_value :: (15, 0, 10)\ndef clip_value(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clip_value((15, 0, 10)))\n"}
+{"text": "# clip_value :: (0, 0, 10)\ndef clip_value(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clip_value((0, 0, 10)))\n"}
+{"text": "# clip_value :: (10, 0, 10)\ndef clip_value(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(clip_value((10, 0, 10)))\n"}
+{"text": "# bound :: (5, 0, 10)\ndef bound(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(bound((5, 0, 10)))\n"}
+{"text": "# bound :: (-1, 0, 10)\ndef bound(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(bound((-1, 0, 10)))\n"}
+{"text": "# bound :: (15, 0, 10)\ndef bound(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(bound((15, 0, 10)))\n"}
+{"text": "# bound :: (0, 0, 10)\ndef bound(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(bound((0, 0, 10)))\n"}
+{"text": "# bound :: (10, 0, 10)\ndef bound(x, lo, hi):\n    if x < lo:\n        return lo\n    if x > hi:\n        return hi\n    return x\n\nif __name__ == \"__main__\":\n    print(bound((10, 0, 10)))\n"}

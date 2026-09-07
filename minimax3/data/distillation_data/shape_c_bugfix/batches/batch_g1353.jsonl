@@ -1,0 +1,1 @@
+{"instruction": "Show the `_` wildcard in `match_wild`. (input: )", "response": "def match_wild(x):\n    match x:\n        case _:\n            return 'matched'\n\n# Bug was: `_` is the wildcard; matches anything\n\n# pair: match_wild /\n"}

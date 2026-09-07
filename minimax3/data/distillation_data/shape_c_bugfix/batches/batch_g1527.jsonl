@@ -1,0 +1,1 @@
+{"instruction": "Show `threading.Thread` in `thread_thread`. (input: )", "response": "import threading\n\ndef worker():\n    print('working')\n\ndef thread_thread():\n    t = threading.Thread(target=worker)\n    t.start()\n    t.join()\n    return 'done'\n\n# Bug was: `Thread` runs the target function; `start` begins, `join` waits for completion\n\n# pair: thread_thread /\n"}

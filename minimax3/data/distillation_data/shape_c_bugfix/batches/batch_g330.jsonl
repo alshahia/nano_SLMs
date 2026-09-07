@@ -1,0 +1,1 @@
+{"instruction": "Show __slots__ preventing extra attrs in `point`. (input: (1, 2))", "response": "class point:\n    __slots__ = ('x', 'y')\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n        self.z = 0\n\n# Bug was: __slots__ disables __dict__ — setting `z` raises AttributeError\n\n# pair: point / (1, 2)\n"}

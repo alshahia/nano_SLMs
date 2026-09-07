@@ -1,0 +1,1 @@
+{"instruction": "Show OrderedDict obsolete in `od`. Input: `[('a', 1), ('b', 2)]`. (input: [('a', 1), ('b', 2)])", "response": "from collections import OrderedDict\ndef od(items):\n    return OrderedDict(items)\n\n# Bug was: Py3.7+ dict preserves order — OrderedDict rarely needed\n\n# pair: od / [('a', 1), ('b', 2)]\n"}

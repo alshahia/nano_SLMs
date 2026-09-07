@@ -1,0 +1,1 @@
+{"instruction": "Show strptime format mismatch in `parse_date`. Input: `'2024-01-15', '%d/%m/%Y'`. (input: '2024-01-15', '%d/%m/%Y')", "response": "from datetime import datetime\ndef parse_date(s, fmt):\n    return datetime.strptime(s, fmt)\n\n# Bug was: format doesn't match string — ValueError at runtime\n\n# pair: parse_date / '2024-01-15', '%d/%m/%Y'\n"}

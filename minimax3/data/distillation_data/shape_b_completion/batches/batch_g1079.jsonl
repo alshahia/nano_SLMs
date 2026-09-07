@@ -1,0 +1,15 @@
+{"text": "# qx2_is_printable :: 'hello'\ndef qx2_is_printable(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_is_printable('hello'))\n"}
+{"text": "# qx2_is_printable :: 'hello\\nworld'\ndef qx2_is_printable(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_is_printable('hello\\nworld'))\n"}
+{"text": "# qx2_is_printable :: ''\ndef qx2_is_printable(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_is_printable(''))\n"}
+{"text": "# qx2_is_printable :: 'abc123'\ndef qx2_is_printable(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_is_printable('abc123'))\n"}
+{"text": "# qx2_is_printable :: '\\t'\ndef qx2_is_printable(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_is_printable('\\t'))\n"}
+{"text": "# qx2_print_check :: 'hello'\ndef qx2_print_check(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_print_check('hello'))\n"}
+{"text": "# qx2_print_check :: 'hello\\nworld'\ndef qx2_print_check(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_print_check('hello\\nworld'))\n"}
+{"text": "# qx2_print_check :: ''\ndef qx2_print_check(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_print_check(''))\n"}
+{"text": "# qx2_print_check :: 'abc123'\ndef qx2_print_check(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_print_check('abc123'))\n"}
+{"text": "# qx2_print_check :: '\\t'\ndef qx2_print_check(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_print_check('\\t'))\n"}
+{"text": "# qx2_all_print :: 'hello'\ndef qx2_all_print(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_all_print('hello'))\n"}
+{"text": "# qx2_all_print :: 'hello\\nworld'\ndef qx2_all_print(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_all_print('hello\\nworld'))\n"}
+{"text": "# qx2_all_print :: ''\ndef qx2_all_print(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_all_print(''))\n"}
+{"text": "# qx2_all_print :: 'abc123'\ndef qx2_all_print(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_all_print('abc123'))\n"}
+{"text": "# qx2_all_print :: '\\t'\ndef qx2_all_print(s):\n    return s.isprintable()\n\nif __name__ == '__main__':\n    print(qx2_all_print('\\t'))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show deque O(n) index in `dqi`. Input: `1`. (input: 1)", "response": "from collections import deque\ndef dqi(idx):\n    d = deque([1, 2, 3])\n    return d[idx]\n\n# Bug was: deque supports indexing but it's O(n) — use d.popleft() etc\n\n# pair: dqi / 1\n"}

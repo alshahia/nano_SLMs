@@ -1,0 +1,1 @@
+{"instruction": "Show tokenize use in `tok`. Input: `'x = 1'`. (input: 'x = 1')", "response": "import tokenize, io\ndef tok(src):\n    return list(tokenize.tokenize(io.BytesIO(src.encode()).readline))\n\n# Bug was: tokenize.tokenize needs a callable that returns bytes — not a file object directly\n\n# pair: tok / 'x = 1'\n"}

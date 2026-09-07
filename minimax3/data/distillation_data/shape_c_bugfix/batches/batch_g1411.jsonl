@@ -1,0 +1,1 @@
+{"instruction": "Show `isinstance` in `isinstance_basic`. (input: 42)", "response": "def isinstance_basic(x):\n    return isinstance(x, int)\n\n# Bug was: `isinstance` also matches subclasses; `type(x) == int` does not\n\n# pair: isinstance_basic / 42\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the `is True` pattern in `iseq_bool`. (input: True)", "response": "def iseq_bool(x):\n    return x is True\n\n# Bug was: `True` is a singleton so `is True` works; but use `==` for compatibility\n\n# pair: iseq_bool / True\n"}

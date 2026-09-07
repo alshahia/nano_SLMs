@@ -1,0 +1,1 @@
+{"instruction": "Show `dataclass(slots=True)` in `dc_slots`. (input: 5)", "response": "from dataclasses import dataclass\n\n@dataclass(slots=True)\nclass C:\n    x: int\n\ndef dc_slots(x):\n    return C(x)\n\n# Bug was: `slots=True` (Py3.10+) adds `__slots__` for memory efficiency\n\n# pair: dc_slots / 5\n"}

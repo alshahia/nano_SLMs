@@ -1,0 +1,15 @@
+{"text": "# qx_compound_interest :: (1000, 0.05, 10)\ndef qx_compound_interest(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound_interest((1000, 0.05, 10)))\n"}
+{"text": "# qx_compound_interest :: (100, 0.1, 5)\ndef qx_compound_interest(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound_interest((100, 0.1, 5)))\n"}
+{"text": "# qx_compound_interest :: (500, 0.03, 20)\ndef qx_compound_interest(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound_interest((500, 0.03, 20)))\n"}
+{"text": "# qx_compound_interest :: (1000, 0.0, 10)\ndef qx_compound_interest(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound_interest((1000, 0.0, 10)))\n"}
+{"text": "# qx_compound_interest :: (100, 0.5, 1)\ndef qx_compound_interest(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound_interest((100, 0.5, 1)))\n"}
+{"text": "# qx_compound :: (1000, 0.05, 10)\ndef qx_compound(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound((1000, 0.05, 10)))\n"}
+{"text": "# qx_compound :: (100, 0.1, 5)\ndef qx_compound(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound((100, 0.1, 5)))\n"}
+{"text": "# qx_compound :: (500, 0.03, 20)\ndef qx_compound(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound((500, 0.03, 20)))\n"}
+{"text": "# qx_compound :: (1000, 0.0, 10)\ndef qx_compound(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound((1000, 0.0, 10)))\n"}
+{"text": "# qx_compound :: (100, 0.5, 1)\ndef qx_compound(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_compound((100, 0.5, 1)))\n"}
+{"text": "# qx_cagr :: (1000, 0.05, 10)\ndef qx_cagr(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_cagr((1000, 0.05, 10)))\n"}
+{"text": "# qx_cagr :: (100, 0.1, 5)\ndef qx_cagr(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_cagr((100, 0.1, 5)))\n"}
+{"text": "# qx_cagr :: (500, 0.03, 20)\ndef qx_cagr(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_cagr((500, 0.03, 20)))\n"}
+{"text": "# qx_cagr :: (1000, 0.0, 10)\ndef qx_cagr(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_cagr((1000, 0.0, 10)))\n"}
+{"text": "# qx_cagr :: (100, 0.5, 1)\ndef qx_cagr(principal, rate, years):\n    return principal * (1 + rate) ** years\n\nif __name__ == '__main__':\n    print(qx_cagr((100, 0.5, 1)))\n"}

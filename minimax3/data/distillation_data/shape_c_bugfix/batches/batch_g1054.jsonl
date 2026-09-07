@@ -1,0 +1,1 @@
+{"instruction": "Show the negative-step slice in `slice_step_neg`. (input: [1, 2, 3, 4, 5])", "response": "def slice_step_neg(xs):\n    return xs[::-1]\n\n# Bug was: negative step reverses; works on any sequence\n\n# pair: slice_step_neg / [1, 2, 3, 4, 5]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `chr`/`ord` in `chr_ord`. (input: 65)", "response": "def chr_ord(n):\n    return chr(n), ord(chr(n))\n\n# Bug was: `chr(n)` returns the character; `ord(c)` returns the codepoint\n\n# pair: chr_ord / 65\n"}

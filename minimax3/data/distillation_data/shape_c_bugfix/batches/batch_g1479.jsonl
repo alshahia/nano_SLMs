@@ -1,0 +1,1 @@
+{"instruction": "Show the mutable default set in `def_set_arg`. (input: 1)", "response": "def def_set_arg(x, s=set()):\n    s.add(x)\n    return s\n\n# Bug was: mutable default set shared; use `s=None`\n\n# pair: def_set_arg / 1\n"}

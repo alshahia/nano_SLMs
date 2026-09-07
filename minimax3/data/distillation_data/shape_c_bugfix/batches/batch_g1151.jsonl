@@ -1,0 +1,1 @@
+{"instruction": "Show the Iterable type hint in `type_hint_iter`. (input: [1, 2, 3])", "response": "from typing import Iterable\n\ndef type_hint_iter(xs: Iterable[int]) -> int:\n    return sum(xs)\n\n# Bug was: `Iterable[int]` accepts any iterable; less strict than `list[int]`\n\n# pair: type_hint_iter / [1, 2, 3]\n"}

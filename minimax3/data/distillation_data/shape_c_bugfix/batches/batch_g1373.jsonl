@@ -1,0 +1,1 @@
+{"instruction": "Show the `continue` skip in `cont_skip`. (input: [1, 2, 3, 4])", "response": "def cont_skip(xs):\n    out = []\n    for x in xs:\n        if x % 2 == 0:\n            continue\n        out.append(x)\n    return out\n\n# Bug was: `continue` skips the rest of the loop body\n\n# pair: cont_skip / [1, 2, 3, 4]\n"}

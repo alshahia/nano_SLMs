@@ -1,0 +1,1 @@
+{"instruction": "Show `dir` in `dir_basic`. (input: 42)", "response": "def dir_basic(x):\n    return dir(x)\n\n# Bug was: `dir(x)` returns attribute names; useful for introspection\n\n# pair: dir_basic / 42\n"}

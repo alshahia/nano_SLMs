@@ -1,0 +1,1 @@
+{"instruction": "The module has a circular import. Defer the import inside the function. (input: demo)", "response": "from b import y\n\ndef circular():\n    return y()\n    # Bug was: circular import a <-> b causes ImportError; restructure or use lazy import inside function.\n\n# pair: circular / demo\n"}

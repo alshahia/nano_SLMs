@@ -1,0 +1,1 @@
+{"instruction": "Show the type-hint syntax in `type_hint_basic`. (input: 5)", "response": "def type_hint_basic(x: int) -> int:\n    return x + 1\n\n# Bug was: type hints are advisory; runtime doesn't enforce unless you use a checker\n\n# pair: type_hint_basic / 5\n"}

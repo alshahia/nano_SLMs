@@ -1,0 +1,15 @@
+{"text": "# qx2_reverse_int :: 123\ndef qx2_reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_reverse_int(123))\n"}
+{"text": "# qx2_reverse_int :: 1200\ndef qx2_reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_reverse_int(1200))\n"}
+{"text": "# qx2_reverse_int :: 0\ndef qx2_reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_reverse_int(0))\n"}
+{"text": "# qx2_reverse_int :: -456\ndef qx2_reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_reverse_int(-456))\n"}
+{"text": "# qx2_reverse_int :: 5\ndef qx2_reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_reverse_int(5))\n"}
+{"text": "# qx2_int_reverse :: 123\ndef qx2_int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_int_reverse(123))\n"}
+{"text": "# qx2_int_reverse :: 1200\ndef qx2_int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_int_reverse(1200))\n"}
+{"text": "# qx2_int_reverse :: 0\ndef qx2_int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_int_reverse(0))\n"}
+{"text": "# qx2_int_reverse :: -456\ndef qx2_int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_int_reverse(-456))\n"}
+{"text": "# qx2_int_reverse :: 5\ndef qx2_int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_int_reverse(5))\n"}
+{"text": "# qx2_flip_int :: 123\ndef qx2_flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_flip_int(123))\n"}
+{"text": "# qx2_flip_int :: 1200\ndef qx2_flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_flip_int(1200))\n"}
+{"text": "# qx2_flip_int :: 0\ndef qx2_flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_flip_int(0))\n"}
+{"text": "# qx2_flip_int :: -456\ndef qx2_flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_flip_int(-456))\n"}
+{"text": "# qx2_flip_int :: 5\ndef qx2_flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(qx2_flip_int(5))\n"}

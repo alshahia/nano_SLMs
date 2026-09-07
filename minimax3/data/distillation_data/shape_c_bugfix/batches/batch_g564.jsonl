@@ -1,0 +1,1 @@
+{"instruction": "Show singledispatch order in `sd`. (input: '')", "response": "from functools import singledispatch\n@singledispatch\ndef sd(x):\n    return x\n@sd.register(list)\ndef _(x): return list(x)\n\n# Bug was: singledispatch picks first matching type — register(int) before list to control order\n\n# pair: sd / ''\n"}

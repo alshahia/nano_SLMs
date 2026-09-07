@@ -1,0 +1,15 @@
+{"text": "# qx2_basename :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_basename(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_basename('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_basename :: 'a.txt'\nimport os\n\ndef qx2_basename(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_basename('a.txt'))\n"}
+{"text": "# qx2_basename :: '/usr/local/bin'\nimport os\n\ndef qx2_basename(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_basename('/usr/local/bin'))\n"}
+{"text": "# qx2_basename :: 'path/with/no/ext'\nimport os\n\ndef qx2_basename(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_basename('path/with/no/ext'))\n"}
+{"text": "# qx2_basename :: ''\nimport os\n\ndef qx2_basename(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_basename(''))\n"}
+{"text": "# qx2_base_name :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_base_name(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_base_name('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_base_name :: 'a.txt'\nimport os\n\ndef qx2_base_name(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_base_name('a.txt'))\n"}
+{"text": "# qx2_base_name :: '/usr/local/bin'\nimport os\n\ndef qx2_base_name(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_base_name('/usr/local/bin'))\n"}
+{"text": "# qx2_base_name :: 'path/with/no/ext'\nimport os\n\ndef qx2_base_name(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_base_name('path/with/no/ext'))\n"}
+{"text": "# qx2_base_name :: ''\nimport os\n\ndef qx2_base_name(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_base_name(''))\n"}
+{"text": "# qx2_path_tail :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_path_tail(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_path_tail('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_path_tail :: 'a.txt'\nimport os\n\ndef qx2_path_tail(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_path_tail('a.txt'))\n"}
+{"text": "# qx2_path_tail :: '/usr/local/bin'\nimport os\n\ndef qx2_path_tail(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_path_tail('/usr/local/bin'))\n"}
+{"text": "# qx2_path_tail :: 'path/with/no/ext'\nimport os\n\ndef qx2_path_tail(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_path_tail('path/with/no/ext'))\n"}
+{"text": "# qx2_path_tail :: ''\nimport os\n\ndef qx2_path_tail(p):\n    return os.path.basename(p)\n\nif __name__ == '__main__':\n    print(qx2_path_tail(''))\n"}

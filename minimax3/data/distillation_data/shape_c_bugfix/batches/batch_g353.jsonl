@@ -1,0 +1,1 @@
+{"instruction": "Show missing raise_for_status in `fetch5`. (input: url)", "response": "import requests\ndef fetch5(u):\n        return requests.get(u).json()\n\n# Bug was: 4xx/5xx still returns a response — call raise_for_status() first\n\n# pair: fetch5 / url\n"}

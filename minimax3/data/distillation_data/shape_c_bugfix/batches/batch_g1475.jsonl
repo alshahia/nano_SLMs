@@ -1,0 +1,1 @@
+{"instruction": "Show the keyword-only lambda in `lambda_kwargs`. (input: 5)", "response": "def lambda_kwargs(x):\n    f = lambda *, k: x + k\n    return f(k=10)\n\n# Bug was: lambda with `*` forces keyword-only args\n\n# pair: lambda_kwargs / 5\n"}

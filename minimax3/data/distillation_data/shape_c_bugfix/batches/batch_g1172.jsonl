@@ -1,0 +1,1 @@
+{"instruction": "Show `asyncio.run` entry point in `asyncio_run`. (input: 1)", "response": "import asyncio\n\ndef asyncio_run():\n    return asyncio.run(main())\n\n# Bug was: `asyncio.run` is the high-level entry point; runs the coroutine to completion\n\n# pair: asyncio_run / 1\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show asyncio.timeout version mismatch in `to`. Input: `coro, 5`. (input: coro, 5)", "response": "import asyncio\nasync def to(coro, t):\n    return await asyncio.timeout(coro, t)\n\n# Bug was: asyncio.timeout is Py3.11+ — earlier use asyncio.wait_for\n\n# pair: to / coro, 5\n"}

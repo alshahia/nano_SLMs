@@ -1,0 +1,1 @@
+{"instruction": "Show the module docstring in `module_docstring`. (input: 'module')", "response": "\"\"\"This module does things.\"\"\"\n\ndef helper():\n    return 1\n\n# Bug was: module docstrings describe purpose; first string in the module is treated as the docstring\n\n# pair: module_docstring / 'module'\n"}

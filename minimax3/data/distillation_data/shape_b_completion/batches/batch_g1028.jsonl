@@ -1,0 +1,15 @@
+{"text": "# qx2_comb :: (5, 2)\nimport math\n\ndef qx2_comb(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_comb((5, 2)))\n"}
+{"text": "# qx2_comb :: (5, 5)\nimport math\n\ndef qx2_comb(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_comb((5, 5)))\n"}
+{"text": "# qx2_comb :: (5, 0)\nimport math\n\ndef qx2_comb(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_comb((5, 0)))\n"}
+{"text": "# qx2_comb :: (10, 3)\nimport math\n\ndef qx2_comb(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_comb((10, 3)))\n"}
+{"text": "# qx2_comb :: (4, 1)\nimport math\n\ndef qx2_comb(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_comb((4, 1)))\n"}
+{"text": "# qx2_combinations :: (5, 2)\nimport math\n\ndef qx2_combinations(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_combinations((5, 2)))\n"}
+{"text": "# qx2_combinations :: (5, 5)\nimport math\n\ndef qx2_combinations(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_combinations((5, 5)))\n"}
+{"text": "# qx2_combinations :: (5, 0)\nimport math\n\ndef qx2_combinations(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_combinations((5, 0)))\n"}
+{"text": "# qx2_combinations :: (10, 3)\nimport math\n\ndef qx2_combinations(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_combinations((10, 3)))\n"}
+{"text": "# qx2_combinations :: (4, 1)\nimport math\n\ndef qx2_combinations(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_combinations((4, 1)))\n"}
+{"text": "# qx2_n_choose_k :: (5, 2)\nimport math\n\ndef qx2_n_choose_k(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_n_choose_k((5, 2)))\n"}
+{"text": "# qx2_n_choose_k :: (5, 5)\nimport math\n\ndef qx2_n_choose_k(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_n_choose_k((5, 5)))\n"}
+{"text": "# qx2_n_choose_k :: (5, 0)\nimport math\n\ndef qx2_n_choose_k(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_n_choose_k((5, 0)))\n"}
+{"text": "# qx2_n_choose_k :: (10, 3)\nimport math\n\ndef qx2_n_choose_k(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_n_choose_k((10, 3)))\n"}
+{"text": "# qx2_n_choose_k :: (4, 1)\nimport math\n\ndef qx2_n_choose_k(n, k):\n    return math.comb(n, k)\n\nif __name__ == '__main__':\n    print(qx2_n_choose_k((4, 1)))\n"}

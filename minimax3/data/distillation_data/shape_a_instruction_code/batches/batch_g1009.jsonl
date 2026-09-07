@@ -1,0 +1,64 @@
+{"instruction": "Write a function `byte_size(s)` returning the UTF-8 byte length of `s`. Example: `byte_size('hello')`.", "response": "def byte_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_size(s)` returning the UTF-8 byte length of `s`. Example: `byte_size('café')`.", "response": "def byte_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_size(s)` returning the UTF-8 byte length of `s`. Example: `byte_size('')`.", "response": "def byte_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_size(s)` returning the UTF-8 byte length of `s`. Example: `byte_size('Python')`.", "response": "def byte_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_size(s)` returning the UTF-8 byte length of `s`. Example: `byte_size('日本語')`.", "response": "def byte_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_size(s)` returning the UTF-8 byte length of `s`. Example: `byte_size('😀')`.", "response": "def byte_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_size(s)` returning the UTF-8 byte length of `s`. Example: `byte_size('ascii')`.", "response": "def byte_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_size(s)` returning the UTF-8 byte length of `s`. Example: `byte_size('mixed café 日')`.", "response": "def byte_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_size(s)` returning the UTF-8 byte length of `s`. Example: `utf8_size('hello')`.", "response": "def utf8_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_size(s)` returning the UTF-8 byte length of `s`. Example: `utf8_size('café')`.", "response": "def utf8_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_size(s)` returning the UTF-8 byte length of `s`. Example: `utf8_size('')`.", "response": "def utf8_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_size(s)` returning the UTF-8 byte length of `s`. Example: `utf8_size('Python')`.", "response": "def utf8_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_size(s)` returning the UTF-8 byte length of `s`. Example: `utf8_size('日本語')`.", "response": "def utf8_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_size(s)` returning the UTF-8 byte length of `s`. Example: `utf8_size('😀')`.", "response": "def utf8_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_size(s)` returning the UTF-8 byte length of `s`. Example: `utf8_size('ascii')`.", "response": "def utf8_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_size(s)` returning the UTF-8 byte length of `s`. Example: `utf8_size('mixed café 日')`.", "response": "def utf8_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encoded_size(s)` returning the UTF-8 byte length of `s`. Example: `encoded_size('hello')`.", "response": "def encoded_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encoded_size(s)` returning the UTF-8 byte length of `s`. Example: `encoded_size('café')`.", "response": "def encoded_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encoded_size(s)` returning the UTF-8 byte length of `s`. Example: `encoded_size('')`.", "response": "def encoded_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encoded_size(s)` returning the UTF-8 byte length of `s`. Example: `encoded_size('Python')`.", "response": "def encoded_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encoded_size(s)` returning the UTF-8 byte length of `s`. Example: `encoded_size('日本語')`.", "response": "def encoded_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encoded_size(s)` returning the UTF-8 byte length of `s`. Example: `encoded_size('😀')`.", "response": "def encoded_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encoded_size(s)` returning the UTF-8 byte length of `s`. Example: `encoded_size('ascii')`.", "response": "def encoded_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encoded_size(s)` returning the UTF-8 byte length of `s`. Example: `encoded_size('mixed café 日')`.", "response": "def encoded_size(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_length(s)` returning the UTF-8 byte length of `s`. Example: `byte_length('hello')`.", "response": "def byte_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_length(s)` returning the UTF-8 byte length of `s`. Example: `byte_length('café')`.", "response": "def byte_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_length(s)` returning the UTF-8 byte length of `s`. Example: `byte_length('')`.", "response": "def byte_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_length(s)` returning the UTF-8 byte length of `s`. Example: `byte_length('Python')`.", "response": "def byte_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_length(s)` returning the UTF-8 byte length of `s`. Example: `byte_length('日本語')`.", "response": "def byte_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_length(s)` returning the UTF-8 byte length of `s`. Example: `byte_length('😀')`.", "response": "def byte_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_length(s)` returning the UTF-8 byte length of `s`. Example: `byte_length('ascii')`.", "response": "def byte_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `byte_length(s)` returning the UTF-8 byte length of `s`. Example: `byte_length('mixed café 日')`.", "response": "def byte_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('hello')`.", "response": "def bytes_of(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('café')`.", "response": "def bytes_of(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('')`.", "response": "def bytes_of(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('Python')`.", "response": "def bytes_of(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('日本語')`.", "response": "def bytes_of(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('😀')`.", "response": "def bytes_of(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('ascii')`.", "response": "def bytes_of(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('mixed café 日')`.", "response": "def bytes_of(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `size_bytes(s)` returning the UTF-8 byte length of `s`. Example: `size_bytes('hello')`.", "response": "def size_bytes(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `size_bytes(s)` returning the UTF-8 byte length of `s`. Example: `size_bytes('café')`.", "response": "def size_bytes(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `size_bytes(s)` returning the UTF-8 byte length of `s`. Example: `size_bytes('')`.", "response": "def size_bytes(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `size_bytes(s)` returning the UTF-8 byte length of `s`. Example: `size_bytes('Python')`.", "response": "def size_bytes(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `size_bytes(s)` returning the UTF-8 byte length of `s`. Example: `size_bytes('日本語')`.", "response": "def size_bytes(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `size_bytes(s)` returning the UTF-8 byte length of `s`. Example: `size_bytes('😀')`.", "response": "def size_bytes(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `size_bytes(s)` returning the UTF-8 byte length of `s`. Example: `size_bytes('ascii')`.", "response": "def size_bytes(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `size_bytes(s)` returning the UTF-8 byte length of `s`. Example: `size_bytes('mixed café 日')`.", "response": "def size_bytes(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('hello')`.", "response": "def encode_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('café')`.", "response": "def encode_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('')`.", "response": "def encode_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('Python')`.", "response": "def encode_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('日本語')`.", "response": "def encode_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('😀')`.", "response": "def encode_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('ascii')`.", "response": "def encode_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('mixed café 日')`.", "response": "def encode_length(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_byte_count(s)` returning the UTF-8 byte length of `s`. Example: `utf8_byte_count('hello')`.", "response": "def utf8_byte_count(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_byte_count(s)` returning the UTF-8 byte length of `s`. Example: `utf8_byte_count('café')`.", "response": "def utf8_byte_count(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_byte_count(s)` returning the UTF-8 byte length of `s`. Example: `utf8_byte_count('')`.", "response": "def utf8_byte_count(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_byte_count(s)` returning the UTF-8 byte length of `s`. Example: `utf8_byte_count('Python')`.", "response": "def utf8_byte_count(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_byte_count(s)` returning the UTF-8 byte length of `s`. Example: `utf8_byte_count('日本語')`.", "response": "def utf8_byte_count(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_byte_count(s)` returning the UTF-8 byte length of `s`. Example: `utf8_byte_count('😀')`.", "response": "def utf8_byte_count(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_byte_count(s)` returning the UTF-8 byte length of `s`. Example: `utf8_byte_count('ascii')`.", "response": "def utf8_byte_count(s):\n    return len(s.encode('utf-8'))\n"}
+{"instruction": "Write a function `utf8_byte_count(s)` returning the UTF-8 byte length of `s`. Example: `utf8_byte_count('mixed café 日')`.", "response": "def utf8_byte_count(s):\n    return len(s.encode('utf-8'))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `pickle.dumps` in `pickle_basic`. (input: {'k': 1})", "response": "import pickle\n\ndef pickle_basic(d):\n    return pickle.dumps(d)\n\n# Bug was: `pickle.dumps` serializes Python objects; insecure for untrusted data\n\n# pair: pickle_basic / {'k': 1}\n"}

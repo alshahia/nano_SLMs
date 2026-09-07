@@ -1,0 +1,15 @@
+{"text": "# normalize_spaces :: '  hello   world  '\nimport re\n\ndef normalize_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(normalize_spaces('  hello   world  '))\n"}
+{"text": "# normalize_spaces :: 'a\\tb\\nc'\nimport re\n\ndef normalize_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(normalize_spaces('a\\tb\\nc'))\n"}
+{"text": "# normalize_spaces :: ''\nimport re\n\ndef normalize_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(normalize_spaces(''))\n"}
+{"text": "# normalize_spaces :: 'one two three'\nimport re\n\ndef normalize_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(normalize_spaces('one two three'))\n"}
+{"text": "# normalize_spaces :: '   '\nimport re\n\ndef normalize_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(normalize_spaces('   '))\n"}
+{"text": "# collapse_spaces :: '  hello   world  '\nimport re\n\ndef collapse_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(collapse_spaces('  hello   world  '))\n"}
+{"text": "# collapse_spaces :: 'a\\tb\\nc'\nimport re\n\ndef collapse_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(collapse_spaces('a\\tb\\nc'))\n"}
+{"text": "# collapse_spaces :: ''\nimport re\n\ndef collapse_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(collapse_spaces(''))\n"}
+{"text": "# collapse_spaces :: 'one two three'\nimport re\n\ndef collapse_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(collapse_spaces('one two three'))\n"}
+{"text": "# collapse_spaces :: '   '\nimport re\n\ndef collapse_spaces(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(collapse_spaces('   '))\n"}
+{"text": "# squash_ws :: '  hello   world  '\nimport re\n\ndef squash_ws(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(squash_ws('  hello   world  '))\n"}
+{"text": "# squash_ws :: 'a\\tb\\nc'\nimport re\n\ndef squash_ws(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(squash_ws('a\\tb\\nc'))\n"}
+{"text": "# squash_ws :: ''\nimport re\n\ndef squash_ws(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(squash_ws(''))\n"}
+{"text": "# squash_ws :: 'one two three'\nimport re\n\ndef squash_ws(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(squash_ws('one two three'))\n"}
+{"text": "# squash_ws :: '   '\nimport re\n\ndef squash_ws(s):\n    return re.sub(r'\\s+', ' ', s).strip()\n\nif __name__ == '__main__':\n    print(squash_ws('   '))\n"}

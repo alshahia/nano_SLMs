@@ -1,0 +1,1 @@
+{"instruction": "Show `calendar.isleap` in `cal_isleap`. (input: 2024)", "response": "import calendar\n\ndef cal_isleap(year):\n    return calendar.isleap(year)\n\n# Bug was: `isleap` returns True for div-by-4 except century years unless div-by-400\n\n# pair: cal_isleap / 2024\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show self in @staticmethod `utility`. (input: '')", "response": "class utility:\n    @staticmethod\n    def helper(self, x):\n        return x * 2\n\n# Bug was: staticmethod shouldn't take self — drop the self parameter\n\n# pair: utility / ''\n"}

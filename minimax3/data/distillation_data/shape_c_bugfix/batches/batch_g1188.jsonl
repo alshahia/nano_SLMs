@@ -1,0 +1,2 @@
+{"instruction": "Show the ChainMap usage in `chainmap`. (input: {'a': 1})", "response": "from collections import ChainMap\n\ndef chainmap(a, b):\n    return dict(ChainMap(a, b))\n\n# Bug was: ChainMap groups dicts; first match wins for reads\n\n# pair: chainmap / {'a': 1}\n"}
+{"instruction": "Show the ChainMap usage in `chainmap`. (input: {'b': 2})", "response": "from collections import ChainMap\n\ndef chainmap(a, b):\n    return dict(ChainMap(a, b))\n\n# Bug was: ChainMap groups dicts; first match wins for reads\n\n# pair: chainmap / {'b': 2}\n"}

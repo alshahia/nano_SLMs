@@ -1,0 +1,1 @@
+{"instruction": "Show coerce builtin in `co`. Input: `1, 1.5`. (input: 1, 1.5)", "response": "def co(a, b):\n    return coerce(a, b)\n\n# Bug was: coerce removed in Py3 — use explicit conversion\n\n# pair: co / 1, 1.5\n"}

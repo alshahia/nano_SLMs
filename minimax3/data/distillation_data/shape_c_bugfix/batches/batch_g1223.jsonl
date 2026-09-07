@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.stem` in `path_stem`. (input: 'foo.txt')", "response": "from pathlib import Path\n\ndef path_stem(p):\n    return Path(p).stem\n\n# Bug was: `Path.stem` returns the filename without the suffix\n\n# pair: path_stem / 'foo.txt'\n"}

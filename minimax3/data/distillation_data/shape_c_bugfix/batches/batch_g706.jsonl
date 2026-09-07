@@ -1,0 +1,1 @@
+{"instruction": "Show slicing off-by-one in `last_n`. Input: `[1,2,3,4,5], 3`. (input: [1,2,3,4,5], 3)", "response": "def last_n(xs, n):\n    return xs[:-n]\n\n# Bug was: xs[:-n] drops last n; for first-n use xs[:n]\n\n# pair: last_n / [1,2,3,4,5], 3\n"}

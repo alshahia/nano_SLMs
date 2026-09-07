@@ -1,0 +1,15 @@
+{"text": "# qx2_sqrt :: 0\nimport math\n\ndef qx2_sqrt(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_sqrt(0))\n"}
+{"text": "# qx2_sqrt :: 1\nimport math\n\ndef qx2_sqrt(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_sqrt(1))\n"}
+{"text": "# qx2_sqrt :: 4\nimport math\n\ndef qx2_sqrt(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_sqrt(4))\n"}
+{"text": "# qx2_sqrt :: 16\nimport math\n\ndef qx2_sqrt(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_sqrt(16))\n"}
+{"text": "# qx2_sqrt :: 100\nimport math\n\ndef qx2_sqrt(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_sqrt(100))\n"}
+{"text": "# qx2_square_root :: 0\nimport math\n\ndef qx2_square_root(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_square_root(0))\n"}
+{"text": "# qx2_square_root :: 1\nimport math\n\ndef qx2_square_root(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_square_root(1))\n"}
+{"text": "# qx2_square_root :: 4\nimport math\n\ndef qx2_square_root(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_square_root(4))\n"}
+{"text": "# qx2_square_root :: 16\nimport math\n\ndef qx2_square_root(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_square_root(16))\n"}
+{"text": "# qx2_square_root :: 100\nimport math\n\ndef qx2_square_root(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_square_root(100))\n"}
+{"text": "# qx2_root2 :: 0\nimport math\n\ndef qx2_root2(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_root2(0))\n"}
+{"text": "# qx2_root2 :: 1\nimport math\n\ndef qx2_root2(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_root2(1))\n"}
+{"text": "# qx2_root2 :: 4\nimport math\n\ndef qx2_root2(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_root2(4))\n"}
+{"text": "# qx2_root2 :: 16\nimport math\n\ndef qx2_root2(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_root2(16))\n"}
+{"text": "# qx2_root2 :: 100\nimport math\n\ndef qx2_root2(x):\n    return math.sqrt(x)\n\nif __name__ == '__main__':\n    print(qx2_root2(100))\n"}

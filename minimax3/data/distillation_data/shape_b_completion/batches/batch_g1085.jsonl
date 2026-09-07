@@ -1,0 +1,15 @@
+{"text": "# qx2_title_case :: 'hello world'\ndef qx2_title_case(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_case('hello world'))\n"}
+{"text": "# qx2_title_case :: 'Hello World'\ndef qx2_title_case(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_case('Hello World'))\n"}
+{"text": "# qx2_title_case :: ''\ndef qx2_title_case(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_case(''))\n"}
+{"text": "# qx2_title_case :: 'abc def'\ndef qx2_title_case(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_case('abc def'))\n"}
+{"text": "# qx2_title_case :: 'a b c'\ndef qx2_title_case(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_case('a b c'))\n"}
+{"text": "# qx2_to_title :: 'hello world'\ndef qx2_to_title(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_to_title('hello world'))\n"}
+{"text": "# qx2_to_title :: 'Hello World'\ndef qx2_to_title(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_to_title('Hello World'))\n"}
+{"text": "# qx2_to_title :: ''\ndef qx2_to_title(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_to_title(''))\n"}
+{"text": "# qx2_to_title :: 'abc def'\ndef qx2_to_title(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_to_title('abc def'))\n"}
+{"text": "# qx2_to_title :: 'a b c'\ndef qx2_to_title(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_to_title('a b c'))\n"}
+{"text": "# qx2_title_str :: 'hello world'\ndef qx2_title_str(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_str('hello world'))\n"}
+{"text": "# qx2_title_str :: 'Hello World'\ndef qx2_title_str(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_str('Hello World'))\n"}
+{"text": "# qx2_title_str :: ''\ndef qx2_title_str(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_str(''))\n"}
+{"text": "# qx2_title_str :: 'abc def'\ndef qx2_title_str(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_str('abc def'))\n"}
+{"text": "# qx2_title_str :: 'a b c'\ndef qx2_title_str(s):\n    return s.title()\n\nif __name__ == '__main__':\n    print(qx2_title_str('a b c'))\n"}

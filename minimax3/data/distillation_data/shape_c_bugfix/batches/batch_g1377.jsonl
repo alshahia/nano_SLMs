@@ -1,0 +1,1 @@
+{"instruction": "Show the `del` slice in `del_slice`. (input: [1, 2, 3, 4, 5])", "response": "def del_slice(xs):\n    del xs[1:3]\n    return xs\n\n# Bug was: `del xs[1:3]` removes the slice; mutates in place\n\n# pair: del_slice / [1, 2, 3, 4, 5]\n"}

@@ -1,0 +1,15 @@
+{"text": "# basename :: '/foo/bar/baz.py'\ndef basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(basename('/foo/bar/baz.py'))\n"}
+{"text": "# basename :: 'a.txt'\ndef basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(basename('a.txt'))\n"}
+{"text": "# basename :: '/usr/local/bin'\ndef basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(basename('/usr/local/bin'))\n"}
+{"text": "# basename :: 'path/with/no/ext'\ndef basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(basename('path/with/no/ext'))\n"}
+{"text": "# basename :: ''\ndef basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(basename(''))\n"}
+{"text": "# path_basename :: '/foo/bar/baz.py'\ndef path_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(path_basename('/foo/bar/baz.py'))\n"}
+{"text": "# path_basename :: 'a.txt'\ndef path_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(path_basename('a.txt'))\n"}
+{"text": "# path_basename :: '/usr/local/bin'\ndef path_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(path_basename('/usr/local/bin'))\n"}
+{"text": "# path_basename :: 'path/with/no/ext'\ndef path_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(path_basename('path/with/no/ext'))\n"}
+{"text": "# path_basename :: ''\ndef path_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(path_basename(''))\n"}
+{"text": "# file_basename :: '/foo/bar/baz.py'\ndef file_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(file_basename('/foo/bar/baz.py'))\n"}
+{"text": "# file_basename :: 'a.txt'\ndef file_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(file_basename('a.txt'))\n"}
+{"text": "# file_basename :: '/usr/local/bin'\ndef file_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(file_basename('/usr/local/bin'))\n"}
+{"text": "# file_basename :: 'path/with/no/ext'\ndef file_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(file_basename('path/with/no/ext'))\n"}
+{"text": "# file_basename :: ''\ndef file_basename(path):\n    return path.rsplit('/', 1)[-1]\n\nif __name__ == \"__main__\":\n    print(file_basename(''))\n"}

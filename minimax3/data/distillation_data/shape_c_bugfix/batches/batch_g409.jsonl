@@ -1,0 +1,1 @@
+{"instruction": "Show send before next in `sender`. Input: `5`. (input: '')", "response": "def sender():\n    x = yield\n    yield x * 2\n\ng = sender()\ng.send(5)\n\n# Bug was: send() before priming with next() raises TypeError — call next(g) first\n\n# pair: sender / ''\n"}

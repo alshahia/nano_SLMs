@@ -1,0 +1,1 @@
+{"instruction": "Show ipaddress no strict in `ipns`. Input: `'10/8'`. (input: '10/8')", "response": "import ipaddress\ndef ipns(s):\n    return ipaddress.ip_network(s)\n\n# Bug was: '10/8' parsed as 10.0.0.0/8 with strict=False; pass strict=True to reject\n\n# pair: ipns / '10/8'\n"}

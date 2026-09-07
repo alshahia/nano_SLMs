@@ -1,0 +1,1 @@
+{"instruction": "Show the chained assignment in `chain_assign`. (input: )", "response": "def chain_assign():\n    a = b = c = 0\n    return a, b, c\n\n# Bug was: chained assignment initializes all three to 0\n\n# pair: chain_assign /\n"}

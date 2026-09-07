@@ -1,0 +1,64 @@
+{"instruction": "Write a function `is_str_alpha(s)` returning True iff `s` is all letters. Example: `is_str_alpha('hello')`.", "response": "def is_str_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_str_alpha(s)` returning True iff `s` is all letters. Example: `is_str_alpha('Hello')`.", "response": "def is_str_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_str_alpha(s)` returning True iff `s` is all letters. Example: `is_str_alpha('hello123')`.", "response": "def is_str_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_str_alpha(s)` returning True iff `s` is all letters. Example: `is_str_alpha('')`.", "response": "def is_str_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_str_alpha(s)` returning True iff `s` is all letters. Example: `is_str_alpha('abc def')`.", "response": "def is_str_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_str_alpha(s)` returning True iff `s` is all letters. Example: `is_str_alpha('café')`.", "response": "def is_str_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_str_alpha(s)` returning True iff `s` is all letters. Example: `is_str_alpha('abc')`.", "response": "def is_str_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_str_alpha(s)` returning True iff `s` is all letters. Example: `is_str_alpha('123')`.", "response": "def is_str_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `all_letters_v2(s)` returning True iff `s` is all letters. Example: `all_letters_v2('hello')`.", "response": "def all_letters_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `all_letters_v2(s)` returning True iff `s` is all letters. Example: `all_letters_v2('Hello')`.", "response": "def all_letters_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `all_letters_v2(s)` returning True iff `s` is all letters. Example: `all_letters_v2('hello123')`.", "response": "def all_letters_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `all_letters_v2(s)` returning True iff `s` is all letters. Example: `all_letters_v2('')`.", "response": "def all_letters_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `all_letters_v2(s)` returning True iff `s` is all letters. Example: `all_letters_v2('abc def')`.", "response": "def all_letters_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `all_letters_v2(s)` returning True iff `s` is all letters. Example: `all_letters_v2('café')`.", "response": "def all_letters_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `all_letters_v2(s)` returning True iff `s` is all letters. Example: `all_letters_v2('abc')`.", "response": "def all_letters_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `all_letters_v2(s)` returning True iff `s` is all letters. Example: `all_letters_v2('123')`.", "response": "def all_letters_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_check_v2(s)` returning True iff `s` is all letters. Example: `alpha_check_v2('hello')`.", "response": "def alpha_check_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_check_v2(s)` returning True iff `s` is all letters. Example: `alpha_check_v2('Hello')`.", "response": "def alpha_check_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_check_v2(s)` returning True iff `s` is all letters. Example: `alpha_check_v2('hello123')`.", "response": "def alpha_check_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_check_v2(s)` returning True iff `s` is all letters. Example: `alpha_check_v2('')`.", "response": "def alpha_check_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_check_v2(s)` returning True iff `s` is all letters. Example: `alpha_check_v2('abc def')`.", "response": "def alpha_check_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_check_v2(s)` returning True iff `s` is all letters. Example: `alpha_check_v2('café')`.", "response": "def alpha_check_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_check_v2(s)` returning True iff `s` is all letters. Example: `alpha_check_v2('abc')`.", "response": "def alpha_check_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_check_v2(s)` returning True iff `s` is all letters. Example: `alpha_check_v2('123')`.", "response": "def alpha_check_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alpha_v2(s)` returning True iff `s` is all letters. Example: `is_alpha_v2('hello')`.", "response": "def is_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alpha_v2(s)` returning True iff `s` is all letters. Example: `is_alpha_v2('Hello')`.", "response": "def is_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alpha_v2(s)` returning True iff `s` is all letters. Example: `is_alpha_v2('hello123')`.", "response": "def is_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alpha_v2(s)` returning True iff `s` is all letters. Example: `is_alpha_v2('')`.", "response": "def is_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alpha_v2(s)` returning True iff `s` is all letters. Example: `is_alpha_v2('abc def')`.", "response": "def is_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alpha_v2(s)` returning True iff `s` is all letters. Example: `is_alpha_v2('café')`.", "response": "def is_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alpha_v2(s)` returning True iff `s` is all letters. Example: `is_alpha_v2('abc')`.", "response": "def is_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alpha_v2(s)` returning True iff `s` is all letters. Example: `is_alpha_v2('123')`.", "response": "def is_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alphabetic(s)` returning True iff `s` is all letters. Example: `is_alphabetic('hello')`.", "response": "def is_alphabetic(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alphabetic(s)` returning True iff `s` is all letters. Example: `is_alphabetic('Hello')`.", "response": "def is_alphabetic(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alphabetic(s)` returning True iff `s` is all letters. Example: `is_alphabetic('hello123')`.", "response": "def is_alphabetic(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alphabetic(s)` returning True iff `s` is all letters. Example: `is_alphabetic('')`.", "response": "def is_alphabetic(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alphabetic(s)` returning True iff `s` is all letters. Example: `is_alphabetic('abc def')`.", "response": "def is_alphabetic(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alphabetic(s)` returning True iff `s` is all letters. Example: `is_alphabetic('café')`.", "response": "def is_alphabetic(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alphabetic(s)` returning True iff `s` is all letters. Example: `is_alphabetic('abc')`.", "response": "def is_alphabetic(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `is_alphabetic(s)` returning True iff `s` is all letters. Example: `is_alphabetic('123')`.", "response": "def is_alphabetic(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `do_alpha_v2(s)` returning True iff `s` is all letters. Example: `do_alpha_v2('hello')`.", "response": "def do_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `do_alpha_v2(s)` returning True iff `s` is all letters. Example: `do_alpha_v2('Hello')`.", "response": "def do_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `do_alpha_v2(s)` returning True iff `s` is all letters. Example: `do_alpha_v2('hello123')`.", "response": "def do_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `do_alpha_v2(s)` returning True iff `s` is all letters. Example: `do_alpha_v2('')`.", "response": "def do_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `do_alpha_v2(s)` returning True iff `s` is all letters. Example: `do_alpha_v2('abc def')`.", "response": "def do_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `do_alpha_v2(s)` returning True iff `s` is all letters. Example: `do_alpha_v2('café')`.", "response": "def do_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `do_alpha_v2(s)` returning True iff `s` is all letters. Example: `do_alpha_v2('abc')`.", "response": "def do_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `do_alpha_v2(s)` returning True iff `s` is all letters. Example: `do_alpha_v2('123')`.", "response": "def do_alpha_v2(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_p(s)` returning True iff `s` is all letters. Example: `alpha_p('hello')`.", "response": "def alpha_p(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_p(s)` returning True iff `s` is all letters. Example: `alpha_p('Hello')`.", "response": "def alpha_p(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_p(s)` returning True iff `s` is all letters. Example: `alpha_p('hello123')`.", "response": "def alpha_p(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_p(s)` returning True iff `s` is all letters. Example: `alpha_p('')`.", "response": "def alpha_p(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_p(s)` returning True iff `s` is all letters. Example: `alpha_p('abc def')`.", "response": "def alpha_p(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_p(s)` returning True iff `s` is all letters. Example: `alpha_p('café')`.", "response": "def alpha_p(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_p(s)` returning True iff `s` is all letters. Example: `alpha_p('abc')`.", "response": "def alpha_p(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `alpha_p(s)` returning True iff `s` is all letters. Example: `alpha_p('123')`.", "response": "def alpha_p(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `check_alpha(s)` returning True iff `s` is all letters. Example: `check_alpha('hello')`.", "response": "def check_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `check_alpha(s)` returning True iff `s` is all letters. Example: `check_alpha('Hello')`.", "response": "def check_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `check_alpha(s)` returning True iff `s` is all letters. Example: `check_alpha('hello123')`.", "response": "def check_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `check_alpha(s)` returning True iff `s` is all letters. Example: `check_alpha('')`.", "response": "def check_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `check_alpha(s)` returning True iff `s` is all letters. Example: `check_alpha('abc def')`.", "response": "def check_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `check_alpha(s)` returning True iff `s` is all letters. Example: `check_alpha('café')`.", "response": "def check_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `check_alpha(s)` returning True iff `s` is all letters. Example: `check_alpha('abc')`.", "response": "def check_alpha(s):\n    return s.isalpha()\n"}
+{"instruction": "Write a function `check_alpha(s)` returning True iff `s` is all letters. Example: `check_alpha('123')`.", "response": "def check_alpha(s):\n    return s.isalpha()\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the `from module import name` pattern in `import_from`. (input: from math)", "response": "from math import sqrt, pi\n\ndef import_from():\n    return sqrt(pi)\n\n# Bug was: `from module import name` brings specific names into scope\n\n# pair: import_from / from math\n"}

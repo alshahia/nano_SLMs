@@ -1,0 +1,1 @@
+{"instruction": "Show throw after close in `thrower`. (input: '')", "response": "def thrower():\n    try:\n        yield 1\n    finally:\n        cleanup()\n\ng = thrower()\nnext(g)\ng.close()\ng.throw(ValueError('x'))\n\n# Bug was: throw on closed generator raises ValueError — also calls cleanup twice\n\n# pair: thrower / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `subprocess.check_output` in `subproc_check`. (input: 'exit 1')", "response": "import subprocess\n\ndef subproc_check(cmd):\n    return subprocess.check_output(cmd, shell=True, text=True)\n\n# Bug was: `check_output` raises CalledProcessError on non-zero exit\n\n# pair: subproc_check / 'exit 1'\n"}

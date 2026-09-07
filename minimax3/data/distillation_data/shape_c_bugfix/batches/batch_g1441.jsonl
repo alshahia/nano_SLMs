@@ -1,0 +1,2 @@
+{"instruction": "Show `zip` in `zip_basic2`. (input: [1, 2, 3])", "response": "def zip_basic2(a, b):\n    return list(zip(a, b))\n\n# Bug was: `zip` truncates to shortest; use `zip_longest` to pad\n\n# pair: zip_basic2 / [1, 2, 3]\n"}
+{"instruction": "Show `zip` in `zip_basic2`. (input: ['a', 'b', 'c'])", "response": "def zip_basic2(a, b):\n    return list(zip(a, b))\n\n# Bug was: `zip` truncates to shortest; use `zip_longest` to pad\n\n# pair: zip_basic2 / ['a', 'b', 'c']\n"}

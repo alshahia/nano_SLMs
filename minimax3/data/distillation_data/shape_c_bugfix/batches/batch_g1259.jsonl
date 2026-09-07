@@ -1,0 +1,2 @@
+{"instruction": "Show `re.findall` in `re_findall`. (input: 'hello world hello')", "response": "import re\n\ndef re_findall(s, pattern):\n    return re.findall(pattern, s)\n\n# Bug was: `findall` returns all non-overlapping matches as a list\n\n# pair: re_findall / 'hello world hello'\n"}
+{"instruction": "Show `re.findall` in `re_findall`. (input: 'hello')", "response": "import re\n\ndef re_findall(s, pattern):\n    return re.findall(pattern, s)\n\n# Bug was: `findall` returns all non-overlapping matches as a list\n\n# pair: re_findall / 'hello'\n"}

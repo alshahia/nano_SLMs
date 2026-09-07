@@ -1,0 +1,15 @@
+{"text": "# qx2_count_sub :: 'hello world', 'l'\ndef qx2_count_sub(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_sub('hello world', 'l'))\n"}
+{"text": "# qx2_count_sub :: 'hello', 'll'\ndef qx2_count_sub(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_sub('hello', 'll'))\n"}
+{"text": "# qx2_count_sub :: 'aaaa', 'a'\ndef qx2_count_sub(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_sub('aaaa', 'a'))\n"}
+{"text": "# qx2_count_sub :: 'hello', 'x'\ndef qx2_count_sub(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_sub('hello', 'x'))\n"}
+{"text": "# qx2_count_sub :: '', 'a'\ndef qx2_count_sub(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_sub('', 'a'))\n"}
+{"text": "# qx2_sub_count :: 'hello world', 'l'\ndef qx2_sub_count(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_sub_count('hello world', 'l'))\n"}
+{"text": "# qx2_sub_count :: 'hello', 'll'\ndef qx2_sub_count(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_sub_count('hello', 'll'))\n"}
+{"text": "# qx2_sub_count :: 'aaaa', 'a'\ndef qx2_sub_count(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_sub_count('aaaa', 'a'))\n"}
+{"text": "# qx2_sub_count :: 'hello', 'x'\ndef qx2_sub_count(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_sub_count('hello', 'x'))\n"}
+{"text": "# qx2_sub_count :: '', 'a'\ndef qx2_sub_count(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_sub_count('', 'a'))\n"}
+{"text": "# qx2_count_in_str :: 'hello world', 'l'\ndef qx2_count_in_str(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_in_str('hello world', 'l'))\n"}
+{"text": "# qx2_count_in_str :: 'hello', 'll'\ndef qx2_count_in_str(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_in_str('hello', 'll'))\n"}
+{"text": "# qx2_count_in_str :: 'aaaa', 'a'\ndef qx2_count_in_str(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_in_str('aaaa', 'a'))\n"}
+{"text": "# qx2_count_in_str :: 'hello', 'x'\ndef qx2_count_in_str(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_in_str('hello', 'x'))\n"}
+{"text": "# qx2_count_in_str :: '', 'a'\ndef qx2_count_in_str(s, sub):\n    return s.count(sub)\n\nif __name__ == '__main__':\n    print(qx2_count_in_str('', 'a'))\n"}

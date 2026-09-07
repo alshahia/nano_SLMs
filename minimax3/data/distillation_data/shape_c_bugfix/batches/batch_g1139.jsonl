@@ -1,0 +1,1 @@
+{"instruction": "Show the missing main guard in `no_main_guard`. (input: 5)", "response": "def helper():\n    return 1\n\nprint(helper())\n\n# Bug was: missing `if __name__ == '__main__'` guard; importing this module runs the print\n\n# pair: no_main_guard / 5\n"}

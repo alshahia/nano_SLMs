@@ -1,0 +1,1 @@
+{"instruction": "The function `no_zero_guard(a, b)` raises on b=0. Guard the division. (input: demo)", "response": "def no_zero_guard(a, b):\n    return a / b\n    # Bug was: ZeroDivisionError on b=0; guard with try/except or check.\n\n# pair: no_zero_guard / demo\n"}

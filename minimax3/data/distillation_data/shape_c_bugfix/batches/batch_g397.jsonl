@@ -1,0 +1,1 @@
+{"instruction": "Show missing handler cleanup in `stream`. (input: '')", "response": "import logging, sys\ndef stream():\n    h = logging.StreamHandler(sys.stderr)\n    logger = logging.getLogger()\n    logger.addHandler(h)\n    logger.info('hi')\n\n# Bug was: handler never removed — leaks file descriptor; use `logger.removeHandler`\n\n# pair: stream / ''\n"}

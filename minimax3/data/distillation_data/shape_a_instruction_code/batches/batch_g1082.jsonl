@@ -1,0 +1,64 @@
+{"instruction": "Write a function `sum_squares_v2(xs)` returning the sum of squares. Example: `sum_squares_v2([1, 2, 3, 4])`.", "response": "def sum_squares_v2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_squares_v2(xs)` returning the sum of squares. Example: `sum_squares_v2([])`.", "response": "def sum_squares_v2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_squares_v2(xs)` returning the sum of squares. Example: `sum_squares_v2([0])`.", "response": "def sum_squares_v2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_squares_v2(xs)` returning the sum of squares. Example: `sum_squares_v2([1])`.", "response": "def sum_squares_v2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_squares_v2(xs)` returning the sum of squares. Example: `sum_squares_v2([-1, -2, -3])`.", "response": "def sum_squares_v2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_squares_v2(xs)` returning the sum of squares. Example: `sum_squares_v2([2, 4, 6])`.", "response": "def sum_squares_v2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_squares_v2(xs)` returning the sum of squares. Example: `sum_squares_v2([1.5, 2.5])`.", "response": "def sum_squares_v2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_squares_v2(xs)` returning the sum of squares. Example: `sum_squares_v2([10])`.", "response": "def sum_squares_v2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_sq2(xs)` returning the sum of squares. Example: `sum_sq2([1, 2, 3, 4])`.", "response": "def sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_sq2(xs)` returning the sum of squares. Example: `sum_sq2([])`.", "response": "def sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_sq2(xs)` returning the sum of squares. Example: `sum_sq2([0])`.", "response": "def sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_sq2(xs)` returning the sum of squares. Example: `sum_sq2([1])`.", "response": "def sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_sq2(xs)` returning the sum of squares. Example: `sum_sq2([-1, -2, -3])`.", "response": "def sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_sq2(xs)` returning the sum of squares. Example: `sum_sq2([2, 4, 6])`.", "response": "def sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_sq2(xs)` returning the sum of squares. Example: `sum_sq2([1.5, 2.5])`.", "response": "def sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_sq2(xs)` returning the sum of squares. Example: `sum_sq2([10])`.", "response": "def sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_sum2(xs)` returning the sum of squares. Example: `sq_sum2([1, 2, 3, 4])`.", "response": "def sq_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_sum2(xs)` returning the sum of squares. Example: `sq_sum2([])`.", "response": "def sq_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_sum2(xs)` returning the sum of squares. Example: `sq_sum2([0])`.", "response": "def sq_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_sum2(xs)` returning the sum of squares. Example: `sq_sum2([1])`.", "response": "def sq_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_sum2(xs)` returning the sum of squares. Example: `sq_sum2([-1, -2, -3])`.", "response": "def sq_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_sum2(xs)` returning the sum of squares. Example: `sq_sum2([2, 4, 6])`.", "response": "def sq_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_sum2(xs)` returning the sum of squares. Example: `sq_sum2([1.5, 2.5])`.", "response": "def sq_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_sum2(xs)` returning the sum of squares. Example: `sq_sum2([10])`.", "response": "def sq_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([1, 2, 3, 4])`.", "response": "def sum_of_squares2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([])`.", "response": "def sum_of_squares2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([0])`.", "response": "def sum_of_squares2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([1])`.", "response": "def sum_of_squares2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([-1, -2, -3])`.", "response": "def sum_of_squares2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([2, 4, 6])`.", "response": "def sum_of_squares2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([1.5, 2.5])`.", "response": "def sum_of_squares2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([10])`.", "response": "def sum_of_squares2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `do_sum_sq2(xs)` returning the sum of squares. Example: `do_sum_sq2([1, 2, 3, 4])`.", "response": "def do_sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `do_sum_sq2(xs)` returning the sum of squares. Example: `do_sum_sq2([])`.", "response": "def do_sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `do_sum_sq2(xs)` returning the sum of squares. Example: `do_sum_sq2([0])`.", "response": "def do_sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `do_sum_sq2(xs)` returning the sum of squares. Example: `do_sum_sq2([1])`.", "response": "def do_sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `do_sum_sq2(xs)` returning the sum of squares. Example: `do_sum_sq2([-1, -2, -3])`.", "response": "def do_sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `do_sum_sq2(xs)` returning the sum of squares. Example: `do_sum_sq2([2, 4, 6])`.", "response": "def do_sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `do_sum_sq2(xs)` returning the sum of squares. Example: `do_sum_sq2([1.5, 2.5])`.", "response": "def do_sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `do_sum_sq2(xs)` returning the sum of squares. Example: `do_sum_sq2([10])`.", "response": "def do_sum_sq2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_total2(xs)` returning the sum of squares. Example: `sq_total2([1, 2, 3, 4])`.", "response": "def sq_total2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_total2(xs)` returning the sum of squares. Example: `sq_total2([])`.", "response": "def sq_total2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_total2(xs)` returning the sum of squares. Example: `sq_total2([0])`.", "response": "def sq_total2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_total2(xs)` returning the sum of squares. Example: `sq_total2([1])`.", "response": "def sq_total2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_total2(xs)` returning the sum of squares. Example: `sq_total2([-1, -2, -3])`.", "response": "def sq_total2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_total2(xs)` returning the sum of squares. Example: `sq_total2([2, 4, 6])`.", "response": "def sq_total2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_total2(xs)` returning the sum of squares. Example: `sq_total2([1.5, 2.5])`.", "response": "def sq_total2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `sq_total2(xs)` returning the sum of squares. Example: `sq_total2([10])`.", "response": "def sq_total2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `ss2(xs)` returning the sum of squares. Example: `ss2([1, 2, 3, 4])`.", "response": "def ss2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `ss2(xs)` returning the sum of squares. Example: `ss2([])`.", "response": "def ss2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `ss2(xs)` returning the sum of squares. Example: `ss2([0])`.", "response": "def ss2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `ss2(xs)` returning the sum of squares. Example: `ss2([1])`.", "response": "def ss2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `ss2(xs)` returning the sum of squares. Example: `ss2([-1, -2, -3])`.", "response": "def ss2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `ss2(xs)` returning the sum of squares. Example: `ss2([2, 4, 6])`.", "response": "def ss2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `ss2(xs)` returning the sum of squares. Example: `ss2([1.5, 2.5])`.", "response": "def ss2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `ss2(xs)` returning the sum of squares. Example: `ss2([10])`.", "response": "def ss2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `squares_sum2(xs)` returning the sum of squares. Example: `squares_sum2([1, 2, 3, 4])`.", "response": "def squares_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `squares_sum2(xs)` returning the sum of squares. Example: `squares_sum2([])`.", "response": "def squares_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `squares_sum2(xs)` returning the sum of squares. Example: `squares_sum2([0])`.", "response": "def squares_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `squares_sum2(xs)` returning the sum of squares. Example: `squares_sum2([1])`.", "response": "def squares_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `squares_sum2(xs)` returning the sum of squares. Example: `squares_sum2([-1, -2, -3])`.", "response": "def squares_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `squares_sum2(xs)` returning the sum of squares. Example: `squares_sum2([2, 4, 6])`.", "response": "def squares_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `squares_sum2(xs)` returning the sum of squares. Example: `squares_sum2([1.5, 2.5])`.", "response": "def squares_sum2(xs):\n    return sum(x * x for x in xs)\n"}
+{"instruction": "Write a function `squares_sum2(xs)` returning the sum of squares. Example: `squares_sum2([10])`.", "response": "def squares_sum2(xs):\n    return sum(x * x for x in xs)\n"}

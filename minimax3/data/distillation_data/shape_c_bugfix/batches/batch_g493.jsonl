@@ -1,0 +1,1 @@
+{"instruction": "Show wrong pool for I/O in `tpi`. (input: '')", "response": "from concurrent.futures import ProcessPoolExecutor\ndef tpi(urls):\n    with ProcessPoolExecutor() as ex:\n        return list(ex.map(requests.get, urls))\n\n# Bug was: ProcessPool for I/O — pickling overhead kills perf; use ThreadPool\n\n# pair: tpi / ''\n"}

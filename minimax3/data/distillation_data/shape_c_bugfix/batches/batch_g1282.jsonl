@@ -1,0 +1,1 @@
+{"instruction": "Show `csv.reader` in `csv_reader`. (input: 'a,b,c\\n1,2,3')", "response": "import csv\nimport io\n\ndef csv_reader(data):\n    return list(csv.reader(io.StringIO(data)))\n\n# Bug was: `csv.reader` needs an iterable; `StringIO` wraps a string\n\n# pair: csv_reader / 'a,b,c\\n1,2,3'\n"}

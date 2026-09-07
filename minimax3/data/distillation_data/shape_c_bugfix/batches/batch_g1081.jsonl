@@ -1,0 +1,1 @@
+{"instruction": "Show the ternary expression in `ternary_lambda`. (input: 5)", "response": "def ternary_lambda(x):\n    return ('big' if x > 10 else 'small')\n\n# Bug was: ternary expressions are common in lambdas; readable in plain code too\n\n# pair: ternary_lambda / 5\n"}

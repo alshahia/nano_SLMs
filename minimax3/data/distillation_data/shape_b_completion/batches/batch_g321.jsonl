@@ -1,0 +1,15 @@
+{"text": "# qx_factorial_rec :: 0\ndef qx_factorial_rec(n):\n    return 1 if n <= 1 else n * qx_factorial_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_factorial_rec(0))\n"}
+{"text": "# qx_factorial_rec :: 1\ndef qx_factorial_rec(n):\n    return 1 if n <= 1 else n * qx_factorial_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_factorial_rec(1))\n"}
+{"text": "# qx_factorial_rec :: 5\ndef qx_factorial_rec(n):\n    return 1 if n <= 1 else n * qx_factorial_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_factorial_rec(5))\n"}
+{"text": "# qx_factorial_rec :: 10\ndef qx_factorial_rec(n):\n    return 1 if n <= 1 else n * qx_factorial_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_factorial_rec(10))\n"}
+{"text": "# qx_factorial_rec :: 12\ndef qx_factorial_rec(n):\n    return 1 if n <= 1 else n * qx_factorial_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_factorial_rec(12))\n"}
+{"text": "# qx_fact_rec :: 0\ndef qx_fact_rec(n):\n    return 1 if n <= 1 else n * qx_fact_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_fact_rec(0))\n"}
+{"text": "# qx_fact_rec :: 1\ndef qx_fact_rec(n):\n    return 1 if n <= 1 else n * qx_fact_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_fact_rec(1))\n"}
+{"text": "# qx_fact_rec :: 5\ndef qx_fact_rec(n):\n    return 1 if n <= 1 else n * qx_fact_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_fact_rec(5))\n"}
+{"text": "# qx_fact_rec :: 10\ndef qx_fact_rec(n):\n    return 1 if n <= 1 else n * qx_fact_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_fact_rec(10))\n"}
+{"text": "# qx_fact_rec :: 12\ndef qx_fact_rec(n):\n    return 1 if n <= 1 else n * qx_fact_rec(n - 1)\n\nif __name__ == '__main__':\n    print(qx_fact_rec(12))\n"}
+{"text": "# qx_rec_fact :: 0\ndef qx_rec_fact(n):\n    return 1 if n <= 1 else n * qx_rec_fact(n - 1)\n\nif __name__ == '__main__':\n    print(qx_rec_fact(0))\n"}
+{"text": "# qx_rec_fact :: 1\ndef qx_rec_fact(n):\n    return 1 if n <= 1 else n * qx_rec_fact(n - 1)\n\nif __name__ == '__main__':\n    print(qx_rec_fact(1))\n"}
+{"text": "# qx_rec_fact :: 5\ndef qx_rec_fact(n):\n    return 1 if n <= 1 else n * qx_rec_fact(n - 1)\n\nif __name__ == '__main__':\n    print(qx_rec_fact(5))\n"}
+{"text": "# qx_rec_fact :: 10\ndef qx_rec_fact(n):\n    return 1 if n <= 1 else n * qx_rec_fact(n - 1)\n\nif __name__ == '__main__':\n    print(qx_rec_fact(10))\n"}
+{"text": "# qx_rec_fact :: 12\ndef qx_rec_fact(n):\n    return 1 if n <= 1 else n * qx_rec_fact(n - 1)\n\nif __name__ == '__main__':\n    print(qx_rec_fact(12))\n"}

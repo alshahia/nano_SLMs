@@ -1,0 +1,1 @@
+{"instruction": "Show `yaml.safe_load` in `yaml_basic`. (input: 'k: 1')", "response": "import yaml\n\ndef yaml_basic(s):\n    return yaml.safe_load(s)\n\n# Bug was: `safe_load` avoids arbitrary code execution; preferred over `load`\n\n# pair: yaml_basic / 'k: 1'\n"}

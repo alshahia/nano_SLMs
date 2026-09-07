@@ -1,0 +1,1 @@
+{"instruction": "Show `os.path.splitext` in `os_path_splitext`. (input: 'file.txt')", "response": "import os.path\n\ndef os_path_splitext(p):\n    return os.path.splitext(p)\n\n# Bug was: `splitext` returns (root, ext)\n\n# pair: os_path_splitext / 'file.txt'\n"}

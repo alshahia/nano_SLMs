@@ -1,0 +1,1 @@
+{"instruction": "Show inspect.signature in `isg`. Input: `fn`. (input: fn)", "response": "import inspect\ndef isg(f):\n    return inspect.signature(f).parameters\n\n# Bug was: signature() raises ValueError on builtins — handle that\n\n# pair: isg / fn\n"}

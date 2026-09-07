@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.exists()` in `path_exists`. (input: '.')", "response": "from pathlib import Path\n\ndef path_exists(p):\n    return Path(p).exists()\n\n# Bug was: `Path.exists()` is the modern way to check filesystem existence\n\n# pair: path_exists / '.'\n"}

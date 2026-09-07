@@ -1,0 +1,15 @@
+{"text": "# qx2_intersect :: ([1, 2, 3], [2, 3, 4])\ndef qx2_intersect(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_intersect(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_intersect :: ([1, 2], [3, 4])\ndef qx2_intersect(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_intersect(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_intersect :: ([], [1, 2])\ndef qx2_intersect(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_intersect(([], [1, 2])))\n"}
+{"text": "# qx2_intersect :: ([1], [1])\ndef qx2_intersect(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_intersect(([1], [1])))\n"}
+{"text": "# qx2_intersect :: ([1, 2, 2, 3], [2, 3, 3])\ndef qx2_intersect(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_intersect(([1, 2, 2, 3], [2, 3, 3])))\n"}
+{"text": "# qx2_common :: ([1, 2, 3], [2, 3, 4])\ndef qx2_common(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_common(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_common :: ([1, 2], [3, 4])\ndef qx2_common(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_common(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_common :: ([], [1, 2])\ndef qx2_common(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_common(([], [1, 2])))\n"}
+{"text": "# qx2_common :: ([1], [1])\ndef qx2_common(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_common(([1], [1])))\n"}
+{"text": "# qx2_common :: ([1, 2, 2, 3], [2, 3, 3])\ndef qx2_common(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_common(([1, 2, 2, 3], [2, 3, 3])))\n"}
+{"text": "# qx2_set_inter :: ([1, 2, 3], [2, 3, 4])\ndef qx2_set_inter(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_inter(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_set_inter :: ([1, 2], [3, 4])\ndef qx2_set_inter(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_inter(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_set_inter :: ([], [1, 2])\ndef qx2_set_inter(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_inter(([], [1, 2])))\n"}
+{"text": "# qx2_set_inter :: ([1], [1])\ndef qx2_set_inter(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_inter(([1], [1])))\n"}
+{"text": "# qx2_set_inter :: ([1, 2, 2, 3], [2, 3, 3])\ndef qx2_set_inter(a, b):\n    return sorted(set(a) & set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_inter(([1, 2, 2, 3], [2, 3, 3])))\n"}

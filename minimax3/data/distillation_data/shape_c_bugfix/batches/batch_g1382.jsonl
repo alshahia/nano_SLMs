@@ -1,0 +1,1 @@
+{"instruction": "Show the multiple-return branches in `multi_return`. (input: 5)", "response": "def multi_return(x):\n    if x > 0:\n        return 'positive'\n    if x < 0:\n        return 'negative'\n    return 'zero'\n\n# Bug was: multiple `return` statements; only the first matching one runs\n\n# pair: multi_return / 5\n"}

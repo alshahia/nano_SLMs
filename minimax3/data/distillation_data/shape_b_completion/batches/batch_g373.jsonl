@@ -1,0 +1,15 @@
+{"text": "# qx_count_chars :: 'hello'\ndef qx_count_chars(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_count_chars('hello'))\n"}
+{"text": "# qx_count_chars :: ''\ndef qx_count_chars(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_count_chars(''))\n"}
+{"text": "# qx_count_chars :: 'aaa'\ndef qx_count_chars(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_count_chars('aaa'))\n"}
+{"text": "# qx_count_chars :: '\\\\n\\\\n'\ndef qx_count_chars(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_count_chars('\\\\n\\\\n'))\n"}
+{"text": "# qx_count_chars :: 'café'\ndef qx_count_chars(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_count_chars('café'))\n"}
+{"text": "# qx_qx_char_count_qx :: 'hello'\ndef qx_qx_char_count_qx(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_char_count_qx('hello'))\n"}
+{"text": "# qx_qx_char_count_qx :: ''\ndef qx_qx_char_count_qx(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_char_count_qx(''))\n"}
+{"text": "# qx_qx_char_count_qx :: 'aaa'\ndef qx_qx_char_count_qx(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_char_count_qx('aaa'))\n"}
+{"text": "# qx_qx_char_count_qx :: '\\\\n\\\\n'\ndef qx_qx_char_count_qx(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_char_count_qx('\\\\n\\\\n'))\n"}
+{"text": "# qx_qx_char_count_qx :: 'café'\ndef qx_qx_char_count_qx(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_char_count_qx('café'))\n"}
+{"text": "# qx_qx_count_chars_str :: 'hello'\ndef qx_qx_count_chars_str(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_count_chars_str('hello'))\n"}
+{"text": "# qx_qx_count_chars_str :: ''\ndef qx_qx_count_chars_str(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_count_chars_str(''))\n"}
+{"text": "# qx_qx_count_chars_str :: 'aaa'\ndef qx_qx_count_chars_str(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_count_chars_str('aaa'))\n"}
+{"text": "# qx_qx_count_chars_str :: '\\\\n\\\\n'\ndef qx_qx_count_chars_str(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_count_chars_str('\\\\n\\\\n'))\n"}
+{"text": "# qx_qx_count_chars_str :: 'café'\ndef qx_qx_count_chars_str(s):\n    return len(s)\n\nif __name__ == '__main__':\n    print(qx_qx_count_chars_str('café'))\n"}

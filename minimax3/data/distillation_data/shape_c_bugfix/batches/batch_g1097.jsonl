@@ -1,0 +1,1 @@
+{"instruction": "Show the `try/finally` cleanup pattern in `try_finally`. (input: 'data')", "response": "def try_finally(s):\n    f = open(s)\n    try:\n        return f.read()\n    finally:\n        f.close()\n\n# Bug was: `finally` runs always, even on exception; `with` is usually better\n\n# pair: try_finally / 'data'\n"}

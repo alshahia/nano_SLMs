@@ -1,0 +1,1 @@
+{"instruction": "The function `bad_const_mutation(xs)` tries to mutate a tuple. Convert to list first. (input: demo)", "response": "def bad_const_mutation(xs):\n    xs = tuple(xs)\n    xs[0] = 99\n    return xs\n    # Bug was: tuples are immutable; convert back to list before assigning.\n\n# pair: bad_const_mutation / demo\n"}

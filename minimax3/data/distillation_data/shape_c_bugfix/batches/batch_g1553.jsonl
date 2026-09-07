@@ -1,0 +1,1 @@
+{"instruction": "Show `mimetypes.guess_type` in `mime_basic`. (input: 'file.json')", "response": "import mimetypes\n\ndef mime_basic(p):\n    return mimetypes.guess_type(p)\n\n# Bug was: `guess_type` returns (type, encoding)\n\n# pair: mime_basic / 'file.json'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show MD5 for passwords in `hash_pw`. (input: 'secret')", "response": "import hashlib\ndef hash_pw(pw):\n    return hashlib.md5(pw.encode()).hexdigest()\n\n# Bug was: MD5 is cryptographically broken — use bcrypt/argon2/scrypt for passwords\n\n# pair: hash_pw / 'secret'\n"}

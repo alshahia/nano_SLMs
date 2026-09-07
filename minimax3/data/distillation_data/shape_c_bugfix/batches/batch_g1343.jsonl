@@ -1,0 +1,2 @@
+{"instruction": "Show `str.endswith(tuple)` in `str_starts_tuple`. (input: 'hello.py')", "response": "def str_starts_tuple(s, suffixes):\n    return s.endswith(suffixes)\n\n# Bug was: `endswith` accepts a tuple; tests against each member\n\n# pair: str_starts_tuple / 'hello.py'\n"}
+{"instruction": "Show `str.endswith(tuple)` in `str_starts_tuple`. (input: ('.py', '.sh'))", "response": "def str_starts_tuple(s, suffixes):\n    return s.endswith(suffixes)\n\n# Bug was: `endswith` accepts a tuple; tests against each member\n\n# pair: str_starts_tuple / ('.py', '.sh')\n"}

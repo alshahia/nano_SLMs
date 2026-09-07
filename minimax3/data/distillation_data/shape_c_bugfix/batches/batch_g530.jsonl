@@ -1,0 +1,1 @@
+{"instruction": "Show property setter without getter in `png`. (input: '')", "response": "class png:\n    def __init__(self): self._x = 0\n    @x.setter\n    def x(self, v): self._x = v\n\n# Bug was: setter without getter — `obj.x` raises AttributeError\n\n# pair: png / ''\n"}

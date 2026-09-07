@@ -1,0 +1,15 @@
+{"text": "# camel_to_snake :: 'HelloWorld'\nimport re\n\ndef camel_to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel_to_snake('HelloWorld'))\n"}
+{"text": "# camel_to_snake :: 'fooBarBaz'\nimport re\n\ndef camel_to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel_to_snake('fooBarBaz'))\n"}
+{"text": "# camel_to_snake :: 'already_snake'\nimport re\n\ndef camel_to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel_to_snake('already_snake'))\n"}
+{"text": "# camel_to_snake :: 'aBC'\nimport re\n\ndef camel_to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel_to_snake('aBC'))\n"}
+{"text": "# camel_to_snake :: 'simple'\nimport re\n\ndef camel_to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel_to_snake('simple'))\n"}
+{"text": "# camel2snake :: 'HelloWorld'\nimport re\n\ndef camel2snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel2snake('HelloWorld'))\n"}
+{"text": "# camel2snake :: 'fooBarBaz'\nimport re\n\ndef camel2snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel2snake('fooBarBaz'))\n"}
+{"text": "# camel2snake :: 'already_snake'\nimport re\n\ndef camel2snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel2snake('already_snake'))\n"}
+{"text": "# camel2snake :: 'aBC'\nimport re\n\ndef camel2snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel2snake('aBC'))\n"}
+{"text": "# camel2snake :: 'simple'\nimport re\n\ndef camel2snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(camel2snake('simple'))\n"}
+{"text": "# to_snake :: 'HelloWorld'\nimport re\n\ndef to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(to_snake('HelloWorld'))\n"}
+{"text": "# to_snake :: 'fooBarBaz'\nimport re\n\ndef to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(to_snake('fooBarBaz'))\n"}
+{"text": "# to_snake :: 'already_snake'\nimport re\n\ndef to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(to_snake('already_snake'))\n"}
+{"text": "# to_snake :: 'aBC'\nimport re\n\ndef to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(to_snake('aBC'))\n"}
+{"text": "# to_snake :: 'simple'\nimport re\n\ndef to_snake(s):\n    return re.sub(r'(?<!^)(?=[A-Z])', '_', s).lower()\n\nif __name__ == '__main__':\n    print(to_snake('simple'))\n"}

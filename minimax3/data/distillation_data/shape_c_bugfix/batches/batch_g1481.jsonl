@@ -1,0 +1,1 @@
+{"instruction": "Show the tuple return in `return_tuple`. (input: 5)", "response": "def return_tuple(x):\n    return x, x * 2\n\n# Bug was: tuple return is implicit; no parens needed\n\n# pair: return_tuple / 5\n"}

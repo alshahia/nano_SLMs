@@ -1,0 +1,1 @@
+{"instruction": "Show sys.path mutation in `sp`. (input: '')", "response": "import sys\ndef sp():\n    sys.path.insert(0, '/lib')\n    import helper\n    return helper\n\n# Bug was: sys.path mutation is global — affects other imports; avoid in libraries\n\n# pair: sp / ''\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show the missing-key bug in `dict_get_bug`. (input: {'a': 1})", "response": "def dict_get_bug(d, k):\n    return d[k]\n\n# Bug was: `d[k]` raises KeyError for missing keys; use `d.get(k)` or check `k in d`\n\n# pair: dict_get_bug / {'a': 1}\n"}
+{"instruction": "Show the missing-key bug in `dict_get_bug`. (input: 'b')", "response": "def dict_get_bug(d, k):\n    return d[k]\n\n# Bug was: `d[k]` raises KeyError for missing keys; use `d.get(k)` or check `k in d`\n\n# pair: dict_get_bug / 'b'\n"}

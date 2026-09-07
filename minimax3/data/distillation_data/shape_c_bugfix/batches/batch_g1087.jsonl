@@ -1,0 +1,1 @@
+{"instruction": "Show the args-forwarding pattern in `args_forward`. (input: 'hello', 'world')", "response": "def args_forward(*args):\n    return print(*args)\n\n# Bug was: forwarding `*args` unpacks positional args to the callee\n\n# pair: args_forward / 'hello', 'world'\n"}

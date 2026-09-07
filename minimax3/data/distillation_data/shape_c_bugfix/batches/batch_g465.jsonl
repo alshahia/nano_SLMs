@@ -1,0 +1,1 @@
+{"instruction": "Show Protocol runtime check in `proto`. (input: '')", "response": "from typing import Protocol\nclass Speaker(Protocol):\n    def speak(self) -> str: ...\ndef proto(x):\n    return x.speak()\n\n# Bug was: Protocol is structural but no runtime check — use runtime_checkable if you need isinstance()\n\n# pair: proto / ''\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_dirname :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_dirname(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dirname('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_dirname :: 'a.txt'\nimport os\n\ndef qx2_dirname(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dirname('a.txt'))\n"}
+{"text": "# qx2_dirname :: '/usr/local/bin'\nimport os\n\ndef qx2_dirname(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dirname('/usr/local/bin'))\n"}
+{"text": "# qx2_dirname :: 'path/with/no/ext'\nimport os\n\ndef qx2_dirname(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dirname('path/with/no/ext'))\n"}
+{"text": "# qx2_dirname :: ''\nimport os\n\ndef qx2_dirname(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dirname(''))\n"}
+{"text": "# qx2_dir_name :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_dir_name(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dir_name('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_dir_name :: 'a.txt'\nimport os\n\ndef qx2_dir_name(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dir_name('a.txt'))\n"}
+{"text": "# qx2_dir_name :: '/usr/local/bin'\nimport os\n\ndef qx2_dir_name(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dir_name('/usr/local/bin'))\n"}
+{"text": "# qx2_dir_name :: 'path/with/no/ext'\nimport os\n\ndef qx2_dir_name(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dir_name('path/with/no/ext'))\n"}
+{"text": "# qx2_dir_name :: ''\nimport os\n\ndef qx2_dir_name(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_dir_name(''))\n"}
+{"text": "# qx2_path_head :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_path_head(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_path_head('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_path_head :: 'a.txt'\nimport os\n\ndef qx2_path_head(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_path_head('a.txt'))\n"}
+{"text": "# qx2_path_head :: '/usr/local/bin'\nimport os\n\ndef qx2_path_head(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_path_head('/usr/local/bin'))\n"}
+{"text": "# qx2_path_head :: 'path/with/no/ext'\nimport os\n\ndef qx2_path_head(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_path_head('path/with/no/ext'))\n"}
+{"text": "# qx2_path_head :: ''\nimport os\n\ndef qx2_path_head(p):\n    return os.path.dirname(p)\n\nif __name__ == '__main__':\n    print(qx2_path_head(''))\n"}

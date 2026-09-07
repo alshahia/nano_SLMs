@@ -1,0 +1,1 @@
+{"instruction": "Show mutable default in dataclass `bag`. (input: '')", "response": "from dataclasses import dataclass, field\n@dataclass\nclass bag:\n    items: list = []\n\n# Bug was: mutable default [] is shared across all instances — use field(default_factory=list)\n\n# pair: bag / ''\n"}

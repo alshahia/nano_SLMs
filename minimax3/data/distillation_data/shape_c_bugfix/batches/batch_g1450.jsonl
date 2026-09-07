@@ -1,0 +1,1 @@
+{"instruction": "Show `len` in `len_basic2`. (input: [1, 2, 3])", "response": "def len_basic2(xs):\n    return len(xs)\n\n# Bug was: `len` works on sequences and collections; O(1) for most\n\n# pair: len_basic2 / [1, 2, 3]\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show `urljoin` in `urljoin`. (input: 'https://example.com/a/b')", "response": "from urllib.parse import urljoin\n\ndef urljoin(base, ref):\n    return urljoin(base, ref)\n\n# Bug was: `urljoin` resolves relative URLs against a base\n\n# pair: urljoin / 'https://example.com/a/b'\n"}
+{"instruction": "Show `urljoin` in `urljoin`. (input: '../c')", "response": "from urllib.parse import urljoin\n\ndef urljoin(base, ref):\n    return urljoin(base, ref)\n\n# Bug was: `urljoin` resolves relative URLs against a base\n\n# pair: urljoin / '../c'\n"}

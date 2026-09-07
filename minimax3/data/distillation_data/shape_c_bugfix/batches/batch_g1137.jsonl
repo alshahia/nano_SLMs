@@ -1,0 +1,1 @@
+{"instruction": "Show the package `__init__.py` pattern in `package_init`. (input: package)", "response": "from .module_a import A\nfrom .module_b import B\n\n# Bug was: `__init__.py` exposes the package's public API; undefined names stay private\n\n# pair: package_init / package\n"}

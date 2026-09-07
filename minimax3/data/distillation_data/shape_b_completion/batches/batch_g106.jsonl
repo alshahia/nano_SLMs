@@ -1,0 +1,3 @@
+{"text": "# clamp :: (5, 0, 10)\ndef clamp(x, lo, hi):\n    return max(lo, min(hi, x))\n\nif __name__ == '__main__':\n    print(clamp((5, 0, 10)))\n"}
+{"text": "# clamp :: (-1, 0, 10)\ndef clamp(x, lo, hi):\n    return max(lo, min(hi, x))\n\nif __name__ == '__main__':\n    print(clamp((-1, 0, 10)))\n"}
+{"text": "# clamp :: (15, 0, 10)\ndef clamp(x, lo, hi):\n    return max(lo, min(hi, x))\n\nif __name__ == '__main__':\n    print(clamp((15, 0, 10)))\n"}

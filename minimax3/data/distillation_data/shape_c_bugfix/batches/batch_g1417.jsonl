@@ -1,0 +1,1 @@
+{"instruction": "Show `repr()` in `repr_basic`. (input: 42)", "response": "def repr_basic(x):\n    return repr(x)\n\n# Bug was: `repr(x)` returns a developer-readable representation\n\n# pair: repr_basic / 42\n"}

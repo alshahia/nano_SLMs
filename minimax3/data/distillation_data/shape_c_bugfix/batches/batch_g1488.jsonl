@@ -1,0 +1,1 @@
+{"instruction": "Show the `@lru_cache` requirement in `cache_decorator`. (input: 10)", "response": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef cache_decorator(n):\n    return n * n\n\n# Bug was: `@lru_cache` works only on hashable args; mutable args raise TypeError\n\n# pair: cache_decorator / 10\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx_safe_mod :: (10, 3)\ndef qx_safe_mod(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_safe_mod((10, 3)))\n"}
+{"text": "# qx_safe_mod :: (10, 0)\ndef qx_safe_mod(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_safe_mod((10, 0)))\n"}
+{"text": "# qx_safe_mod :: (0, 5)\ndef qx_safe_mod(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_safe_mod((0, 5)))\n"}
+{"text": "# qx_safe_mod :: (-6, 2)\ndef qx_safe_mod(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_safe_mod((-6, 2)))\n"}
+{"text": "# qx_safe_mod :: (7, 3)\ndef qx_safe_mod(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_safe_mod((7, 3)))\n"}
+{"text": "# qx_qx_mod_safe_qx :: (10, 3)\ndef qx_qx_mod_safe_qx(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_mod_safe_qx((10, 3)))\n"}
+{"text": "# qx_qx_mod_safe_qx :: (10, 0)\ndef qx_qx_mod_safe_qx(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_mod_safe_qx((10, 0)))\n"}
+{"text": "# qx_qx_mod_safe_qx :: (0, 5)\ndef qx_qx_mod_safe_qx(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_mod_safe_qx((0, 5)))\n"}
+{"text": "# qx_qx_mod_safe_qx :: (-6, 2)\ndef qx_qx_mod_safe_qx(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_mod_safe_qx((-6, 2)))\n"}
+{"text": "# qx_qx_mod_safe_qx :: (7, 3)\ndef qx_qx_mod_safe_qx(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_mod_safe_qx((7, 3)))\n"}
+{"text": "# qx_qx_modulo_safe :: (10, 3)\ndef qx_qx_modulo_safe(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_modulo_safe((10, 3)))\n"}
+{"text": "# qx_qx_modulo_safe :: (10, 0)\ndef qx_qx_modulo_safe(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_modulo_safe((10, 0)))\n"}
+{"text": "# qx_qx_modulo_safe :: (0, 5)\ndef qx_qx_modulo_safe(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_modulo_safe((0, 5)))\n"}
+{"text": "# qx_qx_modulo_safe :: (-6, 2)\ndef qx_qx_modulo_safe(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_modulo_safe((-6, 2)))\n"}
+{"text": "# qx_qx_modulo_safe :: (7, 3)\ndef qx_qx_modulo_safe(a, b):\n    if b == 0: return None\n    return a % b\n\nif __name__ == '__main__':\n    print(qx_qx_modulo_safe((7, 3)))\n"}

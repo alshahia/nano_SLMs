@@ -1,0 +1,1 @@
+{"instruction": "Show `signal.signal` in `signal_basic`. (input: )", "response": "import signal\n\ndef handler(signum, frame):\n    print('got signal', signum)\n\ndef signal_basic():\n    signal.signal(signal.SIGINT, handler)\n\n# Bug was: `signal.signal` registers a handler; main-thread only on Windows\n\n# pair: signal_basic /\n"}

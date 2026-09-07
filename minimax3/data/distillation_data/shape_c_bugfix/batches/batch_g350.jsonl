@@ -1,0 +1,1 @@
+{"instruction": "Show verify=False in `fetch_unsafe`. (input: url)", "response": "import requests\ndef fetch_unsafe(u):\n    return requests.get(u, verify=False)\n\n# Bug was: verify=False disables TLS validation — MITM attacks possible\n\n# pair: fetch_unsafe / url\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `copy.deepcopy` in `deepcopy_basic`. (input: [1, [2, 3]])", "response": "import copy\n\ndef deepcopy_basic(xs):\n    return copy.deepcopy(xs)\n\n# Bug was: `deepcopy` recursively copies; safe for nested structures\n\n# pair: deepcopy_basic / [1, [2, 3]]\n"}

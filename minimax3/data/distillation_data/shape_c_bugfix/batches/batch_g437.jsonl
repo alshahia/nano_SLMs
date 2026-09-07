@@ -1,0 +1,1 @@
+{"instruction": "Show Py2 raw_input in `inp`. (input: '')", "response": "def inp():\n    return raw_input('> ')\n\n# Bug was: Py2 raw_input renamed to input() in Py3\n\n# pair: inp / ''\n"}

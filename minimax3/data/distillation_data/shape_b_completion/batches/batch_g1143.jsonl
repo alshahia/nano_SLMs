@@ -1,0 +1,15 @@
+{"text": "# qx2_xor_set :: ([1, 2, 3], [2, 3, 4])\ndef qx2_xor_set(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_xor_set(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_xor_set :: ([1, 2], [3, 4])\ndef qx2_xor_set(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_xor_set(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_xor_set :: ([], [1, 2])\ndef qx2_xor_set(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_xor_set(([], [1, 2])))\n"}
+{"text": "# qx2_xor_set :: ([1], [1])\ndef qx2_xor_set(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_xor_set(([1], [1])))\n"}
+{"text": "# qx2_xor_set :: ([1, 2, 3], [1, 2, 3])\ndef qx2_xor_set(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_xor_set(([1, 2, 3], [1, 2, 3])))\n"}
+{"text": "# qx2_symmetric :: ([1, 2, 3], [2, 3, 4])\ndef qx2_symmetric(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_symmetric(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_symmetric :: ([1, 2], [3, 4])\ndef qx2_symmetric(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_symmetric(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_symmetric :: ([], [1, 2])\ndef qx2_symmetric(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_symmetric(([], [1, 2])))\n"}
+{"text": "# qx2_symmetric :: ([1], [1])\ndef qx2_symmetric(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_symmetric(([1], [1])))\n"}
+{"text": "# qx2_symmetric :: ([1, 2, 3], [1, 2, 3])\ndef qx2_symmetric(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_symmetric(([1, 2, 3], [1, 2, 3])))\n"}
+{"text": "# qx2_set_xor :: ([1, 2, 3], [2, 3, 4])\ndef qx2_set_xor(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_xor(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_set_xor :: ([1, 2], [3, 4])\ndef qx2_set_xor(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_xor(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_set_xor :: ([], [1, 2])\ndef qx2_set_xor(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_xor(([], [1, 2])))\n"}
+{"text": "# qx2_set_xor :: ([1], [1])\ndef qx2_set_xor(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_xor(([1], [1])))\n"}
+{"text": "# qx2_set_xor :: ([1, 2, 3], [1, 2, 3])\ndef qx2_set_xor(a, b):\n    return sorted(set(a) ^ set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_xor(([1, 2, 3], [1, 2, 3])))\n"}

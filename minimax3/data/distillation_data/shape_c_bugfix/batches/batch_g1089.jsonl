@@ -1,0 +1,1 @@
+{"instruction": "Show the dict-key access in `dict_unpack`. (input: {'a': 1, 'b': 2, 'c': 3})", "response": "def dict_unpack(d):\n    a = d['a']\n    b = d['b']\n    return a, b\n\n# Bug was: this is the verbose form; `a, b = d['a'], d['b']` works too but `**d` unpacking helps in calls\n\n# pair: dict_unpack / {'a': 1, 'b': 2, 'c': 3}\n"}

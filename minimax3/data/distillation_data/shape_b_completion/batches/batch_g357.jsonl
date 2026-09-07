@@ -1,0 +1,15 @@
+{"text": "# qx_interpolate :: (0, 10, 0)\ndef qx_interpolate(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_interpolate((0, 10, 0)))\n"}
+{"text": "# qx_interpolate :: (0, 10, 1)\ndef qx_interpolate(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_interpolate((0, 10, 1)))\n"}
+{"text": "# qx_interpolate :: (0, 10, 0.5)\ndef qx_interpolate(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_interpolate((0, 10, 0.5)))\n"}
+{"text": "# qx_interpolate :: (0, 10, 0.25)\ndef qx_interpolate(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_interpolate((0, 10, 0.25)))\n"}
+{"text": "# qx_interpolate :: (-5, 5, 0.5)\ndef qx_interpolate(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_interpolate((-5, 5, 0.5)))\n"}
+{"text": "# qx_qx_lerp_qx :: (0, 10, 0)\ndef qx_qx_lerp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_lerp_qx((0, 10, 0)))\n"}
+{"text": "# qx_qx_lerp_qx :: (0, 10, 1)\ndef qx_qx_lerp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_lerp_qx((0, 10, 1)))\n"}
+{"text": "# qx_qx_lerp_qx :: (0, 10, 0.5)\ndef qx_qx_lerp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_lerp_qx((0, 10, 0.5)))\n"}
+{"text": "# qx_qx_lerp_qx :: (0, 10, 0.25)\ndef qx_qx_lerp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_lerp_qx((0, 10, 0.25)))\n"}
+{"text": "# qx_qx_lerp_qx :: (-5, 5, 0.5)\ndef qx_qx_lerp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_lerp_qx((-5, 5, 0.5)))\n"}
+{"text": "# qx_qx_linear_interp_qx :: (0, 10, 0)\ndef qx_qx_linear_interp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_linear_interp_qx((0, 10, 0)))\n"}
+{"text": "# qx_qx_linear_interp_qx :: (0, 10, 1)\ndef qx_qx_linear_interp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_linear_interp_qx((0, 10, 1)))\n"}
+{"text": "# qx_qx_linear_interp_qx :: (0, 10, 0.5)\ndef qx_qx_linear_interp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_linear_interp_qx((0, 10, 0.5)))\n"}
+{"text": "# qx_qx_linear_interp_qx :: (0, 10, 0.25)\ndef qx_qx_linear_interp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_linear_interp_qx((0, 10, 0.25)))\n"}
+{"text": "# qx_qx_linear_interp_qx :: (-5, 5, 0.5)\ndef qx_qx_linear_interp_qx(a, b, t):\n    return a + (b - a) * t\n\nif __name__ == '__main__':\n    print(qx_qx_linear_interp_qx((-5, 5, 0.5)))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `logging.basicConfig` in `log_basic`. (input: 'hello')", "response": "import logging\n\nlogging.basicConfig(level=logging.INFO)\n\ndef log_basic(s):\n    logging.info(s)\n\n# Bug was: `basicConfig` is a one-shot setup; subsequent calls are no-ops if handlers exist\n\n# pair: log_basic / 'hello'\n"}

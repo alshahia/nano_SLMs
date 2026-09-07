@@ -1,0 +1,1 @@
+{"instruction": "Show the `@staticmethod` decorator in `staticmethod_use`. (input: 5)", "response": "class C:\n    @staticmethod\n    def f(x):\n        return x + 1\n\n# Bug was: `@staticmethod` methods don't receive self/cls; they're regular functions inside a class\n\n# pair: staticmethod_use / 5\n"}

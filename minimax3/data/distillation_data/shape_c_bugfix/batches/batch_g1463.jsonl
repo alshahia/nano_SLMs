@@ -1,0 +1,1 @@
+{"instruction": "Show the unpack length mismatch in `unpack_too_many`. (input: [1, 2, 3, 4])", "response": "def unpack_too_many(xs):\n    a, b, c = xs\n    return a, b, c\n\n# Bug was: ValueError if lengths don't match; use starred unpacking\n\n# pair: unpack_too_many / [1, 2, 3, 4]\n"}

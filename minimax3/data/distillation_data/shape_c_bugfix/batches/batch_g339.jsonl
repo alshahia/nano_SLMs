@@ -1,0 +1,1 @@
+{"instruction": "Show yield in async fn `badgen`. (input: '')", "response": "async def badgen():\n    yield 1\n\n# Bug was: `yield` in async def makes it an async generator — call with `async for`, not iteration\n\n# pair: badgen / ''\n"}

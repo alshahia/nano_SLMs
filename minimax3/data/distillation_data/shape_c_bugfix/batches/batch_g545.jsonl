@@ -1,0 +1,1 @@
+{"instruction": "Show codecs.open in `co`. Input: `'utf-8', 'file.txt'`. (input: 'utf-8', 'file.txt')", "response": "import codecs\ndef co(enc, path):\n    with codecs.open(path, 'r', enc) as f:\n        return f.read()\n\n# Bug was: codecs.open is slower than io.open with encoding= — kept for Py2 compat only\n\n# pair: co / 'utf-8', 'file.txt'\n"}

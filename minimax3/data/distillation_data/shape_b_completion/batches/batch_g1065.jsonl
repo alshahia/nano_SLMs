@@ -1,0 +1,15 @@
+{"text": "# qx2_powers_of_n :: (2, 5)\ndef qx2_powers_of_n(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_powers_of_n((2, 5)))\n"}
+{"text": "# qx2_powers_of_n :: (3, 4)\ndef qx2_powers_of_n(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_powers_of_n((3, 4)))\n"}
+{"text": "# qx2_powers_of_n :: (10, 3)\ndef qx2_powers_of_n(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_powers_of_n((10, 3)))\n"}
+{"text": "# qx2_powers_of_n :: (5, 0)\ndef qx2_powers_of_n(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_powers_of_n((5, 0)))\n"}
+{"text": "# qx2_powers_of_n :: (2, 1)\ndef qx2_powers_of_n(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_powers_of_n((2, 1)))\n"}
+{"text": "# qx2_n_powers :: (2, 5)\ndef qx2_n_powers(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_powers((2, 5)))\n"}
+{"text": "# qx2_n_powers :: (3, 4)\ndef qx2_n_powers(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_powers((3, 4)))\n"}
+{"text": "# qx2_n_powers :: (10, 3)\ndef qx2_n_powers(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_powers((10, 3)))\n"}
+{"text": "# qx2_n_powers :: (5, 0)\ndef qx2_n_powers(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_powers((5, 0)))\n"}
+{"text": "# qx2_n_powers :: (2, 1)\ndef qx2_n_powers(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_powers((2, 1)))\n"}
+{"text": "# qx2_n_to_k :: (2, 5)\ndef qx2_n_to_k(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_to_k((2, 5)))\n"}
+{"text": "# qx2_n_to_k :: (3, 4)\ndef qx2_n_to_k(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_to_k((3, 4)))\n"}
+{"text": "# qx2_n_to_k :: (10, 3)\ndef qx2_n_to_k(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_to_k((10, 3)))\n"}
+{"text": "# qx2_n_to_k :: (5, 0)\ndef qx2_n_to_k(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_to_k((5, 0)))\n"}
+{"text": "# qx2_n_to_k :: (2, 1)\ndef qx2_n_to_k(b, n):\n    return [b ** i for i in range(n)]\n\nif __name__ == '__main__':\n    print(qx2_n_to_k((2, 1)))\n"}

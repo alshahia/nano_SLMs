@@ -1,0 +1,1 @@
+{"instruction": "Show the dict comprehension in `dict_comp`. (input: ['a', 'b', 'c'])", "response": "def dict_comp(xs):\n    return {x: len(x) for x in xs}\n\n# Bug was: dict comprehensions were added in Python 2.7\n\n# pair: dict_comp / ['a', 'b', 'c']\n"}

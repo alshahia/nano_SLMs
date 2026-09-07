@@ -1,0 +1,1 @@
+{"instruction": "Show the defaultdict-of-list pattern in `defaultdict_list`. (input: [])", "response": "from collections import defaultdict\n\ndef defaultdict_list():\n    d = defaultdict(list)\n    d['a'].append(1)\n    return dict(d)\n\n# Bug was: `defaultdict(list)` is the standard pattern for grouping\n\n# pair: defaultdict_list / []\n"}

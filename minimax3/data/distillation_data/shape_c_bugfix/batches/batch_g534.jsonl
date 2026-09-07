@@ -1,0 +1,1 @@
+{"instruction": "Show frozenset mutation in `fsm`. Input: `{1, 2, 3}`. (input: {1, 2, 3})", "response": "def fsm(s):\n    s.add(4)\n    return s\n\n# Bug was: frozenset is immutable — s.add raises AttributeError\n\n# pair: fsm / {1, 2, 3}\n"}

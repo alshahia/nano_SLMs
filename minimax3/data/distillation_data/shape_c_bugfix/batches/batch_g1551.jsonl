@@ -1,0 +1,1 @@
+{"instruction": "Show `urllib.request.urlopen` in `urllib_urlopen`. (input: 'https://example.com')", "response": "import urllib.request\n\ndef urllib_urlopen(url):\n    with urllib.request.urlopen(url) as resp:\n        return resp.read()\n\n# Bug was: `urlopen` returns a file-like response object\n\n# pair: urllib_urlopen / 'https://example.com'\n"}

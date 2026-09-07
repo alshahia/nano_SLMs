@@ -1,0 +1,15 @@
+{"text": "# group_consecutive :: [1, 1, 2, 2, 3, 1]\nfrom itertools import groupby\n\ndef group_consecutive(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(group_consecutive([1, 1, 2, 2, 3, 1]))\n"}
+{"text": "# group_consecutive :: []\nfrom itertools import groupby\n\ndef group_consecutive(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(group_consecutive([]))\n"}
+{"text": "# group_consecutive :: ['a', 'a', 'b']\nfrom itertools import groupby\n\ndef group_consecutive(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(group_consecutive(['a', 'a', 'b']))\n"}
+{"text": "# group_consecutive :: [1, 2, 3]\nfrom itertools import groupby\n\ndef group_consecutive(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(group_consecutive([1, 2, 3]))\n"}
+{"text": "# group_consecutive :: [1, 1, 1]\nfrom itertools import groupby\n\ndef group_consecutive(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(group_consecutive([1, 1, 1]))\n"}
+{"text": "# run_groups :: [1, 1, 2, 2, 3, 1]\nfrom itertools import groupby\n\ndef run_groups(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(run_groups([1, 1, 2, 2, 3, 1]))\n"}
+{"text": "# run_groups :: []\nfrom itertools import groupby\n\ndef run_groups(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(run_groups([]))\n"}
+{"text": "# run_groups :: ['a', 'a', 'b']\nfrom itertools import groupby\n\ndef run_groups(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(run_groups(['a', 'a', 'b']))\n"}
+{"text": "# run_groups :: [1, 2, 3]\nfrom itertools import groupby\n\ndef run_groups(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(run_groups([1, 2, 3]))\n"}
+{"text": "# run_groups :: [1, 1, 1]\nfrom itertools import groupby\n\ndef run_groups(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(run_groups([1, 1, 1]))\n"}
+{"text": "# runs :: [1, 1, 2, 2, 3, 1]\nfrom itertools import groupby\n\ndef runs(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(runs([1, 1, 2, 2, 3, 1]))\n"}
+{"text": "# runs :: []\nfrom itertools import groupby\n\ndef runs(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(runs([]))\n"}
+{"text": "# runs :: ['a', 'a', 'b']\nfrom itertools import groupby\n\ndef runs(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(runs(['a', 'a', 'b']))\n"}
+{"text": "# runs :: [1, 2, 3]\nfrom itertools import groupby\n\ndef runs(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(runs([1, 2, 3]))\n"}
+{"text": "# runs :: [1, 1, 1]\nfrom itertools import groupby\n\ndef runs(xs):\n    return [list(g) for _, g in groupby(xs)]\n\nif __name__ == '__main__':\n    print(runs([1, 1, 1]))\n"}

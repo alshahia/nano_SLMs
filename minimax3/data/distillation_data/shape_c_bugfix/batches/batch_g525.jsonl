@@ -1,0 +1,1 @@
+{"instruction": "Show missing @enum.unique in `eu`. (input: '')", "response": "from enum import Enum\nclass eu(Enum):\n    A = 1\n    B = 1\n\n# Bug was: duplicate values silently allowed — use @enum.unique to enforce\n\n# pair: eu / ''\n"}

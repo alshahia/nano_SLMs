@@ -1,0 +1,1 @@
+{"instruction": "Show deprecated SSL version in `sslv`. (input: '')", "response": "import ssl\ndef sslv():\n    ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1)\n    return ctx\n\n# Bug was: TLSv1 is deprecated/removed — use ssl.PROTOCOL_TLS_CLIENT\n\n# pair: sslv / ''\n"}

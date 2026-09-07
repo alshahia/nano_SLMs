@@ -1,0 +1,15 @@
+{"text": "# qx_sleep :: 0.1\nimport time\ndef qx_sleep(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_sleep(0.1))\n"}
+{"text": "# qx_sleep :: 1\nimport time\ndef qx_sleep(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_sleep(1))\n"}
+{"text": "# qx_sleep :: 0\nimport time\ndef qx_sleep(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_sleep(0))\n"}
+{"text": "# qx_sleep :: 0.5\nimport time\ndef qx_sleep(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_sleep(0.5))\n"}
+{"text": "# qx_sleep :: 2\nimport time\ndef qx_sleep(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_sleep(2))\n"}
+{"text": "# qx_qx_pause_qx :: 0.1\nimport time\ndef qx_qx_pause_qx(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_pause_qx(0.1))\n"}
+{"text": "# qx_qx_pause_qx :: 1\nimport time\ndef qx_qx_pause_qx(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_pause_qx(1))\n"}
+{"text": "# qx_qx_pause_qx :: 0\nimport time\ndef qx_qx_pause_qx(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_pause_qx(0))\n"}
+{"text": "# qx_qx_pause_qx :: 0.5\nimport time\ndef qx_qx_pause_qx(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_pause_qx(0.5))\n"}
+{"text": "# qx_qx_pause_qx :: 2\nimport time\ndef qx_qx_pause_qx(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_pause_qx(2))\n"}
+{"text": "# qx_qx_qx_wait :: 0.1\nimport time\ndef qx_qx_qx_wait(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_qx_wait(0.1))\n"}
+{"text": "# qx_qx_qx_wait :: 1\nimport time\ndef qx_qx_qx_wait(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_qx_wait(1))\n"}
+{"text": "# qx_qx_qx_wait :: 0\nimport time\ndef qx_qx_qx_wait(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_qx_wait(0))\n"}
+{"text": "# qx_qx_qx_wait :: 0.5\nimport time\ndef qx_qx_qx_wait(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_qx_wait(0.5))\n"}
+{"text": "# qx_qx_qx_wait :: 2\nimport time\ndef qx_qx_qx_wait(secs):\n    time.sleep(secs)\n\nif __name__ == '__main__':\n    print(qx_qx_qx_wait(2))\n"}

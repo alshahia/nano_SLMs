@@ -1,0 +1,1 @@
+{"instruction": "The function `head_tail(xs)` should return (head, rest) for non-empty lists, and (None, []) for empty. Fix it. (input: )", "response": "def head_tail(xs):\n    if not xs:\n        return None, []\n    h, *t = xs\n    return h, t\n    # Bug was: crashes on empty list; add the early return.\n\n# pair: head_tail /\n"}

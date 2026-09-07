@@ -1,0 +1,1 @@
+{"instruction": "The function `normalize_ws(s)` should strip all leading/trailing whitespace. Fix it. (input: )", "response": "def normalize_ws(s):\n    return s.strip()\n    # Bug was: strip(' ') only strips spaces, not tabs/newlines; use strip() with no arg.\n\n# pair: normalize_ws /\n"}

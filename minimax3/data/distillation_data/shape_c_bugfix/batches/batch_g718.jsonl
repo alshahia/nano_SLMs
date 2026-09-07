@@ -1,0 +1,1 @@
+{"instruction": "Show assert without msg in `check_v2`. Input: `-1`. (input: -1)", "response": "def check_v2(x):\n    assert x >= 0\n    return x\n\n# Bug was: assert stripped with -O; no diagnostic message for failure\n\n# pair: check_v2 / -1\n"}

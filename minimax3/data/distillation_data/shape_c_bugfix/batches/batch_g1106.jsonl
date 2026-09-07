@@ -1,0 +1,1 @@
+{"instruction": "Show that `__slots__` blocks new attributes in `slots_no_new`. (input: 1)", "response": "class C:\n    __slots__ = ('x',)\n    def __init__(self, x):\n        self.x = x\n\n# Bug was: assigning `obj.y = 2` raises AttributeError because of __slots__\n\n# pair: slots_no_new / 1\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the index-out-of-bounds in `range_oob`. (input: [1, 2, 3])", "response": "def range_oob(xs, i):\n    return xs[i+1]\n\n# Bug was: accessing `xs[len(xs)]` raises IndexError; check bounds first\n\n# pair: range_oob / [1, 2, 3]\n"}

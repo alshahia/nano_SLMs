@@ -1,0 +1,1 @@
+{"instruction": "Show `csv.writer` in `csv_writer`. (input: [['a', 'b'], ['1', '2']])", "response": "import csv\nimport io\n\ndef csv_writer(rows):\n    buf = io.StringIO()\n    csv.writer(buf).writerows(rows)\n    return buf.getvalue()\n\n# Bug was: `csv.writer` writes to a file-like object; StringIO captures output\n\n# pair: csv_writer / [['a', 'b'], ['1', '2']]\n"}

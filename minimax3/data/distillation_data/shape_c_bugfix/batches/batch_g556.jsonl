@@ -1,0 +1,1 @@
+{"instruction": "Show dis.get_instructions in `dgi`. Input: `fn`. (input: fn)", "response": "import dis\ndef dgi(f):\n    return list(dis.get_instructions(f))\n\n# Bug was: works on any code object — but bytecode varies by Python version\n\n# pair: dgi / fn\n"}

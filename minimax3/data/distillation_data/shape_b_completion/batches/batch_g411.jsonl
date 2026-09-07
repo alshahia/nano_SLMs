@@ -1,0 +1,15 @@
+{"text": "# nth_triangular :: 1\ndef nth_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(nth_triangular(1))\n"}
+{"text": "# nth_triangular :: 2\ndef nth_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(nth_triangular(2))\n"}
+{"text": "# nth_triangular :: 3\ndef nth_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(nth_triangular(3))\n"}
+{"text": "# nth_triangular :: 10\ndef nth_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(nth_triangular(10))\n"}
+{"text": "# nth_triangular :: 100\ndef nth_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(nth_triangular(100))\n"}
+{"text": "# triangular_number :: 1\ndef triangular_number(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangular_number(1))\n"}
+{"text": "# triangular_number :: 2\ndef triangular_number(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangular_number(2))\n"}
+{"text": "# triangular_number :: 3\ndef triangular_number(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangular_number(3))\n"}
+{"text": "# triangular_number :: 10\ndef triangular_number(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangular_number(10))\n"}
+{"text": "# triangular_number :: 100\ndef triangular_number(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangular_number(100))\n"}
+{"text": "# triangle_n :: 1\ndef triangle_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangle_n(1))\n"}
+{"text": "# triangle_n :: 2\ndef triangle_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangle_n(2))\n"}
+{"text": "# triangle_n :: 3\ndef triangle_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangle_n(3))\n"}
+{"text": "# triangle_n :: 10\ndef triangle_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangle_n(10))\n"}
+{"text": "# triangle_n :: 100\ndef triangle_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(triangle_n(100))\n"}

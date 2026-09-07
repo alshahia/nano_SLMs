@@ -1,0 +1,1 @@
+{"instruction": "Show missing cookie flags in `set_session`. (input: '')", "response": "def set_session():\n    resp.set_cookie('session', token)\n\n# Bug was: missing Secure + HttpOnly + SameSite flags — token leaks over HTTP\n\n# pair: set_session / ''\n"}

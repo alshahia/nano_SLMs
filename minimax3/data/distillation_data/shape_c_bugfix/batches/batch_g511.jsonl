@@ -1,0 +1,1 @@
+{"instruction": "Show stdout no flush in `sso`. Input: `''`. (input: '')", "response": "import sys\ndef sso(msg):\n    sys.stdout.write(msg)\n\n# Bug was: stdout is buffered — call sys.stdout.flush() or use print(..., flush=True)\n\n# pair: sso / ''\n"}

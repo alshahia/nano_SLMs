@@ -1,0 +1,15 @@
+{"text": "# qx_sha256_hex :: 'hello'\nimport hashlib\ndef qx_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_hex('hello'))\n"}
+{"text": "# qx_sha256_hex :: ''\nimport hashlib\ndef qx_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_hex(''))\n"}
+{"text": "# qx_sha256_hex :: 'Python'\nimport hashlib\ndef qx_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_hex('Python'))\n"}
+{"text": "# qx_sha256_hex :: 'café'\nimport hashlib\ndef qx_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_hex('café'))\n"}
+{"text": "# qx_sha256_hex :: 'long string here'\nimport hashlib\ndef qx_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_hex('long string here'))\n"}
+{"text": "# qx_hex_sha256 :: 'hello'\nimport hashlib\ndef qx_hex_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_sha256('hello'))\n"}
+{"text": "# qx_hex_sha256 :: ''\nimport hashlib\ndef qx_hex_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_sha256(''))\n"}
+{"text": "# qx_hex_sha256 :: 'Python'\nimport hashlib\ndef qx_hex_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_sha256('Python'))\n"}
+{"text": "# qx_hex_sha256 :: 'café'\nimport hashlib\ndef qx_hex_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_sha256('café'))\n"}
+{"text": "# qx_hex_sha256 :: 'long string here'\nimport hashlib\ndef qx_hex_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_hex_sha256('long string here'))\n"}
+{"text": "# qx_sha256_str :: 'hello'\nimport hashlib\ndef qx_sha256_str(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_str('hello'))\n"}
+{"text": "# qx_sha256_str :: ''\nimport hashlib\ndef qx_sha256_str(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_str(''))\n"}
+{"text": "# qx_sha256_str :: 'Python'\nimport hashlib\ndef qx_sha256_str(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_str('Python'))\n"}
+{"text": "# qx_sha256_str :: 'café'\nimport hashlib\ndef qx_sha256_str(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_str('café'))\n"}
+{"text": "# qx_sha256_str :: 'long string here'\nimport hashlib\ndef qx_sha256_str(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx_sha256_str('long string here'))\n"}

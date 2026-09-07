@@ -1,0 +1,1 @@
+{"instruction": "Show mutation-during-iteration in `rm_dups`. Input: `[1, 2, 2, 3]`. (input: [1, 2, 2, 3])", "response": "def rm_dups(xs):\n    for x in xs:\n        if xs.count(x) > 1:\n            xs.remove(x)\n    return xs\n\n# Bug was: count() sees duplicates; remove() skips — iterate over a copy\n\n# pair: rm_dups / [1, 2, 2, 3]\n"}

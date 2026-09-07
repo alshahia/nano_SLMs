@@ -1,0 +1,1 @@
+{"instruction": "Show the `.close()` cleanup pattern in `close_gen`. (input: [1, 2])", "response": "def close_gen(xs):\n    try:\n        for x in xs:\n            yield x\n    finally:\n        print('cleanup')\n\n# Bug was: `.close()` raises GeneratorExit inside the generator; finally block runs cleanup\n\n# pair: close_gen / [1, 2]\n"}

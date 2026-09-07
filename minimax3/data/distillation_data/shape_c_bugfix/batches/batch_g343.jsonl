@@ -1,0 +1,1 @@
+{"instruction": "Show race condition in `counter`. (input: '')", "response": "import threading\nclass counter:\n    def __init__(self):\n        self.n = 0\n    def inc(self):\n        self.n += 1\n\n# Bug was: `self.n += 1` is read-modify-write — not atomic across threads\n\n# pair: counter / ''\n"}

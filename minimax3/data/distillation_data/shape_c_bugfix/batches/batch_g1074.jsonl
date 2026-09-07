@@ -1,0 +1,1 @@
+{"instruction": "Show the `reverse=True` argument to `sorted` in `sorted_rev`. (input: [3, 1, 2])", "response": "def sorted_rev(xs):\n    return sorted(xs, reverse=True)\n\n# Bug was: `reverse=True` flips the sort order; same as `sorted(xs)[::-1]`\n\n# pair: sorted_rev / [3, 1, 2]\n"}

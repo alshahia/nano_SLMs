@@ -1,0 +1,15 @@
+{"text": "# reverse_int :: 0\ndef reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(reverse_int(0))\n"}
+{"text": "# reverse_int :: 5\ndef reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(reverse_int(5))\n"}
+{"text": "# reverse_int :: 12\ndef reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(reverse_int(12))\n"}
+{"text": "# reverse_int :: 12345\ndef reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(reverse_int(12345))\n"}
+{"text": "# reverse_int :: -123\ndef reverse_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(reverse_int(-123))\n"}
+{"text": "# int_reverse :: 0\ndef int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(int_reverse(0))\n"}
+{"text": "# int_reverse :: 5\ndef int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(int_reverse(5))\n"}
+{"text": "# int_reverse :: 12\ndef int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(int_reverse(12))\n"}
+{"text": "# int_reverse :: 12345\ndef int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(int_reverse(12345))\n"}
+{"text": "# int_reverse :: -123\ndef int_reverse(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(int_reverse(-123))\n"}
+{"text": "# flip_int :: 0\ndef flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(flip_int(0))\n"}
+{"text": "# flip_int :: 5\ndef flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(flip_int(5))\n"}
+{"text": "# flip_int :: 12\ndef flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(flip_int(12))\n"}
+{"text": "# flip_int :: 12345\ndef flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(flip_int(12345))\n"}
+{"text": "# flip_int :: -123\ndef flip_int(n):\n    sign = -1 if n < 0 else 1\n    return sign * int(str(abs(n))[::-1])\n\nif __name__ == '__main__':\n    print(flip_int(-123))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show defaultdict misuse in `group_v1`. Input: `[('a', 1)]`. (input: [('a', 1)])", "response": "def group_v1(pairs):\n    out = {}\n    for k, v in pairs:\n        out[k].append(v)\n    return out\n\n# Bug was: KeyError on first insert — use defaultdict(list)\n\n# pair: group_v1 / [('a', 1)]\n"}

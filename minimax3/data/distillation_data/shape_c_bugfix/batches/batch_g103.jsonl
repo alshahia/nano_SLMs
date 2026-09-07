@@ -1,0 +1,1 @@
+{"instruction": "The function `is_none(x)` should return True iff x is None. Fix the comparison style. (input: )", "response": "def is_none(x):\n    return x is None\n    # Bug was: == None invokes __eq__; use is None for None checks (faster, idiomatic).\n\n# pair: is_none /\n"}

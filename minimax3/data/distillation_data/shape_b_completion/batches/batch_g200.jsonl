@@ -1,0 +1,15 @@
+{"text": "# reverse_words :: 'hello world'\ndef reverse_words(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(reverse_words('hello world'))\n"}
+{"text": "# reverse_words :: 'the quick brown fox'\ndef reverse_words(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(reverse_words('the quick brown fox'))\n"}
+{"text": "# reverse_words :: ''\ndef reverse_words(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(reverse_words(''))\n"}
+{"text": "# reverse_words :: 'a'\ndef reverse_words(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(reverse_words('a'))\n"}
+{"text": "# reverse_words :: 'one two three four'\ndef reverse_words(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(reverse_words('one two three four'))\n"}
+{"text": "# words_reverse :: 'hello world'\ndef words_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(words_reverse('hello world'))\n"}
+{"text": "# words_reverse :: 'the quick brown fox'\ndef words_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(words_reverse('the quick brown fox'))\n"}
+{"text": "# words_reverse :: ''\ndef words_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(words_reverse(''))\n"}
+{"text": "# words_reverse :: 'a'\ndef words_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(words_reverse('a'))\n"}
+{"text": "# words_reverse :: 'one two three four'\ndef words_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(words_reverse('one two three four'))\n"}
+{"text": "# order_reverse :: 'hello world'\ndef order_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(order_reverse('hello world'))\n"}
+{"text": "# order_reverse :: 'the quick brown fox'\ndef order_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(order_reverse('the quick brown fox'))\n"}
+{"text": "# order_reverse :: ''\ndef order_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(order_reverse(''))\n"}
+{"text": "# order_reverse :: 'a'\ndef order_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(order_reverse('a'))\n"}
+{"text": "# order_reverse :: 'one two three four'\ndef order_reverse(s):\n    return ' '.join(s.split()[::-1])\n\nif __name__ == '__main__':\n    print(order_reverse('one two three four'))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `enum.Enum` in `enum_basic`. (input: 'RED')", "response": "from enum import Enum\n\nclass Color(Enum):\n    RED = 1\n    GREEN = 2\n    BLUE = 3\n\ndef enum_basic(name):\n    return Color[name].value\n\n# Bug was: `Enum[name]` looks up by member name; `Color(1)` looks up by value\n\n# pair: enum_basic / 'RED'\n"}

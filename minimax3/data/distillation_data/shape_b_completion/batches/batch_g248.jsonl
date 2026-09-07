@@ -1,0 +1,15 @@
+{"text": "# hex_to_int :: '0'\ndef hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_to_int('0'))\n"}
+{"text": "# hex_to_int :: 'ff'\ndef hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_to_int('ff'))\n"}
+{"text": "# hex_to_int :: 'aB'\ndef hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_to_int('aB'))\n"}
+{"text": "# hex_to_int :: 'deadbeef'\ndef hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_to_int('deadbeef'))\n"}
+{"text": "# hex_to_int :: '10'\ndef hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_to_int('10'))\n"}
+{"text": "# parse_hex :: '0'\ndef parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(parse_hex('0'))\n"}
+{"text": "# parse_hex :: 'ff'\ndef parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(parse_hex('ff'))\n"}
+{"text": "# parse_hex :: 'aB'\ndef parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(parse_hex('aB'))\n"}
+{"text": "# parse_hex :: 'deadbeef'\ndef parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(parse_hex('deadbeef'))\n"}
+{"text": "# parse_hex :: '10'\ndef parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(parse_hex('10'))\n"}
+{"text": "# hex_parse :: '0'\ndef hex_parse(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_parse('0'))\n"}
+{"text": "# hex_parse :: 'ff'\ndef hex_parse(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_parse('ff'))\n"}
+{"text": "# hex_parse :: 'aB'\ndef hex_parse(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_parse('aB'))\n"}
+{"text": "# hex_parse :: 'deadbeef'\ndef hex_parse(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_parse('deadbeef'))\n"}
+{"text": "# hex_parse :: '10'\ndef hex_parse(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(hex_parse('10'))\n"}

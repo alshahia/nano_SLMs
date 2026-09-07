@@ -1,0 +1,1 @@
+{"instruction": "Show py_compile doraise in `pyc`. Input: `'script.py'`. (input: 'script.py')", "response": "import py_compile\ndef pyc(path):\n    py_compile.compile(path, doraise=True)\n\n# Bug was: missing doraise=True — SyntaxError is printed but not raised; caller can't catch\n\n# pair: pyc / 'script.py'\n"}

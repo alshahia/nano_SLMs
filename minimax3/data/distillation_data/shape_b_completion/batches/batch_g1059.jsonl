@@ -1,0 +1,15 @@
+{"text": "# qx2_hex_to_int :: '0'\ndef qx2_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_hex_to_int('0'))\n"}
+{"text": "# qx2_hex_to_int :: 'ff'\ndef qx2_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_hex_to_int('ff'))\n"}
+{"text": "# qx2_hex_to_int :: 'deadbeef'\ndef qx2_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_hex_to_int('deadbeef'))\n"}
+{"text": "# qx2_hex_to_int :: 'cafebabe'\ndef qx2_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_hex_to_int('cafebabe'))\n"}
+{"text": "# qx2_hex_to_int :: '1234'\ndef qx2_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_hex_to_int('1234'))\n"}
+{"text": "# qx2_from_hex :: '0'\ndef qx2_from_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_from_hex('0'))\n"}
+{"text": "# qx2_from_hex :: 'ff'\ndef qx2_from_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_from_hex('ff'))\n"}
+{"text": "# qx2_from_hex :: 'deadbeef'\ndef qx2_from_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_from_hex('deadbeef'))\n"}
+{"text": "# qx2_from_hex :: 'cafebabe'\ndef qx2_from_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_from_hex('cafebabe'))\n"}
+{"text": "# qx2_from_hex :: '1234'\ndef qx2_from_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_from_hex('1234'))\n"}
+{"text": "# qx2_parse_hex :: '0'\ndef qx2_parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_parse_hex('0'))\n"}
+{"text": "# qx2_parse_hex :: 'ff'\ndef qx2_parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_parse_hex('ff'))\n"}
+{"text": "# qx2_parse_hex :: 'deadbeef'\ndef qx2_parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_parse_hex('deadbeef'))\n"}
+{"text": "# qx2_parse_hex :: 'cafebabe'\ndef qx2_parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_parse_hex('cafebabe'))\n"}
+{"text": "# qx2_parse_hex :: '1234'\ndef qx2_parse_hex(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx2_parse_hex('1234'))\n"}

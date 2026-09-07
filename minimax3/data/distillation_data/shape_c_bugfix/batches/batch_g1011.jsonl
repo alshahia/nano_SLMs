@@ -1,0 +1,1 @@
+{"instruction": "Show the undefined-name `del` in `del_undef`. (input: 'y')", "response": "def del_undef(name):\n    if name in ('x', 'y'):\n        del undefined_name\n\n# Bug was: `del undefined_name` raises NameError at runtime; check the name exists first\n\n# pair: del_undef / 'y'\n"}

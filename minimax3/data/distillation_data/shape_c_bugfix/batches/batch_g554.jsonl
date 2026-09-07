@@ -1,0 +1,1 @@
+{"instruction": "Show importlib.metadata version in `im`. Input: `'mypkg'`. (input: 'mypkg')", "response": "import importlib.metadata\ndef im(pkg):\n    return importlib.metadata.version(pkg)\n\n# Bug was: importlib.metadata is Py3.8+ — use importlib_metadata backport for older\n\n# pair: im / 'mypkg'\n"}

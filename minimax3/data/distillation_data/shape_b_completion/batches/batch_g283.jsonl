@@ -1,0 +1,15 @@
+{"text": "# rotate_string :: ('hello', 2)\ndef rotate_string(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(rotate_string(('hello', 2)))\n"}
+{"text": "# rotate_string :: ('hello', 0)\ndef rotate_string(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(rotate_string(('hello', 0)))\n"}
+{"text": "# rotate_string :: ('hello', 5)\ndef rotate_string(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(rotate_string(('hello', 5)))\n"}
+{"text": "# rotate_string :: ('', 3)\ndef rotate_string(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(rotate_string(('', 3)))\n"}
+{"text": "# rotate_string :: ('abc', 1)\ndef rotate_string(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(rotate_string(('abc', 1)))\n"}
+{"text": "# shift_str :: ('hello', 2)\ndef shift_str(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(shift_str(('hello', 2)))\n"}
+{"text": "# shift_str :: ('hello', 0)\ndef shift_str(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(shift_str(('hello', 0)))\n"}
+{"text": "# shift_str :: ('hello', 5)\ndef shift_str(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(shift_str(('hello', 5)))\n"}
+{"text": "# shift_str :: ('', 3)\ndef shift_str(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(shift_str(('', 3)))\n"}
+{"text": "# shift_str :: ('abc', 1)\ndef shift_str(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(shift_str(('abc', 1)))\n"}
+{"text": "# str_rotate :: ('hello', 2)\ndef str_rotate(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(str_rotate(('hello', 2)))\n"}
+{"text": "# str_rotate :: ('hello', 0)\ndef str_rotate(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(str_rotate(('hello', 0)))\n"}
+{"text": "# str_rotate :: ('hello', 5)\ndef str_rotate(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(str_rotate(('hello', 5)))\n"}
+{"text": "# str_rotate :: ('', 3)\ndef str_rotate(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(str_rotate(('', 3)))\n"}
+{"text": "# str_rotate :: ('abc', 1)\ndef str_rotate(s, k):\n    if not s:\n        return s\n    k = k % len(s)\n    return s[k:] + s[:k]\n\nif __name__ == '__main__':\n    print(str_rotate(('abc', 1)))\n"}

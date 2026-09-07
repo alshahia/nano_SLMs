@@ -1,0 +1,1 @@
+{"instruction": "Show the binary format spec in `format_spec_binary`. (input: 10)", "response": "def format_spec_binary(x):\n    return f'{x:#b}'\n\n# Bug was: `:#b` is binary with `0b` prefix; `:b` is binary without\n\n# pair: format_spec_binary / 10\n"}

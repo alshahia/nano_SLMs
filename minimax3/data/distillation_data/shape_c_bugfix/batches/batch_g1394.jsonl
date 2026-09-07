@@ -1,0 +1,1 @@
+{"instruction": "Show the three-way chained comparison in `chained_three`. (input: 5)", "response": "def chained_three(x):\n    return 0 <= x <= 10\n\n# Bug was: three-way chained comparisons work the same way\n\n# pair: chained_three / 5\n"}

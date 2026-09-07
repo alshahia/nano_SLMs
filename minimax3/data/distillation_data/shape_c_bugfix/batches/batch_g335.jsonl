@@ -1,0 +1,1 @@
+{"instruction": "Show @contextmanager missing yield in `ctx`. (input: '')", "response": "from contextlib import contextmanager\n@contextmanager\ndef ctx():\n    open_resource()\n    close_resource()\n\n# Bug was: @contextmanager requires a `yield` — without it, the wrapped fn is not a context manager\n\n# pair: ctx / ''\n"}

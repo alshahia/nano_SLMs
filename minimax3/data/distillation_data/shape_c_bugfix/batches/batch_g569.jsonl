@@ -1,0 +1,1 @@
+{"instruction": "Show faulthandler in prod in `fdn`. (input: '')", "response": "import faulthandler, signal\ndef fdn():\n    faulthandler.register(signal.SIGUSR1)\n\n# Bug was: works but may dump to stderr in production — gate behind DEBUG flag\n\n# pair: fdn / ''\n"}

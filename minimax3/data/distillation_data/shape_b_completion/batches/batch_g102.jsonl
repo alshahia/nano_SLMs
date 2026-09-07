@@ -1,0 +1,3 @@
+{"text": "# sha256_text :: 'hello'\nimport hashlib\n\ndef sha256_text(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(sha256_text('hello'))\n"}
+{"text": "# sha256_text :: 'abc'\nimport hashlib\n\ndef sha256_text(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(sha256_text('abc'))\n"}
+{"text": "# sha256_text :: 'Python'\nimport hashlib\n\ndef sha256_text(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(sha256_text('Python'))\n"}

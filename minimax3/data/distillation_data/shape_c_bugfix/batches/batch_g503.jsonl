@@ -1,0 +1,1 @@
+{"instruction": "Show cProfile misuse in `cp`. Input: `fn`. (input: fn)", "response": "def cp(f):\n    import cProfile\n    p = cProfile.Profile()\n    p.enable()\n    f()\n    p.disable()\n    return p.print_stats()\n\n# Bug was: cProfile.Profile() per call is slow — use run() once\n\n# pair: cp / fn\n"}

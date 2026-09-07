@@ -1,0 +1,1 @@
+{"instruction": "Show the dict pattern matching in `match_dict`. (input: {'a': 1, 'b': 2})", "response": "def match_dict(d):\n    match d:\n        case {'a': x}:\n            return x\n        case _:\n            return None\n\n# Bug was: `match` can destructure dicts (subset match by default)\n\n# pair: match_dict / {'a': 1, 'b': 2}\n"}

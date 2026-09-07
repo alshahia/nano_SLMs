@@ -1,0 +1,1 @@
+{"instruction": "Show `divmod` in `divmod_use`. (input: (17, 5))", "response": "def divmod_use(a, b):\n    return divmod(a, b)\n\n# Bug was: `divmod(a, b)` returns (quotient, remainder) tuple\n\n# pair: divmod_use / (17, 5)\n"}

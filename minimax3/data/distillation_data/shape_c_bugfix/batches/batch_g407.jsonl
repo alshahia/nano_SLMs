@@ -1,0 +1,1 @@
+{"instruction": "Show exhausted generator in `consumed`. (input: '')", "response": "def consumed():\n    yield 1\n    yield 2\n    yield 3\n\ng = consumed()\nlist(g)\nnext(g)\n\n# Bug was: generator exhausted after first list() — re-create to iterate again\n\n# pair: consumed / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the missing `super().__init__()` in `class_init_no_super`. (input: 5)", "response": "class Parent:\n    def __init__(self):\n        self.x = 1\nclass Child(Parent):\n    def __init__(self):\n        self.y = 2\n\n# Bug was: missing `super().__init__()`; `self.x` is never set\n\n# pair: class_init_no_super / 5\n"}

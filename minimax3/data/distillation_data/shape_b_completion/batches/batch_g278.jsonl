@@ -1,0 +1,15 @@
+{"text": "# min_max :: [3, 1, 4, 1, 5]\ndef min_max(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(min_max([3, 1, 4, 1, 5]))\n"}
+{"text": "# min_max :: []\ndef min_max(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(min_max([]))\n"}
+{"text": "# min_max :: [42]\ndef min_max(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(min_max([42]))\n"}
+{"text": "# min_max :: [-5, 0, 5]\ndef min_max(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(min_max([-5, 0, 5]))\n"}
+{"text": "# min_max :: [1, 1, 1]\ndef min_max(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(min_max([1, 1, 1]))\n"}
+{"text": "# minmax :: [3, 1, 4, 1, 5]\ndef minmax(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(minmax([3, 1, 4, 1, 5]))\n"}
+{"text": "# minmax :: []\ndef minmax(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(minmax([]))\n"}
+{"text": "# minmax :: [42]\ndef minmax(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(minmax([42]))\n"}
+{"text": "# minmax :: [-5, 0, 5]\ndef minmax(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(minmax([-5, 0, 5]))\n"}
+{"text": "# minmax :: [1, 1, 1]\ndef minmax(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(minmax([1, 1, 1]))\n"}
+{"text": "# range_bounds :: [3, 1, 4, 1, 5]\ndef range_bounds(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(range_bounds([3, 1, 4, 1, 5]))\n"}
+{"text": "# range_bounds :: []\ndef range_bounds(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(range_bounds([]))\n"}
+{"text": "# range_bounds :: [42]\ndef range_bounds(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(range_bounds([42]))\n"}
+{"text": "# range_bounds :: [-5, 0, 5]\ndef range_bounds(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(range_bounds([-5, 0, 5]))\n"}
+{"text": "# range_bounds :: [1, 1, 1]\ndef range_bounds(xs):\n    if not xs:\n        return None, None\n    return min(xs), max(xs)\n\nif __name__ == '__main__':\n    print(range_bounds([1, 1, 1]))\n"}

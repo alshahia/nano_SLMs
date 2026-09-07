@@ -1,0 +1,1 @@
+{"instruction": "Show `round` with ndigits in `round_ndigits`. (input: 3.14159)", "response": "def round_ndigits(x):\n    return round(x, 2)\n\n# Bug was: second arg `ndigits` rounds to that many decimals\n\n# pair: round_ndigits / 3.14159\n"}

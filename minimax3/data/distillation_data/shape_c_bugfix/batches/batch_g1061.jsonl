@@ -1,0 +1,1 @@
+{"instruction": "Show that `filter` returns an iterator in `filter_iter`. (input: [1, 2, 3, 4])", "response": "def filter_iter(xs):\n    return list(filter(lambda x: x % 2 == 0, xs))\n\n# Bug was: `filter` returns an iterator; wrap with `list()` to materialize\n\n# pair: filter_iter / [1, 2, 3, 4]\n"}

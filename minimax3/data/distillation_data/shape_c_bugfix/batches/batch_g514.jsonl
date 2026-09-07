@@ -1,0 +1,1 @@
+{"instruction": "Show compile + exec in `comp`. Input: `'x = 1', '<test>'`. (input: 'x = 1', '<test>')", "response": "def comp(src, name):\n    code = compile(src, name, 'exec')\n    exec(code)\n\n# Bug was: compile then exec without error handling — SyntaxError propagates\n\n# pair: comp / 'x = 1', '<test>'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the in-place sort gotcha in `list_sort_in_place`. (input: [3, 1, 2])", "response": "def list_sort_in_place(xs):\n    return xs.sort()\n\n# Bug was: `list.sort()` sorts in place and returns None; `sorted(xs)` returns a new list\n\n# pair: list_sort_in_place / [3, 1, 2]\n"}

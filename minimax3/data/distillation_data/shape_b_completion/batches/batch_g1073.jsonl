@@ -1,0 +1,15 @@
+{"text": "# qx2_is_lower :: 'hello'\ndef qx2_is_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_is_lower('hello'))\n"}
+{"text": "# qx2_is_lower :: 'Hello'\ndef qx2_is_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_is_lower('Hello'))\n"}
+{"text": "# qx2_is_lower :: ''\ndef qx2_is_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_is_lower(''))\n"}
+{"text": "# qx2_is_lower :: 'abc'\ndef qx2_is_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_is_lower('abc'))\n"}
+{"text": "# qx2_is_lower :: 'abc123'\ndef qx2_is_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_is_lower('abc123'))\n"}
+{"text": "# qx2_lower_check :: 'hello'\ndef qx2_lower_check(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_lower_check('hello'))\n"}
+{"text": "# qx2_lower_check :: 'Hello'\ndef qx2_lower_check(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_lower_check('Hello'))\n"}
+{"text": "# qx2_lower_check :: ''\ndef qx2_lower_check(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_lower_check(''))\n"}
+{"text": "# qx2_lower_check :: 'abc'\ndef qx2_lower_check(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_lower_check('abc'))\n"}
+{"text": "# qx2_lower_check :: 'abc123'\ndef qx2_lower_check(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_lower_check('abc123'))\n"}
+{"text": "# qx2_all_lower :: 'hello'\ndef qx2_all_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_all_lower('hello'))\n"}
+{"text": "# qx2_all_lower :: 'Hello'\ndef qx2_all_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_all_lower('Hello'))\n"}
+{"text": "# qx2_all_lower :: ''\ndef qx2_all_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_all_lower(''))\n"}
+{"text": "# qx2_all_lower :: 'abc'\ndef qx2_all_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_all_lower('abc'))\n"}
+{"text": "# qx2_all_lower :: 'abc123'\ndef qx2_all_lower(s):\n    return s.islower()\n\nif __name__ == '__main__':\n    print(qx2_all_lower('abc123'))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show why basicConfig is wrong in library code `configure`. (input: '')", "response": "def configure():\n    import logging\n    logging.basicConfig(level=logging.DEBUG)\n\n# Bug was: calling basicConfig in a library hijacks the root logger — never do this in library code\n\n# pair: configure / ''\n"}

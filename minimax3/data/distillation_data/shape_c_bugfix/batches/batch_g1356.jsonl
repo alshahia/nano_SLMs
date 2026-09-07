@@ -1,0 +1,1 @@
+{"instruction": "Show the `is None` idiom in `iseq_none`. (input: None)", "response": "def iseq_none(x):\n    return x is None\n\n# Bug was: `None` is the canonical sentinel; `is None` is the right idiom\n\n# pair: iseq_none / None\n"}

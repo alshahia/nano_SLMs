@@ -1,0 +1,1 @@
+{"instruction": "Show the missing `@wraps` in `decor_wraps`. (input: 5)", "response": "from functools import wraps\n\ndef my_decorator(f):\n    @wraps(f)\n    def wrapper(*args, **kwargs):\n        return f(*args, **kwargs)\n    return wrapper\n\n# Bug was: without `@wraps`, `wrapper.__name__` is 'wrapper' instead of f's name; breaks introspection\n\n# pair: decor_wraps / 5\n"}

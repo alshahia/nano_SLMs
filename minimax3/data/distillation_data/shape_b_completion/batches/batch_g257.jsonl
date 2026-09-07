@@ -1,0 +1,15 @@
+{"text": "# unique_chars :: 'hello'\ndef unique_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(unique_chars('hello'))\n"}
+{"text": "# unique_chars :: 'abc'\ndef unique_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(unique_chars('abc'))\n"}
+{"text": "# unique_chars :: ''\ndef unique_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(unique_chars(''))\n"}
+{"text": "# unique_chars :: 'aabbcc'\ndef unique_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(unique_chars('aabbcc'))\n"}
+{"text": "# unique_chars :: Python\ndef unique_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(unique_chars(Python))\n"}
+{"text": "# distinct_chars :: 'hello'\ndef distinct_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(distinct_chars('hello'))\n"}
+{"text": "# distinct_chars :: 'abc'\ndef distinct_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(distinct_chars('abc'))\n"}
+{"text": "# distinct_chars :: ''\ndef distinct_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(distinct_chars(''))\n"}
+{"text": "# distinct_chars :: 'aabbcc'\ndef distinct_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(distinct_chars('aabbcc'))\n"}
+{"text": "# distinct_chars :: Python\ndef distinct_chars(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(distinct_chars(Python))\n"}
+{"text": "# char_set :: 'hello'\ndef char_set(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(char_set('hello'))\n"}
+{"text": "# char_set :: 'abc'\ndef char_set(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(char_set('abc'))\n"}
+{"text": "# char_set :: ''\ndef char_set(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(char_set(''))\n"}
+{"text": "# char_set :: 'aabbcc'\ndef char_set(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(char_set('aabbcc'))\n"}
+{"text": "# char_set :: Python\ndef char_set(s):\n    return len(set(s)) == len(s)\n\nif __name__ == '__main__':\n    print(char_set(Python))\n"}

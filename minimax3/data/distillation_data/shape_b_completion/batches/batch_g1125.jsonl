@@ -1,0 +1,15 @@
+{"text": "# qx2_html_unesc :: '&lt;a&gt;'\nimport html\n\ndef qx2_html_unesc(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unesc('&lt;a&gt;'))\n"}
+{"text": "# qx2_html_unesc :: 'a &amp; b'\nimport html\n\ndef qx2_html_unesc(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unesc('a &amp; b'))\n"}
+{"text": "# qx2_html_unesc :: '&quot;quoted&quot;'\nimport html\n\ndef qx2_html_unesc(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unesc('&quot;quoted&quot;'))\n"}
+{"text": "# qx2_html_unesc :: 'no special'\nimport html\n\ndef qx2_html_unesc(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unesc('no special'))\n"}
+{"text": "# qx2_html_unesc :: '&apos;'\nimport html\n\ndef qx2_html_unesc(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unesc('&apos;'))\n"}
+{"text": "# qx2_html_unescape :: '&lt;a&gt;'\nimport html\n\ndef qx2_html_unescape(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unescape('&lt;a&gt;'))\n"}
+{"text": "# qx2_html_unescape :: 'a &amp; b'\nimport html\n\ndef qx2_html_unescape(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unescape('a &amp; b'))\n"}
+{"text": "# qx2_html_unescape :: '&quot;quoted&quot;'\nimport html\n\ndef qx2_html_unescape(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unescape('&quot;quoted&quot;'))\n"}
+{"text": "# qx2_html_unescape :: 'no special'\nimport html\n\ndef qx2_html_unescape(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unescape('no special'))\n"}
+{"text": "# qx2_html_unescape :: '&apos;'\nimport html\n\ndef qx2_html_unescape(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_unescape('&apos;'))\n"}
+{"text": "# qx2_unescape_html :: '&lt;a&gt;'\nimport html\n\ndef qx2_unescape_html(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_unescape_html('&lt;a&gt;'))\n"}
+{"text": "# qx2_unescape_html :: 'a &amp; b'\nimport html\n\ndef qx2_unescape_html(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_unescape_html('a &amp; b'))\n"}
+{"text": "# qx2_unescape_html :: '&quot;quoted&quot;'\nimport html\n\ndef qx2_unescape_html(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_unescape_html('&quot;quoted&quot;'))\n"}
+{"text": "# qx2_unescape_html :: 'no special'\nimport html\n\ndef qx2_unescape_html(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_unescape_html('no special'))\n"}
+{"text": "# qx2_unescape_html :: '&apos;'\nimport html\n\ndef qx2_unescape_html(s):\n    return html.unescape(s)\n\nif __name__ == '__main__':\n    print(qx2_unescape_html('&apos;'))\n"}

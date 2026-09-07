@@ -1,0 +1,1 @@
+{"instruction": "Show string concat in loop in `build_csv_v1`. Input: `['a', 'b', 'c']`. (input: ['a', 'b', 'c'])", "response": "def build_csv_v1(xs):\n    out = ''\n    for x in xs:\n        out += x + ','\n    return out\n\n# Bug was: O(n^2) concat — use ','.join(xs)\n\n# pair: build_csv_v1 / ['a', 'b', 'c']\n"}

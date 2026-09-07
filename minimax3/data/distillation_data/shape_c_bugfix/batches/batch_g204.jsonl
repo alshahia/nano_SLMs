@@ -1,0 +1,1 @@
+{"instruction": "The function `purge_dict(d)` raises RuntimeError when deleting None-valued keys. Fix it. (input: demo)", "response": "def purge_dict(d):\n    for k in list(d):\n        if d[k] is None:\n            del d[k]\n    return d\n    # Bug was: mutating dict during iteration raises RuntimeError; iterate over list(d) snapshot.\n\n# pair: purge_dict / demo\n"}

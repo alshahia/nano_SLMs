@@ -1,0 +1,1 @@
+{"instruction": "Show pkgutil.get_data in `pgd`. Input: `mypkg, 'data.txt'`. (input: mypkg, 'data.txt')", "response": "import pkgutil\ndef pgd(pkg, name):\n    return pkgutil.get_data(pkg, name).decode()\n\n# Bug was: works but limited to package data files — use importlib.resources for portability\n\n# pair: pgd / mypkg, 'data.txt'\n"}

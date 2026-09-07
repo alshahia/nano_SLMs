@@ -1,0 +1,1 @@
+{"instruction": "Show the canonical `super().__init__()` pattern in `class_init_with_super`. (input: 5)", "response": "class Parent:\n    def __init__(self):\n        self.x = 1\nclass Child(Parent):\n    def __init__(self):\n        super().__init__()\n        self.y = 2\n\n# Bug was: this is the canonical fix for the missing super init\n\n# pair: class_init_with_super / 5\n"}

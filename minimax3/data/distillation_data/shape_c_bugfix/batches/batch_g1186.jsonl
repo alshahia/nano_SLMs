@@ -1,0 +1,1 @@
+{"instruction": "Show the defaultdict usage in `defaultdict`. (input: [])", "response": "from collections import defaultdict\n\ndef defaultdict():\n    d = defaultdict(int)\n    d['a'] += 1\n    return d['a']\n\n# Bug was: `defaultdict` auto-creates missing keys via the factory function\n\n# pair: defaultdict / []\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show integer division confusion in `avg_v1`. Input: `[1, 2, 3]`. (input: [1, 2, 3])", "response": "def avg_v1(xs):\n    return sum(xs) / len(xs)\n\n# Bug was: `/` is float division — use `//` for integer average if desired\n\n# pair: avg_v1 / [1, 2, 3]\n"}

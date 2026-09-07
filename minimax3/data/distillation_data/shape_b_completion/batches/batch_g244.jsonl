@@ -1,0 +1,15 @@
+{"text": "# vector_norm :: [3, 4]\ndef vector_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vector_norm([3, 4]))\n"}
+{"text": "# vector_norm :: [1, 0, 0]\ndef vector_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vector_norm([1, 0, 0]))\n"}
+{"text": "# vector_norm :: [0, 0, 0]\ndef vector_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vector_norm([0, 0, 0]))\n"}
+{"text": "# vector_norm :: [1, 1, 1]\ndef vector_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vector_norm([1, 1, 1]))\n"}
+{"text": "# vector_norm :: [-3, -4]\ndef vector_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vector_norm([-3, -4]))\n"}
+{"text": "# vec_norm :: [3, 4]\ndef vec_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vec_norm([3, 4]))\n"}
+{"text": "# vec_norm :: [1, 0, 0]\ndef vec_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vec_norm([1, 0, 0]))\n"}
+{"text": "# vec_norm :: [0, 0, 0]\ndef vec_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vec_norm([0, 0, 0]))\n"}
+{"text": "# vec_norm :: [1, 1, 1]\ndef vec_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vec_norm([1, 1, 1]))\n"}
+{"text": "# vec_norm :: [-3, -4]\ndef vec_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(vec_norm([-3, -4]))\n"}
+{"text": "# magnitude :: [3, 4]\ndef magnitude(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(magnitude([3, 4]))\n"}
+{"text": "# magnitude :: [1, 0, 0]\ndef magnitude(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(magnitude([1, 0, 0]))\n"}
+{"text": "# magnitude :: [0, 0, 0]\ndef magnitude(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(magnitude([0, 0, 0]))\n"}
+{"text": "# magnitude :: [1, 1, 1]\ndef magnitude(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(magnitude([1, 1, 1]))\n"}
+{"text": "# magnitude :: [-3, -4]\ndef magnitude(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(magnitude([-3, -4]))\n"}

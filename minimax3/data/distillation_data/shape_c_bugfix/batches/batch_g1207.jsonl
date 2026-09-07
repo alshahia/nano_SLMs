@@ -1,0 +1,1 @@
+{"instruction": "Show functools.lru_cache in `fn_lru`. (input: 5)", "response": "from functools import lru_cache\n\n@lru_cache(maxsize=128)\ndef fn_lru(n):\n    return n * n\n\n# Bug was: `@lru_cache` memoizes function results; args must be hashable\n\n# pair: fn_lru / 5\n"}

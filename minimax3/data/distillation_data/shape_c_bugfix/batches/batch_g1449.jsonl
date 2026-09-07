@@ -1,0 +1,1 @@
+{"instruction": "Show `sum` in `sum_basic2`. (input: [1, 2, 3])", "response": "def sum_basic2(xs):\n    return sum(xs)\n\n# Bug was: `sum(xs)` returns 0 for empty; `start` arg shifts initial\n\n# pair: sum_basic2 / [1, 2, 3]\n"}

@@ -1,0 +1,26 @@
+You are writing JSONL training pairs for a 226M-param code LM. Shape B format: {text} where text is a self-contained, runnable Python snippet that ast.parse() accepts.
+
+DO NOT respond with a text-only plan. In THIS turn, you MUST:
+
+1. Read these files (use the read tool):
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_b_completion\schema.md
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_b_completion\seed.jsonl
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_b_completion\batches\batch_001.jsonl
+
+2. Write the output file (use the write tool) to:
+   E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_b_completion\batches\batch_w001.jsonl
+
+3. Write EXACTLY 250 JSONL lines. Each line = {"text": "<self-contained python snippet>"}. Each snippet must include imports + defs + an if __name__ == "__main__" demo. Build snippets as list-of-strings joined with \n.
+
+4. Topic: **asyncio / generators / pathlib / os**. Cover: asyncio.gather, async def, await, async context managers (@asynccontextmanager), async iterators, yield-based generators, pathlib.Path operations (glob, rglob, mkdir, with_suffix), os.walk, os.path.join, environment variable access.
+
+5. Every text must ast.parse() cleanly. Every text must be UNIQUE.
+
+6. Reply ONLY with: 'Wrote 250 pairs. SHA256: <hash>'
+
+If escape issues arise: write a small Python helper to meta/_gen_async_pairs.py, run it with the venv, then delete it.
+
+HARD CAPS:
+- 250 pairs
+- Output file: shape_b_completion/batches/batch_w001.jsonl (exact path)
+- Do NOT spawn subagents of your own

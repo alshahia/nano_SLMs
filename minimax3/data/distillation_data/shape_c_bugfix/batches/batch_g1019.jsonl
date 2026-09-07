@@ -1,0 +1,1 @@
+{"instruction": "Show the `is` on lists mistake in `is_list`. (input: [])", "response": "def is_list(xs):\n    return xs is []\n\n# Bug was: `[]` creates a new list each time; identity check fails even for equal lists\n\n# pair: is_list / []\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `ast.dump` in `ast_dump`. (input: '1 + 2')", "response": "import ast\n\ndef ast_dump(code):\n    return ast.dump(ast.parse(code))\n\n# Bug was: `ast.dump` serializes the AST; useful for debugging\n\n# pair: ast_dump / '1 + 2'\n"}

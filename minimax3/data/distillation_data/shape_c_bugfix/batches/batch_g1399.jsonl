@@ -1,0 +1,1 @@
+{"instruction": "Show the falsy-empty-dict in `truthy_empty_dict`. (input: {})", "response": "def truthy_empty_dict(d):\n    if d:\n        return 'truthy'\n    return 'falsy'\n\n# Bug was: empty dict is falsy\n\n# pair: truthy_empty_dict / {}\n"}

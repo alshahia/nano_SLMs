@@ -1,0 +1,15 @@
+{"text": "# pairwise :: [1, 2, 3, 4]\ndef pairwise(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(pairwise([1, 2, 3, 4]))\n"}
+{"text": "# pairwise :: ['a', 'b', 'c']\ndef pairwise(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(pairwise(['a', 'b', 'c']))\n"}
+{"text": "# pairwise :: [1]\ndef pairwise(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(pairwise([1]))\n"}
+{"text": "# pairwise :: []\ndef pairwise(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(pairwise([]))\n"}
+{"text": "# pairwise :: [1, 2, 3, 4, 5]\ndef pairwise(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(pairwise([1, 2, 3, 4, 5]))\n"}
+{"text": "# consecutive_pairs :: [1, 2, 3, 4]\ndef consecutive_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(consecutive_pairs([1, 2, 3, 4]))\n"}
+{"text": "# consecutive_pairs :: ['a', 'b', 'c']\ndef consecutive_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(consecutive_pairs(['a', 'b', 'c']))\n"}
+{"text": "# consecutive_pairs :: [1]\ndef consecutive_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(consecutive_pairs([1]))\n"}
+{"text": "# consecutive_pairs :: []\ndef consecutive_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(consecutive_pairs([]))\n"}
+{"text": "# consecutive_pairs :: [1, 2, 3, 4, 5]\ndef consecutive_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(consecutive_pairs([1, 2, 3, 4, 5]))\n"}
+{"text": "# adjacent_pairs :: [1, 2, 3, 4]\ndef adjacent_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(adjacent_pairs([1, 2, 3, 4]))\n"}
+{"text": "# adjacent_pairs :: ['a', 'b', 'c']\ndef adjacent_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(adjacent_pairs(['a', 'b', 'c']))\n"}
+{"text": "# adjacent_pairs :: [1]\ndef adjacent_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(adjacent_pairs([1]))\n"}
+{"text": "# adjacent_pairs :: []\ndef adjacent_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(adjacent_pairs([]))\n"}
+{"text": "# adjacent_pairs :: [1, 2, 3, 4, 5]\ndef adjacent_pairs(xs):\n    return list(zip(xs, xs[1:]))\n\nif __name__ == '__main__':\n    print(adjacent_pairs([1, 2, 3, 4, 5]))\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show `textwrap.indent` in `str_indent`. (input: 'hello\\nworld')", "response": "import textwrap\n\ndef str_indent(s, prefix):\n    return textwrap.indent(s, prefix)\n\n# Bug was: `indent` adds prefix to each non-empty line\n\n# pair: str_indent / 'hello\\nworld'\n"}
+{"instruction": "Show `textwrap.indent` in `str_indent`. (input: >)", "response": "import textwrap\n\ndef str_indent(s, prefix):\n    return textwrap.indent(s, prefix)\n\n# Bug was: `indent` adds prefix to each non-empty line\n\n# pair: str_indent / >\n"}

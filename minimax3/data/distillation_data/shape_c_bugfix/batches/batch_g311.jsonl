@@ -1,0 +1,1 @@
+{"instruction": "Show why ensure_ascii=False is needed for utf-8 in `dump_json`. (input: {'name': 'café'}, 'f.json')", "response": "import json\ndef dump_json(obj, path):\n    with open(path, 'w') as f:\n        json.dump(obj, f)\n\n# Bug was: non-ASCII chars get \\uXXXX escaped — pass ensure_ascii=False to keep utf-8\n\n# pair: dump_json / {'name': 'café'}, 'f.json'\n"}

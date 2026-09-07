@@ -1,0 +1,1 @@
+{"instruction": "Show the negative-index out-of-bounds in `neg_idx_oob`. (input: [1, 2, 3])", "response": "def neg_idx_oob(xs):\n    return xs[-len(xs) - 1]\n\n# Bug was: negative indices past `-len(xs)` raise IndexError\n\n# pair: neg_idx_oob / [1, 2, 3]\n"}

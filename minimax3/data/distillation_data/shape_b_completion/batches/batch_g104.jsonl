@@ -1,0 +1,2 @@
+{"text": "# b64_decode :: 'aGVsbG8='\nimport base64\n\ndef b64_decode(s):\n    return base64.b64decode(s.encode('ascii')).decode('utf-8')\n\nif __name__ == '__main__':\n    print(b64_decode('aGVsbG8='))\n"}
+{"text": "# b64_decode :: ''\nimport base64\n\ndef b64_decode(s):\n    return base64.b64decode(s.encode('ascii')).decode('utf-8')\n\nif __name__ == '__main__':\n    print(b64_decode(''))\n"}

@@ -1,0 +1,15 @@
+{"text": "# count_words :: 'hello world'\ndef count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(count_words('hello world'))\n"}
+{"text": "# count_words :: ''\ndef count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(count_words(''))\n"}
+{"text": "# count_words :: 'one'\ndef count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(count_words('one'))\n"}
+{"text": "# count_words :: 'one two three'\ndef count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(count_words('one two three'))\n"}
+{"text": "# count_words :: '  spaced  out  '\ndef count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(count_words('  spaced  out  '))\n"}
+{"text": "# word_count :: 'hello world'\ndef word_count(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(word_count('hello world'))\n"}
+{"text": "# word_count :: ''\ndef word_count(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(word_count(''))\n"}
+{"text": "# word_count :: 'one'\ndef word_count(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(word_count('one'))\n"}
+{"text": "# word_count :: 'one two three'\ndef word_count(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(word_count('one two three'))\n"}
+{"text": "# word_count :: '  spaced  out  '\ndef word_count(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(word_count('  spaced  out  '))\n"}
+{"text": "# n_words :: 'hello world'\ndef n_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(n_words('hello world'))\n"}
+{"text": "# n_words :: ''\ndef n_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(n_words(''))\n"}
+{"text": "# n_words :: 'one'\ndef n_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(n_words('one'))\n"}
+{"text": "# n_words :: 'one two three'\ndef n_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(n_words('one two three'))\n"}
+{"text": "# n_words :: '  spaced  out  '\ndef n_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(n_words('  spaced  out  '))\n"}

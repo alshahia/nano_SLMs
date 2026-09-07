@@ -1,0 +1,1 @@
+{"instruction": "Show weak hash in `checksum`. (input: 'data')", "response": "import hashlib\ndef checksum(data):\n    return hashlib.md5(data).hexdigest()\n\n# Bug was: MD5 is broken for security — use sha256 for integrity, bcrypt for passwords\n\n# pair: checksum / 'data'\n"}

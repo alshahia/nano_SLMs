@@ -1,0 +1,15 @@
+{"text": "# qx2_digit_sum :: 0\ndef qx2_digit_sum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_sum(0))\n"}
+{"text": "# qx2_digit_sum :: 9\ndef qx2_digit_sum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_sum(9))\n"}
+{"text": "# qx2_digit_sum :: 123\ndef qx2_digit_sum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_sum(123))\n"}
+{"text": "# qx2_digit_sum :: 9999\ndef qx2_digit_sum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_sum(9999))\n"}
+{"text": "# qx2_digit_sum :: 100\ndef qx2_digit_sum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_sum(100))\n"}
+{"text": "# qx2_sum_digits :: 0\ndef qx2_sum_digits(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_sum_digits(0))\n"}
+{"text": "# qx2_sum_digits :: 9\ndef qx2_sum_digits(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_sum_digits(9))\n"}
+{"text": "# qx2_sum_digits :: 123\ndef qx2_sum_digits(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_sum_digits(123))\n"}
+{"text": "# qx2_sum_digits :: 9999\ndef qx2_sum_digits(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_sum_digits(9999))\n"}
+{"text": "# qx2_sum_digits :: 100\ndef qx2_sum_digits(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_sum_digits(100))\n"}
+{"text": "# qx2_dsum :: 0\ndef qx2_dsum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_dsum(0))\n"}
+{"text": "# qx2_dsum :: 9\ndef qx2_dsum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_dsum(9))\n"}
+{"text": "# qx2_dsum :: 123\ndef qx2_dsum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_dsum(123))\n"}
+{"text": "# qx2_dsum :: 9999\ndef qx2_dsum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_dsum(9999))\n"}
+{"text": "# qx2_dsum :: 100\ndef qx2_dsum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_dsum(100))\n"}

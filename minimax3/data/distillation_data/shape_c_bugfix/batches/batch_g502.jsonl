@@ -1,0 +1,1 @@
+{"instruction": "Show tracemalloc compare in `ts`. (input: '')", "response": "import tracemalloc\ndef ts():\n    tracemalloc.start()\n    snap1 = tracemalloc.take_snapshot()\n    do_work()\n    snap2 = tracemalloc.take_snapshot()\n    return snap2.compare_to(snap1, 'lineno')\n\n# Bug was: compare_to filter is fine — but missing traceback limit may slow\n\n# pair: ts / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show mutation-during-iter in `rm_even`. Input: `[1,2,3,4]`. (input: [1,2,3,4])", "response": "def rm_even(xs):\n    for x in xs:\n        if x % 2 == 0:\n            xs.remove(x)\n    return xs\n\n# Bug was: removes while iterating — skips elements; iterate over copy\n\n# pair: rm_even / [1,2,3,4]\n"}

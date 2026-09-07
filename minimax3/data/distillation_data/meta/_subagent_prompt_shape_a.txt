@@ -1,0 +1,26 @@
+You are writing JSONL training pairs for a 226M-param code LM. Shape A format: {instruction, response} where response is pure Python code that ast.parse() accepts.
+
+DO NOT respond with a text-only plan. In THIS turn, you MUST:
+
+1. Read these files (use the read tool):
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_a_instruction_code\schema.md
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_a_instruction_code\seed.jsonl
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_a_instruction_code\batches\batch_001.jsonl
+
+2. Write the output file (use the write tool) to:
+   E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_a_instruction_code\batches\batch_w001.jsonl
+
+3. Write EXACTLY 250 JSONL lines. Each line = {"instruction": "<short task>", "response": "<python code>"}. Build code as list-of-strings joined with \n, never as one giant string. Avoid nested f-strings. Use raw strings (r"...") for any regex.
+
+4. Topic: **JSON serialization / dataclasses / type hints**. Cover: json.dumps/loads with custom encoders, dataclass to/from dict conversion, TypedDict definitions, NamedTuple, Enum usage, pydantic-style validators (without the library), @dataclass(frozen=True) patterns, field(default_factory=...), asdict/astuple patterns.
+
+5. Every response must ast.parse() cleanly. Every instruction must be UNIQUE.
+
+6. Reply ONLY with: 'Wrote 250 pairs. SHA256: <hash>'
+
+If escape issues arise: write a small Python helper to meta/_gen_json_pairs.py, run it with the venv, then delete it.
+
+HARD CAPS:
+- 250 pairs
+- Output file: shape_a_instruction_code/batches/batch_w001.jsonl (exact path)
+- Do NOT spawn subagents of your own

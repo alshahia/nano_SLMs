@@ -1,0 +1,1 @@
+{"instruction": "Show UTC tz strip in `now2`. (input: '')", "response": "from datetime import datetime, timezone\ndef now2():\n    return datetime.now(timezone.utc).replace(tzinfo=None)\n\n# Bug was: strip tz then use as if local — defeats the purpose of UTC storage\n\n# pair: now2 / ''\n"}

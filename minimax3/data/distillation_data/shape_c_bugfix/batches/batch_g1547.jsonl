@@ -1,0 +1,1 @@
+{"instruction": "Show `gzip.decompress` in `gzip_decompress`. (input: b'\\x1f\\x8b\\x08\\x00...')", "response": "import gzip\n\ndef gzip_decompress(data):\n    return gzip.decompress(data).decode()\n\n# Bug was: `gzip.decompress` reverses compression\n\n# pair: gzip_decompress / b'\\x1f\\x8b\\x08\\x00...'\n"}

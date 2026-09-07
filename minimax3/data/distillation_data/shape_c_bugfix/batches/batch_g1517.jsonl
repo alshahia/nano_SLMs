@@ -1,0 +1,1 @@
+{"instruction": "Show `os.listdir` in `os_listdir`. (input: '.')", "response": "import os\n\ndef os_listdir(d):\n    return os.listdir(d)\n\n# Bug was: `os.listdir` returns filenames without full path; `Path.iterdir` is the modern API\n\n# pair: os_listdir / '.'\n"}

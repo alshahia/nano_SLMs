@@ -1,0 +1,1 @@
+{"instruction": "Show the missing None-check on re.search in `re_no_match`. (input: 'hello')", "response": "import re\ndef re_no_match(s):\n    m = re.search('(\\d+)', s)\n    return m.group(1)\n\n# Bug was: `re.search` returns None when no match; calling `.group(1)` raises AttributeError\n\n# pair: re_no_match / 'hello'\n"}

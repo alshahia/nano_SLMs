@@ -1,0 +1,15 @@
+{"text": "# mean :: [1, 2, 3, 4, 5]\ndef mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(mean([1, 2, 3, 4, 5]))\n"}
+{"text": "# mean :: []\ndef mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(mean([]))\n"}
+{"text": "# mean :: [10, 20, 30]\ndef mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(mean([10, 20, 30]))\n"}
+{"text": "# mean :: [1.5, 2.5]\ndef mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(mean([1.5, 2.5]))\n"}
+{"text": "# mean :: [42]\ndef mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(mean([42]))\n"}
+{"text": "# average :: [1, 2, 3, 4, 5]\ndef average(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(average([1, 2, 3, 4, 5]))\n"}
+{"text": "# average :: []\ndef average(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(average([]))\n"}
+{"text": "# average :: [10, 20, 30]\ndef average(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(average([10, 20, 30]))\n"}
+{"text": "# average :: [1.5, 2.5]\ndef average(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(average([1.5, 2.5]))\n"}
+{"text": "# average :: [42]\ndef average(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(average([42]))\n"}
+{"text": "# compute_mean :: [1, 2, 3, 4, 5]\ndef compute_mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(compute_mean([1, 2, 3, 4, 5]))\n"}
+{"text": "# compute_mean :: []\ndef compute_mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(compute_mean([]))\n"}
+{"text": "# compute_mean :: [10, 20, 30]\ndef compute_mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(compute_mean([10, 20, 30]))\n"}
+{"text": "# compute_mean :: [1.5, 2.5]\ndef compute_mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(compute_mean([1.5, 2.5]))\n"}
+{"text": "# compute_mean :: [42]\ndef compute_mean(xs):\n    if not xs:\n        return 0\n    return sum(xs) / len(xs)\n\nif __name__ == \"__main__\":\n    print(compute_mean([42]))\n"}

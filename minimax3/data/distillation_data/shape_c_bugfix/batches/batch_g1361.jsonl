@@ -1,0 +1,1 @@
+{"instruction": "Show the recursive fib in `rec_fib`. (input: 10)", "response": "def rec_fib(n):\n    if n < 2:\n        return n\n    return rec_fib(n-1) + rec_fib(n-2)\n\n# Bug was: naive fib is O(2^n); memoize for performance\n\n# pair: rec_fib / 10\n"}

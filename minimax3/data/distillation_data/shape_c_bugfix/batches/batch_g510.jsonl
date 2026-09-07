@@ -1,0 +1,1 @@
+{"instruction": "Show sys.stdin encoding in `ssi`. (input: '')", "response": "import sys\ndef ssi():\n    return sys.stdin.read()\n\n# Bug was: sys.stdin encoding is locale-dependent — wrap with io.TextIOWrapper(sys.stdin.buffer, encoding='utf-8')\n\n# pair: ssi / ''\n"}

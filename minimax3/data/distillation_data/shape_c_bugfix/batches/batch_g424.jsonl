@@ -1,0 +1,1 @@
+{"instruction": "Show dict comprehension scope in `dc`. (input: '')", "response": "def dc():\n    return {v: k for k, v in [(1, 'a'), (2, 'b')]}\n\n# Bug was: in Py3, comprehensions have their own scope — no leak\n\n# pair: dc / ''\n"}

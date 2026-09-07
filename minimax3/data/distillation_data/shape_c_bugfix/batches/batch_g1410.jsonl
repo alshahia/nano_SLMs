@@ -1,0 +1,1 @@
+{"instruction": "Show `delattr` in `delattr_basic`. (input: 'x')", "response": "class C:\n    x = 5\n\ndef delattr_basic(obj):\n    delattr(obj, 'x')\n    return obj\n\n# Bug was: `delattr` removes the attribute; AttributeError if missing\n\n# pair: delattr_basic / 'x'\n"}

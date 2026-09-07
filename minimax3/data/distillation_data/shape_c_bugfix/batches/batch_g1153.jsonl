@@ -1,0 +1,1 @@
+{"instruction": "Show the Tuple type hint in `type_hint_tuple`. (input: (1, 'a'))", "response": "from typing import Tuple\n\ndef type_hint_tuple(p: Tuple[int, str]) -> str:\n    return p[1]\n\n# Bug was: `Tuple[int, str]` is fixed-length; `tuple[int, ...]` is variable\n\n# pair: type_hint_tuple / (1, 'a')\n"}

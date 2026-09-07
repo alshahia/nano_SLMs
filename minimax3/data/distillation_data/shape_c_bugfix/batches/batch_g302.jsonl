@@ -1,0 +1,1 @@
+{"instruction": "Show why catching `BaseException` is a bug in `watch_signal`. (input: '')", "response": "def watch_signal(s):\n    try:\n        do_work(s)\n    except BaseException:\n        pass\n\n# Bug was: BaseException also catches KeyboardInterrupt and SystemExit — never use for normal flow\n\n# pair: watch_signal / ''\n"}

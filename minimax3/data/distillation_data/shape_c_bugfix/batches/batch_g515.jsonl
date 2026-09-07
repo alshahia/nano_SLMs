@@ -1,0 +1,1 @@
+{"instruction": "Show ast.walk vs visitor in `aw`. Input: `'x = 1'`. (input: 'x = 1')", "response": "import ast\ndef aw(src):\n    tree = ast.parse(src)\n    for node in ast.walk(tree):\n        print(node)\n\n# Bug was: ast.walk visits all nodes — use ast.NodeVisitor for selective traversal\n\n# pair: aw / 'x = 1'\n"}

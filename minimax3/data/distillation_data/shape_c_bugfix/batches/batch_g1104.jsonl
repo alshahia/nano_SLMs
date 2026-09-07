@@ -1,0 +1,1 @@
+{"instruction": "Show the `@dataclass` decorator in `dataclass_use`. (input: 1, 'a')", "response": "from dataclasses import dataclass\n\n@dataclass\nclass Point:\n    x: int\n    y: int = 0\n\n# Bug was: `@dataclass` auto-generates `__init__`, `__repr__`, `__eq__`; needs `from dataclasses import dataclass`\n\n# pair: dataclass_use / 1, 'a'\n"}

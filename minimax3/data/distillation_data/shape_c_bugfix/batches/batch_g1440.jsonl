@@ -1,0 +1,1 @@
+{"instruction": "Show `enumerate` in `enum_basic2`. (input: ['a', 'b', 'c'])", "response": "def enum_basic2(xs):\n    return list(enumerate(xs))\n\n# Bug was: `enumerate(xs)` yields (index, value) tuples\n\n# pair: enum_basic2 / ['a', 'b', 'c']\n"}

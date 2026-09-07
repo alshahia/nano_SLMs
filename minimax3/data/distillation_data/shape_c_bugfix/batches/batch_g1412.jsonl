@@ -1,0 +1,1 @@
+{"instruction": "Show `isinstance` with a tuple in `isinstance_tuple`. (input: 42)", "response": "def isinstance_tuple(x):\n    return isinstance(x, (int, float))\n\n# Bug was: `isinstance` accepts a tuple of types; checks against any\n\n# pair: isinstance_tuple / 42\n"}

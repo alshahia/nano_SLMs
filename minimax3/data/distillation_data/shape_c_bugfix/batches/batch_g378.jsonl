@@ -1,0 +1,1 @@
+{"instruction": "Show unsafe XML parse in `parse_xml`. Input: `'data.xml'`. (input: 'data.xml')", "response": "import xml.etree.ElementTree as ET\ndef parse_xml(path):\n    return ET.parse(path)\n\n# Bug was: ET.parse vulnerable to billion-laughs + external entity attacks — use defusedxml\n\n# pair: parse_xml / 'data.xml'\n"}

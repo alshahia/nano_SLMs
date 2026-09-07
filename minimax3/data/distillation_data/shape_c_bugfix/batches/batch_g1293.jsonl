@@ -1,0 +1,1 @@
+{"instruction": "Show the argparse default in `arg_basic`. (input: 5)", "response": "import argparse\n\ndef arg_basic(default):\n    p = argparse.ArgumentParser()\n    p.add_argument('--n', type=int, default=default)\n    args = p.parse_args([])\n    return args.n\n\n# Bug was: `parse_args([])` simulates no command-line args; default is used\n\n# pair: arg_basic / 5\n"}

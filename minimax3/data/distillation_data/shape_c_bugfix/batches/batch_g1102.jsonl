@@ -1,0 +1,1 @@
+{"instruction": "Show the `@classmethod` decorator in `classmethod_use`. (input: 'C')", "response": "class C:\n    @classmethod\n    def f(cls, x):\n        return cls.__name__ + str(x)\n\n# Bug was: `@classmethod` receives `cls` as first arg; can construct instances\n\n# pair: classmethod_use / 'C'\n"}

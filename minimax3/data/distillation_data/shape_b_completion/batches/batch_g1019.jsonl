@@ -1,0 +1,15 @@
+{"text": "# qx2_log2 :: 1\nimport math\n\ndef qx2_log2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log2(1))\n"}
+{"text": "# qx2_log2 :: 2\nimport math\n\ndef qx2_log2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log2(2))\n"}
+{"text": "# qx2_log2 :: 8\nimport math\n\ndef qx2_log2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log2(8))\n"}
+{"text": "# qx2_log2 :: 16\nimport math\n\ndef qx2_log2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log2(16))\n"}
+{"text": "# qx2_log2 :: 1024\nimport math\n\ndef qx2_log2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log2(1024))\n"}
+{"text": "# qx2_log_base2 :: 1\nimport math\n\ndef qx2_log_base2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log_base2(1))\n"}
+{"text": "# qx2_log_base2 :: 2\nimport math\n\ndef qx2_log_base2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log_base2(2))\n"}
+{"text": "# qx2_log_base2 :: 8\nimport math\n\ndef qx2_log_base2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log_base2(8))\n"}
+{"text": "# qx2_log_base2 :: 16\nimport math\n\ndef qx2_log_base2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log_base2(16))\n"}
+{"text": "# qx2_log_base2 :: 1024\nimport math\n\ndef qx2_log_base2(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_log_base2(1024))\n"}
+{"text": "# qx2_lg :: 1\nimport math\n\ndef qx2_lg(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_lg(1))\n"}
+{"text": "# qx2_lg :: 2\nimport math\n\ndef qx2_lg(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_lg(2))\n"}
+{"text": "# qx2_lg :: 8\nimport math\n\ndef qx2_lg(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_lg(8))\n"}
+{"text": "# qx2_lg :: 16\nimport math\n\ndef qx2_lg(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_lg(16))\n"}
+{"text": "# qx2_lg :: 1024\nimport math\n\ndef qx2_lg(x):\n    return math.log2(x)\n\nif __name__ == '__main__':\n    print(qx2_lg(1024))\n"}

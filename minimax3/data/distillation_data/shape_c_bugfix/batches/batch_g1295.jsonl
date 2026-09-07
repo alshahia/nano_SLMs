@@ -1,0 +1,1 @@
+{"instruction": "Show the argparse type conversion in `arg_type`. (input: 42)", "response": "import argparse\n\ndef arg_type(s):\n    p = argparse.ArgumentParser()\n    p.add_argument('--n', type=int)\n    args = p.parse_args(['--n', s])\n    return args.n\n\n# Bug was: `type=int` auto-converts the string to int; fails if non-numeric\n\n# pair: arg_type / 42\n"}

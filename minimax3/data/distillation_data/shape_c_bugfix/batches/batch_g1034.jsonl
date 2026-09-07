@@ -1,0 +1,1 @@
+{"instruction": "Show the efficient `join` in `str_join_works`. (input: ['a', 'b', 'c', 'd', 'e'])", "response": "def str_join_works(parts):\n    return ''.join(parts)\n\n# Bug was: this is the correct form; the buggy version uses `+=` in a loop\n\n# pair: str_join_works / ['a', 'b', 'c', 'd', 'e']\n"}

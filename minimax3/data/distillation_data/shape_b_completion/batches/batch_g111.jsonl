@@ -1,0 +1,3 @@
+{"text": "# count_vowels :: 'hello'\ndef count_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_vowels('hello'))\n"}
+{"text": "# count_vowels :: 'Python'\ndef count_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_vowels('Python'))\n"}
+{"text": "# count_vowels :: ''\ndef count_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_vowels(''))\n"}

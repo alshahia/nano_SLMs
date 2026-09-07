@@ -1,0 +1,1 @@
+{"instruction": "Show `callable` in `callable_basic`. (input: 5)", "response": "def callable_basic(x):\n    return callable(x)\n\n# Bug was: `callable` returns True for functions, methods, classes, and instances with `__call__`\n\n# pair: callable_basic / 5\n"}

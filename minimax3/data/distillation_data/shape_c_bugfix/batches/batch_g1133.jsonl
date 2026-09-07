@@ -1,0 +1,1 @@
+{"instruction": "Show the import alias pattern in `import_alias`. (input: import numpy)", "response": "import numpy as np\n\ndef import_alias():\n    return np.array([1, 2, 3])\n\n# Bug was: aliases (`as np`) are conventional for widely-used modules\n\n# pair: import_alias / import numpy\n"}

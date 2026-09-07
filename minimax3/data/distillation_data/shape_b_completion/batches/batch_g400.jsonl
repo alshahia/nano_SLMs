@@ -1,0 +1,15 @@
+{"text": "# permutations :: [1,2,3]\nfrom itertools import permutations\ndef permutations(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permutations([1,2,3]))\n"}
+{"text": "# permutations :: [1,2]\nfrom itertools import permutations\ndef permutations(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permutations([1,2]))\n"}
+{"text": "# permutations :: [1]\nfrom itertools import permutations\ndef permutations(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permutations([1]))\n"}
+{"text": "# permutations :: []\nfrom itertools import permutations\ndef permutations(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permutations([]))\n"}
+{"text": "# permutations :: [1,2,3,4]\nfrom itertools import permutations\ndef permutations(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permutations([1,2,3,4]))\n"}
+{"text": "# all_perms :: [1,2,3]\nfrom itertools import permutations\ndef all_perms(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(all_perms([1,2,3]))\n"}
+{"text": "# all_perms :: [1,2]\nfrom itertools import permutations\ndef all_perms(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(all_perms([1,2]))\n"}
+{"text": "# all_perms :: [1]\nfrom itertools import permutations\ndef all_perms(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(all_perms([1]))\n"}
+{"text": "# all_perms :: []\nfrom itertools import permutations\ndef all_perms(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(all_perms([]))\n"}
+{"text": "# all_perms :: [1,2,3,4]\nfrom itertools import permutations\ndef all_perms(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(all_perms([1,2,3,4]))\n"}
+{"text": "# permute :: [1,2,3]\nfrom itertools import permutations\ndef permute(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permute([1,2,3]))\n"}
+{"text": "# permute :: [1,2]\nfrom itertools import permutations\ndef permute(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permute([1,2]))\n"}
+{"text": "# permute :: [1]\nfrom itertools import permutations\ndef permute(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permute([1]))\n"}
+{"text": "# permute :: []\nfrom itertools import permutations\ndef permute(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permute([]))\n"}
+{"text": "# permute :: [1,2,3,4]\nfrom itertools import permutations\ndef permute(xs):\n    return list(permutations(xs))\n\nif __name__ == '__main__':\n    print(permute([1,2,3,4]))\n"}

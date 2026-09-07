@@ -1,0 +1,1 @@
+{"instruction": "Show the mutable default list in `def_list_arg`. (input: 1)", "response": "def def_list_arg(x, items=[]):\n    items.append(x)\n    return items\n\n# Bug was: mutable default arg is shared across calls; use `items=None` and create inside\n\n# pair: def_list_arg / 1\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show str enum subclassing in `se`. (input: '')", "response": "from enum import Enum\nclass se(Enum):\n    A = 'apple'\n    B = 'banana'\n\n# Bug was: str subclassing Enum (Py3.11+) requires `class X(str, Enum)` — manual str check is brittle\n\n# pair: se / ''\n"}

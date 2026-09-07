@@ -1,0 +1,15 @@
+{"text": "# qx2_split_ext :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_split_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_ext('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_split_ext :: 'a.txt'\nimport os\n\ndef qx2_split_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_ext('a.txt'))\n"}
+{"text": "# qx2_split_ext :: '/usr/local/bin'\nimport os\n\ndef qx2_split_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_ext('/usr/local/bin'))\n"}
+{"text": "# qx2_split_ext :: 'path/with/no/ext'\nimport os\n\ndef qx2_split_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_ext('path/with/no/ext'))\n"}
+{"text": "# qx2_split_ext :: ''\nimport os\n\ndef qx2_split_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_ext(''))\n"}
+{"text": "# qx2_path_ext :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_path_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_path_ext('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_path_ext :: 'a.txt'\nimport os\n\ndef qx2_path_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_path_ext('a.txt'))\n"}
+{"text": "# qx2_path_ext :: '/usr/local/bin'\nimport os\n\ndef qx2_path_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_path_ext('/usr/local/bin'))\n"}
+{"text": "# qx2_path_ext :: 'path/with/no/ext'\nimport os\n\ndef qx2_path_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_path_ext('path/with/no/ext'))\n"}
+{"text": "# qx2_path_ext :: ''\nimport os\n\ndef qx2_path_ext(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_path_ext(''))\n"}
+{"text": "# qx2_split_path :: '/foo/bar/baz.py'\nimport os\n\ndef qx2_split_path(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_path('/foo/bar/baz.py'))\n"}
+{"text": "# qx2_split_path :: 'a.txt'\nimport os\n\ndef qx2_split_path(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_path('a.txt'))\n"}
+{"text": "# qx2_split_path :: '/usr/local/bin'\nimport os\n\ndef qx2_split_path(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_path('/usr/local/bin'))\n"}
+{"text": "# qx2_split_path :: 'path/with/no/ext'\nimport os\n\ndef qx2_split_path(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_path('path/with/no/ext'))\n"}
+{"text": "# qx2_split_path :: ''\nimport os\n\ndef qx2_split_path(p):\n    return os.path.splitext(p)\n\nif __name__ == '__main__':\n    print(qx2_split_path(''))\n"}

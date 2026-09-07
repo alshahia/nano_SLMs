@@ -1,0 +1,1 @@
+{"instruction": "Show ref cycle in `cycle`. (input: '')", "response": "def cycle():\n    a = []\n    b = [a]\n    a.append(b)\n\n# Bug was: ref cycle a<->b — gc collects but __del__ may run at unpredictable times\n\n# pair: cycle / ''\n"}

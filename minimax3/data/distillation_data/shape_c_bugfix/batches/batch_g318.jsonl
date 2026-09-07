@@ -1,0 +1,1 @@
+{"instruction": "Show why `raise from` is needed in `parse_data`. Input: `'bad'`. (input: 'bad')", "response": "def parse_data(s):\n    try:\n        return int(s)\n    except ValueError as e:\n        raise RuntimeError('parse failed')\n\n# Bug was: `raise X from e` chains the original traceback; plain `raise X` loses it\n\n# pair: parse_data / 'bad'\n"}

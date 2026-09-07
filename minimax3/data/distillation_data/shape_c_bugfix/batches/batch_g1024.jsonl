@@ -1,0 +1,1 @@
+{"instruction": "Show the string-'0'-is-truthy gotcha in `truthy_zero`. (input: '0')", "response": "def truthy_zero(x):\n    if x:\n        return 'truthy'\n    return 'falsy'\n\n# Bug was: '0' (the string) is truthy because the string is non-empty; only 0 (int) is falsy\n\n# pair: truthy_zero / '0'\n"}

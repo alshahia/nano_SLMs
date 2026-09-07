@@ -1,0 +1,1 @@
+{"instruction": "Show asyncio.gather cancellation in `multi`. (input: [fetch(u) for u in urls])", "response": "import asyncio\nasync def multi(tasks):\n    return await asyncio.gather(*tasks)\n\n# Bug was: gather cancels all on first failure — pass return_exceptions=True to get partial results\n\n# pair: multi / [fetch(u) for u in urls]\n"}

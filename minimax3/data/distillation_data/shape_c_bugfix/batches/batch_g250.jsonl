@@ -1,0 +1,1 @@
+{"instruction": "The function `leaky_comprehension()` references `x` which may not be defined. Use an explicit local variable. (input: demo)", "response": "def leaky_comprehension():\n    [x for x in range(10)]\n    return x\n    # Bug was: comprehension scope in py3 is isolated; x leaks in py2. Use a local variable.\n\n# pair: leaky_comprehension / demo\n"}

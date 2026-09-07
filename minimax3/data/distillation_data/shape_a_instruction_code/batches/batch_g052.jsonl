@@ -1,0 +1,15 @@
+{"instruction": "Write a function `file_exists(p)` returning True iff the file exists. Example: `file_exists('/etc/hosts')`.", "response": "import os\ndef file_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `file_exists(p)` returning True iff the file exists. Example: `file_exists('/nonexistent.txt')`.", "response": "import os\ndef file_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `file_exists(p)` returning True iff the file exists. Example: `file_exists('.')`.", "response": "import os\ndef file_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `file_exists(p)` returning True iff the file exists. Example: `file_exists('')`.", "response": "import os\ndef file_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `file_exists(p)` returning True iff the file exists. Example: `file_exists('/tmp')`.", "response": "import os\ndef file_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `path_exists(p)` returning True iff the file exists. Example: `path_exists('/etc/hosts')`.", "response": "import os\ndef path_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `path_exists(p)` returning True iff the file exists. Example: `path_exists('/nonexistent.txt')`.", "response": "import os\ndef path_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `path_exists(p)` returning True iff the file exists. Example: `path_exists('.')`.", "response": "import os\ndef path_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `path_exists(p)` returning True iff the file exists. Example: `path_exists('')`.", "response": "import os\ndef path_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `path_exists(p)` returning True iff the file exists. Example: `path_exists('/tmp')`.", "response": "import os\ndef path_exists(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `check_file(p)` returning True iff the file exists. Example: `check_file('/etc/hosts')`.", "response": "import os\ndef check_file(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `check_file(p)` returning True iff the file exists. Example: `check_file('/nonexistent.txt')`.", "response": "import os\ndef check_file(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `check_file(p)` returning True iff the file exists. Example: `check_file('.')`.", "response": "import os\ndef check_file(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `check_file(p)` returning True iff the file exists. Example: `check_file('')`.", "response": "import os\ndef check_file(p):\n    return os.path.isfile(p)\n"}
+{"instruction": "Write a function `check_file(p)` returning True iff the file exists. Example: `check_file('/tmp')`.", "response": "import os\ndef check_file(p):\n    return os.path.isfile(p)\n"}

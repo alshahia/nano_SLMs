@@ -1,0 +1,1 @@
+{"instruction": "Show string concat in loop in `join_words`. Input: `['a', 'b', 'c', 'd', 'e']`. (input: ['a', 'b', 'c', 'd', 'e'])", "response": "def join_words(words):\n    s = ''\n    for w in words:\n        s = s + w\n    return s\n\n# Bug was: O(n^2) due to string immutability — use ''.join(words)\n\n# pair: join_words / ['a', 'b', 'c', 'd', 'e']\n"}

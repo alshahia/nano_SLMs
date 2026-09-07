@@ -1,0 +1,1 @@
+{"instruction": "Show namedtuple missing field in `ntd`. (input: '')", "response": "from collections import namedtuple\nPoint = namedtuple('Point', 'x y')\np = Point(1)\n\n# Bug was: missing y — TypeError. Use typing.NamedTuple with defaults (Py3.6.1+) or check len\n\n# pair: ntd / ''\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show `struct.unpack` in `struct_unpack`. (input: 'h')", "response": "import struct\n\ndef struct_unpack(fmt, data):\n    return struct.unpack(fmt, data)[0]\n\n# Bug was: `struct.unpack` returns a tuple, even for single values\n\n# pair: struct_unpack / 'h'\n"}
+{"instruction": "Show `struct.unpack` in `struct_unpack`. (input: b'\\x00\\x04')", "response": "import struct\n\ndef struct_unpack(fmt, data):\n    return struct.unpack(fmt, data)[0]\n\n# Bug was: `struct.unpack` returns a tuple, even for single values\n\n# pair: struct_unpack / b'\\x00\\x04'\n"}

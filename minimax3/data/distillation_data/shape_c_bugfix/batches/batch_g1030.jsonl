@@ -1,0 +1,1 @@
+{"instruction": "Show the shallow-copy gotcha in `shallow_list`. (input: ([1, [2, 3]],))", "response": "import copy\ndef shallow_list(xs):\n    ys = list(xs)\n    ys[0].append(99)\n    return xs\n\n# Bug was: `list(xs)` is a shallow copy; the nested list is still shared\n\n# pair: shallow_list / ([1, [2, 3]],)\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show __init_subclass__ recursion in `rec`. (input: '')", "response": "class rec:\n    def __init_subclass__(cls, **kwargs):\n        super().__init_subclass__(**kwargs)\n        cls()\n\n# Bug was: cls() in __init_subclass__ triggers metaclass init recursively — pick initialization carefully\n\n# pair: rec / ''\n"}

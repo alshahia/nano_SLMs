@@ -1,0 +1,15 @@
+{"text": "# reverse_string :: 'hello'\ndef reverse_string(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_string('hello'))\n"}
+{"text": "# reverse_string :: ''\ndef reverse_string(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_string(''))\n"}
+{"text": "# reverse_string :: 'a'\ndef reverse_string(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_string('a'))\n"}
+{"text": "# reverse_string :: 'racecar'\ndef reverse_string(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_string('racecar'))\n"}
+{"text": "# reverse_string :: 'Python'\ndef reverse_string(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_string('Python'))\n"}
+{"text": "# reverse_str :: 'hello'\ndef reverse_str(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_str('hello'))\n"}
+{"text": "# reverse_str :: ''\ndef reverse_str(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_str(''))\n"}
+{"text": "# reverse_str :: 'a'\ndef reverse_str(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_str('a'))\n"}
+{"text": "# reverse_str :: 'racecar'\ndef reverse_str(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_str('racecar'))\n"}
+{"text": "# reverse_str :: 'Python'\ndef reverse_str(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(reverse_str('Python'))\n"}
+{"text": "# str_reverse :: 'hello'\ndef str_reverse(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(str_reverse('hello'))\n"}
+{"text": "# str_reverse :: ''\ndef str_reverse(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(str_reverse(''))\n"}
+{"text": "# str_reverse :: 'a'\ndef str_reverse(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(str_reverse('a'))\n"}
+{"text": "# str_reverse :: 'racecar'\ndef str_reverse(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(str_reverse('racecar'))\n"}
+{"text": "# str_reverse :: 'Python'\ndef str_reverse(s):\n    return s[::-1]\n\nif __name__ == \"__main__\":\n    print(str_reverse('Python'))\n"}

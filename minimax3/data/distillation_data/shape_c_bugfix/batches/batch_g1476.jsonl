@@ -1,0 +1,1 @@
+{"instruction": "Show the lambda closure in `closure_lambda`. (input: 5)", "response": "def closure_lambda(x):\n    return lambda y: x + y\n\n# Bug was: closures capture variables by reference; default args fix late binding\n\n# pair: closure_lambda / 5\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show typing.cast misuse in `cast`. Input: `'hello'`. (input: 'hello')", "response": "from typing import cast\ndef cast(x):\n    return cast(int, x)\n\n# Bug was: cast is a no-op at runtime — relies on static type checker\n\n# pair: cast / 'hello'\n"}

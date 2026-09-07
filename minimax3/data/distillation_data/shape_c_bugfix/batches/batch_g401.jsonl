@@ -1,0 +1,1 @@
+{"instruction": "Show eager format in logging in `logf`. Input: `'user', 'login'`. (input: 'user', 'login')", "response": "import logging\ndef logf(user, event):\n    logging.info('user=%s event=%s' % (user, event))\n\n# Bug was: %-format runs even when INFO disabled — pass args lazily\n\n# pair: logf / 'user', 'login'\n"}

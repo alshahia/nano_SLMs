@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.parent` in `path_parent`. (input: '/tmp/foo/bar.txt')", "response": "from pathlib import Path\n\ndef path_parent(p):\n    return Path(p).parent\n\n# Bug was: `Path.parent` returns the parent directory as a new Path\n\n# pair: path_parent / '/tmp/foo/bar.txt'\n"}

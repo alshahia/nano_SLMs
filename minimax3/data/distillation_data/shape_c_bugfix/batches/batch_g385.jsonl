@@ -1,0 +1,1 @@
+{"instruction": "Show urljoin without base in `resolve`. (input: 'foo', '')", "response": "from urllib.parse import urljoin\ndef resolve(base, ref):\n    return urljoin(base, ref)\n\n# Bug was: empty base drops the scheme — urljoin requires a base with scheme\n\n# pair: resolve / 'foo', ''\n"}

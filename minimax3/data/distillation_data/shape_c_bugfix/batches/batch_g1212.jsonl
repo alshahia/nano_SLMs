@@ -1,0 +1,1 @@
+{"instruction": "Show the dataclass `__post_init__` in `dc_post_init`. (input: 1, 2)", "response": "from dataclasses import dataclass\n\n@dataclass\nclass C:\n    x: int\n    y: int\n    def __post_init__(self):\n        self.sum = self.x + self.y\n\n# Bug was: `__post_init__` runs after the auto-generated `__init__`\n\n# pair: dc_post_init / 1, 2\n"}

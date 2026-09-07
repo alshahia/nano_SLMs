@@ -1,0 +1,1 @@
+{"instruction": "Show `all` in `all_basic2`. (input: [True, True, False])", "response": "def all_basic2(xs):\n    return all(xs)\n\n# Bug was: `all(xs)` returns True for empty list (vacuous truth)\n\n# pair: all_basic2 / [True, True, False]\n"}

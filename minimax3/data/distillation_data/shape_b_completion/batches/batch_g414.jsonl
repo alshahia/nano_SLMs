@@ -1,0 +1,15 @@
+{"text": "# nth_fib_mod :: (10, 1000)\ndef nth_fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(nth_fib_mod((10, 1000)))\n"}
+{"text": "# nth_fib_mod :: (100, 100)\ndef nth_fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(nth_fib_mod((100, 100)))\n"}
+{"text": "# nth_fib_mod :: (0, 5)\ndef nth_fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(nth_fib_mod((0, 5)))\n"}
+{"text": "# nth_fib_mod :: (1, 1)\ndef nth_fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(nth_fib_mod((1, 1)))\n"}
+{"text": "# nth_fib_mod :: (50, 7)\ndef nth_fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(nth_fib_mod((50, 7)))\n"}
+{"text": "# fib_mod :: (10, 1000)\ndef fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(fib_mod((10, 1000)))\n"}
+{"text": "# fib_mod :: (100, 100)\ndef fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(fib_mod((100, 100)))\n"}
+{"text": "# fib_mod :: (0, 5)\ndef fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(fib_mod((0, 5)))\n"}
+{"text": "# fib_mod :: (1, 1)\ndef fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(fib_mod((1, 1)))\n"}
+{"text": "# fib_mod :: (50, 7)\ndef fib_mod(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(fib_mod((50, 7)))\n"}
+{"text": "# pisano :: (10, 1000)\ndef pisano(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(pisano((10, 1000)))\n"}
+{"text": "# pisano :: (100, 100)\ndef pisano(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(pisano((100, 100)))\n"}
+{"text": "# pisano :: (0, 5)\ndef pisano(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(pisano((0, 5)))\n"}
+{"text": "# pisano :: (1, 1)\ndef pisano(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(pisano((1, 1)))\n"}
+{"text": "# pisano :: (50, 7)\ndef pisano(n, m):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, (a + b) % m\n    return a\n\nif __name__ == '__main__':\n    print(pisano((50, 7)))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the memoized fib in `fib_memo`. (input: 10)", "response": "from functools import lru_cache\n\n@lru_cache(maxsize=None)\ndef fib_memo(n):\n    if n < 2:\n        return n\n    return fib_memo(n-1) + fib_memo(n-2)\n\n# Bug was: `@lru_cache` memoizes results; turns O(2^n) into O(n)\n\n# pair: fib_memo / 10\n"}

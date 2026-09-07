@@ -1,0 +1,64 @@
+{"instruction": "Write a function `vector_norm_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_norm_v2([3, 4])`.", "response": "def vector_norm_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_norm_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_norm_v2([0, 0])`.", "response": "def vector_norm_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_norm_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_norm_v2([1])`.", "response": "def vector_norm_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_norm_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_norm_v2([1, 0, 0])`.", "response": "def vector_norm_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_norm_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_norm_v2([1, 1, 1])`.", "response": "def vector_norm_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_norm_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_norm_v2([2, 3, 6])`.", "response": "def vector_norm_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_norm_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_norm_v2([1.5, 2.5])`.", "response": "def vector_norm_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_norm_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_norm_v2([-3, -4])`.", "response": "def vector_norm_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([3, 4])`.", "response": "def vec_len2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([0, 0])`.", "response": "def vec_len2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([1])`.", "response": "def vec_len2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([1, 0, 0])`.", "response": "def vec_len2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([1, 1, 1])`.", "response": "def vec_len2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([2, 3, 6])`.", "response": "def vec_len2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([1.5, 2.5])`.", "response": "def vec_len2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([-3, -4])`.", "response": "def vec_len2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `mag_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `mag_v2([3, 4])`.", "response": "def mag_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `mag_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `mag_v2([0, 0])`.", "response": "def mag_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `mag_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `mag_v2([1])`.", "response": "def mag_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `mag_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `mag_v2([1, 0, 0])`.", "response": "def mag_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `mag_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `mag_v2([1, 1, 1])`.", "response": "def mag_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `mag_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `mag_v2([2, 3, 6])`.", "response": "def mag_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `mag_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `mag_v2([1.5, 2.5])`.", "response": "def mag_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `mag_v2(v)` returning the L2 norm (Euclidean magnitude). Example: `mag_v2([-3, -4])`.", "response": "def mag_v2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_norm2([3, 4])`.", "response": "def l2_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_norm2([0, 0])`.", "response": "def l2_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_norm2([1])`.", "response": "def l2_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_norm2([1, 0, 0])`.", "response": "def l2_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_norm2([1, 1, 1])`.", "response": "def l2_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_norm2([2, 3, 6])`.", "response": "def l2_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_norm2([1.5, 2.5])`.", "response": "def l2_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_norm2([-3, -4])`.", "response": "def l2_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `norm2([3, 4])`.", "response": "def norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `norm2([0, 0])`.", "response": "def norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `norm2([1])`.", "response": "def norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `norm2([1, 0, 0])`.", "response": "def norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `norm2([1, 1, 1])`.", "response": "def norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `norm2([2, 3, 6])`.", "response": "def norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `norm2([1.5, 2.5])`.", "response": "def norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `norm2([-3, -4])`.", "response": "def norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_mag2([3, 4])`.", "response": "def vector_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_mag2([0, 0])`.", "response": "def vector_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_mag2([1])`.", "response": "def vector_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_mag2([1, 0, 0])`.", "response": "def vector_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_mag2([1, 1, 1])`.", "response": "def vector_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_mag2([2, 3, 6])`.", "response": "def vector_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_mag2([1.5, 2.5])`.", "response": "def vector_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `vector_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `vector_mag2([-3, -4])`.", "response": "def vector_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `do_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `do_norm2([3, 4])`.", "response": "def do_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `do_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `do_norm2([0, 0])`.", "response": "def do_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `do_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `do_norm2([1])`.", "response": "def do_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `do_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `do_norm2([1, 0, 0])`.", "response": "def do_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `do_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `do_norm2([1, 1, 1])`.", "response": "def do_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `do_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `do_norm2([2, 3, 6])`.", "response": "def do_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `do_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `do_norm2([1.5, 2.5])`.", "response": "def do_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `do_norm2(v)` returning the L2 norm (Euclidean magnitude). Example: `do_norm2([-3, -4])`.", "response": "def do_norm2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_mag2([3, 4])`.", "response": "def l2_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_mag2([0, 0])`.", "response": "def l2_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_mag2([1])`.", "response": "def l2_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_mag2([1, 0, 0])`.", "response": "def l2_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_mag2([1, 1, 1])`.", "response": "def l2_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_mag2([2, 3, 6])`.", "response": "def l2_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_mag2([1.5, 2.5])`.", "response": "def l2_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}
+{"instruction": "Write a function `l2_mag2(v)` returning the L2 norm (Euclidean magnitude). Example: `l2_mag2([-3, -4])`.", "response": "def l2_mag2(v):\n    return sum(x * x for x in v) ** 0.5\n"}

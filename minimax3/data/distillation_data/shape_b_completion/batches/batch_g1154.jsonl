@@ -1,0 +1,15 @@
+{"text": "# qx2_circle_circ :: '0'\nimport math\n\ndef qx2_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_circ('0'))\n"}
+{"text": "# qx2_circle_circ :: '1'\nimport math\n\ndef qx2_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_circ('1'))\n"}
+{"text": "# qx2_circle_circ :: '2'\nimport math\n\ndef qx2_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_circ('2'))\n"}
+{"text": "# qx2_circle_circ :: '3'\nimport math\n\ndef qx2_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_circ('3'))\n"}
+{"text": "# qx2_circle_circ :: '5'\nimport math\n\ndef qx2_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_circ('5'))\n"}
+{"text": "# qx2_circumference :: '0'\nimport math\n\ndef qx2_circumference(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circumference('0'))\n"}
+{"text": "# qx2_circumference :: '1'\nimport math\n\ndef qx2_circumference(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circumference('1'))\n"}
+{"text": "# qx2_circumference :: '2'\nimport math\n\ndef qx2_circumference(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circumference('2'))\n"}
+{"text": "# qx2_circumference :: '3'\nimport math\n\ndef qx2_circumference(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circumference('3'))\n"}
+{"text": "# qx2_circumference :: '5'\nimport math\n\ndef qx2_circumference(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circumference('5'))\n"}
+{"text": "# qx2_circle_perim :: '0'\nimport math\n\ndef qx2_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_perim('0'))\n"}
+{"text": "# qx2_circle_perim :: '1'\nimport math\n\ndef qx2_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_perim('1'))\n"}
+{"text": "# qx2_circle_perim :: '2'\nimport math\n\ndef qx2_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_perim('2'))\n"}
+{"text": "# qx2_circle_perim :: '3'\nimport math\n\ndef qx2_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_perim('3'))\n"}
+{"text": "# qx2_circle_perim :: '5'\nimport math\n\ndef qx2_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx2_circle_perim('5'))\n"}

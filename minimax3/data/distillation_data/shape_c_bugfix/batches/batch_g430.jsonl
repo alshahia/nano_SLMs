@@ -1,0 +1,1 @@
+{"instruction": "Show removed ssl.wrap_socket in `tls`. (input: '')", "response": "import ssl\ndef tls():\n    return ssl.wrap_socket(socket.socket())\n\n# Bug was: ssl.wrap_socket removed in Py3.12 — use ssl.SSLContext.wrap_socket\n\n# pair: tls / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the `del` attribute in `del_attr`. (input: 5)", "response": "class C:\n    def __init__(self, x):\n        self.x = x\n\ndef del_attr(c):\n    del c.x\n    return c\n\n# Bug was: `del obj.attr` removes the attribute; subsequent access raises AttributeError\n\n# pair: del_attr / 5\n"}

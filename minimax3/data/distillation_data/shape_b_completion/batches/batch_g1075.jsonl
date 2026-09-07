@@ -1,0 +1,15 @@
+{"text": "# qx2_is_space :: '   '\ndef qx2_is_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_is_space('   '))\n"}
+{"text": "# qx2_is_space :: ''\ndef qx2_is_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_is_space(''))\n"}
+{"text": "# qx2_is_space :: ' '\ndef qx2_is_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_is_space(' '))\n"}
+{"text": "# qx2_is_space :: '\\t\\n'\ndef qx2_is_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_is_space('\\t\\n'))\n"}
+{"text": "# qx2_is_space :: ' a '\ndef qx2_is_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_is_space(' a '))\n"}
+{"text": "# qx2_space_check :: '   '\ndef qx2_space_check(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_space_check('   '))\n"}
+{"text": "# qx2_space_check :: ''\ndef qx2_space_check(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_space_check(''))\n"}
+{"text": "# qx2_space_check :: ' '\ndef qx2_space_check(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_space_check(' '))\n"}
+{"text": "# qx2_space_check :: '\\t\\n'\ndef qx2_space_check(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_space_check('\\t\\n'))\n"}
+{"text": "# qx2_space_check :: ' a '\ndef qx2_space_check(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_space_check(' a '))\n"}
+{"text": "# qx2_all_space :: '   '\ndef qx2_all_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_all_space('   '))\n"}
+{"text": "# qx2_all_space :: ''\ndef qx2_all_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_all_space(''))\n"}
+{"text": "# qx2_all_space :: ' '\ndef qx2_all_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_all_space(' '))\n"}
+{"text": "# qx2_all_space :: '\\t\\n'\ndef qx2_all_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_all_space('\\t\\n'))\n"}
+{"text": "# qx2_all_space :: ' a '\ndef qx2_all_space(s):\n    return s.isspace()\n\nif __name__ == '__main__':\n    print(qx2_all_space(' a '))\n"}

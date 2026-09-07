@@ -1,0 +1,1 @@
+{"instruction": "Show the explicit `return None` in `always_none`. (input: 42)", "response": "def always_none(x):\n    return None\n\n# Bug was: explicitly returning None; missing return in a function also returns None\n\n# pair: always_none / 42\n"}

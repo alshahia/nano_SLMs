@@ -1,0 +1,1 @@
+{"instruction": "Show `hashlib.sha3_256` in `hl_sha3`. (input: 'hello')", "response": "import hashlib\n\ndef hl_sha3(s):\n    return hashlib.sha3_256(s.encode()).hexdigest()\n\n# Bug was: SHA-3 is the NIST-standardized alternative to SHA-2\n\n# pair: hl_sha3 / 'hello'\n"}

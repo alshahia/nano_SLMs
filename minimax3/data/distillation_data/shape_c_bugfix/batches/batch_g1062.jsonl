@@ -1,0 +1,1 @@
+{"instruction": "Show the `map(lambda)` pattern in `map_lambda`. (input: [1, 2, 3])", "response": "def map_lambda(xs):\n    return list(map(lambda x: x * 2, xs))\n\n# Bug was: this is the idiomatic way to apply a transform; comprehension `[x*2 for x in xs]` is often clearer\n\n# pair: map_lambda / [1, 2, 3]\n"}

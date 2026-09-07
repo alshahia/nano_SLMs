@@ -1,0 +1,1 @@
+{"instruction": "Show missing pool close in `pooled`. (input: [fn, fn, fn])", "response": "from multiprocessing import Pool\ndef pooled(fns):\n    p = Pool(4)\n    return p.map(work, fns)\n\n# Bug was: Pool never closed — workers leak; use `with Pool(...) as p:`\n\n# pair: pooled / [fn, fn, fn]\n"}

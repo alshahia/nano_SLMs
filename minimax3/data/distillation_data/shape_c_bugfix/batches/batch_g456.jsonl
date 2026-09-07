@@ -1,0 +1,1 @@
+{"instruction": "Show copy.deepcopy on slots in `copyslot`. (input: '')", "response": "import copy\nclass copyslot:\n    __slots__ = ('x',)\n    def __init__(self): self.x = 1\ncopy.deepcopy(copyslot())\n\n# Bug was: copy.deepcopy needs __reduce__ or __deepcopy__ for slotted class with complex state\n\n# pair: copyslot / ''\n"}

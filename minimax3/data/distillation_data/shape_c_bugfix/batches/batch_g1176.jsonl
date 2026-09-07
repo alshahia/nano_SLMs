@@ -1,0 +1,1 @@
+{"instruction": "Show the Sequence type hint in `type_sequence`. (input: [1, 2])", "response": "from collections.abc import Sequence\n\ndef type_sequence(xs: Sequence[int]) -> int:\n    return xs[0]\n\n# Bug was: `Sequence` allows indexing but not necessarily appending\n\n# pair: type_sequence / [1, 2]\n"}

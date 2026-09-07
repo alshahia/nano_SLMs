@@ -1,0 +1,1 @@
+{"instruction": "Show the unhashable-args with `@lru_cache` in `cache_unhashable`. (input: [1, 2])", "response": "from functools import lru_cache\n\n@lru_cache\ndef cache_unhashable(xs):\n    return sum(xs)\n\n# Bug was: list args are unhashable; @lru_cache requires hashable args\n\n# pair: cache_unhashable / [1, 2]\n"}

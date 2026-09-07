@@ -1,0 +1,1 @@
+{"instruction": "Show `typing.Final` in `typing_final`. (input: 'hello')", "response": "from typing import Final\n\nMAX: Final = 100\n\ndef typing_final():\n    return MAX\n\n# Bug was: `Final` signals constants to type checkers; runtime doesn't enforce\n\n# pair: typing_final / 'hello'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `memoryview` slicing in `mv_slice`. (input: b'hello')", "response": "def mv_slice(data):\n    return memoryview(data)[1:4]\n\n# Bug was: `memoryview` is sliceable without copying\n\n# pair: mv_slice / b'hello'\n"}

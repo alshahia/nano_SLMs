@@ -1,0 +1,15 @@
+{"text": "# qx2_split_max :: ('a,b,c', ',', 2)\ndef qx2_split_max(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_max(('a,b,c', ',', 2)))\n"}
+{"text": "# qx2_split_max :: ('hello world', ' ', 1)\ndef qx2_split_max(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_max(('hello world', ' ', 1)))\n"}
+{"text": "# qx2_split_max :: ('a,b,c', ',', 1)\ndef qx2_split_max(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_max(('a,b,c', ',', 1)))\n"}
+{"text": "# qx2_split_max :: ('', ',', 3)\ndef qx2_split_max(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_max(('', ',', 3)))\n"}
+{"text": "# qx2_split_max :: ('a,b,c,d,e', ',', 10)\ndef qx2_split_max(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_max(('a,b,c,d,e', ',', 10)))\n"}
+{"text": "# qx2_split_n :: ('a,b,c', ',', 2)\ndef qx2_split_n(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_n(('a,b,c', ',', 2)))\n"}
+{"text": "# qx2_split_n :: ('hello world', ' ', 1)\ndef qx2_split_n(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_n(('hello world', ' ', 1)))\n"}
+{"text": "# qx2_split_n :: ('a,b,c', ',', 1)\ndef qx2_split_n(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_n(('a,b,c', ',', 1)))\n"}
+{"text": "# qx2_split_n :: ('', ',', 3)\ndef qx2_split_n(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_n(('', ',', 3)))\n"}
+{"text": "# qx2_split_n :: ('a,b,c,d,e', ',', 10)\ndef qx2_split_n(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_n(('a,b,c,d,e', ',', 10)))\n"}
+{"text": "# qx2_split_limit :: ('a,b,c', ',', 2)\ndef qx2_split_limit(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_limit(('a,b,c', ',', 2)))\n"}
+{"text": "# qx2_split_limit :: ('hello world', ' ', 1)\ndef qx2_split_limit(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_limit(('hello world', ' ', 1)))\n"}
+{"text": "# qx2_split_limit :: ('a,b,c', ',', 1)\ndef qx2_split_limit(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_limit(('a,b,c', ',', 1)))\n"}
+{"text": "# qx2_split_limit :: ('', ',', 3)\ndef qx2_split_limit(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_limit(('', ',', 3)))\n"}
+{"text": "# qx2_split_limit :: ('a,b,c,d,e', ',', 10)\ndef qx2_split_limit(s, sep, n):\n    return s.split(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_limit(('a,b,c,d,e', ',', 10)))\n"}

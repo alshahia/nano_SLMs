@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.iterdir` in `path_iterdir`. (input: '.')", "response": "from pathlib import Path\n\ndef path_iterdir(d):\n    return [str(p) for p in Path(d).iterdir()]\n\n# Bug was: `iterdir` yields Path objects for each entry in the directory\n\n# pair: path_iterdir / '.'\n"}

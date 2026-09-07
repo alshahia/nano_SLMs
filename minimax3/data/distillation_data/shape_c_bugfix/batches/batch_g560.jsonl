@@ -1,0 +1,1 @@
+{"instruction": "Show lru_cache on method in `fcm`. Input: `self, n`. (input: self, n)", "response": "from functools import lru_cache\nclass fcm:\n    @lru_cache(maxsize=128)\n    def compute(self, n):\n        return n * 2\n\n# Bug was: instance method cached holds self in cache — memory leak; use functools.cached_property for state\n\n# pair: fcm / self, n\n"}

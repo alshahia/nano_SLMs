@@ -1,0 +1,1 @@
+{"instruction": "Show the json.loads call without error handling in `json_loads_safe`. (input: '{\"a\": 1}')", "response": "import json\ndef json_loads_safe(s):\n    return json.loads(s)\n\n# Bug was: invalid JSON raises `json.JSONDecodeError`; caller should catch\n\n# pair: json_loads_safe / '{\"a\": 1}'\n"}

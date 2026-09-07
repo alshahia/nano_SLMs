@@ -1,0 +1,1 @@
+{"instruction": "Show the falsy-empty-string in `truthy_empty`. (input: '')", "response": "def truthy_empty(s):\n    if s:\n        return 'truthy'\n    return 'falsy'\n\n# Bug was: empty string is falsy\n\n# pair: truthy_empty / ''\n"}

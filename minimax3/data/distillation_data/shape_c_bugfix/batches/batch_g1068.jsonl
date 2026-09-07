@@ -1,0 +1,1 @@
+{"instruction": "Show the empty-list `all` returns True in `all_empty`. (input: [])", "response": "def all_empty(xs):\n    return all(xs)\n\n# Bug was: `all([])` returns True (vacuous truth); `any([])` returns False\n\n# pair: all_empty / []\n"}

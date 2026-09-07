@@ -1,0 +1,1 @@
+{"instruction": "Show the `assert` stripped under `-O` gotcha in `assert_prod`. (input: 'a')", "response": "def assert_prod(x):\n    assert x is not None, 'must not be None'\n    return x.upper()\n\n# Bug was: `assert` is stripped when Python runs with `-O`; don't use it for validation\n\n# pair: assert_prod / 'a'\n"}

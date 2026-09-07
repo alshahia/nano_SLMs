@@ -1,0 +1,15 @@
+{"text": "# qx_bin_to_int :: '0'\ndef qx_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_bin_to_int('0'))\n"}
+{"text": "# qx_bin_to_int :: '1'\ndef qx_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_bin_to_int('1'))\n"}
+{"text": "# qx_bin_to_int :: '101'\ndef qx_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_bin_to_int('101'))\n"}
+{"text": "# qx_bin_to_int :: '1010'\ndef qx_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_bin_to_int('1010'))\n"}
+{"text": "# qx_bin_to_int :: '11111111'\ndef qx_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_bin_to_int('11111111'))\n"}
+{"text": "# qx_qx_parse_binary_qx :: '0'\ndef qx_qx_parse_binary_qx(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_binary_qx('0'))\n"}
+{"text": "# qx_qx_parse_binary_qx :: '1'\ndef qx_qx_parse_binary_qx(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_binary_qx('1'))\n"}
+{"text": "# qx_qx_parse_binary_qx :: '101'\ndef qx_qx_parse_binary_qx(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_binary_qx('101'))\n"}
+{"text": "# qx_qx_parse_binary_qx :: '1010'\ndef qx_qx_parse_binary_qx(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_binary_qx('1010'))\n"}
+{"text": "# qx_qx_parse_binary_qx :: '11111111'\ndef qx_qx_parse_binary_qx(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_binary_qx('11111111'))\n"}
+{"text": "# qx_qx_binstr_to_int :: '0'\ndef qx_qx_binstr_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_binstr_to_int('0'))\n"}
+{"text": "# qx_qx_binstr_to_int :: '1'\ndef qx_qx_binstr_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_binstr_to_int('1'))\n"}
+{"text": "# qx_qx_binstr_to_int :: '101'\ndef qx_qx_binstr_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_binstr_to_int('101'))\n"}
+{"text": "# qx_qx_binstr_to_int :: '1010'\ndef qx_qx_binstr_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_binstr_to_int('1010'))\n"}
+{"text": "# qx_qx_binstr_to_int :: '11111111'\ndef qx_qx_binstr_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx_qx_binstr_to_int('11111111'))\n"}

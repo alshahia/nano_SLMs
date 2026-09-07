@@ -1,0 +1,2 @@
+{"instruction": "Show the zip-shortest behavior in `zip_short`. (input: [1, 2, 3])", "response": "def zip_short(a, b):\n    return list(zip(a, b))\n\n# Bug was: `zip` truncates to the shorter iterable; use `itertools.zip_longest` to pad\n\n# pair: zip_short / [1, 2, 3]\n"}
+{"instruction": "Show the zip-shortest behavior in `zip_short`. (input: ['a', 'b', 'c', 'd', 'e'])", "response": "def zip_short(a, b):\n    return list(zip(a, b))\n\n# Bug was: `zip` truncates to the shorter iterable; use `itertools.zip_longest` to pad\n\n# pair: zip_short / ['a', 'b', 'c', 'd', 'e']\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show signal in non-main thread in `handler`. (input: '')", "response": "import signal, threading\ndef handler(signum, frame):\n    cleanup()\nsignal.signal(signal.SIGINT, handler)\nthreading.Thread(target=work).start()\n\n# Bug was: signals only fire in main thread — handler may not run\n\n# pair: handler / ''\n"}

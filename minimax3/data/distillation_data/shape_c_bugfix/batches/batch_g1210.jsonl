@@ -1,0 +1,1 @@
+{"instruction": "Show `@singledispatch` in `fn_singledisp`. (input: 1)", "response": "from functools import singledispatch\n\n@singledispatch\ndef fn_singledisp(x):\n    return 'default'\n\n# Bug was: `singledispatch` lets you register type-specific implementations\n\n# pair: fn_singledisp / 1\n"}

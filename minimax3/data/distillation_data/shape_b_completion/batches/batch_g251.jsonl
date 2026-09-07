@@ -1,0 +1,15 @@
+{"text": "# vowel_count :: 'hello'\ndef vowel_count(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(vowel_count('hello'))\n"}
+{"text": "# vowel_count :: 'HELLO'\ndef vowel_count(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(vowel_count('HELLO'))\n"}
+{"text": "# vowel_count :: ''\ndef vowel_count(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(vowel_count(''))\n"}
+{"text": "# vowel_count :: 'Python programming'\ndef vowel_count(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(vowel_count('Python programming'))\n"}
+{"text": "# vowel_count :: aeiou\ndef vowel_count(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(vowel_count(aeiou))\n"}
+{"text": "# n_vowels :: 'hello'\ndef n_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_vowels('hello'))\n"}
+{"text": "# n_vowels :: 'HELLO'\ndef n_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_vowels('HELLO'))\n"}
+{"text": "# n_vowels :: ''\ndef n_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_vowels(''))\n"}
+{"text": "# n_vowels :: 'Python programming'\ndef n_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_vowels('Python programming'))\n"}
+{"text": "# n_vowels :: aeiou\ndef n_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(n_vowels(aeiou))\n"}
+{"text": "# count_vow :: 'hello'\ndef count_vow(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_vow('hello'))\n"}
+{"text": "# count_vow :: 'HELLO'\ndef count_vow(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_vow('HELLO'))\n"}
+{"text": "# count_vow :: ''\ndef count_vow(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_vow(''))\n"}
+{"text": "# count_vow :: 'Python programming'\ndef count_vow(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_vow('Python programming'))\n"}
+{"text": "# count_vow :: aeiou\ndef count_vow(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')\n\nif __name__ == '__main__':\n    print(count_vow(aeiou))\n"}

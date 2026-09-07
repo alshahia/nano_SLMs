@@ -1,0 +1,1 @@
+{"instruction": "Show `iter` in `iter_basic`. (input: [1, 2, 3])", "response": "def iter_basic(xs):\n    return iter(xs)\n\n# Bug was: `iter(xs)` returns an iterator; `iter(callable, sentinel)` calls until sentinel\n\n# pair: iter_basic / [1, 2, 3]\n"}

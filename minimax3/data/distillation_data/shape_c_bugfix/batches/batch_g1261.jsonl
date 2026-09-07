@@ -1,0 +1,1 @@
+{"instruction": "Show the redundant `^` with `re.match` in `re_anchor`. (input: 'hello world')", "response": "import re\n\ndef re_anchor(s):\n    return bool(re.match(r'^hello', s))\n\n# Bug was: `match` already anchors at the start; `^` is redundant unless using `re.MULTILINE`\n\n# pair: re_anchor / 'hello world'\n"}

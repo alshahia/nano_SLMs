@@ -1,0 +1,1 @@
+{"instruction": "Show the `...` placeholder in `ellipsis_ph`. (input: )", "response": "def ellipsis_ph():\n    ...\n\n# Bug was: `...` is also valid as a placeholder; commonly used in type stubs\n\n# pair: ellipsis_ph /\n"}

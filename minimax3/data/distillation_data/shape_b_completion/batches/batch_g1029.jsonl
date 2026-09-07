@@ -1,0 +1,15 @@
+{"text": "# qx2_gcd :: (12, 18)\nimport math\n\ndef qx2_gcd(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd((12, 18)))\n"}
+{"text": "# qx2_gcd :: (7, 13)\nimport math\n\ndef qx2_gcd(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd((7, 13)))\n"}
+{"text": "# qx2_gcd :: (100, 75)\nimport math\n\ndef qx2_gcd(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd((100, 75)))\n"}
+{"text": "# qx2_gcd :: (0, 5)\nimport math\n\ndef qx2_gcd(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd((0, 5)))\n"}
+{"text": "# qx2_gcd :: (17, 17)\nimport math\n\ndef qx2_gcd(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd((17, 17)))\n"}
+{"text": "# qx2_greatest_common :: (12, 18)\nimport math\n\ndef qx2_greatest_common(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_greatest_common((12, 18)))\n"}
+{"text": "# qx2_greatest_common :: (7, 13)\nimport math\n\ndef qx2_greatest_common(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_greatest_common((7, 13)))\n"}
+{"text": "# qx2_greatest_common :: (100, 75)\nimport math\n\ndef qx2_greatest_common(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_greatest_common((100, 75)))\n"}
+{"text": "# qx2_greatest_common :: (0, 5)\nimport math\n\ndef qx2_greatest_common(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_greatest_common((0, 5)))\n"}
+{"text": "# qx2_greatest_common :: (17, 17)\nimport math\n\ndef qx2_greatest_common(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_greatest_common((17, 17)))\n"}
+{"text": "# qx2_gcd_pair :: (12, 18)\nimport math\n\ndef qx2_gcd_pair(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd_pair((12, 18)))\n"}
+{"text": "# qx2_gcd_pair :: (7, 13)\nimport math\n\ndef qx2_gcd_pair(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd_pair((7, 13)))\n"}
+{"text": "# qx2_gcd_pair :: (100, 75)\nimport math\n\ndef qx2_gcd_pair(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd_pair((100, 75)))\n"}
+{"text": "# qx2_gcd_pair :: (0, 5)\nimport math\n\ndef qx2_gcd_pair(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd_pair((0, 5)))\n"}
+{"text": "# qx2_gcd_pair :: (17, 17)\nimport math\n\ndef qx2_gcd_pair(a, b):\n    return math.gcd(a, b)\n\nif __name__ == '__main__':\n    print(qx2_gcd_pair((17, 17)))\n"}

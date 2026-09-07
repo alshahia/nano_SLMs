@@ -1,0 +1,1 @@
+{"instruction": "Show the empty-input ValueError for `min` in `min_empty`. (input: [])", "response": "def min_empty(xs):\n    return min(xs)\n\n# Bug was: `min([])` raises ValueError; pass a default with `default=` keyword\n\n# pair: min_empty / []\n"}

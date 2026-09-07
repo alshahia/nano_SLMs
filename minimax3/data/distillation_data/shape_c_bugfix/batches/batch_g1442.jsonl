@@ -1,0 +1,2 @@
+{"instruction": "Show `zip(strict=True)` in `zip_strict`. (input: [1, 2, 3])", "response": "def zip_strict(a, b):\n    return list(zip(a, b, strict=True))\n\n# Bug was: `strict=True` raises ValueError on length mismatch (Py3.10+)\n\n# pair: zip_strict / [1, 2, 3]\n"}
+{"instruction": "Show `zip(strict=True)` in `zip_strict`. (input: ['a', 'b'])", "response": "def zip_strict(a, b):\n    return list(zip(a, b, strict=True))\n\n# Bug was: `strict=True` raises ValueError on length mismatch (Py3.10+)\n\n# pair: zip_strict / ['a', 'b']\n"}

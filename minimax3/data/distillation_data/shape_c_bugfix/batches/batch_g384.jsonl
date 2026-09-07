@@ -1,0 +1,1 @@
+{"instruction": "Show ip parse error in `parse_ip`. Input: `'999.999.999.999'`. (input: '999.999.999.999')", "response": "import ipaddress\ndef parse_ip(s):\n    return ipaddress.ip_address(s)\n\n# Bug was: invalid IPs raise — handle ValueError or pre-validate\n\n# pair: parse_ip / '999.999.999.999'\n"}

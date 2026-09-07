@@ -1,0 +1,1 @@
+{"instruction": "Show the combined format spec in `format_spec_complex`. (input: 1234567.89)", "response": "def format_spec_complex(x):\n    return f'{x:,.2f}'\n\n# Bug was: combines thousands separator with 2 decimals\n\n# pair: format_spec_complex / 1234567.89\n"}

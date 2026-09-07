@@ -1,0 +1,15 @@
+{"text": "# qx2_rect_area :: (0, 0)\ndef qx2_rect_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rect_area((0, 0)))\n"}
+{"text": "# qx2_rect_area :: (1, 1)\ndef qx2_rect_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rect_area((1, 1)))\n"}
+{"text": "# qx2_rect_area :: (3, 4)\ndef qx2_rect_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rect_area((3, 4)))\n"}
+{"text": "# qx2_rect_area :: (10, 10)\ndef qx2_rect_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rect_area((10, 10)))\n"}
+{"text": "# qx2_rect_area :: (0, 5)\ndef qx2_rect_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rect_area((0, 5)))\n"}
+{"text": "# qx2_area_rect :: (0, 0)\ndef qx2_area_rect(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_area_rect((0, 0)))\n"}
+{"text": "# qx2_area_rect :: (1, 1)\ndef qx2_area_rect(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_area_rect((1, 1)))\n"}
+{"text": "# qx2_area_rect :: (3, 4)\ndef qx2_area_rect(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_area_rect((3, 4)))\n"}
+{"text": "# qx2_area_rect :: (10, 10)\ndef qx2_area_rect(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_area_rect((10, 10)))\n"}
+{"text": "# qx2_area_rect :: (0, 5)\ndef qx2_area_rect(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_area_rect((0, 5)))\n"}
+{"text": "# qx2_rectangle_area :: (0, 0)\ndef qx2_rectangle_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rectangle_area((0, 0)))\n"}
+{"text": "# qx2_rectangle_area :: (1, 1)\ndef qx2_rectangle_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rectangle_area((1, 1)))\n"}
+{"text": "# qx2_rectangle_area :: (3, 4)\ndef qx2_rectangle_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rectangle_area((3, 4)))\n"}
+{"text": "# qx2_rectangle_area :: (10, 10)\ndef qx2_rectangle_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rectangle_area((10, 10)))\n"}
+{"text": "# qx2_rectangle_area :: (0, 5)\ndef qx2_rectangle_area(w, h):\n    return w * h\n\nif __name__ == '__main__':\n    print(qx2_rectangle_area((0, 5)))\n"}

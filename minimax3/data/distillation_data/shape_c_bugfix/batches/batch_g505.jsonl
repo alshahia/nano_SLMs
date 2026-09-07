@@ -1,0 +1,1 @@
+{"instruction": "Show wrong debugger call in `bp`. (input: '')", "response": "def bp(x):\n    breakpoint()\n    return x\n\n# Bug was: PYTHONBREAKPOINT env var not honored if you use pdb.set_trace directly — use breakpoint()\n\n# pair: bp / ''\n"}

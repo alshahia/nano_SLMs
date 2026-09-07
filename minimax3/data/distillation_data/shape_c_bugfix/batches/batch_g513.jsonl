@@ -1,0 +1,1 @@
+{"instruction": "Show importlib.import_module in `ilm`. Input: `'os.path'`. (input: 'os.path')", "response": "def ilm(m):\n    import importlib\n    return importlib.import_module(m)\n\n# Bug was: works but no error handling — wrap in try/except ImportError\n\n# pair: ilm / 'os.path'\n"}

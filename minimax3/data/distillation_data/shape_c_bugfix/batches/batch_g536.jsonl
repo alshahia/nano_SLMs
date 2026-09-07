@@ -1,0 +1,1 @@
+{"instruction": "Show namedtuple field assign in `nta`. (input: '')", "response": "from collections import namedtuple\nPoint = namedtuple('Point', 'x y')\np = Point(1, 2)\np.x = 3\n\n# Bug was: namedtuple is immutable — assignment raises AttributeError\n\n# pair: nta / ''\n"}

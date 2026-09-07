@@ -1,0 +1,3 @@
+{"text": "# b64_encode :: 'hello'\nimport base64\n\ndef b64_encode(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(b64_encode('hello'))\n"}
+{"text": "# b64_encode :: ''\nimport base64\n\ndef b64_encode(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(b64_encode(''))\n"}
+{"text": "# b64_encode :: 'Python'\nimport base64\n\ndef b64_encode(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(b64_encode('Python'))\n"}

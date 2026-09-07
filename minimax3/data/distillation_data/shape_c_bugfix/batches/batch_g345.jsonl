@@ -1,0 +1,1 @@
+{"instruction": "Show shell=True injection risk in `run_cmd`. Input: `'rm -rf /tmp/build'`. (input: 'rm -rf /tmp/build')", "response": "import subprocess\ndef run_cmd(cmd):\n    return subprocess.run(cmd, shell=True)\n\n# Bug was: shell=True enables shell injection — pass cmd as list, shell=False\n\n# pair: run_cmd / 'rm -rf /tmp/build'\n"}

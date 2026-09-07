@@ -1,0 +1,2 @@
+{"instruction": "Show the tuple-swap idiom in `tuple_swap`. (input: 1)", "response": "def tuple_swap(a, b):\n    a, b = b, a\n    return a, b\n\n# Bug was: tuple unpacking allows simultaneous swap without a temp\n\n# pair: tuple_swap / 1\n"}
+{"instruction": "Show the tuple-swap idiom in `tuple_swap`. (input: 2)", "response": "def tuple_swap(a, b):\n    a, b = b, a\n    return a, b\n\n# Bug was: tuple unpacking allows simultaneous swap without a temp\n\n# pair: tuple_swap / 2\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show the set-add idempotency in `set_add_dup`. (input: {1, 2, 3})", "response": "def set_add_dup(s, x):\n    s.add(x)\n    return s\n\n# Bug was: sets silently ignore duplicates; `s.add(x)` is idempotent\n\n# pair: set_add_dup / {1, 2, 3}\n"}
+{"instruction": "Show the set-add idempotency in `set_add_dup`. (input: 2)", "response": "def set_add_dup(s, x):\n    s.add(x)\n    return s\n\n# Bug was: sets silently ignore duplicates; `s.add(x)` is idempotent\n\n# pair: set_add_dup / 2\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the builtin shadow in comprehension in `shadow_builtin_comp`. (input: [1, 2, 3])", "response": "def shadow_builtin_comp(xs):\n    return [list(str(x)) for list in xs]\n\n# Bug was: using `list` as a loop variable shadows the builtin\n\n# pair: shadow_builtin_comp / [1, 2, 3]\n"}

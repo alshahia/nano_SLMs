@@ -1,0 +1,1 @@
+{"instruction": "Show the chained comparison in `chained_ok`. (input: 5)", "response": "def chained_ok(x):\n    return 0 < x < 10\n\n# Bug was: chained comparisons are evaluated as `0 < x AND x < 10`\n\n# pair: chained_ok / 5\n"}

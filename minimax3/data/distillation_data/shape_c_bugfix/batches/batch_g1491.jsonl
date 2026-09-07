@@ -1,0 +1,1 @@
+{"instruction": "Show the memoryview modification in `mv_modify`. (input: b'hello')", "response": "def mv_modify(data):\n    mv = memoryview(data)\n    mv[0] = 72\n    return bytes(mv)\n\n# Bug was: `memoryview` allows in-place modification of buffers\n\n# pair: mv_modify / b'hello'\n"}

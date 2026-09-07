@@ -1,0 +1,15 @@
+{"text": "# qx_coin_flip :: '_'\nimport random\ndef qx_coin_flip():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_coin_flip('_'))\n"}
+{"text": "# qx_coin_flip :: '*'\nimport random\ndef qx_coin_flip():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_coin_flip('*'))\n"}
+{"text": "# qx_coin_flip :: '#'\nimport random\ndef qx_coin_flip():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_coin_flip('#'))\n"}
+{"text": "# qx_coin_flip :: '?'\nimport random\ndef qx_coin_flip():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_coin_flip('?'))\n"}
+{"text": "# qx_coin_flip :: '!'\nimport random\ndef qx_coin_flip():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_coin_flip('!'))\n"}
+{"text": "# qx_flip_coin :: '_'\nimport random\ndef qx_flip_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_flip_coin('_'))\n"}
+{"text": "# qx_flip_coin :: '*'\nimport random\ndef qx_flip_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_flip_coin('*'))\n"}
+{"text": "# qx_flip_coin :: '#'\nimport random\ndef qx_flip_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_flip_coin('#'))\n"}
+{"text": "# qx_flip_coin :: '?'\nimport random\ndef qx_flip_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_flip_coin('?'))\n"}
+{"text": "# qx_flip_coin :: '!'\nimport random\ndef qx_flip_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_flip_coin('!'))\n"}
+{"text": "# qx_toss_coin :: '_'\nimport random\ndef qx_toss_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_toss_coin('_'))\n"}
+{"text": "# qx_toss_coin :: '*'\nimport random\ndef qx_toss_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_toss_coin('*'))\n"}
+{"text": "# qx_toss_coin :: '#'\nimport random\ndef qx_toss_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_toss_coin('#'))\n"}
+{"text": "# qx_toss_coin :: '?'\nimport random\ndef qx_toss_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_toss_coin('?'))\n"}
+{"text": "# qx_toss_coin :: '!'\nimport random\ndef qx_toss_coin():\n    return random.choice(['heads', 'tails'])\n\nif __name__ == '__main__':\n    print(qx_toss_coin('!'))\n"}

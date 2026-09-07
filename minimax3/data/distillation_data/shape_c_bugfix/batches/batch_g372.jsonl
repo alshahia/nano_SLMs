@@ -1,0 +1,1 @@
+{"instruction": "Show tz issue in strftime in `format_date`. (input: now)", "response": "from datetime import datetime\ndef format_date(dt):\n    return dt.strftime('%Y-%m-%d')\n\n# Bug was: naive dt strftime works, but tz-aware conversion back is wrong — store UTC\n\n# pair: format_date / now\n"}

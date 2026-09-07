@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.is_file()` in `path_isfile`. (input: 'file.txt')", "response": "from pathlib import Path\n\ndef path_isfile(p):\n    return Path(p).is_file()\n\n# Bug was: `is_file()` is True only for regular files (not directories)\n\n# pair: path_isfile / 'file.txt'\n"}

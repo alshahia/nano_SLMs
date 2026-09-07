@@ -1,0 +1,15 @@
+{"text": "# percent_change :: (100, 150)\ndef percent_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_change((100, 150)))\n"}
+{"text": "# percent_change :: (200, 100)\ndef percent_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_change((200, 100)))\n"}
+{"text": "# percent_change :: (50, 50)\ndef percent_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_change((50, 50)))\n"}
+{"text": "# percent_change :: (0, 10)\ndef percent_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_change((0, 10)))\n"}
+{"text": "# percent_change :: (10, 0)\ndef percent_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_change((10, 0)))\n"}
+{"text": "# pct_change :: (100, 150)\ndef pct_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(pct_change((100, 150)))\n"}
+{"text": "# pct_change :: (200, 100)\ndef pct_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(pct_change((200, 100)))\n"}
+{"text": "# pct_change :: (50, 50)\ndef pct_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(pct_change((50, 50)))\n"}
+{"text": "# pct_change :: (0, 10)\ndef pct_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(pct_change((0, 10)))\n"}
+{"text": "# pct_change :: (10, 0)\ndef pct_change(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(pct_change((10, 0)))\n"}
+{"text": "# percent_diff :: (100, 150)\ndef percent_diff(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_diff((100, 150)))\n"}
+{"text": "# percent_diff :: (200, 100)\ndef percent_diff(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_diff((200, 100)))\n"}
+{"text": "# percent_diff :: (50, 50)\ndef percent_diff(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_diff((50, 50)))\n"}
+{"text": "# percent_diff :: (0, 10)\ndef percent_diff(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_diff((0, 10)))\n"}
+{"text": "# percent_diff :: (10, 0)\ndef percent_diff(old, new):\n    if old == 0:\n        return 0.0\n    return (new - old) / old * 100\n\nif __name__ == '__main__':\n    print(percent_diff((10, 0)))\n"}

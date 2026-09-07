@@ -1,0 +1,1 @@
+{"instruction": "Show the print side effect in `side_effect_print`. (input: )", "response": "def side_effect_print():\n    print('side effect')\n    return 1\n\n# Bug was: `print` is a side effect; pure functions shouldn't have visible side effects\n\n# pair: side_effect_print /\n"}

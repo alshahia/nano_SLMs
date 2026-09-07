@@ -1,0 +1,1 @@
+{"instruction": "Show `zoneinfo.ZoneInfo` in `zoneinfo_basic`. (input: 'America/New_York')", "response": "from zoneinfo import ZoneInfo\nfrom datetime import datetime\n\ndef zoneinfo_basic(tz_name):\n    return datetime.now(ZoneInfo(tz_name))\n\n# Bug was: `zoneinfo` (Py3.9+) replaces pytz for most use cases\n\n# pair: zoneinfo_basic / 'America/New_York'\n"}

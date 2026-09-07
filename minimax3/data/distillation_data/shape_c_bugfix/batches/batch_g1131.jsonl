@@ -1,0 +1,1 @@
+{"instruction": "Show the `__call__` method in `class_call`. (input: 1)", "response": "class C:\n    def __init__(self, x):\n        self.x = x\n    def __call__(self, y):\n        return self.x + y\n\n# Bug was: `__call__` makes instances callable like functions\n\n# pair: class_call / 1\n"}

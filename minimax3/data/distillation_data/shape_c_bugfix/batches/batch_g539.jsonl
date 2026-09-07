@@ -1,0 +1,1 @@
+{"instruction": "Show Counter negative in `cneg`. Input: `'aab'`. (input: 'aab')", "response": "from collections import Counter\ndef cneg(s):\n    c = Counter(s)\n    c.subtract({'a': 5})\n    return c['a']\n\n# Bug was: Counter values can go negative — guard with max(0, c[x])\n\n# pair: cneg / 'aab'\n"}

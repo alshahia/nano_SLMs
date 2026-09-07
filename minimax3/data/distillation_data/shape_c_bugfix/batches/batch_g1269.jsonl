@@ -1,0 +1,1 @@
+{"instruction": "Show `math.fsum` in `math_fsum`. (input: [0.1] * 10)", "response": "import math\ndef math_fsum(xs):\n    return math.fsum(xs)\n\n# Bug was: `math.fsum` tracks partial sums for better precision\n\n# pair: math_fsum / [0.1] * 10\n"}

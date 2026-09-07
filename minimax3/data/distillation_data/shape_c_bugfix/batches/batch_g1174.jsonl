@@ -1,0 +1,1 @@
+{"instruction": "Show the modern Iterable import in `type_iter_new`. (input: [1, 2])", "response": "from collections.abc import Iterable\n\ndef type_iter_new(xs: Iterable[int]) -> int:\n    return sum(xs)\n\n# Bug was: `collections.abc.Iterable` for type hints in 3.9+\n\n# pair: type_iter_new / [1, 2]\n"}

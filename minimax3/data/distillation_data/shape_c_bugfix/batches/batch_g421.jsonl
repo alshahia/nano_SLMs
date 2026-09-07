@@ -1,0 +1,1 @@
+{"instruction": "Show metaclass conflict in `meta`. (input: '')", "response": "from abc import ABC\nclass A(ABC): pass\nclass B(metaclass=ABCMeta): pass\nclass meta(A, B): pass\n\n# Bug was: ABCMeta and another metaclass conflict — pick one or compose via metaclass=\n\n# pair: meta / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `threading.Lock` in `thread_lock`. (input: )", "response": "import threading\n\nlock = threading.Lock()\n\ndef thread_lock():\n    with lock:\n        return 1\n\n# Bug was: `Lock` is acquired/released by `with` block; protects shared state\n\n# pair: thread_lock /\n"}

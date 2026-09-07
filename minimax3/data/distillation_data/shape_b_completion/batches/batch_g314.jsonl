@@ -1,0 +1,15 @@
+{"text": "# qx_uniform :: (0.0, 1.0)\nimport random\ndef qx_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_uniform((0.0, 1.0)))\n"}
+{"text": "# qx_uniform :: (0, 100)\nimport random\ndef qx_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_uniform((0, 100)))\n"}
+{"text": "# qx_uniform :: (-1, 1)\nimport random\ndef qx_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_uniform((-1, 1)))\n"}
+{"text": "# qx_uniform :: (5, 5)\nimport random\ndef qx_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_uniform((5, 5)))\n"}
+{"text": "# qx_uniform :: (0, 0.001)\nimport random\ndef qx_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_uniform((0, 0.001)))\n"}
+{"text": "# qx_random_float :: (0.0, 1.0)\nimport random\ndef qx_random_float(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_random_float((0.0, 1.0)))\n"}
+{"text": "# qx_random_float :: (0, 100)\nimport random\ndef qx_random_float(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_random_float((0, 100)))\n"}
+{"text": "# qx_random_float :: (-1, 1)\nimport random\ndef qx_random_float(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_random_float((-1, 1)))\n"}
+{"text": "# qx_random_float :: (5, 5)\nimport random\ndef qx_random_float(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_random_float((5, 5)))\n"}
+{"text": "# qx_random_float :: (0, 0.001)\nimport random\ndef qx_random_float(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_random_float((0, 0.001)))\n"}
+{"text": "# qx_rand_uniform :: (0.0, 1.0)\nimport random\ndef qx_rand_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_rand_uniform((0.0, 1.0)))\n"}
+{"text": "# qx_rand_uniform :: (0, 100)\nimport random\ndef qx_rand_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_rand_uniform((0, 100)))\n"}
+{"text": "# qx_rand_uniform :: (-1, 1)\nimport random\ndef qx_rand_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_rand_uniform((-1, 1)))\n"}
+{"text": "# qx_rand_uniform :: (5, 5)\nimport random\ndef qx_rand_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_rand_uniform((5, 5)))\n"}
+{"text": "# qx_rand_uniform :: (0, 0.001)\nimport random\ndef qx_rand_uniform(lo, hi):\n    return random.uniform(lo, hi)\n\nif __name__ == '__main__':\n    print(qx_rand_uniform((0, 0.001)))\n"}

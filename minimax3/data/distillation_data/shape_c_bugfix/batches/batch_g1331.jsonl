@@ -1,0 +1,1 @@
+{"instruction": "Show `enum.auto` in `enum_auto`. (input: )", "response": "from enum import Enum, auto\n\nclass Color(Enum):\n    RED = auto()\n    GREEN = auto()\n    BLUE = auto()\n\ndef enum_auto():\n    return Color.RED.value\n\n# Bug was: `auto()` assigns sequential values automatically\n\n# pair: enum_auto /\n"}

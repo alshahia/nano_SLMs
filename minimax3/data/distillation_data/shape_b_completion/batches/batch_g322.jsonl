@@ -1,0 +1,15 @@
+{"text": "# qx_fib_iter :: 0\ndef qx_fib_iter(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter(0))\n"}
+{"text": "# qx_fib_iter :: 1\ndef qx_fib_iter(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter(1))\n"}
+{"text": "# qx_fib_iter :: 5\ndef qx_fib_iter(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter(5))\n"}
+{"text": "# qx_fib_iter :: 10\ndef qx_fib_iter(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter(10))\n"}
+{"text": "# qx_fib_iter :: 20\ndef qx_fib_iter(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter(20))\n"}
+{"text": "# qx_iter_fib :: 0\ndef qx_iter_fib(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_iter_fib(0))\n"}
+{"text": "# qx_iter_fib :: 1\ndef qx_iter_fib(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_iter_fib(1))\n"}
+{"text": "# qx_iter_fib :: 5\ndef qx_iter_fib(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_iter_fib(5))\n"}
+{"text": "# qx_iter_fib :: 10\ndef qx_iter_fib(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_iter_fib(10))\n"}
+{"text": "# qx_iter_fib :: 20\ndef qx_iter_fib(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_iter_fib(20))\n"}
+{"text": "# qx_fib_iter_n :: 0\ndef qx_fib_iter_n(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter_n(0))\n"}
+{"text": "# qx_fib_iter_n :: 1\ndef qx_fib_iter_n(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter_n(1))\n"}
+{"text": "# qx_fib_iter_n :: 5\ndef qx_fib_iter_n(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter_n(5))\n"}
+{"text": "# qx_fib_iter_n :: 10\ndef qx_fib_iter_n(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter_n(10))\n"}
+{"text": "# qx_fib_iter_n :: 20\ndef qx_fib_iter_n(n):\n    a, b = 0, 1\n    for _ in range(n): a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(qx_fib_iter_n(20))\n"}

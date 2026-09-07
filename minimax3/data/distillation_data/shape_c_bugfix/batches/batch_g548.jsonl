@@ -1,0 +1,1 @@
+{"instruction": "Show unicodedata.lookup case in `ul`. Input: `'LATIN SMALL LETTER A'`. (input: 'LATIN SMALL LETTER A')", "response": "import unicodedata\ndef ul(name):\n    return unicodedata.lookup(name)\n\n# Bug was: lookup is case-sensitive and spaces — 'LATIN SMALL LETTER A' or 'LATIN SMALL LETTER A'\n\n# pair: ul / 'LATIN SMALL LETTER A'\n"}

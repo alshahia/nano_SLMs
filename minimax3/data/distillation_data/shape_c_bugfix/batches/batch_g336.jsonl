@@ -1,0 +1,1 @@
+{"instruction": "Show __exit__ return value semantics in `silent_close`. (input: '')", "response": "class silent_close:\n    def __enter__(self):\n        return self\n    def __exit__(self, exc_type, exc, tb):\n        close()\n        return False\n\n# Bug was: returning False (or None) propagates the exception — return True to swallow\n\n# pair: silent_close / ''\n"}

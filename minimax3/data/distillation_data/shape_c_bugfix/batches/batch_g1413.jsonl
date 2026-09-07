@@ -1,0 +1,1 @@
+{"instruction": "Show `issubclass` in `issubclass`. (input: )", "response": "class A:\n    pass\nclass B(A):\n    pass\n\ndef issubclass():\n    return issubclass(B, A)\n\n# Bug was: `issubclass` checks class inheritance; use `isinstance` for instances\n\n# pair: issubclass /\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show missing timeout in `fetch`. (input: 'https://example.com')", "response": "import subprocess\ndef fetch(url):\n    return subprocess.run(['curl', url], capture_output=True)\n\n# Bug was: missing `timeout=` — hanging processes never return\n\n# pair: fetch / 'https://example.com'\n"}

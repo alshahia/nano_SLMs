@@ -1,0 +1,1 @@
+{"instruction": "Show the nested-lambda anti-pattern in `nested_lambda`. (input: 5)", "response": "def nested_lambda(x):\n    f = lambda x: (lambda y: y + 1)(x)\n    return f(x)\n\n# Bug was: nested lambdas are valid but unreadable; use `def` for clarity\n\n# pair: nested_lambda / 5\n"}

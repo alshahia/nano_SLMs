@@ -1,0 +1,2 @@
+{"instruction": "Show the operator precedence in `op_precedence`. (input: 2)", "response": "def op_precedence(a, b):\n    return a + b * 2\n\n# Bug was: `*` binds tighter than `+`; result is `a + (b*2)`, not `(a+b)*2`\n\n# pair: op_precedence / 2\n"}
+{"instruction": "Show the operator precedence in `op_precedence`. (input: 3)", "response": "def op_precedence(a, b):\n    return a + b * 2\n\n# Bug was: `*` binds tighter than `+`; result is `a + (b*2)`, not `(a+b)*2`\n\n# pair: op_precedence / 3\n"}

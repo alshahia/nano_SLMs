@@ -1,0 +1,1 @@
+{"instruction": "Show the `TYPE_CHECKING` guard in `type_checking`. (input: )", "response": "from typing import TYPE_CHECKING\n\nif TYPE_CHECKING:\n    from heavy_module import Heavy\n\ndef type_checking(x):\n    return x\n\n# Bug was: `TYPE_CHECKING` is False at runtime; imports are skipped; saves startup time\n\n# pair: type_checking /\n"}

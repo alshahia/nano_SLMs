@@ -1,0 +1,1 @@
+{"instruction": "Show missing notify in `cv`. (input: '')", "response": "import threading\ncv = threading.Condition()\ndef cv():\n    with cv:\n        cv.wait()\n        do_work()\n\n# Bug was: no notify_all() anywhere — all waiters hang forever\n\n# pair: cv / ''\n"}

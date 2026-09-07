@@ -1,0 +1,1 @@
+{"instruction": "Show the weakref pattern in `weakref_basic`. (input: )", "response": "import weakref\n\nclass C:\n    pass\n\ndef weakref_basic():\n    c = C()\n    r = weakref.ref(c)\n    return r()\n\n# Bug was: `weakref.ref` doesn't prevent garbage collection; returns None if collected\n\n# pair: weakref_basic /\n"}

@@ -1,0 +1,15 @@
+{"text": "# dict_intersect :: ({'a': 1, 'b': 2}, {'b': 3, 'c': 4})\ndef dict_intersect(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_intersect(({'a': 1, 'b': 2}, {'b': 3, 'c': 4})))\n"}
+{"text": "# dict_intersect :: ({'a': 1}, {})\ndef dict_intersect(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_intersect(({'a': 1}, {})))\n"}
+{"text": "# dict_intersect :: ({}, {'a': 1})\ndef dict_intersect(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_intersect(({}, {'a': 1})))\n"}
+{"text": "# dict_intersect :: ({'x': 1}, {'x': 2, 'y': 3})\ndef dict_intersect(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_intersect(({'x': 1}, {'x': 2, 'y': 3})))\n"}
+{"text": "# dict_intersect :: ({'a': 1}, {'a': 1})\ndef dict_intersect(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_intersect(({'a': 1}, {'a': 1})))\n"}
+{"text": "# common_keys :: ({'a': 1, 'b': 2}, {'b': 3, 'c': 4})\ndef common_keys(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(common_keys(({'a': 1, 'b': 2}, {'b': 3, 'c': 4})))\n"}
+{"text": "# common_keys :: ({'a': 1}, {})\ndef common_keys(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(common_keys(({'a': 1}, {})))\n"}
+{"text": "# common_keys :: ({}, {'a': 1})\ndef common_keys(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(common_keys(({}, {'a': 1})))\n"}
+{"text": "# common_keys :: ({'x': 1}, {'x': 2, 'y': 3})\ndef common_keys(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(common_keys(({'x': 1}, {'x': 2, 'y': 3})))\n"}
+{"text": "# common_keys :: ({'a': 1}, {'a': 1})\ndef common_keys(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(common_keys(({'a': 1}, {'a': 1})))\n"}
+{"text": "# dict_and :: ({'a': 1, 'b': 2}, {'b': 3, 'c': 4})\ndef dict_and(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_and(({'a': 1, 'b': 2}, {'b': 3, 'c': 4})))\n"}
+{"text": "# dict_and :: ({'a': 1}, {})\ndef dict_and(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_and(({'a': 1}, {})))\n"}
+{"text": "# dict_and :: ({}, {'a': 1})\ndef dict_and(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_and(({}, {'a': 1})))\n"}
+{"text": "# dict_and :: ({'x': 1}, {'x': 2, 'y': 3})\ndef dict_and(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_and(({'x': 1}, {'x': 2, 'y': 3})))\n"}
+{"text": "# dict_and :: ({'a': 1}, {'a': 1})\ndef dict_and(a, b):\n    return {k: a[k] for k in a if k in b}\n\nif __name__ == '__main__':\n    print(dict_and(({'a': 1}, {'a': 1})))\n"}

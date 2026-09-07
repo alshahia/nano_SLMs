@@ -1,0 +1,1 @@
+{"instruction": "Show `NoReturn` in `typing_noreturn`. (input: )", "response": "from typing import NoReturn\n\ndef typing_noreturn() -> NoReturn:\n    raise SystemExit(1)\n\n# Bug was: `NoReturn` signals the function never returns\n\n# pair: typing_noreturn /\n"}

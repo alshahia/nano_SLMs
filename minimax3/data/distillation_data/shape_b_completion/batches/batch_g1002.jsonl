@@ -1,0 +1,15 @@
+{"text": "# qx2_mode :: [1, 2, 3, 4, 5]\nimport statistics\n\ndef qx2_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode([1, 2, 3, 4, 5]))\n"}
+{"text": "# qx2_mode :: [10]\nimport statistics\n\ndef qx2_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode([10]))\n"}
+{"text": "# qx2_mode :: [1.5, 2.5, 3.5]\nimport statistics\n\ndef qx2_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode([1.5, 2.5, 3.5]))\n"}
+{"text": "# qx2_mode :: [-1, 0, 1]\nimport statistics\n\ndef qx2_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode([-1, 0, 1]))\n"}
+{"text": "# qx2_mode :: [5, 5, 5, 5]\nimport statistics\n\ndef qx2_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode([5, 5, 5, 5]))\n"}
+{"text": "# qx2_mode_run :: [1, 2, 3, 4, 5]\nimport statistics\n\ndef qx2_mode_run(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode_run([1, 2, 3, 4, 5]))\n"}
+{"text": "# qx2_mode_run :: [10]\nimport statistics\n\ndef qx2_mode_run(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode_run([10]))\n"}
+{"text": "# qx2_mode_run :: [1.5, 2.5, 3.5]\nimport statistics\n\ndef qx2_mode_run(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode_run([1.5, 2.5, 3.5]))\n"}
+{"text": "# qx2_mode_run :: [-1, 0, 1]\nimport statistics\n\ndef qx2_mode_run(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode_run([-1, 0, 1]))\n"}
+{"text": "# qx2_mode_run :: [5, 5, 5, 5]\nimport statistics\n\ndef qx2_mode_run(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_mode_run([5, 5, 5, 5]))\n"}
+{"text": "# qx2_run_mode :: [1, 2, 3, 4, 5]\nimport statistics\n\ndef qx2_run_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_run_mode([1, 2, 3, 4, 5]))\n"}
+{"text": "# qx2_run_mode :: [10]\nimport statistics\n\ndef qx2_run_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_run_mode([10]))\n"}
+{"text": "# qx2_run_mode :: [1.5, 2.5, 3.5]\nimport statistics\n\ndef qx2_run_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_run_mode([1.5, 2.5, 3.5]))\n"}
+{"text": "# qx2_run_mode :: [-1, 0, 1]\nimport statistics\n\ndef qx2_run_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_run_mode([-1, 0, 1]))\n"}
+{"text": "# qx2_run_mode :: [5, 5, 5, 5]\nimport statistics\n\ndef qx2_run_mode(xs):\n    return statistics.mode(xs)\n\nif __name__ == '__main__':\n    print(qx2_run_mode([5, 5, 5, 5]))\n"}

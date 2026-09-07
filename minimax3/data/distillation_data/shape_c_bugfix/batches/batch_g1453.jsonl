@@ -1,0 +1,1 @@
+{"instruction": "Show the exhausted-reversed bug in `reversed_list`. (input: [1, 2, 3])", "response": "def reversed_list(xs):\n    r = reversed(xs)\n    return list(r) + list(r)\n\n# Bug was: `reversed` iterator is exhausted after one pass\n\n# pair: reversed_list / [1, 2, 3]\n"}

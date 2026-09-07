@@ -1,0 +1,1 @@
+{"instruction": "Show the read-before-global-decl pattern in `read_global`. (input: 1)", "response": "def read_global(x):\n    return counter + x\n\ncounter = 0\n\n# Bug was: `counter` is module-level; reading it works but assignment would need `global counter`\n\n# pair: read_global / 1\n"}

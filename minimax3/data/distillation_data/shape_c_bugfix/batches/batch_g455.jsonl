@@ -1,0 +1,1 @@
+{"instruction": "Show pickle slot class in `pickle_slot`. (input: '')", "response": "import pickle\nclass pickle_slot:\n    __slots__ = ('x',)\n    def __init__(self): self.x = 1\nprint(pickle.dumps(pickle_slot()))\n\n# Bug was: pickling slotted class works, but unpickling requires the class to be importable at the same path\n\n# pair: pickle_slot / ''\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show the heapq.nsmallest in `heapq_small`. (input: [3, 1, 4, 1, 5, 9])", "response": "import heapq\n\ndef heapq_small(xs, n):\n    return heapq.nsmallest(n, xs)\n\n# Bug was: `nsmallest(n, xs)` is more efficient than sorting for small n\n\n# pair: heapq_small / [3, 1, 4, 1, 5, 9]\n"}
+{"instruction": "Show the heapq.nsmallest in `heapq_small`. (input: 2)", "response": "import heapq\n\ndef heapq_small(xs, n):\n    return heapq.nsmallest(n, xs)\n\n# Bug was: `nsmallest(n, xs)` is more efficient than sorting for small n\n\n# pair: heapq_small / 2\n"}

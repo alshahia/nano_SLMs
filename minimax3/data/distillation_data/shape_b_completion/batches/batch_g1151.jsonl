@@ -1,0 +1,15 @@
+{"text": "# qx2_norm :: [3, 4]\ndef qx2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_norm([3, 4]))\n"}
+{"text": "# qx2_norm :: [0, 0]\ndef qx2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_norm([0, 0]))\n"}
+{"text": "# qx2_norm :: [1]\ndef qx2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_norm([1]))\n"}
+{"text": "# qx2_norm :: [1, 0, 0]\ndef qx2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_norm([1, 0, 0]))\n"}
+{"text": "# qx2_norm :: [1, 1, 1]\ndef qx2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_norm([1, 1, 1]))\n"}
+{"text": "# qx2_l2_norm :: [3, 4]\ndef qx2_l2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_l2_norm([3, 4]))\n"}
+{"text": "# qx2_l2_norm :: [0, 0]\ndef qx2_l2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_l2_norm([0, 0]))\n"}
+{"text": "# qx2_l2_norm :: [1]\ndef qx2_l2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_l2_norm([1]))\n"}
+{"text": "# qx2_l2_norm :: [1, 0, 0]\ndef qx2_l2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_l2_norm([1, 0, 0]))\n"}
+{"text": "# qx2_l2_norm :: [1, 1, 1]\ndef qx2_l2_norm(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_l2_norm([1, 1, 1]))\n"}
+{"text": "# qx2_vec_mag :: [3, 4]\ndef qx2_vec_mag(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_vec_mag([3, 4]))\n"}
+{"text": "# qx2_vec_mag :: [0, 0]\ndef qx2_vec_mag(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_vec_mag([0, 0]))\n"}
+{"text": "# qx2_vec_mag :: [1]\ndef qx2_vec_mag(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_vec_mag([1]))\n"}
+{"text": "# qx2_vec_mag :: [1, 0, 0]\ndef qx2_vec_mag(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_vec_mag([1, 0, 0]))\n"}
+{"text": "# qx2_vec_mag :: [1, 1, 1]\ndef qx2_vec_mag(v):\n    return sum(x * x for x in v) ** 0.5\n\nif __name__ == '__main__':\n    print(qx2_vec_mag([1, 1, 1]))\n"}

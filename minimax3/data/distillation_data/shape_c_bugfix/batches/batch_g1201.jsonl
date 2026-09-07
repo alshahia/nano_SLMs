@@ -1,0 +1,1 @@
+{"instruction": "Show the itertools.filterfalse in `it_filterfalse`. (input: [1, 2, 3, 4])", "response": "from itertools import filterfalse\n\ndef it_filterfalse(xs):\n    return list(filterfalse(lambda x: x % 2 == 0, xs))\n\n# Bug was: `filterfalse` keeps items where the predicate is false\n\n# pair: it_filterfalse / [1, 2, 3, 4]\n"}

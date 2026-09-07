@@ -1,0 +1,15 @@
+{"text": "# qx2_digit_count :: 0\ndef qx2_digit_count(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_count(0))\n"}
+{"text": "# qx2_digit_count :: 9\ndef qx2_digit_count(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_count(9))\n"}
+{"text": "# qx2_digit_count :: 100\ndef qx2_digit_count(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_count(100))\n"}
+{"text": "# qx2_digit_count :: 12345\ndef qx2_digit_count(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_count(12345))\n"}
+{"text": "# qx2_digit_count :: 1000000\ndef qx2_digit_count(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_digit_count(1000000))\n"}
+{"text": "# qx2_num_digits :: 0\ndef qx2_num_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_num_digits(0))\n"}
+{"text": "# qx2_num_digits :: 9\ndef qx2_num_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_num_digits(9))\n"}
+{"text": "# qx2_num_digits :: 100\ndef qx2_num_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_num_digits(100))\n"}
+{"text": "# qx2_num_digits :: 12345\ndef qx2_num_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_num_digits(12345))\n"}
+{"text": "# qx2_num_digits :: 1000000\ndef qx2_num_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_num_digits(1000000))\n"}
+{"text": "# qx2_n_digits :: 0\ndef qx2_n_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_n_digits(0))\n"}
+{"text": "# qx2_n_digits :: 9\ndef qx2_n_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_n_digits(9))\n"}
+{"text": "# qx2_n_digits :: 100\ndef qx2_n_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_n_digits(100))\n"}
+{"text": "# qx2_n_digits :: 12345\ndef qx2_n_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_n_digits(12345))\n"}
+{"text": "# qx2_n_digits :: 1000000\ndef qx2_n_digits(n):\n    return len(str(abs(n)))\n\nif __name__ == '__main__':\n    print(qx2_n_digits(1000000))\n"}

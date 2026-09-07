@@ -1,0 +1,18 @@
+{"text": "# qx2_flatten :: [[1, 2], [3, 4]]\ndef qx2_flatten(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flatten([[1, 2], [3, 4]]))\n"}
+{"text": "# qx2_flatten :: [[1], [2], [3]]\ndef qx2_flatten(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flatten([[1], [2], [3]]))\n"}
+{"text": "# qx2_flatten :: [['a'], ['b', 'c']]\ndef qx2_flatten(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flatten([['a'], ['b', 'c']]))\n"}
+{"text": "# qx2_flatten :: [[]]\ndef qx2_flatten(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flatten([[]]))\n"}
+{"text": "# qx2_flatten :: [[1]]\ndef qx2_flatten(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flatten([[1]]))\n"}
+{"text": "# qx2_flatten :: [[1, 2, 3]]\ndef qx2_flatten(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flatten([[1, 2, 3]]))\n"}
+{"text": "# qx2_flat :: [[1, 2], [3, 4]]\ndef qx2_flat(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flat([[1, 2], [3, 4]]))\n"}
+{"text": "# qx2_flat :: [[1], [2], [3]]\ndef qx2_flat(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flat([[1], [2], [3]]))\n"}
+{"text": "# qx2_flat :: [['a'], ['b', 'c']]\ndef qx2_flat(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flat([['a'], ['b', 'c']]))\n"}
+{"text": "# qx2_flat :: [[]]\ndef qx2_flat(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flat([[]]))\n"}
+{"text": "# qx2_flat :: [[1]]\ndef qx2_flat(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flat([[1]]))\n"}
+{"text": "# qx2_flat :: [[1, 2, 3]]\ndef qx2_flat(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_flat([[1, 2, 3]]))\n"}
+{"text": "# qx2_one_level :: [[1, 2], [3, 4]]\ndef qx2_one_level(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_one_level([[1, 2], [3, 4]]))\n"}
+{"text": "# qx2_one_level :: [[1], [2], [3]]\ndef qx2_one_level(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_one_level([[1], [2], [3]]))\n"}
+{"text": "# qx2_one_level :: [['a'], ['b', 'c']]\ndef qx2_one_level(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_one_level([['a'], ['b', 'c']]))\n"}
+{"text": "# qx2_one_level :: [[]]\ndef qx2_one_level(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_one_level([[]]))\n"}
+{"text": "# qx2_one_level :: [[1]]\ndef qx2_one_level(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_one_level([[1]]))\n"}
+{"text": "# qx2_one_level :: [[1, 2, 3]]\ndef qx2_one_level(xs):\n    out = []\n    for sub in xs:\n        out.extend(sub)\n    return out\n\nif __name__ == '__main__':\n    print(qx2_one_level([[1, 2, 3]]))\n"}

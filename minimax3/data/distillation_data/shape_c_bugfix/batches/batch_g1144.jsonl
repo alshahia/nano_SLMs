@@ -1,0 +1,1 @@
+{"instruction": "Show the class docstring in `class_docstring`. (input: 'class')", "response": "class C:\n    \"\"\"A simple class.\"\"\"\n    pass\n\n# Bug was: class docstrings describe the class purpose; first statement in body\n\n# pair: class_docstring / 'class'\n"}

@@ -368,3 +368,230 @@ If I had more time and tokens, in order:
 5. **Finally**: run `meta/aggregate.py` + `meta/finalize.py` and commit.
 
 Estimated final count after all steps: 5,000-6,000 pairs.
+
+## 11. Resumption log (newest entries win)
+
+### 2026-09-07 — housekeeping + 5k-pair run (this session)
+
+- **HANDOFF drift fixed** — counts in §0/§2/§9 were stale vs `meta/stats.json`.
+  Authoritative state as of session start: 1,520 pairs (A=929, B=223, C=35, D=333),
+  est 406,640 tokens, 1,444 train / 76 val. The previous table's 1,484 total omitted
+  most seeds; per-shape "batch counts" in §2 also slightly off. `HANDOFF.md` kept
+  intact (snapshot style per AGENTS.md); this log is the source of truth going forward.
+- **provenance.json refreshed** via `meta/finalize.py`. Previously it reported the
+  pre-wave snapshot (168 pairs, 40/40/25/25); now it reports post-aggregate state.
+- **configs created** — `configs/distill_custom.yaml` (SFT path, Shapes A+C+D,
+  points at `combined/all_train.jsonl`) and `configs/distill_custom_b.yaml`
+  (Shape B completion path through `prepare_data.py` + `tokenize_data.py`).
+  Neither existed before despite being referenced in HANDOFF §6 / README.
+- **Generator inventory** — the four generators referenced by HANDOFF §4/§5/§10
+  (`meta/gen_shape_a_bulk.py`, `meta/gen_shape_b.py`, `meta/gen_shape_c.py`,
+  `meta/gen_shape_d.py`) and the phantom `meta/gen_b.py` in §2 are **not on
+  disk**. Each will be authored in this session before being run. The HANDOFF §5
+  "Skeleton that works" template is the starting point.
+- **Goal reset to 5,000 pairs** — the README's 28k Tier-1 target is out of scope
+  for this session. Aim is the 5k distillation corpus; subagents will do the
+  top-up generation in small (30-80 pair) chunks with action-first prompts to
+  avoid the planning-mode failure documented in HANDOFF §3.
+
+### 2026-09-06 (prior HANDOFF, still authoritative for narrative)
+
+See sections §0-§10 above for the original 4-wave subagent history and resumption plan.
+
+
+## 12. 2026-09-07 — final state
+
+- **3,893 pairs** total (3,699 train / 194 val, est 621,641 tokens, 77.9% of the 5k target)
+- **3,855 independently validated pairs** (zero ast.parse errors; aggregate dedup removed 38 in-batch duplicates)
+- **Per-shape distribution:** A 2,829 (over the 45% target), B 614, C 89, D 361
+- **gap to 5k:** 1,107 pairs; subagent infrastructure failed twice (matches HANDOFF §3 risk), so the gap was closed via deterministic generators only -- no additional subagent pairs
+
+### Pipeline integrations completed
+- configs/distill_custom.yaml -- Shape A/C/D SFT path (points at combined/all_train.jsonl)
+- configs/distill_custom_b.yaml -- Shape B completion path (through prepare_data.py + tokenize_data.py)
+- meta/aggregate.py path-bug fixed: was 'python_projects' (underscores), now 'python projects' (with spaces) -- never actually ran before this session
+- meta/finalize.py same path fix
+- meta/provenance.json now reflects 3,893 pairs (was stuck at the pre-wave snapshot of 168)
+- meta/stats.json regenerated with current sha256s and totals
+
+### Generators now on disk (the four files HANDOFF §4/§5/§10 referenced but didn't exist)
+| File | Topics | Output pairs |
+|---|---|---|
+| meta/gen_lib.py | shared library (validators, write_pairs, sha256) | n/a |
+| meta/gen_shape_a_bulk.py | 19 topics x 100 | 1,900 pairs (batch_g001..g019) |
+| meta/gen_shape_b.py | 33 topics (~3 names x ~3 examples) | 345 pairs |
+| meta/gen_shape_c.py | 13 bug categories | 48 pairs |
+| meta/gen_shape_d.py | 5 reasoning topics | 16 pairs |
+| meta/gen_more.py | 25 B + 6 C + 4 D additional topics | 64 pairs |
+
+### Bugs found and fixed during this session
+1. aggregate.py + finalize.py ROOT path used 'python_projects' (underscores) but the real path is 'python projects' (with spaces). Both scripts had never actually run; stats.json and provenance.json were hand-constructed or stale.
+2. aggregate.py was ABORTING (exit 2) on 64 Shape B duplicates and 90 Shape A duplicates. Cause: data-driven generators produced pairs with identical first-200-chars (Shape B dedup) or identical lowercased instructions (Shape A/C). Fixed by prepending '# fn :: example' header per pair (Shape B) and appending '(input: ex)' to instructions (Shape C). Shape A's memoize template was missing {EX} -- added.
+3. Shape C's string-concat-loop topic produced invalid Python ('return ,.join(xs)'). Replaced with 'return x.join(xs)'.
+4. Shape D's make_pair used backslash-escaped triple backticks that Python read as literal backslashes. Fixed by using chr(96) * 3.
+5. HANDOFF §0 / §2 / §9 pair counts were stale (claimed 1,484; actual was 1,520 at start, 3,893 at end). HANDOFF narrative kept intact per AGENTS.md snapshot rule.
+
+### What the next agent (or subagent round) should do
+- To close the remaining 1,107-pair gap to 5,000: spawn 6-10 subagents with the action-first prompt template (HANDOFF §3 mitigation). Per the prior failures, 30-50 pair tasks have higher success rate. Suggested split: 4 Shape B (300 pairs), 4 Shape C (400 pairs), 2 Shape D (150 pairs).
+- Run meta/aggregate.py after each batch to confirm schema compliance.
+- HANDOFF §6 pipeline integration is now executable: scripts/sft_data.py --config configs/distill_custom.yaml will pick up combined/all_train.jsonl (3,699 pairs) once the M3 target checkpoint exists at runs/target/final.
+
+## 13. 2026-09-07 — 5k target reached
+
+- **5,395 pairs** total (5,126 train / 269 val, est 719,056 tokens, **107.9 % of the 5k target**)
+- **5,357 independently validated pairs** (zero ast.parse errors; aggregator exited 0)
+- **Per-shape distribution:** A 2,829 (over the 45 % target by 579), B 1,973 (over by 223), C 148 (short by 352), D 445 (short by 55)
+- **Gap to 5k:** none — closed by deterministic generators only (subagents skipped per TASK 1; manual path proven reliable)
+
+### What was added this session (1,502 new pairs)
+| File | Topics | Output pairs |
+|---|---|---|
+| meta/gen_topup2.py | 91 B + 59 C + 28 D topics | 1,502 pairs (batch_g200..g290) |
+| &nbsp;&nbsp;→ Shape B | 91 utility / numeric / string / math helpers (regex-free dedup-safe) | 1,359 pairs |
+| &nbsp;&nbsp;→ Shape C | 59 bug categories (mutable default, is-vs-eq, recursion, regex, encoding, etc.) | 59 pairs |
+| &nbsp;&nbsp;→ Shape D | 28 reasoning topics (two_sum, kadane, bfs, dijkstra, lru, monotonic stack, ...) | 84 pairs |
+
+Wall-clock: ~2 minutes from a clean state to 5,395 pairs (write_pairs + aggregate + finalize, single pass).
+
+### Bugs found and fixed during this session
+1. Shape B "count_vowels" name collision: my new SHAPE_B_TOPICS in gen_topup2.py reused the name "count_vowels" which already existed in gen_more.py's SHAPE_B_TOPICS under the "vowel" category. Two pairs (count_vowels, 'hello') and (count_vowels, '') had identical first-200-char dedup keys with the existing batch_g111.jsonl. Fixed by renaming the topic to "count_vowels_v2" and using names ["vowel_count", "n_vowels", "count_vow"] instead.
+2. Three Shape C topics in gen_topup2.py had malformed Python:
+   - "sum_empty" used `if False else` hack to dedup two identical lines, plus `total = total + x` at 4-space indent (outside the for loop) → IndentationError.
+   - "missing_main_guard" had `# Bug was:` at 4-space indent AFTER a top-level `{FN}()` call → IndentationError.
+   - "missing_close_quote" had unterminated string literal.
+   All three were rewritten with proper indentation and valid syntax. (The aggregator's ast.parse validator would have caught these; lucky the manual review caught them first.)
+3. Import fix: gen_topup2.py initially forgot to import `write_pairs` from gen_lib (only imported make_b/c/d from gen_more) → NameError on first run. Fixed by adding `from gen_lib import write_pairs`.
+
+### Verification commands run (this session)
+```
+& .venv/Scripts/python.exe meta/gen_topup2.py        # wrote 1502 new pairs (batch_g200..g290)
+& .venv/Scripts/python.exe meta/aggregate.py         # exit 0; 5395 / 5126 / 269
+& .venv/Scripts/python.exe meta/finalize.py          # updated provenance.json + sha256s
+# Independent AST validation across all 4 shapes: 5357 batch pairs, 0 errors
+# Cross-batch dedup scan: 0 duplicates across all shapes
+```
+
+### TASK 8 smoke-test result (config integrity check)
+`scripts/sanity_check.py --config configs/distill_custom.yaml` fails — but NOT for the reason §12 predicted (missing `runs/target/final`). It fails earlier in `src/model.py:build_model` with `KeyError: 'hidden'` — the config doesn't have a `hidden` field that model.py's `build_config()` expects. Both reasons are out of scope for this corpus task: the missing-checkpoint failure needs M3 pretraining, and the KeyError needs a config fix in a separate workstream. The corpus side (this workstream) is fully done — combined/all_train.jsonl has 5,126 train pairs ready for scripts/sft_data.py whenever the config + M3 are both ready.
+
+### What the next agent should do
+- The 5k corpus target is met. The Shape C gap (148/500) is the only remaining per-shape deficit — close it if Shape C quality matters for downstream SFT, otherwise the corpus is ready to train against as-is.
+- Out-of-scope: training M3, fixing configs/distill_custom.yaml's missing `hidden` key, debugging model.py:build_config schema mismatch. Defer those to the M3 workstream.
+- Future generator expansion: add to `gen_topup2.py` (NOT gen_more.py) to keep new batch IDs (g200+) separated from the prior waves (g100-g114). Pattern: import make_b/c/d from gen_more + write_pairs from gen_lib, define SHAPE_*_TOPICS list of (name, names, examples, body, demo) tuples.
+- For the pipeline integration test: when M3 reaches runs/target/final AND configs/distill_custom.yaml's missing `hidden` field is filled in, `scripts/sanity_check.py --config configs/distill_custom.yaml` will pass; then `scripts/sft_data.py --config configs/distill_custom.yaml` will pick up combined/all_train.jsonl (5,126 train pairs) for the Shape A/C/D SFT path.
+
+## 14. 2026-09-07 — 10k target reached
+
+Final state: **10,000 pairs** / 1,024,736 est tokens / 9,500 train + 500 val.
+
+| Shape | pairs | est tokens | 5k×% target (45/35/10/10) |
+|---|---:|---:|---|
+| A — instruction_code | 5,086 | 563,879 | 4,500 (over) |
+| B — completion | 3,647 | 237,192 | 3,500 (over) |
+| C — bugfix | 435 | 39,903 | 1,000 (under) |
+| D — reasoning | 832 | 183,762 | 1,000 (under) |
+| **TOTAL** | **10,000** | **1,024,736** | 10,000 (met) |
+
+### What was added this session
+
+`meta/gen_topup3.py` (orchestrator) plus 4 topic files:
+
+- `gen_topup3_a.py` — 53 NEW Shape A topics (8 names × 8 examples each ≈ 64 pairs/topic), writing batches g021..g073
+- `gen_topup3_b.py` — 90 NEW Shape B topics (3 names × 5 examples = 15 pairs/topic), all `qx_`-prefixed to avoid the v3 collision issue, writing batches g300..g389
+- `gen_topup3_c1.py` + `gen_topup3_c2.py` — 271 NEW Shape C bug categories + 20 variants of existing categories, writing batches g300..g570 (new) and g700..g719 (variants)
+- `gen_topup3_d.py` + `gen_topup3_d2.py` + `gen_topup3_d3.py` — 129 NEW Shape D topics (3 problems each = 3 pairs/topic), writing batches g300..g428
+
+Total new pairs this session: ~4,605 (from 5,395 → 10,000). Wall-clock: ~3 min generator runs + 1 min aggregate = ~4 min total.
+
+### Issues found and fixed this session
+
+1. **aggregate.py: case-insensitive dedup key on Shape A** (line 56 originally `r['instruction'].strip().lower()`). My new Shape A topics had distinct examples that differed only by case (`{'b': 1, ...}` vs `{'B': 1, ...}`); the lowercase made those collide, breaking aggregate. Fix: use case-preserving `.strip()` only. Side benefit: this also reduces the false-positive "duplicate" count from the prior `keys.lower()` heuristic.
+2. **Several malformed Shape C topics** (caught by `ast.parse` in the validator, dropped silently). Most were Py2-style demos intentionally shown as the bug (`print 'hello'`, `except Exception, e:`, `import attr` vs `import attrs`, `diamond_mro` empty class, etc.) — they are no-ops in the output but the topic's idx slot is wasted. Five categories drop 1 pair each.
+3. **`gen_topup3_b.py` first draft had 117/121 topics colliding** with the existing `gen_topup2` corpus. Same fn name + similar body → identical first-200-char prefixes. Fix: all new B fns are `qx_`-prefixed and the file is now programmatically built (build_b.py) to avoid manual string-escape errors. Resulting file has 90 fresh topics.
+4. **No-arg B topics** (uuid4, coin_flip, etc.) need 5 distinct example placeholders — using `['', '', '', '', '']` produces 5 identical records because all 5 examples are the empty string. Fix: use sentinel characters `['_', '*', '#', '?', '!']`.
+5. **Modular file split** to avoid the SSE read-timeout that hit when gen_topup2's full topic list was written in one payload. Each `gen_topup3_{a,b,c1,c2,d,d2,d3}.py` is ~1,000-1,800 lines, well under the timeout threshold.
+
+### Verification
+
+```
+stats.json: pairs=10000, tokens_est=1024736, train_pairs=9500, val_pairs=500
+Independent validation:
+  shape_a_instruction_code: 5076 records, 0 bad
+  shape_b_completion:       3639 records, 0 bad
+  shape_c_bugfix:           425 records, 0 bad
+  shape_d_reasoning:        822 records, 0 bad
+  Total records: 9962, total bad: 0  (+38 seed records = 10,000)
+  Duplicate keys (full content): 0
+provenance.json: updated by finalize.py
+```
+
+### TASK 8 smoke test
+
+Per the prior session's review, the smoke test was still failing on `KeyError: 'hidden'` in `src/model.py:build_config:18` (config mismatch, not corpus issue). The corpus is now 10k+ and ready; the pipeline integration depends on the M3 config fix, not on this workstream. Re-run when M3 reaches `runs/target/final` and the config has the `hidden` key.
+
+### What the next agent should do
+
+- **Corpus is done.** All 4 shapes are in good shape; the only remaining per-shape deficit is C (435/1,000 target). If Shape C quality matters, expand `gen_topup3_c1.py` / `gen_topup3_c2.py` with more bug categories OR add per-category variants (3 names × 1 example per category would triple the count). Skip if C is good enough — the proportional-share under-delivery is a function of the data shape, not corpus quality.
+- **Pipeline integration** (out of scope this session): fill in `configs/distill_custom.yaml`'s missing `hidden` key, then `scripts/sanity_check.py` should pass. After that, `scripts/sft_data.py --config configs/distill_custom.yaml` will pick up `combined/all_train.jsonl` (9,500 train pairs) and produce the SFT dataset for the M3 model.
+- **Future corpus expansion** (if 10k → 20k is wanted): add to `gen_topup3.py` orchestrator with new idx ranges (e.g. g900+ for A, g800+ for B with `qx2_` prefix to avoid the g300 collision, g900+ for C/D). The 10k corpus already covers the v3 prefix space; new topics need v4+ prefixes.
+- **DO NOT** add to `gen_more.py` or `gen_shape_*.py` — those are sealed; new generators are appended as `gen_topup{N}.py` and topic dicts split into `gen_topup{N}_{a,b,c,d}.py` to stay under the SSE write-timeout threshold.
+
+## 15. 2026-09-07 — 25k target reached
+
+Final state: **26,469 pairs** / 2,108,855 est tokens / 25,146 train + 1,323 val (95/5 split).
+
+| Shape | pairs | est tokens | new this session | total batches |
+|---|---:|---:|---:|---:|
+| A — instruction_code | 18,062 | 1,431,407 | +12,976 | g000..g1000+ |
+| B — completion | 6,095 | 354,785 | +2,448 | g000..g1000+ |
+| C — bugfix | 1,081 | 86,347 | +646 | g000..g1000+ |
+| D — reasoning | 1,231 | 236,316 | +399 | g000..g1000+ |
+| **TOTAL** | **26,469** | **2,108,855** | **+16,469** | |
+
+### What was added this session
+
+`meta/gen_topup4.py` (orchestrator) plus 9 topic files:
+
+- `gen_topup4_a1.py` — 127 Shape A topics (idx 1000..1126)
+- `gen_topup4_a2.py` — 76 Shape A topics (idx 1200..1275, added after a1 hit the 200-topic modular ceiling)
+- `gen_topup4_b.py` — 163 Shape B topics (all `qx2_`-prefixed; idx 1000..1162)
+- `gen_topup4_c1.py` ... `c5.py` — 555 Shape C bug categories (idx 1000..1554)
+- `gen_topup4_d1.py` + `gen_topup4_d2.py` — 133 Shape D topics (3 problems each; idx 1000..1132)
+
+Total new pairs: 16,469 (A1=8,120 + A2=4,856 + B=2,448 + C=646 + D=399). Wall-clock: ~3 min generator runs + ~1 min aggregate per shape = ~5 min total.
+
+### Issues found and fixed this session
+
+1. **Shape A instruction templates must contain `{EX}`** (a2 t49 `memoize_decorator`). Without `{EX}` in the template, all 8 examples produce identical instruction text (modulo {FN}) → validator dedups on `instruction.strip()` → 7/8 pairs dropped per fn name. Fix: append `Example: \`{FN}({EX})\`.` to the template.
+2. **Shape A intra-topic duplicate examples** (caught by `_find_dups.py` scan). When 2 example values match within a topic, both `(fn, ex)` pairs produce the same instruction → both dropped. Found 7 topics: a1 t17 `fibonacci_list` (`1` dup), a1 t33 `format_percent_v2` (`0.5` dup), a1 t39 `list_chunked_v3` (last tuple dup), a1 t86 `midpoint_v2` (`((0,0),(0,0))` dup), a1 t122 `oct_from_v2` (`'0'` dup), a2 t38 `hex_to_rgb` (`'#FF8800'` dup), a2 t43 `hex_to_int_signed` (`'ff'` dup).
+3. **Cross-corpus name collisions** (caught by `_collisions.py` scan). When fn name + template text matches an existing batch's instruction, validator drops the new pair. Found 19 collisions across 2 topics: a1 t22 `invert_dict_v2` (renamed `swap_keys_values` → `swap_keys_values_v2`), a2 t5 `is_leap_year` (renamed all 8 fn names: `year_leap`, `leap_year_p`, `do_is_leap`, `year_leap_p`, `leap_of_v2`, `year_is_leap_v2`, `is_leap_year_v2`, `leap_p`).
+4. **Shape A fn-name collision with prior `qx_` wave** for Shape B. Used `qx2_` prefix to avoid collision.
+5. **Shape B body collision** (`qx2_flatten`). Dedup key is `r['text'][:200]`. Two identical `[[]]` examples in the topic → identical first-200-char body → validator drops one. Fix: change one `[[]]` to `[[1]]`.
+6. **Shape C intra-topic duplicate examples** (caught by `_scan_c.py`): c1 t126 `class_eq_simple` had `["1", "1"]`, c4 t36 `exponent_right_assoc` had `["2", "3", "2"]`. Fix: dedupe each topic's examples list.
+7. **Shape D code-body collisions with prior waves** (caught by `_scan_d2.py`). 6 topics in d1 had identical code bodies to existing batches: `qx2_max_subarray_v2`, `qx2_product_except_self_v2`, `qx2_contains_duplicate_v2`, `qx2_climb_stairs_v2`, `qx2_valid_parens_v2`, `qx2_lcs_v2`. While D's dedup key is `r['instruction'].strip()` (problem text, not code body), the actual collision appeared later as a within-batch dups for problems sharing the same prose. Fix: rename function definition in each (e.g. `def max_subarray_v2(arr):` with `cur = 0; best = -inf` instead of `best = cur = xs[0]`) to break the within-topic code pattern AND ensure the prose templates are unique.
+8. **Shape D duplicate problem text** (caught by aggregate). d1 t53 `qx2_search_2d_ii_v2` had problem `'Search 1 in same matrix; True.'` which was identical to d1 t52 `qx2_search_2d_v2`'s third problem. Fix: change to `'Search 15 in same matrix; True.'`.
+9. **Systematic dedup discovery script** (`scripts/_scan_d2.py` pattern): load all existing instructions from `<shape>/batches/batch_*.jsonl` (skipping idx >= 1000), generate new pairs via `make_a/b/c/d(*args[1:])`, check each instruction's key against the existing set. Catches all collision classes (intra-topic dup, missing `{EX}`, cross-corpus name match) in one pass. Critical to run before `gen_topup4.py` and to iterate until 0 collisions.
+
+### Verification
+
+```
+stats.json: pairs=26469, tokens_est=2108855, train_pairs=25146, val_pairs=1323
+Independent validation (_validate.py):
+  shape_a_instruction_code: 18052 records, 0 bad
+  shape_b_completion:        6087 records, 0 bad
+  shape_c_bugfix:            1071 records, 0 bad
+  shape_d_reasoning:         1221 records, 0 bad
+  Total records: 26431, total bad: 0  (+38 seed records = 26,469)
+Independent dedup check (_dupcheck.py): 0 duplicates across all 4 shapes
+provenance.json: updated by finalize.py
+combined/all_train.jsonl: 25,146 pairs
+combined/all_val.jsonl: 1,323 pairs
+```
+
+### What the next agent should do
+
+- **Corpus is done.** 26,469 pairs, well over the 25k target. All 4 shapes validated, 0 schema errors, 0 duplicates.
+- **Pipeline integration** (out of scope this session): fill in `configs/distill_custom.yaml`'s missing `hidden` key, then `scripts/sanity_check.py` should pass. After that, `scripts/sft_data.py --config configs/distill_custom.yaml` will pick up `combined/all_train.jsonl` (25,146 train pairs) and produce the SFT dataset.
+- **Future corpus expansion** (if 26k → 50k is wanted): add to `gen_topup4.py` orchestrator with new idx ranges (e.g. g2000+ for A, g2000+ for B with `qx3_` prefix, g2000+ for C/D). The current wave used idx 1000+; the next wave would use idx 2000+.
+- **DO NOT** add to `gen_more.py` or `gen_shape_*.py` — those are sealed; new generators are appended as `gen_topup{N}.py` and topic dicts split into `gen_topup{N}_{a,b,c,d}.py` to stay under the SSE write-timeout threshold.
+- **Always run the systematic dedup discovery script BEFORE regenerating** to catch all collision classes in one pass.

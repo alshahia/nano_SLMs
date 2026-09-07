@@ -1,0 +1,1 @@
+{"instruction": "Show walrus in listcomp in `wl`. Input: `[1, 2, 3, 4]`. (input: [1, 2, 3, 4])", "response": "def wl(xs):\n    return [y for x in xs if (y := x * 2) > 2]\n\n# Bug was: walrus works in Py3.8+ — but leaks `y` after the comprehension\n\n# pair: wl / [1, 2, 3, 4]\n"}

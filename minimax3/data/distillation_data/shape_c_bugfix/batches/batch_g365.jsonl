@@ -1,0 +1,1 @@
+{"instruction": "Show KeyError in `lookup`. Input: `{'a': 1}, 'b'`. (input: {'a': 1}, 'b')", "response": "def lookup(d, k):\n    return d[k]\n\n# Bug was: KeyError on missing key — use d.get(k, default)\n\n# pair: lookup / {'a': 1}, 'b'\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_lstrip :: '  hello  '\ndef qx2_lstrip(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_lstrip('  hello  '))\n"}
+{"text": "# qx2_lstrip :: 'hello'\ndef qx2_lstrip(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_lstrip('hello'))\n"}
+{"text": "# qx2_lstrip :: '\\nhi\\n'\ndef qx2_lstrip(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_lstrip('\\nhi\\n'))\n"}
+{"text": "# qx2_lstrip :: ''\ndef qx2_lstrip(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_lstrip(''))\n"}
+{"text": "# qx2_lstrip :: '  '\ndef qx2_lstrip(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_lstrip('  '))\n"}
+{"text": "# qx2_ltrim :: '  hello  '\ndef qx2_ltrim(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_ltrim('  hello  '))\n"}
+{"text": "# qx2_ltrim :: 'hello'\ndef qx2_ltrim(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_ltrim('hello'))\n"}
+{"text": "# qx2_ltrim :: '\\nhi\\n'\ndef qx2_ltrim(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_ltrim('\\nhi\\n'))\n"}
+{"text": "# qx2_ltrim :: ''\ndef qx2_ltrim(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_ltrim(''))\n"}
+{"text": "# qx2_ltrim :: '  '\ndef qx2_ltrim(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_ltrim('  '))\n"}
+{"text": "# qx2_strip_left :: '  hello  '\ndef qx2_strip_left(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_strip_left('  hello  '))\n"}
+{"text": "# qx2_strip_left :: 'hello'\ndef qx2_strip_left(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_strip_left('hello'))\n"}
+{"text": "# qx2_strip_left :: '\\nhi\\n'\ndef qx2_strip_left(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_strip_left('\\nhi\\n'))\n"}
+{"text": "# qx2_strip_left :: ''\ndef qx2_strip_left(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_strip_left(''))\n"}
+{"text": "# qx2_strip_left :: '  '\ndef qx2_strip_left(s):\n    return s.lstrip()\n\nif __name__ == '__main__':\n    print(qx2_strip_left('  '))\n"}

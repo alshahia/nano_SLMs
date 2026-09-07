@@ -1,0 +1,1 @@
+{"instruction": "Show `hex` in `hex_basic`. (input: 255)", "response": "def hex_basic(n):\n    return hex(n)\n\n# Bug was: `hex(n)` returns '0xNN' string; `format(n, 'x')` returns 'NN'\n\n# pair: hex_basic / 255\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the logging formatter in `log_formatter`. (input: 'hello')", "response": "import logging\n\ndef log_formatter():\n    fmt = logging.Formatter('%(asctime)s %(levelname)s %(message)s')\n    return fmt\n\n# Bug was: Formatter controls the log message format\n\n# pair: log_formatter / 'hello'\n"}

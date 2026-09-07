@@ -1,0 +1,1 @@
+{"instruction": "Show missing session in `fetch4`. (input: url_list)", "response": "import requests\ndef fetch4(urls):\n    return [requests.get(u) for u in urls]\n\n# Bug was: each requests.get opens a new connection — use requests.Session for keep-alive\n\n# pair: fetch4 / url_list\n"}

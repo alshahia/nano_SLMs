@@ -1,0 +1,1 @@
+{"instruction": "Show `operator.methodcaller` in `op_methodcaller`. (input: ['hello', 'world'])", "response": "import operator\n\ndef op_methodcaller(xs):\n    upper = operator.methodcaller('upper')\n    return [upper(s) for s in xs]\n\n# Bug was: `methodcaller('upper')` is faster than `lambda s: s.upper()`\n\n# pair: op_methodcaller / ['hello', 'world']\n"}

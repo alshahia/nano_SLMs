@@ -1,0 +1,1 @@
+{"instruction": "Show `csv.DictReader` in `csv_dict_reader`. (input: 'a,b\\n1,2\\n3,4')", "response": "import csv\nimport io\n\ndef csv_dict_reader(data):\n    return list(csv.DictReader(io.StringIO(data)))\n\n# Bug was: `DictReader` returns dicts with column names as keys\n\n# pair: csv_dict_reader / 'a,b\\n1,2\\n3,4'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show missing await in async fn `fetch`. (input: url)", "response": "import asyncio\nasync def fetch(u):\n        resp = requests.get(u)\n        return resp.text\n\n# Bug was: async function with blocking I/O defeats the purpose — use an async HTTP client\n\n# pair: fetch / url\n"}

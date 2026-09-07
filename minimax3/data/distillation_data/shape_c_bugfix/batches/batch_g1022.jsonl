@@ -1,0 +1,1 @@
+{"instruction": "Show the None-vs-zero comparison in `none_zero_cmp`. (input: None)", "response": "def none_zero_cmp(x):\n    return x == 0\n\n# Bug was: `None == 0` is False; the check should be `x is None` for the sentinel\n\n# pair: none_zero_cmp / None\n"}

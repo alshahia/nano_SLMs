@@ -1,0 +1,15 @@
+{"text": "# qx_json_loads :: '{\"a\": 1}'\nimport json\ndef qx_json_loads(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_json_loads('{\"a\": 1}'))\n"}
+{"text": "# qx_json_loads :: '[1, 2, 3]'\nimport json\ndef qx_json_loads(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_json_loads('[1, 2, 3]'))\n"}
+{"text": "# qx_json_loads :: '\"hello\"'\nimport json\ndef qx_json_loads(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_json_loads('\"hello\"'))\n"}
+{"text": "# qx_json_loads :: '42'\nimport json\ndef qx_json_loads(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_json_loads('42'))\n"}
+{"text": "# qx_json_loads :: 'null'\nimport json\ndef qx_json_loads(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_json_loads('null'))\n"}
+{"text": "# qx_qx_from_json_qx :: '{\"a\": 1}'\nimport json\ndef qx_qx_from_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_from_json_qx('{\"a\": 1}'))\n"}
+{"text": "# qx_qx_from_json_qx :: '[1, 2, 3]'\nimport json\ndef qx_qx_from_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_from_json_qx('[1, 2, 3]'))\n"}
+{"text": "# qx_qx_from_json_qx :: '\"hello\"'\nimport json\ndef qx_qx_from_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_from_json_qx('\"hello\"'))\n"}
+{"text": "# qx_qx_from_json_qx :: '42'\nimport json\ndef qx_qx_from_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_from_json_qx('42'))\n"}
+{"text": "# qx_qx_from_json_qx :: 'null'\nimport json\ndef qx_qx_from_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_from_json_qx('null'))\n"}
+{"text": "# qx_qx_parse_json_qx :: '{\"a\": 1}'\nimport json\ndef qx_qx_parse_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_json_qx('{\"a\": 1}'))\n"}
+{"text": "# qx_qx_parse_json_qx :: '[1, 2, 3]'\nimport json\ndef qx_qx_parse_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_json_qx('[1, 2, 3]'))\n"}
+{"text": "# qx_qx_parse_json_qx :: '\"hello\"'\nimport json\ndef qx_qx_parse_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_json_qx('\"hello\"'))\n"}
+{"text": "# qx_qx_parse_json_qx :: '42'\nimport json\ndef qx_qx_parse_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_json_qx('42'))\n"}
+{"text": "# qx_qx_parse_json_qx :: 'null'\nimport json\ndef qx_qx_parse_json_qx(s):\n    return json.loads(s)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_json_qx('null'))\n"}

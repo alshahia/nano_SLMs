@@ -1,0 +1,1 @@
+{"instruction": "Show `TypeGuard` in `typing_typeguard`. (input: 42)", "response": "from typing import TypeGuard\n\ndef typing_typeguard(x: object) -> TypeGuard[int]:\n    return isinstance(x, int)\n\n# Bug was: `TypeGuard` lets functions narrow types for type checkers\n\n# pair: typing_typeguard / 42\n"}

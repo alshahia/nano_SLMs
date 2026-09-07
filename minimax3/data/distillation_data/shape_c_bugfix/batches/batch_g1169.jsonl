@@ -1,0 +1,1 @@
+{"instruction": "Show the `async for` pattern in `async_for`. (input: [])", "response": "async def async_for():\n    async for x in agen():\n        yield x\n\n# Bug was: `async for` requires an async iterator; works inside async functions\n\n# pair: async_for / []\n"}

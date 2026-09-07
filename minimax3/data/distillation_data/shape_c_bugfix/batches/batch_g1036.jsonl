@@ -1,0 +1,1 @@
+{"instruction": "Show the safe `sorted` in `sorted_new`. (input: [3, 1, 2])", "response": "def sorted_new(xs):\n    return sorted(xs)\n\n# Bug was: `sorted(xs)` returns a new list; this is the safe form\n\n# pair: sorted_new / [3, 1, 2]\n"}

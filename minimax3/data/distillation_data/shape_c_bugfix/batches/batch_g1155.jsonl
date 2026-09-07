@@ -1,0 +1,1 @@
+{"instruction": "Show the FrozenSet type hint in `type_hint_frozen`. (input: frozenset({1, 2, 3}))", "response": "from typing import FrozenSet\n\ndef type_hint_frozen(s: FrozenSet[int]) -> int:\n    return sum(s)\n\n# Bug was: `FrozenSet[int]` is immutable set; `frozenset[int]` works in 3.9+\n\n# pair: type_hint_frozen / frozenset({1, 2, 3})\n"}

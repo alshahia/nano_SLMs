@@ -1,0 +1,15 @@
+{"text": "# qx2_bin_to_int :: '0'\ndef qx2_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_bin_to_int('0'))\n"}
+{"text": "# qx2_bin_to_int :: '1'\ndef qx2_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_bin_to_int('1'))\n"}
+{"text": "# qx2_bin_to_int :: '101'\ndef qx2_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_bin_to_int('101'))\n"}
+{"text": "# qx2_bin_to_int :: '11111111'\ndef qx2_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_bin_to_int('11111111'))\n"}
+{"text": "# qx2_bin_to_int :: '10000000000'\ndef qx2_bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_bin_to_int('10000000000'))\n"}
+{"text": "# qx2_from_binary :: '0'\ndef qx2_from_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_from_binary('0'))\n"}
+{"text": "# qx2_from_binary :: '1'\ndef qx2_from_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_from_binary('1'))\n"}
+{"text": "# qx2_from_binary :: '101'\ndef qx2_from_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_from_binary('101'))\n"}
+{"text": "# qx2_from_binary :: '11111111'\ndef qx2_from_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_from_binary('11111111'))\n"}
+{"text": "# qx2_from_binary :: '10000000000'\ndef qx2_from_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_from_binary('10000000000'))\n"}
+{"text": "# qx2_parse_bin :: '0'\ndef qx2_parse_bin(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_parse_bin('0'))\n"}
+{"text": "# qx2_parse_bin :: '1'\ndef qx2_parse_bin(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_parse_bin('1'))\n"}
+{"text": "# qx2_parse_bin :: '101'\ndef qx2_parse_bin(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_parse_bin('101'))\n"}
+{"text": "# qx2_parse_bin :: '11111111'\ndef qx2_parse_bin(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_parse_bin('11111111'))\n"}
+{"text": "# qx2_parse_bin :: '10000000000'\ndef qx2_parse_bin(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(qx2_parse_bin('10000000000'))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `os.getcwd` in `os_getcwd`. (input: )", "response": "import os\n\ndef os_getcwd():\n    return os.getcwd()\n\n# Bug was: `os.getcwd()` returns the current working directory\n\n# pair: os_getcwd /\n"}

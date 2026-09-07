@@ -1,0 +1,1 @@
+{"instruction": "Show NaN equality in `is_nan`. Input: `float('nan')`. (input: float('nan'))", "response": "def is_nan(x):\n    return x == x\n\n# Bug was: NaN != NaN by IEEE 754 — use math.isnan(x)\n\n# pair: is_nan / float('nan')\n"}

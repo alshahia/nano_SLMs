@@ -1,0 +1,15 @@
+{"text": "# qx2_is_digit :: '12345'\ndef qx2_is_digit(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_is_digit('12345'))\n"}
+{"text": "# qx2_is_digit :: '12a'\ndef qx2_is_digit(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_is_digit('12a'))\n"}
+{"text": "# qx2_is_digit :: ''\ndef qx2_is_digit(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_is_digit(''))\n"}
+{"text": "# qx2_is_digit :: '0'\ndef qx2_is_digit(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_is_digit('0'))\n"}
+{"text": "# qx2_is_digit :: '  '\ndef qx2_is_digit(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_is_digit('  '))\n"}
+{"text": "# qx2_digit_check :: '12345'\ndef qx2_digit_check(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_digit_check('12345'))\n"}
+{"text": "# qx2_digit_check :: '12a'\ndef qx2_digit_check(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_digit_check('12a'))\n"}
+{"text": "# qx2_digit_check :: ''\ndef qx2_digit_check(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_digit_check(''))\n"}
+{"text": "# qx2_digit_check :: '0'\ndef qx2_digit_check(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_digit_check('0'))\n"}
+{"text": "# qx2_digit_check :: '  '\ndef qx2_digit_check(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_digit_check('  '))\n"}
+{"text": "# qx2_all_digits :: '12345'\ndef qx2_all_digits(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_all_digits('12345'))\n"}
+{"text": "# qx2_all_digits :: '12a'\ndef qx2_all_digits(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_all_digits('12a'))\n"}
+{"text": "# qx2_all_digits :: ''\ndef qx2_all_digits(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_all_digits(''))\n"}
+{"text": "# qx2_all_digits :: '0'\ndef qx2_all_digits(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_all_digits('0'))\n"}
+{"text": "# qx2_all_digits :: '  '\ndef qx2_all_digits(s):\n    return s.isdigit()\n\nif __name__ == '__main__':\n    print(qx2_all_digits('  '))\n"}

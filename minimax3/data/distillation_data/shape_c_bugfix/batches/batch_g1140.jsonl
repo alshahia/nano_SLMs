@@ -1,0 +1,1 @@
+{"instruction": "Show the shebang line pattern in `shebang_line`. (input: #!/usr/bin/env python3)", "response": "#!/usr/bin/env python3\n\ndef helper():\n    return 1\n\nif __name__ == '__main__':\n    print(helper())\n\n# Bug was: shebang line on POSIX makes the file directly executable; ignored on Windows\n\n# pair: shebang_line / #!/usr/bin/env python3\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show os.system in `run`. Input: `'ls -l'`. (input: 'ls -l')", "response": "import os\ndef run(cmd):\n    os.system(cmd)\n\n# Bug was: os.system uses shell — use subprocess.run with list args\n\n# pair: run / 'ls -l'\n"}

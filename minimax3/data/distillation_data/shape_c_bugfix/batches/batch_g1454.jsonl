@@ -1,0 +1,1 @@
+{"instruction": "Show `islice` in `iter_islice`. (input: [1, 2, 3, 4, 5])", "response": "from itertools import islice\n\ndef iter_islice(xs):\n    return list(islice(xs, 3))\n\n# Bug was: `islice` returns an iterator; bound the take amount\n\n# pair: iter_islice / [1, 2, 3, 4, 5]\n"}

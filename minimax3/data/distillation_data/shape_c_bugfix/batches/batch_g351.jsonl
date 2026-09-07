@@ -1,0 +1,1 @@
+{"instruction": "Show missing timeout in `fetch3`. (input: url)", "response": "import requests\ndef fetch3(u):\n    return requests.get(u)\n\n# Bug was: no timeout — request can hang forever; pass timeout=10\n\n# pair: fetch3 / url\n"}

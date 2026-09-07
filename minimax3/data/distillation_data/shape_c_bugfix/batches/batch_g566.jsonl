@@ -1,0 +1,1 @@
+{"instruction": "Show unbounded lru_cache in `ccf`. (input: '')", "response": "from functools import lru_cache\n@lru_cache(maxsize=None)\ndef ccf(n):\n    return expensive(n)\n\nfor i in range(1000000): ccf(i)\n\n# Bug was: unbounded lru_cache grows forever — pass maxsize or clear periodically\n\n# pair: ccf / ''\n"}

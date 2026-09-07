@@ -1,0 +1,15 @@
+{"text": "# qx2_isinf :: 1.0\nimport math\n\ndef qx2_isinf(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_isinf(1.0))\n"}
+{"text": "# qx2_isinf :: float('inf')\nimport math\n\ndef qx2_isinf(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_isinf(float('inf')))\n"}
+{"text": "# qx2_isinf :: float('-inf')\nimport math\n\ndef qx2_isinf(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_isinf(float('-inf')))\n"}
+{"text": "# qx2_isinf :: float('nan')\nimport math\n\ndef qx2_isinf(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_isinf(float('nan')))\n"}
+{"text": "# qx2_isinf :: 0.0\nimport math\n\ndef qx2_isinf(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_isinf(0.0))\n"}
+{"text": "# qx2_is_infinite :: 1.0\nimport math\n\ndef qx2_is_infinite(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_is_infinite(1.0))\n"}
+{"text": "# qx2_is_infinite :: float('inf')\nimport math\n\ndef qx2_is_infinite(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_is_infinite(float('inf')))\n"}
+{"text": "# qx2_is_infinite :: float('-inf')\nimport math\n\ndef qx2_is_infinite(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_is_infinite(float('-inf')))\n"}
+{"text": "# qx2_is_infinite :: float('nan')\nimport math\n\ndef qx2_is_infinite(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_is_infinite(float('nan')))\n"}
+{"text": "# qx2_is_infinite :: 0.0\nimport math\n\ndef qx2_is_infinite(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_is_infinite(0.0))\n"}
+{"text": "# qx2_inf_check :: 1.0\nimport math\n\ndef qx2_inf_check(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_inf_check(1.0))\n"}
+{"text": "# qx2_inf_check :: float('inf')\nimport math\n\ndef qx2_inf_check(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_inf_check(float('inf')))\n"}
+{"text": "# qx2_inf_check :: float('-inf')\nimport math\n\ndef qx2_inf_check(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_inf_check(float('-inf')))\n"}
+{"text": "# qx2_inf_check :: float('nan')\nimport math\n\ndef qx2_inf_check(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_inf_check(float('nan')))\n"}
+{"text": "# qx2_inf_check :: 0.0\nimport math\n\ndef qx2_inf_check(x):\n    return math.isinf(x)\n\nif __name__ == '__main__':\n    print(qx2_inf_check(0.0))\n"}

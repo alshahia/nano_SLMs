@@ -4,7 +4,7 @@ import json, hashlib, random, re, sys, ast
 from pathlib import Path
 from datetime import datetime, timezone
 
-ROOT = Path('E:/python_projects/nano_SLMs/minimax3/data/distillation_data')
+ROOT = Path('E:/python projects/nano_SLMs/minimax3/data/distillation_data')
 SHAPES = ['shape_a_instruction_code', 'shape_b_completion', 'shape_c_bugfix', 'shape_d_reasoning']
 _D_FENCE = re.compile(r'```python\n(.*?)```', re.DOTALL)
 VAL_FRACTION = 0.05  # 5% val from the larger corpus
@@ -53,7 +53,7 @@ def validate(shape_name, rows):
                     ast.parse(m.group(1))
                 else:
                     ast.parse(r['response'])
-                key = r['instruction'].strip().lower()
+                key = r['instruction'].strip()
             if key in seen_responses:
                 errors.append(f'{shape_name} {src}[{i}]: DUPLICATE of {seen_responses[key]}'[:200])
             else:

@@ -1,0 +1,1 @@
+{"instruction": "Show __setattr__ recursion in `setter`. (input: '')", "response": "class setter:\n    def __setattr__(self, name, value):\n        self.__dict__[name] = value\n\n# Bug was: __setattr__ triggers __setattr__ recursively when assigning to __dict__ — guard with `super()` or sentinel\n\n# pair: setter / ''\n"}

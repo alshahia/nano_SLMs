@@ -1,0 +1,1 @@
+{"instruction": "Show the list comprehension alternative to map in `comp_vs_map`. (input: [1, 2, 3])", "response": "def comp_vs_map(xs):\n    return [x * 2 for x in xs]\n\n# Bug was: comprehensions are often more readable than `map(lambda)`; both are equivalent\n\n# pair: comp_vs_map / [1, 2, 3]\n"}

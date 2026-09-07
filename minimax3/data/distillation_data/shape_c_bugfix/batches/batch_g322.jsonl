@@ -1,0 +1,1 @@
+{"instruction": "Show why `return` in `finally` is a bug in `wrapped`. (input: 0)", "response": "def wrapped(x):\n    try:\n        return x / x\n    finally:\n        return -1\n\n# Bug was: `return` in finally silently overrides the try-block return value\n\n# pair: wrapped / 0\n"}

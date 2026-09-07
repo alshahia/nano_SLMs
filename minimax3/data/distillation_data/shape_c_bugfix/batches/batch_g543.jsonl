@@ -1,0 +1,1 @@
+{"instruction": "Show array typecode in `arr`. Input: `'i', [1, 2, 3]`. (input: 'i', [1, 2, 3])", "response": "import array\ndef arr(typecode, items):\n    return array.array(typecode, items)\n\n# Bug was: array typecode must match element type — 'i' for signed int only\n\n# pair: arr / 'i', [1, 2, 3]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `platform.python_version` in `plat_python`. (input: )", "response": "import platform\n\ndef plat_python():\n    return platform.python_version()\n\n# Bug was: `platform.python_version()` returns '3.12.0'-style string\n\n# pair: plat_python /\n"}

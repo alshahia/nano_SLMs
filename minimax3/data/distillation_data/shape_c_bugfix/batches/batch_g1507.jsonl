@@ -1,0 +1,1 @@
+{"instruction": "Show `sys.version_info` in `sys_version`. (input: )", "response": "import sys\n\ndef sys_version():\n    return sys.version_info\n\n# Bug was: `sys.version_info` is a namedtuple of (major, minor, micro, ...)\n\n# pair: sys_version /\n"}

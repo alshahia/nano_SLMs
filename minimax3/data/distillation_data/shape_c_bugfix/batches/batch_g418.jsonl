@@ -1,0 +1,1 @@
+{"instruction": "Show property without setter in `prop`. (input: '')", "response": "class prop:\n    def __init__(self): self._x = 0\n    @property\n    def x(self):\n        return self._x\n\n# Bug was: no @x.setter — assigning to .x raises AttributeError\n\n# pair: prop / ''\n"}

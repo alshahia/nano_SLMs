@@ -1,0 +1,1 @@
+{"instruction": "Show the frozen dataclass in `dc_frozen`. (input: 1)", "response": "from dataclasses import dataclass\n\n@dataclass(frozen=True)\nclass C:\n    x: int\n\n# Bug was: `frozen=True` makes instances immutable; raises FrozenInstanceError on assignment\n\n# pair: dc_frozen / 1\n"}

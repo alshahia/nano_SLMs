@@ -1,0 +1,15 @@
+{"text": "# qx2_trunc :: 1.5\nimport math\n\ndef qx2_trunc(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_trunc(1.5))\n"}
+{"text": "# qx2_trunc :: 0.5\nimport math\n\ndef qx2_trunc(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_trunc(0.5))\n"}
+{"text": "# qx2_trunc :: -1.5\nimport math\n\ndef qx2_trunc(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_trunc(-1.5))\n"}
+{"text": "# qx2_trunc :: 3.0\nimport math\n\ndef qx2_trunc(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_trunc(3.0))\n"}
+{"text": "# qx2_trunc :: 100.9\nimport math\n\ndef qx2_trunc(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_trunc(100.9))\n"}
+{"text": "# qx2_truncate_int :: 1.5\nimport math\n\ndef qx2_truncate_int(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate_int(1.5))\n"}
+{"text": "# qx2_truncate_int :: 0.5\nimport math\n\ndef qx2_truncate_int(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate_int(0.5))\n"}
+{"text": "# qx2_truncate_int :: -1.5\nimport math\n\ndef qx2_truncate_int(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate_int(-1.5))\n"}
+{"text": "# qx2_truncate_int :: 3.0\nimport math\n\ndef qx2_truncate_int(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate_int(3.0))\n"}
+{"text": "# qx2_truncate_int :: 100.9\nimport math\n\ndef qx2_truncate_int(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate_int(100.9))\n"}
+{"text": "# qx2_truncate :: 1.5\nimport math\n\ndef qx2_truncate(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate(1.5))\n"}
+{"text": "# qx2_truncate :: 0.5\nimport math\n\ndef qx2_truncate(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate(0.5))\n"}
+{"text": "# qx2_truncate :: -1.5\nimport math\n\ndef qx2_truncate(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate(-1.5))\n"}
+{"text": "# qx2_truncate :: 3.0\nimport math\n\ndef qx2_truncate(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate(3.0))\n"}
+{"text": "# qx2_truncate :: 100.9\nimport math\n\ndef qx2_truncate(x):\n    return math.trunc(x)\n\nif __name__ == '__main__':\n    print(qx2_truncate(100.9))\n"}

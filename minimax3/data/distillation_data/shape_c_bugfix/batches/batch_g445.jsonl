@@ -1,0 +1,1 @@
+{"instruction": "Show apply builtin in `ap`. (input: '')", "response": "def ap(f, args):\n    apply(f, args)\n\n# Bug was: apply removed in Py3 — use `f(*args)`\n\n# pair: ap / ''\n"}

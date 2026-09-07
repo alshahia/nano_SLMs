@@ -1,0 +1,15 @@
+{"text": "# top_k :: ([1, 5, 2, 8, 3], 2)\nimport heapq\n\ndef top_k(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(top_k(([1, 5, 2, 8, 3], 2)))\n"}
+{"text": "# top_k :: ([1, 2, 3], 3)\nimport heapq\n\ndef top_k(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(top_k(([1, 2, 3], 3)))\n"}
+{"text": "# top_k :: ([5, 5, 5], 2)\nimport heapq\n\ndef top_k(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(top_k(([5, 5, 5], 2)))\n"}
+{"text": "# top_k :: ([], 3)\nimport heapq\n\ndef top_k(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(top_k(([], 3)))\n"}
+{"text": "# top_k :: ([1], 1)\nimport heapq\n\ndef top_k(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(top_k(([1], 1)))\n"}
+{"text": "# k_largest :: ([1, 5, 2, 8, 3], 2)\nimport heapq\n\ndef k_largest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(k_largest(([1, 5, 2, 8, 3], 2)))\n"}
+{"text": "# k_largest :: ([1, 2, 3], 3)\nimport heapq\n\ndef k_largest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(k_largest(([1, 2, 3], 3)))\n"}
+{"text": "# k_largest :: ([5, 5, 5], 2)\nimport heapq\n\ndef k_largest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(k_largest(([5, 5, 5], 2)))\n"}
+{"text": "# k_largest :: ([], 3)\nimport heapq\n\ndef k_largest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(k_largest(([], 3)))\n"}
+{"text": "# k_largest :: ([1], 1)\nimport heapq\n\ndef k_largest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(k_largest(([1], 1)))\n"}
+{"text": "# nlargest :: ([1, 5, 2, 8, 3], 2)\nimport heapq\n\ndef nlargest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(nlargest(([1, 5, 2, 8, 3], 2)))\n"}
+{"text": "# nlargest :: ([1, 2, 3], 3)\nimport heapq\n\ndef nlargest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(nlargest(([1, 2, 3], 3)))\n"}
+{"text": "# nlargest :: ([5, 5, 5], 2)\nimport heapq\n\ndef nlargest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(nlargest(([5, 5, 5], 2)))\n"}
+{"text": "# nlargest :: ([], 3)\nimport heapq\n\ndef nlargest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(nlargest(([], 3)))\n"}
+{"text": "# nlargest :: ([1], 1)\nimport heapq\n\ndef nlargest(xs, k):\n    return heapq.nlargest(k, xs)\n\nif __name__ == '__main__':\n    print(nlargest(([1], 1)))\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_rle_dec :: [('A', 4), ('B', 3), ('C', 2)]\ndef qx2_rle_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_rle_dec([('A', 4), ('B', 3), ('C', 2)]))\n"}
+{"text": "# qx2_rle_dec :: [('X', 1)]\ndef qx2_rle_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_rle_dec([('X', 1)]))\n"}
+{"text": "# qx2_rle_dec :: []\ndef qx2_rle_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_rle_dec([]))\n"}
+{"text": "# qx2_rle_dec :: [('a', 3)]\ndef qx2_rle_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_rle_dec([('a', 3)]))\n"}
+{"text": "# qx2_rle_dec :: [('A', 1), ('B', 1)]\ndef qx2_rle_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_rle_dec([('A', 1), ('B', 1)]))\n"}
+{"text": "# qx2_run_len_dec :: [('A', 4), ('B', 3), ('C', 2)]\ndef qx2_run_len_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_run_len_dec([('A', 4), ('B', 3), ('C', 2)]))\n"}
+{"text": "# qx2_run_len_dec :: [('X', 1)]\ndef qx2_run_len_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_run_len_dec([('X', 1)]))\n"}
+{"text": "# qx2_run_len_dec :: []\ndef qx2_run_len_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_run_len_dec([]))\n"}
+{"text": "# qx2_run_len_dec :: [('a', 3)]\ndef qx2_run_len_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_run_len_dec([('a', 3)]))\n"}
+{"text": "# qx2_run_len_dec :: [('A', 1), ('B', 1)]\ndef qx2_run_len_dec(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_run_len_dec([('A', 1), ('B', 1)]))\n"}
+{"text": "# qx2_decompress_runs :: [('A', 4), ('B', 3), ('C', 2)]\ndef qx2_decompress_runs(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_decompress_runs([('A', 4), ('B', 3), ('C', 2)]))\n"}
+{"text": "# qx2_decompress_runs :: [('X', 1)]\ndef qx2_decompress_runs(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_decompress_runs([('X', 1)]))\n"}
+{"text": "# qx2_decompress_runs :: []\ndef qx2_decompress_runs(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_decompress_runs([]))\n"}
+{"text": "# qx2_decompress_runs :: [('a', 3)]\ndef qx2_decompress_runs(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_decompress_runs([('a', 3)]))\n"}
+{"text": "# qx2_decompress_runs :: [('A', 1), ('B', 1)]\ndef qx2_decompress_runs(runs):\n    return ''.join(c * n for c, n in runs)\n\nif __name__ == '__main__':\n    print(qx2_decompress_runs([('A', 1), ('B', 1)]))\n"}

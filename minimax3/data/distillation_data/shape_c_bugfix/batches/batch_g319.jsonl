@@ -1,0 +1,1 @@
+{"instruction": "Demonstrate proper re-raise syntax in `watcher`. (input: '')", "response": "def watcher(s):\n    try:\n        do_work(s)\n    except Exception:\n        raise\n\n# Bug was: `raise` is correct, but `raise e` rebinds and loses the original traceback\n\n# pair: watcher / ''\n"}

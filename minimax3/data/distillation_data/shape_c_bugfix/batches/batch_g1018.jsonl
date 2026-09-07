@@ -1,0 +1,1 @@
+{"instruction": "Show the `is`-vs-`==` on strings in `is_yes`. (input: 'yes')", "response": "def is_yes(s):\n    return s is 'yes'\n\n# Bug was: string interning may make `is` work for literals but it's not guaranteed; use `==` for value comparison\n\n# pair: is_yes / 'yes'\n"}

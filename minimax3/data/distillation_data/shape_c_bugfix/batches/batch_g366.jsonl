@@ -1,0 +1,1 @@
+{"instruction": "Show `is` vs `==` in `compare`. Input: `'5', 5`. (input: '5', 5)", "response": "def compare(a, b):\n    return a is b\n\n# Bug was: `is` checks identity, not equality — for small ints CPython caches, but not strings > 256 chars\n\n# pair: compare / '5', 5\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `bytearray` slicing in `bytearray_slice`. (input: b'hello')", "response": "def bytearray_slice(data):\n    return bytearray(data)[1:4]\n\n# Bug was: `bytearray` slicing returns a new `bytearray`\n\n# pair: bytearray_slice / b'hello'\n"}

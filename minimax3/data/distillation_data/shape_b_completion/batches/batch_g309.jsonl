@@ -1,0 +1,15 @@
+{"text": "# qx_token_hex :: 16\nimport secrets\ndef qx_token_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_token_hex(16))\n"}
+{"text": "# qx_token_hex :: 8\nimport secrets\ndef qx_token_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_token_hex(8))\n"}
+{"text": "# qx_token_hex :: 32\nimport secrets\ndef qx_token_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_token_hex(32))\n"}
+{"text": "# qx_token_hex :: 1\nimport secrets\ndef qx_token_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_token_hex(1))\n"}
+{"text": "# qx_token_hex :: 64\nimport secrets\ndef qx_token_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_token_hex(64))\n"}
+{"text": "# qx_make_token :: 16\nimport secrets\ndef qx_make_token(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_make_token(16))\n"}
+{"text": "# qx_make_token :: 8\nimport secrets\ndef qx_make_token(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_make_token(8))\n"}
+{"text": "# qx_make_token :: 32\nimport secrets\ndef qx_make_token(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_make_token(32))\n"}
+{"text": "# qx_make_token :: 1\nimport secrets\ndef qx_make_token(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_make_token(1))\n"}
+{"text": "# qx_make_token :: 64\nimport secrets\ndef qx_make_token(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_make_token(64))\n"}
+{"text": "# qx_random_hex :: 16\nimport secrets\ndef qx_random_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_random_hex(16))\n"}
+{"text": "# qx_random_hex :: 8\nimport secrets\ndef qx_random_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_random_hex(8))\n"}
+{"text": "# qx_random_hex :: 32\nimport secrets\ndef qx_random_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_random_hex(32))\n"}
+{"text": "# qx_random_hex :: 1\nimport secrets\ndef qx_random_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_random_hex(1))\n"}
+{"text": "# qx_random_hex :: 64\nimport secrets\ndef qx_random_hex(n):\n    return secrets.token_hex(n)\n\nif __name__ == '__main__':\n    print(qx_random_hex(64))\n"}

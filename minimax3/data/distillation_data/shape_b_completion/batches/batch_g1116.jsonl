@@ -1,0 +1,15 @@
+{"text": "# qx2_sha256 :: 'hello'\nimport hashlib\n\ndef qx2_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256('hello'))\n"}
+{"text": "# qx2_sha256 :: ''\nimport hashlib\n\ndef qx2_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256(''))\n"}
+{"text": "# qx2_sha256 :: 'Python'\nimport hashlib\n\ndef qx2_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256('Python'))\n"}
+{"text": "# qx2_sha256 :: 'café'\nimport hashlib\n\ndef qx2_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256('café'))\n"}
+{"text": "# qx2_sha256 :: '1234567890'\nimport hashlib\n\ndef qx2_sha256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256('1234567890'))\n"}
+{"text": "# qx2_sha256_hex :: 'hello'\nimport hashlib\n\ndef qx2_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256_hex('hello'))\n"}
+{"text": "# qx2_sha256_hex :: ''\nimport hashlib\n\ndef qx2_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256_hex(''))\n"}
+{"text": "# qx2_sha256_hex :: 'Python'\nimport hashlib\n\ndef qx2_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256_hex('Python'))\n"}
+{"text": "# qx2_sha256_hex :: 'café'\nimport hashlib\n\ndef qx2_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256_hex('café'))\n"}
+{"text": "# qx2_sha256_hex :: '1234567890'\nimport hashlib\n\ndef qx2_sha256_hex(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_sha256_hex('1234567890'))\n"}
+{"text": "# qx2_hash256 :: 'hello'\nimport hashlib\n\ndef qx2_hash256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash256('hello'))\n"}
+{"text": "# qx2_hash256 :: ''\nimport hashlib\n\ndef qx2_hash256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash256(''))\n"}
+{"text": "# qx2_hash256 :: 'Python'\nimport hashlib\n\ndef qx2_hash256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash256('Python'))\n"}
+{"text": "# qx2_hash256 :: 'café'\nimport hashlib\n\ndef qx2_hash256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash256('café'))\n"}
+{"text": "# qx2_hash256 :: '1234567890'\nimport hashlib\n\ndef qx2_hash256(s):\n    return hashlib.sha256(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash256('1234567890'))\n"}

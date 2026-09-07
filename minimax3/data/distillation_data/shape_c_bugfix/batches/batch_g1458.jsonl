@@ -1,0 +1,1 @@
+{"instruction": "Show the generator-with-filter in `gen_filter`. (input: [1, 2, 3, 4])", "response": "def gen_filter(xs):\n    return [x * 2 for x in xs if x > 2]\n\n# Bug was: `if` clause filters before the transform\n\n# pair: gen_filter / [1, 2, 3, 4]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show __init__ returning value in `builder`. (input: '')", "response": "class builder:\n    def __init__(self):\n        self.x = 1\n        return self\n\n# Bug was: __init__ must return None — TypeError at construction\n\n# pair: builder / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show missing task_done in `worker`. (input: '')", "response": "from queue import Queue\nq = Queue()\ndef worker():\n    while True:\n        item = q.get()\n        process(item)\n        q.task_done()\n\n# Bug was: task_done after exception skipped — use try/finally\n\n# pair: worker / ''\n"}

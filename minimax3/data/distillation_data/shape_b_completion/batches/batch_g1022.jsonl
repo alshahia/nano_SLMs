@@ -1,0 +1,15 @@
+{"text": "# qx2_exp :: 0\nimport math\n\ndef qx2_exp(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_exp(0))\n"}
+{"text": "# qx2_exp :: 1\nimport math\n\ndef qx2_exp(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_exp(1))\n"}
+{"text": "# qx2_exp :: 2\nimport math\n\ndef qx2_exp(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_exp(2))\n"}
+{"text": "# qx2_exp :: 0.5\nimport math\n\ndef qx2_exp(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_exp(0.5))\n"}
+{"text": "# qx2_exp :: -1\nimport math\n\ndef qx2_exp(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_exp(-1))\n"}
+{"text": "# qx2_e_to_x :: 0\nimport math\n\ndef qx2_e_to_x(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_e_to_x(0))\n"}
+{"text": "# qx2_e_to_x :: 1\nimport math\n\ndef qx2_e_to_x(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_e_to_x(1))\n"}
+{"text": "# qx2_e_to_x :: 2\nimport math\n\ndef qx2_e_to_x(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_e_to_x(2))\n"}
+{"text": "# qx2_e_to_x :: 0.5\nimport math\n\ndef qx2_e_to_x(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_e_to_x(0.5))\n"}
+{"text": "# qx2_e_to_x :: -1\nimport math\n\ndef qx2_e_to_x(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_e_to_x(-1))\n"}
+{"text": "# qx2_expx :: 0\nimport math\n\ndef qx2_expx(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_expx(0))\n"}
+{"text": "# qx2_expx :: 1\nimport math\n\ndef qx2_expx(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_expx(1))\n"}
+{"text": "# qx2_expx :: 2\nimport math\n\ndef qx2_expx(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_expx(2))\n"}
+{"text": "# qx2_expx :: 0.5\nimport math\n\ndef qx2_expx(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_expx(0.5))\n"}
+{"text": "# qx2_expx :: -1\nimport math\n\ndef qx2_expx(x):\n    return math.exp(x)\n\nif __name__ == '__main__':\n    print(qx2_expx(-1))\n"}

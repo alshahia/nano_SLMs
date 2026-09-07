@@ -1,0 +1,1 @@
+{"instruction": "Show the bool-of-string gotcha in `str_bool`. (input: 'true')", "response": "def str_bool(s):\n    return bool(s)\n\n# Bug was: `bool(s)` is True for any non-empty string; not 'truthy string check'\n\n# pair: str_bool / 'true'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the per-comprehension fresh generator in `gen_fresh`. (input: [1, 2, 3])", "response": "def gen_fresh(xs):\n    g = (x * x for x in xs)\n    return [sum(g) for _ in range(2)]\n\n# Bug was: each comprehension creates a fresh generator; only the first sum gets the values\n\n# pair: gen_fresh / [1, 2, 3]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show executor no shutdown in `ex`. (input: '')", "response": "from concurrent.futures import ThreadPoolExecutor\ndef ex(tasks):\n    ex = ThreadPoolExecutor(max_workers=4)\n    return [ex.submit(t) for t in tasks]\n\n# Bug was: executor never shutdown — threads leak; use `with ThreadPoolExecutor(...) as ex:`\n\n# pair: ex / ''\n"}

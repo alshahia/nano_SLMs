@@ -1,0 +1,15 @@
+{"text": "# qx2_file_size :: '_'\nimport os\n\ndef qx2_file_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_file_size())\n"}
+{"text": "# qx2_file_size :: '*'\nimport os\n\ndef qx2_file_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_file_size())\n"}
+{"text": "# qx2_file_size :: '#'\nimport os\n\ndef qx2_file_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_file_size())\n"}
+{"text": "# qx2_file_size :: '?'\nimport os\n\ndef qx2_file_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_file_size())\n"}
+{"text": "# qx2_file_size :: '!'\nimport os\n\ndef qx2_file_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_file_size())\n"}
+{"text": "# qx2_getsize :: '_'\nimport os\n\ndef qx2_getsize():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_getsize())\n"}
+{"text": "# qx2_getsize :: '*'\nimport os\n\ndef qx2_getsize():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_getsize())\n"}
+{"text": "# qx2_getsize :: '#'\nimport os\n\ndef qx2_getsize():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_getsize())\n"}
+{"text": "# qx2_getsize :: '?'\nimport os\n\ndef qx2_getsize():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_getsize())\n"}
+{"text": "# qx2_getsize :: '!'\nimport os\n\ndef qx2_getsize():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_getsize())\n"}
+{"text": "# qx2_path_size :: '_'\nimport os\n\ndef qx2_path_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_path_size())\n"}
+{"text": "# qx2_path_size :: '*'\nimport os\n\ndef qx2_path_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_path_size())\n"}
+{"text": "# qx2_path_size :: '#'\nimport os\n\ndef qx2_path_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_path_size())\n"}
+{"text": "# qx2_path_size :: '?'\nimport os\n\ndef qx2_path_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_path_size())\n"}
+{"text": "# qx2_path_size :: '!'\nimport os\n\ndef qx2_path_size():\n    import sys\n    return os.path.getsize(sys.argv[0])\n\nif __name__ == '__main__':\n    print(qx2_path_size())\n"}

@@ -1,0 +1,1 @@
+{"instruction": "The function `bad_sum(xs)` should sum a list. Use the built-in sum() function. (input: demo)", "response": "def bad_sum(xs):\n    total = 0\n    for x in xs:\n        total += x\n    return total\n    # Bug was: manual loop when sum() is built-in; the loop works but is slower and less idiomatic.\n\n# pair: bad_sum / demo\n"}

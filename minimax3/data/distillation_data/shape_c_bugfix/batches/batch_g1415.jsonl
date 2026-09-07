@@ -1,0 +1,1 @@
+{"instruction": "Show `type` in `type_basic`. (input: 42)", "response": "def type_basic(x):\n    return type(x).__name__\n\n# Bug was: `type(x)` is the exact type; `isinstance(x, T)` is usually preferred\n\n# pair: type_basic / 42\n"}

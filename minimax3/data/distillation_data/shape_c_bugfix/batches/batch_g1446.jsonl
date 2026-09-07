@@ -1,0 +1,1 @@
+{"instruction": "Show `any` in `any_basic2`. (input: [False, False, True])", "response": "def any_basic2(xs):\n    return any(xs)\n\n# Bug was: `any(xs)` returns False for empty list\n\n# pair: any_basic2 / [False, False, True]\n"}

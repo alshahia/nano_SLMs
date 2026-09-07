@@ -1,0 +1,15 @@
+{"text": "# gcd :: (12, 18)\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcd((12, 18)))\n"}
+{"text": "# gcd :: (15, 25)\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcd((15, 25)))\n"}
+{"text": "# gcd :: (100, 75)\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcd((100, 75)))\n"}
+{"text": "# gcd :: (7, 13)\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcd((7, 13)))\n"}
+{"text": "# gcd :: (270, 192)\ndef gcd(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcd((270, 192)))\n"}
+{"text": "# greatest_common_divisor :: (12, 18)\ndef greatest_common_divisor(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(greatest_common_divisor((12, 18)))\n"}
+{"text": "# greatest_common_divisor :: (15, 25)\ndef greatest_common_divisor(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(greatest_common_divisor((15, 25)))\n"}
+{"text": "# greatest_common_divisor :: (100, 75)\ndef greatest_common_divisor(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(greatest_common_divisor((100, 75)))\n"}
+{"text": "# greatest_common_divisor :: (7, 13)\ndef greatest_common_divisor(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(greatest_common_divisor((7, 13)))\n"}
+{"text": "# greatest_common_divisor :: (270, 192)\ndef greatest_common_divisor(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(greatest_common_divisor((270, 192)))\n"}
+{"text": "# gcf :: (12, 18)\ndef gcf(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcf((12, 18)))\n"}
+{"text": "# gcf :: (15, 25)\ndef gcf(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcf((15, 25)))\n"}
+{"text": "# gcf :: (100, 75)\ndef gcf(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcf((100, 75)))\n"}
+{"text": "# gcf :: (7, 13)\ndef gcf(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcf((7, 13)))\n"}
+{"text": "# gcf :: (270, 192)\ndef gcf(a, b):\n    while b:\n        a, b = b, a % b\n    return a\n\nif __name__ == \"__main__\":\n    print(gcf((270, 192)))\n"}

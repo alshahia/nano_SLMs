@@ -1,0 +1,1 @@
+{"instruction": "Show the built-in shadowing in `dict_user`. (input: {'a': 1})", "response": "def dict_user(pairs):\n    dict = {}\n    for k, v in pairs.items():\n        dict[k] = v * 2\n    return dict\n\n# Bug was: `dict` shadows the builtin; use `out` or `result` instead\n\n# pair: dict_user / {'a': 1}\n"}

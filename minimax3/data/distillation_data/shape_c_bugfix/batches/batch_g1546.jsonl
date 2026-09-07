@@ -1,0 +1,1 @@
+{"instruction": "Show `gzip.compress` in `gzip_basic`. (input: b'hello')", "response": "import gzip\n\ndef gzip_basic(data):\n    return gzip.compress(data)\n\n# Bug was: `gzip.compress` returns compressed bytes; `gzip.decompress` reverses\n\n# pair: gzip_basic / b'hello'\n"}

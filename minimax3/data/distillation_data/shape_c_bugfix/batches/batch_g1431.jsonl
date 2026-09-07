@@ -1,0 +1,1 @@
+{"instruction": "Show `vars` in `vars_basic`. (input: )", "response": "class C:\n    x = 5\n\ndef vars_basic():\n    c = C()\n    c.y = 10\n    return vars(c)\n\n# Bug was: `vars(obj)` returns the instance `__dict__`; `dir(obj)` returns attribute names\n\n# pair: vars_basic /\n"}

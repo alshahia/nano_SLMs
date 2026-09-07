@@ -1,0 +1,1 @@
+{"instruction": "Show the MutableSequence type hint in `type_mut_seq`. (input: [1, 2])", "response": "from collections.abc import MutableSequence\n\ndef type_mut_seq(xs: MutableSequence[int]) -> None:\n    xs.append(3)\n\n# Bug was: `MutableSequence` allows append/pop/etc.; `Sequence` does not\n\n# pair: type_mut_seq / [1, 2]\n"}

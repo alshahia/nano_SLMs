@@ -1,0 +1,1 @@
+{"instruction": "Show the Any type hint in `type_hint_any`. (input: 5)", "response": "from typing import Any\n\ndef type_hint_any(x: Any) -> Any:\n    return x\n\n# Bug was: `Any` opts out of type checking; avoid where possible\n\n# pair: type_hint_any / 5\n"}

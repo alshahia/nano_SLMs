@@ -1,0 +1,64 @@
+{"instruction": "Write a function `str_swap_case_v2(s)` swapping the case of every letter. Example: `str_swap_case_v2('Hello')`.", "response": "def str_swap_case_v2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `str_swap_case_v2(s)` swapping the case of every letter. Example: `str_swap_case_v2('WORLD')`.", "response": "def str_swap_case_v2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `str_swap_case_v2(s)` swapping the case of every letter. Example: `str_swap_case_v2('hello')`.", "response": "def str_swap_case_v2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `str_swap_case_v2(s)` swapping the case of every letter. Example: `str_swap_case_v2('')`.", "response": "def str_swap_case_v2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `str_swap_case_v2(s)` swapping the case of every letter. Example: `str_swap_case_v2('aBcDeF')`.", "response": "def str_swap_case_v2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `str_swap_case_v2(s)` swapping the case of every letter. Example: `str_swap_case_v2('123')`.", "response": "def str_swap_case_v2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `str_swap_case_v2(s)` swapping the case of every letter. Example: `str_swap_case_v2('AbCdEfGh')`.", "response": "def str_swap_case_v2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `str_swap_case_v2(s)` swapping the case of every letter. Example: `str_swap_case_v2('Mixed CASE')`.", "response": "def str_swap_case_v2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_case2(s)` swapping the case of every letter. Example: `swap_case2('Hello')`.", "response": "def swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_case2(s)` swapping the case of every letter. Example: `swap_case2('WORLD')`.", "response": "def swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_case2(s)` swapping the case of every letter. Example: `swap_case2('hello')`.", "response": "def swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_case2(s)` swapping the case of every letter. Example: `swap_case2('')`.", "response": "def swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_case2(s)` swapping the case of every letter. Example: `swap_case2('aBcDeF')`.", "response": "def swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_case2(s)` swapping the case of every letter. Example: `swap_case2('123')`.", "response": "def swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_case2(s)` swapping the case of every letter. Example: `swap_case2('AbCdEfGh')`.", "response": "def swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_case2(s)` swapping the case of every letter. Example: `swap_case2('Mixed CASE')`.", "response": "def swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_case2(s)` swapping the case of every letter. Example: `flip_case2('Hello')`.", "response": "def flip_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_case2(s)` swapping the case of every letter. Example: `flip_case2('WORLD')`.", "response": "def flip_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_case2(s)` swapping the case of every letter. Example: `flip_case2('hello')`.", "response": "def flip_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_case2(s)` swapping the case of every letter. Example: `flip_case2('')`.", "response": "def flip_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_case2(s)` swapping the case of every letter. Example: `flip_case2('aBcDeF')`.", "response": "def flip_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_case2(s)` swapping the case of every letter. Example: `flip_case2('123')`.", "response": "def flip_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_case2(s)` swapping the case of every letter. Example: `flip_case2('AbCdEfGh')`.", "response": "def flip_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_case2(s)` swapping the case of every letter. Example: `flip_case2('Mixed CASE')`.", "response": "def flip_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `do_swap_case2(s)` swapping the case of every letter. Example: `do_swap_case2('Hello')`.", "response": "def do_swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `do_swap_case2(s)` swapping the case of every letter. Example: `do_swap_case2('WORLD')`.", "response": "def do_swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `do_swap_case2(s)` swapping the case of every letter. Example: `do_swap_case2('hello')`.", "response": "def do_swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `do_swap_case2(s)` swapping the case of every letter. Example: `do_swap_case2('')`.", "response": "def do_swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `do_swap_case2(s)` swapping the case of every letter. Example: `do_swap_case2('aBcDeF')`.", "response": "def do_swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `do_swap_case2(s)` swapping the case of every letter. Example: `do_swap_case2('123')`.", "response": "def do_swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `do_swap_case2(s)` swapping the case of every letter. Example: `do_swap_case2('AbCdEfGh')`.", "response": "def do_swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `do_swap_case2(s)` swapping the case of every letter. Example: `do_swap_case2('Mixed CASE')`.", "response": "def do_swap_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `toggle_case2(s)` swapping the case of every letter. Example: `toggle_case2('Hello')`.", "response": "def toggle_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `toggle_case2(s)` swapping the case of every letter. Example: `toggle_case2('WORLD')`.", "response": "def toggle_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `toggle_case2(s)` swapping the case of every letter. Example: `toggle_case2('hello')`.", "response": "def toggle_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `toggle_case2(s)` swapping the case of every letter. Example: `toggle_case2('')`.", "response": "def toggle_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `toggle_case2(s)` swapping the case of every letter. Example: `toggle_case2('aBcDeF')`.", "response": "def toggle_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `toggle_case2(s)` swapping the case of every letter. Example: `toggle_case2('123')`.", "response": "def toggle_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `toggle_case2(s)` swapping the case of every letter. Example: `toggle_case2('AbCdEfGh')`.", "response": "def toggle_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `toggle_case2(s)` swapping the case of every letter. Example: `toggle_case2('Mixed CASE')`.", "response": "def toggle_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `case_swap2(s)` swapping the case of every letter. Example: `case_swap2('Hello')`.", "response": "def case_swap2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `case_swap2(s)` swapping the case of every letter. Example: `case_swap2('WORLD')`.", "response": "def case_swap2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `case_swap2(s)` swapping the case of every letter. Example: `case_swap2('hello')`.", "response": "def case_swap2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `case_swap2(s)` swapping the case of every letter. Example: `case_swap2('')`.", "response": "def case_swap2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `case_swap2(s)` swapping the case of every letter. Example: `case_swap2('aBcDeF')`.", "response": "def case_swap2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `case_swap2(s)` swapping the case of every letter. Example: `case_swap2('123')`.", "response": "def case_swap2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `case_swap2(s)` swapping the case of every letter. Example: `case_swap2('AbCdEfGh')`.", "response": "def case_swap2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `case_swap2(s)` swapping the case of every letter. Example: `case_swap2('Mixed CASE')`.", "response": "def case_swap2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_str_case2(s)` swapping the case of every letter. Example: `swap_str_case2('Hello')`.", "response": "def swap_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_str_case2(s)` swapping the case of every letter. Example: `swap_str_case2('WORLD')`.", "response": "def swap_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_str_case2(s)` swapping the case of every letter. Example: `swap_str_case2('hello')`.", "response": "def swap_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_str_case2(s)` swapping the case of every letter. Example: `swap_str_case2('')`.", "response": "def swap_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_str_case2(s)` swapping the case of every letter. Example: `swap_str_case2('aBcDeF')`.", "response": "def swap_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_str_case2(s)` swapping the case of every letter. Example: `swap_str_case2('123')`.", "response": "def swap_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_str_case2(s)` swapping the case of every letter. Example: `swap_str_case2('AbCdEfGh')`.", "response": "def swap_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `swap_str_case2(s)` swapping the case of every letter. Example: `swap_str_case2('Mixed CASE')`.", "response": "def swap_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_str_case2(s)` swapping the case of every letter. Example: `flip_str_case2('Hello')`.", "response": "def flip_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_str_case2(s)` swapping the case of every letter. Example: `flip_str_case2('WORLD')`.", "response": "def flip_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_str_case2(s)` swapping the case of every letter. Example: `flip_str_case2('hello')`.", "response": "def flip_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_str_case2(s)` swapping the case of every letter. Example: `flip_str_case2('')`.", "response": "def flip_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_str_case2(s)` swapping the case of every letter. Example: `flip_str_case2('aBcDeF')`.", "response": "def flip_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_str_case2(s)` swapping the case of every letter. Example: `flip_str_case2('123')`.", "response": "def flip_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_str_case2(s)` swapping the case of every letter. Example: `flip_str_case2('AbCdEfGh')`.", "response": "def flip_str_case2(s):\n    return s.swapcase()\n"}
+{"instruction": "Write a function `flip_str_case2(s)` swapping the case of every letter. Example: `flip_str_case2('Mixed CASE')`.", "response": "def flip_str_case2(s):\n    return s.swapcase()\n"}

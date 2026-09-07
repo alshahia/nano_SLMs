@@ -1,0 +1,15 @@
+{"text": "# qx_dice_roll :: '_'\nimport random\ndef qx_dice_roll():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_dice_roll('_'))\n"}
+{"text": "# qx_dice_roll :: '*'\nimport random\ndef qx_dice_roll():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_dice_roll('*'))\n"}
+{"text": "# qx_dice_roll :: '#'\nimport random\ndef qx_dice_roll():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_dice_roll('#'))\n"}
+{"text": "# qx_dice_roll :: '?'\nimport random\ndef qx_dice_roll():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_dice_roll('?'))\n"}
+{"text": "# qx_dice_roll :: '!'\nimport random\ndef qx_dice_roll():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_dice_roll('!'))\n"}
+{"text": "# qx_roll_d6 :: '_'\nimport random\ndef qx_roll_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_roll_d6('_'))\n"}
+{"text": "# qx_roll_d6 :: '*'\nimport random\ndef qx_roll_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_roll_d6('*'))\n"}
+{"text": "# qx_roll_d6 :: '#'\nimport random\ndef qx_roll_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_roll_d6('#'))\n"}
+{"text": "# qx_roll_d6 :: '?'\nimport random\ndef qx_roll_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_roll_d6('?'))\n"}
+{"text": "# qx_roll_d6 :: '!'\nimport random\ndef qx_roll_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_roll_d6('!'))\n"}
+{"text": "# qx_one_d6 :: '_'\nimport random\ndef qx_one_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_one_d6('_'))\n"}
+{"text": "# qx_one_d6 :: '*'\nimport random\ndef qx_one_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_one_d6('*'))\n"}
+{"text": "# qx_one_d6 :: '#'\nimport random\ndef qx_one_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_one_d6('#'))\n"}
+{"text": "# qx_one_d6 :: '?'\nimport random\ndef qx_one_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_one_d6('?'))\n"}
+{"text": "# qx_one_d6 :: '!'\nimport random\ndef qx_one_d6():\n    return random.randint(1, 6)\n\nif __name__ == '__main__':\n    print(qx_one_d6('!'))\n"}

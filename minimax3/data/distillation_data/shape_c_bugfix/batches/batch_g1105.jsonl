@@ -1,0 +1,1 @@
+{"instruction": "Show the `__slots__` optimization in `slots_use`. (input: 1)", "response": "class C:\n    __slots__ = ('x',)\n    def __init__(self, x):\n        self.x = x\n\n# Bug was: `__slots__` prevents adding new attributes; saves memory in many instances\n\n# pair: slots_use / 1\n"}

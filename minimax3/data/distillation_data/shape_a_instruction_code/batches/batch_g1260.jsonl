@@ -1,0 +1,64 @@
+{"instruction": "Write a function `trim_and_lower(s)` that strips whitespace and lowercases. Example: `trim_and_lower('  HELLO  ')`.", "response": "def trim_and_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_and_lower(s)` that strips whitespace and lowercases. Example: `trim_and_lower('WORLD')`.", "response": "def trim_and_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_and_lower(s)` that strips whitespace and lowercases. Example: `trim_and_lower('  Mixed Case  ')`.", "response": "def trim_and_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_and_lower(s)` that strips whitespace and lowercases. Example: `trim_and_lower('')`.", "response": "def trim_and_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_and_lower(s)` that strips whitespace and lowercases. Example: `trim_and_lower('   ')`.", "response": "def trim_and_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_and_lower(s)` that strips whitespace and lowercases. Example: `trim_and_lower('  tabs\\there  ')`.", "response": "def trim_and_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_and_lower(s)` that strips whitespace and lowercases. Example: `trim_and_lower('  spaces  ')`.", "response": "def trim_and_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_and_lower(s)` that strips whitespace and lowercases. Example: `trim_and_lower('NORMAL')`.", "response": "def trim_and_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('  HELLO  ')`.", "response": "def clean_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('WORLD')`.", "response": "def clean_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('  Mixed Case  ')`.", "response": "def clean_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('')`.", "response": "def clean_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('   ')`.", "response": "def clean_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('  tabs\\there  ')`.", "response": "def clean_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('  spaces  ')`.", "response": "def clean_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('NORMAL')`.", "response": "def clean_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_lower(s)` that strips whitespace and lowercases. Example: `strip_lower('  HELLO  ')`.", "response": "def strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_lower(s)` that strips whitespace and lowercases. Example: `strip_lower('WORLD')`.", "response": "def strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_lower(s)` that strips whitespace and lowercases. Example: `strip_lower('  Mixed Case  ')`.", "response": "def strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_lower(s)` that strips whitespace and lowercases. Example: `strip_lower('')`.", "response": "def strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_lower(s)` that strips whitespace and lowercases. Example: `strip_lower('   ')`.", "response": "def strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_lower(s)` that strips whitespace and lowercases. Example: `strip_lower('  tabs\\there  ')`.", "response": "def strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_lower(s)` that strips whitespace and lowercases. Example: `strip_lower('  spaces  ')`.", "response": "def strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_lower(s)` that strips whitespace and lowercases. Example: `strip_lower('NORMAL')`.", "response": "def strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_trim_lower(s)` that strips whitespace and lowercases. Example: `do_trim_lower('  HELLO  ')`.", "response": "def do_trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_trim_lower(s)` that strips whitespace and lowercases. Example: `do_trim_lower('WORLD')`.", "response": "def do_trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_trim_lower(s)` that strips whitespace and lowercases. Example: `do_trim_lower('  Mixed Case  ')`.", "response": "def do_trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_trim_lower(s)` that strips whitespace and lowercases. Example: `do_trim_lower('')`.", "response": "def do_trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_trim_lower(s)` that strips whitespace and lowercases. Example: `do_trim_lower('   ')`.", "response": "def do_trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_trim_lower(s)` that strips whitespace and lowercases. Example: `do_trim_lower('  tabs\\there  ')`.", "response": "def do_trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_trim_lower(s)` that strips whitespace and lowercases. Example: `do_trim_lower('  spaces  ')`.", "response": "def do_trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_trim_lower(s)` that strips whitespace and lowercases. Example: `do_trim_lower('NORMAL')`.", "response": "def do_trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('  HELLO  ')`.", "response": "def trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('WORLD')`.", "response": "def trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('  Mixed Case  ')`.", "response": "def trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('')`.", "response": "def trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('   ')`.", "response": "def trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('  tabs\\there  ')`.", "response": "def trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('  spaces  ')`.", "response": "def trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('NORMAL')`.", "response": "def trim_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_to_lower(s)` that strips whitespace and lowercases. Example: `strip_to_lower('  HELLO  ')`.", "response": "def strip_to_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_to_lower(s)` that strips whitespace and lowercases. Example: `strip_to_lower('WORLD')`.", "response": "def strip_to_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_to_lower(s)` that strips whitespace and lowercases. Example: `strip_to_lower('  Mixed Case  ')`.", "response": "def strip_to_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_to_lower(s)` that strips whitespace and lowercases. Example: `strip_to_lower('')`.", "response": "def strip_to_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_to_lower(s)` that strips whitespace and lowercases. Example: `strip_to_lower('   ')`.", "response": "def strip_to_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_to_lower(s)` that strips whitespace and lowercases. Example: `strip_to_lower('  tabs\\there  ')`.", "response": "def strip_to_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_to_lower(s)` that strips whitespace and lowercases. Example: `strip_to_lower('  spaces  ')`.", "response": "def strip_to_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `strip_to_lower(s)` that strips whitespace and lowercases. Example: `strip_to_lower('NORMAL')`.", "response": "def strip_to_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('  HELLO  ')`.", "response": "def do_strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('WORLD')`.", "response": "def do_strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('  Mixed Case  ')`.", "response": "def do_strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('')`.", "response": "def do_strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('   ')`.", "response": "def do_strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('  tabs\\there  ')`.", "response": "def do_strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('  spaces  ')`.", "response": "def do_strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('NORMAL')`.", "response": "def do_strip_lower(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `lower_clean(s)` that strips whitespace and lowercases. Example: `lower_clean('  HELLO  ')`.", "response": "def lower_clean(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `lower_clean(s)` that strips whitespace and lowercases. Example: `lower_clean('WORLD')`.", "response": "def lower_clean(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `lower_clean(s)` that strips whitespace and lowercases. Example: `lower_clean('  Mixed Case  ')`.", "response": "def lower_clean(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `lower_clean(s)` that strips whitespace and lowercases. Example: `lower_clean('')`.", "response": "def lower_clean(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `lower_clean(s)` that strips whitespace and lowercases. Example: `lower_clean('   ')`.", "response": "def lower_clean(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `lower_clean(s)` that strips whitespace and lowercases. Example: `lower_clean('  tabs\\there  ')`.", "response": "def lower_clean(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `lower_clean(s)` that strips whitespace and lowercases. Example: `lower_clean('  spaces  ')`.", "response": "def lower_clean(s):\n    return s.strip().lower()\n"}
+{"instruction": "Write a function `lower_clean(s)` that strips whitespace and lowercases. Example: `lower_clean('NORMAL')`.", "response": "def lower_clean(s):\n    return s.strip().lower()\n"}

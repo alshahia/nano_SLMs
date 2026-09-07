@@ -1,0 +1,1 @@
+{"instruction": "Show the default-arg closure fix in `make_funcs_fixed`. (input: 3)", "response": "def make_funcs_fixed():\n    return [lambda i=i: i for i in range(3)]\n\n# Bug was: default-arg trick `i=i` captures the loop value at definition time\n\n# pair: make_funcs_fixed / 3\n"}

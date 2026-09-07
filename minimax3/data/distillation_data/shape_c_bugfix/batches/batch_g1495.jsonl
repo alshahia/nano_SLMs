@@ -1,0 +1,2 @@
+{"instruction": "Show `operator.mul` in `op_mul`. (input: 3)", "response": "import operator\n\ndef op_mul(a, b):\n    return operator.mul(a, b)\n\n# Bug was: `operator.mul` is `a * b`\n\n# pair: op_mul / 3\n"}
+{"instruction": "Show `operator.mul` in `op_mul`. (input: 4)", "response": "import operator\n\ndef op_mul(a, b):\n    return operator.mul(a, b)\n\n# Bug was: `operator.mul` is `a * b`\n\n# pair: op_mul / 4\n"}

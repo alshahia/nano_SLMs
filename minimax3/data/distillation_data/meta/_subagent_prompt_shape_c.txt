@@ -1,0 +1,26 @@
+You are writing JSONL training pairs for a 226M-param code LM. Shape C format: {instruction, response} where instruction describes a buggy Python snippet, and response is the FIXED Python code containing the literal comment '# Bug was:' near the fix site.
+
+DO NOT respond with a text-only plan. In THIS turn, you MUST:
+
+1. Read these files (use the read tool):
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_c_bugfix\schema.md
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_c_bugfix\seed.jsonl
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_c_bugfix\batches\batch_g001.jsonl (or any existing batch) for format reference
+
+2. Write the output file (use the write tool) to:
+   E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_c_bugfix\batches\batch_w001.jsonl
+
+3. Write EXACTLY 250 JSONL lines. Each line = {"instruction": "<1-3 sentence description of the bug>", "response": "<fixed python code with # Bug was: comment>"}. Build response as list-of-strings joined with \n.
+
+4. Topic: **Python bug categories**. Cover at least 8 of: mutable default arg, NameError (wrong scope), wrong comparison (< vs <=), KeyError unhandled, off-by-one in range, infinite loop without break, AttributeError, TypeError (str + int), IndexError unhandled, infinite recursion (missing base case), resource leak (no with statement), bare except, integer division vs float, list mutation during iteration, variable shadowing.
+
+5. Every response must ast.parse() cleanly AND contain the literal '# Bug was:' comment. Every instruction must be UNIQUE.
+
+6. Reply ONLY with: 'Wrote 250 pairs. SHA256: <hash>'
+
+If escape issues arise: write a small Python helper to meta/_gen_bugfix_pairs.py, run it with the venv, then delete it.
+
+HARD CAPS:
+- 250 pairs
+- Output file: shape_c_bugfix/batches/batch_w001.jsonl (exact path)
+- Do NOT spawn subagents of your own

@@ -1,0 +1,15 @@
+{"text": "# qx_anagram :: ('listen', 'silent')\ndef qx_anagram(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_anagram(('listen', 'silent')))\n"}
+{"text": "# qx_anagram :: ('hello', 'world')\ndef qx_anagram(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_anagram(('hello', 'world')))\n"}
+{"text": "# qx_anagram :: ('', '')\ndef qx_anagram(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_anagram(('', '')))\n"}
+{"text": "# qx_anagram :: ('a', 'a')\ndef qx_anagram(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_anagram(('a', 'a')))\n"}
+{"text": "# qx_anagram :: ('Abc', 'CBA')\ndef qx_anagram(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_anagram(('Abc', 'CBA')))\n"}
+{"text": "# qx_qx_is_anagram_qx :: ('listen', 'silent')\ndef qx_qx_is_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_is_anagram_qx(('listen', 'silent')))\n"}
+{"text": "# qx_qx_is_anagram_qx :: ('hello', 'world')\ndef qx_qx_is_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_is_anagram_qx(('hello', 'world')))\n"}
+{"text": "# qx_qx_is_anagram_qx :: ('', '')\ndef qx_qx_is_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_is_anagram_qx(('', '')))\n"}
+{"text": "# qx_qx_is_anagram_qx :: ('a', 'a')\ndef qx_qx_is_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_is_anagram_qx(('a', 'a')))\n"}
+{"text": "# qx_qx_is_anagram_qx :: ('Abc', 'CBA')\ndef qx_qx_is_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_is_anagram_qx(('Abc', 'CBA')))\n"}
+{"text": "# qx_qx_check_anagram_qx :: ('listen', 'silent')\ndef qx_qx_check_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_check_anagram_qx(('listen', 'silent')))\n"}
+{"text": "# qx_qx_check_anagram_qx :: ('hello', 'world')\ndef qx_qx_check_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_check_anagram_qx(('hello', 'world')))\n"}
+{"text": "# qx_qx_check_anagram_qx :: ('', '')\ndef qx_qx_check_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_check_anagram_qx(('', '')))\n"}
+{"text": "# qx_qx_check_anagram_qx :: ('a', 'a')\ndef qx_qx_check_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_check_anagram_qx(('a', 'a')))\n"}
+{"text": "# qx_qx_check_anagram_qx :: ('Abc', 'CBA')\ndef qx_qx_check_anagram_qx(a, b):\n    return sorted(a.lower()) == sorted(b.lower())\n\nif __name__ == '__main__':\n    print(qx_qx_check_anagram_qx(('Abc', 'CBA')))\n"}

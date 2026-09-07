@@ -1,0 +1,1 @@
+{"instruction": "Show decorator losing metadata in `dec`. (input: fn)", "response": "def dec(func):\n    def wrapper(*args):\n        return func(*args)\n    return wrapper\n\n# Bug was: wrapper loses __name__, __doc__ — use @functools.wraps(func)\n\n# pair: dec / fn\n"}

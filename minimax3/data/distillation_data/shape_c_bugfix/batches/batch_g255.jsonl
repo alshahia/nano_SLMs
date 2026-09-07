@@ -1,0 +1,1 @@
+{"instruction": "The function `wrong_and_or(x)` has ambiguous precedence. Add explicit parentheses. (input: demo)", "response": "def wrong_and_or(x):\n    return 0 < x and x < 10 or x == 100\n    # Bug was: 'and' binds tighter than 'or'; use explicit parens for clarity.\n\n# pair: wrong_and_or / demo\n"}

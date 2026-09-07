@@ -1,0 +1,12 @@
+{"text": "# pad_right :: ('42', 5, '0')\ndef pad_right(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(pad_right(('42', 5, '0')))\n"}
+{"text": "# pad_right :: ('hi', 4, '-')\ndef pad_right(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(pad_right(('hi', 4, '-')))\n"}
+{"text": "# pad_right :: ('abc', 3, 'x')\ndef pad_right(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(pad_right(('abc', 3, 'x')))\n"}
+{"text": "# pad_right :: ('123', 6, '0')\ndef pad_right(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(pad_right(('123', 6, '0')))\n"}
+{"text": "# rpad :: ('42', 5, '0')\ndef rpad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(rpad(('42', 5, '0')))\n"}
+{"text": "# rpad :: ('hi', 4, '-')\ndef rpad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(rpad(('hi', 4, '-')))\n"}
+{"text": "# rpad :: ('abc', 3, 'x')\ndef rpad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(rpad(('abc', 3, 'x')))\n"}
+{"text": "# rpad :: ('123', 6, '0')\ndef rpad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(rpad(('123', 6, '0')))\n"}
+{"text": "# right_pad :: ('42', 5, '0')\ndef right_pad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(right_pad(('42', 5, '0')))\n"}
+{"text": "# right_pad :: ('hi', 4, '-')\ndef right_pad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(right_pad(('hi', 4, '-')))\n"}
+{"text": "# right_pad :: ('abc', 3, 'x')\ndef right_pad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(right_pad(('abc', 3, 'x')))\n"}
+{"text": "# right_pad :: ('123', 6, '0')\ndef right_pad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return s + ch * (n - len(s))\n\nif __name__ == '__main__':\n    print(right_pad(('123', 6, '0')))\n"}

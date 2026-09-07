@@ -1,0 +1,1 @@
+{"instruction": "Show the hex format spec in `format_spec_hex`. (input: 255)", "response": "def format_spec_hex(x):\n    return f'{x:#x}'\n\n# Bug was: `:#x` is hex with `0x` prefix; `:x` is hex without\n\n# pair: format_spec_hex / 255\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx_percent_of :: (25, 100)\ndef qx_percent_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_percent_of((25, 100)))\n"}
+{"text": "# qx_percent_of :: (50, 200)\ndef qx_percent_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_percent_of((50, 200)))\n"}
+{"text": "# qx_percent_of :: (10, 50)\ndef qx_percent_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_percent_of((10, 50)))\n"}
+{"text": "# qx_percent_of :: (1, 3)\ndef qx_percent_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_percent_of((1, 3)))\n"}
+{"text": "# qx_percent_of :: (100, 100)\ndef qx_percent_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_percent_of((100, 100)))\n"}
+{"text": "# qx_qx_pct_of :: (25, 100)\ndef qx_qx_pct_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_of((25, 100)))\n"}
+{"text": "# qx_qx_pct_of :: (50, 200)\ndef qx_qx_pct_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_of((50, 200)))\n"}
+{"text": "# qx_qx_pct_of :: (10, 50)\ndef qx_qx_pct_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_of((10, 50)))\n"}
+{"text": "# qx_qx_pct_of :: (1, 3)\ndef qx_qx_pct_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_of((1, 3)))\n"}
+{"text": "# qx_qx_pct_of :: (100, 100)\ndef qx_qx_pct_of(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_of((100, 100)))\n"}
+{"text": "# qx_qx_pct_calculate :: (25, 100)\ndef qx_qx_pct_calculate(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_calculate((25, 100)))\n"}
+{"text": "# qx_qx_pct_calculate :: (50, 200)\ndef qx_qx_pct_calculate(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_calculate((50, 200)))\n"}
+{"text": "# qx_qx_pct_calculate :: (10, 50)\ndef qx_qx_pct_calculate(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_calculate((10, 50)))\n"}
+{"text": "# qx_qx_pct_calculate :: (1, 3)\ndef qx_qx_pct_calculate(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_calculate((1, 3)))\n"}
+{"text": "# qx_qx_pct_calculate :: (100, 100)\ndef qx_qx_pct_calculate(part, whole):\n    if whole == 0: return 0.0\n    return (part / whole) * 100\n\nif __name__ == '__main__':\n    print(qx_qx_pct_calculate((100, 100)))\n"}

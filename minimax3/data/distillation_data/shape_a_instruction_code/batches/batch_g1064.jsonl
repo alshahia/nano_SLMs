@@ -1,0 +1,64 @@
+{"instruction": "Write a function `do_repeat_v2(s, n)` returning `s` repeated `n` times. Example: `do_repeat_v2(('ab', 3))`.", "response": "def do_repeat_v2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_repeat_v2(s, n)` returning `s` repeated `n` times. Example: `do_repeat_v2(('x', 0))`.", "response": "def do_repeat_v2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_repeat_v2(s, n)` returning `s` repeated `n` times. Example: `do_repeat_v2(('', 5))`.", "response": "def do_repeat_v2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_repeat_v2(s, n)` returning `s` repeated `n` times. Example: `do_repeat_v2(('hello', 1))`.", "response": "def do_repeat_v2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_repeat_v2(s, n)` returning `s` repeated `n` times. Example: `do_repeat_v2(('ab', 5))`.", "response": "def do_repeat_v2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_repeat_v2(s, n)` returning `s` repeated `n` times. Example: `do_repeat_v2((' ', 3))`.", "response": "def do_repeat_v2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_repeat_v2(s, n)` returning `s` repeated `n` times. Example: `do_repeat_v2(('python', 2))`.", "response": "def do_repeat_v2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_repeat_v2(s, n)` returning `s` repeated `n` times. Example: `do_repeat_v2(('z', 10))`.", "response": "def do_repeat_v2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `repeat_str2(s, n)` returning `s` repeated `n` times. Example: `repeat_str2(('ab', 3))`.", "response": "def repeat_str2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `repeat_str2(s, n)` returning `s` repeated `n` times. Example: `repeat_str2(('x', 0))`.", "response": "def repeat_str2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `repeat_str2(s, n)` returning `s` repeated `n` times. Example: `repeat_str2(('', 5))`.", "response": "def repeat_str2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `repeat_str2(s, n)` returning `s` repeated `n` times. Example: `repeat_str2(('hello', 1))`.", "response": "def repeat_str2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `repeat_str2(s, n)` returning `s` repeated `n` times. Example: `repeat_str2(('ab', 5))`.", "response": "def repeat_str2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `repeat_str2(s, n)` returning `s` repeated `n` times. Example: `repeat_str2((' ', 3))`.", "response": "def repeat_str2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `repeat_str2(s, n)` returning `s` repeated `n` times. Example: `repeat_str2(('python', 2))`.", "response": "def repeat_str2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `repeat_str2(s, n)` returning `s` repeated `n` times. Example: `repeat_str2(('z', 10))`.", "response": "def repeat_str2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. Example: `n_times2(('ab', 3))`.", "response": "def n_times2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. Example: `n_times2(('x', 0))`.", "response": "def n_times2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. Example: `n_times2(('', 5))`.", "response": "def n_times2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. Example: `n_times2(('hello', 1))`.", "response": "def n_times2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. Example: `n_times2(('ab', 5))`.", "response": "def n_times2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. Example: `n_times2((' ', 3))`.", "response": "def n_times2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. Example: `n_times2(('python', 2))`.", "response": "def n_times2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. Example: `n_times2(('z', 10))`.", "response": "def n_times2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. Example: `make_n_copies2(('ab', 3))`.", "response": "def make_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. Example: `make_n_copies2(('x', 0))`.", "response": "def make_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. Example: `make_n_copies2(('', 5))`.", "response": "def make_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. Example: `make_n_copies2(('hello', 1))`.", "response": "def make_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. Example: `make_n_copies2(('ab', 5))`.", "response": "def make_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. Example: `make_n_copies2((' ', 3))`.", "response": "def make_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. Example: `make_n_copies2(('python', 2))`.", "response": "def make_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. Example: `make_n_copies2(('z', 10))`.", "response": "def make_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `replicate2(s, n)` returning `s` repeated `n` times. Example: `replicate2(('ab', 3))`.", "response": "def replicate2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `replicate2(s, n)` returning `s` repeated `n` times. Example: `replicate2(('x', 0))`.", "response": "def replicate2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `replicate2(s, n)` returning `s` repeated `n` times. Example: `replicate2(('', 5))`.", "response": "def replicate2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `replicate2(s, n)` returning `s` repeated `n` times. Example: `replicate2(('hello', 1))`.", "response": "def replicate2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `replicate2(s, n)` returning `s` repeated `n` times. Example: `replicate2(('ab', 5))`.", "response": "def replicate2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `replicate2(s, n)` returning `s` repeated `n` times. Example: `replicate2((' ', 3))`.", "response": "def replicate2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `replicate2(s, n)` returning `s` repeated `n` times. Example: `replicate2(('python', 2))`.", "response": "def replicate2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `replicate2(s, n)` returning `s` repeated `n` times. Example: `replicate2(('z', 10))`.", "response": "def replicate2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_n_copies2(s, n)` returning `s` repeated `n` times. Example: `do_n_copies2(('ab', 3))`.", "response": "def do_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_n_copies2(s, n)` returning `s` repeated `n` times. Example: `do_n_copies2(('x', 0))`.", "response": "def do_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_n_copies2(s, n)` returning `s` repeated `n` times. Example: `do_n_copies2(('', 5))`.", "response": "def do_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_n_copies2(s, n)` returning `s` repeated `n` times. Example: `do_n_copies2(('hello', 1))`.", "response": "def do_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_n_copies2(s, n)` returning `s` repeated `n` times. Example: `do_n_copies2(('ab', 5))`.", "response": "def do_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_n_copies2(s, n)` returning `s` repeated `n` times. Example: `do_n_copies2((' ', 3))`.", "response": "def do_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_n_copies2(s, n)` returning `s` repeated `n` times. Example: `do_n_copies2(('python', 2))`.", "response": "def do_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_n_copies2(s, n)` returning `s` repeated `n` times. Example: `do_n_copies2(('z', 10))`.", "response": "def do_n_copies2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `str_repeat2(s, n)` returning `s` repeated `n` times. Example: `str_repeat2(('ab', 3))`.", "response": "def str_repeat2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `str_repeat2(s, n)` returning `s` repeated `n` times. Example: `str_repeat2(('x', 0))`.", "response": "def str_repeat2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `str_repeat2(s, n)` returning `s` repeated `n` times. Example: `str_repeat2(('', 5))`.", "response": "def str_repeat2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `str_repeat2(s, n)` returning `s` repeated `n` times. Example: `str_repeat2(('hello', 1))`.", "response": "def str_repeat2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `str_repeat2(s, n)` returning `s` repeated `n` times. Example: `str_repeat2(('ab', 5))`.", "response": "def str_repeat2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `str_repeat2(s, n)` returning `s` repeated `n` times. Example: `str_repeat2((' ', 3))`.", "response": "def str_repeat2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `str_repeat2(s, n)` returning `s` repeated `n` times. Example: `str_repeat2(('python', 2))`.", "response": "def str_repeat2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `str_repeat2(s, n)` returning `s` repeated `n` times. Example: `str_repeat2(('z', 10))`.", "response": "def str_repeat2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_mult2(s, n)` returning `s` repeated `n` times. Example: `do_mult2(('ab', 3))`.", "response": "def do_mult2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_mult2(s, n)` returning `s` repeated `n` times. Example: `do_mult2(('x', 0))`.", "response": "def do_mult2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_mult2(s, n)` returning `s` repeated `n` times. Example: `do_mult2(('', 5))`.", "response": "def do_mult2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_mult2(s, n)` returning `s` repeated `n` times. Example: `do_mult2(('hello', 1))`.", "response": "def do_mult2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_mult2(s, n)` returning `s` repeated `n` times. Example: `do_mult2(('ab', 5))`.", "response": "def do_mult2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_mult2(s, n)` returning `s` repeated `n` times. Example: `do_mult2((' ', 3))`.", "response": "def do_mult2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_mult2(s, n)` returning `s` repeated `n` times. Example: `do_mult2(('python', 2))`.", "response": "def do_mult2(s, n):\n    return s * n\n"}
+{"instruction": "Write a function `do_mult2(s, n)` returning `s` repeated `n` times. Example: `do_mult2(('z', 10))`.", "response": "def do_mult2(s, n):\n    return s * n\n"}

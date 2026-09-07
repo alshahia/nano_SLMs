@@ -1,0 +1,1 @@
+{"instruction": "Show the `== True` anti-pattern in `cmp_true_eq`. (input: True)", "response": "def cmp_true_eq(x):\n    return x == True\n\n# Bug was: `True == 1` but the intent was probably `x is True` or `bool(x)`\n\n# pair: cmp_true_eq / True\n"}

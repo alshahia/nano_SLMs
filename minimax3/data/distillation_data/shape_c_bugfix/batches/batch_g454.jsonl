@@ -1,0 +1,1 @@
+{"instruction": "Show __slots__ + property in `slotprop`. (input: '')", "response": "class slotprop:\n    __slots__ = ('_x',)\n    @property\n    def x(self):\n        return self._x\n\n# Bug was: __slots__ with property — `_x` is the slot but property may shadow name collision\n\n# pair: slotprop / ''\n"}

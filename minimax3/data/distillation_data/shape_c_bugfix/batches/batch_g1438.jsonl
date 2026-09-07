@@ -1,0 +1,1 @@
+{"instruction": "Show `next` with default in `next_default`. (input: [1, 2, 3])", "response": "def next_default(it):\n    return next(it, None)\n\n# Bug was: `next(it, default)` returns default instead of raising\n\n# pair: next_default / [1, 2, 3]\n"}

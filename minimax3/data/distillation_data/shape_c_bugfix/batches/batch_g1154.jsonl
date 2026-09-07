@@ -1,0 +1,1 @@
+{"instruction": "Show the Set type hint in `type_hint_set`. (input: {1, 2, 3})", "response": "from typing import Set\n\ndef type_hint_set(s: Set[int]) -> int:\n    return sum(s)\n\n# Bug was: `Set[int]` is the older syntax; `set[int]` works in 3.9+\n\n# pair: type_hint_set / {1, 2, 3}\n"}

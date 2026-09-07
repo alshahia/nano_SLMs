@@ -1,0 +1,1 @@
+{"instruction": "Show the Mapping type hint in `type_mapping`. (input: {1: 'a'})", "response": "from collections.abc import Mapping\n\ndef type_mapping(m: Mapping[int, str]) -> list:\n    return list(m.items())\n\n# Bug was: `Mapping` is read-only view; `MutableMapping` allows item assignment\n\n# pair: type_mapping / {1: 'a'}\n"}

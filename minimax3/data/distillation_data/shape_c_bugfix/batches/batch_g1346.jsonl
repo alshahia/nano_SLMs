@@ -1,0 +1,1 @@
+{"instruction": "Show the basic `match` in `match_basic`. (input: 2)", "response": "def match_basic(x):\n    match x:\n        case 1:\n            return 'one'\n        case 2:\n            return 'two'\n        case _:\n            return 'other'\n\n# Bug was: structural pattern matching (Py3.10+) matches values, types, and sequences\n\n# pair: match_basic / 2\n"}

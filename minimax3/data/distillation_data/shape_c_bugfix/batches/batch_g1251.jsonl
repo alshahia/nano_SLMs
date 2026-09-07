@@ -1,0 +1,1 @@
+{"instruction": "Show `logging.getLogger` in `log_get`. (input: 'hello')", "response": "import logging\n\nlogger = logging.getLogger(__name__)\n\ndef log_get(s):\n    logger.info(s)\n\n# Bug was: `getLogger(__name__)` creates a per-module logger; best practice\n\n# pair: log_get / 'hello'\n"}

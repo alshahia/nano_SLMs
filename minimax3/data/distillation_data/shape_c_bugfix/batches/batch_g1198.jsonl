@@ -1,0 +1,1 @@
+{"instruction": "Show the itertools.islice in `it_islice`. (input: [1, 2, 3, 4, 5])", "response": "from itertools import islice\n\ndef it_islice(xs):\n    return list(islice(xs, 2))\n\n# Bug was: `islice(xs, n)` takes the first n without materializing the iterable\n\n# pair: it_islice / [1, 2, 3, 4, 5]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show f-string quote conflict in `fmt2`. (input: {'k': 'v'})", "response": "def fmt2(d):\n    s = f\"key='{d['k']}'\"\n    return s\n\n# Bug was: same quote type inside f-string — use opposite quote type for the f-string itself\n\n# pair: fmt2 / {'k': 'v'}\n"}

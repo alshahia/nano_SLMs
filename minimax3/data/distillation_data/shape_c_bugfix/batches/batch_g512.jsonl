@@ -1,0 +1,1 @@
+{"instruction": "Show builtins mutation in `bui`. (input: '')", "response": "import builtins\ndef bui():\n    builtins.print = lambda *a, **k: None\n\n# Bug was: mutating builtins is process-global — affects everything; never do\n\n# pair: bui / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the exhausted-filter bug in `filter_consume`. (input: [1, 2, 3, 4])", "response": "def filter_consume(xs):\n    f = filter(lambda x: x % 2 == 0, xs)\n    return list(f) + list(f)\n\n# Bug was: `filter` iterator is exhausted after one pass\n\n# pair: filter_consume / [1, 2, 3, 4]\n"}

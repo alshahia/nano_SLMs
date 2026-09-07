@@ -1,0 +1,1 @@
+{"instruction": "Show `secrets.randbelow` in `sc_below`. (input: 100)", "response": "import secrets\n\ndef sc_below(n):\n    return secrets.randbelow(n)\n\n# Bug was: `secrets.randbelow(n)` returns 0 <= result < n\n\n# pair: sc_below / 100\n"}

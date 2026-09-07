@@ -1,0 +1,1 @@
+{"instruction": "Show missing parent init in `kid`. (input: '')", "response": "class Base:\n    def __init__(self):\n        self.base_attr = 1\n\nclass kid(Base):\n    def __init__(self):\n        self.child_attr = 2\n\n# Bug was: Base.__init__ never runs — child_attr is set but base_attr is missing\n\n# pair: kid / ''\n"}

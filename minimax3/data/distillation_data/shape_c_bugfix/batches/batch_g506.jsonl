@@ -1,0 +1,1 @@
+{"instruction": "Show faulthandler not enabled in `fh`. (input: '')", "response": "import faulthandler\ndef fh():\n    faulthandler.dump_traceback()\n\n# Bug was: faulthandler must be enabled first — call faulthandler.enable()\n\n# pair: fh / ''\n"}

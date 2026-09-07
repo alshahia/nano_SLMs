@@ -1,0 +1,1 @@
+{"instruction": "Show weakref.finalize timing in `wrf`. (input: '')", "response": "import weakref\ndef wrf():\n    r = weakref.finalize(obj, cleanup)\n\n# Bug was: finalize fires at GC time — may run too late; use atexit for app-level cleanup\n\n# pair: wrf / ''\n"}

@@ -1,0 +1,15 @@
+{"text": "# dict_diff :: ({'a': 1, 'b': 2}, {'b': 3})\ndef dict_diff(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_diff(({'a': 1, 'b': 2}, {'b': 3})))\n"}
+{"text": "# dict_diff :: ({'a': 1}, {})\ndef dict_diff(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_diff(({'a': 1}, {})))\n"}
+{"text": "# dict_diff :: ({}, {'a': 1})\ndef dict_diff(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_diff(({}, {'a': 1})))\n"}
+{"text": "# dict_diff :: ({'x': 1, 'y': 2}, {'x': 1})\ndef dict_diff(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_diff(({'x': 1, 'y': 2}, {'x': 1})))\n"}
+{"text": "# dict_diff :: ({'a': 1}, {'a': 1})\ndef dict_diff(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_diff(({'a': 1}, {'a': 1})))\n"}
+{"text": "# keys_in_a_not_b :: ({'a': 1, 'b': 2}, {'b': 3})\ndef keys_in_a_not_b(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(keys_in_a_not_b(({'a': 1, 'b': 2}, {'b': 3})))\n"}
+{"text": "# keys_in_a_not_b :: ({'a': 1}, {})\ndef keys_in_a_not_b(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(keys_in_a_not_b(({'a': 1}, {})))\n"}
+{"text": "# keys_in_a_not_b :: ({}, {'a': 1})\ndef keys_in_a_not_b(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(keys_in_a_not_b(({}, {'a': 1})))\n"}
+{"text": "# keys_in_a_not_b :: ({'x': 1, 'y': 2}, {'x': 1})\ndef keys_in_a_not_b(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(keys_in_a_not_b(({'x': 1, 'y': 2}, {'x': 1})))\n"}
+{"text": "# keys_in_a_not_b :: ({'a': 1}, {'a': 1})\ndef keys_in_a_not_b(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(keys_in_a_not_b(({'a': 1}, {'a': 1})))\n"}
+{"text": "# dict_minus :: ({'a': 1, 'b': 2}, {'b': 3})\ndef dict_minus(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_minus(({'a': 1, 'b': 2}, {'b': 3})))\n"}
+{"text": "# dict_minus :: ({'a': 1}, {})\ndef dict_minus(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_minus(({'a': 1}, {})))\n"}
+{"text": "# dict_minus :: ({}, {'a': 1})\ndef dict_minus(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_minus(({}, {'a': 1})))\n"}
+{"text": "# dict_minus :: ({'x': 1, 'y': 2}, {'x': 1})\ndef dict_minus(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_minus(({'x': 1, 'y': 2}, {'x': 1})))\n"}
+{"text": "# dict_minus :: ({'a': 1}, {'a': 1})\ndef dict_minus(a, b):\n    return {k: a[k] for k in a if k not in b}\n\nif __name__ == '__main__':\n    print(dict_minus(({'a': 1}, {'a': 1})))\n"}

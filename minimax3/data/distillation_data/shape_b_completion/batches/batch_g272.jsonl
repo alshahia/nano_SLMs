@@ -1,0 +1,15 @@
+{"text": "# is_armstrong :: (153,)\ndef is_armstrong(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(is_armstrong((153,)))\n"}
+{"text": "# is_armstrong :: (370,)\ndef is_armstrong(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(is_armstrong((370,)))\n"}
+{"text": "# is_armstrong :: (371,)\ndef is_armstrong(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(is_armstrong((371,)))\n"}
+{"text": "# is_armstrong :: (100,)\ndef is_armstrong(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(is_armstrong((100,)))\n"}
+{"text": "# is_armstrong :: (9474,)\ndef is_armstrong(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(is_armstrong((9474,)))\n"}
+{"text": "# armstrong_check :: (153,)\ndef armstrong_check(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(armstrong_check((153,)))\n"}
+{"text": "# armstrong_check :: (370,)\ndef armstrong_check(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(armstrong_check((370,)))\n"}
+{"text": "# armstrong_check :: (371,)\ndef armstrong_check(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(armstrong_check((371,)))\n"}
+{"text": "# armstrong_check :: (100,)\ndef armstrong_check(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(armstrong_check((100,)))\n"}
+{"text": "# armstrong_check :: (9474,)\ndef armstrong_check(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(armstrong_check((9474,)))\n"}
+{"text": "# narcissistic :: (153,)\ndef narcissistic(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(narcissistic((153,)))\n"}
+{"text": "# narcissistic :: (370,)\ndef narcissistic(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(narcissistic((370,)))\n"}
+{"text": "# narcissistic :: (371,)\ndef narcissistic(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(narcissistic((371,)))\n"}
+{"text": "# narcissistic :: (100,)\ndef narcissistic(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(narcissistic((100,)))\n"}
+{"text": "# narcissistic :: (9474,)\ndef narcissistic(n):\n    s = str(abs(n))\n    p = len(s)\n    return sum(int(d) ** p for d in s) == n\n\nif __name__ == '__main__':\n    print(narcissistic((9474,)))\n"}

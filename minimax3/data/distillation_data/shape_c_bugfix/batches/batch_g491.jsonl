@@ -1,0 +1,1 @@
+{"instruction": "Show missing logging config in `ldc`. (input: '')", "response": "import logging\ndef ldc():\n    logging.warning('starting')\n\n# Bug was: no dictConfig — uses lastResort handler which is WARNING+ stderr — fine but not configurable\n\n# pair: ldc / ''\n"}

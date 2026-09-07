@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.glob` in `path_glob`. (input: '/tmp')", "response": "from pathlib import Path\n\ndef path_glob(d):\n    return [str(p) for p in Path(d).glob('*.txt')]\n\n# Bug was: `Path.glob` is the modern way to find files matching a pattern\n\n# pair: path_glob / '/tmp'\n"}

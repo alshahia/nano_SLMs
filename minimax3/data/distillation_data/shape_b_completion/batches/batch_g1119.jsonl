@@ -1,0 +1,15 @@
+{"text": "# qx2_blake2b :: 'hello'\nimport hashlib\n\ndef qx2_blake2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_blake2b('hello'))\n"}
+{"text": "# qx2_blake2b :: ''\nimport hashlib\n\ndef qx2_blake2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_blake2b(''))\n"}
+{"text": "# qx2_blake2b :: 'Python'\nimport hashlib\n\ndef qx2_blake2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_blake2b('Python'))\n"}
+{"text": "# qx2_blake2b :: 'café'\nimport hashlib\n\ndef qx2_blake2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_blake2b('café'))\n"}
+{"text": "# qx2_blake2b :: 'x'\nimport hashlib\n\ndef qx2_blake2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_blake2b('x'))\n"}
+{"text": "# qx2_b2b :: 'hello'\nimport hashlib\n\ndef qx2_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_b2b('hello'))\n"}
+{"text": "# qx2_b2b :: ''\nimport hashlib\n\ndef qx2_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_b2b(''))\n"}
+{"text": "# qx2_b2b :: 'Python'\nimport hashlib\n\ndef qx2_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_b2b('Python'))\n"}
+{"text": "# qx2_b2b :: 'café'\nimport hashlib\n\ndef qx2_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_b2b('café'))\n"}
+{"text": "# qx2_b2b :: 'x'\nimport hashlib\n\ndef qx2_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_b2b('x'))\n"}
+{"text": "# qx2_hash_b2b :: 'hello'\nimport hashlib\n\ndef qx2_hash_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash_b2b('hello'))\n"}
+{"text": "# qx2_hash_b2b :: ''\nimport hashlib\n\ndef qx2_hash_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash_b2b(''))\n"}
+{"text": "# qx2_hash_b2b :: 'Python'\nimport hashlib\n\ndef qx2_hash_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash_b2b('Python'))\n"}
+{"text": "# qx2_hash_b2b :: 'café'\nimport hashlib\n\ndef qx2_hash_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash_b2b('café'))\n"}
+{"text": "# qx2_hash_b2b :: 'x'\nimport hashlib\n\ndef qx2_hash_b2b(s):\n    return hashlib.blake2b(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(qx2_hash_b2b('x'))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `operator.attrgetter` in `op_attrgetter`. (input: )", "response": "import operator\n\nclass C:\n    def __init__(self, x):\n        self.x = x\n\ndef op_attrgetter():\n    cs = [C(1), C(2), C(3)]\n    g = operator.attrgetter('x')\n    return [g(c) for c in cs]\n\n# Bug was: `attrgetter('x')` is faster than `lambda c: c.x`\n\n# pair: op_attrgetter /\n"}

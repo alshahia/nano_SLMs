@@ -1,0 +1,15 @@
+{"text": "# qx2_radians :: 0\nimport math\n\ndef qx2_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_radians(0))\n"}
+{"text": "# qx2_radians :: 90\nimport math\n\ndef qx2_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_radians(90))\n"}
+{"text": "# qx2_radians :: 180\nimport math\n\ndef qx2_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_radians(180))\n"}
+{"text": "# qx2_radians :: 270\nimport math\n\ndef qx2_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_radians(270))\n"}
+{"text": "# qx2_radians :: 360\nimport math\n\ndef qx2_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_radians(360))\n"}
+{"text": "# qx2_to_radians :: 0\nimport math\n\ndef qx2_to_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_to_radians(0))\n"}
+{"text": "# qx2_to_radians :: 90\nimport math\n\ndef qx2_to_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_to_radians(90))\n"}
+{"text": "# qx2_to_radians :: 180\nimport math\n\ndef qx2_to_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_to_radians(180))\n"}
+{"text": "# qx2_to_radians :: 270\nimport math\n\ndef qx2_to_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_to_radians(270))\n"}
+{"text": "# qx2_to_radians :: 360\nimport math\n\ndef qx2_to_radians(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_to_radians(360))\n"}
+{"text": "# qx2_deg_to_rad :: 0\nimport math\n\ndef qx2_deg_to_rad(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_deg_to_rad(0))\n"}
+{"text": "# qx2_deg_to_rad :: 90\nimport math\n\ndef qx2_deg_to_rad(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_deg_to_rad(90))\n"}
+{"text": "# qx2_deg_to_rad :: 180\nimport math\n\ndef qx2_deg_to_rad(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_deg_to_rad(180))\n"}
+{"text": "# qx2_deg_to_rad :: 270\nimport math\n\ndef qx2_deg_to_rad(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_deg_to_rad(270))\n"}
+{"text": "# qx2_deg_to_rad :: 360\nimport math\n\ndef qx2_deg_to_rad(deg):\n    return deg * math.pi / 180\n\nif __name__ == '__main__':\n    print(qx2_deg_to_rad(360))\n"}

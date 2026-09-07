@@ -1,0 +1,15 @@
+{"text": "# drop :: ([1, 2, 3, 4, 5], 3)\ndef drop(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# drop :: ([1, 2], 5)\ndef drop(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop(([1, 2], 5)))\n"}
+{"text": "# drop :: ([], 3)\ndef drop(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop(([], 3)))\n"}
+{"text": "# drop :: ([1, 2, 3], 0)\ndef drop(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop(([1, 2, 3], 0)))\n"}
+{"text": "# drop :: ([1, 2, 3], 3)\ndef drop(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop(([1, 2, 3], 3)))\n"}
+{"text": "# skip_n :: ([1, 2, 3, 4, 5], 3)\ndef skip_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(skip_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# skip_n :: ([1, 2], 5)\ndef skip_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(skip_n(([1, 2], 5)))\n"}
+{"text": "# skip_n :: ([], 3)\ndef skip_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(skip_n(([], 3)))\n"}
+{"text": "# skip_n :: ([1, 2, 3], 0)\ndef skip_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(skip_n(([1, 2, 3], 0)))\n"}
+{"text": "# skip_n :: ([1, 2, 3], 3)\ndef skip_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(skip_n(([1, 2, 3], 3)))\n"}
+{"text": "# drop_n :: ([1, 2, 3, 4, 5], 3)\ndef drop_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# drop_n :: ([1, 2], 5)\ndef drop_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop_n(([1, 2], 5)))\n"}
+{"text": "# drop_n :: ([], 3)\ndef drop_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop_n(([], 3)))\n"}
+{"text": "# drop_n :: ([1, 2, 3], 0)\ndef drop_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop_n(([1, 2, 3], 0)))\n"}
+{"text": "# drop_n :: ([1, 2, 3], 3)\ndef drop_n(xs, n):\n    return xs[max(0, n):]\n\nif __name__ == '__main__':\n    print(drop_n(([1, 2, 3], 3)))\n"}

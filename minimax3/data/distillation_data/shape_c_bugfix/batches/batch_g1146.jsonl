@@ -1,0 +1,1 @@
+{"instruction": "Show the typed-list hint in `type_hint_list`. (input: [1, 2, 3])", "response": "from typing import List\n\ndef type_hint_list(xs: List[int]) -> int:\n    return sum(xs)\n\n# Bug was: `List[int]` is the older syntax; PEP 585 allows `list[int]` in 3.9+\n\n# pair: type_hint_list / [1, 2, 3]\n"}

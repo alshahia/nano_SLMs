@@ -1,0 +1,1 @@
+{"instruction": "Show except* syntax (Py<3.11). (input: '')", "response": "try:\n    raise ValueError('x')\nexcept* ValueError as eg:\n    pass\n\n# Bug was: except* is Py3.11+ — earlier versions get SyntaxError\n\n# pair: estar / ''\n"}

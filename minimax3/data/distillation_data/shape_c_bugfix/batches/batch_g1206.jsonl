@@ -1,0 +1,1 @@
+{"instruction": "Show functools.reduce in `fn_reduce`. (input: [1, 2, 3, 4])", "response": "from functools import reduce\n\ndef fn_reduce(xs):\n    return reduce(lambda a, b: a + b, xs)\n\n# Bug was: `reduce` is fold-left; prefer `sum`/`any`/`all` for common cases\n\n# pair: fn_reduce / [1, 2, 3, 4]\n"}

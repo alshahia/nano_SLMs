@@ -1,0 +1,1 @@
+{"instruction": "Show `unquote` in `unquote`. (input: 'hello%20world')", "response": "from urllib.parse import unquote\n\ndef unquote(s):\n    return unquote(s)\n\n# Bug was: `unquote` reverses `quote`; handles percent-encoded chars\n\n# pair: unquote / 'hello%20world'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show removed telnetlib in `old_proto`. (input: '')", "response": "import telnetlib\ndef old_proto():\n    return telnetlib.Telnet('host')\n\n# Bug was: telnetlib removed in Py3.11 — unencrypted, use ssh/ssl libraries\n\n# pair: old_proto / ''\n"}

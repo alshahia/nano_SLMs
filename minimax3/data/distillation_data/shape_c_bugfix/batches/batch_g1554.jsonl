@@ -1,0 +1,1 @@
+{"instruction": "Show `tomli_w.dumps` in `tomllib_dump`. (input: {'k': [1, 2]})", "response": "import tomli_w\n\ndef tomllib_dump(d):\n    return tomli_w.dumps(d)\n\n# Bug was: `tomli_w` is the writer pair to `tomllib`; `tomllib` is read-only in stdlib\n\n# pair: tomllib_dump / {'k': [1, 2]}\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the context-manager `with open` in `file_with_correct`. (input: 'data.txt')", "response": "def file_with_correct(path):\n    with open(path) as f:\n        data = f.read()\n    return data\n\n# Bug was: this is the correct form using a context manager\n\n# pair: file_with_correct / 'data.txt'\n"}

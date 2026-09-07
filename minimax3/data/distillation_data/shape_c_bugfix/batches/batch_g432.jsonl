@@ -1,0 +1,1 @@
+{"instruction": "Show Py2-style division in `div`. Input: `7, 2`. (input: 7, 2)", "response": "def div(a, b):\n    return a / b\n\n# Bug was: Py2 `/` is integer division for ints — use `from __future__ import division` or `//`\n\n# pair: div / 7, 2\n"}

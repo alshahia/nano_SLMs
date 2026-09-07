@@ -1,0 +1,15 @@
+{"text": "# qx2_b64dec :: 'aGVsbG8='\nimport base64\n\ndef qx2_b64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64dec('aGVsbG8='))\n"}
+{"text": "# qx2_b64dec :: ''\nimport base64\n\ndef qx2_b64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64dec(''))\n"}
+{"text": "# qx2_b64dec :: 'UHl0aG9u'\nimport base64\n\ndef qx2_b64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64dec('UHl0aG9u'))\n"}
+{"text": "# qx2_b64dec :: 'Y2Fmw6k='\nimport base64\n\ndef qx2_b64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64dec('Y2Fmw6k='))\n"}
+{"text": "# qx2_b64dec :: 'MTIzNDU2Nzg5MA=='\nimport base64\n\ndef qx2_b64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64dec('MTIzNDU2Nzg5MA=='))\n"}
+{"text": "# qx2_b64_decode :: 'aGVsbG8='\nimport base64\n\ndef qx2_b64_decode(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64_decode('aGVsbG8='))\n"}
+{"text": "# qx2_b64_decode :: ''\nimport base64\n\ndef qx2_b64_decode(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64_decode(''))\n"}
+{"text": "# qx2_b64_decode :: 'UHl0aG9u'\nimport base64\n\ndef qx2_b64_decode(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64_decode('UHl0aG9u'))\n"}
+{"text": "# qx2_b64_decode :: 'Y2Fmw6k='\nimport base64\n\ndef qx2_b64_decode(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64_decode('Y2Fmw6k='))\n"}
+{"text": "# qx2_b64_decode :: 'MTIzNDU2Nzg5MA=='\nimport base64\n\ndef qx2_b64_decode(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_b64_decode('MTIzNDU2Nzg5MA=='))\n"}
+{"text": "# qx2_base64dec :: 'aGVsbG8='\nimport base64\n\ndef qx2_base64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_base64dec('aGVsbG8='))\n"}
+{"text": "# qx2_base64dec :: ''\nimport base64\n\ndef qx2_base64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_base64dec(''))\n"}
+{"text": "# qx2_base64dec :: 'UHl0aG9u'\nimport base64\n\ndef qx2_base64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_base64dec('UHl0aG9u'))\n"}
+{"text": "# qx2_base64dec :: 'Y2Fmw6k='\nimport base64\n\ndef qx2_base64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_base64dec('Y2Fmw6k='))\n"}
+{"text": "# qx2_base64dec :: 'MTIzNDU2Nzg5MA=='\nimport base64\n\ndef qx2_base64dec(s):\n    return base64.b64decode(s).decode('utf-8')\n\nif __name__ == '__main__':\n    print(qx2_base64dec('MTIzNDU2Nzg5MA=='))\n"}

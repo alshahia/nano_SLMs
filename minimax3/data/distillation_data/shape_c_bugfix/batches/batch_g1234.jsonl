@@ -1,0 +1,1 @@
+{"instruction": "Show `string.capwords` in `str_capwords`. (input: 'hello world')", "response": "from string import capwords\n\ndef str_capwords(s):\n    return capwords(s)\n\n# Bug was: `capwords` capitalizes each whitespace-separated word\n\n# pair: str_capwords / 'hello world'\n"}

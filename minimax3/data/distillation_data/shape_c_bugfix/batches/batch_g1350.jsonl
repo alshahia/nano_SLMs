@@ -1,0 +1,1 @@
+{"instruction": "Show the `|` OR pattern in `match_or`. (input: 2)", "response": "def match_or(x):\n    match x:\n        case 1 | 2 | 3:\n            return 'small'\n        case _:\n            return 'big'\n\n# Bug was: `|` in patterns is OR; combines alternatives\n\n# pair: match_or / 2\n"}

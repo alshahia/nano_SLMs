@@ -1,0 +1,1 @@
+{"instruction": "Show the starred unpacking in `unpack_starred`. (input: [1, 2, 3, 4, 5])", "response": "def unpack_starred(xs):\n    a, b, *rest = xs\n    return a, b, rest\n\n# Bug was: starred assignment captures the rest; works on any iterable\n\n# pair: unpack_starred / [1, 2, 3, 4, 5]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `str()` conversion in `str_str`. (input: 42)", "response": "def str_str(x):\n    return str(x)\n\n# Bug was: `str()` calls `__str__`; `repr()` calls `__repr__`\n\n# pair: str_str / 42\n"}

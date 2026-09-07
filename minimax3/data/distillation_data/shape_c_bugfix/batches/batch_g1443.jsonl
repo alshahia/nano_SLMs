@@ -1,0 +1,1 @@
+{"instruction": "Show `map` in `map_basic2`. (input: [1, 2, 3])", "response": "def map_basic2(xs):\n    return list(map(str, xs))\n\n# Bug was: `map` returns an iterator in Py3; lazy\n\n# pair: map_basic2 / [1, 2, 3]\n"}

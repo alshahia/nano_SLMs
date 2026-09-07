@@ -1,0 +1,1 @@
+{"instruction": "Show semaphore leak in `limit`. (input: '')", "response": "import threading\nsem = threading.Semaphore(3)\ndef limit():\n    sem.acquire()\n    work()\n\n# Bug was: missing release — semaphore eventually locks everyone out\n\n# pair: limit / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show type alias old syntax in `alias`. (input: '')", "response": "MyList = list\ndef alias() -> MyList:\n    return []\n\n# Bug was: bare assignment is value alias; for type alias use `MyList = list[int]` (Py3.9+) or `TypeAlias`\n\n# pair: alias / ''\n"}

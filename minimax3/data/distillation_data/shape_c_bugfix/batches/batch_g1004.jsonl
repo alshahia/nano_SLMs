@@ -1,0 +1,1 @@
+{"instruction": "Show the built-in shadowing in `list_maker`. (input: [1, 2, 3])", "response": "def list_maker(items):\n    list = []\n    for x in items:\n        list.append(x * 2)\n    return list\n\n# Bug was: `list` shadows the builtin; use `out` or `result` to avoid breaking other code that uses `list()`\n\n# pair: list_maker / [1, 2, 3]\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx_count_words :: 'hello world'\ndef qx_count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_count_words('hello world'))\n"}
+{"text": "# qx_count_words :: ''\ndef qx_count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_count_words(''))\n"}
+{"text": "# qx_count_words :: 'one'\ndef qx_count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_count_words('one'))\n"}
+{"text": "# qx_count_words :: '  spaced  out  '\ndef qx_count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_count_words('  spaced  out  '))\n"}
+{"text": "# qx_count_words :: 'line1\\\\nline2\\\\nline3'\ndef qx_count_words(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_count_words('line1\\\\nline2\\\\nline3'))\n"}
+{"text": "# qx_qx_word_count_qx :: 'hello world'\ndef qx_qx_word_count_qx(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_word_count_qx('hello world'))\n"}
+{"text": "# qx_qx_word_count_qx :: ''\ndef qx_qx_word_count_qx(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_word_count_qx(''))\n"}
+{"text": "# qx_qx_word_count_qx :: 'one'\ndef qx_qx_word_count_qx(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_word_count_qx('one'))\n"}
+{"text": "# qx_qx_word_count_qx :: '  spaced  out  '\ndef qx_qx_word_count_qx(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_word_count_qx('  spaced  out  '))\n"}
+{"text": "# qx_qx_word_count_qx :: 'line1\\\\nline2\\\\nline3'\ndef qx_qx_word_count_qx(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_word_count_qx('line1\\\\nline2\\\\nline3'))\n"}
+{"text": "# qx_qx_count_words_str :: 'hello world'\ndef qx_qx_count_words_str(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_count_words_str('hello world'))\n"}
+{"text": "# qx_qx_count_words_str :: ''\ndef qx_qx_count_words_str(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_count_words_str(''))\n"}
+{"text": "# qx_qx_count_words_str :: 'one'\ndef qx_qx_count_words_str(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_count_words_str('one'))\n"}
+{"text": "# qx_qx_count_words_str :: '  spaced  out  '\ndef qx_qx_count_words_str(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_count_words_str('  spaced  out  '))\n"}
+{"text": "# qx_qx_count_words_str :: 'line1\\\\nline2\\\\nline3'\ndef qx_qx_count_words_str(s):\n    return len(s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_count_words_str('line1\\\\nline2\\\\nline3'))\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show `secrets.compare_digest` in `sc_cmp`. (input: 'abc')", "response": "import secrets\n\ndef sc_cmp(a, b):\n    return secrets.compare_digest(a, b)\n\n# Bug was: `compare_digest` is timing-attack-safe; use for password/token checks\n\n# pair: sc_cmp / 'abc'\n"}
+{"instruction": "Show `secrets.compare_digest` in `sc_cmp`. (input: 'def')", "response": "import secrets\n\ndef sc_cmp(a, b):\n    return secrets.compare_digest(a, b)\n\n# Bug was: `compare_digest` is timing-attack-safe; use for password/token checks\n\n# pair: sc_cmp / 'def'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `hash` in `hash_basic`. (input: 'hello')", "response": "def hash_basic(x):\n    return hash(x)\n\n# Bug was: `hash(x)` must be consistent across runs; equals-implies-same-hash contract\n\n# pair: hash_basic / 'hello'\n"}

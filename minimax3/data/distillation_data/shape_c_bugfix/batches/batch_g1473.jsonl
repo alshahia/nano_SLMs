@@ -1,0 +1,1 @@
+{"instruction": "Show the no-arg lambda in `lambda_no_args`. (input: )", "response": "def lambda_no_args():\n    return (lambda: 42)()\n\n# Bug was: lambda with no args is just an expression\n\n# pair: lambda_no_args /\n"}

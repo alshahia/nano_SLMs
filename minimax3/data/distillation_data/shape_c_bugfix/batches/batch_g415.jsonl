@@ -1,0 +1,1 @@
+{"instruction": "Show assert with eager message in `a`. (input: '')", "response": "def a(x):\n    assert x, expensive_compute()\n\n# Bug was: message always evaluated — even with -O. Use `if not x: raise AssertionError(...)`\n\n# pair: a / ''\n"}

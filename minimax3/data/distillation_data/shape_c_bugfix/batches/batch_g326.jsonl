@@ -1,0 +1,1 @@
+{"instruction": "Show Py2-style super() antipattern in `child_init2`. (input: '')", "response": "class Parent:\n    def __init__(self):\n        self.x = 1\n\nclass child_init2(Parent):\n    def __init__(self):\n        Parent.__init__(self)\n\n# Bug was: Py2-style Parent.__init__(self) works but breaks with multiple inheritance — use super()\n\n# pair: child_init2 / ''\n"}

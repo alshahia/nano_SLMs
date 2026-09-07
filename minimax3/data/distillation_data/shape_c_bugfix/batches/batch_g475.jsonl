@@ -1,0 +1,1 @@
+{"instruction": "Show async for no cleanup in `af`. Input: `producer()`. (input: producer())", "response": "async def af(src):\n    async for x in src:\n        if x == 'stop': break\n        process(x)\n\n# Bug was: breaking out doesn't call aclose on src — async iteration leaks resources\n\n# pair: af / producer()\n"}

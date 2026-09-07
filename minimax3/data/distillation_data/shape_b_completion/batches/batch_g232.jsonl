@@ -1,0 +1,15 @@
+{"text": "# last_or_none :: [1, 2, 3]\ndef last_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(last_or_none([1, 2, 3]))\n"}
+{"text": "# last_or_none :: []\ndef last_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(last_or_none([]))\n"}
+{"text": "# last_or_none :: ['a']\ndef last_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(last_or_none(['a']))\n"}
+{"text": "# last_or_none :: [None]\ndef last_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(last_or_none([None]))\n"}
+{"text": "# last_or_none :: [1]\ndef last_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(last_or_none([1]))\n"}
+{"text": "# tail_or_none :: [1, 2, 3]\ndef tail_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(tail_or_none([1, 2, 3]))\n"}
+{"text": "# tail_or_none :: []\ndef tail_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(tail_or_none([]))\n"}
+{"text": "# tail_or_none :: ['a']\ndef tail_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(tail_or_none(['a']))\n"}
+{"text": "# tail_or_none :: [None]\ndef tail_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(tail_or_none([None]))\n"}
+{"text": "# tail_or_none :: [1]\ndef tail_or_none(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(tail_or_none([1]))\n"}
+{"text": "# safe_last :: [1, 2, 3]\ndef safe_last(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(safe_last([1, 2, 3]))\n"}
+{"text": "# safe_last :: []\ndef safe_last(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(safe_last([]))\n"}
+{"text": "# safe_last :: ['a']\ndef safe_last(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(safe_last(['a']))\n"}
+{"text": "# safe_last :: [None]\ndef safe_last(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(safe_last([None]))\n"}
+{"text": "# safe_last :: [1]\ndef safe_last(xs):\n    return xs[-1] if xs else None\n\nif __name__ == '__main__':\n    print(safe_last([1]))\n"}

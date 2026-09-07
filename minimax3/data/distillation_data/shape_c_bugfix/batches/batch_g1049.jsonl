@@ -1,0 +1,1 @@
+{"instruction": "Show the json.dumps call without error handling in `json_dumps_safe`. (input: {'a': 1})", "response": "import json\ndef json_dumps_safe(d):\n    return json.dumps(d)\n\n# Bug was: non-JSON-serializable values (sets, custom objects) raise TypeError\n\n# pair: json_dumps_safe / {'a': 1}\n"}

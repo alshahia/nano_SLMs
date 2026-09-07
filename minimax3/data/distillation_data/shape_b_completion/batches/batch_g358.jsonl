@@ -1,0 +1,15 @@
+{"text": "# qx_first_n :: ([1, 2, 3, 4, 5], 3)\ndef qx_first_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_first_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# qx_first_n :: ([1, 2], 5)\ndef qx_first_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_first_n(([1, 2], 5)))\n"}
+{"text": "# qx_first_n :: ([], 3)\ndef qx_first_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_first_n(([], 3)))\n"}
+{"text": "# qx_first_n :: ([1], 1)\ndef qx_first_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_first_n(([1], 1)))\n"}
+{"text": "# qx_first_n :: (['a', 'b', 'c'], 2)\ndef qx_first_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_first_n((['a', 'b', 'c'], 2)))\n"}
+{"text": "# qx_qx_take_n :: ([1, 2, 3, 4, 5], 3)\ndef qx_qx_take_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_take_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# qx_qx_take_n :: ([1, 2], 5)\ndef qx_qx_take_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_take_n(([1, 2], 5)))\n"}
+{"text": "# qx_qx_take_n :: ([], 3)\ndef qx_qx_take_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_take_n(([], 3)))\n"}
+{"text": "# qx_qx_take_n :: ([1], 1)\ndef qx_qx_take_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_take_n(([1], 1)))\n"}
+{"text": "# qx_qx_take_n :: (['a', 'b', 'c'], 2)\ndef qx_qx_take_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_take_n((['a', 'b', 'c'], 2)))\n"}
+{"text": "# qx_qx_head_n :: ([1, 2, 3, 4, 5], 3)\ndef qx_qx_head_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_head_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# qx_qx_head_n :: ([1, 2], 5)\ndef qx_qx_head_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_head_n(([1, 2], 5)))\n"}
+{"text": "# qx_qx_head_n :: ([], 3)\ndef qx_qx_head_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_head_n(([], 3)))\n"}
+{"text": "# qx_qx_head_n :: ([1], 1)\ndef qx_qx_head_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_head_n(([1], 1)))\n"}
+{"text": "# qx_qx_head_n :: (['a', 'b', 'c'], 2)\ndef qx_qx_head_n(xs, n):\n    return list(xs)[:max(0, n)]\n\nif __name__ == '__main__':\n    print(qx_qx_head_n((['a', 'b', 'c'], 2)))\n"}

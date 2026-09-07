@@ -1,0 +1,1 @@
+{"instruction": "Show the infinite-while gotcha in `inf_while`. (input: 0)", "response": "def inf_while():\n    while True:\n        pass\n    return 1\n\n# Bug was: `while True` with no break is infinite; use a counter or condition\n\n# pair: inf_while / 0\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show Self type misuse in `self`. (input: '')", "response": "from typing import Self\nclass self:\n    def copy(self) -> Self:\n        return type(self)()\n\n# Bug was: returning `Self` (Py3.11+) — older code needs TypeVar('T', bound='self')\n\n# pair: self / ''\n"}

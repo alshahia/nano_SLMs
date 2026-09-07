@@ -1,0 +1,1 @@
+{"instruction": "Show the missing braces in the f-string of `compose_msg`. (input: 'alice')", "response": "def compose_msg(name):\n    return f'hello name'\n\n# Bug was: f-strings need `{{name}}` to interpolate `name`; otherwise it's literal text\n\n# pair: compose_msg / 'alice'\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx_parity :: 0\ndef qx_parity(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_parity(0))\n"}
+{"text": "# qx_parity :: 1\ndef qx_parity(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_parity(1))\n"}
+{"text": "# qx_parity :: 2\ndef qx_parity(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_parity(2))\n"}
+{"text": "# qx_parity :: 3\ndef qx_parity(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_parity(3))\n"}
+{"text": "# qx_parity :: -4\ndef qx_parity(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_parity(-4))\n"}
+{"text": "# qx_qx_is_even_qx :: 0\ndef qx_qx_is_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_is_even_qx(0))\n"}
+{"text": "# qx_qx_is_even_qx :: 1\ndef qx_qx_is_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_is_even_qx(1))\n"}
+{"text": "# qx_qx_is_even_qx :: 2\ndef qx_qx_is_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_is_even_qx(2))\n"}
+{"text": "# qx_qx_is_even_qx :: 3\ndef qx_qx_is_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_is_even_qx(3))\n"}
+{"text": "# qx_qx_is_even_qx :: -4\ndef qx_qx_is_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_is_even_qx(-4))\n"}
+{"text": "# qx_qx_check_even_qx :: 0\ndef qx_qx_check_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_check_even_qx(0))\n"}
+{"text": "# qx_qx_check_even_qx :: 1\ndef qx_qx_check_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_check_even_qx(1))\n"}
+{"text": "# qx_qx_check_even_qx :: 2\ndef qx_qx_check_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_check_even_qx(2))\n"}
+{"text": "# qx_qx_check_even_qx :: 3\ndef qx_qx_check_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_check_even_qx(3))\n"}
+{"text": "# qx_qx_check_even_qx :: -4\ndef qx_qx_check_even_qx(n):\n    return n % 2 == 0\n\nif __name__ == '__main__':\n    print(qx_qx_check_even_qx(-4))\n"}

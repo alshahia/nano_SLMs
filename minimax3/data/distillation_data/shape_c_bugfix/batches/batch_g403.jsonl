@@ -1,0 +1,1 @@
+{"instruction": "Show __new__/__init__ mismatch in `alt`. (input: '')", "response": "class alt:\n    def __new__(cls, x, y):\n        return super().__new__(cls)\n    def __init__(self, x, y):\n        self.x = x\n\n# Bug was: __new__ gets called twice with mismatched args — only customize __new__ if you really need to\n\n# pair: alt / ''\n"}

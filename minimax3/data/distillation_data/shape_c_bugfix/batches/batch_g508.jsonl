@@ -1,0 +1,1 @@
+{"instruction": "Show sys.argv no check in `argv`. (input: '')", "response": "import sys\ndef argv():\n    return sys.argv[1]\n\n# Bug was: argv[1] may not exist — guard with `if len(sys.argv) > 1`\n\n# pair: argv / ''\n"}

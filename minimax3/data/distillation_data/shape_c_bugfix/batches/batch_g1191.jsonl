@@ -1,0 +1,2 @@
+{"instruction": "Show the heapq.heappushpop in `heapq_pp`. (input: [1, 2, 3])", "response": "import heapq\n\ndef heapq_pp(xs, x):\n    heapq.heapify(xs)\n    return heapq.heappushpop(xs, x)\n\n# Bug was: `heappushpop` is more efficient than separate push/pop\n\n# pair: heapq_pp / [1, 2, 3]\n"}
+{"instruction": "Show the heapq.heappushpop in `heapq_pp`. (input: 4)", "response": "import heapq\n\ndef heapq_pp(xs, x):\n    heapq.heapify(xs)\n    return heapq.heappushpop(xs, x)\n\n# Bug was: `heappushpop` is more efficient than separate push/pop\n\n# pair: heapq_pp / 4\n"}

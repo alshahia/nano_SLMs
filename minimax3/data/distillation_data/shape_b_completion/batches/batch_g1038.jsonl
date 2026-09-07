@@ -1,0 +1,15 @@
+{"text": "# qx2_bit_count :: 0\ndef qx2_bit_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_bit_count(0))\n"}
+{"text": "# qx2_bit_count :: 1\ndef qx2_bit_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_bit_count(1))\n"}
+{"text": "# qx2_bit_count :: 7\ndef qx2_bit_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_bit_count(7))\n"}
+{"text": "# qx2_bit_count :: 255\ndef qx2_bit_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_bit_count(255))\n"}
+{"text": "# qx2_bit_count :: 1024\ndef qx2_bit_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_bit_count(1024))\n"}
+{"text": "# qx2_popcount :: 0\ndef qx2_popcount(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_popcount(0))\n"}
+{"text": "# qx2_popcount :: 1\ndef qx2_popcount(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_popcount(1))\n"}
+{"text": "# qx2_popcount :: 7\ndef qx2_popcount(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_popcount(7))\n"}
+{"text": "# qx2_popcount :: 255\ndef qx2_popcount(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_popcount(255))\n"}
+{"text": "# qx2_popcount :: 1024\ndef qx2_popcount(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_popcount(1024))\n"}
+{"text": "# qx2_ones_count :: 0\ndef qx2_ones_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_ones_count(0))\n"}
+{"text": "# qx2_ones_count :: 1\ndef qx2_ones_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_ones_count(1))\n"}
+{"text": "# qx2_ones_count :: 7\ndef qx2_ones_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_ones_count(7))\n"}
+{"text": "# qx2_ones_count :: 255\ndef qx2_ones_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_ones_count(255))\n"}
+{"text": "# qx2_ones_count :: 1024\ndef qx2_ones_count(n):\n    return bin(n).count('1')\n\nif __name__ == '__main__':\n    print(qx2_ones_count(1024))\n"}

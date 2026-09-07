@@ -1,0 +1,1 @@
+{"instruction": "Show Generic without TypeVar in `gen`. (input: '')", "response": "from typing import Generic\nclass gen(Generic):\n    def get(self):\n        return self._x\n\n# Bug was: Generic without TypeVar — Python raises TypeError at class creation\n\n# pair: gen / ''\n"}

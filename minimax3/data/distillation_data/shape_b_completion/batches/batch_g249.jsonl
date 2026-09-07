@@ -1,0 +1,15 @@
+{"text": "# int_to_hex :: (0,)\ndef int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(int_to_hex((0,)))\n"}
+{"text": "# int_to_hex :: (255,)\ndef int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(int_to_hex((255,)))\n"}
+{"text": "# int_to_hex :: (16,)\ndef int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(int_to_hex((16,)))\n"}
+{"text": "# int_to_hex :: (4096,)\ndef int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(int_to_hex((4096,)))\n"}
+{"text": "# int_to_hex :: (65535,)\ndef int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(int_to_hex((65535,)))\n"}
+{"text": "# format_hex :: (0,)\ndef format_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(format_hex((0,)))\n"}
+{"text": "# format_hex :: (255,)\ndef format_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(format_hex((255,)))\n"}
+{"text": "# format_hex :: (16,)\ndef format_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(format_hex((16,)))\n"}
+{"text": "# format_hex :: (4096,)\ndef format_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(format_hex((4096,)))\n"}
+{"text": "# format_hex :: (65535,)\ndef format_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(format_hex((65535,)))\n"}
+{"text": "# to_hex :: (0,)\ndef to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(to_hex((0,)))\n"}
+{"text": "# to_hex :: (255,)\ndef to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(to_hex((255,)))\n"}
+{"text": "# to_hex :: (16,)\ndef to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(to_hex((16,)))\n"}
+{"text": "# to_hex :: (4096,)\ndef to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(to_hex((4096,)))\n"}
+{"text": "# to_hex :: (65535,)\ndef to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(to_hex((65535,)))\n"}

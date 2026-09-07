@@ -1,0 +1,1 @@
+{"instruction": "Show silent exception swallow in `parse_int`. Input: `'42'`. (input: '42')", "response": "def parse_int(s):\n    try:\n        return int(s)\n    except ValueError:\n        pass\n\n# Bug was: silent fall-through returns None — caller can't distinguish 'invalid' from 'valid 0'\n\n# pair: parse_int / '42'\n"}

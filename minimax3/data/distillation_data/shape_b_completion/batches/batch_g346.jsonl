@@ -1,0 +1,15 @@
+{"text": "# qx_clamp_float :: (0.5, 0.0, 1.0)\ndef qx_clamp_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_float((0.5, 0.0, 1.0)))\n"}
+{"text": "# qx_clamp_float :: (1.5, 0.0, 1.0)\ndef qx_clamp_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_float((1.5, 0.0, 1.0)))\n"}
+{"text": "# qx_clamp_float :: (-0.5, 0.0, 1.0)\ndef qx_clamp_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_float((-0.5, 0.0, 1.0)))\n"}
+{"text": "# qx_clamp_float :: (0.0, 0.0, 1.0)\ndef qx_clamp_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_float((0.0, 0.0, 1.0)))\n"}
+{"text": "# qx_clamp_float :: (1.0, 0.0, 1.0)\ndef qx_clamp_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_clamp_float((1.0, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_clip_float :: (0.5, 0.0, 1.0)\ndef qx_qx_clip_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_float((0.5, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_clip_float :: (1.5, 0.0, 1.0)\ndef qx_qx_clip_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_float((1.5, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_clip_float :: (-0.5, 0.0, 1.0)\ndef qx_qx_clip_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_float((-0.5, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_clip_float :: (0.0, 0.0, 1.0)\ndef qx_qx_clip_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_float((0.0, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_clip_float :: (1.0, 0.0, 1.0)\ndef qx_qx_clip_float(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_clip_float((1.0, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_float_clamp :: (0.5, 0.0, 1.0)\ndef qx_qx_float_clamp(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_float_clamp((0.5, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_float_clamp :: (1.5, 0.0, 1.0)\ndef qx_qx_float_clamp(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_float_clamp((1.5, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_float_clamp :: (-0.5, 0.0, 1.0)\ndef qx_qx_float_clamp(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_float_clamp((-0.5, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_float_clamp :: (0.0, 0.0, 1.0)\ndef qx_qx_float_clamp(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_float_clamp((0.0, 0.0, 1.0)))\n"}
+{"text": "# qx_qx_float_clamp :: (1.0, 0.0, 1.0)\ndef qx_qx_float_clamp(x, lo, hi):\n    return max(lo, min(hi, float(x)))\n\nif __name__ == '__main__':\n    print(qx_qx_float_clamp((1.0, 0.0, 1.0)))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show cPickle in `pk`. (input: '')", "response": "import cPickle\ndef pk(obj):\n    return cPickle.dumps(obj)\n\n# Bug was: cPickle merged into pickle in Py3 — cPickle is gone\n\n# pair: pk / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show itertools.permutations in `it_perms`. (input: [1, 2, 3])", "response": "from itertools import permutations\n\ndef it_perms(xs):\n    return list(permutations(xs))\n\n# Bug was: `permutations(xs)` gives all orderings of len(xs)\n\n# pair: it_perms / [1, 2, 3]\n"}

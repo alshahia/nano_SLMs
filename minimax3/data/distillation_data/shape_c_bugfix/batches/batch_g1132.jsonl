@@ -1,0 +1,1 @@
+{"instruction": "Show the `from module import *` pattern in `import_star`. (input: from math import *)", "response": "from math import *\n\ndef import_star():\n    return sqrt(16)\n\n# Bug was: `import *` pollutes namespace; explicit imports are preferred\n\n# pair: import_star / from math import *\n"}

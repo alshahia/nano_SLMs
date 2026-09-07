@@ -1,0 +1,1 @@
+{"instruction": "Show the `__getitem__` method in `class_getitem`. (input: [1, 2, 3])", "response": "class C:\n    def __init__(self, xs):\n        self.xs = xs\n    def __getitem__(self, i):\n        return self.xs[i]\n\n# Bug was: `__getitem__` enables indexing and iteration\n\n# pair: class_getitem / [1, 2, 3]\n"}

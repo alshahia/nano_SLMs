@@ -1,0 +1,1 @@
+{"instruction": "Show nested asyncio.run in `reentry`. (input: '')", "response": "import asyncio\nasync def main():\n    await asyncio.sleep(1)\nasyncio.run(asyncio.run(main()))\n\n# Bug was: asyncio.run creates a new loop — nested call raises RuntimeError\n\n# pair: reentry / ''\n"}

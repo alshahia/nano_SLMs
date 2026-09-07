@@ -1,0 +1,1 @@
+{"instruction": "Show functools.partial in `fn_partial`. (input: 5)", "response": "from functools import partial\n\ndef fn_partial(x):\n    return partial(pow, 2)(x)\n\n# Bug was: `partial` binds args left-to-right; `partial(pow, 2)` makes `pow(2, x)`\n\n# pair: fn_partial / 5\n"}

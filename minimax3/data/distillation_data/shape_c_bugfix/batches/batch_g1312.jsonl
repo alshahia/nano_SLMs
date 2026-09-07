@@ -1,0 +1,1 @@
+{"instruction": "Show `urlencode` in `urlencode`. (input: {'q': 'hello world'})", "response": "from urllib.parse import urlencode\n\ndef urlencode(params):\n    return urlencode(params)\n\n# Bug was: `urlencode` builds query strings with proper escaping\n\n# pair: urlencode / {'q': 'hello world'}\n"}

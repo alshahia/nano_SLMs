@@ -1,0 +1,1 @@
+{"instruction": "Show why yaml.load is unsafe in `load_yaml`. (input: 'config.yml')", "response": "import yaml\ndef load_yaml(path):\n    with open(path) as f:\n        return yaml.load(f)\n\n# Bug was: yaml.load uses unsafe loader by default — use yaml.safe_load instead\n\n# pair: load_yaml / 'config.yml'\n"}

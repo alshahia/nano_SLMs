@@ -1,0 +1,3 @@
+{"text": "# digit_sum :: (123,)\ndef digit_sum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(digit_sum((123,)))\n"}
+{"text": "# digit_sum :: (9999,)\ndef digit_sum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(digit_sum((9999,)))\n"}
+{"text": "# digit_sum :: (0,)\ndef digit_sum(n):\n    return sum(int(d) for d in str(abs(n)))\n\nif __name__ == '__main__':\n    print(digit_sum((0,)))\n"}

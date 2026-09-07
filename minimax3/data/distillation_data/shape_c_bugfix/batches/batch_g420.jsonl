@@ -1,0 +1,1 @@
+{"instruction": "Show shadowing class attr in `shadow`. (input: '')", "response": "class shadow:\n    x = 1\n    def __init__(self):\n        self.x = 2\n\n# Bug was: instance attr shadows class attr — `cls.x` is 1 but `instance.x` is 2\n\n# pair: shadow / ''\n"}

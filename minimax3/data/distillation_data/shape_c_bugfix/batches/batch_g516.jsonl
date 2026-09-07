@@ -1,0 +1,1 @@
+{"instruction": "Show ast.unparse version in `au`. Input: `'x = 1'`. (input: 'x = 1')", "response": "import ast\ndef au(src):\n    tree = ast.parse(src)\n    return ast.unparse(tree)\n\n# Bug was: ast.unparse is Py3.9+ — earlier versions raise AttributeError\n\n# pair: au / 'x = 1'\n"}

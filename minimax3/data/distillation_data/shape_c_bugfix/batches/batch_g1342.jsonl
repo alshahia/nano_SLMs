@@ -1,0 +1,1 @@
+{"instruction": "Show `bool(int)` in `bool_int`. (input: 0)", "response": "def bool_int(x):\n    return bool(x)\n\n# Bug was: `bool(0)` is False; `bool(-1)` and `bool(1)` are True\n\n# pair: bool_int / 0\n"}

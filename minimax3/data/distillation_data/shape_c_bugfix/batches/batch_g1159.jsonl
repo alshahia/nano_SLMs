@@ -1,0 +1,1 @@
+{"instruction": "Show the generator-exhaustion bug in `gen_exhaust`. (input: [1, 2, 3])", "response": "def gen_exhaust(xs):\n    g = (x * x for x in xs)\n    return sum(g) + sum(g)\n\n# Bug was: generators are exhausted after one full pass; the second `sum(g)` returns 0\n\n# pair: gen_exhaust / [1, 2, 3]\n"}

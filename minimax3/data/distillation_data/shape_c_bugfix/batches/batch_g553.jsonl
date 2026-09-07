@@ -1,0 +1,1 @@
+{"instruction": "Show importlib.resources in `ir`. Input: `mypkg, 'data.txt'`. (input: mypkg, 'data.txt')", "response": "import importlib.resources\ndef ir(pkg, name):\n    return importlib.resources.read_text(pkg, name)\n\n# Bug was: Py3.9+ uses files() API; older uses path — version-dependent\n\n# pair: ir / mypkg, 'data.txt'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show future.result missing in `async_call`. (input: '')", "response": "from concurrent.futures import ThreadPoolExecutor\ndef async_call():\n    ex = ThreadPoolExecutor()\n    f = ex.submit(work)\n    return None\n\n# Bug was: future.result() never called — work may not have finished\n\n# pair: async_call / ''\n"}

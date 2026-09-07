@@ -1,0 +1,15 @@
+{"text": "# binary_to_int :: '0'\ndef binary_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(binary_to_int('0'))\n"}
+{"text": "# binary_to_int :: '1'\ndef binary_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(binary_to_int('1'))\n"}
+{"text": "# binary_to_int :: '101'\ndef binary_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(binary_to_int('101'))\n"}
+{"text": "# binary_to_int :: '1010'\ndef binary_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(binary_to_int('1010'))\n"}
+{"text": "# binary_to_int :: '11111111'\ndef binary_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(binary_to_int('11111111'))\n"}
+{"text": "# bin_to_int :: '0'\ndef bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(bin_to_int('0'))\n"}
+{"text": "# bin_to_int :: '1'\ndef bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(bin_to_int('1'))\n"}
+{"text": "# bin_to_int :: '101'\ndef bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(bin_to_int('101'))\n"}
+{"text": "# bin_to_int :: '1010'\ndef bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(bin_to_int('1010'))\n"}
+{"text": "# bin_to_int :: '11111111'\ndef bin_to_int(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(bin_to_int('11111111'))\n"}
+{"text": "# parse_binary :: '0'\ndef parse_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(parse_binary('0'))\n"}
+{"text": "# parse_binary :: '1'\ndef parse_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(parse_binary('1'))\n"}
+{"text": "# parse_binary :: '101'\ndef parse_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(parse_binary('101'))\n"}
+{"text": "# parse_binary :: '1010'\ndef parse_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(parse_binary('1010'))\n"}
+{"text": "# parse_binary :: '11111111'\ndef parse_binary(s):\n    return int(s, 2)\n\nif __name__ == '__main__':\n    print(parse_binary('11111111'))\n"}

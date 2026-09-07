@@ -1,0 +1,1 @@
+{"instruction": "Show the shared class attribute in `class_attr_mut`. (input: [1, 2, 3])", "response": "class C:\n    items = []\n\ndef class_attr_mut(item):\n    C.items.append(item)\n    return C.items\n\n# Bug was: class-attribute lists are shared across all instances\n\n# pair: class_attr_mut / [1, 2, 3]\n"}

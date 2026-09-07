@@ -1,0 +1,1 @@
+{"instruction": "Show `is` vs `==` for strings in `compare_strs_alt`. Input: `'hello', 'hello'`. (input: 'hello', 'hello')", "response": "def compare_strs_alt(a, b):\n    return a is b\n\n# Bug was: `is` checks identity — string interning is implementation-defined\n\n# pair: compare_strs_alt / 'hello', 'hello'\n"}

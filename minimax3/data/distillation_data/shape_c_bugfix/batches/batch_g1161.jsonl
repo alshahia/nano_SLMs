@@ -1,0 +1,1 @@
+{"instruction": "Show the bare `yield None` in `yield_none`. (input: [1, 2, 3])", "response": "def yield_none(xs):\n    for x in xs:\n        yield\n\n# Bug was: bare `yield` yields None; use `yield x` to pass values\n\n# pair: yield_none / [1, 2, 3]\n"}

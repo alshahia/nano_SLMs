@@ -1,0 +1,1 @@
+{"instruction": "Show wrong pool for CPU in `ppci`. (input: '')", "response": "from concurrent.futures import ThreadPoolExecutor\ndef ppci(items):\n    with ThreadPoolExecutor() as ex:\n        return list(ex.map(cpu_heavy, items))\n\n# Bug was: ThreadPool for CPU work — GIL serializes; use ProcessPool\n\n# pair: ppci / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the itertools.cycle in `it_cycle`. (input: [1, 2, 3])", "response": "from itertools import cycle\n\ndef it_cycle(xs):\n    return cycle(xs)\n\n# Bug was: `cycle` repeats an iterable infinitely; use `islice` to bound\n\n# pair: it_cycle / [1, 2, 3]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show dis.dis in `di`. (input: '')", "response": "import dis\ndef di(fn):\n    dis.dis(fn)\n\n# Bug was: works on functions but not all callables — wrap in try\n\n# pair: di / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the double-negation idiom in `check_truthy`. (input: 'maybe')", "response": "def check_truthy(x):\n    if not not x:\n        return 'truthy'\n    return 'falsy'\n\n# Bug was: `not not x` is an idiomatic but redundant double-negation; readable forms use `bool(x)` or `if x:`\n\n# pair: check_truthy / 'maybe'\n"}

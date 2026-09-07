@@ -1,0 +1,1 @@
+{"instruction": "Show `json.loads` on pretty-printed input in `json_load_pretty`. (input: '{\\n  \"a\": 1\\n}')", "response": "import json\n\ndef json_load_pretty(s):\n    return json.loads(s)\n\n# Bug was: `loads` accepts any whitespace, including formatted JSON\n\n# pair: json_load_pretty / '{\\n  \"a\": 1\\n}'\n"}

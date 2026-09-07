@@ -1,0 +1,15 @@
+{"text": "# qx2_html_esc :: '<a>'\nimport html\n\ndef qx2_html_esc(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_esc('<a>'))\n"}
+{"text": "# qx2_html_esc :: 'a & b'\nimport html\n\ndef qx2_html_esc(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_esc('a & b'))\n"}
+{"text": "# qx2_html_esc :: '<'\nimport html\n\ndef qx2_html_esc(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_esc('<'))\n"}
+{"text": "# qx2_html_esc :: '\"quoted\"'\nimport html\n\ndef qx2_html_esc(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_esc('\"quoted\"'))\n"}
+{"text": "# qx2_html_esc :: 'no special'\nimport html\n\ndef qx2_html_esc(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_esc('no special'))\n"}
+{"text": "# qx2_html_escape :: '<a>'\nimport html\n\ndef qx2_html_escape(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_escape('<a>'))\n"}
+{"text": "# qx2_html_escape :: 'a & b'\nimport html\n\ndef qx2_html_escape(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_escape('a & b'))\n"}
+{"text": "# qx2_html_escape :: '<'\nimport html\n\ndef qx2_html_escape(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_escape('<'))\n"}
+{"text": "# qx2_html_escape :: '\"quoted\"'\nimport html\n\ndef qx2_html_escape(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_escape('\"quoted\"'))\n"}
+{"text": "# qx2_html_escape :: 'no special'\nimport html\n\ndef qx2_html_escape(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_html_escape('no special'))\n"}
+{"text": "# qx2_escape_html :: '<a>'\nimport html\n\ndef qx2_escape_html(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_escape_html('<a>'))\n"}
+{"text": "# qx2_escape_html :: 'a & b'\nimport html\n\ndef qx2_escape_html(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_escape_html('a & b'))\n"}
+{"text": "# qx2_escape_html :: '<'\nimport html\n\ndef qx2_escape_html(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_escape_html('<'))\n"}
+{"text": "# qx2_escape_html :: '\"quoted\"'\nimport html\n\ndef qx2_escape_html(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_escape_html('\"quoted\"'))\n"}
+{"text": "# qx2_escape_html :: 'no special'\nimport html\n\ndef qx2_escape_html(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(qx2_escape_html('no special'))\n"}

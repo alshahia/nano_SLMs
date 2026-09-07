@@ -1,0 +1,1 @@
+{"instruction": "Show shared class attr in `cls_state`. (input: '')", "response": "class cls_state:\n    cache = {}\n    def add(self, k, v):\n        self.cache[k] = v\n\n# Bug was: cache shared across all instances — fine if intentional, but mutating it affects everyone\n\n# pair: cls_state / ''\n"}

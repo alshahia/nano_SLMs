@@ -1,0 +1,1 @@
+{"instruction": "Show the built-in shadowing in `id_user`. (input: 42)", "response": "def id_user(x):\n    id = x + 1\n    return id\n\n# Bug was: `id` is the builtin for object identity; shadowing it prevents use of `id()` later\n\n# pair: id_user / 42\n"}

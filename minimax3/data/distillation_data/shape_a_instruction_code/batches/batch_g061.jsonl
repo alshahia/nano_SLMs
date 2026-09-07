@@ -1,0 +1,15 @@
+{"instruction": "Write a function `count_occurrences_v2(s, c)` counting occurrences of c in s. Example: `count_occurrences_v2(('hello world', 'o'))`.", "response": "def count_occurrences_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `count_occurrences_v2(s, c)` counting occurrences of c in s. Example: `count_occurrences_v2(('banana', 'a'))`.", "response": "def count_occurrences_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `count_occurrences_v2(s, c)` counting occurrences of c in s. Example: `count_occurrences_v2(('test', 'z'))`.", "response": "def count_occurrences_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `count_occurrences_v2(s, c)` counting occurrences of c in s. Example: `count_occurrences_v2(('aaa', 'a'))`.", "response": "def count_occurrences_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `count_occurrences_v2(s, c)` counting occurrences of c in s. Example: `count_occurrences_v2(('hello', 'l'))`.", "response": "def count_occurrences_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `tally_v2(s, c)` counting occurrences of c in s. Example: `tally_v2(('hello world', 'o'))`.", "response": "def tally_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `tally_v2(s, c)` counting occurrences of c in s. Example: `tally_v2(('banana', 'a'))`.", "response": "def tally_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `tally_v2(s, c)` counting occurrences of c in s. Example: `tally_v2(('test', 'z'))`.", "response": "def tally_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `tally_v2(s, c)` counting occurrences of c in s. Example: `tally_v2(('aaa', 'a'))`.", "response": "def tally_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `tally_v2(s, c)` counting occurrences of c in s. Example: `tally_v2(('hello', 'l'))`.", "response": "def tally_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `freq_v2(s, c)` counting occurrences of c in s. Example: `freq_v2(('hello world', 'o'))`.", "response": "def freq_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `freq_v2(s, c)` counting occurrences of c in s. Example: `freq_v2(('banana', 'a'))`.", "response": "def freq_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `freq_v2(s, c)` counting occurrences of c in s. Example: `freq_v2(('test', 'z'))`.", "response": "def freq_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `freq_v2(s, c)` counting occurrences of c in s. Example: `freq_v2(('aaa', 'a'))`.", "response": "def freq_v2(s, c):\n    return s.count(c)\n"}
+{"instruction": "Write a function `freq_v2(s, c)` counting occurrences of c in s. Example: `freq_v2(('hello', 'l'))`.", "response": "def freq_v2(s, c):\n    return s.count(c)\n"}

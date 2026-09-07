@@ -1,0 +1,1 @@
+{"instruction": "Show the whitespace-tolerant int parsing in `int_loose`. (input: '  42  ')", "response": "def int_loose(s):\n    return int(s)\n\n# Bug was: `int()` accepts surrounding whitespace; `float()` also\n\n# pair: int_loose / '  42  '\n"}

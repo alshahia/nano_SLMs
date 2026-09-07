@@ -1,0 +1,1 @@
+{"instruction": "Show the extended-slice assignment in `ext_slice`. (input: [0, 0, 0, 0, 0])", "response": "def ext_slice(xs):\n    xs[::2] = [1, 2, 3]\n    return xs\n\n# Bug was: extended slices (`[::2]`) work for assignment too\n\n# pair: ext_slice / [0, 0, 0, 0, 0]\n"}

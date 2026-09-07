@@ -1,0 +1,1 @@
+{"instruction": "Show the octal format spec in `format_spec_oct`. (input: 8)", "response": "def format_spec_oct(x):\n    return f'{x:#o}'\n\n# Bug was: `:#o` is octal with `0o` prefix; `:o` is octal without\n\n# pair: format_spec_oct / 8\n"}

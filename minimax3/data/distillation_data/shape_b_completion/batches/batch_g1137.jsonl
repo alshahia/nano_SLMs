@@ -1,0 +1,15 @@
+{"text": "# qx2_zip_pair :: ([1, 2, 3], ['a', 'b', 'c'])\ndef qx2_zip_pair(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip_pair(([1, 2, 3], ['a', 'b', 'c'])))\n"}
+{"text": "# qx2_zip_pair :: ([1, 2], ['a', 'b'])\ndef qx2_zip_pair(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip_pair(([1, 2], ['a', 'b'])))\n"}
+{"text": "# qx2_zip_pair :: ([], [1, 2])\ndef qx2_zip_pair(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip_pair(([], [1, 2])))\n"}
+{"text": "# qx2_zip_pair :: ([1], [])\ndef qx2_zip_pair(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip_pair(([1], [])))\n"}
+{"text": "# qx2_zip_pair :: ([1, 2, 3], ['a'])\ndef qx2_zip_pair(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip_pair(([1, 2, 3], ['a'])))\n"}
+{"text": "# qx2_pair_up :: ([1, 2, 3], ['a', 'b', 'c'])\ndef qx2_pair_up(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_pair_up(([1, 2, 3], ['a', 'b', 'c'])))\n"}
+{"text": "# qx2_pair_up :: ([1, 2], ['a', 'b'])\ndef qx2_pair_up(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_pair_up(([1, 2], ['a', 'b'])))\n"}
+{"text": "# qx2_pair_up :: ([], [1, 2])\ndef qx2_pair_up(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_pair_up(([], [1, 2])))\n"}
+{"text": "# qx2_pair_up :: ([1], [])\ndef qx2_pair_up(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_pair_up(([1], [])))\n"}
+{"text": "# qx2_pair_up :: ([1, 2, 3], ['a'])\ndef qx2_pair_up(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_pair_up(([1, 2, 3], ['a'])))\n"}
+{"text": "# qx2_zip2 :: ([1, 2, 3], ['a', 'b', 'c'])\ndef qx2_zip2(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip2(([1, 2, 3], ['a', 'b', 'c'])))\n"}
+{"text": "# qx2_zip2 :: ([1, 2], ['a', 'b'])\ndef qx2_zip2(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip2(([1, 2], ['a', 'b'])))\n"}
+{"text": "# qx2_zip2 :: ([], [1, 2])\ndef qx2_zip2(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip2(([], [1, 2])))\n"}
+{"text": "# qx2_zip2 :: ([1], [])\ndef qx2_zip2(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip2(([1], [])))\n"}
+{"text": "# qx2_zip2 :: ([1, 2, 3], ['a'])\ndef qx2_zip2(a, b):\n    return list(zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_zip2(([1, 2, 3], ['a'])))\n"}

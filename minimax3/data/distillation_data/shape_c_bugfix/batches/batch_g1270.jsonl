@@ -1,0 +1,1 @@
+{"instruction": "Show `str.encode` in `str_bytes`. (input: 'hello')", "response": "def str_bytes(s):\n    return s.encode('utf-8')\n\n# Bug was: `str.encode()` converts to bytes; `bytes.decode()` reverses\n\n# pair: str_bytes / 'hello'\n"}

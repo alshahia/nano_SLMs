@@ -1,0 +1,15 @@
+{"text": "# qx2_path_exists :: '.'\nimport os\n\ndef qx2_path_exists(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_path_exists('.'))\n"}
+{"text": "# qx2_path_exists :: '/tmp'\nimport os\n\ndef qx2_path_exists(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_path_exists('/tmp'))\n"}
+{"text": "# qx2_path_exists :: '/nonexistent_xyz'\nimport os\n\ndef qx2_path_exists(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_path_exists('/nonexistent_xyz'))\n"}
+{"text": "# qx2_path_exists :: '..'\nimport os\n\ndef qx2_path_exists(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_path_exists('..'))\n"}
+{"text": "# qx2_path_exists :: ''\nimport os\n\ndef qx2_path_exists(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_path_exists(''))\n"}
+{"text": "# qx2_exists_path :: '.'\nimport os\n\ndef qx2_exists_path(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_exists_path('.'))\n"}
+{"text": "# qx2_exists_path :: '/tmp'\nimport os\n\ndef qx2_exists_path(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_exists_path('/tmp'))\n"}
+{"text": "# qx2_exists_path :: '/nonexistent_xyz'\nimport os\n\ndef qx2_exists_path(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_exists_path('/nonexistent_xyz'))\n"}
+{"text": "# qx2_exists_path :: '..'\nimport os\n\ndef qx2_exists_path(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_exists_path('..'))\n"}
+{"text": "# qx2_exists_path :: ''\nimport os\n\ndef qx2_exists_path(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_exists_path(''))\n"}
+{"text": "# qx2_does_exist :: '.'\nimport os\n\ndef qx2_does_exist(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_does_exist('.'))\n"}
+{"text": "# qx2_does_exist :: '/tmp'\nimport os\n\ndef qx2_does_exist(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_does_exist('/tmp'))\n"}
+{"text": "# qx2_does_exist :: '/nonexistent_xyz'\nimport os\n\ndef qx2_does_exist(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_does_exist('/nonexistent_xyz'))\n"}
+{"text": "# qx2_does_exist :: '..'\nimport os\n\ndef qx2_does_exist(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_does_exist('..'))\n"}
+{"text": "# qx2_does_exist :: ''\nimport os\n\ndef qx2_does_exist(p):\n    return os.path.exists(p)\n\nif __name__ == '__main__':\n    print(qx2_does_exist(''))\n"}

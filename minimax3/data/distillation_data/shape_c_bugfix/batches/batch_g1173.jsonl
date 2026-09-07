@@ -1,0 +1,1 @@
+{"instruction": "Show the modern Callable import in `type_callable_new`. (input: 5)", "response": "from collections.abc import Callable\n\ndef type_callable_new(f: Callable[[int], int]) -> int:\n    return f(1)\n\n# Bug was: in 3.9+, `collections.abc.Callable` replaces `typing.Callable` for types\n\n# pair: type_callable_new / 5\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show partial in loop in `pl`. Input: `[1, 2, 3]`. (input: [1, 2, 3])", "response": "from functools import partial\ndef pl(items):\n    fns = [partial(pow, 2, x) for x in items]\n    return fns\n\n# Bug was: in a loop, partial captures the loop var; in Py3 the comprehension creates its own scope so safe\n\n# pair: pl / [1, 2, 3]\n"}

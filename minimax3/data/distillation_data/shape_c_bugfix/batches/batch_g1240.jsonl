@@ -1,0 +1,1 @@
+{"instruction": "Show `unicodedata.normalize` in `ud_norm`. (input: 'café')", "response": "import unicodedata\n\ndef ud_norm(s):\n    return unicodedata.normalize('NFC', s)\n\n# Bug was: `normalize('NFC', ...)` canonicalizes composed forms\n\n# pair: ud_norm / 'café'\n"}

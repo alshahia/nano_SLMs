@@ -1,0 +1,1 @@
+{"instruction": "Show the `start` argument to `sum` in `sum_start`. (input: [])", "response": "def sum_start(xs):\n    return sum(xs, 10)\n\n# Bug was: `start=10` shifts the initial value; useful for non-numeric sums\n\n# pair: sum_start / []\n"}

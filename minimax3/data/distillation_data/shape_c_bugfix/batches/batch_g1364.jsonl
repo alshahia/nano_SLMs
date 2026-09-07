@@ -1,0 +1,1 @@
+{"instruction": "Show the recursion limit setting in `recursion_limit`. (input: 10000)", "response": "import sys\n\ndef recursion_limit(n):\n    sys.setrecursionlimit(n)\n    return n\n\n# Bug was: `setrecursionlimit` raises the recursion limit; default is 1000\n\n# pair: recursion_limit / 10000\n"}

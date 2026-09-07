@@ -1,0 +1,1 @@
+{"instruction": "Show Py2 range methods in `ranged`. (input: 10)", "response": "def ranged(n):\n    return range(n)\n\ng = ranged(5)\ng.append(5)\n\n# Bug was: Py3 range is xrange — doesn't have .append()\n\n# pair: ranged / 10\n"}

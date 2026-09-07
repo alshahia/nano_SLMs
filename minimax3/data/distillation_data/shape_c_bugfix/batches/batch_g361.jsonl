@@ -1,0 +1,1 @@
+{"instruction": "Show float division when int wanted in `halve`. (input: 7)", "response": "def halve(n):\n    return n / 2\n\n# Bug was: `/` is true division — use `//` if you want integer halving\n\n# pair: halve / 7\n"}

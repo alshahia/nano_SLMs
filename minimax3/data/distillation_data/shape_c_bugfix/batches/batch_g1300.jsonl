@@ -1,0 +1,1 @@
+{"instruction": "Show `random.choices` in `rand_choices`. (input: [1, 2, 3])", "response": "import random\n\ndef rand_choices(xs):\n    return random.choices(xs, k=2)\n\n# Bug was: `random.choices(xs, k=n)` picks n with replacement\n\n# pair: rand_choices / [1, 2, 3]\n"}

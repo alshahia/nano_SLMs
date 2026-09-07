@@ -1,0 +1,1 @@
+{"instruction": "Show wait_for cancellation in `wait_for`. Input: `coro, 5`. (input: coro, 5)", "response": "import asyncio\nasync def wait_for(coro, t):\n    return await asyncio.wait_for(coro, t)\n\n# Bug was: cancelling the outer wait_for cancels the inner coro — wrap with asyncio.shield if needed\n\n# pair: wait_for / coro, 5\n"}

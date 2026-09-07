@@ -1,0 +1,15 @@
+{"text": "# qx2_copysign :: (1.0, -1.0)\nimport math\n\ndef qx2_copysign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copysign((1.0, -1.0)))\n"}
+{"text": "# qx2_copysign :: (1.0, 1.0)\nimport math\n\ndef qx2_copysign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copysign((1.0, 1.0)))\n"}
+{"text": "# qx2_copysign :: (-1.0, 1.0)\nimport math\n\ndef qx2_copysign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copysign((-1.0, 1.0)))\n"}
+{"text": "# qx2_copysign :: (5.0, -2.0)\nimport math\n\ndef qx2_copysign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copysign((5.0, -2.0)))\n"}
+{"text": "# qx2_copysign :: (0.0, 1.0)\nimport math\n\ndef qx2_copysign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copysign((0.0, 1.0)))\n"}
+{"text": "# qx2_copy_sign :: (1.0, -1.0)\nimport math\n\ndef qx2_copy_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copy_sign((1.0, -1.0)))\n"}
+{"text": "# qx2_copy_sign :: (1.0, 1.0)\nimport math\n\ndef qx2_copy_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copy_sign((1.0, 1.0)))\n"}
+{"text": "# qx2_copy_sign :: (-1.0, 1.0)\nimport math\n\ndef qx2_copy_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copy_sign((-1.0, 1.0)))\n"}
+{"text": "# qx2_copy_sign :: (5.0, -2.0)\nimport math\n\ndef qx2_copy_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copy_sign((5.0, -2.0)))\n"}
+{"text": "# qx2_copy_sign :: (0.0, 1.0)\nimport math\n\ndef qx2_copy_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_copy_sign((0.0, 1.0)))\n"}
+{"text": "# qx2_mag_sign :: (1.0, -1.0)\nimport math\n\ndef qx2_mag_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_mag_sign((1.0, -1.0)))\n"}
+{"text": "# qx2_mag_sign :: (1.0, 1.0)\nimport math\n\ndef qx2_mag_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_mag_sign((1.0, 1.0)))\n"}
+{"text": "# qx2_mag_sign :: (-1.0, 1.0)\nimport math\n\ndef qx2_mag_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_mag_sign((-1.0, 1.0)))\n"}
+{"text": "# qx2_mag_sign :: (5.0, -2.0)\nimport math\n\ndef qx2_mag_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_mag_sign((5.0, -2.0)))\n"}
+{"text": "# qx2_mag_sign :: (0.0, 1.0)\nimport math\n\ndef qx2_mag_sign(x, y):\n    return math.copysign(x, y)\n\nif __name__ == '__main__':\n    print(qx2_mag_sign((0.0, 1.0)))\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_cosh :: 0.0\nimport math\n\ndef qx2_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh(0.0))\n"}
+{"text": "# qx2_cosh :: 0.5\nimport math\n\ndef qx2_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh(0.5))\n"}
+{"text": "# qx2_cosh :: 1.0\nimport math\n\ndef qx2_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh(1.0))\n"}
+{"text": "# qx2_cosh :: 3.14159 / 2\nimport math\n\ndef qx2_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh(3.14159 / 2))\n"}
+{"text": "# qx2_cosh :: -1.0\nimport math\n\ndef qx2_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh(-1.0))\n"}
+{"text": "# qx2_cosh_run :: 0.0\nimport math\n\ndef qx2_cosh_run(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh_run(0.0))\n"}
+{"text": "# qx2_cosh_run :: 0.5\nimport math\n\ndef qx2_cosh_run(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh_run(0.5))\n"}
+{"text": "# qx2_cosh_run :: 1.0\nimport math\n\ndef qx2_cosh_run(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh_run(1.0))\n"}
+{"text": "# qx2_cosh_run :: 3.14159 / 2\nimport math\n\ndef qx2_cosh_run(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh_run(3.14159 / 2))\n"}
+{"text": "# qx2_cosh_run :: -1.0\nimport math\n\ndef qx2_cosh_run(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_cosh_run(-1.0))\n"}
+{"text": "# qx2_run_cosh :: 0.0\nimport math\n\ndef qx2_run_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cosh(0.0))\n"}
+{"text": "# qx2_run_cosh :: 0.5\nimport math\n\ndef qx2_run_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cosh(0.5))\n"}
+{"text": "# qx2_run_cosh :: 1.0\nimport math\n\ndef qx2_run_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cosh(1.0))\n"}
+{"text": "# qx2_run_cosh :: 3.14159 / 2\nimport math\n\ndef qx2_run_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cosh(3.14159 / 2))\n"}
+{"text": "# qx2_run_cosh :: -1.0\nimport math\n\ndef qx2_run_cosh(x):\n    return math.cosh(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cosh(-1.0))\n"}

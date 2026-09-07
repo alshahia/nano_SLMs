@@ -1,0 +1,1 @@
+{"instruction": "Show the namedtuple return in `return_named`. (input: 1, 2)", "response": "from collections import namedtuple\n\nPoint = namedtuple('Point', ['x', 'y'])\n\ndef return_named(x, y):\n    return Point(x, y)\n\n# Bug was: namedtuples are tuples with field names\n\n# pair: return_named / 1, 2\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `sys.path` in `sys_path`. (input: )", "response": "import sys\n\ndef sys_path():\n    return sys.path\n\n# Bug was: `sys.path` is the module search path; modifying affects imports\n\n# pair: sys_path /\n"}

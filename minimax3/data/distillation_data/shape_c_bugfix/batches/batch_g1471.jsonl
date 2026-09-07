@@ -1,0 +1,2 @@
+{"instruction": "Show the keyword-only syntax in `kwonly`. (input: 1)", "response": "def kwonly(a, *, b):\n    return a + b\n\ndef caller():\n    return kwonly(1, b=2)\n\n# Bug was: `*` separates positional from keyword-only args\n\n# pair: kwonly / 1\n"}
+{"instruction": "Show the keyword-only syntax in `kwonly`. (input: 2)", "response": "def kwonly(a, *, b):\n    return a + b\n\ndef caller():\n    return kwonly(1, b=2)\n\n# Bug was: `*` separates positional from keyword-only args\n\n# pair: kwonly / 2\n"}

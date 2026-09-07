@@ -1,0 +1,1 @@
+{"instruction": "Show email policy in `em`. Input: `'hi'`. (input: 'hi')", "response": "from email.message import EmailMessage\ndef em(body):\n    m = EmailMessage()\n    m.set_content(body)\n    return m\n\n# Bug was: EmailMessage defaults to policy.compat32 — use policy.default for Py3.6+ behavior\n\n# pair: em / 'hi'\n"}

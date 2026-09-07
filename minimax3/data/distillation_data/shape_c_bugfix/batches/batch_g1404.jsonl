@@ -1,0 +1,1 @@
+{"instruction": "Show the read-only property in `prop_no_setter`. (input: 5)", "response": "class C:\n    def __init__(self):\n        self._x = 0\n    @property\n    def x(self):\n        return self._x\n\ndef prop_no_setter(c):\n    c.x = 5\n    return c.x\n\n# Bug was: `@property` without `@x.setter` makes the attribute read-only\n\n# pair: prop_no_setter / 5\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show pathlib glob vs rglob in `pg`. Input: `'src'`. (input: 'src')", "response": "from pathlib import Path\ndef pg(d):\n    return Path(d).glob('*.py')\n\n# Bug was: glob() is non-recursive — use rglob('**/*.py') for recursive\n\n# pair: pg / 'src'\n"}

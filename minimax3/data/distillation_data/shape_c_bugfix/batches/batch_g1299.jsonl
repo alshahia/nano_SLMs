@@ -1,0 +1,1 @@
+{"instruction": "Show `random.choice` in `rand_choice`. (input: [1, 2, 3])", "response": "import random\n\ndef rand_choice(xs):\n    return random.choice(xs)\n\n# Bug was: `random.choice` picks one element uniformly\n\n# pair: rand_choice / [1, 2, 3]\n"}

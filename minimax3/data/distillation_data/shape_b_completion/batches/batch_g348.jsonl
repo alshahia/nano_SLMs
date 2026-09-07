@@ -1,0 +1,15 @@
+{"text": "# qx_round_to :: (3.14159, 2)\ndef qx_round_to(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_round_to((3.14159, 2)))\n"}
+{"text": "# qx_round_to :: (3.5, 0)\ndef qx_round_to(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_round_to((3.5, 0)))\n"}
+{"text": "# qx_round_to :: (1.234567, 3)\ndef qx_round_to(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_round_to((1.234567, 3)))\n"}
+{"text": "# qx_round_to :: (-1.5, 0)\ndef qx_round_to(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_round_to((-1.5, 0)))\n"}
+{"text": "# qx_round_to :: (0.0, 5)\ndef qx_round_to(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_round_to((0.0, 5)))\n"}
+{"text": "# qx_qx_round_to_n :: (3.14159, 2)\ndef qx_qx_round_to_n(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_to_n((3.14159, 2)))\n"}
+{"text": "# qx_qx_round_to_n :: (3.5, 0)\ndef qx_qx_round_to_n(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_to_n((3.5, 0)))\n"}
+{"text": "# qx_qx_round_to_n :: (1.234567, 3)\ndef qx_qx_round_to_n(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_to_n((1.234567, 3)))\n"}
+{"text": "# qx_qx_round_to_n :: (-1.5, 0)\ndef qx_qx_round_to_n(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_to_n((-1.5, 0)))\n"}
+{"text": "# qx_qx_round_to_n :: (0.0, 5)\ndef qx_qx_round_to_n(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_to_n((0.0, 5)))\n"}
+{"text": "# qx_qx_round_n_decimals :: (3.14159, 2)\ndef qx_qx_round_n_decimals(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_n_decimals((3.14159, 2)))\n"}
+{"text": "# qx_qx_round_n_decimals :: (3.5, 0)\ndef qx_qx_round_n_decimals(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_n_decimals((3.5, 0)))\n"}
+{"text": "# qx_qx_round_n_decimals :: (1.234567, 3)\ndef qx_qx_round_n_decimals(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_n_decimals((1.234567, 3)))\n"}
+{"text": "# qx_qx_round_n_decimals :: (-1.5, 0)\ndef qx_qx_round_n_decimals(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_n_decimals((-1.5, 0)))\n"}
+{"text": "# qx_qx_round_n_decimals :: (0.0, 5)\ndef qx_qx_round_n_decimals(x, n):\n    return round(x, n)\n\nif __name__ == '__main__':\n    print(qx_qx_round_n_decimals((0.0, 5)))\n"}

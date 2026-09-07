@@ -1,0 +1,1 @@
+{"instruction": "Show `asyncio.create_task` in `asyncio_create`. (input: 1)", "response": "import asyncio\n\nasync def asyncio_create():\n    task = asyncio.create_task(coro())\n    return await task\n\n# Bug was: `create_task` schedules a coroutine to run concurrently\n\n# pair: asyncio_create / 1\n"}

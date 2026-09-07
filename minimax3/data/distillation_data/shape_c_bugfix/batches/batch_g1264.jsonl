@@ -1,0 +1,2 @@
+{"instruction": "Show the float-precision issue in `float_prec`. (input: 0.1)", "response": "def float_prec(a, b):\n    return a + b == 0.3\n\n# Bug was: `0.1 + 0.2 == 0.3` is False due to IEEE 754 float representation\n\n# pair: float_prec / 0.1\n"}
+{"instruction": "Show the float-precision issue in `float_prec`. (input: 0.2)", "response": "def float_prec(a, b):\n    return a + b == 0.3\n\n# Bug was: `0.1 + 0.2 == 0.3` is False due to IEEE 754 float representation\n\n# pair: float_prec / 0.2\n"}

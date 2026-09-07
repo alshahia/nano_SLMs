@@ -1,0 +1,1 @@
+{"instruction": "Show `sys.stderr` in `sys_stderr`. (input: 'error')", "response": "import sys\n\ndef sys_stderr(msg):\n    print(msg, file=sys.stderr)\n\n# Bug was: `sys.stderr` is the standard error stream; separate from stdout\n\n# pair: sys_stderr / 'error'\n"}

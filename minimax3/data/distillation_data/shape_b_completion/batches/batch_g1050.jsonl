@@ -1,0 +1,15 @@
+{"text": "# qx2_is_palindrome_n :: 121\ndef qx2_is_palindrome_n(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_is_palindrome_n(121))\n"}
+{"text": "# qx2_is_palindrome_n :: 123\ndef qx2_is_palindrome_n(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_is_palindrome_n(123))\n"}
+{"text": "# qx2_is_palindrome_n :: 0\ndef qx2_is_palindrome_n(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_is_palindrome_n(0))\n"}
+{"text": "# qx2_is_palindrome_n :: 1\ndef qx2_is_palindrome_n(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_is_palindrome_n(1))\n"}
+{"text": "# qx2_is_palindrome_n :: 12321\ndef qx2_is_palindrome_n(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_is_palindrome_n(12321))\n"}
+{"text": "# qx2_int_pal :: 121\ndef qx2_int_pal(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_int_pal(121))\n"}
+{"text": "# qx2_int_pal :: 123\ndef qx2_int_pal(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_int_pal(123))\n"}
+{"text": "# qx2_int_pal :: 0\ndef qx2_int_pal(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_int_pal(0))\n"}
+{"text": "# qx2_int_pal :: 1\ndef qx2_int_pal(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_int_pal(1))\n"}
+{"text": "# qx2_int_pal :: 12321\ndef qx2_int_pal(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_int_pal(12321))\n"}
+{"text": "# qx2_pal_int :: 121\ndef qx2_pal_int(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_pal_int(121))\n"}
+{"text": "# qx2_pal_int :: 123\ndef qx2_pal_int(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_pal_int(123))\n"}
+{"text": "# qx2_pal_int :: 0\ndef qx2_pal_int(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_pal_int(0))\n"}
+{"text": "# qx2_pal_int :: 1\ndef qx2_pal_int(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_pal_int(1))\n"}
+{"text": "# qx2_pal_int :: 12321\ndef qx2_pal_int(n):\n    s = str(abs(n))\n    return s == s[::-1]\n\nif __name__ == '__main__':\n    print(qx2_pal_int(12321))\n"}

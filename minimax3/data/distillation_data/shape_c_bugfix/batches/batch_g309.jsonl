@@ -1,0 +1,1 @@
+{"instruction": "Show why csv needs `newline=''` in `save_csv`. (input: data, 'out.csv')", "response": "import csv\ndef save_csv(rows, path):\n    with open(path, 'w') as f:\n        w = csv.writer(f)\n        w.writerows(rows)\n\n# Bug was: csv module requires newline='' on Windows or you get blank lines between rows\n\n# pair: save_csv / data, 'out.csv'\n"}

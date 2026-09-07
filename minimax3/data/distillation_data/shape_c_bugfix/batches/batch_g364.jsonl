@@ -1,0 +1,1 @@
+{"instruction": "Show unhashable in set in `in_set`. (input: [1, 2, 3])", "response": "def in_set(x):\n    s = {[1, 2, 3]}\n    return x in s\n\n# Bug was: set elements must be hashable — list is unhashable; TypeError on construction\n\n# pair: in_set / [1, 2, 3]\n"}

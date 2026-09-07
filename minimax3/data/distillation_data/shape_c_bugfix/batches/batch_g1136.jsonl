@@ -1,0 +1,1 @@
+{"instruction": "Show the relative import pattern in `relative_import`. (input: import)", "response": "from . import sibling\n\ndef relative_import():\n    return sibling.helper()\n\n# Bug was: relative imports work only inside packages; absolute imports are clearer\n\n# pair: relative_import / import\n"}

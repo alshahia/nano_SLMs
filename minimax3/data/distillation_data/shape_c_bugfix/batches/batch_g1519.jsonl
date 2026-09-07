@@ -1,0 +1,2 @@
+{"instruction": "Show `os.rename` in `os_rename`. (input: 'old.txt')", "response": "import os\n\ndef os_rename(src, dst):\n    os.rename(src, dst)\n\n# Bug was: `os.rename` is atomic on POSIX; works cross-filesystem on POSIX\n\n# pair: os_rename / 'old.txt'\n"}
+{"instruction": "Show `os.rename` in `os_rename`. (input: 'new.txt')", "response": "import os\n\ndef os_rename(src, dst):\n    os.rename(src, dst)\n\n# Bug was: `os.rename` is atomic on POSIX; works cross-filesystem on POSIX\n\n# pair: os_rename / 'new.txt'\n"}

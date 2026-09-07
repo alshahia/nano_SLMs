@@ -1,0 +1,1 @@
+{"instruction": "Show heapq no heapify in `hnh`. Input: `[3, 1, 4, 1, 5]`. (input: [3, 1, 4, 1, 5])", "response": "import heapq\ndef hnh(xs):\n    return heapq.heappop(xs)\n\n# Bug was: xs is not a heap — heappop returns min element but the heap property is broken\n\n# pair: hnh / [3, 1, 4, 1, 5]\n"}

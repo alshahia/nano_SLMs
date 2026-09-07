@@ -1,0 +1,1 @@
+{"instruction": "Show naive datetime in `now`. (input: '')", "response": "from datetime import datetime\ndef now():\n    return datetime.now()\n\n# Bug was: naive datetime — comparison with tz-aware dt raises TypeError\n\n# pair: now / ''\n"}

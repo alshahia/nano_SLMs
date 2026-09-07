@@ -1,0 +1,1 @@
+{"instruction": "Show match statement (Py<3.10) in `matcher`. Input: `2`. (input: 2)", "response": "def matcher(x):\n    match x:\n        case 1: return 'one'\n        case 2: return 'two'\n\n# Bug was: structural pattern matching is Py3.10+ — earlier versions get SyntaxError\n\n# pair: matcher / 2\n"}

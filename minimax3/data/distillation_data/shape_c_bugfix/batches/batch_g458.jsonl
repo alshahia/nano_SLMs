@@ -1,0 +1,1 @@
+{"instruction": "Show property infinite recursion in `prop_rec`. (input: '')", "response": "class prop_rec:\n    @property\n    def x(self):\n        return self.x\n\n# Bug was: getter returns self.x — infinite recursion\n\n# pair: prop_rec / ''\n"}

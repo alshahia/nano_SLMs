@@ -1,0 +1,1 @@
+{"instruction": "Show textwrap.fill width in `tw`. Input: `'hello world', 5`. (input: 'hello world', 5)", "response": "import textwrap\ndef tw(s, w):\n    return textwrap.fill(s, w)\n\n# Bug was: width < shortest word length silently degrades — check or use break_long_words=False\n\n# pair: tw / 'hello world', 5\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the pure-function pattern in `pure_func`. (input: 5)", "response": "def pure_func(x):\n    return x + 1\n\n# Bug was: this is a pure function; same input always gives same output, no I/O\n\n# pair: pure_func / 5\n"}

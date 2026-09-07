@@ -1,0 +1,1 @@
+{"instruction": "Show reduce without import in `r`. Input: `[1, 2, 3, 4]`. (input: [1, 2, 3, 4])", "response": "def r(xs):\n    return reduce(lambda a, b: a + b, xs)\n\n# Bug was: reduce moved to functools in Py3 — `from functools import reduce`\n\n# pair: r / [1, 2, 3, 4]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the missing base case in `rec_no_base`. (input: 5)", "response": "def rec_no_base(n):\n    return rec_no_base(n - 1) + 1 if n > 0 else 0\n\n# Bug was: missing base case for n == 0 leads to infinite recursion\n\n# pair: rec_no_base / 5\n"}

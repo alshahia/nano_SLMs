@@ -1,0 +1,1 @@
+{"instruction": "Show the `raise from` exception chaining in `raise_from`. (input: 'data')", "response": "def raise_from(s):\n    try:\n        int(s)\n    except ValueError as e:\n        raise TypeError('not a number') from e\n\n# Bug was: `raise ... from ...` chains exceptions; preserves context\n\n# pair: raise_from / 'data'\n"}

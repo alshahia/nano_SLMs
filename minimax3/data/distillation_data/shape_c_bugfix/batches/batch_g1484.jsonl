@@ -1,0 +1,1 @@
+{"instruction": "Show the nested function calls in `nested_call`. (input: )", "response": "def nested_call():\n    return max(abs(-5), abs(-3))\n\n# Bug was: nested calls evaluate innermost first\n\n# pair: nested_call /\n"}

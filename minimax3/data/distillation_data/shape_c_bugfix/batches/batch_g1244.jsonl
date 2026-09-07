@@ -1,0 +1,1 @@
+{"instruction": "Show `base64.b64decode` in `b64_dec`. (input: 'aGVsbG8=')", "response": "import base64\n\ndef b64_dec(s):\n    return base64.b64decode(s).decode()\n\n# Bug was: `b64decode` returns bytes; decode to str\n\n# pair: b64_dec / 'aGVsbG8='\n"}

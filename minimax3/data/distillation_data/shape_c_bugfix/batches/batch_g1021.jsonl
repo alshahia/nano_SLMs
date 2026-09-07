@@ -1,0 +1,1 @@
+{"instruction": "Show the zero-eq-False comparison in `zero_false`. (input: 0)", "response": "def zero_false(x):\n    return x == False\n\n# Bug was: `0 == False` is True but the intent was probably `x is False` or `x == 0`\n\n# pair: zero_false / 0\n"}

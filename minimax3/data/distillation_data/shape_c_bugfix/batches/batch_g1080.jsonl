@@ -1,0 +1,1 @@
+{"instruction": "Show the lambda conditional expression in `lambda_cond`. (input: 5)", "response": "def lambda_cond(x):\n    f = lambda x: 'big' if x > 10 else 'small'\n    return f(x)\n\n# Bug was: lambdas can contain conditional expressions\n\n# pair: lambda_cond / 5\n"}

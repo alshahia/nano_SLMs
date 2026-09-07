@@ -1,0 +1,1 @@
+{"instruction": "Show lock leak in `guard`. (input: '')", "response": "import threading\nlock = threading.Lock()\ndef guard():\n    lock.acquire()\n    do_work()\n    return\n\n# Bug was: if do_work raises, lock never released — use `with lock:`\n\n# pair: guard / ''\n"}

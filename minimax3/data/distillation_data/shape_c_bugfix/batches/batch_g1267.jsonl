@@ -1,0 +1,1 @@
+{"instruction": "Show modular `pow` in `pow_mod`. (input: (2, 10, 1000))", "response": "def pow_mod(b, e, m):\n    return pow(b, e, m)\n\n# Bug was: `pow(b, e, m)` does modular exponentiation; faster than `(b**e) % m`\n\n# pair: pow_mod / (2, 10, 1000)\n"}

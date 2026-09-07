@@ -1,0 +1,1 @@
+{"instruction": "Show the built-in shadowing in `str_repeater`. (input: 'hello')", "response": "def str_repeater(s, n):\n    str = s * n\n    return str\n\n# Bug was: `str` is a builtin; shadowing it breaks `str(123)` later in the same module\n\n# pair: str_repeater / 'hello'\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx_dice_n :: 3\nimport random\ndef qx_dice_n(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_dice_n(3))\n"}
+{"text": "# qx_dice_n :: 1\nimport random\ndef qx_dice_n(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_dice_n(1))\n"}
+{"text": "# qx_dice_n :: 5\nimport random\ndef qx_dice_n(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_dice_n(5))\n"}
+{"text": "# qx_dice_n :: 10\nimport random\ndef qx_dice_n(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_dice_n(10))\n"}
+{"text": "# qx_dice_n :: 2\nimport random\ndef qx_dice_n(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_dice_n(2))\n"}
+{"text": "# qx_roll_dice :: 3\nimport random\ndef qx_roll_dice(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_roll_dice(3))\n"}
+{"text": "# qx_roll_dice :: 1\nimport random\ndef qx_roll_dice(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_roll_dice(1))\n"}
+{"text": "# qx_roll_dice :: 5\nimport random\ndef qx_roll_dice(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_roll_dice(5))\n"}
+{"text": "# qx_roll_dice :: 10\nimport random\ndef qx_roll_dice(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_roll_dice(10))\n"}
+{"text": "# qx_roll_dice :: 2\nimport random\ndef qx_roll_dice(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_roll_dice(2))\n"}
+{"text": "# qx_n_d6 :: 3\nimport random\ndef qx_n_d6(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_n_d6(3))\n"}
+{"text": "# qx_n_d6 :: 1\nimport random\ndef qx_n_d6(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_n_d6(1))\n"}
+{"text": "# qx_n_d6 :: 5\nimport random\ndef qx_n_d6(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_n_d6(5))\n"}
+{"text": "# qx_n_d6 :: 10\nimport random\ndef qx_n_d6(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_n_d6(10))\n"}
+{"text": "# qx_n_d6 :: 2\nimport random\ndef qx_n_d6(n):\n    return [random.randint(1, 6) for _ in range(n)]\n\nif __name__ == '__main__':\n    print(qx_n_d6(2))\n"}

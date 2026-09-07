@@ -1,0 +1,15 @@
+{"text": "# qx_now_ts :: '_'\nimport time\ndef qx_now_ts():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_now_ts('_'))\n"}
+{"text": "# qx_now_ts :: '*'\nimport time\ndef qx_now_ts():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_now_ts('*'))\n"}
+{"text": "# qx_now_ts :: '#'\nimport time\ndef qx_now_ts():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_now_ts('#'))\n"}
+{"text": "# qx_now_ts :: '?'\nimport time\ndef qx_now_ts():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_now_ts('?'))\n"}
+{"text": "# qx_now_ts :: '!'\nimport time\ndef qx_now_ts():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_now_ts('!'))\n"}
+{"text": "# qx_qx_timestamp_qx :: '_'\nimport time\ndef qx_qx_timestamp_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_timestamp_qx('_'))\n"}
+{"text": "# qx_qx_timestamp_qx :: '*'\nimport time\ndef qx_qx_timestamp_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_timestamp_qx('*'))\n"}
+{"text": "# qx_qx_timestamp_qx :: '#'\nimport time\ndef qx_qx_timestamp_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_timestamp_qx('#'))\n"}
+{"text": "# qx_qx_timestamp_qx :: '?'\nimport time\ndef qx_qx_timestamp_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_timestamp_qx('?'))\n"}
+{"text": "# qx_qx_timestamp_qx :: '!'\nimport time\ndef qx_qx_timestamp_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_timestamp_qx('!'))\n"}
+{"text": "# qx_qx_epoch_qx :: '_'\nimport time\ndef qx_qx_epoch_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_epoch_qx('_'))\n"}
+{"text": "# qx_qx_epoch_qx :: '*'\nimport time\ndef qx_qx_epoch_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_epoch_qx('*'))\n"}
+{"text": "# qx_qx_epoch_qx :: '#'\nimport time\ndef qx_qx_epoch_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_epoch_qx('#'))\n"}
+{"text": "# qx_qx_epoch_qx :: '?'\nimport time\ndef qx_qx_epoch_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_epoch_qx('?'))\n"}
+{"text": "# qx_qx_epoch_qx :: '!'\nimport time\ndef qx_qx_epoch_qx():\n    return int(time.time())\n\nif __name__ == '__main__':\n    print(qx_qx_epoch_qx('!'))\n"}

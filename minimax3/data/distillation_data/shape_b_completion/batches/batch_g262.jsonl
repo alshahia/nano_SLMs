@@ -1,0 +1,15 @@
+{"text": "# dict_get_or_default :: ({'a': 1}, 'a', 0)\ndef dict_get_or_default(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_get_or_default(({'a': 1}, 'a', 0)))\n"}
+{"text": "# dict_get_or_default :: ({'a': 1}, 'b', 0)\ndef dict_get_or_default(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_get_or_default(({'a': 1}, 'b', 0)))\n"}
+{"text": "# dict_get_or_default :: ({}, 'x', 99)\ndef dict_get_or_default(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_get_or_default(({}, 'x', 99)))\n"}
+{"text": "# dict_get_or_default :: ({'a': None}, 'a', 0)\ndef dict_get_or_default(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_get_or_default(({'a': None}, 'a', 0)))\n"}
+{"text": "# dict_get_or_default :: ({'a': 1}, 'a', None)\ndef dict_get_or_default(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_get_or_default(({'a': 1}, 'a', None)))\n"}
+{"text": "# fetch_or :: ({'a': 1}, 'a', 0)\ndef fetch_or(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(fetch_or(({'a': 1}, 'a', 0)))\n"}
+{"text": "# fetch_or :: ({'a': 1}, 'b', 0)\ndef fetch_or(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(fetch_or(({'a': 1}, 'b', 0)))\n"}
+{"text": "# fetch_or :: ({}, 'x', 99)\ndef fetch_or(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(fetch_or(({}, 'x', 99)))\n"}
+{"text": "# fetch_or :: ({'a': None}, 'a', 0)\ndef fetch_or(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(fetch_or(({'a': None}, 'a', 0)))\n"}
+{"text": "# fetch_or :: ({'a': 1}, 'a', None)\ndef fetch_or(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(fetch_or(({'a': 1}, 'a', None)))\n"}
+{"text": "# dict_safe_get :: ({'a': 1}, 'a', 0)\ndef dict_safe_get(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_safe_get(({'a': 1}, 'a', 0)))\n"}
+{"text": "# dict_safe_get :: ({'a': 1}, 'b', 0)\ndef dict_safe_get(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_safe_get(({'a': 1}, 'b', 0)))\n"}
+{"text": "# dict_safe_get :: ({}, 'x', 99)\ndef dict_safe_get(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_safe_get(({}, 'x', 99)))\n"}
+{"text": "# dict_safe_get :: ({'a': None}, 'a', 0)\ndef dict_safe_get(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_safe_get(({'a': None}, 'a', 0)))\n"}
+{"text": "# dict_safe_get :: ({'a': 1}, 'a', None)\ndef dict_safe_get(d, key, default=None):\n    return d.get(key, default)\n\nif __name__ == '__main__':\n    print(dict_safe_get(({'a': 1}, 'a', None)))\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_parity :: 0\ndef qx2_parity(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity(0))\n"}
+{"text": "# qx2_parity :: 1\ndef qx2_parity(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity(1))\n"}
+{"text": "# qx2_parity :: 2\ndef qx2_parity(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity(2))\n"}
+{"text": "# qx2_parity :: 3\ndef qx2_parity(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity(3))\n"}
+{"text": "# qx2_parity :: 0b1011\ndef qx2_parity(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity(0b1011))\n"}
+{"text": "# qx2_parity_of :: 0\ndef qx2_parity_of(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity_of(0))\n"}
+{"text": "# qx2_parity_of :: 1\ndef qx2_parity_of(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity_of(1))\n"}
+{"text": "# qx2_parity_of :: 2\ndef qx2_parity_of(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity_of(2))\n"}
+{"text": "# qx2_parity_of :: 3\ndef qx2_parity_of(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity_of(3))\n"}
+{"text": "# qx2_parity_of :: 0b1011\ndef qx2_parity_of(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_parity_of(0b1011))\n"}
+{"text": "# qx2_is_even_bits :: 0\ndef qx2_is_even_bits(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_is_even_bits(0))\n"}
+{"text": "# qx2_is_even_bits :: 1\ndef qx2_is_even_bits(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_is_even_bits(1))\n"}
+{"text": "# qx2_is_even_bits :: 2\ndef qx2_is_even_bits(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_is_even_bits(2))\n"}
+{"text": "# qx2_is_even_bits :: 3\ndef qx2_is_even_bits(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_is_even_bits(3))\n"}
+{"text": "# qx2_is_even_bits :: 0b1011\ndef qx2_is_even_bits(n):\n    return bin(n).count('1') % 2\n\nif __name__ == '__main__':\n    print(qx2_is_even_bits(0b1011))\n"}

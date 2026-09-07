@@ -1,0 +1,15 @@
+{"text": "# qx2_tan :: 0.0\nimport math\n\ndef qx2_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan(0.0))\n"}
+{"text": "# qx2_tan :: 0.5\nimport math\n\ndef qx2_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan(0.5))\n"}
+{"text": "# qx2_tan :: 1.0\nimport math\n\ndef qx2_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan(1.0))\n"}
+{"text": "# qx2_tan :: 3.14159 / 2\nimport math\n\ndef qx2_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan(3.14159 / 2))\n"}
+{"text": "# qx2_tan :: -1.0\nimport math\n\ndef qx2_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan(-1.0))\n"}
+{"text": "# qx2_tan_run :: 0.0\nimport math\n\ndef qx2_tan_run(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan_run(0.0))\n"}
+{"text": "# qx2_tan_run :: 0.5\nimport math\n\ndef qx2_tan_run(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan_run(0.5))\n"}
+{"text": "# qx2_tan_run :: 1.0\nimport math\n\ndef qx2_tan_run(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan_run(1.0))\n"}
+{"text": "# qx2_tan_run :: 3.14159 / 2\nimport math\n\ndef qx2_tan_run(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan_run(3.14159 / 2))\n"}
+{"text": "# qx2_tan_run :: -1.0\nimport math\n\ndef qx2_tan_run(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_tan_run(-1.0))\n"}
+{"text": "# qx2_run_tan :: 0.0\nimport math\n\ndef qx2_run_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_tan(0.0))\n"}
+{"text": "# qx2_run_tan :: 0.5\nimport math\n\ndef qx2_run_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_tan(0.5))\n"}
+{"text": "# qx2_run_tan :: 1.0\nimport math\n\ndef qx2_run_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_tan(1.0))\n"}
+{"text": "# qx2_run_tan :: 3.14159 / 2\nimport math\n\ndef qx2_run_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_tan(3.14159 / 2))\n"}
+{"text": "# qx2_run_tan :: -1.0\nimport math\n\ndef qx2_run_tan(x):\n    return math.tan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_tan(-1.0))\n"}

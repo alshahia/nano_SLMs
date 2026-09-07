@@ -1,0 +1,2 @@
+{"instruction": "Show the nested generator in `nested_gen`. (input: [1, 2])", "response": "def nested_gen(a, b):\n    return [x * y for x in a for y in b]\n\n# Bug was: nested generator in a comprehension; left-to-right evaluation\n\n# pair: nested_gen / [1, 2]\n"}
+{"instruction": "Show the nested generator in `nested_gen`. (input: [3, 4])", "response": "def nested_gen(a, b):\n    return [x * y for x in a for y in b]\n\n# Bug was: nested generator in a comprehension; left-to-right evaluation\n\n# pair: nested_gen / [3, 4]\n"}

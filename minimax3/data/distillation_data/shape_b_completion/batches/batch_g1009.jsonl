@@ -1,0 +1,15 @@
+{"text": "# qx2_cos :: 0.0\nimport math\n\ndef qx2_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos(0.0))\n"}
+{"text": "# qx2_cos :: 0.5\nimport math\n\ndef qx2_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos(0.5))\n"}
+{"text": "# qx2_cos :: 1.0\nimport math\n\ndef qx2_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos(1.0))\n"}
+{"text": "# qx2_cos :: 3.14159 / 2\nimport math\n\ndef qx2_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos(3.14159 / 2))\n"}
+{"text": "# qx2_cos :: -1.0\nimport math\n\ndef qx2_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos(-1.0))\n"}
+{"text": "# qx2_cos_run :: 0.0\nimport math\n\ndef qx2_cos_run(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos_run(0.0))\n"}
+{"text": "# qx2_cos_run :: 0.5\nimport math\n\ndef qx2_cos_run(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos_run(0.5))\n"}
+{"text": "# qx2_cos_run :: 1.0\nimport math\n\ndef qx2_cos_run(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos_run(1.0))\n"}
+{"text": "# qx2_cos_run :: 3.14159 / 2\nimport math\n\ndef qx2_cos_run(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos_run(3.14159 / 2))\n"}
+{"text": "# qx2_cos_run :: -1.0\nimport math\n\ndef qx2_cos_run(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_cos_run(-1.0))\n"}
+{"text": "# qx2_run_cos :: 0.0\nimport math\n\ndef qx2_run_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cos(0.0))\n"}
+{"text": "# qx2_run_cos :: 0.5\nimport math\n\ndef qx2_run_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cos(0.5))\n"}
+{"text": "# qx2_run_cos :: 1.0\nimport math\n\ndef qx2_run_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cos(1.0))\n"}
+{"text": "# qx2_run_cos :: 3.14159 / 2\nimport math\n\ndef qx2_run_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cos(3.14159 / 2))\n"}
+{"text": "# qx2_run_cos :: -1.0\nimport math\n\ndef qx2_run_cos(x):\n    return math.cos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_cos(-1.0))\n"}

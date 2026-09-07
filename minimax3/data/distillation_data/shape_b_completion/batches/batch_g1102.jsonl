@@ -1,0 +1,15 @@
+{"text": "# qx2_join_path :: ('foo', 'bar')\nimport os\n\ndef qx2_join_path(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_join_path(('foo', 'bar')))\n"}
+{"text": "# qx2_join_path :: ('foo', '/bar')\nimport os\n\ndef qx2_join_path(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_join_path(('foo', '/bar')))\n"}
+{"text": "# qx2_join_path :: ('', 'a')\nimport os\n\ndef qx2_join_path(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_join_path(('', 'a')))\n"}
+{"text": "# qx2_join_path :: ('a', 'b', 'c')\nimport os\n\ndef qx2_join_path(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_join_path(('a', 'b', 'c')))\n"}
+{"text": "# qx2_join_path :: ('a/', '/b')\nimport os\n\ndef qx2_join_path(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_join_path(('a/', '/b')))\n"}
+{"text": "# qx2_path_join :: ('foo', 'bar')\nimport os\n\ndef qx2_path_join(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_path_join(('foo', 'bar')))\n"}
+{"text": "# qx2_path_join :: ('foo', '/bar')\nimport os\n\ndef qx2_path_join(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_path_join(('foo', '/bar')))\n"}
+{"text": "# qx2_path_join :: ('', 'a')\nimport os\n\ndef qx2_path_join(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_path_join(('', 'a')))\n"}
+{"text": "# qx2_path_join :: ('a', 'b', 'c')\nimport os\n\ndef qx2_path_join(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_path_join(('a', 'b', 'c')))\n"}
+{"text": "# qx2_path_join :: ('a/', '/b')\nimport os\n\ndef qx2_path_join(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_path_join(('a/', '/b')))\n"}
+{"text": "# qx2_pjoin :: ('foo', 'bar')\nimport os\n\ndef qx2_pjoin(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_pjoin(('foo', 'bar')))\n"}
+{"text": "# qx2_pjoin :: ('foo', '/bar')\nimport os\n\ndef qx2_pjoin(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_pjoin(('foo', '/bar')))\n"}
+{"text": "# qx2_pjoin :: ('', 'a')\nimport os\n\ndef qx2_pjoin(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_pjoin(('', 'a')))\n"}
+{"text": "# qx2_pjoin :: ('a', 'b', 'c')\nimport os\n\ndef qx2_pjoin(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_pjoin(('a', 'b', 'c')))\n"}
+{"text": "# qx2_pjoin :: ('a/', '/b')\nimport os\n\ndef qx2_pjoin(*parts):\n    return os.path.join(*parts)\n\nif __name__ == '__main__':\n    print(qx2_pjoin(('a/', '/b')))\n"}

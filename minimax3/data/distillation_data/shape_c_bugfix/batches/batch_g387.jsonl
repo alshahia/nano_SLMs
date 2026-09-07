@@ -1,0 +1,1 @@
+{"instruction": "Show fork after thread in `worker`. (input: '')", "response": "import threading, os\nt = threading.Thread(target=work)\nt.start()\nos.fork()\n\n# Bug was: fork after thread leaks threads in child — use multiprocessing.Process\n\n# pair: worker / ''\n"}

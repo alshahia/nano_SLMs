@@ -1,0 +1,1 @@
+{"instruction": "Show the missing `start` for sum-of-strings in `sum_str_no_start`. (input: ['a', 'b', 'c'])", "response": "def sum_str_no_start(xs):\n    return sum(xs)\n\n# Bug was: `sum` of strings requires `start=''`; otherwise raises TypeError because the default start is 0 (int)\n\n# pair: sum_str_no_start / ['a', 'b', 'c']\n"}

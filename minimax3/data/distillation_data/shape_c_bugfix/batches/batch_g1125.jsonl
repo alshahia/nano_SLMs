@@ -1,0 +1,1 @@
+{"instruction": "Show the `__repr__` override in `class_dunder_repr`. (input: 1)", "response": "class C:\n    def __init__(self, x):\n        self.x = x\n    def __repr__(self):\n        return f'C({self.x!r})'\n\n# Bug was: `__repr__` should be unambiguous; `__str__` for human-readable\n\n# pair: class_dunder_repr / 1\n"}

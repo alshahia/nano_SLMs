@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.resolve` in `path_resolve`. (input: './foo/../bar')", "response": "from pathlib import Path\n\ndef path_resolve(p):\n    return str(Path(p).resolve())\n\n# Bug was: `resolve()` returns the absolute canonical path\n\n# pair: path_resolve / './foo/../bar'\n"}

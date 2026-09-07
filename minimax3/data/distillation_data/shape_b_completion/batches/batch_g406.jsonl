@@ -1,0 +1,15 @@
+{"text": "# digit_sum :: 0\ndef digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(digit_sum(0))\n"}
+{"text": "# digit_sum :: 9\ndef digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(digit_sum(9))\n"}
+{"text": "# digit_sum :: 10\ndef digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(digit_sum(10))\n"}
+{"text": "# digit_sum :: 12345\ndef digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(digit_sum(12345))\n"}
+{"text": "# digit_sum :: 999999\ndef digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(digit_sum(999999))\n"}
+{"text": "# sum_digits :: 0\ndef sum_digits(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(sum_digits(0))\n"}
+{"text": "# sum_digits :: 9\ndef sum_digits(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(sum_digits(9))\n"}
+{"text": "# sum_digits :: 10\ndef sum_digits(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(sum_digits(10))\n"}
+{"text": "# sum_digits :: 12345\ndef sum_digits(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(sum_digits(12345))\n"}
+{"text": "# sum_digits :: 999999\ndef sum_digits(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(sum_digits(999999))\n"}
+{"text": "# n_digit_sum :: 0\ndef n_digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(n_digit_sum(0))\n"}
+{"text": "# n_digit_sum :: 9\ndef n_digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(n_digit_sum(9))\n"}
+{"text": "# n_digit_sum :: 10\ndef n_digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(n_digit_sum(10))\n"}
+{"text": "# n_digit_sum :: 12345\ndef n_digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(n_digit_sum(12345))\n"}
+{"text": "# n_digit_sum :: 999999\ndef n_digit_sum(n):\n    return sum(int(c) for c in str(abs(n)))\n\nif __name__ == '__main__':\n    print(n_digit_sum(999999))\n"}

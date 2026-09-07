@@ -1,0 +1,1 @@
+{"instruction": "Show sys.exit in library in `syse`. (input: '')", "response": "def syse(s):\n    if not s:\n        sys.exit('missing input')\n    return s\n\n# Bug was: sys.exit in library code — should raise, not exit\n\n# pair: syse / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `bytearray` usage in `bytearray_use`. (input: 'hello')", "response": "def bytearray_use(s):\n    return bytearray(s, 'utf-8')\n\n# Bug was: `bytearray` is mutable; `bytes` is immutable\n\n# pair: bytearray_use / 'hello'\n"}

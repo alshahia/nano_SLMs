@@ -1,0 +1,1 @@
+{"instruction": "Show the Optional type hint in `type_hint_opt`. (input: 5)", "response": "from typing import Optional\n\ndef type_hint_opt(x: Optional[int] = None) -> int:\n    return x or 0\n\n# Bug was: `Optional[int]` is `int | None`; newer syntax is `int | None` (Python 3.10+)\n\n# pair: type_hint_opt / 5\n"}

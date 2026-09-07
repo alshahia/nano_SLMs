@@ -1,0 +1,1 @@
+{"instruction": "Show the zero-pad format spec in `format_spec_pad`. (input: 42)", "response": "def format_spec_pad(x):\n    return f'{x:05d}'\n\n# Bug was: `:05d` zero-pads to 5 digits; `>5d` right-aligns with spaces\n\n# pair: format_spec_pad / 42\n"}

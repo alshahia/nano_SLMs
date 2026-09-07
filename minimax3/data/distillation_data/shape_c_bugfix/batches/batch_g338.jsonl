@@ -1,0 +1,1 @@
+{"instruction": "Show await outside async in `caller`. (input: '')", "response": "import asyncio\ndef caller():\n    return await asyncio.sleep(1)\n\n# Bug was: `await` only valid inside `async def` — make the function async too\n\n# pair: caller / ''\n"}

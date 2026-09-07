@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.rglob` in `path_rglob`. (input: '/tmp')", "response": "from pathlib import Path\n\ndef path_rglob(d):\n    return [str(p) for p in Path(d).rglob('*.py')]\n\n# Bug was: `Path.rglob` recurses into subdirectories\n\n# pair: path_rglob / '/tmp'\n"}

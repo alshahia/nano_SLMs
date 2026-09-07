@@ -1,0 +1,1 @@
+{"instruction": "Show the `if __name__ == '__main__'` guard in `main_guard`. (input: 5)", "response": "def helper():\n    return 1\n\nif __name__ == '__main__':\n    print(helper())\n\n# Bug was: the `__main__` guard lets the file be importable without running side effects\n\n# pair: main_guard / 5\n"}

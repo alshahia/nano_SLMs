@@ -1,0 +1,1 @@
+{"instruction": "Show `ipaddress.ip_address` in `ip_basic`. (input: '192.168.1.1')", "response": "import ipaddress\n\ndef ip_basic(s):\n    return ipaddress.ip_address(s)\n\n# Bug was: `ip_address` accepts both IPv4 and IPv6\n\n# pair: ip_basic / '192.168.1.1'\n"}

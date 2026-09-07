@@ -1,0 +1,1 @@
+{"instruction": "Show `lzma.compress` in `lzma_basic`. (input: b'hello')", "response": "import lzma\n\ndef lzma_basic(data):\n    return lzma.compress(data)\n\n# Bug was: `lzma` compresses best; slowest of the three\n\n# pair: lzma_basic / b'hello'\n"}

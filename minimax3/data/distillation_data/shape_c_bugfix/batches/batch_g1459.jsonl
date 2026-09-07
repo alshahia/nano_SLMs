@@ -1,0 +1,1 @@
+{"instruction": "Show the comprehension scope in `nested_scope_gen`. (input: [1, 2, 3])", "response": "def nested_scope_gen(xs):\n    return [x for x in xs]\n\n# Bug was: list comprehension creates its own scope in Py3; `x` doesn't leak\n\n# pair: nested_scope_gen / [1, 2, 3]\n"}

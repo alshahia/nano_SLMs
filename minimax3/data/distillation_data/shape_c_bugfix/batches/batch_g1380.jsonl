@@ -1,0 +1,1 @@
+{"instruction": "Show the identity function in `identity`. (input: 42)", "response": "def identity(x):\n    return x\n\n# Bug was: identity returns the same object; useful as a default for higher-order functions\n\n# pair: identity / 42\n"}

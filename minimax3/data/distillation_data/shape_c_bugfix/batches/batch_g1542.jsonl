@@ -1,0 +1,1 @@
+{"instruction": "Show `yaml.dump` in `yaml_dump`. (input: {'k': 1})", "response": "import yaml\n\ndef yaml_dump(d):\n    return yaml.dump(d)\n\n# Bug was: `yaml.dump` returns a YAML string\n\n# pair: yaml_dump / {'k': 1}\n"}

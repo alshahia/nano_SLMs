@@ -1,0 +1,1 @@
+{"instruction": "Show async context manager incomplete in `aw`. (input: '')", "response": "class aw:\n    async def __aenter__(self):\n        return self\n    async def __aexit__(self, *exc):\n        return False\n\n# Bug was: missing __aenter__/__aexit__ — `async with aw():` raises AttributeError\n\n# pair: aw / ''\n"}

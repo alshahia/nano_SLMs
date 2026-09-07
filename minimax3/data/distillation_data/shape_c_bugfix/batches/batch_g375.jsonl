@@ -1,0 +1,1 @@
+{"instruction": "Show hardcoded path sep in `joinp`. Input: `['a', 'b', 'c']`. (input: ['a', 'b', 'c'])", "response": "import os\ndef joinp(parts):\n    return '/'.join(parts)\n\n# Bug was: hardcoded '/' — use os.path.join(parts) or pathlib.PurePath\n\n# pair: joinp / ['a', 'b', 'c']\n"}

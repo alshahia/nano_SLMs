@@ -1,0 +1,1 @@
+{"instruction": "Show `globals` in `globals_use`. (input: 1)", "response": "def globals_use():\n    return list(globals().keys())[:3]\n\n# Bug was: `globals()` returns the module's namespace dict\n\n# pair: globals_use / 1\n"}

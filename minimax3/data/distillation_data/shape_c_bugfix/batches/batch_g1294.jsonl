@@ -1,0 +1,1 @@
+{"instruction": "Show the required argparse arg in `arg_required`. (input: 'value')", "response": "import argparse\n\ndef arg_required(value):\n    p = argparse.ArgumentParser()\n    p.add_argument('name')\n    args = p.parse_args([value])\n    return args.name\n\n# Bug was: positional arguments are required by default\n\n# pair: arg_required / 'value'\n"}

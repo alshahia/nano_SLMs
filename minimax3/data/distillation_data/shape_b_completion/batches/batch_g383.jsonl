@@ -1,0 +1,15 @@
+{"text": "# qx_title_case :: 'hello world'\ndef qx_title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_title_case('hello world'))\n"}
+{"text": "# qx_title_case :: 'the quick brown fox'\ndef qx_title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_title_case('the quick brown fox'))\n"}
+{"text": "# qx_title_case :: ''\ndef qx_title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_title_case(''))\n"}
+{"text": "# qx_title_case :: 'one'\ndef qx_title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_title_case('one'))\n"}
+{"text": "# qx_title_case :: 'mixed CASE here'\ndef qx_title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_title_case('mixed CASE here'))\n"}
+{"text": "# qx_qx_capitalize_each_qx :: 'hello world'\ndef qx_qx_capitalize_each_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_capitalize_each_qx('hello world'))\n"}
+{"text": "# qx_qx_capitalize_each_qx :: 'the quick brown fox'\ndef qx_qx_capitalize_each_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_capitalize_each_qx('the quick brown fox'))\n"}
+{"text": "# qx_qx_capitalize_each_qx :: ''\ndef qx_qx_capitalize_each_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_capitalize_each_qx(''))\n"}
+{"text": "# qx_qx_capitalize_each_qx :: 'one'\ndef qx_qx_capitalize_each_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_capitalize_each_qx('one'))\n"}
+{"text": "# qx_qx_capitalize_each_qx :: 'mixed CASE here'\ndef qx_qx_capitalize_each_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_capitalize_each_qx('mixed CASE here'))\n"}
+{"text": "# qx_qx_title_qx :: 'hello world'\ndef qx_qx_title_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_title_qx('hello world'))\n"}
+{"text": "# qx_qx_title_qx :: 'the quick brown fox'\ndef qx_qx_title_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_title_qx('the quick brown fox'))\n"}
+{"text": "# qx_qx_title_qx :: ''\ndef qx_qx_title_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_title_qx(''))\n"}
+{"text": "# qx_qx_title_qx :: 'one'\ndef qx_qx_title_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_title_qx('one'))\n"}
+{"text": "# qx_qx_title_qx :: 'mixed CASE here'\ndef qx_qx_title_qx(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(qx_qx_title_qx('mixed CASE here'))\n"}

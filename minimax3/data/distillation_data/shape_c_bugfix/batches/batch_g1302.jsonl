@@ -1,0 +1,1 @@
+{"instruction": "Show `random.shuffle` in `rand_shuffle`. (input: [1, 2, 3, 4])", "response": "import random\n\ndef rand_shuffle(xs):\n    random.shuffle(xs)\n    return xs\n\n# Bug was: `random.shuffle` mutates in place; returns None\n\n# pair: rand_shuffle / [1, 2, 3, 4]\n"}

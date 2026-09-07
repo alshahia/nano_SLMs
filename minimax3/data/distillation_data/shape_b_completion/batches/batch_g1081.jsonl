@@ -1,0 +1,15 @@
+{"text": "# qx2_upper :: 'hello'\ndef qx2_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_upper('hello'))\n"}
+{"text": "# qx2_upper :: 'Hello'\ndef qx2_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_upper('Hello'))\n"}
+{"text": "# qx2_upper :: ''\ndef qx2_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_upper(''))\n"}
+{"text": "# qx2_upper :: 'abc123'\ndef qx2_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_upper('abc123'))\n"}
+{"text": "# qx2_upper :: 'mixED'\ndef qx2_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_upper('mixED'))\n"}
+{"text": "# qx2_to_upper :: 'hello'\ndef qx2_to_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_to_upper('hello'))\n"}
+{"text": "# qx2_to_upper :: 'Hello'\ndef qx2_to_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_to_upper('Hello'))\n"}
+{"text": "# qx2_to_upper :: ''\ndef qx2_to_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_to_upper(''))\n"}
+{"text": "# qx2_to_upper :: 'abc123'\ndef qx2_to_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_to_upper('abc123'))\n"}
+{"text": "# qx2_to_upper :: 'mixED'\ndef qx2_to_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_to_upper('mixED'))\n"}
+{"text": "# qx2_str_upper :: 'hello'\ndef qx2_str_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_str_upper('hello'))\n"}
+{"text": "# qx2_str_upper :: 'Hello'\ndef qx2_str_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_str_upper('Hello'))\n"}
+{"text": "# qx2_str_upper :: ''\ndef qx2_str_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_str_upper(''))\n"}
+{"text": "# qx2_str_upper :: 'abc123'\ndef qx2_str_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_str_upper('abc123'))\n"}
+{"text": "# qx2_str_upper :: 'mixED'\ndef qx2_str_upper(s):\n    return s.upper()\n\nif __name__ == '__main__':\n    print(qx2_str_upper('mixED'))\n"}

@@ -1,0 +1,15 @@
+{"text": "# relu :: (0.0,)\ndef relu(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu((0.0,)))\n"}
+{"text": "# relu :: (1.5,)\ndef relu(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu((1.5,)))\n"}
+{"text": "# relu :: (-2.0,)\ndef relu(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu((-2.0,)))\n"}
+{"text": "# relu :: (100.0,)\ndef relu(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu((100.0,)))\n"}
+{"text": "# relu :: (-0.001,)\ndef relu(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu((-0.001,)))\n"}
+{"text": "# rectify :: (0.0,)\ndef rectify(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(rectify((0.0,)))\n"}
+{"text": "# rectify :: (1.5,)\ndef rectify(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(rectify((1.5,)))\n"}
+{"text": "# rectify :: (-2.0,)\ndef rectify(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(rectify((-2.0,)))\n"}
+{"text": "# rectify :: (100.0,)\ndef rectify(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(rectify((100.0,)))\n"}
+{"text": "# rectify :: (-0.001,)\ndef rectify(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(rectify((-0.001,)))\n"}
+{"text": "# relu_fn :: (0.0,)\ndef relu_fn(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu_fn((0.0,)))\n"}
+{"text": "# relu_fn :: (1.5,)\ndef relu_fn(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu_fn((1.5,)))\n"}
+{"text": "# relu_fn :: (-2.0,)\ndef relu_fn(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu_fn((-2.0,)))\n"}
+{"text": "# relu_fn :: (100.0,)\ndef relu_fn(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu_fn((100.0,)))\n"}
+{"text": "# relu_fn :: (-0.001,)\ndef relu_fn(x):\n    return max(0.0, x)\n\nif __name__ == '__main__':\n    print(relu_fn((-0.001,)))\n"}

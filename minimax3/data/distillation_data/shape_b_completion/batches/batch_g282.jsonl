@@ -1,0 +1,15 @@
+{"text": "# is_substring :: ('hello world', 'world')\ndef is_substring(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(is_substring(('hello world', 'world')))\n"}
+{"text": "# is_substring :: ('hello', 'xyz')\ndef is_substring(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(is_substring(('hello', 'xyz')))\n"}
+{"text": "# is_substring :: ('', '')\ndef is_substring(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(is_substring(('', '')))\n"}
+{"text": "# is_substring :: ('abc', 'abc')\ndef is_substring(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(is_substring(('abc', 'abc')))\n"}
+{"text": "# is_substring :: ('hello', '')\ndef is_substring(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(is_substring(('hello', '')))\n"}
+{"text": "# contains_sub :: ('hello world', 'world')\ndef contains_sub(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(contains_sub(('hello world', 'world')))\n"}
+{"text": "# contains_sub :: ('hello', 'xyz')\ndef contains_sub(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(contains_sub(('hello', 'xyz')))\n"}
+{"text": "# contains_sub :: ('', '')\ndef contains_sub(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(contains_sub(('', '')))\n"}
+{"text": "# contains_sub :: ('abc', 'abc')\ndef contains_sub(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(contains_sub(('abc', 'abc')))\n"}
+{"text": "# contains_sub :: ('hello', '')\ndef contains_sub(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(contains_sub(('hello', '')))\n"}
+{"text": "# substr_in :: ('hello world', 'world')\ndef substr_in(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(substr_in(('hello world', 'world')))\n"}
+{"text": "# substr_in :: ('hello', 'xyz')\ndef substr_in(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(substr_in(('hello', 'xyz')))\n"}
+{"text": "# substr_in :: ('', '')\ndef substr_in(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(substr_in(('', '')))\n"}
+{"text": "# substr_in :: ('abc', 'abc')\ndef substr_in(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(substr_in(('abc', 'abc')))\n"}
+{"text": "# substr_in :: ('hello', '')\ndef substr_in(s, sub):\n    return sub in s\n\nif __name__ == '__main__':\n    print(substr_in(('hello', '')))\n"}

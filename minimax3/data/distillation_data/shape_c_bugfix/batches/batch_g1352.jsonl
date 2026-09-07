@@ -1,0 +1,1 @@
+{"instruction": "Show the bare-name capture in `match_capture`. (input: 42)", "response": "def match_capture(x):\n    match x:\n        case n:\n            return n\n\n# Bug was: bare name captures the matched value\n\n# pair: match_capture / 42\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `typing.Literal` in `typing_lit`. (input: 'red')", "response": "from typing import Literal\n\ndef typing_lit(c: Literal['red', 'green', 'blue']) -> str:\n    return c\n\n# Bug was: `Literal` restricts values to specific literals\n\n# pair: typing_lit / 'red'\n"}

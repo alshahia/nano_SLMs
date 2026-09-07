@@ -1,0 +1,1 @@
+{"instruction": "Show the `async with` pattern in `async_with`. (input: 'data.txt')", "response": "import asyncio\n\nasync def async_with(path):\n    async with open(path) as f:\n        return await f.read()\n\n# Bug was: `async with` requires an async context manager\n\n# pair: async_with / 'data.txt'\n"}

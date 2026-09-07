@@ -1,0 +1,1 @@
+{"instruction": "Show shutil.rmtree danger in `rm`. (input: '')", "response": "import shutil\ndef rm(path):\n    shutil.rmtree(path)\n\n# Bug was: rmtree on a symlink to a directory deletes the target — use ignore_errors or check first\n\n# pair: rm / ''\n"}

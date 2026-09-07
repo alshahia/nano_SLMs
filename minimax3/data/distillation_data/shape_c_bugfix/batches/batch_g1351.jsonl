@@ -1,0 +1,1 @@
+{"instruction": "Show the `if` guard pattern in `match_guard`. (input: 2)", "response": "def match_guard(x):\n    match x:\n        case n if n > 0:\n            return 'positive'\n        case _:\n            return 'other'\n\n# Bug was: `if` guards add a runtime condition to a pattern\n\n# pair: match_guard / 2\n"}

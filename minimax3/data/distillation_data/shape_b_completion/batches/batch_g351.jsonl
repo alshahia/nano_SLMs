@@ -1,0 +1,15 @@
+{"text": "# qx_sign :: 0\ndef qx_sign(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_sign(0))\n"}
+{"text": "# qx_sign :: 1\ndef qx_sign(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_sign(1))\n"}
+{"text": "# qx_sign :: -1\ndef qx_sign(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_sign(-1))\n"}
+{"text": "# qx_sign :: 5\ndef qx_sign(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_sign(5))\n"}
+{"text": "# qx_sign :: -3\ndef qx_sign(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_sign(-3))\n"}
+{"text": "# qx_qx_sgn_qx :: 0\ndef qx_qx_sgn_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_sgn_qx(0))\n"}
+{"text": "# qx_qx_sgn_qx :: 1\ndef qx_qx_sgn_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_sgn_qx(1))\n"}
+{"text": "# qx_qx_sgn_qx :: -1\ndef qx_qx_sgn_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_sgn_qx(-1))\n"}
+{"text": "# qx_qx_sgn_qx :: 5\ndef qx_qx_sgn_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_sgn_qx(5))\n"}
+{"text": "# qx_qx_sgn_qx :: -3\ndef qx_qx_sgn_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_sgn_qx(-3))\n"}
+{"text": "# qx_qx_signum_qx :: 0\ndef qx_qx_signum_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_signum_qx(0))\n"}
+{"text": "# qx_qx_signum_qx :: 1\ndef qx_qx_signum_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_signum_qx(1))\n"}
+{"text": "# qx_qx_signum_qx :: -1\ndef qx_qx_signum_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_signum_qx(-1))\n"}
+{"text": "# qx_qx_signum_qx :: 5\ndef qx_qx_signum_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_signum_qx(5))\n"}
+{"text": "# qx_qx_signum_qx :: -3\ndef qx_qx_signum_qx(n):\n    if n > 0: return 1\n    if n < 0: return -1\n    return 0\n\nif __name__ == '__main__':\n    print(qx_qx_signum_qx(-3))\n"}

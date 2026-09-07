@@ -1,0 +1,1 @@
+{"instruction": "Show why catching `Exception` is too broad in `load_data`. (input: 'data.json')", "response": "def load_data(path):\n    try:\n        return open(path).read()\n    except Exception:\n        return None\n\n# Bug was: catching Exception is too broad — masks real bugs (TypeError, AttributeError, etc.)\n\n# pair: load_data / 'data.json'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the `pass` placeholder in `pass_placeholder`. (input: )", "response": "def pass_placeholder():\n    pass\n\n# Bug was: `pass` is a no-op placeholder; required for empty function bodies\n\n# pair: pass_placeholder /\n"}

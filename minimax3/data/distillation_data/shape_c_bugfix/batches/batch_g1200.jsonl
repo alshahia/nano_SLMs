@@ -1,0 +1,1 @@
+{"instruction": "Show the itertools.dropwhile in `it_dropwhile`. (input: [1, 2, 3, 0, 1])", "response": "from itertools import dropwhile\n\ndef it_dropwhile(xs):\n    return list(dropwhile(lambda x: x > 0, xs))\n\n# Bug was: `dropwhile` skips while predicate is true, then yields the rest\n\n# pair: it_dropwhile / [1, 2, 3, 0, 1]\n"}

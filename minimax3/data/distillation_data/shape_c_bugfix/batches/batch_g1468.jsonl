@@ -1,0 +1,1 @@
+{"instruction": "Show the augmented assignment in `aug_assign2`. (input: 5)", "response": "def aug_assign2(x):\n    x += 1\n    return x\n\n# Bug was: `x += 1` rebinds `x`; for mutable containers it does in-place mutation\n\n# pair: aug_assign2 / 5\n"}

@@ -1,0 +1,3 @@
+{"text": "# escape_html :: '<a>'\nimport html\n\ndef escape_html(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(escape_html('<a>'))\n"}
+{"text": "# escape_html :: 'a & b'\nimport html\n\ndef escape_html(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(escape_html('a & b'))\n"}
+{"text": "# escape_html :: '<'\nimport html\n\ndef escape_html(s):\n    return html.escape(s)\n\nif __name__ == '__main__':\n    print(escape_html('<'))\n"}

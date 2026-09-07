@@ -1,0 +1,15 @@
+{"text": "# qx2_swapcase :: 'Hello'\ndef qx2_swapcase(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swapcase('Hello'))\n"}
+{"text": "# qx2_swapcase :: 'WORLD'\ndef qx2_swapcase(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swapcase('WORLD'))\n"}
+{"text": "# qx2_swapcase :: ''\ndef qx2_swapcase(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swapcase(''))\n"}
+{"text": "# qx2_swapcase :: 'aBcDeF'\ndef qx2_swapcase(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swapcase('aBcDeF'))\n"}
+{"text": "# qx2_swapcase :: '123'\ndef qx2_swapcase(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swapcase('123'))\n"}
+{"text": "# qx2_swap_case :: 'Hello'\ndef qx2_swap_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swap_case('Hello'))\n"}
+{"text": "# qx2_swap_case :: 'WORLD'\ndef qx2_swap_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swap_case('WORLD'))\n"}
+{"text": "# qx2_swap_case :: ''\ndef qx2_swap_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swap_case(''))\n"}
+{"text": "# qx2_swap_case :: 'aBcDeF'\ndef qx2_swap_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swap_case('aBcDeF'))\n"}
+{"text": "# qx2_swap_case :: '123'\ndef qx2_swap_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_swap_case('123'))\n"}
+{"text": "# qx2_flip_case :: 'Hello'\ndef qx2_flip_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_flip_case('Hello'))\n"}
+{"text": "# qx2_flip_case :: 'WORLD'\ndef qx2_flip_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_flip_case('WORLD'))\n"}
+{"text": "# qx2_flip_case :: ''\ndef qx2_flip_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_flip_case(''))\n"}
+{"text": "# qx2_flip_case :: 'aBcDeF'\ndef qx2_flip_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_flip_case('aBcDeF'))\n"}
+{"text": "# qx2_flip_case :: '123'\ndef qx2_flip_case(s):\n    return s.swapcase()\n\nif __name__ == '__main__':\n    print(qx2_flip_case('123'))\n"}

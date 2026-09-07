@@ -1,0 +1,15 @@
+{"text": "# title_case :: 'hello world'\ndef title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(title_case('hello world'))\n"}
+{"text": "# title_case :: 'HELLO WORLD'\ndef title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(title_case('HELLO WORLD'))\n"}
+{"text": "# title_case :: ''\ndef title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(title_case(''))\n"}
+{"text": "# title_case :: 'the quick brown fox'\ndef title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(title_case('the quick brown fox'))\n"}
+{"text": "# title_case :: 'already Title'\ndef title_case(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(title_case('already Title'))\n"}
+{"text": "# to_title :: 'hello world'\ndef to_title(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(to_title('hello world'))\n"}
+{"text": "# to_title :: 'HELLO WORLD'\ndef to_title(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(to_title('HELLO WORLD'))\n"}
+{"text": "# to_title :: ''\ndef to_title(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(to_title(''))\n"}
+{"text": "# to_title :: 'the quick brown fox'\ndef to_title(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(to_title('the quick brown fox'))\n"}
+{"text": "# to_title :: 'already Title'\ndef to_title(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(to_title('already Title'))\n"}
+{"text": "# titlecase :: 'hello world'\ndef titlecase(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(titlecase('hello world'))\n"}
+{"text": "# titlecase :: 'HELLO WORLD'\ndef titlecase(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(titlecase('HELLO WORLD'))\n"}
+{"text": "# titlecase :: ''\ndef titlecase(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(titlecase(''))\n"}
+{"text": "# titlecase :: 'the quick brown fox'\ndef titlecase(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(titlecase('the quick brown fox'))\n"}
+{"text": "# titlecase :: 'already Title'\ndef titlecase(s):\n    return ' '.join(w.capitalize() for w in s.split())\n\nif __name__ == '__main__':\n    print(titlecase('already Title'))\n"}

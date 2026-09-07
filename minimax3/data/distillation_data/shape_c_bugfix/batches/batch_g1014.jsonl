@@ -1,0 +1,1 @@
+{"instruction": "Show the walrus-precedence issue in `walrus_bad`. (input: 5)", "response": "def walrus_bad(x):\n    if y := x + 1 > 5:\n        return y\n    return None\n\n# Bug was: walrus needs parentheses inside an `if`; without them the precedence is wrong\n\n# pair: walrus_bad / 5\n"}

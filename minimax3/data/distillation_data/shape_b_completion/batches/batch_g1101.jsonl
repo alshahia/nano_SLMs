@@ -1,0 +1,15 @@
+{"text": "# qx2_normalize_path :: '/foo/bar/../baz'\nimport os\n\ndef qx2_normalize_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_normalize_path('/foo/bar/../baz'))\n"}
+{"text": "# qx2_normalize_path :: './a/b'\nimport os\n\ndef qx2_normalize_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_normalize_path('./a/b'))\n"}
+{"text": "# qx2_normalize_path :: 'a/b/c'\nimport os\n\ndef qx2_normalize_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_normalize_path('a/b/c'))\n"}
+{"text": "# qx2_normalize_path :: '/a/b/c/'\nimport os\n\ndef qx2_normalize_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_normalize_path('/a/b/c/'))\n"}
+{"text": "# qx2_normalize_path :: ''\nimport os\n\ndef qx2_normalize_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_normalize_path(''))\n"}
+{"text": "# qx2_norm_path :: '/foo/bar/../baz'\nimport os\n\ndef qx2_norm_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_norm_path('/foo/bar/../baz'))\n"}
+{"text": "# qx2_norm_path :: './a/b'\nimport os\n\ndef qx2_norm_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_norm_path('./a/b'))\n"}
+{"text": "# qx2_norm_path :: 'a/b/c'\nimport os\n\ndef qx2_norm_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_norm_path('a/b/c'))\n"}
+{"text": "# qx2_norm_path :: '/a/b/c/'\nimport os\n\ndef qx2_norm_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_norm_path('/a/b/c/'))\n"}
+{"text": "# qx2_norm_path :: ''\nimport os\n\ndef qx2_norm_path(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_norm_path(''))\n"}
+{"text": "# qx2_canonical :: '/foo/bar/../baz'\nimport os\n\ndef qx2_canonical(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_canonical('/foo/bar/../baz'))\n"}
+{"text": "# qx2_canonical :: './a/b'\nimport os\n\ndef qx2_canonical(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_canonical('./a/b'))\n"}
+{"text": "# qx2_canonical :: 'a/b/c'\nimport os\n\ndef qx2_canonical(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_canonical('a/b/c'))\n"}
+{"text": "# qx2_canonical :: '/a/b/c/'\nimport os\n\ndef qx2_canonical(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_canonical('/a/b/c/'))\n"}
+{"text": "# qx2_canonical :: ''\nimport os\n\ndef qx2_canonical(p):\n    return os.path.normpath(p)\n\nif __name__ == '__main__':\n    print(qx2_canonical(''))\n"}

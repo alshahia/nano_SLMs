@@ -1,0 +1,1 @@
+{"instruction": "Show the missing `nonlocal` in the nested function of `outer`. (input: 1)", "response": "def outer():\n    x = 0\n    def inner():\n        x += 1\n        return x\n    return inner\n\n# Bug was: assigning to enclosing `x` from `inner` requires `nonlocal x`\n\n# pair: outer / 1\n"}

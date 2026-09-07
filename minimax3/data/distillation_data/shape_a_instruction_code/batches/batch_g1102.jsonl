@@ -1,0 +1,64 @@
+{"instruction": "Write a function `list_concat_v2(a, b)` returning the concatenation of two lists. Example: `list_concat_v2(([1, 2], [3, 4]))`.", "response": "def list_concat_v2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `list_concat_v2(a, b)` returning the concatenation of two lists. Example: `list_concat_v2(([], [1, 2]))`.", "response": "def list_concat_v2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `list_concat_v2(a, b)` returning the concatenation of two lists. Example: `list_concat_v2(([1, 2], []))`.", "response": "def list_concat_v2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `list_concat_v2(a, b)` returning the concatenation of two lists. Example: `list_concat_v2(([], []))`.", "response": "def list_concat_v2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `list_concat_v2(a, b)` returning the concatenation of two lists. Example: `list_concat_v2(([1], [2, 3, 4]))`.", "response": "def list_concat_v2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `list_concat_v2(a, b)` returning the concatenation of two lists. Example: `list_concat_v2((['a'], ['b', 'c']))`.", "response": "def list_concat_v2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `list_concat_v2(a, b)` returning the concatenation of two lists. Example: `list_concat_v2(([True], [False]))`.", "response": "def list_concat_v2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `list_concat_v2(a, b)` returning the concatenation of two lists. Example: `list_concat_v2(([1, 2, 3], [4, 5, 6]))`.", "response": "def list_concat_v2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. Example: `concat2(([1, 2], [3, 4]))`.", "response": "def concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. Example: `concat2(([], [1, 2]))`.", "response": "def concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. Example: `concat2(([1, 2], []))`.", "response": "def concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. Example: `concat2(([], []))`.", "response": "def concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. Example: `concat2(([1], [2, 3, 4]))`.", "response": "def concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. Example: `concat2((['a'], ['b', 'c']))`.", "response": "def concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. Example: `concat2(([True], [False]))`.", "response": "def concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. Example: `concat2(([1, 2, 3], [4, 5, 6]))`.", "response": "def concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `merge_lists2(a, b)` returning the concatenation of two lists. Example: `merge_lists2(([1, 2], [3, 4]))`.", "response": "def merge_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `merge_lists2(a, b)` returning the concatenation of two lists. Example: `merge_lists2(([], [1, 2]))`.", "response": "def merge_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `merge_lists2(a, b)` returning the concatenation of two lists. Example: `merge_lists2(([1, 2], []))`.", "response": "def merge_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `merge_lists2(a, b)` returning the concatenation of two lists. Example: `merge_lists2(([], []))`.", "response": "def merge_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `merge_lists2(a, b)` returning the concatenation of two lists. Example: `merge_lists2(([1], [2, 3, 4]))`.", "response": "def merge_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `merge_lists2(a, b)` returning the concatenation of two lists. Example: `merge_lists2((['a'], ['b', 'c']))`.", "response": "def merge_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `merge_lists2(a, b)` returning the concatenation of two lists. Example: `merge_lists2(([True], [False]))`.", "response": "def merge_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `merge_lists2(a, b)` returning the concatenation of two lists. Example: `merge_lists2(([1, 2, 3], [4, 5, 6]))`.", "response": "def merge_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `do_concat2(a, b)` returning the concatenation of two lists. Example: `do_concat2(([1, 2], [3, 4]))`.", "response": "def do_concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `do_concat2(a, b)` returning the concatenation of two lists. Example: `do_concat2(([], [1, 2]))`.", "response": "def do_concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `do_concat2(a, b)` returning the concatenation of two lists. Example: `do_concat2(([1, 2], []))`.", "response": "def do_concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `do_concat2(a, b)` returning the concatenation of two lists. Example: `do_concat2(([], []))`.", "response": "def do_concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `do_concat2(a, b)` returning the concatenation of two lists. Example: `do_concat2(([1], [2, 3, 4]))`.", "response": "def do_concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `do_concat2(a, b)` returning the concatenation of two lists. Example: `do_concat2((['a'], ['b', 'c']))`.", "response": "def do_concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `do_concat2(a, b)` returning the concatenation of two lists. Example: `do_concat2(([True], [False]))`.", "response": "def do_concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `do_concat2(a, b)` returning the concatenation of two lists. Example: `do_concat2(([1, 2, 3], [4, 5, 6]))`.", "response": "def do_concat2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. Example: `combine_lists2(([1, 2], [3, 4]))`.", "response": "def combine_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. Example: `combine_lists2(([], [1, 2]))`.", "response": "def combine_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. Example: `combine_lists2(([1, 2], []))`.", "response": "def combine_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. Example: `combine_lists2(([], []))`.", "response": "def combine_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. Example: `combine_lists2(([1], [2, 3, 4]))`.", "response": "def combine_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. Example: `combine_lists2((['a'], ['b', 'c']))`.", "response": "def combine_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. Example: `combine_lists2(([True], [False]))`.", "response": "def combine_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. Example: `combine_lists2(([1, 2, 3], [4, 5, 6]))`.", "response": "def combine_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `append_lists2(a, b)` returning the concatenation of two lists. Example: `append_lists2(([1, 2], [3, 4]))`.", "response": "def append_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `append_lists2(a, b)` returning the concatenation of two lists. Example: `append_lists2(([], [1, 2]))`.", "response": "def append_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `append_lists2(a, b)` returning the concatenation of two lists. Example: `append_lists2(([1, 2], []))`.", "response": "def append_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `append_lists2(a, b)` returning the concatenation of two lists. Example: `append_lists2(([], []))`.", "response": "def append_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `append_lists2(a, b)` returning the concatenation of two lists. Example: `append_lists2(([1], [2, 3, 4]))`.", "response": "def append_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `append_lists2(a, b)` returning the concatenation of two lists. Example: `append_lists2((['a'], ['b', 'c']))`.", "response": "def append_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `append_lists2(a, b)` returning the concatenation of two lists. Example: `append_lists2(([True], [False]))`.", "response": "def append_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `append_lists2(a, b)` returning the concatenation of two lists. Example: `append_lists2(([1, 2, 3], [4, 5, 6]))`.", "response": "def append_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. Example: `extend_lists2(([1, 2], [3, 4]))`.", "response": "def extend_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. Example: `extend_lists2(([], [1, 2]))`.", "response": "def extend_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. Example: `extend_lists2(([1, 2], []))`.", "response": "def extend_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. Example: `extend_lists2(([], []))`.", "response": "def extend_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. Example: `extend_lists2(([1], [2, 3, 4]))`.", "response": "def extend_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. Example: `extend_lists2((['a'], ['b', 'c']))`.", "response": "def extend_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. Example: `extend_lists2(([True], [False]))`.", "response": "def extend_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. Example: `extend_lists2(([1, 2, 3], [4, 5, 6]))`.", "response": "def extend_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat_lists2(a, b)` returning the concatenation of two lists. Example: `concat_lists2(([1, 2], [3, 4]))`.", "response": "def concat_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat_lists2(a, b)` returning the concatenation of two lists. Example: `concat_lists2(([], [1, 2]))`.", "response": "def concat_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat_lists2(a, b)` returning the concatenation of two lists. Example: `concat_lists2(([1, 2], []))`.", "response": "def concat_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat_lists2(a, b)` returning the concatenation of two lists. Example: `concat_lists2(([], []))`.", "response": "def concat_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat_lists2(a, b)` returning the concatenation of two lists. Example: `concat_lists2(([1], [2, 3, 4]))`.", "response": "def concat_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat_lists2(a, b)` returning the concatenation of two lists. Example: `concat_lists2((['a'], ['b', 'c']))`.", "response": "def concat_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat_lists2(a, b)` returning the concatenation of two lists. Example: `concat_lists2(([True], [False]))`.", "response": "def concat_lists2(a, b):\n    return a + b\n"}
+{"instruction": "Write a function `concat_lists2(a, b)` returning the concatenation of two lists. Example: `concat_lists2(([1, 2, 3], [4, 5, 6]))`.", "response": "def concat_lists2(a, b):\n    return a + b\n"}

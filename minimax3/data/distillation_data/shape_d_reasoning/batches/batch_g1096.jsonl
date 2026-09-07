@@ -1,0 +1,3 @@
+{"instruction": "Single number in [2, 2, 1]; answer 1.", "response": "XOR all numbers. Pairs cancel; the single element remains.\n\n```python\ndef single_number(nums):\n    result = 0\n    for n in nums:\n        result ^= n\n    return result\n```\n"}
+{"instruction": "Single in [4, 1, 2, 1, 2]; answer 4.", "response": "XOR all numbers. Pairs cancel; the single element remains.\n\n```python\ndef single_number(nums):\n    result = 0\n    for n in nums:\n        result ^= n\n    return result\n```\n"}
+{"instruction": "Single in [1]; answer 1.", "response": "XOR all numbers. Pairs cancel; the single element remains.\n\n```python\ndef single_number(nums):\n    result = 0\n    for n in nums:\n        result ^= n\n    return result\n```\n"}

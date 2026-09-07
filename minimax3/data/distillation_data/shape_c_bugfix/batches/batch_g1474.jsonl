@@ -1,0 +1,1 @@
+{"instruction": "Show the lambda-with-arg in `lambda_args`. (input: 5)", "response": "def lambda_args(x):\n    f = lambda x: x * 2\n    return f(x)\n\n# Bug was: lambda args are positional only; no defaults\n\n# pair: lambda_args / 5\n"}

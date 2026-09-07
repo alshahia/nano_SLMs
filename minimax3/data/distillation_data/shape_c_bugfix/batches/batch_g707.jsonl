@@ -1,0 +1,1 @@
+{"instruction": "Show builtin shadowing in `shadow_list_v1`. Input: `[1, 2]`. (input: [1, 2])", "response": "def shadow_list_v1(xs):\n    list = sum(xs)\n    return list\n\n# Bug was: `list` builtin shadowed — TypeError: 'int' not callable on next call\n\n# pair: shadow_list_v1 / [1, 2]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the mutable-default-argument bug in `mutable_def_arg`. (input: 'a')", "response": "def mutable_def_arg(key, value, d={}):\n    d[key] = value\n    return d\n\n# Bug was: default mutable arguments persist across calls; use `d=None` and create inside\n\n# pair: mutable_def_arg / 'a'\n"}

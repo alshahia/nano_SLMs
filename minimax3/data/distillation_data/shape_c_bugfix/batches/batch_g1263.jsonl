@@ -1,0 +1,1 @@
+{"instruction": "Show the strict int parsing in `int_strict`. (input: '42')", "response": "def int_strict(s):\n    return int(s)\n\n# Bug was: `int('42')` works but `int('42.5')` raises; use `int(float(s))` for decimals\n\n# pair: int_strict / '42'\n"}

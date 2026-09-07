@@ -1,0 +1,1 @@
+{"instruction": "Show `queue.Queue` in `queue_basic`. (input: )", "response": "import queue\n\ndef queue_basic():\n    q = queue.Queue()\n    q.put(1)\n    q.put(2)\n    return q.get(), q.get()\n\n# Bug was: `Queue` is thread-safe; `put`/`get` for producer/consumer\n\n# pair: queue_basic /\n"}

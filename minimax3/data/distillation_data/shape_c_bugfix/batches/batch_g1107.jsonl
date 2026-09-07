@@ -1,0 +1,1 @@
+{"instruction": "Show positional indices in format strings in `str_format_pos`. (input: 'hello')", "response": "def str_format_pos(s):\n    return '{0} world {0}'.format(s)\n\n# Bug was: positional indices let you reuse args; `{0}` and `{1}` index the args\n\n# pair: str_format_pos / 'hello'\n"}

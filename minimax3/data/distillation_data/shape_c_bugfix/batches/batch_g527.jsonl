@@ -1,0 +1,1 @@
+{"instruction": "Show IntEnum comparison in `ie`. (input: '')", "response": "from enum import IntEnum\nclass ie(IntEnum):\n    A = 1\n    B = 2\n\nx = 1\nif x == ie.A: print('match')\n\n# Bug was: IntEnum comparison with int works but loses type safety — use plain Enum unless needed\n\n# pair: ie / ''\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show `Path.write_text` in `path_write_text`. (input: 'file.txt')", "response": "from pathlib import Path\n\ndef path_write_text(p, data):\n    Path(p).write_text(data)\n\n# Bug was: `write_text` opens, writes, and closes in one call\n\n# pair: path_write_text / 'file.txt'\n"}
+{"instruction": "Show `Path.write_text` in `path_write_text`. (input: 'hello')", "response": "from pathlib import Path\n\ndef path_write_text(p, data):\n    Path(p).write_text(data)\n\n# Bug was: `write_text` opens, writes, and closes in one call\n\n# pair: path_write_text / 'hello'\n"}

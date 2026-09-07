@@ -1,0 +1,15 @@
+{"text": "# qx2_perfect_square :: 1\ndef qx2_perfect_square(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_perfect_square(1))\n"}
+{"text": "# qx2_perfect_square :: 4\ndef qx2_perfect_square(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_perfect_square(4))\n"}
+{"text": "# qx2_perfect_square :: 2\ndef qx2_perfect_square(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_perfect_square(2))\n"}
+{"text": "# qx2_perfect_square :: 9\ndef qx2_perfect_square(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_perfect_square(9))\n"}
+{"text": "# qx2_perfect_square :: 100\ndef qx2_perfect_square(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_perfect_square(100))\n"}
+{"text": "# qx2_is_perfect_sq :: 1\ndef qx2_is_perfect_sq(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_is_perfect_sq(1))\n"}
+{"text": "# qx2_is_perfect_sq :: 4\ndef qx2_is_perfect_sq(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_is_perfect_sq(4))\n"}
+{"text": "# qx2_is_perfect_sq :: 2\ndef qx2_is_perfect_sq(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_is_perfect_sq(2))\n"}
+{"text": "# qx2_is_perfect_sq :: 9\ndef qx2_is_perfect_sq(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_is_perfect_sq(9))\n"}
+{"text": "# qx2_is_perfect_sq :: 100\ndef qx2_is_perfect_sq(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_is_perfect_sq(100))\n"}
+{"text": "# qx2_sq_check :: 1\ndef qx2_sq_check(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_sq_check(1))\n"}
+{"text": "# qx2_sq_check :: 4\ndef qx2_sq_check(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_sq_check(4))\n"}
+{"text": "# qx2_sq_check :: 2\ndef qx2_sq_check(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_sq_check(2))\n"}
+{"text": "# qx2_sq_check :: 9\ndef qx2_sq_check(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_sq_check(9))\n"}
+{"text": "# qx2_sq_check :: 100\ndef qx2_sq_check(n):\n    if n < 0:\n        return False\n    r = int(n ** 0.5)\n    return r * r == n\n\nif __name__ == '__main__':\n    print(qx2_sq_check(100))\n"}

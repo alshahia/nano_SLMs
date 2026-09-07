@@ -1,0 +1,1 @@
+{"instruction": "Show Pydantic `BaseModel` in `pyd_basic`. (input: 1)", "response": "from pydantic import BaseModel\n\nclass User(BaseModel):\n    name: str\n    age: int\n\ndef pyd_basic(d):\n    return User(**d)\n\n# Bug was: Pydantic validates types at construction; raises ValidationError on bad data\n\n# pair: pyd_basic / 1\n"}

@@ -1,0 +1,15 @@
+{"text": "# safe_div :: (10, 2)\ndef safe_div(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_div((10, 2)))\n"}
+{"text": "# safe_div :: (10, 0)\ndef safe_div(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_div((10, 0)))\n"}
+{"text": "# safe_div :: (0, 5)\ndef safe_div(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_div((0, 5)))\n"}
+{"text": "# safe_div :: (-6, 2)\ndef safe_div(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_div((-6, 2)))\n"}
+{"text": "# safe_div :: (7, 3)\ndef safe_div(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_div((7, 3)))\n"}
+{"text": "# safe_divide :: (10, 2)\ndef safe_divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_divide((10, 2)))\n"}
+{"text": "# safe_divide :: (10, 0)\ndef safe_divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_divide((10, 0)))\n"}
+{"text": "# safe_divide :: (0, 5)\ndef safe_divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_divide((0, 5)))\n"}
+{"text": "# safe_divide :: (-6, 2)\ndef safe_divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_divide((-6, 2)))\n"}
+{"text": "# safe_divide :: (7, 3)\ndef safe_divide(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(safe_divide((7, 3)))\n"}
+{"text": "# div_or_zero :: (10, 2)\ndef div_or_zero(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(div_or_zero((10, 2)))\n"}
+{"text": "# div_or_zero :: (10, 0)\ndef div_or_zero(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(div_or_zero((10, 0)))\n"}
+{"text": "# div_or_zero :: (0, 5)\ndef div_or_zero(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(div_or_zero((0, 5)))\n"}
+{"text": "# div_or_zero :: (-6, 2)\ndef div_or_zero(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(div_or_zero((-6, 2)))\n"}
+{"text": "# div_or_zero :: (7, 3)\ndef div_or_zero(a, b):\n    try:\n        return a / b\n    except ZeroDivisionError:\n        return 0\n\nif __name__ == \"__main__\":\n    print(div_or_zero((7, 3)))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show Py2 StringIO in `sio`. (input: '')", "response": "import StringIO\ndef sio():\n    return StringIO.StringIO()\n\n# Bug was: StringIO module renamed — use `io.StringIO` in Py3\n\n# pair: sio / ''\n"}

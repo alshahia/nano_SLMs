@@ -1,0 +1,1 @@
+{"instruction": "Show path string concat in `build`. Input: `'/usr', 'local', 'bin'`. (input: '/usr', 'local', 'bin')", "response": "import os\ndef build(*parts):\n    path = ''\n    for p in parts:\n        path = path + '/' + p\n    return path\n\n# Bug was: Windows uses '\\', not '/' — use os.path.join or pathlib\n\n# pair: build / '/usr', 'local', 'bin'\n"}

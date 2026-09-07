@@ -1,0 +1,1 @@
+{"instruction": "Show `urlparse` in `urlparse`. (input: 'https://example.com/path?a=1')", "response": "from urllib.parse import urlparse\n\ndef urlparse(s):\n    p = urlparse(s)\n    return p.netloc, p.path, p.query\n\n# Bug was: `urlparse` returns a `ParseResult` with named parts\n\n# pair: urlparse / 'https://example.com/path?a=1'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the missing `@wraps` in `decor_no_wraps`. (input: 5)", "response": "def my_decorator(f):\n    def wrapper(*args, **kwargs):\n        return f(*args, **kwargs)\n    return wrapper\n\n# Bug was: missing `@wraps(f)`; `wrapper.__name__` becomes 'wrapper' not the original name\n\n# pair: decor_no_wraps / 5\n"}

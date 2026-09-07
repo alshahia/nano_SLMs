@@ -1,0 +1,1 @@
+{"instruction": "Show pathlib.Path basic usage in `path_basic`. (input: '/tmp/foo.txt')", "response": "from pathlib import Path\n\ndef path_basic(p):\n    return Path(p).name\n\n# Bug was: `Path` is the modern path API; `.name` returns the final component\n\n# pair: path_basic / '/tmp/foo.txt'\n"}

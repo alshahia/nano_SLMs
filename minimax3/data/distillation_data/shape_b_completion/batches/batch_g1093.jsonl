@@ -1,0 +1,15 @@
+{"text": "# qx2_rsplit :: ('a,b,c', ',', 1)\ndef qx2_rsplit(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit(('a,b,c', ',', 1)))\n"}
+{"text": "# qx2_rsplit :: ('hello world', ' ', 1)\ndef qx2_rsplit(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit(('hello world', ' ', 1)))\n"}
+{"text": "# qx2_rsplit :: ('a,b,c', ',', 2)\ndef qx2_rsplit(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit(('a,b,c', ',', 2)))\n"}
+{"text": "# qx2_rsplit :: ('', ',', 3)\ndef qx2_rsplit(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit(('', ',', 3)))\n"}
+{"text": "# qx2_rsplit :: ('a,b,c,d', ',', 5)\ndef qx2_rsplit(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit(('a,b,c,d', ',', 5)))\n"}
+{"text": "# qx2_split_right :: ('a,b,c', ',', 1)\ndef qx2_split_right(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_right(('a,b,c', ',', 1)))\n"}
+{"text": "# qx2_split_right :: ('hello world', ' ', 1)\ndef qx2_split_right(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_right(('hello world', ' ', 1)))\n"}
+{"text": "# qx2_split_right :: ('a,b,c', ',', 2)\ndef qx2_split_right(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_right(('a,b,c', ',', 2)))\n"}
+{"text": "# qx2_split_right :: ('', ',', 3)\ndef qx2_split_right(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_right(('', ',', 3)))\n"}
+{"text": "# qx2_split_right :: ('a,b,c,d', ',', 5)\ndef qx2_split_right(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_split_right(('a,b,c,d', ',', 5)))\n"}
+{"text": "# qx2_rsplit_str :: ('a,b,c', ',', 1)\ndef qx2_rsplit_str(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit_str(('a,b,c', ',', 1)))\n"}
+{"text": "# qx2_rsplit_str :: ('hello world', ' ', 1)\ndef qx2_rsplit_str(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit_str(('hello world', ' ', 1)))\n"}
+{"text": "# qx2_rsplit_str :: ('a,b,c', ',', 2)\ndef qx2_rsplit_str(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit_str(('a,b,c', ',', 2)))\n"}
+{"text": "# qx2_rsplit_str :: ('', ',', 3)\ndef qx2_rsplit_str(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit_str(('', ',', 3)))\n"}
+{"text": "# qx2_rsplit_str :: ('a,b,c,d', ',', 5)\ndef qx2_rsplit_str(s, sep, n):\n    return s.rsplit(sep, n)\n\nif __name__ == '__main__':\n    print(qx2_rsplit_str(('a,b,c,d', ',', 5)))\n"}

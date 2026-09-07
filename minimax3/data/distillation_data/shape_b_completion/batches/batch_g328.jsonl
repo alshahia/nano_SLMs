@@ -1,0 +1,15 @@
+{"text": "# qx_circle_circ :: 1\nimport math\ndef qx_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_circ(1))\n"}
+{"text": "# qx_circle_circ :: 5\nimport math\ndef qx_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_circ(5))\n"}
+{"text": "# qx_circle_circ :: 10\nimport math\ndef qx_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_circ(10))\n"}
+{"text": "# qx_circle_circ :: 0.5\nimport math\ndef qx_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_circ(0.5))\n"}
+{"text": "# qx_circle_circ :: 100\nimport math\ndef qx_circle_circ(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_circ(100))\n"}
+{"text": "# qx_circle_perim :: 1\nimport math\ndef qx_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_perim(1))\n"}
+{"text": "# qx_circle_perim :: 5\nimport math\ndef qx_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_perim(5))\n"}
+{"text": "# qx_circle_perim :: 10\nimport math\ndef qx_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_perim(10))\n"}
+{"text": "# qx_circle_perim :: 0.5\nimport math\ndef qx_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_perim(0.5))\n"}
+{"text": "# qx_circle_perim :: 100\nimport math\ndef qx_circle_perim(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circle_perim(100))\n"}
+{"text": "# qx_circumference_of :: 1\nimport math\ndef qx_circumference_of(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circumference_of(1))\n"}
+{"text": "# qx_circumference_of :: 5\nimport math\ndef qx_circumference_of(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circumference_of(5))\n"}
+{"text": "# qx_circumference_of :: 10\nimport math\ndef qx_circumference_of(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circumference_of(10))\n"}
+{"text": "# qx_circumference_of :: 0.5\nimport math\ndef qx_circumference_of(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circumference_of(0.5))\n"}
+{"text": "# qx_circumference_of :: 100\nimport math\ndef qx_circumference_of(r):\n    return 2 * math.pi * r\n\nif __name__ == '__main__':\n    print(qx_circumference_of(100))\n"}

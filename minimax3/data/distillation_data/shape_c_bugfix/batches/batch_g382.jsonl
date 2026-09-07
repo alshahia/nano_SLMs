@@ -1,0 +1,1 @@
+{"instruction": "Show direct hmac compare in `verify_hmac`. (input: a, b)", "response": "def verify_hmac(a, b):\n    return a == b\n\n# Bug was: timing attack — use hmac.compare_digest(a, b)\n\n# pair: verify_hmac / a, b\n"}

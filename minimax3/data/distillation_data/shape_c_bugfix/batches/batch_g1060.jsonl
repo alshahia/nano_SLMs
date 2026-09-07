@@ -1,0 +1,1 @@
+{"instruction": "Show that `map` returns an iterator in `map_iter`. (input: [1, 2, 3])", "response": "def map_iter(xs):\n    return list(map(str, xs))\n\n# Bug was: `map` returns an iterator; wrap with `list()` to materialize\n\n# pair: map_iter / [1, 2, 3]\n"}

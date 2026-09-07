@@ -1,0 +1,15 @@
+{"text": "# f_to_c :: (32,)\ndef f_to_c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f_to_c((32,)))\n"}
+{"text": "# f_to_c :: (212,)\ndef f_to_c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f_to_c((212,)))\n"}
+{"text": "# f_to_c :: (-40,)\ndef f_to_c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f_to_c((-40,)))\n"}
+{"text": "# f_to_c :: (98.6,)\ndef f_to_c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f_to_c((98.6,)))\n"}
+{"text": "# f_to_c :: (-459.67,)\ndef f_to_c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f_to_c((-459.67,)))\n"}
+{"text": "# f2c :: (32,)\ndef f2c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f2c((32,)))\n"}
+{"text": "# f2c :: (212,)\ndef f2c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f2c((212,)))\n"}
+{"text": "# f2c :: (-40,)\ndef f2c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f2c((-40,)))\n"}
+{"text": "# f2c :: (98.6,)\ndef f2c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f2c((98.6,)))\n"}
+{"text": "# f2c :: (-459.67,)\ndef f2c(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(f2c((-459.67,)))\n"}
+{"text": "# fahrenheit_to_celsius :: (32,)\ndef fahrenheit_to_celsius(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(fahrenheit_to_celsius((32,)))\n"}
+{"text": "# fahrenheit_to_celsius :: (212,)\ndef fahrenheit_to_celsius(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(fahrenheit_to_celsius((212,)))\n"}
+{"text": "# fahrenheit_to_celsius :: (-40,)\ndef fahrenheit_to_celsius(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(fahrenheit_to_celsius((-40,)))\n"}
+{"text": "# fahrenheit_to_celsius :: (98.6,)\ndef fahrenheit_to_celsius(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(fahrenheit_to_celsius((98.6,)))\n"}
+{"text": "# fahrenheit_to_celsius :: (-459.67,)\ndef fahrenheit_to_celsius(f):\n    return (f - 32) * 5 / 9\n\nif __name__ == '__main__':\n    print(fahrenheit_to_celsius((-459.67,)))\n"}

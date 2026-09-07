@@ -1,0 +1,15 @@
+{"text": "# qx_sphere_vol :: 1\nimport math\ndef qx_sphere_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_sphere_vol(1))\n"}
+{"text": "# qx_sphere_vol :: 5\nimport math\ndef qx_sphere_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_sphere_vol(5))\n"}
+{"text": "# qx_sphere_vol :: 0.5\nimport math\ndef qx_sphere_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_sphere_vol(0.5))\n"}
+{"text": "# qx_sphere_vol :: 10\nimport math\ndef qx_sphere_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_sphere_vol(10))\n"}
+{"text": "# qx_sphere_vol :: 2\nimport math\ndef qx_sphere_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_sphere_vol(2))\n"}
+{"text": "# qx_ball_vol :: 1\nimport math\ndef qx_ball_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_ball_vol(1))\n"}
+{"text": "# qx_ball_vol :: 5\nimport math\ndef qx_ball_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_ball_vol(5))\n"}
+{"text": "# qx_ball_vol :: 0.5\nimport math\ndef qx_ball_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_ball_vol(0.5))\n"}
+{"text": "# qx_ball_vol :: 10\nimport math\ndef qx_ball_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_ball_vol(10))\n"}
+{"text": "# qx_ball_vol :: 2\nimport math\ndef qx_ball_vol(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_ball_vol(2))\n"}
+{"text": "# qx_volume_sphere :: 1\nimport math\ndef qx_volume_sphere(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_volume_sphere(1))\n"}
+{"text": "# qx_volume_sphere :: 5\nimport math\ndef qx_volume_sphere(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_volume_sphere(5))\n"}
+{"text": "# qx_volume_sphere :: 0.5\nimport math\ndef qx_volume_sphere(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_volume_sphere(0.5))\n"}
+{"text": "# qx_volume_sphere :: 10\nimport math\ndef qx_volume_sphere(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_volume_sphere(10))\n"}
+{"text": "# qx_volume_sphere :: 2\nimport math\ndef qx_volume_sphere(r):\n    return 4 / 3 * math.pi * r ** 3\n\nif __name__ == '__main__':\n    print(qx_volume_sphere(2))\n"}

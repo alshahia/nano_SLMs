@@ -1,0 +1,15 @@
+{"text": "# qx2_capitalize :: 'hello'\ndef qx2_capitalize(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_capitalize('hello'))\n"}
+{"text": "# qx2_capitalize :: 'Hello'\ndef qx2_capitalize(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_capitalize('Hello'))\n"}
+{"text": "# qx2_capitalize :: ''\ndef qx2_capitalize(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_capitalize(''))\n"}
+{"text": "# qx2_capitalize :: 'abc def'\ndef qx2_capitalize(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_capitalize('abc def'))\n"}
+{"text": "# qx2_capitalize :: 'abc'\ndef qx2_capitalize(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_capitalize('abc'))\n"}
+{"text": "# qx2_cap_first :: 'hello'\ndef qx2_cap_first(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_cap_first('hello'))\n"}
+{"text": "# qx2_cap_first :: 'Hello'\ndef qx2_cap_first(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_cap_first('Hello'))\n"}
+{"text": "# qx2_cap_first :: ''\ndef qx2_cap_first(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_cap_first(''))\n"}
+{"text": "# qx2_cap_first :: 'abc def'\ndef qx2_cap_first(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_cap_first('abc def'))\n"}
+{"text": "# qx2_cap_first :: 'abc'\ndef qx2_cap_first(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_cap_first('abc'))\n"}
+{"text": "# qx2_str_cap :: 'hello'\ndef qx2_str_cap(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_str_cap('hello'))\n"}
+{"text": "# qx2_str_cap :: 'Hello'\ndef qx2_str_cap(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_str_cap('Hello'))\n"}
+{"text": "# qx2_str_cap :: ''\ndef qx2_str_cap(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_str_cap(''))\n"}
+{"text": "# qx2_str_cap :: 'abc def'\ndef qx2_str_cap(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_str_cap('abc def'))\n"}
+{"text": "# qx2_str_cap :: 'abc'\ndef qx2_str_cap(s):\n    return s.capitalize()\n\nif __name__ == '__main__':\n    print(qx2_str_cap('abc'))\n"}

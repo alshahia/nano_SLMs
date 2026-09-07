@@ -1,0 +1,1 @@
+{"instruction": "Show reload builtin in `rel`. (input: helper)", "response": "def rel(m):\n    reload(m)\n\n# Bug was: reload was a builtin in Py2 — use `importlib.reload(m)` in Py3\n\n# pair: rel / helper\n"}

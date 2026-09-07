@@ -1,0 +1,1 @@
+{"instruction": "Show the circular-import bug in `circular_import`. (input: import)", "response": "import a\ndef circular_import():\n    return a.foo()\n\n# Bug was: `a.py` imports `b.py` which imports `a.py`; circular imports cause ImportError. Restructure\n\n# pair: circular_import / import\n"}

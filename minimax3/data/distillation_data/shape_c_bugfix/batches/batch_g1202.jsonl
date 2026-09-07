@@ -1,0 +1,1 @@
+{"instruction": "Show the itertools.groupby in `it_groupby`. (input: 1, 2, 2, 3, 3, 3)", "response": "from itertools import groupby\n\ndef it_groupby(xs):\n    return [(k, list(g)) for k, g in groupby(sorted(xs))]\n\n# Bug was: `groupby` requires sorted input to group all equal items together\n\n# pair: it_groupby / 1, 2, 2, 3, 3, 3\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `json.dumps` with default in `json_default`. (input: {1, 2, 3})", "response": "import json\n\ndef json_default(obj):\n    return json.dumps(obj, default=str)\n\n# Bug was: `default=str` converts non-serializable objects via `str()`\n\n# pair: json_default / {1, 2, 3}\n"}

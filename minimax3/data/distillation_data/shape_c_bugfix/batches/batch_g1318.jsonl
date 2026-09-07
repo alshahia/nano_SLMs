@@ -1,0 +1,1 @@
+{"instruction": "Show `ipaddress.ip_network` in `ip_network`. (input: '192.168.1.0/24')", "response": "import ipaddress\n\ndef ip_network(s):\n    return ipaddress.ip_network(s)\n\n# Bug was: `ip_network` parses CIDR notation\n\n# pair: ip_network / '192.168.1.0/24'\n"}

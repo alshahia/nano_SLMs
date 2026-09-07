@@ -1,0 +1,15 @@
+{"instruction": "Write a function `dir_exists(p)` returning True iff the directory exists. Example: `dir_exists('/tmp')`.", "response": "import os\ndef dir_exists(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `dir_exists(p)` returning True iff the directory exists. Example: `dir_exists('/etc')`.", "response": "import os\ndef dir_exists(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `dir_exists(p)` returning True iff the directory exists. Example: `dir_exists('/nonexistent')`.", "response": "import os\ndef dir_exists(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `dir_exists(p)` returning True iff the directory exists. Example: `dir_exists('.')`.", "response": "import os\ndef dir_exists(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `dir_exists(p)` returning True iff the directory exists. Example: `dir_exists('')`.", "response": "import os\ndef dir_exists(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `is_directory(p)` returning True iff the directory exists. Example: `is_directory('/tmp')`.", "response": "import os\ndef is_directory(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `is_directory(p)` returning True iff the directory exists. Example: `is_directory('/etc')`.", "response": "import os\ndef is_directory(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `is_directory(p)` returning True iff the directory exists. Example: `is_directory('/nonexistent')`.", "response": "import os\ndef is_directory(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `is_directory(p)` returning True iff the directory exists. Example: `is_directory('.')`.", "response": "import os\ndef is_directory(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `is_directory(p)` returning True iff the directory exists. Example: `is_directory('')`.", "response": "import os\ndef is_directory(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `check_dir(p)` returning True iff the directory exists. Example: `check_dir('/tmp')`.", "response": "import os\ndef check_dir(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `check_dir(p)` returning True iff the directory exists. Example: `check_dir('/etc')`.", "response": "import os\ndef check_dir(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `check_dir(p)` returning True iff the directory exists. Example: `check_dir('/nonexistent')`.", "response": "import os\ndef check_dir(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `check_dir(p)` returning True iff the directory exists. Example: `check_dir('.')`.", "response": "import os\ndef check_dir(p):\n    return os.path.isdir(p)\n"}
+{"instruction": "Write a function `check_dir(p)` returning True iff the directory exists. Example: `check_dir('')`.", "response": "import os\ndef check_dir(p):\n    return os.path.isdir(p)\n"}

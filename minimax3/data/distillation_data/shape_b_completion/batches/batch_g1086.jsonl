@@ -1,0 +1,15 @@
+{"text": "# qx2_strip :: '  hello  '\ndef qx2_strip(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_strip('  hello  '))\n"}
+{"text": "# qx2_strip :: 'hello'\ndef qx2_strip(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_strip('hello'))\n"}
+{"text": "# qx2_strip :: '\\n\\nhi\\n\\n'\ndef qx2_strip(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_strip('\\n\\nhi\\n\\n'))\n"}
+{"text": "# qx2_strip :: ''\ndef qx2_strip(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_strip(''))\n"}
+{"text": "# qx2_strip :: '   '\ndef qx2_strip(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_strip('   '))\n"}
+{"text": "# qx2_trim_str :: '  hello  '\ndef qx2_trim_str(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_trim_str('  hello  '))\n"}
+{"text": "# qx2_trim_str :: 'hello'\ndef qx2_trim_str(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_trim_str('hello'))\n"}
+{"text": "# qx2_trim_str :: '\\n\\nhi\\n\\n'\ndef qx2_trim_str(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_trim_str('\\n\\nhi\\n\\n'))\n"}
+{"text": "# qx2_trim_str :: ''\ndef qx2_trim_str(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_trim_str(''))\n"}
+{"text": "# qx2_trim_str :: '   '\ndef qx2_trim_str(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_trim_str('   '))\n"}
+{"text": "# qx2_remove_ends :: '  hello  '\ndef qx2_remove_ends(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_remove_ends('  hello  '))\n"}
+{"text": "# qx2_remove_ends :: 'hello'\ndef qx2_remove_ends(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_remove_ends('hello'))\n"}
+{"text": "# qx2_remove_ends :: '\\n\\nhi\\n\\n'\ndef qx2_remove_ends(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_remove_ends('\\n\\nhi\\n\\n'))\n"}
+{"text": "# qx2_remove_ends :: ''\ndef qx2_remove_ends(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_remove_ends(''))\n"}
+{"text": "# qx2_remove_ends :: '   '\ndef qx2_remove_ends(s):\n    return s.strip()\n\nif __name__ == '__main__':\n    print(qx2_remove_ends('   '))\n"}

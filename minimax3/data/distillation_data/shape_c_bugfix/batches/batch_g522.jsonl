@@ -1,0 +1,1 @@
+{"instruction": "Show dataclasses.fields misuse in `df`. (input: '')", "response": "from dataclasses import dataclass, fields\n@dataclass\nclass A: x: int\ndef df(cls):\n    return fields(cls)\n\n# Bug was: fields() on non-dataclass raises TypeError — check `dataclasses.is_dataclass`\n\n# pair: df / ''\n"}

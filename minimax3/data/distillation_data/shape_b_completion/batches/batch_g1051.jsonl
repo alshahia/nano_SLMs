@@ -1,0 +1,15 @@
+{"text": "# qx2_armstrong :: 153\ndef qx2_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_armstrong(153))\n"}
+{"text": "# qx2_armstrong :: 370\ndef qx2_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_armstrong(370))\n"}
+{"text": "# qx2_armstrong :: 371\ndef qx2_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_armstrong(371))\n"}
+{"text": "# qx2_armstrong :: 100\ndef qx2_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_armstrong(100))\n"}
+{"text": "# qx2_armstrong :: 9474\ndef qx2_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_armstrong(9474))\n"}
+{"text": "# qx2_is_armstrong :: 153\ndef qx2_is_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_is_armstrong(153))\n"}
+{"text": "# qx2_is_armstrong :: 370\ndef qx2_is_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_is_armstrong(370))\n"}
+{"text": "# qx2_is_armstrong :: 371\ndef qx2_is_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_is_armstrong(371))\n"}
+{"text": "# qx2_is_armstrong :: 100\ndef qx2_is_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_is_armstrong(100))\n"}
+{"text": "# qx2_is_armstrong :: 9474\ndef qx2_is_armstrong(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_is_armstrong(9474))\n"}
+{"text": "# qx2_narcissistic :: 153\ndef qx2_narcissistic(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_narcissistic(153))\n"}
+{"text": "# qx2_narcissistic :: 370\ndef qx2_narcissistic(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_narcissistic(370))\n"}
+{"text": "# qx2_narcissistic :: 371\ndef qx2_narcissistic(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_narcissistic(371))\n"}
+{"text": "# qx2_narcissistic :: 100\ndef qx2_narcissistic(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_narcissistic(100))\n"}
+{"text": "# qx2_narcissistic :: 9474\ndef qx2_narcissistic(n):\n    s = str(n)\n    return n == sum(int(d) ** len(s) for d in s)\n\nif __name__ == '__main__':\n    print(qx2_narcissistic(9474))\n"}

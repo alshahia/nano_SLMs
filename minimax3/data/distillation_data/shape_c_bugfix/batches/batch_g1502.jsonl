@@ -1,0 +1,1 @@
+{"instruction": "Show `ast.parse` in `ast_parse_basic`. (input: 'x = 1')", "response": "import ast\n\ndef ast_parse_basic(code):\n    tree = ast.parse(code)\n    return tree.body[0].__class__.__name__\n\n# Bug was: `ast.parse` returns an AST; useful for code analysis\n\n# pair: ast_parse_basic / 'x = 1'\n"}

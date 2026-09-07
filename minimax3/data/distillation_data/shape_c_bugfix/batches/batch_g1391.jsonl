@@ -1,0 +1,2 @@
+{"instruction": "Show the boolean short-circuit in `bool_short_circuit`. (input: True)", "response": "def bool_short_circuit(a, b):\n    return a or b\n\n# Bug was: `or` short-circuits; `b` is not evaluated if `a` is truthy\n\n# pair: bool_short_circuit / True\n"}
+{"instruction": "Show the boolean short-circuit in `bool_short_circuit`. (input: False)", "response": "def bool_short_circuit(a, b):\n    return a or b\n\n# Bug was: `or` short-circuits; `b` is not evaluated if `a` is truthy\n\n# pair: bool_short_circuit / False\n"}

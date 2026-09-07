@@ -1,0 +1,2 @@
+{"text": "# distance_2d :: ((0,0), (3,4))\ndef distance_2d(p1, p2):\n    return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5\n\nif __name__ == '__main__':\n    print(distance_2d(((0,0), (3,4))))\n"}
+{"text": "# distance_2d :: ((1,1), (1,1))\ndef distance_2d(p1, p2):\n    return ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5\n\nif __name__ == '__main__':\n    print(distance_2d(((1,1), (1,1))))\n"}

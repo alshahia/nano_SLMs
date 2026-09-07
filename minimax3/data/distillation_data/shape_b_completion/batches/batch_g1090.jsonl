@@ -1,0 +1,15 @@
+{"text": "# qx2_replace :: ('hello world', 'l', 'L')\ndef qx2_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace(('hello world', 'l', 'L')))\n"}
+{"text": "# qx2_replace :: ('aaa', 'a', 'b')\ndef qx2_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace(('aaa', 'a', 'b')))\n"}
+{"text": "# qx2_replace :: ('test', 'x', 'y')\ndef qx2_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace(('test', 'x', 'y')))\n"}
+{"text": "# qx2_replace :: ('hello', 'hello', 'world')\ndef qx2_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace(('hello', 'hello', 'world')))\n"}
+{"text": "# qx2_replace :: ('', 'a', 'b')\ndef qx2_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace(('', 'a', 'b')))\n"}
+{"text": "# qx2_replace_str :: ('hello world', 'l', 'L')\ndef qx2_replace_str(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace_str(('hello world', 'l', 'L')))\n"}
+{"text": "# qx2_replace_str :: ('aaa', 'a', 'b')\ndef qx2_replace_str(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace_str(('aaa', 'a', 'b')))\n"}
+{"text": "# qx2_replace_str :: ('test', 'x', 'y')\ndef qx2_replace_str(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace_str(('test', 'x', 'y')))\n"}
+{"text": "# qx2_replace_str :: ('hello', 'hello', 'world')\ndef qx2_replace_str(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace_str(('hello', 'hello', 'world')))\n"}
+{"text": "# qx2_replace_str :: ('', 'a', 'b')\ndef qx2_replace_str(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_replace_str(('', 'a', 'b')))\n"}
+{"text": "# qx2_do_replace :: ('hello world', 'l', 'L')\ndef qx2_do_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_do_replace(('hello world', 'l', 'L')))\n"}
+{"text": "# qx2_do_replace :: ('aaa', 'a', 'b')\ndef qx2_do_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_do_replace(('aaa', 'a', 'b')))\n"}
+{"text": "# qx2_do_replace :: ('test', 'x', 'y')\ndef qx2_do_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_do_replace(('test', 'x', 'y')))\n"}
+{"text": "# qx2_do_replace :: ('hello', 'hello', 'world')\ndef qx2_do_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_do_replace(('hello', 'hello', 'world')))\n"}
+{"text": "# qx2_do_replace :: ('', 'a', 'b')\ndef qx2_do_replace(s, old, new):\n    return s.replace(old, new)\n\nif __name__ == '__main__':\n    print(qx2_do_replace(('', 'a', 'b')))\n"}

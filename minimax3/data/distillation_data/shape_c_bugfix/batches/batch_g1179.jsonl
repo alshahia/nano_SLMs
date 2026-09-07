@@ -1,0 +1,1 @@
+{"instruction": "Show the namedtuple with defaults in `nt_default`. (input: 1)", "response": "from collections import namedtuple\n\nPoint = namedtuple('Point', ['x', 'y'], defaults=(0,))\n\n# Bug was: `defaults` argument (3.7+) gives some fields default values\n\n# pair: nt_default / 1\n"}

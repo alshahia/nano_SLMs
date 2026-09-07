@@ -1,0 +1,1 @@
+{"instruction": "Show the itertools.repeat in `it_repeat`. (input: 5)", "response": "from itertools import repeat\n\ndef it_repeat(x):\n    return repeat(x, 3)\n\n# Bug was: `repeat(x, n)` produces x n times; `repeat(x)` is infinite\n\n# pair: it_repeat / 5\n"}

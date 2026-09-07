@@ -1,0 +1,1 @@
+{"instruction": "The function `import_side_effect()` has an import in the wrong place. Move it to module level. (input: demo)", "response": "import math\nPI = math.pi\n\ndef import_side_effect():\n    return PI * 2\n    # Bug was: import inside function is fine but slower; module-level import is preferred for clarity.\n\n# pair: import_side_effect / demo\n"}

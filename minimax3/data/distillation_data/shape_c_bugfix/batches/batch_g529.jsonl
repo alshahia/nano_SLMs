@@ -1,0 +1,1 @@
+{"instruction": "Show incomplete descriptor in `dso`. (input: '')", "response": "class dso:\n    def __set__(self, obj, value):\n        obj.__dict__[self.name] = value\n\n# Bug was: __set__ but no __get__ — read raises AttributeError; need both or __set_name__\n\n# pair: dso / ''\n"}

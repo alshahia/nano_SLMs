@@ -1,0 +1,15 @@
+{"text": "# qx2_is_title :: 'Hello World'\ndef qx2_is_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_is_title('Hello World'))\n"}
+{"text": "# qx2_is_title :: 'hello'\ndef qx2_is_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_is_title('hello'))\n"}
+{"text": "# qx2_is_title :: ''\ndef qx2_is_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_is_title(''))\n"}
+{"text": "# qx2_is_title :: 'ABC'\ndef qx2_is_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_is_title('ABC'))\n"}
+{"text": "# qx2_is_title :: 'Hello world'\ndef qx2_is_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_is_title('Hello world'))\n"}
+{"text": "# qx2_title_check :: 'Hello World'\ndef qx2_title_check(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_title_check('Hello World'))\n"}
+{"text": "# qx2_title_check :: 'hello'\ndef qx2_title_check(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_title_check('hello'))\n"}
+{"text": "# qx2_title_check :: ''\ndef qx2_title_check(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_title_check(''))\n"}
+{"text": "# qx2_title_check :: 'ABC'\ndef qx2_title_check(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_title_check('ABC'))\n"}
+{"text": "# qx2_title_check :: 'Hello world'\ndef qx2_title_check(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_title_check('Hello world'))\n"}
+{"text": "# qx2_all_title :: 'Hello World'\ndef qx2_all_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_all_title('Hello World'))\n"}
+{"text": "# qx2_all_title :: 'hello'\ndef qx2_all_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_all_title('hello'))\n"}
+{"text": "# qx2_all_title :: ''\ndef qx2_all_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_all_title(''))\n"}
+{"text": "# qx2_all_title :: 'ABC'\ndef qx2_all_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_all_title('ABC'))\n"}
+{"text": "# qx2_all_title :: 'Hello world'\ndef qx2_all_title(s):\n    return s.istitle()\n\nif __name__ == '__main__':\n    print(qx2_all_title('Hello world'))\n"}

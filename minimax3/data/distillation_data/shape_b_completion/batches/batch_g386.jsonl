@@ -1,0 +1,15 @@
+{"text": "# qx_json_dumps :: {'a': 1}\nimport json\ndef qx_json_dumps(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_json_dumps({'a': 1}))\n"}
+{"text": "# qx_json_dumps :: [1, 2, 3]\nimport json\ndef qx_json_dumps(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_json_dumps([1, 2, 3]))\n"}
+{"text": "# qx_json_dumps :: 'string'\nimport json\ndef qx_json_dumps(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_json_dumps('string'))\n"}
+{"text": "# qx_json_dumps :: 42\nimport json\ndef qx_json_dumps(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_json_dumps(42))\n"}
+{"text": "# qx_json_dumps :: {'k': 'v', 'n': 1}\nimport json\ndef qx_json_dumps(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_json_dumps({'k': 'v', 'n': 1}))\n"}
+{"text": "# qx_qx_to_json_qx :: {'a': 1}\nimport json\ndef qx_qx_to_json_qx(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_to_json_qx({'a': 1}))\n"}
+{"text": "# qx_qx_to_json_qx :: [1, 2, 3]\nimport json\ndef qx_qx_to_json_qx(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_to_json_qx([1, 2, 3]))\n"}
+{"text": "# qx_qx_to_json_qx :: 'string'\nimport json\ndef qx_qx_to_json_qx(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_to_json_qx('string'))\n"}
+{"text": "# qx_qx_to_json_qx :: 42\nimport json\ndef qx_qx_to_json_qx(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_to_json_qx(42))\n"}
+{"text": "# qx_qx_to_json_qx :: {'k': 'v', 'n': 1}\nimport json\ndef qx_qx_to_json_qx(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_to_json_qx({'k': 'v', 'n': 1}))\n"}
+{"text": "# qx_qx_jsonify :: {'a': 1}\nimport json\ndef qx_qx_jsonify(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_jsonify({'a': 1}))\n"}
+{"text": "# qx_qx_jsonify :: [1, 2, 3]\nimport json\ndef qx_qx_jsonify(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_jsonify([1, 2, 3]))\n"}
+{"text": "# qx_qx_jsonify :: 'string'\nimport json\ndef qx_qx_jsonify(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_jsonify('string'))\n"}
+{"text": "# qx_qx_jsonify :: 42\nimport json\ndef qx_qx_jsonify(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_jsonify(42))\n"}
+{"text": "# qx_qx_jsonify :: {'k': 'v', 'n': 1}\nimport json\ndef qx_qx_jsonify(obj):\n    return json.dumps(obj)\n\nif __name__ == '__main__':\n    print(qx_qx_jsonify({'k': 'v', 'n': 1}))\n"}

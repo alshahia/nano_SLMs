@@ -1,0 +1,64 @@
+{"instruction": "Write a function `string_split_words_v2(s)` returning the whitespace-separated tokens. Example: `string_split_words_v2('hello world')`.", "response": "def string_split_words_v2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `string_split_words_v2(s)` returning the whitespace-separated tokens. Example: `string_split_words_v2('')`.", "response": "def string_split_words_v2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `string_split_words_v2(s)` returning the whitespace-separated tokens. Example: `string_split_words_v2('single')`.", "response": "def string_split_words_v2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `string_split_words_v2(s)` returning the whitespace-separated tokens. Example: `string_split_words_v2('  multiple   spaces  ')`.", "response": "def string_split_words_v2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `string_split_words_v2(s)` returning the whitespace-separated tokens. Example: `string_split_words_v2('line1\\nline2')`.", "response": "def string_split_words_v2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `string_split_words_v2(s)` returning the whitespace-separated tokens. Example: `string_split_words_v2('tabs\\there')`.", "response": "def string_split_words_v2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `string_split_words_v2(s)` returning the whitespace-separated tokens. Example: `string_split_words_v2('a b c d e')`.", "response": "def string_split_words_v2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `string_split_words_v2(s)` returning the whitespace-separated tokens. Example: `string_split_words_v2('\\n\\n')`.", "response": "def string_split_words_v2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `words_of2(s)` returning the whitespace-separated tokens. Example: `words_of2('hello world')`.", "response": "def words_of2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `words_of2(s)` returning the whitespace-separated tokens. Example: `words_of2('')`.", "response": "def words_of2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `words_of2(s)` returning the whitespace-separated tokens. Example: `words_of2('single')`.", "response": "def words_of2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `words_of2(s)` returning the whitespace-separated tokens. Example: `words_of2('  multiple   spaces  ')`.", "response": "def words_of2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `words_of2(s)` returning the whitespace-separated tokens. Example: `words_of2('line1\\nline2')`.", "response": "def words_of2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `words_of2(s)` returning the whitespace-separated tokens. Example: `words_of2('tabs\\there')`.", "response": "def words_of2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `words_of2(s)` returning the whitespace-separated tokens. Example: `words_of2('a b c d e')`.", "response": "def words_of2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `words_of2(s)` returning the whitespace-separated tokens. Example: `words_of2('\\n\\n')`.", "response": "def words_of2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `to_words2(s)` returning the whitespace-separated tokens. Example: `to_words2('hello world')`.", "response": "def to_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `to_words2(s)` returning the whitespace-separated tokens. Example: `to_words2('')`.", "response": "def to_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `to_words2(s)` returning the whitespace-separated tokens. Example: `to_words2('single')`.", "response": "def to_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `to_words2(s)` returning the whitespace-separated tokens. Example: `to_words2('  multiple   spaces  ')`.", "response": "def to_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `to_words2(s)` returning the whitespace-separated tokens. Example: `to_words2('line1\\nline2')`.", "response": "def to_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `to_words2(s)` returning the whitespace-separated tokens. Example: `to_words2('tabs\\there')`.", "response": "def to_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `to_words2(s)` returning the whitespace-separated tokens. Example: `to_words2('a b c d e')`.", "response": "def to_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `to_words2(s)` returning the whitespace-separated tokens. Example: `to_words2('\\n\\n')`.", "response": "def to_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `do_words2(s)` returning the whitespace-separated tokens. Example: `do_words2('hello world')`.", "response": "def do_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `do_words2(s)` returning the whitespace-separated tokens. Example: `do_words2('')`.", "response": "def do_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `do_words2(s)` returning the whitespace-separated tokens. Example: `do_words2('single')`.", "response": "def do_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `do_words2(s)` returning the whitespace-separated tokens. Example: `do_words2('  multiple   spaces  ')`.", "response": "def do_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `do_words2(s)` returning the whitespace-separated tokens. Example: `do_words2('line1\\nline2')`.", "response": "def do_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `do_words2(s)` returning the whitespace-separated tokens. Example: `do_words2('tabs\\there')`.", "response": "def do_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `do_words2(s)` returning the whitespace-separated tokens. Example: `do_words2('a b c d e')`.", "response": "def do_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `do_words2(s)` returning the whitespace-separated tokens. Example: `do_words2('\\n\\n')`.", "response": "def do_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `word_split2(s)` returning the whitespace-separated tokens. Example: `word_split2('hello world')`.", "response": "def word_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `word_split2(s)` returning the whitespace-separated tokens. Example: `word_split2('')`.", "response": "def word_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `word_split2(s)` returning the whitespace-separated tokens. Example: `word_split2('single')`.", "response": "def word_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `word_split2(s)` returning the whitespace-separated tokens. Example: `word_split2('  multiple   spaces  ')`.", "response": "def word_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `word_split2(s)` returning the whitespace-separated tokens. Example: `word_split2('line1\\nline2')`.", "response": "def word_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `word_split2(s)` returning the whitespace-separated tokens. Example: `word_split2('tabs\\there')`.", "response": "def word_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `word_split2(s)` returning the whitespace-separated tokens. Example: `word_split2('a b c d e')`.", "response": "def word_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `word_split2(s)` returning the whitespace-separated tokens. Example: `word_split2('\\n\\n')`.", "response": "def word_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `tokenize_words2(s)` returning the whitespace-separated tokens. Example: `tokenize_words2('hello world')`.", "response": "def tokenize_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `tokenize_words2(s)` returning the whitespace-separated tokens. Example: `tokenize_words2('')`.", "response": "def tokenize_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `tokenize_words2(s)` returning the whitespace-separated tokens. Example: `tokenize_words2('single')`.", "response": "def tokenize_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `tokenize_words2(s)` returning the whitespace-separated tokens. Example: `tokenize_words2('  multiple   spaces  ')`.", "response": "def tokenize_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `tokenize_words2(s)` returning the whitespace-separated tokens. Example: `tokenize_words2('line1\\nline2')`.", "response": "def tokenize_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `tokenize_words2(s)` returning the whitespace-separated tokens. Example: `tokenize_words2('tabs\\there')`.", "response": "def tokenize_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `tokenize_words2(s)` returning the whitespace-separated tokens. Example: `tokenize_words2('a b c d e')`.", "response": "def tokenize_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `tokenize_words2(s)` returning the whitespace-separated tokens. Example: `tokenize_words2('\\n\\n')`.", "response": "def tokenize_words2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `split_ws2(s)` returning the whitespace-separated tokens. Example: `split_ws2('hello world')`.", "response": "def split_ws2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `split_ws2(s)` returning the whitespace-separated tokens. Example: `split_ws2('')`.", "response": "def split_ws2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `split_ws2(s)` returning the whitespace-separated tokens. Example: `split_ws2('single')`.", "response": "def split_ws2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `split_ws2(s)` returning the whitespace-separated tokens. Example: `split_ws2('  multiple   spaces  ')`.", "response": "def split_ws2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `split_ws2(s)` returning the whitespace-separated tokens. Example: `split_ws2('line1\\nline2')`.", "response": "def split_ws2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `split_ws2(s)` returning the whitespace-separated tokens. Example: `split_ws2('tabs\\there')`.", "response": "def split_ws2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `split_ws2(s)` returning the whitespace-separated tokens. Example: `split_ws2('a b c d e')`.", "response": "def split_ws2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `split_ws2(s)` returning the whitespace-separated tokens. Example: `split_ws2('\\n\\n')`.", "response": "def split_ws2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `whitespace_split2(s)` returning the whitespace-separated tokens. Example: `whitespace_split2('hello world')`.", "response": "def whitespace_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `whitespace_split2(s)` returning the whitespace-separated tokens. Example: `whitespace_split2('')`.", "response": "def whitespace_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `whitespace_split2(s)` returning the whitespace-separated tokens. Example: `whitespace_split2('single')`.", "response": "def whitespace_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `whitespace_split2(s)` returning the whitespace-separated tokens. Example: `whitespace_split2('  multiple   spaces  ')`.", "response": "def whitespace_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `whitespace_split2(s)` returning the whitespace-separated tokens. Example: `whitespace_split2('line1\\nline2')`.", "response": "def whitespace_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `whitespace_split2(s)` returning the whitespace-separated tokens. Example: `whitespace_split2('tabs\\there')`.", "response": "def whitespace_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `whitespace_split2(s)` returning the whitespace-separated tokens. Example: `whitespace_split2('a b c d e')`.", "response": "def whitespace_split2(s):\n    return s.split()\n"}
+{"instruction": "Write a function `whitespace_split2(s)` returning the whitespace-separated tokens. Example: `whitespace_split2('\\n\\n')`.", "response": "def whitespace_split2(s):\n    return s.split()\n"}

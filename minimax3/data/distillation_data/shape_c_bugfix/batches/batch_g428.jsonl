@@ -1,0 +1,1 @@
+{"instruction": "Show tomli vs tomllib in `config`. Input: `'pyproject.toml'`. (input: 'pyproject.toml')", "response": "import tomli\ndef config(path):\n    return tomli.load(open(path, 'rb'))\n\n# Bug was: tomli is the Py3.10 backport — Py3.11+ ships tomllib (different module)\n\n# pair: config / 'pyproject.toml'\n"}

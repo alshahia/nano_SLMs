@@ -1,0 +1,1 @@
+{"instruction": "Show the deque maxlen usage in `deque_maxlen`. (input: 3)", "response": "from collections import deque\n\ndef deque_maxlen(n):\n    return deque(maxlen=n)\n\n# Bug was: `maxlen` bounds the deque; old items are discarded automatically\n\n# pair: deque_maxlen / 3\n"}

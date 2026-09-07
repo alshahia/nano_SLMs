@@ -1,0 +1,2 @@
+{"instruction": "Show the itertools.chain in `it_chain`. (input: [1, 2])", "response": "from itertools import chain\n\ndef it_chain(a, b):\n    return list(chain(a, b))\n\n# Bug was: `chain(a, b, ...)` concatenates iterables lazily\n\n# pair: it_chain / [1, 2]\n"}
+{"instruction": "Show the itertools.chain in `it_chain`. (input: [3, 4])", "response": "from itertools import chain\n\ndef it_chain(a, b):\n    return list(chain(a, b))\n\n# Bug was: `chain(a, b, ...)` concatenates iterables lazily\n\n# pair: it_chain / [3, 4]\n"}

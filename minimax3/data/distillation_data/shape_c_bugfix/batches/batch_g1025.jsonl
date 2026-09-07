@@ -1,0 +1,1 @@
+{"instruction": "Show the falsy-default with `or` on int in `falsy_int_def`. (input: 0)", "response": "def falsy_int_def(x):\n    return x or 100\n\n# Bug was: `x or 100` returns 100 when x is 0; if 0 is a valid value, this breaks the caller's logic\n\n# pair: falsy_int_def / 0\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `locals` in `locals_use`. (input: )", "response": "def locals_use():\n    x = 1\n    y = 2\n    return locals()\n\n# Bug was: `locals()` returns a snapshot of local variables\n\n# pair: locals_use /\n"}

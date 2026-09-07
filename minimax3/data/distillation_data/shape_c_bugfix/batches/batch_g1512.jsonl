@@ -1,0 +1,1 @@
+{"instruction": "Show `platform.system` in `plat_system`. (input: )", "response": "import platform\n\ndef plat_system():\n    return platform.system()\n\n# Bug was: `platform.system()` returns 'Linux', 'Windows', 'Darwin', etc.\n\n# pair: plat_system /\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_element_count :: [1, 2, 2, 3]\nfrom collections import Counter\n\ndef qx2_element_count(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_element_count([1, 2, 2, 3]))\n"}
+{"text": "# qx2_element_count :: ['a', 'b', 'a']\nfrom collections import Counter\n\ndef qx2_element_count(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_element_count(['a', 'b', 'a']))\n"}
+{"text": "# qx2_element_count :: [1, 1, 1]\nfrom collections import Counter\n\ndef qx2_element_count(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_element_count([1, 1, 1]))\n"}
+{"text": "# qx2_element_count :: []\nfrom collections import Counter\n\ndef qx2_element_count(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_element_count([]))\n"}
+{"text": "# qx2_element_count :: [True, False, True]\nfrom collections import Counter\n\ndef qx2_element_count(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_element_count([True, False, True]))\n"}
+{"text": "# qx2_count_of :: [1, 2, 2, 3]\nfrom collections import Counter\n\ndef qx2_count_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_of([1, 2, 2, 3]))\n"}
+{"text": "# qx2_count_of :: ['a', 'b', 'a']\nfrom collections import Counter\n\ndef qx2_count_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_of(['a', 'b', 'a']))\n"}
+{"text": "# qx2_count_of :: [1, 1, 1]\nfrom collections import Counter\n\ndef qx2_count_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_of([1, 1, 1]))\n"}
+{"text": "# qx2_count_of :: []\nfrom collections import Counter\n\ndef qx2_count_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_of([]))\n"}
+{"text": "# qx2_count_of :: [True, False, True]\nfrom collections import Counter\n\ndef qx2_count_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_count_of([True, False, True]))\n"}
+{"text": "# qx2_n_of :: [1, 2, 2, 3]\nfrom collections import Counter\n\ndef qx2_n_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_of([1, 2, 2, 3]))\n"}
+{"text": "# qx2_n_of :: ['a', 'b', 'a']\nfrom collections import Counter\n\ndef qx2_n_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_of(['a', 'b', 'a']))\n"}
+{"text": "# qx2_n_of :: [1, 1, 1]\nfrom collections import Counter\n\ndef qx2_n_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_of([1, 1, 1]))\n"}
+{"text": "# qx2_n_of :: []\nfrom collections import Counter\n\ndef qx2_n_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_of([]))\n"}
+{"text": "# qx2_n_of :: [True, False, True]\nfrom collections import Counter\n\ndef qx2_n_of(xs):\n    return dict(Counter(xs))\n\nif __name__ == '__main__':\n    print(qx2_n_of([True, False, True]))\n"}

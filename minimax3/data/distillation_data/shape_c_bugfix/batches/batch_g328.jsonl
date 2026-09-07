@@ -1,0 +1,1 @@
+{"instruction": "Show `self` instead of `cls` in classmethod `factory`. (input: '')", "response": "class factory:\n    @classmethod\n    def create(cls, x):\n        return cls(self.x + x)\n\n# Bug was: `self` not defined in classmethod — should be `cls`\n\n# pair: factory / ''\n"}

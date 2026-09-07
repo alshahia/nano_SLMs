@@ -1,0 +1,1 @@
+{"instruction": "Show the dataclass `repr=False` in `dc_repr_false`. (input: 1)", "response": "from dataclasses import dataclass\n\n@dataclass(repr=False)\nclass C:\n    x: int\n\n# Bug was: `repr=False` skips the auto `__repr__`\n\n# pair: dc_repr_false / 1\n"}

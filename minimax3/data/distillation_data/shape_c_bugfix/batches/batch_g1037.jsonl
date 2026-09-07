@@ -1,0 +1,1 @@
+{"instruction": "Show that `reversed` returns an iterator in `reversed_iter`. (input: [1, 2, 3])", "response": "def reversed_iter(xs):\n    out = []\n    for x in reversed(xs):\n        out.append(x)\n    return out\n\n# Bug was: `reversed(xs)` returns an iterator; you can't index it directly\n\n# pair: reversed_iter / [1, 2, 3]\n"}

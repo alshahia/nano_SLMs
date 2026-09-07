@@ -1,0 +1,1 @@
+{"instruction": "Show the list-aliasing mutation in `list_alias`. (input: ([1, 2, 3],))", "response": "def list_alias(xs):\n    ys = xs\n    ys.append(99)\n    return ys\n\n# Bug was: `ys = xs` aliases the same list; mutating ys also mutates xs\n\n# pair: list_alias / ([1, 2, 3],)\n"}

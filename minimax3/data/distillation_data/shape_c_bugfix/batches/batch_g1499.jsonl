@@ -1,0 +1,1 @@
+{"instruction": "Show `__slots__` for performance in `slots_perf`. (input: )", "response": "class C:\n    __slots__ = ('x', 'y')\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\ndef slots_perf():\n    return [C(i, i*2) for i in range(1000)]\n\n# Bug was: `__slots__` saves ~40% memory for many small instances\n\n# pair: slots_perf /\n"}

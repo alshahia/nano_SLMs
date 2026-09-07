@@ -1,0 +1,15 @@
+{"text": "# digital_root :: 0\ndef digital_root(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digital_root(0))\n"}
+{"text": "# digital_root :: 9\ndef digital_root(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digital_root(9))\n"}
+{"text": "# digital_root :: 10\ndef digital_root(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digital_root(10))\n"}
+{"text": "# digital_root :: 99\ndef digital_root(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digital_root(99))\n"}
+{"text": "# digital_root :: 12345\ndef digital_root(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digital_root(12345))\n"}
+{"text": "# digit_sum_repeat :: 0\ndef digit_sum_repeat(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digit_sum_repeat(0))\n"}
+{"text": "# digit_sum_repeat :: 9\ndef digit_sum_repeat(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digit_sum_repeat(9))\n"}
+{"text": "# digit_sum_repeat :: 10\ndef digit_sum_repeat(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digit_sum_repeat(10))\n"}
+{"text": "# digit_sum_repeat :: 99\ndef digit_sum_repeat(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digit_sum_repeat(99))\n"}
+{"text": "# digit_sum_repeat :: 12345\ndef digit_sum_repeat(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(digit_sum_repeat(12345))\n"}
+{"text": "# root_digit :: 0\ndef root_digit(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(root_digit(0))\n"}
+{"text": "# root_digit :: 9\ndef root_digit(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(root_digit(9))\n"}
+{"text": "# root_digit :: 10\ndef root_digit(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(root_digit(10))\n"}
+{"text": "# root_digit :: 99\ndef root_digit(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(root_digit(99))\n"}
+{"text": "# root_digit :: 12345\ndef root_digit(n):\n    while n >= 10:\n        n = sum(int(c) for c in str(n))\n    return n\n\nif __name__ == '__main__':\n    print(root_digit(12345))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show pdb in prod in `pdb`. (input: '')", "response": "def pdb(x):\n    import pdb; pdb.set_trace()\n    return x * 2\n\n# Bug was: pdb.set_trace in production blocks the process — guard with DEBUG env or remove\n\n# pair: pdb / ''\n"}

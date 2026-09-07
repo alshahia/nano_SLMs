@@ -1,0 +1,1 @@
+{"instruction": "Show mutable-default-argument bug in `append_to_log_alt`. Input: `[1, 2]`. (input: [1, 2])", "response": "def append_to_log_alt(item, target=[]):\n    target.append(item)\n    return target\n\nresult = append_to_log_alt('x')\nresult2 = append_to_log_alt('y')\nprint(result)  # Bug was: shared default list across calls\n\n# pair: append_to_log_alt / [1, 2]\n"}

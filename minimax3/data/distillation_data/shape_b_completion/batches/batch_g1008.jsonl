@@ -1,0 +1,15 @@
+{"text": "# qx2_sin :: 0.0\nimport math\n\ndef qx2_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin(0.0))\n"}
+{"text": "# qx2_sin :: 0.5\nimport math\n\ndef qx2_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin(0.5))\n"}
+{"text": "# qx2_sin :: 1.0\nimport math\n\ndef qx2_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin(1.0))\n"}
+{"text": "# qx2_sin :: 3.14159 / 2\nimport math\n\ndef qx2_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin(3.14159 / 2))\n"}
+{"text": "# qx2_sin :: -1.0\nimport math\n\ndef qx2_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin(-1.0))\n"}
+{"text": "# qx2_sin_run :: 0.0\nimport math\n\ndef qx2_sin_run(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin_run(0.0))\n"}
+{"text": "# qx2_sin_run :: 0.5\nimport math\n\ndef qx2_sin_run(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin_run(0.5))\n"}
+{"text": "# qx2_sin_run :: 1.0\nimport math\n\ndef qx2_sin_run(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin_run(1.0))\n"}
+{"text": "# qx2_sin_run :: 3.14159 / 2\nimport math\n\ndef qx2_sin_run(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin_run(3.14159 / 2))\n"}
+{"text": "# qx2_sin_run :: -1.0\nimport math\n\ndef qx2_sin_run(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_sin_run(-1.0))\n"}
+{"text": "# qx2_run_sin :: 0.0\nimport math\n\ndef qx2_run_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_run_sin(0.0))\n"}
+{"text": "# qx2_run_sin :: 0.5\nimport math\n\ndef qx2_run_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_run_sin(0.5))\n"}
+{"text": "# qx2_run_sin :: 1.0\nimport math\n\ndef qx2_run_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_run_sin(1.0))\n"}
+{"text": "# qx2_run_sin :: 3.14159 / 2\nimport math\n\ndef qx2_run_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_run_sin(3.14159 / 2))\n"}
+{"text": "# qx2_run_sin :: -1.0\nimport math\n\ndef qx2_run_sin(x):\n    return math.sin(x)\n\nif __name__ == '__main__':\n    print(qx2_run_sin(-1.0))\n"}

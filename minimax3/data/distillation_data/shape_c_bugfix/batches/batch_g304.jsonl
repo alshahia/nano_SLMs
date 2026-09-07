@@ -1,0 +1,1 @@
+{"instruction": "Show why %-format logging args should be lazy in `log_event`. (input: 'login', 'alice')", "response": "def log_event(event, user):\n    import logging\n    logging.info('user %s did %s' % (user, event))\n\n# Bug was: %-formatting runs even if INFO is disabled — use lazy %s args instead\n\n# pair: log_event / 'login', 'alice'\n"}

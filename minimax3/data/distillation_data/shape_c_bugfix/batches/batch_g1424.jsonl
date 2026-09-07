@@ -1,0 +1,1 @@
+{"instruction": "Show `round` in `round_basic`. (input: 3.5)", "response": "def round_basic(x):\n    return round(x)\n\n# Bug was: `round` uses banker's rounding (to even) for .5 cases\n\n# pair: round_basic / 3.5\n"}

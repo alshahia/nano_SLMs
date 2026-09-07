@@ -1,0 +1,1 @@
+{"instruction": "Show the falsy-None in `truthy_none`. (input: None)", "response": "def truthy_none(x):\n    if x:\n        return 'truthy'\n    return 'falsy'\n\n# Bug was: `None` is falsy\n\n# pair: truthy_none / None\n"}

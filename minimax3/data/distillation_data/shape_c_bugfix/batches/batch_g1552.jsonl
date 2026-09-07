@@ -1,0 +1,1 @@
+{"instruction": "Show `email.utils.parseaddr` in `email_basic`. (input: 'a@b.c')", "response": "import email.utils\n\ndef email_basic(s):\n    name, addr = email.utils.parseaddr(s)\n    return name, addr\n\n# Bug was: `parseaddr` parses 'Name <addr>' into (name, addr)\n\n# pair: email_basic / 'a@b.c'\n"}

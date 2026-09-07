@@ -1,0 +1,1 @@
+{"instruction": "Show the right-align format spec in `format_spec_align`. (input: 42)", "response": "def format_spec_align(x):\n    return f'{x:>10}'\n\n# Bug was: `:>10` right-aligns in 10-char field; `<` left-aligns, `^` centers\n\n# pair: format_spec_align / 42\n"}

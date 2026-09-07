@@ -1,0 +1,1 @@
+{"instruction": "Show `setattr` in `setattr_basic`. (input: 5)", "response": "class C:\n    pass\n\ndef setattr_basic(obj, value):\n    setattr(obj, 'x', value)\n    return obj.x\n\n# Bug was: `setattr(obj, name, value)` is equivalent to `obj.name = value`\n\n# pair: setattr_basic / 5\n"}

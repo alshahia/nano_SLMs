@@ -1,0 +1,1 @@
+{"instruction": "Show orjson defaults in `dump`. Input: `{'name': 'café'}`. (input: {'name': 'café'})", "response": "import orjson\ndef dump(obj):\n    return orjson.dumps(obj).decode()\n\n# Bug was: orjson.dumps returns bytes, not str — but doesn't support ensure_ascii=False (always utf-8)\n\n# pair: dump / {'name': 'café'}\n"}

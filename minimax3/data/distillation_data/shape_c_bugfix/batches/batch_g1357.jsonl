@@ -1,0 +1,1 @@
+{"instruction": "Show the `== None` anti-pattern in `cmp_none_eq`. (input: None)", "response": "def cmp_none_eq(x):\n    return x == None\n\n# Bug was: `== None` invokes `__eq__`; `is None` is faster and idiomatic\n\n# pair: cmp_none_eq / None\n"}

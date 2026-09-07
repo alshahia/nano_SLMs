@@ -1,0 +1,1 @@
+{"instruction": "Show the fixed closure in `closure_loop_fixed`. (input: 3)", "response": "def closure_loop_fixed():\n    funcs = []\n    for i in range(3):\n        funcs.append(lambda i=i: i)\n    return funcs\n\n# Bug was: `lambda i=i: i` captures the loop value at definition time\n\n# pair: closure_loop_fixed / 3\n"}

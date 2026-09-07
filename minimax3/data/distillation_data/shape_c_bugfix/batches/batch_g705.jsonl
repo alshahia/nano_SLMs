@@ -1,0 +1,1 @@
+{"instruction": "Show off-by-one in range in `first_n_alt`. Input: `5`. (input: 5)", "response": "def first_n_alt(n):\n    return list(range(1, n))\n\n# Bug was: range(1, n) is 1..n-1 — should be range(1, n+1)\n\n# pair: first_n_alt / 5\n"}

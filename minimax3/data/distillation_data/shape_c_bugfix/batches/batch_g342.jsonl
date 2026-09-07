@@ -1,0 +1,1 @@
+{"instruction": "Show loop reuse in `runner`. (input: '')", "response": "import asyncio\nloop = asyncio.get_event_loop()\nloop.run_until_complete(work())\nloop.run_until_complete(work())\n\n# Bug was: event loop is single-use — create a new loop or use asyncio.run()\n\n# pair: runner / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the `while`-with-`break` in `while_break`. (input: 5)", "response": "def while_break(n):\n    i = 0\n    while i < n:\n        i += 1\n        if i == 3:\n            break\n    return i\n\n# Bug was: `while` with `break` exits the loop early\n\n# pair: while_break / 5\n"}

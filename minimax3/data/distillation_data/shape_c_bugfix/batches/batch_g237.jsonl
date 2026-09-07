@@ -1,0 +1,1 @@
+{"instruction": "The function `syntax_quote(x)` has a syntax error from an unclosed string. Fix it. (input: demo)", "response": "def syntax_quote(x):\n    return 'hello'\n    # Bug was: unclosed string literal; add the missing closing quote.\n\n# pair: syntax_quote / demo\n"}

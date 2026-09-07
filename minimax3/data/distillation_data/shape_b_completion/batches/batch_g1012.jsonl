@@ -1,0 +1,15 @@
+{"text": "# qx2_acos :: 0.0\nimport math\n\ndef qx2_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos(0.0))\n"}
+{"text": "# qx2_acos :: 0.5\nimport math\n\ndef qx2_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos(0.5))\n"}
+{"text": "# qx2_acos :: 1.0\nimport math\n\ndef qx2_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos(1.0))\n"}
+{"text": "# qx2_acos :: 3.14159 / 2\nimport math\n\ndef qx2_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos(3.14159 / 2))\n"}
+{"text": "# qx2_acos :: -1.0\nimport math\n\ndef qx2_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos(-1.0))\n"}
+{"text": "# qx2_acos_run :: 0.0\nimport math\n\ndef qx2_acos_run(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos_run(0.0))\n"}
+{"text": "# qx2_acos_run :: 0.5\nimport math\n\ndef qx2_acos_run(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos_run(0.5))\n"}
+{"text": "# qx2_acos_run :: 1.0\nimport math\n\ndef qx2_acos_run(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos_run(1.0))\n"}
+{"text": "# qx2_acos_run :: 3.14159 / 2\nimport math\n\ndef qx2_acos_run(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos_run(3.14159 / 2))\n"}
+{"text": "# qx2_acos_run :: -1.0\nimport math\n\ndef qx2_acos_run(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_acos_run(-1.0))\n"}
+{"text": "# qx2_run_acos :: 0.0\nimport math\n\ndef qx2_run_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_acos(0.0))\n"}
+{"text": "# qx2_run_acos :: 0.5\nimport math\n\ndef qx2_run_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_acos(0.5))\n"}
+{"text": "# qx2_run_acos :: 1.0\nimport math\n\ndef qx2_run_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_acos(1.0))\n"}
+{"text": "# qx2_run_acos :: 3.14159 / 2\nimport math\n\ndef qx2_run_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_acos(3.14159 / 2))\n"}
+{"text": "# qx2_run_acos :: -1.0\nimport math\n\ndef qx2_run_acos(x):\n    return math.acos(x)\n\nif __name__ == '__main__':\n    print(qx2_run_acos(-1.0))\n"}

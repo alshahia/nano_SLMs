@@ -1,0 +1,1 @@
+{"instruction": "Show the tail-recursive sum in `tail_call`. (input: 5)", "response": "def tail_call(n, acc=0):\n    if n == 0:\n        return acc\n    return tail_call(n - 1, acc + n)\n\n# Bug was: Python doesn't optimize tail calls; for deep recursion prefer iteration\n\n# pair: tail_call / 5\n"}

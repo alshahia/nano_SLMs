@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.is_dir()` in `path_isdir`. (input: '.')", "response": "from pathlib import Path\n\ndef path_isdir(p):\n    return Path(p).is_dir()\n\n# Bug was: `is_dir()` is True only for directories\n\n# pair: path_isdir / '.'\n"}

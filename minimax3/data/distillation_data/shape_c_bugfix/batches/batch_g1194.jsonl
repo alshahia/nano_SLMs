@@ -1,0 +1,1 @@
+{"instruction": "Show the itertools.count in `it_count`. (input: 0)", "response": "from itertools import count\n\ndef it_count(start):\n    return count(start)\n\n# Bug was: `count` is an infinite counter; useful with `zip` or `islice`\n\n# pair: it_count / 0\n"}

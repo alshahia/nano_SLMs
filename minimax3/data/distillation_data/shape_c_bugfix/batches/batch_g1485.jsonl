@@ -1,0 +1,1 @@
+{"instruction": "Show the side-effect-in-argument in `side_effect_arg`. (input: [])", "response": "def side_effect_arg(items):\n    items.append(1)\n    return items\n\n# Bug was: function mutates the passed-in list; side effect may surprise caller\n\n# pair: side_effect_arg / []\n"}

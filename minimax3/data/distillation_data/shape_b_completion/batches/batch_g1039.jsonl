@@ -1,0 +1,15 @@
+{"text": "# qx2_pow2 :: 1\ndef qx2_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_pow2(1))\n"}
+{"text": "# qx2_pow2 :: 2\ndef qx2_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_pow2(2))\n"}
+{"text": "# qx2_pow2 :: 4\ndef qx2_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_pow2(4))\n"}
+{"text": "# qx2_pow2 :: 1024\ndef qx2_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_pow2(1024))\n"}
+{"text": "# qx2_pow2 :: 1000\ndef qx2_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_pow2(1000))\n"}
+{"text": "# qx2_is_pow2 :: 1\ndef qx2_is_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_is_pow2(1))\n"}
+{"text": "# qx2_is_pow2 :: 2\ndef qx2_is_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_is_pow2(2))\n"}
+{"text": "# qx2_is_pow2 :: 4\ndef qx2_is_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_is_pow2(4))\n"}
+{"text": "# qx2_is_pow2 :: 1024\ndef qx2_is_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_is_pow2(1024))\n"}
+{"text": "# qx2_is_pow2 :: 1000\ndef qx2_is_pow2(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_is_pow2(1000))\n"}
+{"text": "# qx2_power_of_two :: 1\ndef qx2_power_of_two(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_power_of_two(1))\n"}
+{"text": "# qx2_power_of_two :: 2\ndef qx2_power_of_two(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_power_of_two(2))\n"}
+{"text": "# qx2_power_of_two :: 4\ndef qx2_power_of_two(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_power_of_two(4))\n"}
+{"text": "# qx2_power_of_two :: 1024\ndef qx2_power_of_two(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_power_of_two(1024))\n"}
+{"text": "# qx2_power_of_two :: 1000\ndef qx2_power_of_two(n):\n    return n > 0 and (n & (n - 1)) == 0\n\nif __name__ == '__main__':\n    print(qx2_power_of_two(1000))\n"}

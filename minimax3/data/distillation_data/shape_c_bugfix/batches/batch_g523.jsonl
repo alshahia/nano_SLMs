@@ -1,0 +1,1 @@
+{"instruction": "Show asdict recursion in `asd`. Input: `{'x': 1}`. (input: {'x': 1})", "response": "from dataclasses import dataclass, asdict\n@dataclass\nclass A: x: int\ndef asd(obj):\n    return asdict(obj)\n\n# Bug was: asdict recurses — fields with non-dataclass types must be in dict_factory\n\n# pair: asd / {'x': 1}\n"}

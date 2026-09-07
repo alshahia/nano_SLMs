@@ -1,0 +1,1 @@
+{"instruction": "Show wrong variance in `var`. (input: '')", "response": "from typing import TypeVar\nT = TypeVar('T', covariant=True)\ndef var(x: T) -> T:\n    return x\n\n# Bug was: T marked covariant but used as input — variance violation breaks type checking\n\n# pair: var / ''\n"}

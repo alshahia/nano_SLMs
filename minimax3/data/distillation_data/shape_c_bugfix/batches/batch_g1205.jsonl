@@ -1,0 +1,2 @@
+{"instruction": "Show itertools.product in `it_product`. (input: [1, 2])", "response": "from itertools import product\n\ndef it_product(a, b):\n    return list(product(a, b))\n\n# Bug was: `product` is the Cartesian product; useful for nested loops\n\n# pair: it_product / [1, 2]\n"}
+{"instruction": "Show itertools.product in `it_product`. (input: ['a', 'b'])", "response": "from itertools import product\n\ndef it_product(a, b):\n    return list(product(a, b))\n\n# Bug was: `product` is the Cartesian product; useful for nested loops\n\n# pair: it_product / ['a', 'b']\n"}

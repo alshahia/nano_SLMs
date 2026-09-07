@@ -1,0 +1,1 @@
+{"instruction": "Show `os.makedirs` in `os_makedirs`. (input: 'a/b/c')", "response": "import os\n\ndef os_makedirs(d):\n    os.makedirs(d, exist_ok=True)\n\n# Bug was: `makedirs` creates intermediate dirs; `exist_ok=True` is the standard flag\n\n# pair: os_makedirs / 'a/b/c'\n"}

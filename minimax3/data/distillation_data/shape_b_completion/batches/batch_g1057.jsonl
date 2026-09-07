@@ -1,0 +1,15 @@
+{"text": "# qx2_int_to_oct :: 0\ndef qx2_int_to_oct(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_oct(0))\n"}
+{"text": "# qx2_int_to_oct :: 1\ndef qx2_int_to_oct(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_oct(1))\n"}
+{"text": "# qx2_int_to_oct :: 8\ndef qx2_int_to_oct(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_oct(8))\n"}
+{"text": "# qx2_int_to_oct :: 64\ndef qx2_int_to_oct(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_oct(64))\n"}
+{"text": "# qx2_int_to_oct :: 511\ndef qx2_int_to_oct(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_oct(511))\n"}
+{"text": "# qx2_to_octal :: 0\ndef qx2_to_octal(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_octal(0))\n"}
+{"text": "# qx2_to_octal :: 1\ndef qx2_to_octal(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_octal(1))\n"}
+{"text": "# qx2_to_octal :: 8\ndef qx2_to_octal(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_octal(8))\n"}
+{"text": "# qx2_to_octal :: 64\ndef qx2_to_octal(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_octal(64))\n"}
+{"text": "# qx2_to_octal :: 511\ndef qx2_to_octal(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_octal(511))\n"}
+{"text": "# qx2_oct_str :: 0\ndef qx2_oct_str(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_oct_str(0))\n"}
+{"text": "# qx2_oct_str :: 1\ndef qx2_oct_str(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_oct_str(1))\n"}
+{"text": "# qx2_oct_str :: 8\ndef qx2_oct_str(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_oct_str(8))\n"}
+{"text": "# qx2_oct_str :: 64\ndef qx2_oct_str(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_oct_str(64))\n"}
+{"text": "# qx2_oct_str :: 511\ndef qx2_oct_str(n):\n    if n == 0:\n        return '0'\n    return oct(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_oct_str(511))\n"}

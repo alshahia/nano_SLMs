@@ -1,0 +1,1 @@
+{"instruction": "Show `hasattr` in `hasattr_basic`. (input: 'x')", "response": "class C:\n    x = 5\n\ndef hasattr_basic(obj, name):\n    return hasattr(obj, name)\n\n# Bug was: `hasattr` is implemented via try/except getattr; works for methods too\n\n# pair: hasattr_basic / 'x'\n"}

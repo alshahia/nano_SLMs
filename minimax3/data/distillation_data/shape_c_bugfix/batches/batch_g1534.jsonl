@@ -1,0 +1,2 @@
+{"instruction": "Show `calendar.leapdays` in `cal_leapdays`. (input: 2000)", "response": "import calendar\n\ndef cal_leapdays(y1, y2):\n    return calendar.leapdays(y1, y2)\n\n# Bug was: `leapdays(y1, y2)` counts leap years in (y1, y2]\n\n# pair: cal_leapdays / 2000\n"}
+{"instruction": "Show `calendar.leapdays` in `cal_leapdays`. (input: 2024)", "response": "import calendar\n\ndef cal_leapdays(y1, y2):\n    return calendar.leapdays(y1, y2)\n\n# Bug was: `leapdays(y1, y2)` counts leap years in (y1, y2]\n\n# pair: cal_leapdays / 2024\n"}

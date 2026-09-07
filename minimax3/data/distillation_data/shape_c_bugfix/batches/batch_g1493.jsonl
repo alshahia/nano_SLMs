@@ -1,0 +1,1 @@
+{"instruction": "Show `ctypes.c_int` in `ctypes_basic`. (input: 42)", "response": "import ctypes\n\ndef ctypes_basic(n):\n    return ctypes.c_int(n).value\n\n# Bug was: `ctypes.c_int` creates a C-compatible int; `.value` extracts the Python int\n\n# pair: ctypes_basic / 42\n"}

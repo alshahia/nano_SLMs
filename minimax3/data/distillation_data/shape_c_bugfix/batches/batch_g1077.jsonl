@@ -1,0 +1,1 @@
+{"instruction": "Show the generator expression in `gen_expr`. (input: [1, 2, 3, 4])", "response": "def gen_expr(xs):\n    return sum(x * x for x in xs)\n\n# Bug was: generator expressions are lazy and avoid materializing intermediate lists\n\n# pair: gen_expr / [1, 2, 3, 4]\n"}

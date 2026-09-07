@@ -1,0 +1,1 @@
+{"instruction": "Show the itertools.takewhile in `it_takewhile`. (input: [1, 2, 3, 0, 1])", "response": "from itertools import takewhile\n\ndef it_takewhile(xs):\n    return list(takewhile(lambda x: x > 0, xs))\n\n# Bug was: `takewhile` stops at the first failure\n\n# pair: it_takewhile / [1, 2, 3, 0, 1]\n"}

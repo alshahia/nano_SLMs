@@ -1,0 +1,1 @@
+{"instruction": "Show mixed enum values in `ea`. (input: '')", "response": "from enum import Enum, auto\nclass ea(Enum):\n    A = auto()\n    B = auto()\n    C = 'manual'\n\n# Bug was: mixing auto() and manual values — values not contiguous\n\n# pair: ea / ''\n"}

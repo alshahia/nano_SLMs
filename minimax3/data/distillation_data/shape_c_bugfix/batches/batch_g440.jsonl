@@ -1,0 +1,1 @@
+{"instruction": "Show xrange in `xr`. (input: 10)", "response": "def xr(n):\n    for i in xrange(n):\n            pass\n\n# Bug was: xrange removed in Py3 — use range()\n\n# pair: xr / 10\n"}

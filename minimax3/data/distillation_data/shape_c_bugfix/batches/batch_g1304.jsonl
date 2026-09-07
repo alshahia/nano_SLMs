@@ -1,0 +1,1 @@
+{"instruction": "Show `secrets.choice` in `sc_choice`. (input: [1, 2, 3])", "response": "import secrets\n\ndef sc_choice(xs):\n    return secrets.choice(xs)\n\n# Bug was: `secrets.choice` is the cryptographic-secure variant\n\n# pair: sc_choice / [1, 2, 3]\n"}

@@ -1,0 +1,64 @@
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('hello')`.", "response": "def reverse_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('Python')`.", "response": "def reverse_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('a')`.", "response": "def reverse_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('')`.", "response": "def reverse_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('racecar')`.", "response": "def reverse_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('12345')`.", "response": "def reverse_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('Hello, World!')`.", "response": "def reverse_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('tabs\there')`.", "response": "def reverse_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `str_reverse(s)` that returns the reversed string. Example: `str_reverse('hello')`.", "response": "def str_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `str_reverse(s)` that returns the reversed string. Example: `str_reverse('Python')`.", "response": "def str_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `str_reverse(s)` that returns the reversed string. Example: `str_reverse('a')`.", "response": "def str_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `str_reverse(s)` that returns the reversed string. Example: `str_reverse('')`.", "response": "def str_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `str_reverse(s)` that returns the reversed string. Example: `str_reverse('racecar')`.", "response": "def str_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `str_reverse(s)` that returns the reversed string. Example: `str_reverse('12345')`.", "response": "def str_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `str_reverse(s)` that returns the reversed string. Example: `str_reverse('Hello, World!')`.", "response": "def str_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `str_reverse(s)` that returns the reversed string. Example: `str_reverse('tabs\there')`.", "response": "def str_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_str(s)` that returns the reversed string. Example: `reverse_str('hello')`.", "response": "def reverse_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_str(s)` that returns the reversed string. Example: `reverse_str('Python')`.", "response": "def reverse_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_str(s)` that returns the reversed string. Example: `reverse_str('a')`.", "response": "def reverse_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_str(s)` that returns the reversed string. Example: `reverse_str('')`.", "response": "def reverse_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_str(s)` that returns the reversed string. Example: `reverse_str('racecar')`.", "response": "def reverse_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_str(s)` that returns the reversed string. Example: `reverse_str('12345')`.", "response": "def reverse_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_str(s)` that returns the reversed string. Example: `reverse_str('Hello, World!')`.", "response": "def reverse_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reverse_str(s)` that returns the reversed string. Example: `reverse_str('tabs\there')`.", "response": "def reverse_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `string_reverse(s)` that returns the reversed string. Example: `string_reverse('hello')`.", "response": "def string_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `string_reverse(s)` that returns the reversed string. Example: `string_reverse('Python')`.", "response": "def string_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `string_reverse(s)` that returns the reversed string. Example: `string_reverse('a')`.", "response": "def string_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `string_reverse(s)` that returns the reversed string. Example: `string_reverse('')`.", "response": "def string_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `string_reverse(s)` that returns the reversed string. Example: `string_reverse('racecar')`.", "response": "def string_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `string_reverse(s)` that returns the reversed string. Example: `string_reverse('12345')`.", "response": "def string_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `string_reverse(s)` that returns the reversed string. Example: `string_reverse('Hello, World!')`.", "response": "def string_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `string_reverse(s)` that returns the reversed string. Example: `string_reverse('tabs\there')`.", "response": "def string_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `do_reverse(s)` that returns the reversed string. Example: `do_reverse('hello')`.", "response": "def do_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `do_reverse(s)` that returns the reversed string. Example: `do_reverse('Python')`.", "response": "def do_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `do_reverse(s)` that returns the reversed string. Example: `do_reverse('a')`.", "response": "def do_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `do_reverse(s)` that returns the reversed string. Example: `do_reverse('')`.", "response": "def do_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `do_reverse(s)` that returns the reversed string. Example: `do_reverse('racecar')`.", "response": "def do_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `do_reverse(s)` that returns the reversed string. Example: `do_reverse('12345')`.", "response": "def do_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `do_reverse(s)` that returns the reversed string. Example: `do_reverse('Hello, World!')`.", "response": "def do_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `do_reverse(s)` that returns the reversed string. Example: `do_reverse('tabs\there')`.", "response": "def do_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `make_reverse(s)` that returns the reversed string. Example: `make_reverse('hello')`.", "response": "def make_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `make_reverse(s)` that returns the reversed string. Example: `make_reverse('Python')`.", "response": "def make_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `make_reverse(s)` that returns the reversed string. Example: `make_reverse('a')`.", "response": "def make_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `make_reverse(s)` that returns the reversed string. Example: `make_reverse('')`.", "response": "def make_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `make_reverse(s)` that returns the reversed string. Example: `make_reverse('racecar')`.", "response": "def make_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `make_reverse(s)` that returns the reversed string. Example: `make_reverse('12345')`.", "response": "def make_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `make_reverse(s)` that returns the reversed string. Example: `make_reverse('Hello, World!')`.", "response": "def make_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `make_reverse(s)` that returns the reversed string. Example: `make_reverse('tabs\there')`.", "response": "def make_reverse(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reversed_str(s)` that returns the reversed string. Example: `reversed_str('hello')`.", "response": "def reversed_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reversed_str(s)` that returns the reversed string. Example: `reversed_str('Python')`.", "response": "def reversed_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reversed_str(s)` that returns the reversed string. Example: `reversed_str('a')`.", "response": "def reversed_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reversed_str(s)` that returns the reversed string. Example: `reversed_str('')`.", "response": "def reversed_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reversed_str(s)` that returns the reversed string. Example: `reversed_str('racecar')`.", "response": "def reversed_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reversed_str(s)` that returns the reversed string. Example: `reversed_str('12345')`.", "response": "def reversed_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reversed_str(s)` that returns the reversed string. Example: `reversed_str('Hello, World!')`.", "response": "def reversed_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `reversed_str(s)` that returns the reversed string. Example: `reversed_str('tabs\there')`.", "response": "def reversed_str(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('hello')`.", "response": "def flip_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('Python')`.", "response": "def flip_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('a')`.", "response": "def flip_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('')`.", "response": "def flip_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('racecar')`.", "response": "def flip_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('12345')`.", "response": "def flip_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('Hello, World!')`.", "response": "def flip_string(s):\n    return s[::-1]\n"}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('tabs\there')`.", "response": "def flip_string(s):\n    return s[::-1]\n"}

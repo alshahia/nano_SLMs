@@ -1,0 +1,1 @@
+{"instruction": "The function `bad_truthy(x)` returns 'no' for 0 and empty strings. Distinguish None from falsy. (input: demo)", "response": "def bad_truthy(x):\n    if x:\n        return 'yes'\n    return 'no'\n    # Bug was: 0, '', [], {} all falsy; use 'is not None' or explicit checks when only None means 'missing'.\n\n# pair: bad_truthy / demo\n"}

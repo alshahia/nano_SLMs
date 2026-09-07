@@ -1,0 +1,1 @@
+{"instruction": "Show `json.dumps` with sort_keys in `json_sort_keys`. (input: {'b': 2, 'a': 1})", "response": "import json\n\ndef json_sort_keys(d):\n    return json.dumps(d, sort_keys=True)\n\n# Bug was: `sort_keys=True` produces deterministic output\n\n# pair: json_sort_keys / {'b': 2, 'a': 1}\n"}

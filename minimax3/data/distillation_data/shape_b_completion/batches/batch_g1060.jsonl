@@ -1,0 +1,15 @@
+{"text": "# qx2_oct_to_int :: '0'\ndef qx2_oct_to_int(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_oct_to_int('0'))\n"}
+{"text": "# qx2_oct_to_int :: '7'\ndef qx2_oct_to_int(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_oct_to_int('7'))\n"}
+{"text": "# qx2_oct_to_int :: '777'\ndef qx2_oct_to_int(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_oct_to_int('777'))\n"}
+{"text": "# qx2_oct_to_int :: '1234'\ndef qx2_oct_to_int(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_oct_to_int('1234'))\n"}
+{"text": "# qx2_oct_to_int :: '10'\ndef qx2_oct_to_int(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_oct_to_int('10'))\n"}
+{"text": "# qx2_from_octal :: '0'\ndef qx2_from_octal(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_from_octal('0'))\n"}
+{"text": "# qx2_from_octal :: '7'\ndef qx2_from_octal(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_from_octal('7'))\n"}
+{"text": "# qx2_from_octal :: '777'\ndef qx2_from_octal(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_from_octal('777'))\n"}
+{"text": "# qx2_from_octal :: '1234'\ndef qx2_from_octal(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_from_octal('1234'))\n"}
+{"text": "# qx2_from_octal :: '10'\ndef qx2_from_octal(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_from_octal('10'))\n"}
+{"text": "# qx2_parse_oct :: '0'\ndef qx2_parse_oct(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_parse_oct('0'))\n"}
+{"text": "# qx2_parse_oct :: '7'\ndef qx2_parse_oct(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_parse_oct('7'))\n"}
+{"text": "# qx2_parse_oct :: '777'\ndef qx2_parse_oct(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_parse_oct('777'))\n"}
+{"text": "# qx2_parse_oct :: '1234'\ndef qx2_parse_oct(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_parse_oct('1234'))\n"}
+{"text": "# qx2_parse_oct :: '10'\ndef qx2_parse_oct(s):\n    return int(s, 8)\n\nif __name__ == '__main__':\n    print(qx2_parse_oct('10'))\n"}

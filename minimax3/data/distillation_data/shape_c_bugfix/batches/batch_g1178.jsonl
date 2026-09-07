@@ -1,0 +1,1 @@
+{"instruction": "Show the namedtuple usage in `nt_basic`. (input: 1, 'a')", "response": "from collections import namedtuple\n\nPoint = namedtuple('Point', ['x', 'y'])\n\ndef nt_basic(x, y):\n    p = Point(x, y)\n    return p.x + len(p.y)\n\n# Bug was: namedtuples are immutable; use `dataclass` if you need mutation\n\n# pair: nt_basic / 1, 'a'\n"}

@@ -1,0 +1,2 @@
+{"instruction": "Show the underscore placeholder in `underscore`. (input: 1)", "response": "def underscore(a, b):\n    return a\n\n# Bug was: `_` by convention means 'unused'; commonly used in tuple unpacking\n\n# pair: underscore / 1\n"}
+{"instruction": "Show the underscore placeholder in `underscore`. (input: 2)", "response": "def underscore(a, b):\n    return a\n\n# Bug was: `_` by convention means 'unused'; commonly used in tuple unpacking\n\n# pair: underscore / 2\n"}

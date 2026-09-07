@@ -1,0 +1,1 @@
+{"instruction": "The method `double` is missing the self parameter. Fix it. (input: demo)", "response": "class bad_method:\n    def __init__(self, v):\n        self.v = v\n    def double(v):\n        return v * 2\n    # Bug was: method missing self parameter; double(v) is treated as static method or fails on instance call.\n\n# pair: bad_method / demo\n"}

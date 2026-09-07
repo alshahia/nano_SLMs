@@ -1,0 +1,1 @@
+{"instruction": "Show why missing `encoding=` is a bug in `read_text2`. (input: 'file.txt')", "response": "def read_text2(path):\n    with open(path, 'r') as f:\n        return f.read()\n\n# Bug was: locale-dependent encoding on Windows — pass encoding='utf-8' explicitly\n\n# pair: read_text2 / 'file.txt'\n"}

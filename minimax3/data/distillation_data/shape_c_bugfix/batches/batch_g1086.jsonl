@@ -1,0 +1,1 @@
+{"instruction": "Show the kwargs-forwarding pattern in `kwargs_forward`. (input: 'hello')", "response": "def kwargs_forward(**kwargs):\n    return print(**kwargs)\n\n# Bug was: forwarding `**kwargs` works only if the callee accepts the kwargs\n\n# pair: kwargs_forward / 'hello'\n"}

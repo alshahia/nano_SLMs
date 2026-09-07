@@ -1,0 +1,1 @@
+{"instruction": "Show why eval is dangerous in `run_formula`. Input: `'2+2'`. (input: '2+2')", "response": "def run_formula(s):\n    return eval(s)\n\n# Bug was: eval on user input allows arbitrary code execution — use ast.literal_eval\n\n# pair: run_formula / '2+2'\n"}

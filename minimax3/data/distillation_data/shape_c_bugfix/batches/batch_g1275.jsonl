@@ -1,0 +1,2 @@
+{"instruction": "Show `struct.pack` in `struct_pack`. (input: 'h')", "response": "import struct\n\ndef struct_pack(fmt, n):\n    return struct.pack(fmt, n)\n\n# Bug was: `struct.pack` converts Python values to bytes according to format string\n\n# pair: struct_pack / 'h'\n"}
+{"instruction": "Show `struct.pack` in `struct_pack`. (input: 1024)", "response": "import struct\n\ndef struct_pack(fmt, n):\n    return struct.pack(fmt, n)\n\n# Bug was: `struct.pack` converts Python values to bytes according to format string\n\n# pair: struct_pack / 1024\n"}

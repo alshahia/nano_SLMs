@@ -1,0 +1,1 @@
+{"instruction": "Show plain password storage in `save_user`. (input: 'alice', 'secret')", "response": "def save_user(user, pw):\n    db.execute('INSERT INTO users VALUES (?, ?)', (user, pw))\n\n# Bug was: plain-text password storage — hash with bcrypt/argon2 first\n\n# pair: save_user / 'alice', 'secret'\n"}

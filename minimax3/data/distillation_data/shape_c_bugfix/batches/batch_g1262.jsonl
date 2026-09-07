@@ -1,0 +1,1 @@
+{"instruction": "Show that `int(3.7)` is 3 (truncation) in `int_from_float`. (input: 3.7)", "response": "def int_from_float(x):\n    return int(x)\n\n# Bug was: `int(3.7)` truncates toward zero, not round\n\n# pair: int_from_float / 3.7\n"}

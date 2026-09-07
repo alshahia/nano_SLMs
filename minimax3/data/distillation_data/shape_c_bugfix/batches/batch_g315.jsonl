@@ -1,0 +1,1 @@
+{"instruction": "Show why exec is dangerous in `run_code`. (input: 'print(1)')", "response": "def run_code(code):\n    exec(code)\n\n# Bug was: exec on user input allows arbitrary code execution\n\n# pair: run_code / 'print(1)'\n"}

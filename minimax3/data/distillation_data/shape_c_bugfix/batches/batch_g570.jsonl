@@ -1,0 +1,1 @@
+{"instruction": "Show tracemalloc no stop in `tns`. (input: '')", "response": "import tracemalloc\ndef tns():\n    tracemalloc.start(25)\n    do_work()\n\n# Bug was: tracemalloc never stopped — overhead continues; call tracemalloc.stop()\n\n# pair: tns / ''\n"}

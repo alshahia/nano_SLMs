@@ -1,0 +1,1 @@
+{"instruction": "Show silent rename in namedtuple `pt`. (input: '')", "response": "from collections import namedtuple\npt = namedtuple('pt', 'x y class')\n\n# Bug was: 'class' is a Python keyword — namedtuple renames it to '_1' silently; use rename=False\n\n# pair: pt / ''\n"}

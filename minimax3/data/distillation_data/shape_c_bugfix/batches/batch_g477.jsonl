@@ -1,0 +1,1 @@
+{"instruction": "Show gather cancellation in `gather2`. Input: `[t1, t2, t3]`. (input: [t1, t2, t3])", "response": "import asyncio\nasync def gather2(tasks):\n    return await asyncio.gather(*tasks)\n\n# Bug was: gather cancels all on first failure — pass return_exceptions=True for partial results\n\n# pair: gather2 / [t1, t2, t3]\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show manual tmp file in `scratch`. (input: '')", "response": "def scratch(data):\n    path = '/tmp/scratch.tmp'\n    with open(path, 'w') as f:\n        f.write(data)\n    return path\n\n# Bug was: fixed path collides; never cleaned — use tempfile.NamedTemporaryFile\n\n# pair: scratch / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show missing @override in `abs_miss`. (input: '')", "response": "from abc import ABC, abstractmethod\nclass A(ABC):\n    @abstractmethod\n    def m(self): pass\nclass abs_miss(A):\n    def m(self): return 1\n\n# Bug was: Py3.12+ requires @override to catch this — without it, silent signature mismatch\n\n# pair: abs_miss / ''\n"}

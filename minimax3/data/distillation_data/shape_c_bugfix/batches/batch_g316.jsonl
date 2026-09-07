@@ -1,0 +1,1 @@
+{"instruction": "Show why assert is wrong for validation in `set_age`. Input: `-1`. (input: -1)", "response": "def set_age(age):\n    assert age >= 0\n    return age\n\n# Bug was: assert is stripped with python -O — use `if age < 0: raise ValueError(...)`\n\n# pair: set_age / -1\n"}

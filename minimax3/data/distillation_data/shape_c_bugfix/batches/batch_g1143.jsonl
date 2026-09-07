@@ -1,0 +1,1 @@
+{"instruction": "Show the function docstring in `func_docstring`. (input: 'function')", "response": "def helper():\n    \"\"\"Return 1.\"\"\"\n    return 1\n\n# Bug was: function docstrings describe what the function does; first statement in body\n\n# pair: func_docstring / 'function'\n"}

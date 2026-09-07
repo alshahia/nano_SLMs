@@ -1,0 +1,1 @@
+{"instruction": "Show uuid1 leak in `make_id`. (input: '')", "response": "import uuid\ndef make_id():\n    return str(uuid.uuid1())\n\n# Bug was: uuid1 leaks MAC + time — use uuid4 for security-sensitive IDs\n\n# pair: make_id / ''\n"}

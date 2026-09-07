@@ -1,0 +1,1 @@
+{"instruction": "Show `urllib.parse.quote` in `quote_basic`. (input: 'hello world')", "response": "from urllib.parse import quote\n\ndef quote_basic(s):\n    return quote(s)\n\n# Bug was: `quote` defaults to safe='/', which protects path separators\n\n# pair: quote_basic / 'hello world'\n"}

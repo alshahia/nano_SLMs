@@ -1,0 +1,15 @@
+{"text": "# qx_triangular_n :: 1\ndef qx_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_n(1))\n"}
+{"text": "# qx_triangular_n :: 2\ndef qx_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_n(2))\n"}
+{"text": "# qx_triangular_n :: 5\ndef qx_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_n(5))\n"}
+{"text": "# qx_triangular_n :: 10\ndef qx_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_n(10))\n"}
+{"text": "# qx_triangular_n :: 100\ndef qx_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_n(100))\n"}
+{"text": "# qx_tn_value :: 1\ndef qx_tn_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_tn_value(1))\n"}
+{"text": "# qx_tn_value :: 2\ndef qx_tn_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_tn_value(2))\n"}
+{"text": "# qx_tn_value :: 5\ndef qx_tn_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_tn_value(5))\n"}
+{"text": "# qx_tn_value :: 10\ndef qx_tn_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_tn_value(10))\n"}
+{"text": "# qx_tn_value :: 100\ndef qx_tn_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_tn_value(100))\n"}
+{"text": "# qx_triangular_value :: 1\ndef qx_triangular_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_value(1))\n"}
+{"text": "# qx_triangular_value :: 2\ndef qx_triangular_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_value(2))\n"}
+{"text": "# qx_triangular_value :: 5\ndef qx_triangular_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_value(5))\n"}
+{"text": "# qx_triangular_value :: 10\ndef qx_triangular_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_value(10))\n"}
+{"text": "# qx_triangular_value :: 100\ndef qx_triangular_value(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx_triangular_value(100))\n"}

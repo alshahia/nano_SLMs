@@ -1,0 +1,2 @@
+{"instruction": "Show `int(s, base)` in `int_base`. (input: 'ff')", "response": "def int_base(s, base):\n    return int(s, base)\n\n# Bug was: `int(s, base)` parses string in the given base\n\n# pair: int_base / 'ff'\n"}
+{"instruction": "Show `int(s, base)` in `int_base`. (input: 16)", "response": "def int_base(s, base):\n    return int(s, base)\n\n# Bug was: `int(s, base)` parses string in the given base\n\n# pair: int_base / 16\n"}

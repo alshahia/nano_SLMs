@@ -1,0 +1,1 @@
+{"instruction": "Show yield-of-generator in `delegate`. (input: '')", "response": "def inner():\n    yield 1\n    yield 2\n\ndef delegate():\n    yield inner()\n\n# Bug was: yields the generator object — use `yield from inner()`\n\n# pair: delegate / ''\n"}

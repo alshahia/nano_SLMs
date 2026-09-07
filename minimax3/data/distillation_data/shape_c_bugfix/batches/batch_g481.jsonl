@@ -1,0 +1,1 @@
+{"instruction": "Show unnamed task in `tn`. (input: '')", "response": "import asyncio\nasync def tn():\n    await asyncio.sleep(1)\nasyncio.create_task(tn())\n\n# Bug was: task has no name — debugging is harder; pass name= kwarg\n\n# pair: tn / ''\n"}

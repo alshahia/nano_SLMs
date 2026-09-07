@@ -1,0 +1,1 @@
+{"instruction": "Show the early-return guard in `early_return`. (input: [1, 2, 3])", "response": "def early_return(xs):\n    if not xs:\n        return None\n    return xs[0]\n\n# Bug was: early return (guard clause) reduces nesting\n\n# pair: early_return / [1, 2, 3]\n"}

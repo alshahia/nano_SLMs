@@ -1,0 +1,15 @@
+{"text": "# fib_words :: 5\ndef fib_words(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fib_words(5))\n"}
+{"text": "# fib_words :: 1\ndef fib_words(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fib_words(1))\n"}
+{"text": "# fib_words :: 2\ndef fib_words(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fib_words(2))\n"}
+{"text": "# fib_words :: 0\ndef fib_words(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fib_words(0))\n"}
+{"text": "# fib_words :: 10\ndef fib_words(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fib_words(10))\n"}
+{"text": "# fibonacci_string :: 5\ndef fibonacci_string(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fibonacci_string(5))\n"}
+{"text": "# fibonacci_string :: 1\ndef fibonacci_string(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fibonacci_string(1))\n"}
+{"text": "# fibonacci_string :: 2\ndef fibonacci_string(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fibonacci_string(2))\n"}
+{"text": "# fibonacci_string :: 0\ndef fibonacci_string(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fibonacci_string(0))\n"}
+{"text": "# fibonacci_string :: 10\ndef fibonacci_string(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(fibonacci_string(10))\n"}
+{"text": "# word_fib :: 5\ndef word_fib(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(word_fib(5))\n"}
+{"text": "# word_fib :: 1\ndef word_fib(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(word_fib(1))\n"}
+{"text": "# word_fib :: 2\ndef word_fib(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(word_fib(2))\n"}
+{"text": "# word_fib :: 0\ndef word_fib(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(word_fib(0))\n"}
+{"text": "# word_fib :: 10\ndef word_fib(n):\n    a, b = '', 'A'\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == '__main__':\n    print(word_fib(10))\n"}

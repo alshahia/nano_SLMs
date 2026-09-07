@@ -1,0 +1,1 @@
+{"instruction": "Show the modern pipe-union syntax in `typing_pipe`. (input: 5)", "response": "def typing_pipe(x: int | str) -> str:\n    return str(x)\n\n# Bug was: `int | str` works in Python 3.10+; older uses `Union[int, str]`\n\n# pair: typing_pipe / 5\n"}

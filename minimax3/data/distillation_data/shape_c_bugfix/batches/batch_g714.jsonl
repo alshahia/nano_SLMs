@@ -1,0 +1,1 @@
+{"instruction": "Show `is` on lists in `compare_lists`. Input: `[1,2], [1,2]`. (input: [1,2], [1,2])", "response": "def compare_lists(a, b):\n    if a is b:\n        return 'same'\n    return 'different'\n\n# Bug was: two equal lists are not `is` — should use `==`\n\n# pair: compare_lists / [1,2], [1,2]\n"}

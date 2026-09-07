@@ -1,0 +1,1 @@
+{"instruction": "Show `filter` in `filter_basic2`. (input: [1, 2, 3, 4])", "response": "def filter_basic2(xs):\n    return list(filter(lambda x: x > 2, xs))\n\n# Bug was: `filter` returns an iterator in Py3; lazy\n\n# pair: filter_basic2 / [1, 2, 3, 4]\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_isnan :: 1.0\nimport math\n\ndef qx2_isnan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_isnan(1.0))\n"}
+{"text": "# qx2_isnan :: float('nan')\nimport math\n\ndef qx2_isnan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_isnan(float('nan')))\n"}
+{"text": "# qx2_isnan :: 0.0\nimport math\n\ndef qx2_isnan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_isnan(0.0))\n"}
+{"text": "# qx2_isnan :: float('inf')\nimport math\n\ndef qx2_isnan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_isnan(float('inf')))\n"}
+{"text": "# qx2_isnan :: 42.0\nimport math\n\ndef qx2_isnan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_isnan(42.0))\n"}
+{"text": "# qx2_is_nan :: 1.0\nimport math\n\ndef qx2_is_nan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_is_nan(1.0))\n"}
+{"text": "# qx2_is_nan :: float('nan')\nimport math\n\ndef qx2_is_nan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_is_nan(float('nan')))\n"}
+{"text": "# qx2_is_nan :: 0.0\nimport math\n\ndef qx2_is_nan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_is_nan(0.0))\n"}
+{"text": "# qx2_is_nan :: float('inf')\nimport math\n\ndef qx2_is_nan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_is_nan(float('inf')))\n"}
+{"text": "# qx2_is_nan :: 42.0\nimport math\n\ndef qx2_is_nan(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_is_nan(42.0))\n"}
+{"text": "# qx2_nan_check :: 1.0\nimport math\n\ndef qx2_nan_check(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_nan_check(1.0))\n"}
+{"text": "# qx2_nan_check :: float('nan')\nimport math\n\ndef qx2_nan_check(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_nan_check(float('nan')))\n"}
+{"text": "# qx2_nan_check :: 0.0\nimport math\n\ndef qx2_nan_check(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_nan_check(0.0))\n"}
+{"text": "# qx2_nan_check :: float('inf')\nimport math\n\ndef qx2_nan_check(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_nan_check(float('inf')))\n"}
+{"text": "# qx2_nan_check :: 42.0\nimport math\n\ndef qx2_nan_check(x):\n    return math.isnan(x)\n\nif __name__ == '__main__':\n    print(qx2_nan_check(42.0))\n"}

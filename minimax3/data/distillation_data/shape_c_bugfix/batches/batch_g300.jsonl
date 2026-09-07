@@ -1,0 +1,1 @@
+{"instruction": "Show why `except:` (bare except) is dangerous in `try_load`. (input: 'data.json')", "response": "def try_load(path):\n    try:\n        return open(path).read()\n    except:\n        return None\n\n# Bug was: bare except swallows ALL exceptions including KeyboardInterrupt, SystemExit, MemoryError\n\n# pair: try_load / 'data.json'\n"}

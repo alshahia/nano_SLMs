@@ -1,0 +1,1 @@
+{"instruction": "Show the Union type hint in `type_hint_union`. (input: 5)", "response": "from typing import Union\n\ndef type_hint_union(x: Union[int, str]) -> str:\n    return str(x)\n\n# Bug was: `Union[int, str]` is the older syntax; `int | str` works in 3.10+\n\n# pair: type_hint_union / 5\n"}

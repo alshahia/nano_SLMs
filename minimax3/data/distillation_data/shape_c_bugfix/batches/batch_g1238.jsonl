@@ -1,0 +1,1 @@
+{"instruction": "Show `textwrap.dedent` in `str_dedent`. (input:     hello\\n    world)", "response": "import textwrap\n\ndef str_dedent(s):\n    return textwrap.dedent(s)\n\n# Bug was: `dedent` removes common leading whitespace\n\n# pair: str_dedent /     hello\\n    world\n"}

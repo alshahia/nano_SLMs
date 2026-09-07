@@ -1,0 +1,1 @@
+{"instruction": "Show the late-binding closure bug in `make_funcs_late`. (input: 3)", "response": "def make_funcs_late():\n    return [lambda: i for i in range(3)]\n\n# Bug was: closures bind by name not value; each closure captures the same `i` (the last value)\n\n# pair: make_funcs_late / 3\n"}

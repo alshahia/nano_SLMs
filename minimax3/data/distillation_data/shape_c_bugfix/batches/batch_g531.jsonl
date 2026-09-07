@@ -1,0 +1,1 @@
+{"instruction": "Show @abstractproperty deprecation in `ap`. (input: '')", "response": "from abc import ABC, abstractproperty\nclass ap(ABC):\n    @abstractproperty\n    def x(self): pass\n\n# Bug was: abstractproperty deprecated in Py3.3 — use @property + @abstractmethod\n\n# pair: ap / ''\n"}

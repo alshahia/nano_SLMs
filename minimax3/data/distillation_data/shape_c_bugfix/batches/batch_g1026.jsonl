@@ -1,0 +1,1 @@
+{"instruction": "Show the falsy-default with `or` on str in `falsy_str_def`. (input: '')", "response": "def falsy_str_def(s):\n    return s or 'default'\n\n# Bug was: `s or 'default'` returns 'default' for empty string; if empty is valid, this loses data\n\n# pair: falsy_str_def / ''\n"}

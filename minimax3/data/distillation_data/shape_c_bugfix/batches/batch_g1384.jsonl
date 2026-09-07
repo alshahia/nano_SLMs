@@ -1,0 +1,1 @@
+{"instruction": "Show the chained `or` fallback in `chain_or`. (input: None)", "response": "def chain_or(x):\n    return x or 'default'\n\n# Bug was: `or` returns the first truthy value; useful for default fallback\n\n# pair: chain_or / None\n"}

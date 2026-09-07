@@ -1,0 +1,1 @@
+{"instruction": "Show the file handle leak in `file_no_close`. (input: 'data.txt')", "response": "def file_no_close(path):\n    f = open(path)\n    data = f.read()\n    return data\n\n# Bug was: the file handle is never closed; use `with open(path) as f:`\n\n# pair: file_no_close / 'data.txt'\n"}

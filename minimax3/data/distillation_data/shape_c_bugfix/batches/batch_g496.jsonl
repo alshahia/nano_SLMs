@@ -1,0 +1,1 @@
+{"instruction": "Show sigwait in thread in `sigw`. (input: '')", "response": "import signal, threading\ndef sigw():\n    t = threading.Thread(target=lambda: signal.sigwait([signal.SIGINT]))\nt.start()\n\n# Bug was: sigwait must be called from main thread — wraps in handler instead\n\n# pair: sigw / ''\n"}

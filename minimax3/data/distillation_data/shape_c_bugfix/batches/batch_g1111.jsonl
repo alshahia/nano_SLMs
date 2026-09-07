@@ -1,0 +1,1 @@
+{"instruction": "Show the percentage format spec in `format_spec_pct`. (input: 0.85)", "response": "def format_spec_pct(x):\n    return f'{x:.1%}'\n\n# Bug was: `:.1%` formats as percentage with 1 decimal\n\n# pair: format_spec_pct / 0.85\n"}

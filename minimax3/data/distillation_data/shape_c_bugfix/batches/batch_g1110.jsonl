@@ -1,0 +1,1 @@
+{"instruction": "Show the format spec for floats in `format_spec`. (input: 3.14159)", "response": "def format_spec(x):\n    return f'{x:.2f}'\n\n# Bug was: format spec `:2f` means 2 decimal places; format specs are mini-DSL\n\n# pair: format_spec / 3.14159\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `multiprocessing.Pool` in `mp_basic`. (input: 5)", "response": "import multiprocessing\n\ndef square(x):\n    return x * x\n\ndef mp_basic(n):\n    with multiprocessing.Pool(2) as pool:\n        return pool.map(square, range(n))\n\n# Bug was: `Pool` distributes work across processes; useful for CPU-bound tasks\n\n# pair: mp_basic / 5\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show Final without value in `fin`. (input: '')", "response": "from typing import Final\nMAX: Final\nMAX = 100\n\n# Bug was: Final without value at declaration — must be assigned at the same statement\n\n# pair: fin / ''\n"}

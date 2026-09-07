@@ -1,0 +1,1 @@
+{"instruction": "Show ChainMap write in `cm`. Input: `[{'a': 1}, {'a': 2}]`. (input: [{'a': 1}, {'a': 2}])", "response": "from collections import ChainMap\ndef cm(dicts):\n    cm = ChainMap(*dicts)\n    cm['a'] = 99\n\n# Bug was: writes go to the FIRST map only — surprising; use update if you want all\n\n# pair: cm / [{'a': 1}, {'a': 2}]\n"}

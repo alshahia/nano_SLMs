@@ -1,0 +1,2 @@
+{"instruction": "Show the `and` short-circuit in `chain_and`. (input: True)", "response": "def chain_and(a, b):\n    return a and b\n\n# Bug was: `and` returns the first falsy value, or the last truthy value\n\n# pair: chain_and / True\n"}
+{"instruction": "Show the `and` short-circuit in `chain_and`. (input: False)", "response": "def chain_and(a, b):\n    return a and b\n\n# Bug was: `and` returns the first falsy value, or the last truthy value\n\n# pair: chain_and / False\n"}

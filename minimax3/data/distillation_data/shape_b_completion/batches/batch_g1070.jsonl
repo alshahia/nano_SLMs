@@ -1,0 +1,15 @@
+{"text": "# qx2_is_alpha :: 'hello'\ndef qx2_is_alpha(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_is_alpha('hello'))\n"}
+{"text": "# qx2_is_alpha :: 'hello123'\ndef qx2_is_alpha(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_is_alpha('hello123'))\n"}
+{"text": "# qx2_is_alpha :: ''\ndef qx2_is_alpha(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_is_alpha(''))\n"}
+{"text": "# qx2_is_alpha :: 'abc'\ndef qx2_is_alpha(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_is_alpha('abc'))\n"}
+{"text": "# qx2_is_alpha :: '   '\ndef qx2_is_alpha(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_is_alpha('   '))\n"}
+{"text": "# qx2_alpha_check :: 'hello'\ndef qx2_alpha_check(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_alpha_check('hello'))\n"}
+{"text": "# qx2_alpha_check :: 'hello123'\ndef qx2_alpha_check(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_alpha_check('hello123'))\n"}
+{"text": "# qx2_alpha_check :: ''\ndef qx2_alpha_check(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_alpha_check(''))\n"}
+{"text": "# qx2_alpha_check :: 'abc'\ndef qx2_alpha_check(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_alpha_check('abc'))\n"}
+{"text": "# qx2_alpha_check :: '   '\ndef qx2_alpha_check(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_alpha_check('   '))\n"}
+{"text": "# qx2_all_letters :: 'hello'\ndef qx2_all_letters(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_all_letters('hello'))\n"}
+{"text": "# qx2_all_letters :: 'hello123'\ndef qx2_all_letters(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_all_letters('hello123'))\n"}
+{"text": "# qx2_all_letters :: ''\ndef qx2_all_letters(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_all_letters(''))\n"}
+{"text": "# qx2_all_letters :: 'abc'\ndef qx2_all_letters(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_all_letters('abc'))\n"}
+{"text": "# qx2_all_letters :: '   '\ndef qx2_all_letters(s):\n    return s.isalpha()\n\nif __name__ == '__main__':\n    print(qx2_all_letters('   '))\n"}

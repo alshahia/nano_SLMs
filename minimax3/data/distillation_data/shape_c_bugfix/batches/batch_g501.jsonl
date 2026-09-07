@@ -1,0 +1,1 @@
+{"instruction": "Show smtplib no starttls in `sm`. (input: '')", "response": "import smtplib\ndef sm(host, user, pw):\n    s = smtplib.SMTP(host)\n    s.login(user, pw)\n    s.send_message(msg)\n\n# Bug was: password sent in cleartext without starttls — call s.starttls() before login\n\n# pair: sm / ''\n"}

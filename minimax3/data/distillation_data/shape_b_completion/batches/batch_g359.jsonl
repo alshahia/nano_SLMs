@@ -1,0 +1,15 @@
+{"text": "# qx_last_n :: ([1, 2, 3, 4, 5], 3)\ndef qx_last_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_last_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# qx_last_n :: ([1, 2], 5)\ndef qx_last_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_last_n(([1, 2], 5)))\n"}
+{"text": "# qx_last_n :: ([], 3)\ndef qx_last_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_last_n(([], 3)))\n"}
+{"text": "# qx_last_n :: ([1], 1)\ndef qx_last_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_last_n(([1], 1)))\n"}
+{"text": "# qx_last_n :: (['a', 'b', 'c'], 2)\ndef qx_last_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_last_n((['a', 'b', 'c'], 2)))\n"}
+{"text": "# qx_qx_tail_n :: ([1, 2, 3, 4, 5], 3)\ndef qx_qx_tail_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_tail_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# qx_qx_tail_n :: ([1, 2], 5)\ndef qx_qx_tail_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_tail_n(([1, 2], 5)))\n"}
+{"text": "# qx_qx_tail_n :: ([], 3)\ndef qx_qx_tail_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_tail_n(([], 3)))\n"}
+{"text": "# qx_qx_tail_n :: ([1], 1)\ndef qx_qx_tail_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_tail_n(([1], 1)))\n"}
+{"text": "# qx_qx_tail_n :: (['a', 'b', 'c'], 2)\ndef qx_qx_tail_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_tail_n((['a', 'b', 'c'], 2)))\n"}
+{"text": "# qx_qx_bottom_n :: ([1, 2, 3, 4, 5], 3)\ndef qx_qx_bottom_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_bottom_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# qx_qx_bottom_n :: ([1, 2], 5)\ndef qx_qx_bottom_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_bottom_n(([1, 2], 5)))\n"}
+{"text": "# qx_qx_bottom_n :: ([], 3)\ndef qx_qx_bottom_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_bottom_n(([], 3)))\n"}
+{"text": "# qx_qx_bottom_n :: ([1], 1)\ndef qx_qx_bottom_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_bottom_n(([1], 1)))\n"}
+{"text": "# qx_qx_bottom_n :: (['a', 'b', 'c'], 2)\ndef qx_qx_bottom_n(xs, n):\n    if n <= 0: return []\n    return list(xs)[-n:]\n\nif __name__ == '__main__':\n    print(qx_qx_bottom_n((['a', 'b', 'c'], 2)))\n"}

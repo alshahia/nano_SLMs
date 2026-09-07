@@ -1,0 +1,1 @@
+{"instruction": "Show `getpass` in `getpass_use`. (input: 1)", "response": "import getpass\n\ndef getpass_use():\n    return getpass.getpass()\n\n# Bug was: `getpass` reads a password without echoing; requires a tty\n\n# pair: getpass_use / 1\n"}

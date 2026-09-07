@@ -1,0 +1,1 @@
+{"instruction": "Show the chained-comparison idiom in `chain_cmp`. (input: 5)", "response": "def chain_cmp(x):\n    return 0 < x < 10\n\n# Bug was: Python chains comparisons, so `0 < x < 10` means `0 < x AND x < 10`. This is intentional and good; the 'bug' here is none — but if you wrote `0 < x and x < 10` you'd get the same result\n\n# pair: chain_cmp / 5\n"}

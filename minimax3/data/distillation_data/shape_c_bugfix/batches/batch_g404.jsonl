@@ -1,0 +1,1 @@
+{"instruction": "Show __del__ for cleanup in `res`. (input: '')", "response": "class res:\n    def __init__(self):\n        self.f = open('data.txt')\n    def __del__(self):\n        self.f.close()\n\n# Bug was: __del__ not guaranteed to run; cycles prevent GC — use context manager instead\n\n# pair: res / ''\n"}

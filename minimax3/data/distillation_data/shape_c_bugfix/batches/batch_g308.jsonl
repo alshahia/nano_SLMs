@@ -1,0 +1,1 @@
+{"instruction": "Show bytes vs str confusion in `open_file_b`. Input: `'file.bin'`. (input: 'file.bin')", "response": "def open_file_b(path):\n    with open(path, 'rb') as f:\n        text = f.read()\n    return text.upper()\n\n# Bug was: bytes.upper() works but bytes.decode needed for str methods — bytes != str\n\n# pair: open_file_b / 'file.bin'\n"}

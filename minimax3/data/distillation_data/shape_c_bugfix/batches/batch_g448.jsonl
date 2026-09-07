@@ -1,0 +1,1 @@
+{"instruction": "Show descriptor recursion in `lookup`. (input: '')", "response": "class lookup:\n    def __getattr__(self, name):\n        return self.name\n\n# Bug was: __getattr__ on missing attribute — but `self.name` triggers __getattr__ again = infinite recursion\n\n# pair: lookup / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `hashlib.blake2b` in `hl_b2b`. (input: 'hello')", "response": "import hashlib\n\ndef hl_b2b(s):\n    return hashlib.blake2b(s.encode()).hexdigest()\n\n# Bug was: blake2b is faster than sha256 with similar security\n\n# pair: hl_b2b / 'hello'\n"}

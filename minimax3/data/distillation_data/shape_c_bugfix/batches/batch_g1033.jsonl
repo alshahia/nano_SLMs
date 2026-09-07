@@ -1,0 +1,1 @@
+{"instruction": "Show the O(n^2) string concat in `str_concat_loop`. (input: ['a', 'b', 'c', 'd', 'e'])", "response": "def str_concat_loop(parts):\n    out = ''\n    for p in parts:\n        out += p\n    return out\n\n# Bug was: string concat in a loop is O(n^2); use `''.join(parts)` for O(n)\n\n# pair: str_concat_loop / ['a', 'b', 'c', 'd', 'e']\n"}

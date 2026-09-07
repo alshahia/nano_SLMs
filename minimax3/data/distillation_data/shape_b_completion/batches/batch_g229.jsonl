@@ -1,0 +1,15 @@
+{"text": "# take :: ([1, 2, 3, 4, 5], 3)\ndef take(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# take :: ([1, 2], 5)\ndef take(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take(([1, 2], 5)))\n"}
+{"text": "# take :: ([], 3)\ndef take(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take(([], 3)))\n"}
+{"text": "# take :: ([1, 2, 3], 0)\ndef take(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take(([1, 2, 3], 0)))\n"}
+{"text": "# take :: ([1, 2, 3], 3)\ndef take(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take(([1, 2, 3], 3)))\n"}
+{"text": "# first_n :: ([1, 2, 3, 4, 5], 3)\ndef first_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(first_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# first_n :: ([1, 2], 5)\ndef first_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(first_n(([1, 2], 5)))\n"}
+{"text": "# first_n :: ([], 3)\ndef first_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(first_n(([], 3)))\n"}
+{"text": "# first_n :: ([1, 2, 3], 0)\ndef first_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(first_n(([1, 2, 3], 0)))\n"}
+{"text": "# first_n :: ([1, 2, 3], 3)\ndef first_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(first_n(([1, 2, 3], 3)))\n"}
+{"text": "# take_n :: ([1, 2, 3, 4, 5], 3)\ndef take_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take_n(([1, 2, 3, 4, 5], 3)))\n"}
+{"text": "# take_n :: ([1, 2], 5)\ndef take_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take_n(([1, 2], 5)))\n"}
+{"text": "# take_n :: ([], 3)\ndef take_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take_n(([], 3)))\n"}
+{"text": "# take_n :: ([1, 2, 3], 0)\ndef take_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take_n(([1, 2, 3], 0)))\n"}
+{"text": "# take_n :: ([1, 2, 3], 3)\ndef take_n(xs, n):\n    return xs[:max(0, n)]\n\nif __name__ == '__main__':\n    print(take_n(([1, 2, 3], 3)))\n"}

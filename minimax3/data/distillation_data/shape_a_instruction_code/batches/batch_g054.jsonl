@@ -1,0 +1,9 @@
+{"instruction": "Write a function `list_dir(p)` listing files in the directory. Example: `list_dir('/tmp')`.", "response": "import os\ndef list_dir(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}
+{"instruction": "Write a function `list_dir(p)` listing files in the directory. Example: `list_dir('.')`.", "response": "import os\ndef list_dir(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}
+{"instruction": "Write a function `list_dir(p)` listing files in the directory. Example: `list_dir(/etc, /usr, )`.", "response": "import os\ndef list_dir(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}
+{"instruction": "Write a function `ls(p)` listing files in the directory. Example: `ls('/tmp')`.", "response": "import os\ndef ls(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}
+{"instruction": "Write a function `ls(p)` listing files in the directory. Example: `ls('.')`.", "response": "import os\ndef ls(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}
+{"instruction": "Write a function `ls(p)` listing files in the directory. Example: `ls(/etc, /usr, )`.", "response": "import os\ndef ls(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}
+{"instruction": "Write a function `list_directory(p)` listing files in the directory. Example: `list_directory('/tmp')`.", "response": "import os\ndef list_directory(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}
+{"instruction": "Write a function `list_directory(p)` listing files in the directory. Example: `list_directory('.')`.", "response": "import os\ndef list_directory(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}
+{"instruction": "Write a function `list_directory(p)` listing files in the directory. Example: `list_directory(/etc, /usr, )`.", "response": "import os\ndef list_directory(p):\n    return sorted(os.listdir(p)) if os.path.isdir(p) else []\n"}

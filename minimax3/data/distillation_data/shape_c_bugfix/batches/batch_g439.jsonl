@@ -1,0 +1,1 @@
+{"instruction": "Show iteritems in `it`. Input: `{'a': 1, 'b': 2}`. (input: {'a': 1, 'b': 2})", "response": "def it(d):\n    return d.iteritems()\n\n# Bug was: dict.iteritems removed in Py3 — use d.items()\n\n# pair: it / {'a': 1, 'b': 2}\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_is_upper :: 'HELLO'\ndef qx2_is_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_is_upper('HELLO'))\n"}
+{"text": "# qx2_is_upper :: 'Hello'\ndef qx2_is_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_is_upper('Hello'))\n"}
+{"text": "# qx2_is_upper :: ''\ndef qx2_is_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_is_upper(''))\n"}
+{"text": "# qx2_is_upper :: 'ABC'\ndef qx2_is_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_is_upper('ABC'))\n"}
+{"text": "# qx2_is_upper :: 'ABC123'\ndef qx2_is_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_is_upper('ABC123'))\n"}
+{"text": "# qx2_upper_check :: 'HELLO'\ndef qx2_upper_check(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_upper_check('HELLO'))\n"}
+{"text": "# qx2_upper_check :: 'Hello'\ndef qx2_upper_check(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_upper_check('Hello'))\n"}
+{"text": "# qx2_upper_check :: ''\ndef qx2_upper_check(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_upper_check(''))\n"}
+{"text": "# qx2_upper_check :: 'ABC'\ndef qx2_upper_check(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_upper_check('ABC'))\n"}
+{"text": "# qx2_upper_check :: 'ABC123'\ndef qx2_upper_check(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_upper_check('ABC123'))\n"}
+{"text": "# qx2_all_upper :: 'HELLO'\ndef qx2_all_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_all_upper('HELLO'))\n"}
+{"text": "# qx2_all_upper :: 'Hello'\ndef qx2_all_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_all_upper('Hello'))\n"}
+{"text": "# qx2_all_upper :: ''\ndef qx2_all_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_all_upper(''))\n"}
+{"text": "# qx2_all_upper :: 'ABC'\ndef qx2_all_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_all_upper('ABC'))\n"}
+{"text": "# qx2_all_upper :: 'ABC123'\ndef qx2_all_upper(s):\n    return s.isupper()\n\nif __name__ == '__main__':\n    print(qx2_all_upper('ABC123'))\n"}

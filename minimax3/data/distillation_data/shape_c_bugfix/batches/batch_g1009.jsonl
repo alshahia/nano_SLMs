@@ -1,0 +1,1 @@
+{"instruction": "Show the missing `global` declaration in `increment`. (input: 1)", "response": "def increment(n):\n    counter += n\n\ncounter = 0\n\n# Bug was: `counter += n` requires `global counter` declaration to assign to the module-level name\n\n# pair: increment / 1\n"}

@@ -1,0 +1,64 @@
+{"instruction": "Write a function `str_strip_v2(s)` that strips leading and trailing whitespace. Example: `str_strip_v2('  hello  ')`.", "response": "def str_strip_v2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `str_strip_v2(s)` that strips leading and trailing whitespace. Example: `str_strip_v2('hello')`.", "response": "def str_strip_v2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `str_strip_v2(s)` that strips leading and trailing whitespace. Example: `str_strip_v2('\\n\\nhi\\n\\n')`.", "response": "def str_strip_v2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `str_strip_v2(s)` that strips leading and trailing whitespace. Example: `str_strip_v2('')`.", "response": "def str_strip_v2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `str_strip_v2(s)` that strips leading and trailing whitespace. Example: `str_strip_v2('   ')`.", "response": "def str_strip_v2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `str_strip_v2(s)` that strips leading and trailing whitespace. Example: `str_strip_v2('\\t\\t\\t')`.", "response": "def str_strip_v2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `str_strip_v2(s)` that strips leading and trailing whitespace. Example: `str_strip_v2(' x ')`.", "response": "def str_strip_v2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `str_strip_v2(s)` that strips leading and trailing whitespace. Example: `str_strip_v2('\\r\\n')`.", "response": "def str_strip_v2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `trim_str2(s)` that strips leading and trailing whitespace. Example: `trim_str2('  hello  ')`.", "response": "def trim_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `trim_str2(s)` that strips leading and trailing whitespace. Example: `trim_str2('hello')`.", "response": "def trim_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `trim_str2(s)` that strips leading and trailing whitespace. Example: `trim_str2('\\n\\nhi\\n\\n')`.", "response": "def trim_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `trim_str2(s)` that strips leading and trailing whitespace. Example: `trim_str2('')`.", "response": "def trim_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `trim_str2(s)` that strips leading and trailing whitespace. Example: `trim_str2('   ')`.", "response": "def trim_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `trim_str2(s)` that strips leading and trailing whitespace. Example: `trim_str2('\\t\\t\\t')`.", "response": "def trim_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `trim_str2(s)` that strips leading and trailing whitespace. Example: `trim_str2(' x ')`.", "response": "def trim_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `trim_str2(s)` that strips leading and trailing whitespace. Example: `trim_str2('\\r\\n')`.", "response": "def trim_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ws2(s)` that strips leading and trailing whitespace. Example: `remove_ws2('  hello  ')`.", "response": "def remove_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ws2(s)` that strips leading and trailing whitespace. Example: `remove_ws2('hello')`.", "response": "def remove_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ws2(s)` that strips leading and trailing whitespace. Example: `remove_ws2('\\n\\nhi\\n\\n')`.", "response": "def remove_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ws2(s)` that strips leading and trailing whitespace. Example: `remove_ws2('')`.", "response": "def remove_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ws2(s)` that strips leading and trailing whitespace. Example: `remove_ws2('   ')`.", "response": "def remove_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ws2(s)` that strips leading and trailing whitespace. Example: `remove_ws2('\\t\\t\\t')`.", "response": "def remove_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ws2(s)` that strips leading and trailing whitespace. Example: `remove_ws2(' x ')`.", "response": "def remove_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ws2(s)` that strips leading and trailing whitespace. Example: `remove_ws2('\\r\\n')`.", "response": "def remove_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_strip2(s)` that strips leading and trailing whitespace. Example: `do_strip2('  hello  ')`.", "response": "def do_strip2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_strip2(s)` that strips leading and trailing whitespace. Example: `do_strip2('hello')`.", "response": "def do_strip2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_strip2(s)` that strips leading and trailing whitespace. Example: `do_strip2('\\n\\nhi\\n\\n')`.", "response": "def do_strip2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_strip2(s)` that strips leading and trailing whitespace. Example: `do_strip2('')`.", "response": "def do_strip2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_strip2(s)` that strips leading and trailing whitespace. Example: `do_strip2('   ')`.", "response": "def do_strip2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_strip2(s)` that strips leading and trailing whitespace. Example: `do_strip2('\\t\\t\\t')`.", "response": "def do_strip2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_strip2(s)` that strips leading and trailing whitespace. Example: `do_strip2(' x ')`.", "response": "def do_strip2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_strip2(s)` that strips leading and trailing whitespace. Example: `do_strip2('\\r\\n')`.", "response": "def do_strip2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `clean_str2(s)` that strips leading and trailing whitespace. Example: `clean_str2('  hello  ')`.", "response": "def clean_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `clean_str2(s)` that strips leading and trailing whitespace. Example: `clean_str2('hello')`.", "response": "def clean_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `clean_str2(s)` that strips leading and trailing whitespace. Example: `clean_str2('\\n\\nhi\\n\\n')`.", "response": "def clean_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `clean_str2(s)` that strips leading and trailing whitespace. Example: `clean_str2('')`.", "response": "def clean_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `clean_str2(s)` that strips leading and trailing whitespace. Example: `clean_str2('   ')`.", "response": "def clean_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `clean_str2(s)` that strips leading and trailing whitespace. Example: `clean_str2('\\t\\t\\t')`.", "response": "def clean_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `clean_str2(s)` that strips leading and trailing whitespace. Example: `clean_str2(' x ')`.", "response": "def clean_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `clean_str2(s)` that strips leading and trailing whitespace. Example: `clean_str2('\\r\\n')`.", "response": "def clean_str2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_trim2(s)` that strips leading and trailing whitespace. Example: `do_trim2('  hello  ')`.", "response": "def do_trim2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_trim2(s)` that strips leading and trailing whitespace. Example: `do_trim2('hello')`.", "response": "def do_trim2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_trim2(s)` that strips leading and trailing whitespace. Example: `do_trim2('\\n\\nhi\\n\\n')`.", "response": "def do_trim2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_trim2(s)` that strips leading and trailing whitespace. Example: `do_trim2('')`.", "response": "def do_trim2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_trim2(s)` that strips leading and trailing whitespace. Example: `do_trim2('   ')`.", "response": "def do_trim2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_trim2(s)` that strips leading and trailing whitespace. Example: `do_trim2('\\t\\t\\t')`.", "response": "def do_trim2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_trim2(s)` that strips leading and trailing whitespace. Example: `do_trim2(' x ')`.", "response": "def do_trim2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `do_trim2(s)` that strips leading and trailing whitespace. Example: `do_trim2('\\r\\n')`.", "response": "def do_trim2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `strip_ws2(s)` that strips leading and trailing whitespace. Example: `strip_ws2('  hello  ')`.", "response": "def strip_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `strip_ws2(s)` that strips leading and trailing whitespace. Example: `strip_ws2('hello')`.", "response": "def strip_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `strip_ws2(s)` that strips leading and trailing whitespace. Example: `strip_ws2('\\n\\nhi\\n\\n')`.", "response": "def strip_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `strip_ws2(s)` that strips leading and trailing whitespace. Example: `strip_ws2('')`.", "response": "def strip_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `strip_ws2(s)` that strips leading and trailing whitespace. Example: `strip_ws2('   ')`.", "response": "def strip_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `strip_ws2(s)` that strips leading and trailing whitespace. Example: `strip_ws2('\\t\\t\\t')`.", "response": "def strip_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `strip_ws2(s)` that strips leading and trailing whitespace. Example: `strip_ws2(' x ')`.", "response": "def strip_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `strip_ws2(s)` that strips leading and trailing whitespace. Example: `strip_ws2('\\r\\n')`.", "response": "def strip_ws2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ends2(s)` that strips leading and trailing whitespace. Example: `remove_ends2('  hello  ')`.", "response": "def remove_ends2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ends2(s)` that strips leading and trailing whitespace. Example: `remove_ends2('hello')`.", "response": "def remove_ends2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ends2(s)` that strips leading and trailing whitespace. Example: `remove_ends2('\\n\\nhi\\n\\n')`.", "response": "def remove_ends2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ends2(s)` that strips leading and trailing whitespace. Example: `remove_ends2('')`.", "response": "def remove_ends2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ends2(s)` that strips leading and trailing whitespace. Example: `remove_ends2('   ')`.", "response": "def remove_ends2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ends2(s)` that strips leading and trailing whitespace. Example: `remove_ends2('\\t\\t\\t')`.", "response": "def remove_ends2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ends2(s)` that strips leading and trailing whitespace. Example: `remove_ends2(' x ')`.", "response": "def remove_ends2(s):\n    return s.strip()\n"}
+{"instruction": "Write a function `remove_ends2(s)` that strips leading and trailing whitespace. Example: `remove_ends2('\\r\\n')`.", "response": "def remove_ends2(s):\n    return s.strip()\n"}

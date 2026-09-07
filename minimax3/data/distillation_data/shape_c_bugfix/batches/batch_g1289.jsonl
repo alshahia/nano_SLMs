@@ -1,0 +1,1 @@
+{"instruction": "Show `ZipFile.namelist` in `zip_list`. (input: 'data.zip')", "response": "import zipfile\n\ndef zip_list(zip_path):\n    with zipfile.ZipFile(zip_path) as z:\n        return z.namelist()\n\n# Bug was: `namelist()` lists all entries\n\n# pair: zip_list / 'data.zip'\n"}

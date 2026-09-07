@@ -1,0 +1,15 @@
+{"text": "# qx2_lower :: 'HELLO'\ndef qx2_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_lower('HELLO'))\n"}
+{"text": "# qx2_lower :: 'Hello'\ndef qx2_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_lower('Hello'))\n"}
+{"text": "# qx2_lower :: ''\ndef qx2_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_lower(''))\n"}
+{"text": "# qx2_lower :: 'ABC123'\ndef qx2_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_lower('ABC123'))\n"}
+{"text": "# qx2_lower :: 'mixED'\ndef qx2_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_lower('mixED'))\n"}
+{"text": "# qx2_to_lower :: 'HELLO'\ndef qx2_to_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_to_lower('HELLO'))\n"}
+{"text": "# qx2_to_lower :: 'Hello'\ndef qx2_to_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_to_lower('Hello'))\n"}
+{"text": "# qx2_to_lower :: ''\ndef qx2_to_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_to_lower(''))\n"}
+{"text": "# qx2_to_lower :: 'ABC123'\ndef qx2_to_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_to_lower('ABC123'))\n"}
+{"text": "# qx2_to_lower :: 'mixED'\ndef qx2_to_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_to_lower('mixED'))\n"}
+{"text": "# qx2_str_lower :: 'HELLO'\ndef qx2_str_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_str_lower('HELLO'))\n"}
+{"text": "# qx2_str_lower :: 'Hello'\ndef qx2_str_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_str_lower('Hello'))\n"}
+{"text": "# qx2_str_lower :: ''\ndef qx2_str_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_str_lower(''))\n"}
+{"text": "# qx2_str_lower :: 'ABC123'\ndef qx2_str_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_str_lower('ABC123'))\n"}
+{"text": "# qx2_str_lower :: 'mixED'\ndef qx2_str_lower(s):\n    return s.lower()\n\nif __name__ == '__main__':\n    print(qx2_str_lower('mixED'))\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx_square_n :: 0\ndef qx_square_n(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_n(0))\n"}
+{"text": "# qx_square_n :: 1\ndef qx_square_n(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_n(1))\n"}
+{"text": "# qx_square_n :: 5\ndef qx_square_n(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_n(5))\n"}
+{"text": "# qx_square_n :: -3\ndef qx_square_n(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_n(-3))\n"}
+{"text": "# qx_square_n :: 100\ndef qx_square_n(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_n(100))\n"}
+{"text": "# qx_sqr :: 0\ndef qx_sqr(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_sqr(0))\n"}
+{"text": "# qx_sqr :: 1\ndef qx_sqr(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_sqr(1))\n"}
+{"text": "# qx_sqr :: 5\ndef qx_sqr(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_sqr(5))\n"}
+{"text": "# qx_sqr :: -3\ndef qx_sqr(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_sqr(-3))\n"}
+{"text": "# qx_sqr :: 100\ndef qx_sqr(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_sqr(100))\n"}
+{"text": "# qx_square_of :: 0\ndef qx_square_of(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_of(0))\n"}
+{"text": "# qx_square_of :: 1\ndef qx_square_of(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_of(1))\n"}
+{"text": "# qx_square_of :: 5\ndef qx_square_of(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_of(5))\n"}
+{"text": "# qx_square_of :: -3\ndef qx_square_of(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_of(-3))\n"}
+{"text": "# qx_square_of :: 100\ndef qx_square_of(n):\n    return n * n\n\nif __name__ == '__main__':\n    print(qx_square_of(100))\n"}

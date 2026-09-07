@@ -1,0 +1,64 @@
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper('HELLO')`.", "response": "def is_str_upper(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper('Hello')`.", "response": "def is_str_upper(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper('')`.", "response": "def is_str_upper(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper('ABC')`.", "response": "def is_str_upper(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper('ABC123')`.", "response": "def is_str_upper(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper(' ')`.", "response": "def is_str_upper(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper('A B C')`.", "response": "def is_str_upper(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper('all lower')`.", "response": "def is_str_upper(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_upper_v2(s)` returning True iff `s` is all uppercase. Example: `is_upper_v2('HELLO')`.", "response": "def is_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_upper_v2(s)` returning True iff `s` is all uppercase. Example: `is_upper_v2('Hello')`.", "response": "def is_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_upper_v2(s)` returning True iff `s` is all uppercase. Example: `is_upper_v2('')`.", "response": "def is_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_upper_v2(s)` returning True iff `s` is all uppercase. Example: `is_upper_v2('ABC')`.", "response": "def is_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_upper_v2(s)` returning True iff `s` is all uppercase. Example: `is_upper_v2('ABC123')`.", "response": "def is_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_upper_v2(s)` returning True iff `s` is all uppercase. Example: `is_upper_v2(' ')`.", "response": "def is_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_upper_v2(s)` returning True iff `s` is all uppercase. Example: `is_upper_v2('A B C')`.", "response": "def is_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `is_upper_v2(s)` returning True iff `s` is all uppercase. Example: `is_upper_v2('all lower')`.", "response": "def is_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `all_upper_v2(s)` returning True iff `s` is all uppercase. Example: `all_upper_v2('HELLO')`.", "response": "def all_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `all_upper_v2(s)` returning True iff `s` is all uppercase. Example: `all_upper_v2('Hello')`.", "response": "def all_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `all_upper_v2(s)` returning True iff `s` is all uppercase. Example: `all_upper_v2('')`.", "response": "def all_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `all_upper_v2(s)` returning True iff `s` is all uppercase. Example: `all_upper_v2('ABC')`.", "response": "def all_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `all_upper_v2(s)` returning True iff `s` is all uppercase. Example: `all_upper_v2('ABC123')`.", "response": "def all_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `all_upper_v2(s)` returning True iff `s` is all uppercase. Example: `all_upper_v2(' ')`.", "response": "def all_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `all_upper_v2(s)` returning True iff `s` is all uppercase. Example: `all_upper_v2('A B C')`.", "response": "def all_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `all_upper_v2(s)` returning True iff `s` is all uppercase. Example: `all_upper_v2('all lower')`.", "response": "def all_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_check_v2(s)` returning True iff `s` is all uppercase. Example: `upper_check_v2('HELLO')`.", "response": "def upper_check_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_check_v2(s)` returning True iff `s` is all uppercase. Example: `upper_check_v2('Hello')`.", "response": "def upper_check_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_check_v2(s)` returning True iff `s` is all uppercase. Example: `upper_check_v2('')`.", "response": "def upper_check_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_check_v2(s)` returning True iff `s` is all uppercase. Example: `upper_check_v2('ABC')`.", "response": "def upper_check_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_check_v2(s)` returning True iff `s` is all uppercase. Example: `upper_check_v2('ABC123')`.", "response": "def upper_check_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_check_v2(s)` returning True iff `s` is all uppercase. Example: `upper_check_v2(' ')`.", "response": "def upper_check_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_check_v2(s)` returning True iff `s` is all uppercase. Example: `upper_check_v2('A B C')`.", "response": "def upper_check_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_check_v2(s)` returning True iff `s` is all uppercase. Example: `upper_check_v2('all lower')`.", "response": "def upper_check_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2('HELLO')`.", "response": "def isupper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2('Hello')`.", "response": "def isupper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2('')`.", "response": "def isupper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2('ABC')`.", "response": "def isupper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2('ABC123')`.", "response": "def isupper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2(' ')`.", "response": "def isupper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2('A B C')`.", "response": "def isupper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2('all lower')`.", "response": "def isupper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `check_upper_v2(s)` returning True iff `s` is all uppercase. Example: `check_upper_v2('HELLO')`.", "response": "def check_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `check_upper_v2(s)` returning True iff `s` is all uppercase. Example: `check_upper_v2('Hello')`.", "response": "def check_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `check_upper_v2(s)` returning True iff `s` is all uppercase. Example: `check_upper_v2('')`.", "response": "def check_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `check_upper_v2(s)` returning True iff `s` is all uppercase. Example: `check_upper_v2('ABC')`.", "response": "def check_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `check_upper_v2(s)` returning True iff `s` is all uppercase. Example: `check_upper_v2('ABC123')`.", "response": "def check_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `check_upper_v2(s)` returning True iff `s` is all uppercase. Example: `check_upper_v2(' ')`.", "response": "def check_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `check_upper_v2(s)` returning True iff `s` is all uppercase. Example: `check_upper_v2('A B C')`.", "response": "def check_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `check_upper_v2(s)` returning True iff `s` is all uppercase. Example: `check_upper_v2('all lower')`.", "response": "def check_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_p(s)` returning True iff `s` is all uppercase. Example: `upper_p('HELLO')`.", "response": "def upper_p(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_p(s)` returning True iff `s` is all uppercase. Example: `upper_p('Hello')`.", "response": "def upper_p(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_p(s)` returning True iff `s` is all uppercase. Example: `upper_p('')`.", "response": "def upper_p(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_p(s)` returning True iff `s` is all uppercase. Example: `upper_p('ABC')`.", "response": "def upper_p(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_p(s)` returning True iff `s` is all uppercase. Example: `upper_p('ABC123')`.", "response": "def upper_p(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_p(s)` returning True iff `s` is all uppercase. Example: `upper_p(' ')`.", "response": "def upper_p(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_p(s)` returning True iff `s` is all uppercase. Example: `upper_p('A B C')`.", "response": "def upper_p(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `upper_p(s)` returning True iff `s` is all uppercase. Example: `upper_p('all lower')`.", "response": "def upper_p(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2('HELLO')`.", "response": "def do_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2('Hello')`.", "response": "def do_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2('')`.", "response": "def do_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2('ABC')`.", "response": "def do_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2('ABC123')`.", "response": "def do_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2(' ')`.", "response": "def do_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2('A B C')`.", "response": "def do_upper_v2(s):\n    return s.isupper()\n"}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2('all lower')`.", "response": "def do_upper_v2(s):\n    return s.isupper()\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show tomllib binary mode in `toml`. Input: `'pyproject.toml'`. (input: 'pyproject.toml')", "response": "import tomllib\ndef toml(path):\n    with open(path) as f:\n        return tomllib.load(f)\n\n# Bug was: tomllib.load requires binary mode ('rb') — unlike json\n\n# pair: toml / 'pyproject.toml'\n"}

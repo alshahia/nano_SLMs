@@ -1,0 +1,15 @@
+{"text": "# qx2_b64enc :: 'hello'\nimport base64\n\ndef qx2_b64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64enc('hello'))\n"}
+{"text": "# qx2_b64enc :: ''\nimport base64\n\ndef qx2_b64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64enc(''))\n"}
+{"text": "# qx2_b64enc :: 'Python'\nimport base64\n\ndef qx2_b64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64enc('Python'))\n"}
+{"text": "# qx2_b64enc :: 'café'\nimport base64\n\ndef qx2_b64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64enc('café'))\n"}
+{"text": "# qx2_b64enc :: '1234567890'\nimport base64\n\ndef qx2_b64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64enc('1234567890'))\n"}
+{"text": "# qx2_b64_encode :: 'hello'\nimport base64\n\ndef qx2_b64_encode(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64_encode('hello'))\n"}
+{"text": "# qx2_b64_encode :: ''\nimport base64\n\ndef qx2_b64_encode(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64_encode(''))\n"}
+{"text": "# qx2_b64_encode :: 'Python'\nimport base64\n\ndef qx2_b64_encode(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64_encode('Python'))\n"}
+{"text": "# qx2_b64_encode :: 'café'\nimport base64\n\ndef qx2_b64_encode(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64_encode('café'))\n"}
+{"text": "# qx2_b64_encode :: '1234567890'\nimport base64\n\ndef qx2_b64_encode(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_b64_encode('1234567890'))\n"}
+{"text": "# qx2_base64enc :: 'hello'\nimport base64\n\ndef qx2_base64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_base64enc('hello'))\n"}
+{"text": "# qx2_base64enc :: ''\nimport base64\n\ndef qx2_base64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_base64enc(''))\n"}
+{"text": "# qx2_base64enc :: 'Python'\nimport base64\n\ndef qx2_base64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_base64enc('Python'))\n"}
+{"text": "# qx2_base64enc :: 'café'\nimport base64\n\ndef qx2_base64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_base64enc('café'))\n"}
+{"text": "# qx2_base64enc :: '1234567890'\nimport base64\n\ndef qx2_base64enc(s):\n    return base64.b64encode(s.encode('utf-8')).decode('ascii')\n\nif __name__ == '__main__':\n    print(qx2_base64enc('1234567890'))\n"}

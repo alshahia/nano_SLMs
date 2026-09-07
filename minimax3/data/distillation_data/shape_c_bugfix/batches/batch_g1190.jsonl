@@ -1,0 +1,2 @@
+{"instruction": "Show the heapq.nlargest in `heapq_large`. (input: [3, 1, 4, 1, 5, 9])", "response": "import heapq\n\ndef heapq_large(xs, n):\n    return heapq.nlargest(n, xs)\n\n# Bug was: `nlargest(n, xs)` is more efficient than sorting for small n\n\n# pair: heapq_large / [3, 1, 4, 1, 5, 9]\n"}
+{"instruction": "Show the heapq.nlargest in `heapq_large`. (input: 2)", "response": "import heapq\n\ndef heapq_large(xs, n):\n    return heapq.nlargest(n, xs)\n\n# Bug was: `nlargest(n, xs)` is more efficient than sorting for small n\n\n# pair: heapq_large / 2\n"}

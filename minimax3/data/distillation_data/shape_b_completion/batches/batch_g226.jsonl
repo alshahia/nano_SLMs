@@ -1,0 +1,15 @@
+{"text": "# inclusive_range :: (1, 5)\ndef inclusive_range(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(inclusive_range((1, 5)))\n"}
+{"text": "# inclusive_range :: (0, 0)\ndef inclusive_range(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(inclusive_range((0, 0)))\n"}
+{"text": "# inclusive_range :: (-2, 2)\ndef inclusive_range(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(inclusive_range((-2, 2)))\n"}
+{"text": "# inclusive_range :: (5, 1)\ndef inclusive_range(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(inclusive_range((5, 1)))\n"}
+{"text": "# inclusive_range :: (1, 3)\ndef inclusive_range(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(inclusive_range((1, 3)))\n"}
+{"text": "# irange :: (1, 5)\ndef irange(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(irange((1, 5)))\n"}
+{"text": "# irange :: (0, 0)\ndef irange(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(irange((0, 0)))\n"}
+{"text": "# irange :: (-2, 2)\ndef irange(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(irange((-2, 2)))\n"}
+{"text": "# irange :: (5, 1)\ndef irange(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(irange((5, 1)))\n"}
+{"text": "# irange :: (1, 3)\ndef irange(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(irange((1, 3)))\n"}
+{"text": "# range_inclusive :: (1, 5)\ndef range_inclusive(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(range_inclusive((1, 5)))\n"}
+{"text": "# range_inclusive :: (0, 0)\ndef range_inclusive(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(range_inclusive((0, 0)))\n"}
+{"text": "# range_inclusive :: (-2, 2)\ndef range_inclusive(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(range_inclusive((-2, 2)))\n"}
+{"text": "# range_inclusive :: (5, 1)\ndef range_inclusive(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(range_inclusive((5, 1)))\n"}
+{"text": "# range_inclusive :: (1, 3)\ndef range_inclusive(a, b):\n    step = 1 if a <= b else -1\n    return list(range(a, b + step, step))\n\nif __name__ == '__main__':\n    print(range_inclusive((1, 3)))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show coroutine-never-awaited in `launch`. (input: '')", "response": "import asyncio\nasync def launch():\n    return 42\n\nresult = launch()\nprint(result)\n\n# Bug was: calling an async function returns a coroutine object, not the value — needs await\n\n# pair: launch / ''\n"}

@@ -1,0 +1,15 @@
+{"text": "# invert_dict :: {'a': 1, 'b': 2}\ndef invert_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(invert_dict({'a': 1, 'b': 2}))\n"}
+{"text": "# invert_dict :: {'x': 'y'}\ndef invert_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(invert_dict({'x': 'y'}))\n"}
+{"text": "# invert_dict :: {}\ndef invert_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(invert_dict({}))\n"}
+{"text": "# invert_dict :: {1: 'a', 2: 'b'}\ndef invert_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(invert_dict({1: 'a', 2: 'b'}))\n"}
+{"text": "# invert_dict :: {'a': 1, 'b': 1}\ndef invert_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(invert_dict({'a': 1, 'b': 1}))\n"}
+{"text": "# swap_keys_values :: {'a': 1, 'b': 2}\ndef swap_keys_values(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(swap_keys_values({'a': 1, 'b': 2}))\n"}
+{"text": "# swap_keys_values :: {'x': 'y'}\ndef swap_keys_values(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(swap_keys_values({'x': 'y'}))\n"}
+{"text": "# swap_keys_values :: {}\ndef swap_keys_values(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(swap_keys_values({}))\n"}
+{"text": "# swap_keys_values :: {1: 'a', 2: 'b'}\ndef swap_keys_values(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(swap_keys_values({1: 'a', 2: 'b'}))\n"}
+{"text": "# swap_keys_values :: {'a': 1, 'b': 1}\ndef swap_keys_values(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(swap_keys_values({'a': 1, 'b': 1}))\n"}
+{"text": "# reverse_dict :: {'a': 1, 'b': 2}\ndef reverse_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(reverse_dict({'a': 1, 'b': 2}))\n"}
+{"text": "# reverse_dict :: {'x': 'y'}\ndef reverse_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(reverse_dict({'x': 'y'}))\n"}
+{"text": "# reverse_dict :: {}\ndef reverse_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(reverse_dict({}))\n"}
+{"text": "# reverse_dict :: {1: 'a', 2: 'b'}\ndef reverse_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(reverse_dict({1: 'a', 2: 'b'}))\n"}
+{"text": "# reverse_dict :: {'a': 1, 'b': 1}\ndef reverse_dict(d):\n    return {v: k for k, v in d.items()}\n\nif __name__ == '__main__':\n    print(reverse_dict({'a': 1, 'b': 1}))\n"}

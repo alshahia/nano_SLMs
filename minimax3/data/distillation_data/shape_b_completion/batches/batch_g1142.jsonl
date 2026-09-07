@@ -1,0 +1,15 @@
+{"text": "# qx2_diff :: ([1, 2, 3], [2, 3, 4])\ndef qx2_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_diff(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_diff :: ([1, 2], [3, 4])\ndef qx2_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_diff(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_diff :: ([], [1, 2])\ndef qx2_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_diff(([], [1, 2])))\n"}
+{"text": "# qx2_diff :: ([1], [1])\ndef qx2_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_diff(([1], [1])))\n"}
+{"text": "# qx2_diff :: ([1, 2, 2, 3], [3])\ndef qx2_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_diff(([1, 2, 2, 3], [3])))\n"}
+{"text": "# qx2_minus :: ([1, 2, 3], [2, 3, 4])\ndef qx2_minus(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_minus(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_minus :: ([1, 2], [3, 4])\ndef qx2_minus(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_minus(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_minus :: ([], [1, 2])\ndef qx2_minus(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_minus(([], [1, 2])))\n"}
+{"text": "# qx2_minus :: ([1], [1])\ndef qx2_minus(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_minus(([1], [1])))\n"}
+{"text": "# qx2_minus :: ([1, 2, 2, 3], [3])\ndef qx2_minus(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_minus(([1, 2, 2, 3], [3])))\n"}
+{"text": "# qx2_set_diff :: ([1, 2, 3], [2, 3, 4])\ndef qx2_set_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_diff(([1, 2, 3], [2, 3, 4])))\n"}
+{"text": "# qx2_set_diff :: ([1, 2], [3, 4])\ndef qx2_set_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_diff(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_set_diff :: ([], [1, 2])\ndef qx2_set_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_diff(([], [1, 2])))\n"}
+{"text": "# qx2_set_diff :: ([1], [1])\ndef qx2_set_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_diff(([1], [1])))\n"}
+{"text": "# qx2_set_diff :: ([1, 2, 2, 3], [3])\ndef qx2_set_diff(a, b):\n    return sorted(set(a) - set(b))\n\nif __name__ == '__main__':\n    print(qx2_set_diff(([1, 2, 2, 3], [3])))\n"}

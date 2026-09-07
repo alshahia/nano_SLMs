@@ -1,0 +1,1 @@
+{"instruction": "Show the `__iter__` method in `class_iter`. (input: [1, 2, 3])", "response": "class C:\n    def __init__(self, xs):\n        self.xs = xs\n    def __iter__(self):\n        return iter(self.xs)\n\n# Bug was: `__iter__` returns an iterator; iter(self.xs) works because list is iterable\n\n# pair: class_iter / [1, 2, 3]\n"}

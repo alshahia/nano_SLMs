@@ -1,0 +1,1 @@
+{"instruction": "Show the missing `self` in the instance method of `class_no_self`. (input: 5)", "response": "class C:\n    def f():\n        return 42\n\n# Bug was: instance methods need `self` as first arg; without it, calling `c.f()` raises TypeError\n\n# pair: class_no_self / 5\n"}

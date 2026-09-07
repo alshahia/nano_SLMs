@@ -1,0 +1,15 @@
+{"text": "# qx2_dot :: ([1, 2, 3], [4, 5, 6])\ndef qx2_dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot(([1, 2, 3], [4, 5, 6])))\n"}
+{"text": "# qx2_dot :: ([0], [1])\ndef qx2_dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot(([0], [1])))\n"}
+{"text": "# qx2_dot :: ([1, 2], [3, 4])\ndef qx2_dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_dot :: ([], [])\ndef qx2_dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot(([], [])))\n"}
+{"text": "# qx2_dot :: ([1], [5])\ndef qx2_dot(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot(([1], [5])))\n"}
+{"text": "# qx2_inner_prod :: ([1, 2, 3], [4, 5, 6])\ndef qx2_inner_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_inner_prod(([1, 2, 3], [4, 5, 6])))\n"}
+{"text": "# qx2_inner_prod :: ([0], [1])\ndef qx2_inner_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_inner_prod(([0], [1])))\n"}
+{"text": "# qx2_inner_prod :: ([1, 2], [3, 4])\ndef qx2_inner_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_inner_prod(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_inner_prod :: ([], [])\ndef qx2_inner_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_inner_prod(([], [])))\n"}
+{"text": "# qx2_inner_prod :: ([1], [5])\ndef qx2_inner_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_inner_prod(([1], [5])))\n"}
+{"text": "# qx2_dot_prod :: ([1, 2, 3], [4, 5, 6])\ndef qx2_dot_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot_prod(([1, 2, 3], [4, 5, 6])))\n"}
+{"text": "# qx2_dot_prod :: ([0], [1])\ndef qx2_dot_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot_prod(([0], [1])))\n"}
+{"text": "# qx2_dot_prod :: ([1, 2], [3, 4])\ndef qx2_dot_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot_prod(([1, 2], [3, 4])))\n"}
+{"text": "# qx2_dot_prod :: ([], [])\ndef qx2_dot_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot_prod(([], [])))\n"}
+{"text": "# qx2_dot_prod :: ([1], [5])\ndef qx2_dot_prod(a, b):\n    return sum(x * y for x, y in zip(a, b))\n\nif __name__ == '__main__':\n    print(qx2_dot_prod(([1], [5])))\n"}

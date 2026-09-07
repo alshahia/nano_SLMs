@@ -1,0 +1,1 @@
+{"instruction": "Show the deque usage in `deque_basic`. (input: [])", "response": "from collections import deque\n\ndef deque_basic():\n    d = deque()\n    d.append(1)\n    d.appendleft(0)\n    return d.pop()\n\n# Bug was: `deque` is O(1) on both ends; list is O(n) on the left\n\n# pair: deque_basic / []\n"}

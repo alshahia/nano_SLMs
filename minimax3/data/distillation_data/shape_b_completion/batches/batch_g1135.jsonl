@@ -1,0 +1,15 @@
+{"text": "# qx2_take :: ([1, 2, 3, 4], 2)\ndef qx2_take(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_take(([1, 2, 3, 4], 2)))\n"}
+{"text": "# qx2_take :: ([1, 2, 3], 0)\ndef qx2_take(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_take(([1, 2, 3], 0)))\n"}
+{"text": "# qx2_take :: ([1, 2, 3], 5)\ndef qx2_take(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_take(([1, 2, 3], 5)))\n"}
+{"text": "# qx2_take :: ([], 3)\ndef qx2_take(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_take(([], 3)))\n"}
+{"text": "# qx2_take :: ([1], 1)\ndef qx2_take(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_take(([1], 1)))\n"}
+{"text": "# qx2_first_n :: ([1, 2, 3, 4], 2)\ndef qx2_first_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_first_n(([1, 2, 3, 4], 2)))\n"}
+{"text": "# qx2_first_n :: ([1, 2, 3], 0)\ndef qx2_first_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_first_n(([1, 2, 3], 0)))\n"}
+{"text": "# qx2_first_n :: ([1, 2, 3], 5)\ndef qx2_first_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_first_n(([1, 2, 3], 5)))\n"}
+{"text": "# qx2_first_n :: ([], 3)\ndef qx2_first_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_first_n(([], 3)))\n"}
+{"text": "# qx2_first_n :: ([1], 1)\ndef qx2_first_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_first_n(([1], 1)))\n"}
+{"text": "# qx2_head_n :: ([1, 2, 3, 4], 2)\ndef qx2_head_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_head_n(([1, 2, 3, 4], 2)))\n"}
+{"text": "# qx2_head_n :: ([1, 2, 3], 0)\ndef qx2_head_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_head_n(([1, 2, 3], 0)))\n"}
+{"text": "# qx2_head_n :: ([1, 2, 3], 5)\ndef qx2_head_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_head_n(([1, 2, 3], 5)))\n"}
+{"text": "# qx2_head_n :: ([], 3)\ndef qx2_head_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_head_n(([], 3)))\n"}
+{"text": "# qx2_head_n :: ([1], 1)\ndef qx2_head_n(xs, n):\n    return xs[:n]\n\nif __name__ == '__main__':\n    print(qx2_head_n(([1], 1)))\n"}

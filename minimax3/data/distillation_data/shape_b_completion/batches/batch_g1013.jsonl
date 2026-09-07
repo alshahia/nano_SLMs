@@ -1,0 +1,15 @@
+{"text": "# qx2_atan :: 0.0\nimport math\n\ndef qx2_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan(0.0))\n"}
+{"text": "# qx2_atan :: 0.5\nimport math\n\ndef qx2_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan(0.5))\n"}
+{"text": "# qx2_atan :: 1.0\nimport math\n\ndef qx2_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan(1.0))\n"}
+{"text": "# qx2_atan :: 3.14159 / 2\nimport math\n\ndef qx2_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan(3.14159 / 2))\n"}
+{"text": "# qx2_atan :: -1.0\nimport math\n\ndef qx2_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan(-1.0))\n"}
+{"text": "# qx2_atan_run :: 0.0\nimport math\n\ndef qx2_atan_run(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan_run(0.0))\n"}
+{"text": "# qx2_atan_run :: 0.5\nimport math\n\ndef qx2_atan_run(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan_run(0.5))\n"}
+{"text": "# qx2_atan_run :: 1.0\nimport math\n\ndef qx2_atan_run(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan_run(1.0))\n"}
+{"text": "# qx2_atan_run :: 3.14159 / 2\nimport math\n\ndef qx2_atan_run(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan_run(3.14159 / 2))\n"}
+{"text": "# qx2_atan_run :: -1.0\nimport math\n\ndef qx2_atan_run(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_atan_run(-1.0))\n"}
+{"text": "# qx2_run_atan :: 0.0\nimport math\n\ndef qx2_run_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_atan(0.0))\n"}
+{"text": "# qx2_run_atan :: 0.5\nimport math\n\ndef qx2_run_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_atan(0.5))\n"}
+{"text": "# qx2_run_atan :: 1.0\nimport math\n\ndef qx2_run_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_atan(1.0))\n"}
+{"text": "# qx2_run_atan :: 3.14159 / 2\nimport math\n\ndef qx2_run_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_atan(3.14159 / 2))\n"}
+{"text": "# qx2_run_atan :: -1.0\nimport math\n\ndef qx2_run_atan(x):\n    return math.atan(x)\n\nif __name__ == '__main__':\n    print(qx2_run_atan(-1.0))\n"}

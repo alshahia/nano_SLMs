@@ -1,0 +1,15 @@
+{"text": "# qx2_int_to_hex :: 0\ndef qx2_int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_hex(0))\n"}
+{"text": "# qx2_int_to_hex :: 1\ndef qx2_int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_hex(1))\n"}
+{"text": "# qx2_int_to_hex :: 255\ndef qx2_int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_hex(255))\n"}
+{"text": "# qx2_int_to_hex :: 4096\ndef qx2_int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_hex(4096))\n"}
+{"text": "# qx2_int_to_hex :: 0xdeadbeef\ndef qx2_int_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_int_to_hex(0xdeadbeef))\n"}
+{"text": "# qx2_to_hex :: 0\ndef qx2_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_hex(0))\n"}
+{"text": "# qx2_to_hex :: 1\ndef qx2_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_hex(1))\n"}
+{"text": "# qx2_to_hex :: 255\ndef qx2_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_hex(255))\n"}
+{"text": "# qx2_to_hex :: 4096\ndef qx2_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_hex(4096))\n"}
+{"text": "# qx2_to_hex :: 0xdeadbeef\ndef qx2_to_hex(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_to_hex(0xdeadbeef))\n"}
+{"text": "# qx2_hex_str :: 0\ndef qx2_hex_str(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_hex_str(0))\n"}
+{"text": "# qx2_hex_str :: 1\ndef qx2_hex_str(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_hex_str(1))\n"}
+{"text": "# qx2_hex_str :: 255\ndef qx2_hex_str(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_hex_str(255))\n"}
+{"text": "# qx2_hex_str :: 4096\ndef qx2_hex_str(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_hex_str(4096))\n"}
+{"text": "# qx2_hex_str :: 0xdeadbeef\ndef qx2_hex_str(n):\n    if n == 0:\n        return '0'\n    return hex(n)[2:]\n\nif __name__ == '__main__':\n    print(qx2_hex_str(0xdeadbeef))\n"}

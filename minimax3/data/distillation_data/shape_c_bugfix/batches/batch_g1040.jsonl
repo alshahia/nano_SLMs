@@ -1,0 +1,2 @@
+{"instruction": "Show the safe `dict.get` in `dict_get_safe`. (input: {'a': 1})", "response": "def dict_get_safe(d, k):\n    return d.get(k)\n\n# Bug was: `d[k]` raises KeyError; `d.get(k)` returns None\n\n# pair: dict_get_safe / {'a': 1}\n"}
+{"instruction": "Show the safe `dict.get` in `dict_get_safe`. (input: 'b')", "response": "def dict_get_safe(d, k):\n    return d.get(k)\n\n# Bug was: `d[k]` raises KeyError; `d.get(k)` returns None\n\n# pair: dict_get_safe / 'b'\n"}

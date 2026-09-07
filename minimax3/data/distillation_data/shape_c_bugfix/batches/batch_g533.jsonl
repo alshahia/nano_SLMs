@@ -1,0 +1,1 @@
+{"instruction": "Show type(x) is int in `tcs`. Input: `1`. (input: 1)", "response": "def tcs(x):\n    if type(x) is int:\n        return x + 1\n    return None\n\n# Bug was: type(x) is int rejects bool (subclass) — usually want isinstance()\n\n# pair: tcs / 1\n"}

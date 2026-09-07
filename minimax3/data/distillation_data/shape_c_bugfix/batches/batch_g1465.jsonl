@@ -1,0 +1,1 @@
+{"instruction": "Show the underscore-unpacking in `unpack_underscore`. (input: [1, 2, 3])", "response": "def unpack_underscore(xs):\n    a, _, c = xs\n    return a, c\n\n# Bug was: `_` discards the middle element\n\n# pair: unpack_underscore / [1, 2, 3]\n"}

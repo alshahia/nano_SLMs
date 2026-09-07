@@ -1,0 +1,1 @@
+{"instruction": "Show the lambda-body is an expression in `lambda_no_ret`. (input: 5)", "response": "def lambda_no_ret(x):\n    return (lambda: x + 1)()\n\n# Bug was: lambdas have implicit `return` of the single expression\n\n# pair: lambda_no_ret / 5\n"}

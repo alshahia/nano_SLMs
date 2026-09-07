@@ -1,0 +1,1 @@
+{"instruction": "Show split+shell combo in `list_cmd`. (input: 'ls -l')", "response": "import subprocess\ndef list_cmd(cmd):\n    subprocess.run(cmd.split(), shell=True)\n\n# Bug was: shell=True with split is worse — pick one (list+shell=False, or single string)\n\n# pair: list_cmd / 'ls -l'\n"}

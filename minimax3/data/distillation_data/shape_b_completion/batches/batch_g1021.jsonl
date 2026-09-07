@@ -1,0 +1,15 @@
+{"text": "# qx2_log1p :: 0\nimport math\n\ndef qx2_log1p(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1p(0))\n"}
+{"text": "# qx2_log1p :: 1\nimport math\n\ndef qx2_log1p(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1p(1))\n"}
+{"text": "# qx2_log1p :: 0.5\nimport math\n\ndef qx2_log1p(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1p(0.5))\n"}
+{"text": "# qx2_log1p :: -0.5\nimport math\n\ndef qx2_log1p(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1p(-0.5))\n"}
+{"text": "# qx2_log1p :: 99\nimport math\n\ndef qx2_log1p(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1p(99))\n"}
+{"text": "# qx2_log_one_plus :: 0\nimport math\n\ndef qx2_log_one_plus(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log_one_plus(0))\n"}
+{"text": "# qx2_log_one_plus :: 1\nimport math\n\ndef qx2_log_one_plus(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log_one_plus(1))\n"}
+{"text": "# qx2_log_one_plus :: 0.5\nimport math\n\ndef qx2_log_one_plus(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log_one_plus(0.5))\n"}
+{"text": "# qx2_log_one_plus :: -0.5\nimport math\n\ndef qx2_log_one_plus(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log_one_plus(-0.5))\n"}
+{"text": "# qx2_log_one_plus :: 99\nimport math\n\ndef qx2_log_one_plus(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log_one_plus(99))\n"}
+{"text": "# qx2_log1 :: 0\nimport math\n\ndef qx2_log1(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1(0))\n"}
+{"text": "# qx2_log1 :: 1\nimport math\n\ndef qx2_log1(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1(1))\n"}
+{"text": "# qx2_log1 :: 0.5\nimport math\n\ndef qx2_log1(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1(0.5))\n"}
+{"text": "# qx2_log1 :: -0.5\nimport math\n\ndef qx2_log1(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1(-0.5))\n"}
+{"text": "# qx2_log1 :: 99\nimport math\n\ndef qx2_log1(x):\n    return math.log1p(x)\n\nif __name__ == '__main__':\n    print(qx2_log1(99))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the `key` argument to `min` in `min_key`. (input: ['hello', 'a', 'world'])", "response": "def min_key(xs):\n    return min(xs, key=len)\n\n# Bug was: `key=len` makes `min` pick the shortest string\n\n# pair: min_key / ['hello', 'a', 'world']\n"}

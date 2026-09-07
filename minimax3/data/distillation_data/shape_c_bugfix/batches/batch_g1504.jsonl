@@ -1,0 +1,1 @@
+{"instruction": "Show `dis.dis` in `dis_basic`. (input: def f(): return 1)", "response": "import dis\n\ndef dis_basic():\n    dis.dis(f)\n\n# Bug was: `dis.dis` prints bytecode; useful for understanding performance\n\n# pair: dis_basic / def f(): return 1\n"}

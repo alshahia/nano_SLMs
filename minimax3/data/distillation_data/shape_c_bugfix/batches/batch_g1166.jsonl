@@ -1,0 +1,1 @@
+{"instruction": "Show the `async def` syntax in `async_basic`. (input: 1)", "response": "import asyncio\n\nasync def async_basic():\n    await asyncio.sleep(0)\n    return 1\n\n# Bug was: `async def` defines a coroutine; `await` only works inside async functions\n\n# pair: async_basic / 1\n"}

@@ -1,0 +1,15 @@
+{"text": "# qx2_join :: (['a', 'b', 'c'], '-')\ndef qx2_join(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join((['a', 'b', 'c'], '-')))\n"}
+{"text": "# qx2_join :: ([], '-')\ndef qx2_join(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join(([], '-')))\n"}
+{"text": "# qx2_join :: (['x'], '-')\ndef qx2_join(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join((['x'], '-')))\n"}
+{"text": "# qx2_join :: (['a', 'b'], '')\ndef qx2_join(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join((['a', 'b'], '')))\n"}
+{"text": "# qx2_join :: (['hello', 'world'], ' ')\ndef qx2_join(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join((['hello', 'world'], ' ')))\n"}
+{"text": "# qx2_join_str :: (['a', 'b', 'c'], '-')\ndef qx2_join_str(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_str((['a', 'b', 'c'], '-')))\n"}
+{"text": "# qx2_join_str :: ([], '-')\ndef qx2_join_str(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_str(([], '-')))\n"}
+{"text": "# qx2_join_str :: (['x'], '-')\ndef qx2_join_str(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_str((['x'], '-')))\n"}
+{"text": "# qx2_join_str :: (['a', 'b'], '')\ndef qx2_join_str(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_str((['a', 'b'], '')))\n"}
+{"text": "# qx2_join_str :: (['hello', 'world'], ' ')\ndef qx2_join_str(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_str((['hello', 'world'], ' ')))\n"}
+{"text": "# qx2_join_with :: (['a', 'b', 'c'], '-')\ndef qx2_join_with(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_with((['a', 'b', 'c'], '-')))\n"}
+{"text": "# qx2_join_with :: ([], '-')\ndef qx2_join_with(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_with(([], '-')))\n"}
+{"text": "# qx2_join_with :: (['x'], '-')\ndef qx2_join_with(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_with((['x'], '-')))\n"}
+{"text": "# qx2_join_with :: (['a', 'b'], '')\ndef qx2_join_with(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_with((['a', 'b'], '')))\n"}
+{"text": "# qx2_join_with :: (['hello', 'world'], ' ')\ndef qx2_join_with(parts, sep):\n    return sep.join(parts)\n\nif __name__ == '__main__':\n    print(qx2_join_with((['hello', 'world'], ' ')))\n"}

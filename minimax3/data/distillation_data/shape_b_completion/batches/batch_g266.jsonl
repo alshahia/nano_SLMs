@@ -1,0 +1,15 @@
+{"text": "# list_diff :: ([1, 2, 3, 4], [2, 4])\ndef list_diff(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(list_diff(([1, 2, 3, 4], [2, 4])))\n"}
+{"text": "# list_diff :: ([1, 2, 3], [])\ndef list_diff(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(list_diff(([1, 2, 3], [])))\n"}
+{"text": "# list_diff :: ([], [1, 2])\ndef list_diff(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(list_diff(([], [1, 2])))\n"}
+{"text": "# list_diff :: ([1, 1, 2, 2], [1])\ndef list_diff(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(list_diff(([1, 1, 2, 2], [1])))\n"}
+{"text": "# list_diff :: ([1, 2, 3], [4, 5])\ndef list_diff(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(list_diff(([1, 2, 3], [4, 5])))\n"}
+{"text": "# diff_lists :: ([1, 2, 3, 4], [2, 4])\ndef diff_lists(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(diff_lists(([1, 2, 3, 4], [2, 4])))\n"}
+{"text": "# diff_lists :: ([1, 2, 3], [])\ndef diff_lists(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(diff_lists(([1, 2, 3], [])))\n"}
+{"text": "# diff_lists :: ([], [1, 2])\ndef diff_lists(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(diff_lists(([], [1, 2])))\n"}
+{"text": "# diff_lists :: ([1, 1, 2, 2], [1])\ndef diff_lists(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(diff_lists(([1, 1, 2, 2], [1])))\n"}
+{"text": "# diff_lists :: ([1, 2, 3], [4, 5])\ndef diff_lists(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(diff_lists(([1, 2, 3], [4, 5])))\n"}
+{"text": "# subtract_list :: ([1, 2, 3, 4], [2, 4])\ndef subtract_list(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(subtract_list(([1, 2, 3, 4], [2, 4])))\n"}
+{"text": "# subtract_list :: ([1, 2, 3], [])\ndef subtract_list(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(subtract_list(([1, 2, 3], [])))\n"}
+{"text": "# subtract_list :: ([], [1, 2])\ndef subtract_list(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(subtract_list(([], [1, 2])))\n"}
+{"text": "# subtract_list :: ([1, 1, 2, 2], [1])\ndef subtract_list(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(subtract_list(([1, 1, 2, 2], [1])))\n"}
+{"text": "# subtract_list :: ([1, 2, 3], [4, 5])\ndef subtract_list(a, b):\n    bset = set(b)\n    return [x for x in a if x not in bset]\n\nif __name__ == '__main__':\n    print(subtract_list(([1, 2, 3], [4, 5])))\n"}

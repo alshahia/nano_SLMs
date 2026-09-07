@@ -1,0 +1,1 @@
+{"instruction": "Show the `start` parameter to `enumerate` in `enum_start`. (input: ['a', 'b', 'c'])", "response": "def enum_start(xs):\n    for i, x in enumerate(xs, start=1):\n        print(i, x)\n\n# Bug was: `start=1` is the standard way to get 1-based indices\n\n# pair: enum_start / ['a', 'b', 'c']\n"}

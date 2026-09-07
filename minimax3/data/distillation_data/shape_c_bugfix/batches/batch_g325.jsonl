@@ -1,0 +1,1 @@
+{"instruction": "Show missing super().__init__() in `child_init`. (input: '')", "response": "class Parent:\n    def __init__(self):\n        self.x = 1\n\nclass child_init(Parent):\n    def __init__(self):\n        self.y = 2\n\n# Bug was: Parent.__init__ never called — in Py3 use super().__init__() with no args\n\n# pair: child_init / ''\n"}

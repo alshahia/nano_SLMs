@@ -1,0 +1,15 @@
+{"text": "# qx2_is_alnum :: 'hello123'\ndef qx2_is_alnum(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_is_alnum('hello123'))\n"}
+{"text": "# qx2_is_alnum :: 'hello'\ndef qx2_is_alnum(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_is_alnum('hello'))\n"}
+{"text": "# qx2_is_alnum :: '12'\ndef qx2_is_alnum(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_is_alnum('12'))\n"}
+{"text": "# qx2_is_alnum :: ''\ndef qx2_is_alnum(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_is_alnum(''))\n"}
+{"text": "# qx2_is_alnum :: 'hello world'\ndef qx2_is_alnum(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_is_alnum('hello world'))\n"}
+{"text": "# qx2_alnum_check :: 'hello123'\ndef qx2_alnum_check(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alnum_check('hello123'))\n"}
+{"text": "# qx2_alnum_check :: 'hello'\ndef qx2_alnum_check(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alnum_check('hello'))\n"}
+{"text": "# qx2_alnum_check :: '12'\ndef qx2_alnum_check(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alnum_check('12'))\n"}
+{"text": "# qx2_alnum_check :: ''\ndef qx2_alnum_check(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alnum_check(''))\n"}
+{"text": "# qx2_alnum_check :: 'hello world'\ndef qx2_alnum_check(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alnum_check('hello world'))\n"}
+{"text": "# qx2_alphanumeric :: 'hello123'\ndef qx2_alphanumeric(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alphanumeric('hello123'))\n"}
+{"text": "# qx2_alphanumeric :: 'hello'\ndef qx2_alphanumeric(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alphanumeric('hello'))\n"}
+{"text": "# qx2_alphanumeric :: '12'\ndef qx2_alphanumeric(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alphanumeric('12'))\n"}
+{"text": "# qx2_alphanumeric :: ''\ndef qx2_alphanumeric(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alphanumeric(''))\n"}
+{"text": "# qx2_alphanumeric :: 'hello world'\ndef qx2_alphanumeric(s):\n    return s.isalnum()\n\nif __name__ == '__main__':\n    print(qx2_alphanumeric('hello world'))\n"}

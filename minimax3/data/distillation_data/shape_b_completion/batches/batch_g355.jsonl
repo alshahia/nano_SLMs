@@ -1,0 +1,15 @@
+{"text": "# qx_to_bool :: 1\ndef qx_to_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_to_bool(1))\n"}
+{"text": "# qx_to_bool :: 0\ndef qx_to_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_to_bool(0))\n"}
+{"text": "# qx_to_bool :: ''\ndef qx_to_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_to_bool(''))\n"}
+{"text": "# qx_to_bool :: 'yes'\ndef qx_to_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_to_bool('yes'))\n"}
+{"text": "# qx_to_bool :: []\ndef qx_to_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_to_bool([]))\n"}
+{"text": "# qx_qx_truthy_qx :: 1\ndef qx_qx_truthy_qx(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_truthy_qx(1))\n"}
+{"text": "# qx_qx_truthy_qx :: 0\ndef qx_qx_truthy_qx(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_truthy_qx(0))\n"}
+{"text": "# qx_qx_truthy_qx :: ''\ndef qx_qx_truthy_qx(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_truthy_qx(''))\n"}
+{"text": "# qx_qx_truthy_qx :: 'yes'\ndef qx_qx_truthy_qx(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_truthy_qx('yes'))\n"}
+{"text": "# qx_qx_truthy_qx :: []\ndef qx_qx_truthy_qx(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_truthy_qx([]))\n"}
+{"text": "# qx_qx_explicit_bool :: 1\ndef qx_qx_explicit_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_explicit_bool(1))\n"}
+{"text": "# qx_qx_explicit_bool :: 0\ndef qx_qx_explicit_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_explicit_bool(0))\n"}
+{"text": "# qx_qx_explicit_bool :: ''\ndef qx_qx_explicit_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_explicit_bool(''))\n"}
+{"text": "# qx_qx_explicit_bool :: 'yes'\ndef qx_qx_explicit_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_explicit_bool('yes'))\n"}
+{"text": "# qx_qx_explicit_bool :: []\ndef qx_qx_explicit_bool(x):\n    return bool(x)\n\nif __name__ == '__main__':\n    print(qx_qx_explicit_bool([]))\n"}

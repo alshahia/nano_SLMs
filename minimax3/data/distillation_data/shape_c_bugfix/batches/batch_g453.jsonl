@@ -1,0 +1,1 @@
+{"instruction": "Show __bool__ and __len__ together in `both`. (input: '')", "response": "class both:\n    def __bool__(self):\n        return self.n > 0\n    def __len__(self):\n        return self.n\n\n# Bug was: defining both __bool__ and __len__ — __bool__ takes precedence but signals intent confusion\n\n# pair: both / ''\n"}

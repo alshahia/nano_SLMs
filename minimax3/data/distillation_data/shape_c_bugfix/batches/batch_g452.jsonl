@@ -1,0 +1,1 @@
+{"instruction": "Show negative __len__ in `sized`. (input: '')", "response": "class sized:\n    def __len__(self):\n        return -1\n\n# Bug was: __len__ < 0 raises ValueError when bool() is called\n\n# pair: sized / ''\n"}

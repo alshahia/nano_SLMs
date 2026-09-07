@@ -1,0 +1,1 @@
+{"instruction": "Show the `bytes` immutability in `bytes_imm`. (input: b'abc')", "response": "def bytes_imm(b):\n    b[0] = 65\n    return b\n\n# Bug was: `bytes` is immutable; this raises TypeError. Use `bytearray`\n\n# pair: bytes_imm / b'abc'\n"}

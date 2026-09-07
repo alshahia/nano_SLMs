@@ -1,0 +1,1 @@
+{"instruction": "Show the scientific format spec in `format_spec_sci`. (input: 12345.6789)", "response": "def format_spec_sci(x):\n    return f'{x:.2e}'\n\n# Bug was: `:2e` is scientific with 2 decimals; `:E` for uppercase\n\n# pair: format_spec_sci / 12345.6789\n"}

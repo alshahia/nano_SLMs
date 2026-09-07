@@ -1,0 +1,1 @@
+{"instruction": "Show `sched.scheduler` in `sched_basic`. (input: )", "response": "import sched\nimport time\n\ndef sched_basic():\n    s = sched.scheduler(time.time, time.sleep)\n    return s\n\n# Bug was: `sched.scheduler` runs events at scheduled times\n\n# pair: sched_basic /\n"}

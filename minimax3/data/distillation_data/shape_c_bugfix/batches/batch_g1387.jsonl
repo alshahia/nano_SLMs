@@ -1,0 +1,1 @@
+{"instruction": "Show the ternary precedence in `ternary_prec`. (input: 5)", "response": "def ternary_prec(x):\n    return 'big' if x > 10 else 'small'\n\n# Bug was: ternary has very low precedence; wrap with parens when needed\n\n# pair: ternary_prec / 5\n"}

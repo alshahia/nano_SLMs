@@ -1,0 +1,3 @@
+{"instruction": "Find k=3rd smallest in [7, 10, 4, 3, 20, 15]; answer 7.", "response": "Quickselect variant. O(n) average; sort is O(n log n) if simpler.\n\n```python\ndef kth_smallest(nums, k):\n    return sorted(nums)[k-1]\n```\n"}
+{"instruction": "Find k=1 in [1, 2, 3]; answer 1.", "response": "Quickselect variant. O(n) average; sort is O(n log n) if simpler.\n\n```python\ndef kth_smallest(nums, k):\n    return sorted(nums)[k-1]\n```\n"}
+{"instruction": "Find k=2 in [2, 1]; answer 2.", "response": "Quickselect variant. O(n) average; sort is O(n log n) if simpler.\n\n```python\ndef kth_smallest(nums, k):\n    return sorted(nums)[k-1]\n```\n"}

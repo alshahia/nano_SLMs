@@ -1,0 +1,1 @@
+{"instruction": "Show `tracemalloc` in `tracemalloc_basic`. (input: )", "response": "import tracemalloc\n\ntracemalloc.start()\n\ndef tracemalloc_basic():\n    snap = tracemalloc.take_snapshot()\n    return snap\n\n# Bug was: `tracemalloc` tracks memory allocations; useful for finding leaks\n\n# pair: tracemalloc_basic /\n"}

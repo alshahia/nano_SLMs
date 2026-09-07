@@ -1,0 +1,1 @@
+{"instruction": "The function `dict_comp_braces(xs)` builds a dict via comprehension. Verify the syntax. (input: demo)", "response": "def dict_comp_braces(xs):\n    return {x: x*2 for x in xs}\n    # Bug was: dict comp uses {}, not (); ensure comprehension uses braces not parens.\n\n# pair: dict_comp_braces / demo\n"}

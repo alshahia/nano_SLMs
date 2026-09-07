@@ -1,0 +1,15 @@
+{"text": "# celsius_to_f :: (0,)\ndef celsius_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(celsius_to_f((0,)))\n"}
+{"text": "# celsius_to_f :: (100,)\ndef celsius_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(celsius_to_f((100,)))\n"}
+{"text": "# celsius_to_f :: (-40,)\ndef celsius_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(celsius_to_f((-40,)))\n"}
+{"text": "# celsius_to_f :: (37,)\ndef celsius_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(celsius_to_f((37,)))\n"}
+{"text": "# celsius_to_f :: (-273.15,)\ndef celsius_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(celsius_to_f((-273.15,)))\n"}
+{"text": "# c_to_f :: (0,)\ndef c_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c_to_f((0,)))\n"}
+{"text": "# c_to_f :: (100,)\ndef c_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c_to_f((100,)))\n"}
+{"text": "# c_to_f :: (-40,)\ndef c_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c_to_f((-40,)))\n"}
+{"text": "# c_to_f :: (37,)\ndef c_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c_to_f((37,)))\n"}
+{"text": "# c_to_f :: (-273.15,)\ndef c_to_f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c_to_f((-273.15,)))\n"}
+{"text": "# c2f :: (0,)\ndef c2f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c2f((0,)))\n"}
+{"text": "# c2f :: (100,)\ndef c2f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c2f((100,)))\n"}
+{"text": "# c2f :: (-40,)\ndef c2f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c2f((-40,)))\n"}
+{"text": "# c2f :: (37,)\ndef c2f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c2f((37,)))\n"}
+{"text": "# c2f :: (-273.15,)\ndef c2f(c):\n    return c * 9 / 5 + 32\n\nif __name__ == '__main__':\n    print(c2f((-273.15,)))\n"}

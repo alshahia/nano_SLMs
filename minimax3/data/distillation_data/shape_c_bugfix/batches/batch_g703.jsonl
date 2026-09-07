@@ -1,0 +1,1 @@
+{"instruction": "Show `is` for ints in `check_same`. Input: `1000, 1000`. (input: 1000, 1000)", "response": "def check_same(a, b):\n    return a is b\n\n# Bug was: `is` for ints > 256 — interning not guaranteed; use == for value comparison\n\n# pair: check_same / 1000, 1000\n"}

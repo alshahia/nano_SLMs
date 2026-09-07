@@ -1,0 +1,1 @@
+{"instruction": "Show `Self` type in `typing_self`. (input: 5)", "response": "from typing import Self\n\nclass C:\n    def __init__(self, x):\n        self.x = x\n    def clone(self) -> Self:\n        return C(self.x)\n\ndef typing_self(x):\n    return C(x).clone()\n\n# Bug was: `Self` (Py3.11+) is the self type; useful for subclass-friendly methods\n\n# pair: typing_self / 5\n"}

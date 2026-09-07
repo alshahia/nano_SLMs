@@ -1,0 +1,1 @@
+{"instruction": "Show that `await` only works in async functions in `await_only`. (input: 1)", "response": "import asyncio\n\ndef await_only():\n    await asyncio.sleep(0)\n\n# Bug was: `await` only works inside `async def`; this is a SyntaxError\n\n# pair: await_only / 1\n"}

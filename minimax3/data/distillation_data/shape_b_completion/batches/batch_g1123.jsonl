@@ -1,0 +1,15 @@
+{"text": "# qx2_urldec :: 'hello%20world'\nimport urllib.parse\n\ndef qx2_urldec(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_urldec('hello%20world'))\n"}
+{"text": "# qx2_urldec :: 'a%26b%3Dc'\nimport urllib.parse\n\ndef qx2_urldec(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_urldec('a%26b%3Dc'))\n"}
+{"text": "# qx2_urldec :: 'caf%C3%A9'\nimport urllib.parse\n\ndef qx2_urldec(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_urldec('caf%C3%A9'))\n"}
+{"text": "# qx2_urldec :: '%2Fpath'\nimport urllib.parse\n\ndef qx2_urldec(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_urldec('%2Fpath'))\n"}
+{"text": "# qx2_urldec :: '100%25'\nimport urllib.parse\n\ndef qx2_urldec(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_urldec('100%25'))\n"}
+{"text": "# qx2_url_decode :: 'hello%20world'\nimport urllib.parse\n\ndef qx2_url_decode(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_url_decode('hello%20world'))\n"}
+{"text": "# qx2_url_decode :: 'a%26b%3Dc'\nimport urllib.parse\n\ndef qx2_url_decode(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_url_decode('a%26b%3Dc'))\n"}
+{"text": "# qx2_url_decode :: 'caf%C3%A9'\nimport urllib.parse\n\ndef qx2_url_decode(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_url_decode('caf%C3%A9'))\n"}
+{"text": "# qx2_url_decode :: '%2Fpath'\nimport urllib.parse\n\ndef qx2_url_decode(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_url_decode('%2Fpath'))\n"}
+{"text": "# qx2_url_decode :: '100%25'\nimport urllib.parse\n\ndef qx2_url_decode(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_url_decode('100%25'))\n"}
+{"text": "# qx2_unquote_str :: 'hello%20world'\nimport urllib.parse\n\ndef qx2_unquote_str(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_unquote_str('hello%20world'))\n"}
+{"text": "# qx2_unquote_str :: 'a%26b%3Dc'\nimport urllib.parse\n\ndef qx2_unquote_str(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_unquote_str('a%26b%3Dc'))\n"}
+{"text": "# qx2_unquote_str :: 'caf%C3%A9'\nimport urllib.parse\n\ndef qx2_unquote_str(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_unquote_str('caf%C3%A9'))\n"}
+{"text": "# qx2_unquote_str :: '%2Fpath'\nimport urllib.parse\n\ndef qx2_unquote_str(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_unquote_str('%2Fpath'))\n"}
+{"text": "# qx2_unquote_str :: '100%25'\nimport urllib.parse\n\ndef qx2_unquote_str(s):\n    return urllib.parse.unquote(s)\n\nif __name__ == '__main__':\n    print(qx2_unquote_str('100%25'))\n"}

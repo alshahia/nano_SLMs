@@ -1,0 +1,1 @@
+{"instruction": "Show division by zero in `avg_div_v1`. Input: `[]`. (input: [])", "response": "def avg_div_v1(xs):\n    return sum(xs) / len(xs)\n\n# Bug was: empty list — ZeroDivisionError\n\n# pair: avg_div_v1 / []\n"}

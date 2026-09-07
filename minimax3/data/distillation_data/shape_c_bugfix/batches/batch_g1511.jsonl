@@ -1,0 +1,1 @@
+{"instruction": "Show `sys.stdout` in `sys_stdout`. (input: )", "response": "import sys\n\ndef sys_stdout():\n    return sys.stdout\n\n# Bug was: `sys.stdout` is the standard output stream; `print` writes here by default\n\n# pair: sys_stdout /\n"}

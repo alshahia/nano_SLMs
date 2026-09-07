@@ -1,0 +1,2 @@
+{"instruction": "Show f-string formatting in `str_format_kw`. (input: 'hello')", "response": "def str_format_kw(s, t):\n    return f'{s} {t}'\n\n# Bug was: f-strings are usually clearer than `.format()`; both work\n\n# pair: str_format_kw / 'hello'\n"}
+{"instruction": "Show f-string formatting in `str_format_kw`. (input: 'world')", "response": "def str_format_kw(s, t):\n    return f'{s} {t}'\n\n# Bug was: f-strings are usually clearer than `.format()`; both work\n\n# pair: str_format_kw / 'world'\n"}

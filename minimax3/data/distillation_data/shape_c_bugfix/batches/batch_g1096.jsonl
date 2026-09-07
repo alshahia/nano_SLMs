@@ -1,0 +1,1 @@
+{"instruction": "Show the `try/except/else` pattern in `try_else`. (input: 'data')", "response": "def try_else(s):\n    try:\n        x = int(s)\n    except ValueError:\n        return None\n    else:\n        return x * 2\n\n# Bug was: `else` runs only when no exception was raised\n\n# pair: try_else / 'data'\n"}

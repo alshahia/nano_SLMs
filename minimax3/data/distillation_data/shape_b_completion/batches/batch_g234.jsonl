@@ -1,0 +1,15 @@
+{"text": "# find_first :: [1, 2, 3, 4]\ndef find_first(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_first([1, 2, 3, 4]))\n"}
+{"text": "# find_first :: [1, 2, 3]\ndef find_first(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_first([1, 2, 3]))\n"}
+{"text": "# find_first :: []\ndef find_first(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_first([]))\n"}
+{"text": "# find_first :: [5, 5, 5]\ndef find_first(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_first([5, 5, 5]))\n"}
+{"text": "# find_first :: [-1, 0, 1]\ndef find_first(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_first([-1, 0, 1]))\n"}
+{"text": "# first_match :: [1, 2, 3, 4]\ndef first_match(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(first_match([1, 2, 3, 4]))\n"}
+{"text": "# first_match :: [1, 2, 3]\ndef first_match(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(first_match([1, 2, 3]))\n"}
+{"text": "# first_match :: []\ndef first_match(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(first_match([]))\n"}
+{"text": "# first_match :: [5, 5, 5]\ndef first_match(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(first_match([5, 5, 5]))\n"}
+{"text": "# first_match :: [-1, 0, 1]\ndef first_match(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(first_match([-1, 0, 1]))\n"}
+{"text": "# find_where :: [1, 2, 3, 4]\ndef find_where(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_where([1, 2, 3, 4]))\n"}
+{"text": "# find_where :: [1, 2, 3]\ndef find_where(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_where([1, 2, 3]))\n"}
+{"text": "# find_where :: []\ndef find_where(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_where([]))\n"}
+{"text": "# find_where :: [5, 5, 5]\ndef find_where(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_where([5, 5, 5]))\n"}
+{"text": "# find_where :: [-1, 0, 1]\ndef find_where(xs, pred):\n    for x in xs:\n        if pred(x):\n            return x\n    return None\n\nif __name__ == '__main__':\n    print(find_where([-1, 0, 1]))\n"}

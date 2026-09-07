@@ -1,0 +1,1 @@
+{"instruction": "Show the dataclass inheritance in `dc_inherit`. (input: 5)", "response": "from dataclasses import dataclass\n\n@dataclass\nclass A:\n    x: int\n\n@dataclass\nclass B(A):\n    y: int\n\ndef dc_inherit(x, y):\n    return B(x, y)\n\n# Bug was: dataclass inheritance works; subclasses add their own fields\n\n# pair: dc_inherit / 5\n"}

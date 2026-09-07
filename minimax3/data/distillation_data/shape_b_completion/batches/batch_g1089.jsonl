@@ -1,0 +1,15 @@
+{"text": "# qx2_strip_chars :: ('xxhelloxx', 'x')\ndef qx2_strip_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars(('xxhelloxx', 'x')))\n"}
+{"text": "# qx2_strip_chars :: ('  hello  ', ' ')\ndef qx2_strip_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars(('  hello  ', ' ')))\n"}
+{"text": "# qx2_strip_chars :: ('abcba', 'ab')\ndef qx2_strip_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars(('abcba', 'ab')))\n"}
+{"text": "# qx2_strip_chars :: ('hello', 'xyz')\ndef qx2_strip_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars(('hello', 'xyz')))\n"}
+{"text": "# qx2_strip_chars :: ('', 'x')\ndef qx2_strip_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars(('', 'x')))\n"}
+{"text": "# qx2_strip_chars_set :: ('xxhelloxx', 'x')\ndef qx2_strip_chars_set(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars_set(('xxhelloxx', 'x')))\n"}
+{"text": "# qx2_strip_chars_set :: ('  hello  ', ' ')\ndef qx2_strip_chars_set(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars_set(('  hello  ', ' ')))\n"}
+{"text": "# qx2_strip_chars_set :: ('abcba', 'ab')\ndef qx2_strip_chars_set(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars_set(('abcba', 'ab')))\n"}
+{"text": "# qx2_strip_chars_set :: ('hello', 'xyz')\ndef qx2_strip_chars_set(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars_set(('hello', 'xyz')))\n"}
+{"text": "# qx2_strip_chars_set :: ('', 'x')\ndef qx2_strip_chars_set(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_strip_chars_set(('', 'x')))\n"}
+{"text": "# qx2_trim_chars :: ('xxhelloxx', 'x')\ndef qx2_trim_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_trim_chars(('xxhelloxx', 'x')))\n"}
+{"text": "# qx2_trim_chars :: ('  hello  ', ' ')\ndef qx2_trim_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_trim_chars(('  hello  ', ' ')))\n"}
+{"text": "# qx2_trim_chars :: ('abcba', 'ab')\ndef qx2_trim_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_trim_chars(('abcba', 'ab')))\n"}
+{"text": "# qx2_trim_chars :: ('hello', 'xyz')\ndef qx2_trim_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_trim_chars(('hello', 'xyz')))\n"}
+{"text": "# qx2_trim_chars :: ('', 'x')\ndef qx2_trim_chars(s, chars):\n    return s.strip(chars)\n\nif __name__ == '__main__':\n    print(qx2_trim_chars(('', 'x')))\n"}

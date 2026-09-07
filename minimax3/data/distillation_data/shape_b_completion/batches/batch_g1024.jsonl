@@ -1,0 +1,15 @@
+{"text": "# qx2_pow :: (2, 3)\ndef qx2_pow(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_pow((2, 3)))\n"}
+{"text": "# qx2_pow :: (2, 0)\ndef qx2_pow(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_pow((2, 0)))\n"}
+{"text": "# qx2_pow :: (2, 10)\ndef qx2_pow(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_pow((2, 10)))\n"}
+{"text": "# qx2_pow :: (1.5, 2)\ndef qx2_pow(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_pow((1.5, 2)))\n"}
+{"text": "# qx2_pow :: (0, 5)\ndef qx2_pow(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_pow((0, 5)))\n"}
+{"text": "# qx2_x_to_y :: (2, 3)\ndef qx2_x_to_y(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_x_to_y((2, 3)))\n"}
+{"text": "# qx2_x_to_y :: (2, 0)\ndef qx2_x_to_y(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_x_to_y((2, 0)))\n"}
+{"text": "# qx2_x_to_y :: (2, 10)\ndef qx2_x_to_y(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_x_to_y((2, 10)))\n"}
+{"text": "# qx2_x_to_y :: (1.5, 2)\ndef qx2_x_to_y(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_x_to_y((1.5, 2)))\n"}
+{"text": "# qx2_x_to_y :: (0, 5)\ndef qx2_x_to_y(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_x_to_y((0, 5)))\n"}
+{"text": "# qx2_raise :: (2, 3)\ndef qx2_raise(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_raise((2, 3)))\n"}
+{"text": "# qx2_raise :: (2, 0)\ndef qx2_raise(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_raise((2, 0)))\n"}
+{"text": "# qx2_raise :: (2, 10)\ndef qx2_raise(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_raise((2, 10)))\n"}
+{"text": "# qx2_raise :: (1.5, 2)\ndef qx2_raise(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_raise((1.5, 2)))\n"}
+{"text": "# qx2_raise :: (0, 5)\ndef qx2_raise(x, y):\n    return x ** y\n\nif __name__ == '__main__':\n    print(qx2_raise((0, 5)))\n"}

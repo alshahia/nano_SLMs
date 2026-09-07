@@ -1,0 +1,1 @@
+{"instruction": "Show the mutable-module-constant in `mutable_const`. (input: [1, 2, 3])", "response": "DEFAULT_LIST = []\n\ndef mutable_const(item):\n    DEFAULT_LIST.append(item)\n    return DEFAULT_LIST\n\n# Bug was: module-level list is mutable; state persists across calls\n\n# pair: mutable_const / [1, 2, 3]\n"}

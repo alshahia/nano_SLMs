@@ -1,0 +1,1 @@
+{"instruction": "Show `configparser` in `cfg_basic`. (input: '[sec]\\nk = v')", "response": "import configparser\n\ndef cfg_basic(s):\n    cfg = configparser.ConfigParser()\n    cfg.read_string(s)\n    return cfg['sec']['k']\n\n# Bug was: `read_string` parses INI-format config from a string\n\n# pair: cfg_basic / '[sec]\\nk = v'\n"}

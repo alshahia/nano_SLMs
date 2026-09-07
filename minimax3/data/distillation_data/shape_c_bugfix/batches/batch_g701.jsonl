@@ -1,0 +1,1 @@
+{"instruction": "Show mutable-default-argument bug in `add_item_v1`. Input: `[10, 20]`. (input: [10, 20])", "response": "def add_item_v1(item, bucket=[]):\n    bucket.append(item)\n    return bucket\n\nfirst = add_item_v1('a')\nsecond = add_item_v1('b')\nprint(first)  # Bug was: same default bucket reused\n\n# pair: add_item_v1 / [10, 20]\n"}

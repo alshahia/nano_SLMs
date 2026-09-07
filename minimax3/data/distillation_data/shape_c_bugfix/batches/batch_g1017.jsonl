@@ -1,0 +1,1 @@
+{"instruction": "Show the `is`-vs-`==` confusion in `is_zero`. (input: 0)", "response": "def is_zero(n):\n    return n is 0\n\n# Bug was: CPython interns small ints but `is` checks identity; for value check use `==`\n\n# pair: is_zero / 0\n"}

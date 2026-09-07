@@ -1,0 +1,1 @@
+{"instruction": "Show @wraps dropped args in `wa`. (input: '')", "response": "from functools import wraps\ndef wa(func):\n    @wraps(func)\n    def wrapper(*args, **kwargs):\n        return func(**kwargs)\n    return wrapper\n\n# Bug was: wrapper drops positional args — only forwards kwargs\n\n# pair: wa / ''\n"}

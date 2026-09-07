@@ -1,0 +1,1 @@
+{"instruction": "Show decorator state lost in `count`. Input: `fn`. (input: fn)", "response": "def count(func):\n    count = 0\n    def wrapper(*args):\n        count += 1\n        return func(*args)\n    return wrapper\n\n# Bug was: `count += 1` creates new local — use nonlocal or attribute on func\n\n# pair: count / fn\n"}

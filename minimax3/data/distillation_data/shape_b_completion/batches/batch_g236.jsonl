@@ -1,0 +1,15 @@
+{"text": "# merge_dicts :: ({'a': 1}, {'b': 2})\ndef merge_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(merge_dicts(({'a': 1}, {'b': 2})))\n"}
+{"text": "# merge_dicts :: ({}, {'x': 1})\ndef merge_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(merge_dicts(({}, {'x': 1})))\n"}
+{"text": "# merge_dicts :: ({'a': 1}, {'a': 2})\ndef merge_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(merge_dicts(({'a': 1}, {'a': 2})))\n"}
+{"text": "# merge_dicts :: ({'a': 1}, {'b': 2, 'c': 3})\ndef merge_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(merge_dicts(({'a': 1}, {'b': 2, 'c': 3})))\n"}
+{"text": "# merge_dicts :: ({}, {})\ndef merge_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(merge_dicts(({}, {})))\n"}
+{"text": "# combine_dicts :: ({'a': 1}, {'b': 2})\ndef combine_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(combine_dicts(({'a': 1}, {'b': 2})))\n"}
+{"text": "# combine_dicts :: ({}, {'x': 1})\ndef combine_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(combine_dicts(({}, {'x': 1})))\n"}
+{"text": "# combine_dicts :: ({'a': 1}, {'a': 2})\ndef combine_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(combine_dicts(({'a': 1}, {'a': 2})))\n"}
+{"text": "# combine_dicts :: ({'a': 1}, {'b': 2, 'c': 3})\ndef combine_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(combine_dicts(({'a': 1}, {'b': 2, 'c': 3})))\n"}
+{"text": "# combine_dicts :: ({}, {})\ndef combine_dicts(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(combine_dicts(({}, {})))\n"}
+{"text": "# dict_union :: ({'a': 1}, {'b': 2})\ndef dict_union(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(dict_union(({'a': 1}, {'b': 2})))\n"}
+{"text": "# dict_union :: ({}, {'x': 1})\ndef dict_union(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(dict_union(({}, {'x': 1})))\n"}
+{"text": "# dict_union :: ({'a': 1}, {'a': 2})\ndef dict_union(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(dict_union(({'a': 1}, {'a': 2})))\n"}
+{"text": "# dict_union :: ({'a': 1}, {'b': 2, 'c': 3})\ndef dict_union(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(dict_union(({'a': 1}, {'b': 2, 'c': 3})))\n"}
+{"text": "# dict_union :: ({}, {})\ndef dict_union(a, b):\n    out = dict(a)\n    out.update(b)\n    return out\n\nif __name__ == '__main__':\n    print(dict_union(({}, {})))\n"}

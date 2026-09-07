@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.read_text` in `path_read_text`. (input: 'file.txt')", "response": "from pathlib import Path\n\ndef path_read_text(p):\n    return Path(p).read_text()\n\n# Bug was: `read_text` opens, reads, and closes in one call; cleaner than `with open`\n\n# pair: path_read_text / 'file.txt'\n"}

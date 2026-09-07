@@ -1,0 +1,1 @@
+{"instruction": "Show cached_property + slots in `cp`. (input: '')", "response": "from functools import cached_property\nclass cp:\n    @cached_property\n    def x(self):\n        return compute_expensive()\n\n# Bug was: cached_property requires __dict__ on instance — broken with __slots__ unless slots has __dict__\n\n# pair: cp / ''\n"}

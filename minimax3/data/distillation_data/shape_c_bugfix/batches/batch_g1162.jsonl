@@ -1,0 +1,1 @@
+{"instruction": "Show `yield from` in `yield_from`. (input: [1, 2, 3])", "response": "def yield_from(xs):\n    yield from xs\n\n# Bug was: `yield from` delegates to a sub-iterator (PEP 380); cleanest way to flatten one level\n\n# pair: yield_from / [1, 2, 3]\n"}

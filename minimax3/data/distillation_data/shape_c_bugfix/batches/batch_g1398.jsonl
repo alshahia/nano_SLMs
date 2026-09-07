@@ -1,0 +1,1 @@
+{"instruction": "Show the falsy-empty-list in `truthy_empty_list`. (input: [])", "response": "def truthy_empty_list(xs):\n    if xs:\n        return 'truthy'\n    return 'falsy'\n\n# Bug was: empty list is falsy\n\n# pair: truthy_empty_list / []\n"}

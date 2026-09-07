@@ -1,0 +1,1 @@
+{"instruction": "Show `bz2.compress` in `bz2_basic`. (input: b'hello')", "response": "import bz2\n\ndef bz2_basic(data):\n    return bz2.compress(data)\n\n# Bug was: `bz2` compresses better than gzip but is slower\n\n# pair: bz2_basic / b'hello'\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show `sys.argv` in `sys_argv`. (input: )", "response": "import sys\n\ndef sys_argv():\n    return sys.argv[0]\n\n# Bug was: `sys.argv[0]` is the script name; `sys.argv[1:]` are user args\n\n# pair: sys_argv /\n"}

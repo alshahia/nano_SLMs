@@ -1,0 +1,1 @@
+{"instruction": "Show locale.atof locale dep in `lat`. Input: `'1,234.56'`. (input: '1,234.56')", "response": "import locale\ndef lat(s):\n    return locale.atof(s)\n\n# Bug was: locale.atof depends on system locale — surprising for English-speaking users\n\n# pair: lat / '1,234.56'\n"}

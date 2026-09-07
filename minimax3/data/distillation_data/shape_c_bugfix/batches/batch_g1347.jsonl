@@ -1,0 +1,1 @@
+{"instruction": "Show the sequence pattern matching in `match_seq`. (input: [1, 2])", "response": "def match_seq(xs):\n    match xs:\n        case [x, y]:\n            return x + y\n        case [x]:\n            return x\n        case _:\n            return 0\n\n# Bug was: `match` can destructure sequences\n\n# pair: match_seq / [1, 2]\n"}

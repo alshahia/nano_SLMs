@@ -1,0 +1,1 @@
+{"instruction": "Show wrong log level in `log_err`. Input: `'something failed'`. (input: 'something failed')", "response": "import logging\ndef log_err(msg):\n    logging.info(msg)\n\n# Bug was: errors logged at INFO level — never seen if app filters at WARNING+\n\n# pair: log_err / 'something failed'\n"}

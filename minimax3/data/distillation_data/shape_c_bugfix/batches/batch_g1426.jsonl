@@ -1,0 +1,2 @@
+{"instruction": "Show `pow` without modulus in `pow_no_mod`. (input: 2)", "response": "def pow_no_mod(b, e):\n    return pow(b, e)\n\n# Bug was: `pow(b, e)` is `b ** e`; `pow(b, e, m)` does modular exponentiation\n\n# pair: pow_no_mod / 2\n"}
+{"instruction": "Show `pow` without modulus in `pow_no_mod`. (input: 10)", "response": "def pow_no_mod(b, e):\n    return pow(b, e)\n\n# Bug was: `pow(b, e)` is `b ** e`; `pow(b, e, m)` does modular exponentiation\n\n# pair: pow_no_mod / 10\n"}

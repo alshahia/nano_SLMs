@@ -1,0 +1,1 @@
+{"instruction": "Show contextlib.suppress misuse in `silence`. (input: '')", "response": "from contextlib import contextmanager\n@contextmanager\ndef silence():\n    try:\n        yield\n    except:\n        pass\n\n# Bug was: silently swallowing ALL exceptions — use contextlib.suppress(SpecificError)\n\n# pair: silence / ''\n"}

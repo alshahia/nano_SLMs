@@ -1,0 +1,1 @@
+{"instruction": "Show the empty-input ValueError for `max` in `max_empty`. (input: [])", "response": "def max_empty(xs):\n    return max(xs)\n\n# Bug was: `max([])` raises ValueError; pass a default with `default=` keyword\n\n# pair: max_empty / []\n"}

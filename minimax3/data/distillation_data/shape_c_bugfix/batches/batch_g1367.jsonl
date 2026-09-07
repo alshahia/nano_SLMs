@@ -1,0 +1,1 @@
+{"instruction": "Show the loop-variable leak in `for_var_leak`. (input: [1, 2, 3])", "response": "def for_var_leak(xs):\n    for x in xs:\n        pass\n    return x\n\n# Bug was: loop variable leaks into enclosing scope; works but can confuse readers\n\n# pair: for_var_leak / [1, 2, 3]\n"}

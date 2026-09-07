@@ -1,0 +1,1 @@
+{"instruction": "Show itertools.combinations in `it_combs`. (input: [1, 2, 3, 4])", "response": "from itertools import combinations\n\ndef it_combs(xs, k):\n    return list(combinations(xs, k))\n\n# Bug was: `combinations(xs, k)` gives all k-subsets in input order\n\n# pair: it_combs / [1, 2, 3, 4]\n"}

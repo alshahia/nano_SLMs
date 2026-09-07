@@ -1,0 +1,15 @@
+{"text": "# qx2_year_of :: '2026-09-07'\nfrom datetime import date\n\ndef qx2_year_of(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_year_of('2026-09-07'))\n"}
+{"text": "# qx2_year_of :: '2024-02-29'\nfrom datetime import date\n\ndef qx2_year_of(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_year_of('2024-02-29'))\n"}
+{"text": "# qx2_year_of :: '2000-01-01'\nfrom datetime import date\n\ndef qx2_year_of(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_year_of('2000-01-01'))\n"}
+{"text": "# qx2_year_of :: '1999-12-31'\nfrom datetime import date\n\ndef qx2_year_of(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_year_of('1999-12-31'))\n"}
+{"text": "# qx2_year_of :: '2025-07-04'\nfrom datetime import date\n\ndef qx2_year_of(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_year_of('2025-07-04'))\n"}
+{"text": "# qx2_get_year :: '2026-09-07'\nfrom datetime import date\n\ndef qx2_get_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_get_year('2026-09-07'))\n"}
+{"text": "# qx2_get_year :: '2024-02-29'\nfrom datetime import date\n\ndef qx2_get_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_get_year('2024-02-29'))\n"}
+{"text": "# qx2_get_year :: '2000-01-01'\nfrom datetime import date\n\ndef qx2_get_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_get_year('2000-01-01'))\n"}
+{"text": "# qx2_get_year :: '1999-12-31'\nfrom datetime import date\n\ndef qx2_get_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_get_year('1999-12-31'))\n"}
+{"text": "# qx2_get_year :: '2025-07-04'\nfrom datetime import date\n\ndef qx2_get_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_get_year('2025-07-04'))\n"}
+{"text": "# qx2_extract_year :: '2026-09-07'\nfrom datetime import date\n\ndef qx2_extract_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_extract_year('2026-09-07'))\n"}
+{"text": "# qx2_extract_year :: '2024-02-29'\nfrom datetime import date\n\ndef qx2_extract_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_extract_year('2024-02-29'))\n"}
+{"text": "# qx2_extract_year :: '2000-01-01'\nfrom datetime import date\n\ndef qx2_extract_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_extract_year('2000-01-01'))\n"}
+{"text": "# qx2_extract_year :: '1999-12-31'\nfrom datetime import date\n\ndef qx2_extract_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_extract_year('1999-12-31'))\n"}
+{"text": "# qx2_extract_year :: '2025-07-04'\nfrom datetime import date\n\ndef qx2_extract_year(s):\n    return date.fromisoformat(s).year\n\nif __name__ == '__main__':\n    print(qx2_extract_year('2025-07-04'))\n"}

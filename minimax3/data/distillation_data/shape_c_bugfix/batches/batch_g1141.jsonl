@@ -1,0 +1,1 @@
+{"instruction": "Show the encoding declaration in `encoding_decl`. (input: # -*- coding: utf-8 -*-)", "response": "# -*- coding: utf-8 -*-\n\ndef helper():\n    return 'café'\n\n# Bug was: encoding declaration needed for non-ASCII in Python 2; Python 3 defaults to UTF-8\n\n# pair: encoding_decl / # -*- coding: utf-8 -*-\n"}

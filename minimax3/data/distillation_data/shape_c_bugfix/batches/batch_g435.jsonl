@@ -1,0 +1,1 @@
+{"instruction": "Show Py2 unicode literal in `ustring`. (input: '')", "response": "def ustring():\n    s = u'hello'\n    return s.encode('ascii')\n\n# Bug was: Py3 strings ARE unicode — `u''` prefix is a no-op (warning, not error)\n\n# pair: ustring / ''\n"}

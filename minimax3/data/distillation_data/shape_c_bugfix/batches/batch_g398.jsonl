@@ -1,0 +1,1 @@
+{"instruction": "Show missing rotation in `rotlog`. (input: '')", "response": "import logging\ndef rotlog():\n    h = logging.FileHandler('app.log')\n    logger = logging.getLogger()\n    logger.addHandler(h)\n\n# Bug was: log file grows forever — use RotatingFileHandler\n\n# pair: rotlog / ''\n"}

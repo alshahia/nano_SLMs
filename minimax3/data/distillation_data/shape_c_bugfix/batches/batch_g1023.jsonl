@@ -1,0 +1,1 @@
+{"instruction": "Show the empty-string-vs-zero comparison in `empty_str_zero`. (input: '')", "response": "def empty_str_zero(x):\n    return x == 0\n\n# Bug was: comparing a string to an int returns False; either compare to `''` or convert x to a number\n\n# pair: empty_str_zero / ''\n"}

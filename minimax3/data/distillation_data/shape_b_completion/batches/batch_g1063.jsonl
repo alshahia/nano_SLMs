@@ -1,0 +1,15 @@
+{"text": "# qx2_triangular_n :: 0\ndef qx2_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular_n(0))\n"}
+{"text": "# qx2_triangular_n :: 1\ndef qx2_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular_n(1))\n"}
+{"text": "# qx2_triangular_n :: 5\ndef qx2_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular_n(5))\n"}
+{"text": "# qx2_triangular_n :: 10\ndef qx2_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular_n(10))\n"}
+{"text": "# qx2_triangular_n :: 100\ndef qx2_triangular_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular_n(100))\n"}
+{"text": "# qx2_tri_n :: 0\ndef qx2_tri_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_tri_n(0))\n"}
+{"text": "# qx2_tri_n :: 1\ndef qx2_tri_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_tri_n(1))\n"}
+{"text": "# qx2_tri_n :: 5\ndef qx2_tri_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_tri_n(5))\n"}
+{"text": "# qx2_tri_n :: 10\ndef qx2_tri_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_tri_n(10))\n"}
+{"text": "# qx2_tri_n :: 100\ndef qx2_tri_n(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_tri_n(100))\n"}
+{"text": "# qx2_triangular :: 0\ndef qx2_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular(0))\n"}
+{"text": "# qx2_triangular :: 1\ndef qx2_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular(1))\n"}
+{"text": "# qx2_triangular :: 5\ndef qx2_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular(5))\n"}
+{"text": "# qx2_triangular :: 10\ndef qx2_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular(10))\n"}
+{"text": "# qx2_triangular :: 100\ndef qx2_triangular(n):\n    return n * (n + 1) // 2\n\nif __name__ == '__main__':\n    print(qx2_triangular(100))\n"}

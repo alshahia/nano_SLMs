@@ -1,0 +1,1 @@
+{"instruction": "Show the lambda-as-variable pattern in `lambda_assign`. (input: 5)", "response": "def lambda_assign(x):\n    f = lambda y: y * 2\n    return f(x)\n\n# Bug was: `lambda` is an expression, not a statement; PEP 8 discourages assigning to a name\n\n# pair: lambda_assign / 5\n"}

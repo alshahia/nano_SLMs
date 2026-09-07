@@ -1,0 +1,26 @@
+You are writing JSONL training pairs for a 226M-param code LM. Shape D format: {instruction, response} where instruction is a programming problem, and response = 1-3 short reasoning paragraphs followed by a blank line and a fenced triple-backtick python block that ast.parse() accepts.
+
+DO NOT respond with a text-only plan. In THIS turn, you MUST:
+
+1. Read these files (use the read tool):
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_d_reasoning\schema.md
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_d_reasoning\seed.jsonl
+   - E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_d_reasoning\batches\batch_g002.jsonl (or any existing batch) for format reference
+
+2. Write the output file (use the write tool) to:
+   E:\python projects\nano_SLMs\minimax3\data\distillation_data\shape_d_reasoning\batches\batch_w001.jsonl
+
+3. Write EXACTLY 200 JSONL lines. Each line = {"instruction": "<short problem>", "response": "<prose>\n\n<BT>python\n<code>\n<BT>"}. For BT use chr(96)*3 = "\`\`\`" (3 backticks). Build code as list-of-strings joined with \n.
+
+4. Topic: **standard algorithm problems**. Cover 8-10 different algorithms: two_sum, fib_dp, reverse_inplace, group_anagrams, is_palindrome_two_ptr, merge_sorted_lists, balanced_parens, max_subarray_sum, climbing_stairs, coin_change, bfs_shortest_path, dfs_tree_traversal, contains_duplicate, product_except_self, longest_common_prefix.
+
+5. Each response must contain prose with phrases like 'Let me think step by step', 'Approach:', 'For the input ... I will ...'. The fenced code block must ast.parse() cleanly. Every pair must be UNIQUE.
+
+6. Reply ONLY with: 'Wrote 200 pairs. SHA256: <hash>'
+
+If escape issues arise: write a small Python helper to meta/_gen_reasoning_pairs.py, run it with the venv, then delete it.
+
+HARD CAPS:
+- 200 pairs
+- Output file: shape_d_reasoning/batches/batch_w001.jsonl (exact path)
+- Do NOT spawn subagents of your own

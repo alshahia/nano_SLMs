@@ -1,0 +1,15 @@
+{"text": "# qx_discount :: (100.0, 0.2)\ndef qx_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_discount((100.0, 0.2)))\n"}
+{"text": "# qx_discount :: (50.0, 0.1)\ndef qx_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_discount((50.0, 0.1)))\n"}
+{"text": "# qx_discount :: (1000.0, 0.5)\ndef qx_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_discount((1000.0, 0.5)))\n"}
+{"text": "# qx_discount :: (99.99, 0.0)\ndef qx_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_discount((99.99, 0.0)))\n"}
+{"text": "# qx_discount :: (200, 0.15)\ndef qx_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_discount((200, 0.15)))\n"}
+{"text": "# qx_apply_discount :: (100.0, 0.2)\ndef qx_apply_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_apply_discount((100.0, 0.2)))\n"}
+{"text": "# qx_apply_discount :: (50.0, 0.1)\ndef qx_apply_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_apply_discount((50.0, 0.1)))\n"}
+{"text": "# qx_apply_discount :: (1000.0, 0.5)\ndef qx_apply_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_apply_discount((1000.0, 0.5)))\n"}
+{"text": "# qx_apply_discount :: (99.99, 0.0)\ndef qx_apply_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_apply_discount((99.99, 0.0)))\n"}
+{"text": "# qx_apply_discount :: (200, 0.15)\ndef qx_apply_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_apply_discount((200, 0.15)))\n"}
+{"text": "# qx_after_discount :: (100.0, 0.2)\ndef qx_after_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_after_discount((100.0, 0.2)))\n"}
+{"text": "# qx_after_discount :: (50.0, 0.1)\ndef qx_after_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_after_discount((50.0, 0.1)))\n"}
+{"text": "# qx_after_discount :: (1000.0, 0.5)\ndef qx_after_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_after_discount((1000.0, 0.5)))\n"}
+{"text": "# qx_after_discount :: (99.99, 0.0)\ndef qx_after_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_after_discount((99.99, 0.0)))\n"}
+{"text": "# qx_after_discount :: (200, 0.15)\ndef qx_after_discount(price, pct):\n    return price * (1 - pct)\n\nif __name__ == '__main__':\n    print(qx_after_discount((200, 0.15)))\n"}

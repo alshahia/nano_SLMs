@@ -1,0 +1,1 @@
+{"instruction": "Show the logging handler setup in `log_handler`. (input: 'hello')", "response": "import logging\n\ndef log_handler():\n    logger = logging.getLogger('test')\n    h = logging.StreamHandler()\n    logger.addHandler(h)\n    return logger\n\n# Bug was: handlers control where log output goes; multiple handlers can be attached\n\n# pair: log_handler / 'hello'\n"}

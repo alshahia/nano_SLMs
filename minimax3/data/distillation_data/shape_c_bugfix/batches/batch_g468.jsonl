@@ -1,0 +1,1 @@
+{"instruction": "Show @overload missing impl in `ovr`. (input: '')", "response": "from typing import overload\n@overload\ndef ovr(x: int) -> int: ...\n@overload\ndef ovr(x: str) -> str: ...\ndef ovr(x):\n    return x\n\n# Bug was: missing implementation or wrong impl signature — @overload stubs must be followed by real impl\n\n# pair: ovr / ''\n"}

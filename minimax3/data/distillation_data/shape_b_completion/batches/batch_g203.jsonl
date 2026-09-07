@@ -1,0 +1,12 @@
+{"text": "# pad_left :: ('42', 5, '0')\ndef pad_left(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(pad_left(('42', 5, '0')))\n"}
+{"text": "# pad_left :: ('hi', 4, '-')\ndef pad_left(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(pad_left(('hi', 4, '-')))\n"}
+{"text": "# pad_left :: ('abc', 3, 'x')\ndef pad_left(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(pad_left(('abc', 3, 'x')))\n"}
+{"text": "# pad_left :: ('123', 6, '0')\ndef pad_left(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(pad_left(('123', 6, '0')))\n"}
+{"text": "# lpad :: ('42', 5, '0')\ndef lpad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(lpad(('42', 5, '0')))\n"}
+{"text": "# lpad :: ('hi', 4, '-')\ndef lpad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(lpad(('hi', 4, '-')))\n"}
+{"text": "# lpad :: ('abc', 3, 'x')\ndef lpad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(lpad(('abc', 3, 'x')))\n"}
+{"text": "# lpad :: ('123', 6, '0')\ndef lpad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(lpad(('123', 6, '0')))\n"}
+{"text": "# left_pad :: ('42', 5, '0')\ndef left_pad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(left_pad(('42', 5, '0')))\n"}
+{"text": "# left_pad :: ('hi', 4, '-')\ndef left_pad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(left_pad(('hi', 4, '-')))\n"}
+{"text": "# left_pad :: ('abc', 3, 'x')\ndef left_pad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(left_pad(('abc', 3, 'x')))\n"}
+{"text": "# left_pad :: ('123', 6, '0')\ndef left_pad(s, n, ch=' '):\n    if len(s) >= n:\n        return s\n    return ch * (n - len(s)) + s\n\nif __name__ == '__main__':\n    print(left_pad(('123', 6, '0')))\n"}

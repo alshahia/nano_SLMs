@@ -1,0 +1,1 @@
+{"instruction": "Show assert in helper `verify`. (input: -5)", "response": "def verify(x):\n    assert x >= 0, 'negative'\n    return x\n\n# Bug was: helper function asserts are stripped with -O — raises AssertionError inconsistently\n\n# pair: verify / -5\n"}

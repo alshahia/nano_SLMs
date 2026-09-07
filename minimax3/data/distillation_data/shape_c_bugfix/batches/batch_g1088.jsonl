@@ -1,0 +1,1 @@
+{"instruction": "Show the starred-assignment pattern in `star_unpack`. (input: [1, 2, 3, 4, 5])", "response": "def star_unpack(xs):\n    a, b, *rest = xs\n    return a, b, rest\n\n# Bug was: starred assignment captures the remainder; useful for partial destructuring\n\n# pair: star_unpack / [1, 2, 3, 4, 5]\n"}

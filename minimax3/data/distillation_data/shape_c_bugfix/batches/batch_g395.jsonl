@@ -1,0 +1,1 @@
+{"instruction": "Show direct stdout swap in `silence2`. (input: '')", "response": "import sys, io\ndef silence2():\n    sys.stdout = io.StringIO()\n    print('hidden')\n    sys.stdout = sys.__stdout__\n\n# Bug was: if print raises, stdout is never restored — use redirect_stdout\n\n# pair: silence2 / ''\n"}

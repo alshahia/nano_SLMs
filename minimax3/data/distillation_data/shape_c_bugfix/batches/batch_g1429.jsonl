@@ -1,0 +1,1 @@
+{"instruction": "Show `id` in `id_basic`. (input: 42)", "response": "def id_basic(x):\n    return id(x)\n\n# Bug was: `id(x)` returns the memory address; useful for identity checks\n\n# pair: id_basic / 42\n"}

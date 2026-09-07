@@ -1,0 +1,64 @@
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('hello123')`.", "response": "def is_str_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('hello')`.", "response": "def is_str_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('12')`.", "response": "def is_str_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('')`.", "response": "def is_str_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('hello world')`.", "response": "def is_str_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('abc1')`.", "response": "def is_str_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('123abc')`.", "response": "def is_str_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('   ')`.", "response": "def is_str_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanum_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanum_v2('hello123')`.", "response": "def alphanum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanum_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanum_v2('hello')`.", "response": "def alphanum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanum_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanum_v2('12')`.", "response": "def alphanum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanum_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanum_v2('')`.", "response": "def alphanum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanum_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanum_v2('hello world')`.", "response": "def alphanum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanum_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanum_v2('abc1')`.", "response": "def alphanum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanum_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanum_v2('123abc')`.", "response": "def alphanum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanum_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanum_v2('   ')`.", "response": "def alphanum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('hello123')`.", "response": "def alnum_check_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('hello')`.", "response": "def alnum_check_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('12')`.", "response": "def alnum_check_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('')`.", "response": "def alnum_check_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('hello world')`.", "response": "def alnum_check_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('abc1')`.", "response": "def alnum_check_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('123abc')`.", "response": "def alnum_check_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('   ')`.", "response": "def alnum_check_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('hello123')`.", "response": "def is_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('hello')`.", "response": "def is_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('12')`.", "response": "def is_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('')`.", "response": "def is_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('hello world')`.", "response": "def is_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('abc1')`.", "response": "def is_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('123abc')`.", "response": "def is_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('   ')`.", "response": "def is_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanumeric_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanumeric_v2('hello123')`.", "response": "def alphanumeric_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanumeric_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanumeric_v2('hello')`.", "response": "def alphanumeric_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanumeric_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanumeric_v2('12')`.", "response": "def alphanumeric_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanumeric_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanumeric_v2('')`.", "response": "def alphanumeric_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanumeric_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanumeric_v2('hello world')`.", "response": "def alphanumeric_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanumeric_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanumeric_v2('abc1')`.", "response": "def alphanumeric_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanumeric_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanumeric_v2('123abc')`.", "response": "def alphanumeric_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alphanumeric_v2(s)` returning True iff `s` is alphanumeric. Example: `alphanumeric_v2('   ')`.", "response": "def alphanumeric_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `do_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `do_alnum_v2('hello123')`.", "response": "def do_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `do_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `do_alnum_v2('hello')`.", "response": "def do_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `do_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `do_alnum_v2('12')`.", "response": "def do_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `do_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `do_alnum_v2('')`.", "response": "def do_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `do_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `do_alnum_v2('hello world')`.", "response": "def do_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `do_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `do_alnum_v2('abc1')`.", "response": "def do_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `do_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `do_alnum_v2('123abc')`.", "response": "def do_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `do_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `do_alnum_v2('   ')`.", "response": "def do_alnum_v2(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_p(s)` returning True iff `s` is alphanumeric. Example: `alnum_p('hello123')`.", "response": "def alnum_p(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_p(s)` returning True iff `s` is alphanumeric. Example: `alnum_p('hello')`.", "response": "def alnum_p(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_p(s)` returning True iff `s` is alphanumeric. Example: `alnum_p('12')`.", "response": "def alnum_p(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_p(s)` returning True iff `s` is alphanumeric. Example: `alnum_p('')`.", "response": "def alnum_p(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_p(s)` returning True iff `s` is alphanumeric. Example: `alnum_p('hello world')`.", "response": "def alnum_p(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_p(s)` returning True iff `s` is alphanumeric. Example: `alnum_p('abc1')`.", "response": "def alnum_p(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_p(s)` returning True iff `s` is alphanumeric. Example: `alnum_p('123abc')`.", "response": "def alnum_p(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `alnum_p(s)` returning True iff `s` is alphanumeric. Example: `alnum_p('   ')`.", "response": "def alnum_p(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `check_alnum(s)` returning True iff `s` is alphanumeric. Example: `check_alnum('hello123')`.", "response": "def check_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `check_alnum(s)` returning True iff `s` is alphanumeric. Example: `check_alnum('hello')`.", "response": "def check_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `check_alnum(s)` returning True iff `s` is alphanumeric. Example: `check_alnum('12')`.", "response": "def check_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `check_alnum(s)` returning True iff `s` is alphanumeric. Example: `check_alnum('')`.", "response": "def check_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `check_alnum(s)` returning True iff `s` is alphanumeric. Example: `check_alnum('hello world')`.", "response": "def check_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `check_alnum(s)` returning True iff `s` is alphanumeric. Example: `check_alnum('abc1')`.", "response": "def check_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `check_alnum(s)` returning True iff `s` is alphanumeric. Example: `check_alnum('123abc')`.", "response": "def check_alnum(s):\n    return s.isalnum()\n"}
+{"instruction": "Write a function `check_alnum(s)` returning True iff `s` is alphanumeric. Example: `check_alnum('   ')`.", "response": "def check_alnum(s):\n    return s.isalnum()\n"}

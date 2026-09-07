@@ -1,0 +1,1 @@
+{"instruction": "Show `json.dumps` with indent in `json_pretty`. (input: {'a': 1, 'b': 2})", "response": "import json\n\ndef json_pretty(d):\n    return json.dumps(d, indent=2)\n\n# Bug was: `indent=2` pretty-prints the JSON\n\n# pair: json_pretty / {'a': 1, 'b': 2}\n"}

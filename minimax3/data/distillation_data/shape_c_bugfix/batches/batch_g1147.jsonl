@@ -1,0 +1,1 @@
+{"instruction": "Show the typed-dict hint in `type_hint_dict`. (input: {'a': 1})", "response": "from typing import Dict\n\ndef type_hint_dict(d: Dict[str, int]) -> int:\n    return sum(d.values())\n\n# Bug was: `Dict[str, int]` is the older syntax; `dict[str, int]` works in 3.9+\n\n# pair: type_hint_dict / {'a': 1}\n"}

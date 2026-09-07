@@ -1,0 +1,1 @@
+{"instruction": "Show the `.throw()` pattern in `throw_gen`. (input: [1, 2])", "response": "def throw_gen(xs):\n    try:\n        for x in xs:\n            yield x\n    except ValueError:\n        yield 'caught'\n\n# Bug was: `.throw()` injects an exception into the generator; useful for cancellation\n\n# pair: throw_gen / [1, 2]\n"}

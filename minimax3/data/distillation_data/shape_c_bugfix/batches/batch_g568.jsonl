@@ -1,0 +1,1 @@
+{"instruction": "Show atexit in library in `ae`. (input: '')", "response": "import atexit\ndef ae():\n    atexit.register(cleanup)\n\n# Bug was: atexit in library adds to global cleanup — app may exit without calling it (e.g. signal)\n\n# pair: ae / ''\n"}

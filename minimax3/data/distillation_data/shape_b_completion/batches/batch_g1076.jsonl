@@ -1,0 +1,15 @@
+{"text": "# qx2_starts_with :: ('hello world', 'hello')\ndef qx2_starts_with(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_with(('hello world', 'hello')))\n"}
+{"text": "# qx2_starts_with :: ('hello', 'world')\ndef qx2_starts_with(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_with(('hello', 'world')))\n"}
+{"text": "# qx2_starts_with :: ('', 'a')\ndef qx2_starts_with(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_with(('', 'a')))\n"}
+{"text": "# qx2_starts_with :: ('a', '')\ndef qx2_starts_with(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_with(('a', '')))\n"}
+{"text": "# qx2_starts_with :: ('test', 'test')\ndef qx2_starts_with(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_with(('test', 'test')))\n"}
+{"text": "# qx2_has_prefix :: ('hello world', 'hello')\ndef qx2_has_prefix(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_has_prefix(('hello world', 'hello')))\n"}
+{"text": "# qx2_has_prefix :: ('hello', 'world')\ndef qx2_has_prefix(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_has_prefix(('hello', 'world')))\n"}
+{"text": "# qx2_has_prefix :: ('', 'a')\ndef qx2_has_prefix(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_has_prefix(('', 'a')))\n"}
+{"text": "# qx2_has_prefix :: ('a', '')\ndef qx2_has_prefix(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_has_prefix(('a', '')))\n"}
+{"text": "# qx2_has_prefix :: ('test', 'test')\ndef qx2_has_prefix(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_has_prefix(('test', 'test')))\n"}
+{"text": "# qx2_starts_str :: ('hello world', 'hello')\ndef qx2_starts_str(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_str(('hello world', 'hello')))\n"}
+{"text": "# qx2_starts_str :: ('hello', 'world')\ndef qx2_starts_str(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_str(('hello', 'world')))\n"}
+{"text": "# qx2_starts_str :: ('', 'a')\ndef qx2_starts_str(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_str(('', 'a')))\n"}
+{"text": "# qx2_starts_str :: ('a', '')\ndef qx2_starts_str(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_str(('a', '')))\n"}
+{"text": "# qx2_starts_str :: ('test', 'test')\ndef qx2_starts_str(s, p):\n    return s.startswith(p)\n\nif __name__ == '__main__':\n    print(qx2_starts_str(('test', 'test')))\n"}

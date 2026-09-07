@@ -1,0 +1,1 @@
+{"instruction": "Show `dateutil.parser` in `dateutil_parse`. (input: 'Jan 1, 2024')", "response": "from dateutil import parser\n\ndef dateutil_parse(s):\n    return parser.parse(s)\n\n# Bug was: `dateutil.parser.parse` handles many formats; not in stdlib\n\n# pair: dateutil_parse / 'Jan 1, 2024'\n"}

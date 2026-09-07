@@ -1,0 +1,2 @@
+{"instruction": "Show the unused variable pattern in `unused_var`. (input: 1)", "response": "def unused_var(x, y):\n    return x\n\n# Bug was: `y` is unused; `_*` or `_` by convention signals that\n\n# pair: unused_var / 1\n"}
+{"instruction": "Show the unused variable pattern in `unused_var`. (input: 2)", "response": "def unused_var(x, y):\n    return x\n\n# Bug was: `y` is unused; `_*` or `_` by convention signals that\n\n# pair: unused_var / 2\n"}

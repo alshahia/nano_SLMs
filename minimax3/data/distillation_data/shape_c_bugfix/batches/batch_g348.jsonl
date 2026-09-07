@@ -1,0 +1,1 @@
+{"instruction": "Show hardcoded secret in `connect`. (input: '')", "response": "API_KEY = 'sk-1234567890abcdef'\ndef connect():\n    return requests.get(url, headers={'Authorization': API_KEY})\n\n# Bug was: hardcoded secret in source — read from env var or secrets manager\n\n# pair: connect / ''\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the nested-break gotcha in `break_nested`. (input: [[1, 2], [3, 4]])", "response": "def break_nested(xs):\n    for row in xs:\n        for v in row:\n            if v == 3:\n                break\n    return 'done'\n\n# Bug was: `break` exits only the inner loop; use a flag for outer break\n\n# pair: break_nested / [[1, 2], [3, 4]]\n"}

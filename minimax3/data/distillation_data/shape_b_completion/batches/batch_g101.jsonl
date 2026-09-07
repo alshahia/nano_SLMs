@@ -1,0 +1,3 @@
+{"text": "# md5_text :: 'hello'\nimport hashlib\n\ndef md5_text(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(md5_text('hello'))\n"}
+{"text": "# md5_text :: 'world'\nimport hashlib\n\ndef md5_text(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(md5_text('world'))\n"}
+{"text": "# md5_text :: ''\nimport hashlib\n\ndef md5_text(s):\n    return hashlib.md5(s.encode('utf-8')).hexdigest()\n\nif __name__ == '__main__':\n    print(md5_text(''))\n"}

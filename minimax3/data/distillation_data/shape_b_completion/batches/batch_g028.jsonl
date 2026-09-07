@@ -1,0 +1,15 @@
+{"text": "# count_items :: ['a', 'b', 'a', 'c', 'b', 'a']\nfrom collections import Counter\n\ndef count_items(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(count_items(['a', 'b', 'a', 'c', 'b', 'a']))\n"}
+{"text": "# count_items :: []\nfrom collections import Counter\n\ndef count_items(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(count_items([]))\n"}
+{"text": "# count_items :: ['x']\nfrom collections import Counter\n\ndef count_items(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(count_items(['x']))\n"}
+{"text": "# count_items :: [1, 2, 2, 3, 3, 3]\nfrom collections import Counter\n\ndef count_items(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(count_items([1, 2, 2, 3, 3, 3]))\n"}
+{"text": "# count_items :: ['a', 'A', 'a']\nfrom collections import Counter\n\ndef count_items(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(count_items(['a', 'A', 'a']))\n"}
+{"text": "# tally :: ['a', 'b', 'a', 'c', 'b', 'a']\nfrom collections import Counter\n\ndef tally(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(tally(['a', 'b', 'a', 'c', 'b', 'a']))\n"}
+{"text": "# tally :: []\nfrom collections import Counter\n\ndef tally(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(tally([]))\n"}
+{"text": "# tally :: ['x']\nfrom collections import Counter\n\ndef tally(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(tally(['x']))\n"}
+{"text": "# tally :: [1, 2, 2, 3, 3, 3]\nfrom collections import Counter\n\ndef tally(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(tally([1, 2, 2, 3, 3, 3]))\n"}
+{"text": "# tally :: ['a', 'A', 'a']\nfrom collections import Counter\n\ndef tally(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(tally(['a', 'A', 'a']))\n"}
+{"text": "# item_counter :: ['a', 'b', 'a', 'c', 'b', 'a']\nfrom collections import Counter\n\ndef item_counter(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(item_counter(['a', 'b', 'a', 'c', 'b', 'a']))\n"}
+{"text": "# item_counter :: []\nfrom collections import Counter\n\ndef item_counter(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(item_counter([]))\n"}
+{"text": "# item_counter :: ['x']\nfrom collections import Counter\n\ndef item_counter(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(item_counter(['x']))\n"}
+{"text": "# item_counter :: [1, 2, 2, 3, 3, 3]\nfrom collections import Counter\n\ndef item_counter(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(item_counter([1, 2, 2, 3, 3, 3]))\n"}
+{"text": "# item_counter :: ['a', 'A', 'a']\nfrom collections import Counter\n\ndef item_counter(items):\n    return dict(Counter(items))\n\nif __name__ == \"__main__\":\n    print(item_counter(['a', 'A', 'a']))\n"}

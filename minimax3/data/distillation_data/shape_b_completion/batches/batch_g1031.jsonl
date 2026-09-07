@@ -1,0 +1,15 @@
+{"text": "# qx2_floor :: 1.5\nimport math\n\ndef qx2_floor(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor(1.5))\n"}
+{"text": "# qx2_floor :: 0.5\nimport math\n\ndef qx2_floor(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor(0.5))\n"}
+{"text": "# qx2_floor :: -1.5\nimport math\n\ndef qx2_floor(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor(-1.5))\n"}
+{"text": "# qx2_floor :: 3.0\nimport math\n\ndef qx2_floor(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor(3.0))\n"}
+{"text": "# qx2_floor :: 100.7\nimport math\n\ndef qx2_floor(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor(100.7))\n"}
+{"text": "# qx2_floor_int :: 1.5\nimport math\n\ndef qx2_floor_int(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor_int(1.5))\n"}
+{"text": "# qx2_floor_int :: 0.5\nimport math\n\ndef qx2_floor_int(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor_int(0.5))\n"}
+{"text": "# qx2_floor_int :: -1.5\nimport math\n\ndef qx2_floor_int(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor_int(-1.5))\n"}
+{"text": "# qx2_floor_int :: 3.0\nimport math\n\ndef qx2_floor_int(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor_int(3.0))\n"}
+{"text": "# qx2_floor_int :: 100.7\nimport math\n\ndef qx2_floor_int(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_floor_int(100.7))\n"}
+{"text": "# qx2_round_down :: 1.5\nimport math\n\ndef qx2_round_down(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_round_down(1.5))\n"}
+{"text": "# qx2_round_down :: 0.5\nimport math\n\ndef qx2_round_down(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_round_down(0.5))\n"}
+{"text": "# qx2_round_down :: -1.5\nimport math\n\ndef qx2_round_down(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_round_down(-1.5))\n"}
+{"text": "# qx2_round_down :: 3.0\nimport math\n\ndef qx2_round_down(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_round_down(3.0))\n"}
+{"text": "# qx2_round_down :: 100.7\nimport math\n\ndef qx2_round_down(x):\n    return math.floor(x)\n\nif __name__ == '__main__':\n    print(qx2_round_down(100.7))\n"}

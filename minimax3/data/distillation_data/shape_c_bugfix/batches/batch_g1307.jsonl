@@ -1,0 +1,1 @@
+{"instruction": "Show `uuid.uuid5` in `uuid_ns`. (input: 'example.com')", "response": "import uuid\n\ndef uuid_ns(ns):\n    return str(uuid.uuid5(uuid.NAMESPACE_DNS, ns))\n\n# Bug was: `uuid5` is deterministic given namespace+name\n\n# pair: uuid_ns / 'example.com'\n"}

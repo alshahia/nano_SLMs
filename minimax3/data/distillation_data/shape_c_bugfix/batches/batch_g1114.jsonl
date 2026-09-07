@@ -1,0 +1,1 @@
+{"instruction": "Show the thousands-separator format spec in `format_spec_thou`. (input: 1234567)", "response": "def format_spec_thou(x):\n    return f'{x:,}'\n\n# Bug was: `:,` adds thousands separators; depends on locale for the actual separator\n\n# pair: format_spec_thou / 1234567\n"}

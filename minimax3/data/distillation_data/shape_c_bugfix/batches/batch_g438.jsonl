@@ -1,0 +1,1 @@
+{"instruction": "Show has_key in `hk`. Input: `{'a': 1}, 'a'`. (input: {'a': 1}, 'a')", "response": "def hk(d, k):\n    return d.has_key(k)\n\n# Bug was: dict.has_key removed in Py3 — use `k in d`\n\n# pair: hk / {'a': 1}, 'a'\n"}

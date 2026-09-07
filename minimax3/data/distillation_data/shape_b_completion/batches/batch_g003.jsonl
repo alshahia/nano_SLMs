@@ -1,0 +1,15 @@
+{"text": "# fibonacci :: 0\ndef fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fibonacci(0))\n"}
+{"text": "# fibonacci :: 1\ndef fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fibonacci(1))\n"}
+{"text": "# fibonacci :: 5\ndef fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fibonacci(5))\n"}
+{"text": "# fibonacci :: 10\ndef fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fibonacci(10))\n"}
+{"text": "# fibonacci :: 20\ndef fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fibonacci(20))\n"}
+{"text": "# fib :: 0\ndef fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fib(0))\n"}
+{"text": "# fib :: 1\ndef fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fib(1))\n"}
+{"text": "# fib :: 5\ndef fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fib(5))\n"}
+{"text": "# fib :: 10\ndef fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fib(10))\n"}
+{"text": "# fib :: 20\ndef fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(fib(20))\n"}
+{"text": "# compute_fibonacci :: 0\ndef compute_fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(compute_fibonacci(0))\n"}
+{"text": "# compute_fibonacci :: 1\ndef compute_fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(compute_fibonacci(1))\n"}
+{"text": "# compute_fibonacci :: 5\ndef compute_fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(compute_fibonacci(5))\n"}
+{"text": "# compute_fibonacci :: 10\ndef compute_fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(compute_fibonacci(10))\n"}
+{"text": "# compute_fibonacci :: 20\ndef compute_fibonacci(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a\n\nif __name__ == \"__main__\":\n    print(compute_fibonacci(20))\n"}

@@ -1,0 +1,1 @@
+{"instruction": "Show the set-aliasing mutation in `set_alias`. (input: ({1, 2, 3},))", "response": "def set_alias(s):\n    t = s\n    t.add(99)\n    return s\n\n# Bug was: sets also alias; `t = s` does not copy\n\n# pair: set_alias / ({1, 2, 3},)\n"}

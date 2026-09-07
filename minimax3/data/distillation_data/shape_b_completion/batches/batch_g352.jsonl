@@ -1,0 +1,15 @@
+{"text": "# qx_abs_diff :: (5, 3)\ndef qx_abs_diff(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_abs_diff((5, 3)))\n"}
+{"text": "# qx_abs_diff :: (0, 0)\ndef qx_abs_diff(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_abs_diff((0, 0)))\n"}
+{"text": "# qx_abs_diff :: (-5, 5)\ndef qx_abs_diff(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_abs_diff((-5, 5)))\n"}
+{"text": "# qx_abs_diff :: (10, 20)\ndef qx_abs_diff(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_abs_diff((10, 20)))\n"}
+{"text": "# qx_abs_diff :: (100, 50)\ndef qx_abs_diff(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_abs_diff((100, 50)))\n"}
+{"text": "# qx_qx_distance_qx :: (5, 3)\ndef qx_qx_distance_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_distance_qx((5, 3)))\n"}
+{"text": "# qx_qx_distance_qx :: (0, 0)\ndef qx_qx_distance_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_distance_qx((0, 0)))\n"}
+{"text": "# qx_qx_distance_qx :: (-5, 5)\ndef qx_qx_distance_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_distance_qx((-5, 5)))\n"}
+{"text": "# qx_qx_distance_qx :: (10, 20)\ndef qx_qx_distance_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_distance_qx((10, 20)))\n"}
+{"text": "# qx_qx_distance_qx :: (100, 50)\ndef qx_qx_distance_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_distance_qx((100, 50)))\n"}
+{"text": "# qx_qx_l1_diff_qx :: (5, 3)\ndef qx_qx_l1_diff_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_l1_diff_qx((5, 3)))\n"}
+{"text": "# qx_qx_l1_diff_qx :: (0, 0)\ndef qx_qx_l1_diff_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_l1_diff_qx((0, 0)))\n"}
+{"text": "# qx_qx_l1_diff_qx :: (-5, 5)\ndef qx_qx_l1_diff_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_l1_diff_qx((-5, 5)))\n"}
+{"text": "# qx_qx_l1_diff_qx :: (10, 20)\ndef qx_qx_l1_diff_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_l1_diff_qx((10, 20)))\n"}
+{"text": "# qx_qx_l1_diff_qx :: (100, 50)\ndef qx_qx_l1_diff_qx(a, b):\n    return abs(a - b)\n\nif __name__ == '__main__':\n    print(qx_qx_l1_diff_qx((100, 50)))\n"}

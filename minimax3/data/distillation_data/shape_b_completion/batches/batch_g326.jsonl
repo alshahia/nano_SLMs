@@ -1,0 +1,15 @@
+{"text": "# qx_cube_n :: 0\ndef qx_cube_n(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_n(0))\n"}
+{"text": "# qx_cube_n :: 1\ndef qx_cube_n(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_n(1))\n"}
+{"text": "# qx_cube_n :: 3\ndef qx_cube_n(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_n(3))\n"}
+{"text": "# qx_cube_n :: -2\ndef qx_cube_n(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_n(-2))\n"}
+{"text": "# qx_cube_n :: 10\ndef qx_cube_n(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_n(10))\n"}
+{"text": "# qx_cubed :: 0\ndef qx_cubed(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cubed(0))\n"}
+{"text": "# qx_cubed :: 1\ndef qx_cubed(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cubed(1))\n"}
+{"text": "# qx_cubed :: 3\ndef qx_cubed(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cubed(3))\n"}
+{"text": "# qx_cubed :: -2\ndef qx_cubed(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cubed(-2))\n"}
+{"text": "# qx_cubed :: 10\ndef qx_cubed(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cubed(10))\n"}
+{"text": "# qx_cube_of :: 0\ndef qx_cube_of(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_of(0))\n"}
+{"text": "# qx_cube_of :: 1\ndef qx_cube_of(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_of(1))\n"}
+{"text": "# qx_cube_of :: 3\ndef qx_cube_of(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_of(3))\n"}
+{"text": "# qx_cube_of :: -2\ndef qx_cube_of(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_of(-2))\n"}
+{"text": "# qx_cube_of :: 10\ndef qx_cube_of(n):\n    return n * n * n\n\nif __name__ == '__main__':\n    print(qx_cube_of(10))\n"}

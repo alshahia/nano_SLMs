@@ -1,0 +1,1 @@
+{"instruction": "Show `subprocess.run` in `subproc_run`. (input: 'echo hello')", "response": "import subprocess\n\ndef subproc_run(cmd):\n    return subprocess.run(cmd, shell=True, capture_output=True, text=True).stdout\n\n# Bug was: `shell=True` lets you pass a string; prefer list form for safety\n\n# pair: subproc_run / 'echo hello'\n"}

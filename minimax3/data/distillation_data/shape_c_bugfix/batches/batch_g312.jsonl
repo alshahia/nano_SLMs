@@ -1,0 +1,1 @@
+{"instruction": "Show why pickle.load on untrusted data is dangerous in `load_data2`. (input: 'data.pkl')", "response": "import pickle\ndef load_data2(path):\n    with open(path, 'rb') as f:\n        return pickle.load(f)\n\n# Bug was: pickle.load on untrusted input allows arbitrary code execution\n\n# pair: load_data2 / 'data.pkl'\n"}

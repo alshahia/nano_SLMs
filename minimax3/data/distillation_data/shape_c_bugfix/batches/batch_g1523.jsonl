@@ -1,0 +1,1 @@
+{"instruction": "Show `os.path.basename` in `os_path_basename`. (input: '/a/b/c.txt')", "response": "import os.path\n\ndef os_path_basename(p):\n    return os.path.basename(p)\n\n# Bug was: `os.path.basename` returns the filename\n\n# pair: os_path_basename / '/a/b/c.txt'\n"}

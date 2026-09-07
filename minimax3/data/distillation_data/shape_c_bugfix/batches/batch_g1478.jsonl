@@ -1,0 +1,2 @@
+{"instruction": "Show the mutable default dict in `def_dict_arg`. (input: 'k')", "response": "def def_dict_arg(k, v, d={}):\n    d[k] = v\n    return d\n\n# Bug was: mutable default dict shared; use `d=None` and create inside\n\n# pair: def_dict_arg / 'k'\n"}
+{"instruction": "Show the mutable default dict in `def_dict_arg`. (input: 1)", "response": "def def_dict_arg(k, v, d={}):\n    d[k] = v\n    return d\n\n# Bug was: mutable default dict shared; use `d=None` and create inside\n\n# pair: def_dict_arg / 1\n"}

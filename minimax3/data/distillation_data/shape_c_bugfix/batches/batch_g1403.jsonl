@@ -1,0 +1,1 @@
+{"instruction": "Show the instance-vs-class attribute in `inst_vs_class_attr`. (input: 5)", "response": "class C:\n    x = 10\n\ndef inst_vs_class_attr():\n    c = C()\n    c.x = 5\n    return c.x, C.x\n\n# Bug was: instance attribute shadows class; class attribute unchanged\n\n# pair: inst_vs_class_attr / 5\n"}

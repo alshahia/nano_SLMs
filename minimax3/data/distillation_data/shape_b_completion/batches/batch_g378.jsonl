@@ -1,0 +1,15 @@
+{"text": "# qx_hex_to_int :: '0'\ndef qx_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_hex_to_int('0'))\n"}
+{"text": "# qx_hex_to_int :: 'ff'\ndef qx_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_hex_to_int('ff'))\n"}
+{"text": "# qx_hex_to_int :: 'FF'\ndef qx_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_hex_to_int('FF'))\n"}
+{"text": "# qx_hex_to_int :: 'DEADBEEF'\ndef qx_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_hex_to_int('DEADBEEF'))\n"}
+{"text": "# qx_hex_to_int :: 'cafe'\ndef qx_hex_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_hex_to_int('cafe'))\n"}
+{"text": "# qx_qx_parse_hex_qx :: '0'\ndef qx_qx_parse_hex_qx(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_hex_qx('0'))\n"}
+{"text": "# qx_qx_parse_hex_qx :: 'ff'\ndef qx_qx_parse_hex_qx(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_hex_qx('ff'))\n"}
+{"text": "# qx_qx_parse_hex_qx :: 'FF'\ndef qx_qx_parse_hex_qx(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_hex_qx('FF'))\n"}
+{"text": "# qx_qx_parse_hex_qx :: 'DEADBEEF'\ndef qx_qx_parse_hex_qx(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_hex_qx('DEADBEEF'))\n"}
+{"text": "# qx_qx_parse_hex_qx :: 'cafe'\ndef qx_qx_parse_hex_qx(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_parse_hex_qx('cafe'))\n"}
+{"text": "# qx_qx_hexstr_to_int :: '0'\ndef qx_qx_hexstr_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_hexstr_to_int('0'))\n"}
+{"text": "# qx_qx_hexstr_to_int :: 'ff'\ndef qx_qx_hexstr_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_hexstr_to_int('ff'))\n"}
+{"text": "# qx_qx_hexstr_to_int :: 'FF'\ndef qx_qx_hexstr_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_hexstr_to_int('FF'))\n"}
+{"text": "# qx_qx_hexstr_to_int :: 'DEADBEEF'\ndef qx_qx_hexstr_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_hexstr_to_int('DEADBEEF'))\n"}
+{"text": "# qx_qx_hexstr_to_int :: 'cafe'\ndef qx_qx_hexstr_to_int(s):\n    return int(s, 16)\n\nif __name__ == '__main__':\n    print(qx_qx_hexstr_to_int('cafe'))\n"}

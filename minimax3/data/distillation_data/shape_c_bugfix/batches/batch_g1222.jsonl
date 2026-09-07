@@ -1,0 +1,1 @@
+{"instruction": "Show `Path.suffix` in `path_suffix`. (input: 'foo.txt')", "response": "from pathlib import Path\n\ndef path_suffix(p):\n    return Path(p).suffix\n\n# Bug was: `Path.suffix` returns the file extension including the dot\n\n# pair: path_suffix / 'foo.txt'\n"}

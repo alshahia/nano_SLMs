@@ -1,0 +1,1 @@
+{"instruction": "Show the `key` argument to `sorted` in `sorted_key`. (input: ['hello', 'a', 'world'])", "response": "def sorted_key(xs):\n    return sorted(xs, key=len)\n\n# Bug was: `key=len` sorts by length; default is by natural order\n\n# pair: sorted_key / ['hello', 'a', 'world']\n"}

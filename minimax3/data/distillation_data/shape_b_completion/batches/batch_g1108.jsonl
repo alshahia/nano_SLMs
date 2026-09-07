@@ -1,0 +1,15 @@
+{"text": "# qx2_total_count :: [1, 2, 3]\nfrom collections import Counter\n\ndef qx2_total_count(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_total_count([1, 2, 3]))\n"}
+{"text": "# qx2_total_count :: []\nfrom collections import Counter\n\ndef qx2_total_count(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_total_count([]))\n"}
+{"text": "# qx2_total_count :: [1]\nfrom collections import Counter\n\ndef qx2_total_count(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_total_count([1]))\n"}
+{"text": "# qx2_total_count :: [1, 2, 2, 3, 3, 3]\nfrom collections import Counter\n\ndef qx2_total_count(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_total_count([1, 2, 2, 3, 3, 3]))\n"}
+{"text": "# qx2_total_count :: [1, 1, 1, 1]\nfrom collections import Counter\n\ndef qx2_total_count(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_total_count([1, 1, 1, 1]))\n"}
+{"text": "# qx2_count_all :: [1, 2, 3]\nfrom collections import Counter\n\ndef qx2_count_all(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_count_all([1, 2, 3]))\n"}
+{"text": "# qx2_count_all :: []\nfrom collections import Counter\n\ndef qx2_count_all(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_count_all([]))\n"}
+{"text": "# qx2_count_all :: [1]\nfrom collections import Counter\n\ndef qx2_count_all(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_count_all([1]))\n"}
+{"text": "# qx2_count_all :: [1, 2, 2, 3, 3, 3]\nfrom collections import Counter\n\ndef qx2_count_all(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_count_all([1, 2, 2, 3, 3, 3]))\n"}
+{"text": "# qx2_count_all :: [1, 1, 1, 1]\nfrom collections import Counter\n\ndef qx2_count_all(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_count_all([1, 1, 1, 1]))\n"}
+{"text": "# qx2_tally :: [1, 2, 3]\nfrom collections import Counter\n\ndef qx2_tally(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_tally([1, 2, 3]))\n"}
+{"text": "# qx2_tally :: []\nfrom collections import Counter\n\ndef qx2_tally(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_tally([]))\n"}
+{"text": "# qx2_tally :: [1]\nfrom collections import Counter\n\ndef qx2_tally(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_tally([1]))\n"}
+{"text": "# qx2_tally :: [1, 2, 2, 3, 3, 3]\nfrom collections import Counter\n\ndef qx2_tally(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_tally([1, 2, 2, 3, 3, 3]))\n"}
+{"text": "# qx2_tally :: [1, 1, 1, 1]\nfrom collections import Counter\n\ndef qx2_tally(xs):\n    return sum(Counter(xs).values())\n\nif __name__ == '__main__':\n    print(qx2_tally([1, 1, 1, 1]))\n"}

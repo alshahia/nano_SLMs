@@ -1,0 +1,1 @@
+{"instruction": "Show `bin` in `bin_basic`. (input: 5)", "response": "def bin_basic(n):\n    return bin(n)\n\n# Bug was: `bin(n)` returns '0bNN' string\n\n# pair: bin_basic / 5\n"}

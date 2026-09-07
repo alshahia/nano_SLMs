@@ -1,0 +1,1 @@
+{"instruction": "Show intern builtin in `it`. (input: '')", "response": "def it(s):\n    return intern(s)\n\n# Bug was: intern moved to sys.intern() in Py3\n\n# pair: it / ''\n"}
