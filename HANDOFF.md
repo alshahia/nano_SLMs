@@ -23,6 +23,8 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | M1 VRAM probe (226.5M target config) | **DONE — PASSED** | peak 4.24 GB allocated / 4.4 reserved @ 2214 tok/s → target APPROVED for M3; no 8-bit Adam needed; headroom for ctx 1024 |
 | M2 pilot (100.7M) | **DONE — PASSED** | 3000/3000 with auto-resume from checkpoint-1000; eval_loss 2.206→1.161 monotonic (final ppl 3.19); no OOM (peak ~3.3 GB of 6 GB); locally-syntactic samples; artifacts in runs/pilot/final (train_summary.json, eval_report.json) |
 | M3 target (226.5M) | **DONE — PASSED 2026-09-07 ~08:16 UTC on TU09FBO** | 5000/5000 with zero-flag auto-resume from checkpoint-4500 (restored from checkpoint_backup\checkpoint-4500.zip); eval curve 2.8567 @500 → 2.265 @1000 → 2.0903 @1500 → 1.9972 @2000 → **1.8512 @4000 (best)** → 1.8610 @4500 → 1.8641 @5000 (curve at floor, slight rise = normal noise); final eval.py: val_loss 1.8641, ppl 6.45 (runs/target/final/eval_report.json); train_summary.json carries the env fingerprint (git c16179c, torch 2.14.0+cu126, transformers 5.16.1); weights stay LOCAL (§7); see §3b |
+| C12 Tier 1 SFT (full + pilot) | **DONE — PASSED 2026-09-07** | full: 16,376 pairs × 2 epochs, 2048 steps, eval 0.836; instruction ast greedy 0.86 / sampled 0.88; forgetting guard CSN +12.6% (within ≤ +10-15% gate, near edge); weights in checkpoint_backup zips (TASKS row 4) |
+| Web UI U1-U4 (TASKS row 21) | **BUILT + VERIFIED 2026-09-07** (gradio 6.26) | webui/app.py: dashboard / monitor (plot+ETA+GPU+log) / chat (VRAM policy: GPU idle → warn+CPU during training → reject+CPU low VRAM; warn+reject branches VERIFIED, GPU branch pending idle window) / train launcher (webui_*.yaml + run_custom chain; sanity_check 4/4 + dry-run PASS; NO kill button); server start: `& .\.venv\Scripts\python.exe webui\app.py` → 127.0.0.1:7860; spec = WEBUI_PRD.md |
 
 ## 3. M2 pilot run — how to check / resume / finish
 
@@ -382,6 +384,45 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
    Why: the pipeline currently ends at pretraining — no SFT/distill stage exists
    (crosscheck row C12). T never saw Evol-Instruct, so it is contamination-free
    SFT data for the M3 model.
+
+### 2026-09-07 continuation checklist (web UI session → next agent)
+
+If resuming from here with fresh context, work top-down; the first three are
+session-start checks, the rest are the open items. TASKS.md row 21 is the
+live status for the UI; rows 18-20 own the in-flight GPU milestones.
+
+1. **Session start:** read AGENTS.md → CLAUDE.md → HANDOFF (this file) →
+   TASKS.md → WEBUI_PRD.md; scan MEMORY.md gotchas. Then probe reality:
+   `nvidia-smi --query-compute-apps=pid,process_name` (a python PID = a live
+   arm/chain — do NOT start GPU work) and `git status` (tree was pushed at
+   5fbb31a; only live-run logs should be dirty).
+2. **Check TASKS rows 18/19/20 first** — they may have advanced while you
+   were away (arm B 8-bit Adam b8 was LIVE at handoff, pid 15616; arms C +
+   vram_probe --lora + SFT v2 pilot + KD baseline/KD arms are queued behind
+   free GPU windows). Their runbooks: research/milestone_b_8bit_ab.md,
+   research/c12_tier_order_decision.md. Arm artifacts (metrics/logs) get
+   committed per the §7 rules when an arm lands.
+3. **Web UI verifications gated on an idle GPU** (WEBUI_PRD.md §5, all
+   user-visible in the app, none need new code):
+   - U2 GPU branch: chat tab → Load a weights-bearing checkpoint with GPU
+     idle → status must read "On GPU"; unload after.
+   - U4 e2e chain: Train tab → tiny run (Small preset, ~100-200 steps,
+     TinyCode rows 2000, run name `u4e2e`) → Start → watch Monitor tab →
+     confirm complete → cleanup artifacts (runs/u4e2e, configs/webui_u4e2e.yaml,
+     data/u4e2e) with user's go. This also proves U3 live refresh.
+4. **Small webui debt (optional, CPU-safe):** psutil is absent →
+   `webui/app.py:_job_alive` falls back to assume-not-live; either
+   `uv pip install psutil` or leave it (the compute-pids preflight covers
+   the real collision risk). Chat history is intentionally single-turn
+   (fixed templates, no chat tokenizer) — do not "fix" without a design note.
+5. **U5 polish items are user-gated** (LAN + auth, done-notifications, eval
+   report cards, checkpoint delete flow) — do not start without the user's
+   explicit go (WEBUI_PRD.md §5).
+6. **Standing guardrails (never break):** never kill a running train job;
+   never start a second GPU job while one is live (chat's warn→CPU path is
+   the sanctioned exception); resume = the exact same command, zero flags;
+   weights stay local (LFS quota — gitignore rules cover the A/B arms);
+   report before deleting anything; never commit secrets (.env stays out).
 
 ## 9. Conventions
 
