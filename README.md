@@ -105,6 +105,24 @@ the GPU (the never-co-run rule; --allow_gpu_share overrides deliberately):
 & .\.venv\Scripts\python.exe scripts\run_custom.py --config configs\custom_example.yaml             # full chain
 ~~~
 
+## Web UI: dashboard, monitor, chat + training launcher (WEBUI_PRD.md U1-U4)
+
+Point-and-click view of every run (checkpoints, loss curves, eval reports,
+GPU + disk), a **Monitor** tab (loss plot, progress bar + ETA, GPU line,
+log tail; refreshes every 10 s), a **Chat** tab for any checkpoint that has
+weights on disk, and a **Train** tab that generates
+`configs/webui_<name>.yaml` and launches the standard chain via
+`run_custom.py` after preflights (GPU idle, disk headroom, one job at a
+time; **no stop button** — crash recovery is the zero-flag re-launch).
+Read-only over runs/ except the chain launch; the chat model service
+follows the VRAM policy: GPU when idle, warn + CPU while a training run is
+live, reject + CPU if free VRAM is too small — a live training run is
+never touched:
+
+~~~powershell
+& .\.venv\Scripts\python.exe webui\app.py   # http://127.0.0.1:7860
+~~~
+
 ## Execution-based mini-eval + off-site backup
 
 ~~~powershell
