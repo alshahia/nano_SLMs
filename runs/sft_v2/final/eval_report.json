@@ -1,0 +1,22 @@
+{
+  "ckpt": "runs\\sft_v2\\final",
+  "val_loss": 2.232276612245887,
+  "perplexity": 9.32106238721715,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nWe slide a window and maintain a window of the first two chars. When the window is 0 we shrink the window from the left to find the first two chars. This is O(n) time and O(1) space.\n\n```python\ndef fib_window(n: int) -> int:\n    \"\"\"Return the n-th Fibonacci number (0-indexed).\n\n    Args:\n        n: A non-negative integer index.\n\n    Returns:\n        The n-th Fibonacci number.\n\n    Examples:\n        >>> fib_window(0)\n        0\n        >>> fib_window(0)\n        1\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    if n == 0:\n        return 0\n    return 1 + fib_window(n - 1) + fib_window(n - 2)\n```",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import Any, Optional\n\nclass stack:\n    \"\"\"A stack with push, pop and peek.\n\n    Examples:\n        >>> stack = stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n    \"\"\"\n    def __init__(self, value: Any) -> None:\n        self._value: Any = value\n\n    def push(self, value: Any) -> None:\n        self._value = value\n\n    def pop(self) -> Any:\n        if not self._value:\n            raise ValueError(\"value must be non-empty\")\n        self._value = value\n\n    def pop(self) -> Any:\n        if not self._value:\n            raise ValueError(\"value must be non-empty\")\n        return self._value.pop()\n\n    def pop(self) -> Any:"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.98,
+    "sampled_ast_pass_rate": 1.0,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "from typing import Iterable, List\n\ndef iter_proba(xs: Iterable[int]) -> Iterator[int]:\n    \"\"\"Yield each element of a sequence of integers and a list of lists of lists.\n\n    Args:\n        xs: Iterable of integers.\n\n    Yields:\n        Each element of the list is a list of integers.\n\n    Examples:\n        >>> list(iter_proba([1, 2, 3, 4, 5], [2, 4, 6, 7]))\n        [[1, 2], [3, 4], [5]]\n        >>> list(iter_proba([1, 2, 3], [2, 4, 6], [3, 4, 6]))\n        [[1, 2], [3, 4], [5]]\n    \"\"\"\n    if not xs:\n        return []\n    out: List[int] = []\n    i = j = 0\n    while i < len(xs) and j < len(xs):\n        if xs[i] == xs[i-1]:",
+        "sampled": "from typing import Iterable, List\n\ndef iter_profit(xs: Iterable[int]) -> Iterator[int]:\n    \"\"\"Return a list of duplicates without 'proerving prime' algorithm.\n\n    Args:\n        xs: Iterable of integers.\n\n    Returns:\n        A list of two elements, each in reverse order of length 2.\n\n    Examples:\n        >>> iter_profit([2, 1, 2, 3])\n        [1, 2, 3, 4]\n        >>> list(iter_profit([2, 1, 2, 3]))\n        [2, 1, 2, 3]\n    \"\"\"\n    seen: Set[int] = set()\n    out: List[int] = []\n    for x in xs:\n        if x - 1 not in seen:\n            seen.add(x)\n            out.append(x)\n    return out"
+      }
+    ]
+  }
+}

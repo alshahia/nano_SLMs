@@ -1,0 +1,17 @@
+{
+  "phase": "sft_v2",
+  "base_model": "runs/target/final",
+  "pilot": false,
+  "pairs": 18752,
+  "params_m": 226.53,
+  "best_eval_loss": 0.24213065207004547,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\sft_v2\\checkpoint-2344",
+  "final_eval": {
+    "eval_loss": 0.24213065207004547,
+    "eval_runtime": 9.0786,
+    "eval_samples_per_second": 55.075,
+    "eval_steps_per_second": 13.769,
+    "epoch": 2.0
+  },
+  "resumed_from": null
+}

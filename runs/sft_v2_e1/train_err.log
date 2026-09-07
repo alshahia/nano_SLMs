@@ -1,0 +1,4 @@
+W0908 00:00:25.058000 8584 .venv\Lib\site-packages\torch\utils\flop_counter.py:113] triton not found; flop counting will not work for triton kernels
+Loading weights:   0%|          | 0/146 [00:00<?, ?it/s]Loading weights: 100%|##########| 146/146 [00:00<00:00, 4663.21it/s]
+[transformers] The tokenizer has new PAD/BOS/EOS tokens that differ from the model config and generation config. The model config and generation config were aligned accordingly, being updated with the tokenizer's values. Updated tokens: {'pad_token_id': 2}.
+  0%|          | 0/1172 [00:00<?, ?it/s]  0%|          | 1/1172 [00:04<1:23:12,  4.26s/it]  0%|          | 2/1172 [00:08<1:17:31,  3.98s/it]  0%|          | 3/1172 [00:11<1:14:54,  3.84s/it]  0%|          | 4/1172 [00:15<1:16:23,  3.92s/it]  0%|          | 5/1172 [00:19<1:15:11,  3.87s/it]
