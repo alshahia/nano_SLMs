@@ -17,12 +17,13 @@ def main() -> None:
     import yaml
     from transformers import AutoTokenizer
 
-    from src.model import build_model
+    from src.model import build_model, maybe_wrap_peft
 
     cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
     tok = AutoTokenizer.from_pretrained(cfg["tokenizer"]["name"])
     vocab = max(int(cfg["tokenizer"]["vocab_size"]), len(tok))
     model = build_model(cfg, vocab_size=vocab)
+    model = maybe_wrap_peft(model, cfg)
     n_params = sum(p.numel() for p in model.parameters())
 
     device = "cuda" if torch.cuda.is_available() else "cpu"

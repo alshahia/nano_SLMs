@@ -22,12 +22,14 @@ def main() -> None:
     ap.add_argument("--config", default="configs/target.yaml")
     ap.add_argument("--steps", type=int, default=20, help="optimizer steps")
     ap.add_argument("--seq", type=int, default=None, help="override model ctx")
+    ap.add_argument("--lora", action="store_true",
+                    help="apply the config peft block (frozen base + LoRA adapter)")
     args = ap.parse_args()
 
     import torch
     import yaml
 
-    from src.model import build_model
+    from src.model import build_model, maybe_wrap_peft
 
     cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
     t = cfg["train"]
@@ -37,11 +39,18 @@ def main() -> None:
 
     if not torch.cuda.is_available():
         raise SystemExit("vram_probe needs CUDA")
-    model = build_model(cfg, vocab_size=vocab).cuda()
+    model = build_model(cfg, vocab_size=vocab)
+    if args.lora:
+        if not cfg.get("peft"):
+            raise SystemExit("vram_probe --lora needs a peft block in the config")
+        model = maybe_wrap_peft(model, cfg)
+    model = model.cuda()
     model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
     model.train()
     n_params = sum(p.numel() for p in model.parameters())
-    opt = torch.optim.AdamW(model.parameters(), lr=1e-4, betas=(0.9, 0.95), weight_decay=0.1)
+    n_train = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    opt = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad),
+                            lr=1e-4, betas=(0.9, 0.95), weight_decay=0.1)
     scaler = torch.amp.GradScaler("cuda")
     print(f"[probe] {cfg['name']}: {n_params / 1e6:.1f}M params seq={seq} "
           f"batch={batch} accum={accum}", flush=True)
@@ -80,6 +89,7 @@ def main() -> None:
     result = {
         "config": cfg["name"],
         "params_m": round(n_params / 1e6, 2),
+        "trainable_params_m": round(n_train / 1e6, 2),
         "seq": seq,
         "optimizer_steps": args.steps,
         "peak_vram_allocated_gb": round(torch.cuda.max_memory_allocated() / 2**30, 2),

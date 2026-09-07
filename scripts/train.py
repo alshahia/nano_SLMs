@@ -25,7 +25,10 @@ def find_latest_checkpoint(output_dir: Path):
     best = None
     for p in output_dir.glob("checkpoint-*"):
         m = re.fullmatch(r"checkpoint-(\d+)", p.name)
-        if m and p.is_dir():
+        # trainer_state.json is written LAST by the saver; its presence
+        # proves the checkpoint is complete (a kill mid-write must not
+        # crash auto-resume - unattended-safe requirement, PLAN 5.3).
+        if m and p.is_dir() and (p / "trainer_state.json").is_file():
             step = int(m.group(1))
             if best is None or step > best[0]:
                 best = (step, p)
@@ -82,7 +85,7 @@ def main() -> None:
                               default_data_collator)
 
     from src.data import PackedDataset
-    from src.model import build_model
+    from src.model import build_model, maybe_wrap_peft, save_final
 
     cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
     tcfg, d, t = cfg["tokenizer"], cfg["data"], cfg["train"]
@@ -96,6 +99,7 @@ def main() -> None:
 
     vocab = max(int(tcfg["vocab_size"]), len(tok))
     model = build_model(cfg, vocab_size=vocab)
+    model = maybe_wrap_peft(model, cfg)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"[train] params={n_params / 1e6:.1f}M vocab={vocab} fp16={t['fp16']} "
           f"grad_ckpt={t['grad_ckpt']}", flush=True)
@@ -149,11 +153,11 @@ def main() -> None:
     trainer.train(resume_from_checkpoint=True if resume_from is not None else None)
 
     # §5.3.5 keep-final-forever: in-memory model is the BEST checkpoint
-    # (load_best_model_at_end). Saved outside the save_total_limit rotation.
-    model.config.use_cache = True
+    # (load_best_model_at_end). PeftModel is merged to a full model first;
+    # saved outside the save_total_limit rotation.
     final_dir = ROOT / t["final_dir"]
     final_dir.mkdir(parents=True, exist_ok=True)
-    trainer.save_model(str(final_dir))
+    save_final(trainer, final_dir)
     tok.save_pretrained(str(final_dir))
 
     final_metrics = trainer.evaluate()

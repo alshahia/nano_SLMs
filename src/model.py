@@ -38,3 +38,43 @@ def build_model(cfg: dict, vocab_size: int | None = None):
     model = AutoModelForCausalLM.from_config(config, attn_implementation="sdpa")
     model.config.use_cache = False
     return model
+
+
+def maybe_wrap_peft(model, cfg: dict):
+    """Row 10 LoRA hook: wrap with a PeftModel iff the config has a peft block.
+
+    Only adapter params stay trainable; enable_input_require_grads() is
+    required so gradients flow into the frozen base when gradient
+    checkpointing is on. No-op without the block (full fine-tune path).
+    """
+    peft = cfg.get("peft")
+    if not peft:
+        return model
+    from peft import LoraConfig, get_peft_model
+
+    lcfg = LoraConfig(
+        r=int(peft["r"]),
+        lora_alpha=int(peft["lora_alpha"]),
+        lora_dropout=float(peft.get("lora_dropout", 0.0)),
+        target_modules=list(peft["target_modules"]),
+        bias=peft.get("bias", "none"),
+        task_type="CAUSAL_LM",
+    )
+    model = get_peft_model(model, lcfg)
+    model.enable_input_require_grads()
+    model.print_trainable_parameters()
+    return model
+
+
+def save_final(trainer, final_dir) -> None:
+    """keep-final-forever (§5.3.5): in-memory model is the BEST checkpoint.
+
+    PeftModel -> merge_and_unload() first so final_dir always holds a FULL
+    safetensors that eval.py/infer.py load unchanged. Saved outside the
+    save_total_limit rotation.
+    """
+    model = trainer.model
+    if hasattr(model, "merge_and_unload"):
+        model = model.merge_and_unload()
+    model.config.use_cache = True
+    model.save_pretrained(str(final_dir))

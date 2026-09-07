@@ -28,13 +28,13 @@ model:
 # Uncomment and point at YOUR trained model (dir with config.json + safetensors):
 # base_model: data/custom_example/raw/final
 
-# LoRA adapter spec - uncomment after row 10 implements the hook:
-# peft:
-#   r: 16
-#   lora_alpha: 32
-#   lora_dropout: 0.05
-#   target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
-#   bias: none
+# LoRA adapter spec - hook implemented (TASKS row 10, src/model.py:maybe_wrap_peft):
+peft:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
+  bias: none
 
 data:
   dataset_candidates:
