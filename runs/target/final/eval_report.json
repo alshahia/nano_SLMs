@@ -1,0 +1,10 @@
+{
+  "ckpt": "E:\\python projects\\nano_SLMs\\runs\\target\\final",
+  "val_loss": 1.8641137587974261,
+  "perplexity": 6.450216904180861,
+  "samples": {
+    "def fibonacci(n):": "def fibonacci(n):\n    \"\"\"\n    Returns the number of bytes in the given number of bytes.\n\n    :param n: Number of bytes to generate.\n    :return: Number of bytes in the given number of bytes.\n    \"\"\"\n    if n == 0:\n        return 0\n    if",
+    "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):": "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):\n    \"\"\"\n    Compute the absolute error of the y_true and y_pred.\n\n    Parameters\n    ----------\n    y_true : np.ndarray, shape=(n, 2)\n        The true labels.\n    y_pred : np.ndarray",
+    "class Stack:": "class Stack:\n    \"\"\"\n    Creates a new class with the given name and type.\n\n    :param name: Name of the class to create\n    :param type: Type of the new class\n    :param type_type: Type of the new class\n    :return: New class with the given"
+  }
+}

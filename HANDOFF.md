@@ -22,7 +22,7 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | M0 smoke (12.3M) | **DONE — PASSED** | loss 10.4→4.95 in 200 steps; kill at ~step 100 → relaunch resumed at exactly 101/200, zero flags; rotation works (limit 3); artifacts in runs/smoke/final (train_summary.json, eval_report.json); eval_loss 4.7926, ppl 120.6 |
 | M1 VRAM probe (226.5M target config) | **DONE — PASSED** | peak 4.24 GB allocated / 4.4 reserved @ 2214 tok/s → target APPROVED for M3; no 8-bit Adam needed; headroom for ctx 1024 |
 | M2 pilot (100.7M) | **DONE — PASSED** | 3000/3000 with auto-resume from checkpoint-1000; eval_loss 2.206→1.161 monotonic (final ppl 3.19); no OOM (peak ~3.3 GB of 6 GB); locally-syntactic samples; artifacts in runs/pilot/final (train_summary.json, eval_report.json) |
-| M3 target (226.5M) | **PAUSED by user 2026-09-07 07:14 at step 4593/5000** — global_step 4500 on disk (cadence save+eval every 100, limit 3); zip checkpoint_backup\checkpoint-4500.zip | eval curve 2.8567 @500 → 2.265 @1000 → 2.0903 @1500 → 1.9972 @2000 → **1.8512 @4000 (best)** → 1.8610 @4500 (slight rise — curve near floor); seed-42 determinism vs the abandoned TU09FBO run's 2.2755 @1000; log runs/target/train_resume.log; see §3b |
+| M3 target (226.5M) | **DONE — PASSED 2026-09-07 ~08:16 UTC on TU09FBO** | 5000/5000 with zero-flag auto-resume from checkpoint-4500 (restored from checkpoint_backup\checkpoint-4500.zip); eval curve 2.8567 @500 → 2.265 @1000 → 2.0903 @1500 → 1.9972 @2000 → **1.8512 @4000 (best)** → 1.8610 @4500 → 1.8641 @5000 (curve at floor, slight rise = normal noise); final eval.py: val_loss 1.8641, ppl 6.45 (runs/target/final/eval_report.json); train_summary.json carries the env fingerprint (git c16179c, torch 2.14.0+cu126, transformers 5.16.1); weights stay LOCAL (§7); see §3b |
 
 ## 3. M2 pilot run — how to check / resume / finish
 
@@ -51,7 +51,17 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   configs\pilot.yaml`. To re-run training it would no-op (max_steps reached;
   Trainer exits immediately from checkpoint-3000).
 
-## 3b. M3 target run — PAUSED at step 1000 (machine move 2026-09-06)
+## 3b. M3 target run — **COMPLETED 2026-09-07** (5000/5000, PASSED)
+
+> Final state: runs/target/final/ = model.safetensors + config/tokenizer +
+> train_summary.json (env fingerprint: git c16179c) + eval_report.json
+> (val_loss 1.8641, ppl 6.45). Best eval 1.8512 @4000; local
+> checkpoint-{2000,4500,5000} remain on disk (rotation limit 3). The
+> narrative below is the run's history through the machine move; the
+> resume chain that finished it: checkpoint-4500.zip → extracted into
+> runs/target → zero-flag auto-resume at 4501/5000 → completion.
+
+### History (machine move 2026-09-06)
 
 - Config: configs/target.yaml — 16L, d1024, 16Q/4KV, ffn 3072, **ctx 1024**,
   226.5M params, fp16 + grad-checkpointing + SDPA, batch 1 × accum 32

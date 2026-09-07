@@ -1,0 +1,93 @@
+{
+  "phase": "target",
+  "params_m": 226.53,
+  "best_eval_loss": 1.851243257522583,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\target\\checkpoint-4000",
+  "final_eval": {
+    "eval_loss": 1.8641213178634644,
+    "eval_runtime": 44.8036,
+    "eval_samples_per_second": 21.338,
+    "eval_steps_per_second": 10.669,
+    "epoch": 3.4176796052209952
+  },
+  "resumed_from": "checkpoint-4500",
+  "env": {
+    "timestamp_utc": "2026-09-07T08:16:37+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "c16179c",
+    "gpu": "Quadro RTX 4000, 8192 MiB",
+    "resolved_config": {
+      "name": "target",
+      "tokenizer": {
+        "name": "codellama/CodeLlama-7b-hf",
+        "vocab_size": 32768
+      },
+      "model": {
+        "layers": 16,
+        "hidden": 1024,
+        "heads": 16,
+        "kv_heads": 4,
+        "ffn": 3072,
+        "ctx": 1024,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "dataset_candidates": [
+          {
+            "name": "code-search-net/code_search_net",
+            "config": "python"
+          },
+          {
+            "name": "nickrosh/Evol-Instruct-Code-80k-v1"
+          }
+        ],
+        "rows": 150000,
+        "val_fraction": 0.02,
+        "dedupe": true,
+        "min_chars": 200,
+        "shard_tokens": 8000000,
+        "raw_dir": "data/target/raw",
+        "tokens_dir": "data/target/tokens"
+      },
+      "train": {
+        "output_dir": "runs/target",
+        "final_dir": "runs/target/final",
+        "max_steps": 5000,
+        "batch": 1,
+        "eval_batch": 2,
+        "accum": 32,
+        "lr": 0.0004,
+        "scheduler": "cosine",
+        "warmup_steps": 150,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 50,
+        "eval_steps": 100,
+        "save_steps": 100,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": true,
+        "optim": "adamw_torch",
+        "dataloader_num_workers": 0,
+        "seed": 42
+      },
+      "eval": {
+        "max_new_tokens": 64,
+        "prompts": [
+          "def fibonacci(n):",
+          "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):",
+          "class Stack:"
+        ]
+      }
+    }
+  }
+}
