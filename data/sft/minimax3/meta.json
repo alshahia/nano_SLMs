@@ -1,0 +1,23 @@
+{
+  "dataset": "local:all_train.jsonl",
+  "tokenizer": "codellama/CodeLlama-7b-hf",
+  "pad_token_id": 2,
+  "eos_token_id": 2,
+  "ctx": 512,
+  "template": "### Instruction:\n{instruction}\n### Response:\n",
+  "ast_filter": true,
+  "min_chars": 30,
+  "seen": 25146,
+  "kept": 19252,
+  "train_pairs": 18752,
+  "val_pairs": 500,
+  "stats": {
+    "seen": 25146,
+    "kept": 19252,
+    "drop_short": 5777,
+    "drop_instr": 2,
+    "drop_dup": 0,
+    "drop_ast": 0,
+    "drop_long": 115
+  }
+}

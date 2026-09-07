@@ -1,0 +1,500 @@
+{"instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'."}
+{"instruction": "Write a function `c2f_v2(c)` that converts Celsius to Fahrenheit. Example: `c2f_v2(-273.15)`."}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper('ABC123')`."}
+{"instruction": "Write a function `left_take(xs, n)` returning the first `n` items. `left_take([1, 2, 3], 5)`."}
+{"instruction": "Write a function `drop_first2(xs, n)` returning `xs` after dropping the first `n` items. `drop_first2([1, 2, 3], 5)`."}
+{"instruction": "Write a function `date_format2(d)` that returns the ISO 8601 string for a `date`. Example: `date_format2(date(2000, 12, 31))`."}
+{"instruction": "Write a function `hinge2(x)` returning max(0, x) (ReLU). Example: `hinge2(0)`."}
+{"instruction": "Write a function `shift_list(xs, k)` that rotates xs by k positions. Example: `shift_list(([\"x\", \"y\", \"z\"], 0))`."}
+{"instruction": "Write a function `midpoint_v2(p1, p2)` returning the midpoint of two points. `midpoint_v2((0, 0), (0, 0))`."}
+{"instruction": "Write a function `min_pos2(xs)` returning the index of the minimum (or -1 if empty). Example: `min_pos2([])`."}
+{"instruction": "Write a function `distinct_ordered(xs)` returning xs with duplicates removed, order preserved. Example: `distinct_ordered([1, 2, 3, 4])`."}
+{"instruction": "combination sum no reuse"}
+{"instruction": "Write a function `do_tokenize(s)` tokenizing on whitespace. Example: `do_tokenize('hello world')`."}
+{"instruction": "Write a function `duplicates2(xs)` returning the list of elements that appear more than once. Example: `duplicates2([True, False, True])`."}
+{"instruction": "Write a function that returns the k-th prime number (1-indexed)."}
+{"instruction": "Write a function `conditional_sum2(xs, pred)` returning the sum of items satisfying `pred`. `conditional_sum2([], lambda x: True)`."}
+{"instruction": "Write a function `dig_strict(d, keys, default=None)` getting nested dict value, or default. `dig_strict({'a': {'b': 2}}, ('a', 'b'))`."}
+{"instruction": "Write a function `decode_qs(qs)` parsing a URL query string into a dict. Example: `decode_qs('q=hello+world')`."}
+{"instruction": "Show `Never` in `typing_never`. (input: )"}
+{"instruction": "Write a function `or_default2(x, default)` returning `x` if truthy else `default`. `or_default2([1, 2], [])`."}
+{"instruction": "Show asdict recursion in `asd`. Input: `{'x': 1}`. (input: {'x': 1})"}
+{"instruction": "Write a function `standardize_text(s)` that lowercases, collapses whitespace, and strips. Example: `standardize_text('no change needed')`."}
+{"instruction": "Write a function `fit_range_float(x, lo, hi)` clamping float x to [lo, hi]. `fit_range_float(10.0, 0.0, 10.0)`."}
+{"instruction": "Write a function `parse_csv_line(line)` returning the CSV fields as a list. Example: `parse_csv_line('single')`."}
+{"instruction": "Write a function `lo_hi2(xs)` returning (min, max) or (None, None) if empty. Example: `lo_hi2([1.5, 2.5])`."}
+{"instruction": "Write a function `strict_vowel_count(s)` that counts the vowels in `s` (case-sensitive: a/e/i/o/u both cases). Example: `strict_vowel_count('')`."}
+{"instruction": "Write a function `count_digits(s)` that returns the count of digit characters in `s`. Example: `count_digits('abc')`."}
+{"instruction": "Write a function `var(xs)` returning the population variance. Example: `var([1, 1, 1])`."}
+{"instruction": "Write a function `extrema_v2(xs)` returning (min, max) or (None, None) if empty. Example: `extrema_v2([5])`."}
+{"instruction": "Write a function `sigmoid2(x)` returning the sigmoid of `x`. Example: `sigmoid2(-1)`."}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([])`."}
+{"instruction": "Show the `@lru_cache` requirement in `cache_decorator`. (input: 10)"}
+{"instruction": "Write a function `all_satisfy(xs, pred)` returning True iff pred(x) is true for all x. Example: `all_satisfy(([0, 0, 0], lambda x: x >= 0))`."}
+{"instruction": "Write a function `redact_card2(s)` that masks all but the last 4 chars of a card-number-like string. Example: `redact_card2('')`."}
+{"instruction": "Write a function `palindrome(s)` that returns True iff s is a palindrome. Example: `palindrome(\"Madam\")`."}
+{"instruction": "Write a function `parse_oct2(s)` parsing an octal string as int. Example: `parse_oct2('77')`."}
+{"instruction": "Write a function `format_safe(template, args)` safely formatting; returns template if args mismatch. `format_safe('Hello, {}!', ('World',))`."}
+{"instruction": "Write a function `check_email(s)` returning True iff `s` looks like an email. Example: `check_email('user.name+tag@sub.domain.org')`."}
+{"instruction": "Show `textwrap.indent` in `str_indent`. (input: 'hello\\nworld')"}
+{"instruction": "Write a function `do_strip_lower(s)` that strips whitespace and lowercases. Example: `do_strip_lower('   ')`."}
+{"instruction": "Given [1, 2, 3, 4], compute product of array except self for each index."}
+{"instruction": "Write a function `wrap_at(s, width)` that word-wraps `s` so each line is at most `width` chars. `wrap_at('x', 1)`."}
+{"instruction": "Write a function `element_count(xs, target)` returning how many times `target` appears. Example: `element_count((['a', 'b', 'a'], 'a'))`."}
+{"instruction": "Write a function `string_split_lines_v2(s)` returning the lines of `s`. Example: `string_split_lines_v2('\\n\\n\\n')`."}
+{"instruction": "Write a function `palindrome_check(s)` that returns True iff s is a palindrome. Example: `palindrome_check(\"abba\")`."}
+{"instruction": "Write a function `clamp_to_range(x, lo, hi)` clamping x to [lo, hi]. Example: `clamp_to_range((100, 0, 50))`."}
+{"instruction": "Write a function `parse_oct2(s)` parsing an octal string as int. Example: `parse_oct2('777')`."}
+{"instruction": "Write a function `gcd_pair(a, b)` returning the greatest common divisor of `a` and `b`. `gcd_pair(1, 1)`."}
+{"instruction": "Write a function `km_to_mi2(k)` that converts kilometers to miles. Example: `km_to_mi2(1.609344)`."}
+{"instruction": "Write a function `chunk_by_predicate(xs, pred)` chunking xs at pred boundaries. Example: `chunk_by_predicate(([], lambda x: True))`."}
+{"instruction": "Show `queue.Queue` in `queue_basic`. (input: )"}
+{"instruction": "Write a function `qs_parse2(qs)` that parses a URL query string into a dict. Example: `qs_parse2('flag')`."}
+{"instruction": "Write a function `vec_len2(v)` returning the L2 norm (Euclidean magnitude). Example: `vec_len2([1, 1, 1])`."}
+{"instruction": "Write a function `integer_power2(base, exp)` returning base**exp (handles negative exp). `integer_power2(2, 0)`."}
+{"instruction": "Write a function `standardize_text(s)` that lowercases, collapses whitespace, and strips. Example: `standardize_text('Hello\\tWorld\\n')`."}
+{"instruction": "Write a function that reduces x into the canonical range [0, m) using ((x % m) + m) % m."}
+{"instruction": "Write a function `group_n3(xs, n)` that splits `xs` into chunks of size `n`. `group_n3([1], 1)`."}
+{"instruction": "Write a function `group_n_v2(xs, n)` chunking into size-`n` lists. `group_n_v2([1, 2], 10)`."}
+{"instruction": "Write a context manager that validates its two numeric arguments are within a configurable range before entering, raising ValueError otherwise."}
+{"instruction": "Show deprecated SSL version in `sslv`. (input: '')"}
+{"instruction": "Write a function `date_to_iso(s)` that parses an ISO date and returns the same date in ISO format, or None. Example: `date_to_iso('2024-13-01')`."}
+{"instruction": "Write a function `qs_build2(params)` that builds a URL query string from a dict. Example: `qs_build2(({'k': 'café'}))`."}
+{"instruction": "Write a function named `iterative_factorial(n)` that returns the factorial of a non-negative integer n. Example: `iterative_factorial(3)`."}
+{"instruction": "Write a function `all_satisfy(xs, pred)` returning True iff pred(x) is true for all x. Example: `all_satisfy(([1, 2, 3], lambda x: x > 2))`."}
+{"instruction": "Write a function `info_entropy2(s)` returning the Shannon entropy of character frequencies. Example: `info_entropy2('abab')`."}
+{"instruction": "Define a Logger mixin that other classes can use to get a tagged __repr__; Point uses it to show its tag automatically."}
+{"instruction": "Write a function `int_of_bin2(s)` parsing a binary string as int. Example: `int_of_bin2('10000000000')`."}
+{"instruction": "Write a function `round2(x)` returning `x` rounded to nearest integer. Example: `round2((0.5,))`."}
+{"instruction": "Find min coins for amount 3 with coins [2] (impossible, return -1)."}
+{"instruction": "Write a function `rgb_to_hex(r, g, b)` returning a hex color string '#rrggbb'. `rgb_to_hex(255, 136, 0)`."}
+{"instruction": "Write a function `do_safe_attr2(obj, name, default=None)` that safely gets an attribute. `do_safe_attr2({'a': 1}, 'b', 0)`."}
+{"instruction": "Write a function `n_times2(s, n)` returning `s` repeated `n` times. `n_times2('python', 2)`."}
+{"instruction": "Write a function `do_int_pal2(n)` returning True iff `n` is an integer palindrome. Example: `do_int_pal2(0)`."}
+{"instruction": "Write a function `group_n_v2(xs, n)` chunking into size-`n` lists. `group_n_v2([1, 2, 3, 4], 3)`."}
+{"instruction": "Write a function `do_update2(a, b)` returning a new dict with `b` merged into `a`. `do_update2({'a': 1}, {'b': 2})`."}
+{"instruction": "Write a function `do_mid2(p1, p2)` returning the midpoint of two points. `do_mid2((10, 20), (30, 40))`."}
+{"instruction": "insert delete getrandom o1"}
+{"instruction": "Write a function `age_from_birth(birth, today)` returning integer age in years between two ISO dates. `age_from_birth('2020-01-01', '2024-01-01')`."}
+{"instruction": "Write a function `path_to_parts2(p)` returning the non-empty path parts of a '/'-separated path. Example: `path_to_parts2('/usr/local/bin/python')`."}
+{"instruction": "Show the csv quoting options in `csv_quoting`. (input: 'hello, world')"}
+{"instruction": "Write a function `euclid_2d2(p1, p2)` returning the Euclidean 2D distance. `euclid_2d2((2, 3), (5, 7))`."}
+{"instruction": "Show the print side effect in `side_effect_print`. (input: )"}
+{"instruction": "Write a function `from_binary(s)` parsing a binary string into an int. Example: `from_binary('10000000000')`."}
+{"instruction": "Write a function `span_days2(a, b)` returning the number of days between two `date`s (b - a). `span_days2(date(2020, 1, 1), date(2024, 1, 1))`."}
+{"instruction": "Write a function `pal_sentence(s)` that returns True iff `s` is a palindrome ignoring case and non-alphanumeric characters. Example: `pal_sentence('12321')`."}
+{"instruction": "Write a function `sum_of_squares_range(lo, hi)` returning sum of squares from `lo` to `hi` inclusive. `sum_of_squares_range(3, 7)`."}
+{"instruction": "Write a function named `flip_string(s)` that returns the reversed string. Example: `flip_string('12345')`."}
+{"instruction": "Write a function `bin_search(xs, target)` for sorted-list binary search. Example: `bin_search(([1], 1))`."}
+{"instruction": "Write a function `do_count_if_v2(xs, pred)` returning the count of items satisfying `pred`. `do_count_if_v2(['a', 'b', 'c'], lambda s: s in 'aeiou')`."}
+{"instruction": "Write a function `collect_first(pairs)` that groups the second elements by the first. Example: `collect_first([(True, 1), (False, 2), (True, 3)])`."}
+{"instruction": "Write a function `between_pts2(p1, p2)` returning the midpoint of two points. `between_pts2((0, 0), (100, 200))`."}
+{"instruction": "The function `repr_in_format` uses repr in a user-facing format. Use str instead. (input: demo)"}
+{"instruction": "Write a function `common_n2(xs, n)` returning the n most common elements. `common_n2([1, 2, 3, 4], 10)`."}
+{"instruction": "Write a function `calc_median(xs)` returning the median. Example: `calc_median([1, 2, 3])`."}
+{"instruction": "Write a function `params_to_str(params)` building a URL query string from a dict. Example: `params_to_str(({'a': [1, 2, 3]}))`."}
+{"instruction": "Write a function `middle_value(xs)` returning the median. Example: `middle_value([1, 2, 3, 4])`."}
+{"instruction": "Write a function `left_rotate(xs, k)` rotating the list left by `k`. `left_rotate([1, 2, 3, 4], 1)`."}
+{"instruction": "Write a function `alpha_vowel_count(s)` that counts the vowels in `s` (case-sensitive: a/e/i/o/u both cases). Example: `alpha_vowel_count('hello')`."}
+{"instruction": "Write a function `do_iso_date2(d)` that returns the ISO 8601 string for a `date`. Example: `do_iso_date2(date(2024, 1, 1))`."}
+{"instruction": "Write a function `right_take(xs, n)` returning the last `n` items. `right_take([], 3)`."}
+{"instruction": "Write a function `do_lerp(a, b, t)` linear-interpolating between a and b at t. Example: `do_lerp((0, 10, 0))`."}
+{"instruction": "Write a function `do_bin_str2(n)` returning the binary string for `n`. Example: `do_bin_str2(0)`."}
+{"instruction": "Write a function `combine_lists2(a, b)` returning the concatenation of two lists. `combine_lists2(['a'], ['b', 'c'])`."}
+{"instruction": "Write a function `do_sum_sq_range(lo, hi)` returning sum of squares from `lo` to `hi` inclusive. `do_sum_sq_range(5, 10)`."}
+{"instruction": "Write a function `rotate_neg(xs, k)` rotating the list left by `k`. `rotate_neg([1, 2, 3, 4], 0)`."}
+{"instruction": "Given [2, 3], compute product except self."}
+{"instruction": "Write a function `pick_values(d, pred)` that returns the dict entries whose value satisfies `pred`. `pick_values({'x': 0, 'y': 1}, lambda x: x == 0)`."}
+{"instruction": "Rotate a 2x2 [[1,2],[3,4]]."}
+{"instruction": "Write a function `to_iso_str(s)` that parses an ISO date and returns the same date in ISO format, or None. Example: `to_iso_str('2024-02-29')`."}
+{"instruction": "Write a function `capitalize_all(s)` capitalizing the first letter of each word. Example: `capitalize_all('')`."}
+{"instruction": "Write a function `replace_all2(s, old, new)` replacing all occurrences of `old` with `new`. `replace_all2('hello', 'hello', 'world')`."}
+{"instruction": "Write a `function_cache` decorator that caches results by positional args (use it for `cube`)."}
+{"instruction": "Write a function named `factorial(n)` that returns the factorial of a non-negative integer n. Example: `factorial(5)`."}
+{"instruction": "Write a function `tally_pred2(xs, pred)` returning the count of items satisfying `pred`. `tally_pred2([-1, -2, -3], lambda x: x < 0)`."}
+{"instruction": "Write a function `iec_bytes(n)` returning a human-readable binary (1024-based) byte string. Example: `iec_bytes(1048576)`."}
+{"instruction": "Write a function `do_upper_v2(s)` returning True iff `s` is all uppercase. Example: `do_upper_v2('all lower')`."}
+{"instruction": "Write a function `calc_median(xs)` returning the median. Example: `calc_median([1, 2, 3, 4])`."}
+{"instruction": "Write a function `deep_assign_strict(d, keys, value)` setting a value at a nested dict path. `deep_assign_strict({}, ('a',), 'hello')`."}
+{"instruction": "Write a function `after_n2(xs, n)` returning `xs` after dropping the first `n` items. `after_n2('x', 0)`."}
+{"instruction": "Write a function `midpoint_of2(p1, p2)` returning the midpoint of two points. `midpoint_of2((0, 0), (1, 1))`."}
+{"instruction": "Write a function `first_or2(xs)` returning the first element or None if empty. Example: `first_or2(([0]))`."}
+{"instruction": "Write a function `angular_sim2(a, b)` returning cosine similarity (0 for orthogonal). `angular_sim2([1, 1], [1, 1])`."}
+{"instruction": "Write a function `email_ok(s)` returning True iff `s` looks like an email. Example: `email_ok('bob@foo.co.uk')`."}
+{"instruction": "Write a function `prefix_sum(xs)` returning the running (cumulative) sum. Example: `prefix_sum([10, 20, 30])`."}
+{"instruction": "Write a function `first_or_default(xs, pred, default)` returning the first matching item or default. Example: `first_or_default(([1,2,3], lambda x: x > 1, 0))`."}
+{"instruction": "Write a Python function named `slugify(s)` that converts a string to a URL-safe slug. Example: `slugify('Foo Bar  Baz')` returns a hyphenated lowercase string."}
+{"instruction": "Write a function `isupper_v2(s)` returning True iff `s` is all uppercase. Example: `isupper_v2('')`."}
+{"instruction": "Write a function `dict_value_map(d, f)` that returns a new dict with `f` applied to every value. `dict_value_map({'k': -1, 'j': -2}, abs)`."}
+{"instruction": "Write a function `int_pal2(n)` returning True iff `n` is an integer palindrome. Example: `int_pal2(100)`."}
+{"instruction": "Write a decorator that times a math function call and caches its return values; the timing is logged to stderr, while the cache makes subsequent calls instant."}
+{"instruction": "Write a function `to_int_strict2(s)` that parses `s` as int, or returns None if not parseable. Example: `to_int_strict2('abc')`."}
+{"instruction": "Write a function `lines_indent(s, n)` that prepends `n` spaces to every non-empty line. `lines_indent('a\\nb', 8)`."}
+{"instruction": "Write a function `parse_hex_safe(s)` parsing a hex string as int, or None. Example: `parse_hex_safe('1')`."}
+{"instruction": "Write a function `get_emails(text)` returning all email-shaped substrings. Example: `get_emails(\"a.b@c.io\")`."}
+{"instruction": "Write a function `fib_up_to_n(n)` returning the first `n` Fibonacci numbers. Example: `fib_up_to_n(15)`."}
+{"instruction": "Write a function `abs_dist2(p1, p2)` returning the Manhattan distance. `abs_dist2((0, 0), (1, 0))`."}
+{"instruction": "Write a function `parse_bin2(s)` parsing a binary string as int. Example: `parse_bin2('101010')`."}
+{"instruction": "Write a function `map_dict_v2(d, f)` that returns a new dict with `f` applied to every value. `map_dict_v2({'a': True, 'b': False}, lambda b: not b)`."}
+{"instruction": "Write a function `leap_of_v2(y)` returning True iff `y` is a leap year. Example: `leap_of_v2(2024)`."}
+{"instruction": "Write a function `split_csv(line)` returning the CSV fields as a list. Example: `split_csv('hello,world')`."}
+{"instruction": "Write a function `dot_product_v2(a, b)` returning the dot product. `dot_product_v2([0], [1])`."}
+{"instruction": "Write a function `n_from_bin2(s)` parsing a binary string as int. Example: `n_from_bin2('101')`."}
+{"instruction": "Write a function `mask_card_v2(s)` that masks all but the last 4 chars of a card-number-like string. Example: `mask_card_v2('4111111111111111')`."}
+{"instruction": "Show dict comprehension scope in `dc`. (input: '')"}
+{"instruction": "Write a function `constrain3(x, lo, hi)` returning `x` clamped to [lo, hi]. `constrain3(5, 0, 10)`."}
+{"instruction": "Show `random.choices` in `rand_choices`. (input: [1, 2, 3])"}
+{"instruction": "Max loot from [1, 2, 3, 1]; answer 4."}
+{"instruction": "Write a function `readable_iso(s)` returning 'Month DD, YYYY' from ISO date, or None. Example: `readable_iso('2024-02-29')`."}
+{"instruction": "Write a function `check_subsequence(sub, s)` that returns True iff `sub` is a subsequence of `s`. Example: `check_subsequence(('abc', 'acb'))`."}
+{"instruction": "Write a function `ss_range(lo, hi)` returning sum of squares from `lo` to `hi` inclusive. `ss_range(1, 5)`."}
+{"instruction": "Write a function `path_parts2(p)` returning the non-empty path parts of a '/'-separated path. Example: `path_parts2('a/b/c/d')`."}
+{"instruction": "Write a function `iso_format_date(s)` that parses an ISO date and returns the same date in ISO format, or None. Example: `iso_format_date('2024-02-29')`."}
+{"instruction": "Write a function `compute_sum(xs)` returning the sum of all elements. Example: `compute_sum([10])`."}
+{"instruction": "Write a function `sig2(x)` returning the sigmoid of `x`. Example: `sig2(0)`."}
+{"instruction": "Write a function `soft_max2(xs)` returning the numerically-stable softmax of `xs`. Example: `soft_max2([1, 2])`."}
+{"instruction": "Write a function `int_pal2(n)` returning True iff `n` is an integer palindrome. Example: `int_pal2(12321)`."}
+{"instruction": "Write a function `merge_maps(a, b)` returning a merged dict. Example: `merge_maps(({\"x\": None}, {\"y\": 1}))`."}
+{"instruction": "Write a function `clean_lower(s)` that strips whitespace and lowercases. Example: `clean_lower('WORLD')`."}
+{"instruction": "Show the missing base case in `rec_no_base`. (input: 5)"}
+{"instruction": "Write a function `luhn_valid2(s)` that returns True iff `s` passes the Luhn checksum. Example: `luhn_valid2('5500000000000004')`."}
+{"instruction": "Write a function `prefix_n2(xs, n)` returning the first `n` items of `xs`. `prefix_n2([1, 2, 3], 2)`."}
+{"instruction": "Write a function `nested_set_strict(d, keys, value)` setting a value at a nested dict path. `nested_set_strict({'a': [1, 2]}, ('a',), [3, 4])`."}
+{"instruction": "Write a function `norm_text(s)` that lowercases, collapses whitespace, and strips. Example: `norm_text('trailing  ')`."}
+{"instruction": "Show the missing `+` in the string concat loop of `str_join_implicit`. (input: ['a', 'b', 'c'])"}
+{"instruction": "Write a function `softmax_arr2(xs)` returning the numerically-stable softmax of `xs`. Example: `softmax_arr2([1.0])`."}
+{"instruction": "Write a function `all_digits(s)` returning True iff `s` is a valid integer literal. Example: `all_digits('abc')`."}
+{"instruction": "Write a function `flip_multi2(d)` that inverts a dict (handles list-values by grouping). Example: `flip_multi2({'a': [1, 2], 'b': [3, 4]})`."}
+{"instruction": "Write a function `dedupe_ordered(xs)` that dedupes while preserving first-seen order. Example: `dedupe_ordered([1, 1, 1, 1])`."}
+{"instruction": "Write a function `bytes_pretty(n)` returning a human-readable binary (1024-based) byte string. Example: `bytes_pretty(999)`."}
+{"instruction": "Write a function `strict_url_check(s)` returning True iff `s` is a valid http(s) URL. Example: `strict_url_check('http://example.com/path')`."}
+{"instruction": "Write a function `has_prefix2(s, prefix)` returning True iff `s` starts with `prefix`. `has_prefix2('hello', 'world')`."}
+{"instruction": "Write a function `capitalize_words(s)` capitalizing the first letter of each word. Example: `capitalize_words('the quick brown fox')`."}
+{"instruction": "Write a function `days_in(m, y)` returning days in month `m` of year `y`. Example: `days_in((1, 2000))`."}
+{"instruction": "Write a function named `test_prime(n)` that returns True if n is prime. Example: `test_prime(1000003)`."}
+{"instruction": "Write a function `preorder(graph, start)` returning the DFS preorder visit. Example: `preorder(({\"a\": [\"b\"], \"b\": [\"a\"]}, \"a\"))`."}
+{"instruction": "Write a function `count_words(s)` that returns the whitespace-separated word count. Example: `count_words(\"\")`."}
+{"instruction": "Write a function `key_value_swap(d)` that swaps keys and values. Example: `key_value_swap({\"a\": 1.5})`."}
+{"instruction": "Write a function `strict_float2(s)` that parses `s` as float, or returns None if not parseable. Example: `strict_float2('-2.5')`."}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('  spaces  ')`."}
+{"instruction": "Write a function `add_all(xs)` returning the sum of all elements. Example: `add_all([-1, -2, -3])`."}
+{"instruction": "Write a function `sort_dict_keys(d)` returning the dict sorted by key (ascending). Example: `sort_dict_keys({})`."}
+{"instruction": "Write a function `bound_float(x, lo, hi)` clamping float x to [lo, hi]. `bound_float(5.5, 5.5, 5.5)`."}
+{"instruction": "Write a function `is_digits(s)` returning True iff `s` is all digits. Example: `is_digits('12a')`."}
+{"instruction": "Write a function that compares two strings using case-insensitive ordinal ordering (useful for natural sort preparation)."}
+{"instruction": "Write a recursive function that performs a pre-order traversal of a binary tree and returns the visited values."}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('hello')`."}
+{"instruction": "Write a function `split_into_n3(xs, n)` that splits `xs` into chunks of size `n`. `split_into_n3([], 3)`."}
+{"instruction": "Show the mutable default dict in `def_dict_arg`. (input: 1)"}
+{"instruction": "Write a function `hex_to_rgb_tuple(s)` parsing a hex color to RGB tuple. Example: `hex_to_rgb_tuple('#fff')`."}
+{"instruction": "Write a function `insert_between_v2(xs, sep)` interleaving `sep` between elements. `insert_between_v2([True, False], '|')`."}
+{"instruction": "Show contextvars copy semantics in `cv`. (input: '')"}
+{"instruction": "Write a function `dot_product_v2(a, b)` returning the dot product. `dot_product_v2([1, 2, 3], [4, 5])`."}
+{"instruction": "Write a function `ipv4_check2(s)` that returns True iff `s` is a dotted-decimal IPv4 address. Example: `ipv4_check2('1.2.3')`."}
+{"instruction": "Write a function `do_lpad2(s, n, ch=' ')` that pads `s` on the left with `ch` to length `n`. `do_lpad2('1', 1)`."}
+{"instruction": "Write a function `do_sum_sq_range(lo, hi)` returning sum of squares from `lo` to `hi` inclusive. `do_sum_sq_range(0, 10)`."}
+{"instruction": "Write a function `n_trail2(xs, n)` returning the last `n` items. `n_trail2([], 3)`."}
+{"instruction": "word search memo"}
+{"instruction": "Write a function `wrap_list(x)` returning `x` as a list (wrapping scalars, tuple-to-list). Example: `wrap_list([1, 2, 3])`."}
+{"instruction": "Write a function `sum_of_squares2(xs)` returning the sum of squares. Example: `sum_of_squares2([1.5, 2.5])`."}
+{"instruction": "Write a function `sorted_search(xs, target)` for sorted-list binary search. Example: `sorted_search(([\"a\", \"b\", \"c\", \"d\"], \"b\"))`."}
+{"instruction": "Write a function `pick_values(d, pred)` that returns the dict entries whose value satisfies `pred`. `pick_values({'a': 1, 'b': 2, 'c': 1}, lambda x: x == 1)`."}
+{"instruction": "Write a function `runs2(xs)` grouping consecutive equal elements. Example: `runs2([1, 2, 2, 1, 1])`."}
+{"instruction": "Write a function `power_safe2(base, exp)` returning base**exp (handles negative exp). `power_safe2(2, 10)`."}
+{"instruction": "Write a function `iso_str_to_date(s)` that parses an ISO date, returning `date` or None. Example: `iso_str_to_date('2026-09-07')`."}
+{"instruction": "Show `random.choice` in `rand_choice`. (input: [1, 2, 3])"}
+{"instruction": "Write a function `palindrome_with_punct(s)` that returns True iff `s` is a palindrome ignoring case and non-alphanumeric characters. Example: `palindrome_with_punct('A man, a plan, a canal: Panama')`."}
+{"instruction": "Write a function `save_json_to(obj, path)` writing JSON to a file. Example: `save_json_to(({'a': 1}, 'out.json'))`."}
+{"instruction": "Write a function that extracts the protocol (http, https, ftp) from the start of a URL, returning lowercase, or None."}
+{"instruction": "Write a function `head_n_strict(xs, n)` returning the first `n` items. `head_n_strict([1], 1)`."}
+{"instruction": "Write a function `consec_groups2(xs)` grouping consecutive equal elements. Example: `consec_groups2(['a', 'a', 'b', 'c', 'c'])`."}
+{"instruction": "Write a function `integer_power2(base, exp)` returning base**exp (handles negative exp). `integer_power2(2, -1)`."}
+{"instruction": "Write a function `int_pal2(n)` returning True iff `n` is an integer palindrome. Example: `int_pal2(121)`."}
+{"instruction": "Write a function `palindromic(s)` that returns True iff s is a palindrome. Example: `palindromic(\"\")`."}
+{"instruction": "min path sum dp"}
+{"instruction": "Write a function `partition_n(xs, k)` splitting `xs` at index `k` into two lists. `partition_n([1, 2, 3], 0)`."}
+{"instruction": "Write a function `byte_to_bits(b)` returning 8-character binary string for `b` (0-255). Example: `byte_to_bits(100)`."}
+{"instruction": "Write a function `params_to_qs(params)` building a URL query string from a dict. Example: `params_to_qs(({'q': 'hello world'}))`."}
+{"instruction": "Write a function `oct_str2(n)` returning the octal string for `n`. Example: `oct_str2(4096)`."}
+{"instruction": "Write a function `is_subseq_v2(sub, s)` that returns True iff `sub` is a subsequence of `s`. `is_subseq_v2('abc', 'acb')`."}
+{"instruction": "Write a function `dict_overlay2(a, b)` returning a new dict with `b` merged into `a`. `dict_overlay2({'a': 1}, {'a': 2})`."}
+{"instruction": "Write a function `digit_sum2(n)` returning the sum of the digits of `n`. Example: `digit_sum2(-42)`."}
+{"instruction": "Write a function `center_pt2(p1, p2)` returning the midpoint of two points. `center_pt2((0, 0), (4, 4))`."}
+{"instruction": "Write a function `luhn_test2(s)` that returns True iff `s` passes the Luhn checksum. Example: `luhn_test2('1234567890123456')`."}
+{"instruction": "Write a function `top_n_frequent_v2(xs, n)` returning the n most common elements. `top_n_frequent_v2([1, 1, 1, 2, 2, 3], 3)`."}
+{"instruction": "Median of [1, 2] and [3, 4] -> 2.5."}
+{"instruction": "Write a function `n_avg(xs, k)` returning the rolling average over windows of size `k`. `n_avg([1, 2, 3, 4], 4)`."}
+{"instruction": "Write a function `count_vowels_alpha(s)` that counts the vowels in `s` (case-sensitive: a/e/i/o/u both cases). Example: `count_vowels_alpha('hello')`."}
+{"instruction": "Write a function `ma_window(xs, k)` returning the rolling average over windows of size `k`. `ma_window([1, 2, 3, 4, 5], 3)`."}
+{"instruction": "Write a function `sort_dict_values(d)` returning the dict sorted by value (ascending). Example: `sort_dict_values({'n': 100})`."}
+{"instruction": "Write a function `islower_v2(s)` returning True iff `s` is all lowercase. Example: `islower_v2('hello')`."}
+{"instruction": "Write a function `invert_dict(d)` that swaps keys and values. Example: `invert_dict({\"a\": 1.5})`."}
+{"instruction": "Write a `simple_cache` decorator that caches results by positional args (use it for `factorial`)."}
+{"instruction": "Write a function `digit_sum2(n)` returning the sum of the digits of `n`. Example: `digit_sum2(1000000)`."}
+{"instruction": "Write a function `traverse_dfs(graph, start)` returning the DFS preorder visit. Example: `traverse_dfs(({\"a\": [\"b\", \"c\"], \"b\": [\"c\", \"d\"], \"c\": [\"d\"], \"d\": []}, \"a\"))`."}
+{"instruction": "Write a function that returns the length of the longest suffix that all given strings share."}
+{"instruction": "Write a function `n_rle2(s)` returning run-length encoding of `s`. Example: `n_rle2('AAAABBBCCDAA')`."}
+{"instruction": "Write a function named `reverse_string(s)` that returns the reversed string. Example: `reverse_string('Hello, World!')`."}
+{"instruction": "Write a function `rank_dict(d)` returning the dict sorted by value (ascending). Example: `rank_dict({'one': 1})`."}
+{"instruction": "Write a function `dict_omit_keys(d, keys)` returning a dict without the given keys. `dict_omit_keys({'k': 1}, ['k'])`."}
+{"instruction": "Write a function `perm_check(a, b)` returning True iff `a` is a permutation of `b`. `perm_check([1], [1])`."}
+{"instruction": "Write a function `do_flatten3(xs)` that recursively flattens arbitrarily nested lists. Example: `do_flatten3([[]])`."}
+{"instruction": "Write a function named `fibonacci(n)` returning the n-th Fibonacci number. Example: `fibonacci(1)`."}
+{"instruction": "Write a function `dict_update_v2(a, b)` returning a new dict with `b` merged into `a`. `dict_update_v2({'a': 1}, {'b': 2})`."}
+{"instruction": "Write a function named `n_factorial(n)` that returns the factorial of a non-negative integer n. Example: `n_factorial(6)`."}
+{"instruction": "Write a function `make_query2(params)` that builds a URL query string from a dict. Example: `make_query2(({'a': 1, 'b': 2}))`."}
+{"instruction": "Write a function `even_nums2(xs)` returning only the even numbers. Example: `even_nums2([2, 4, 6])`."}
+{"instruction": "Write a function `vowel_total_alpha(s)` that counts the vowels in `s` (case-sensitive: a/e/i/o/u both cases). Example: `vowel_total_alpha('aeiouAEIOU')`."}
+{"instruction": "Write a function `dict_path_get(d, keys, default=None)` getting nested dict value, or default. `dict_path_get({}, ('a',))`."}
+{"instruction": "Write a function `soft_max2(xs)` returning the numerically-stable softmax of `xs`. Example: `soft_max2([1.0, 2.0, 3.0])`."}
+{"instruction": "Write a function `chunks_of3(xs, n)` that splits `xs` into chunks of size `n`. `chunks_of3([1, 2, 3], 1)`."}
+{"instruction": "Write a function `fibonacci_list(n)` returning the first `n` Fibonacci numbers. Example: `fibonacci_list(5)`."}
+{"instruction": "Write a function `find_index2(xs, target)` returning the index of `target` or -1 if absent. `find_index2([], 1)`."}
+{"instruction": "Write a function `do_safe_fmt(template, args)` safely formatting; returns template if args mismatch. `do_safe_fmt('Hello, {}!', ('World',))`."}
+{"instruction": "Write a function `extend_lists2(a, b)` returning the concatenation of two lists. `extend_lists2([1, 2], [])`."}
+{"instruction": "Write a function `has_substr2(s, sub)` returning True iff `sub` is in `s`. `has_substr2('hello', 'xyz')`."}
+{"instruction": "Write a function `safe_float_div(a, b)` returning a/b or None if b=0. `safe_float_div(0.0, 5.0)`."}
+{"instruction": "Write a function `bytes_of(s)` returning the UTF-8 byte length of `s`. Example: `bytes_of('日本語')`."}
+{"instruction": "Write a function `split_chunks(xs, n)` to split a list into chunks of size n. Example: `split_chunks(([1, 2], 5))`."}
+{"instruction": "Write a function `hex_of_v2(n)` returning the hex string for `n`. Example: `hex_of_v2(123456)`."}
+{"instruction": "Write a function `url_ok_strict(s)` returning True iff `s` is a valid http(s) URL. Example: `url_ok_strict('not a url')`."}
+{"instruction": "Write a function `word_counts(s)` returning a word -> count dict. Example: `word_counts('one')`."}
+{"instruction": "Write a function `capitalize_each_word(s)` capitalizing the first letter of each word. Example: `capitalize_each_word('PYTHON')`."}
+{"instruction": "Write a function `do_zip2(a, b)` returning zipped pairs up to the shorter list. `do_zip2([1], [])`."}
+{"instruction": "Show the mutable default dict in `def_dict_arg`. (input: 'k')"}
+{"instruction": "Write a function `add_indent(s, n)` that prepends `n` spaces to every non-empty line. `add_indent('  already', 2)`."}
+{"instruction": "Write a function `find_median(xs)` returning the median. Example: `find_median([])`."}
+{"instruction": "Write a function `rotate_neg(xs, k)` rotating the list left by `k`. `rotate_neg([1, 2], 5)`."}
+{"instruction": "Write a function `is_leap_year(y)` returning True iff `y` is a leap year. Example: `is_leap_year(2023)`."}
+{"instruction": "Write a function that returns the longest word in a sentence based on character count."}
+{"instruction": "Write a function `prime_divide(n)` returning the list of prime factors of `n` in ascending order. Example: `prime_divide(97)`."}
+{"instruction": "Write a function `select_values(d, pred)` that returns the dict entries whose value satisfies `pred`. `select_values({'k': None}, lambda x: x is None)`."}
+{"instruction": "Write a function `mi_from_km2(k)` that converts kilometers to miles. Example: `mi_from_km2(100)`."}
+{"instruction": "Write a function `t_matrix(m)` that transposes a 2D matrix. Example: `t_matrix([[1, 2, 3]])`."}
+{"instruction": "The function `purge_none(d)` raises RuntimeError on dicts with None values. Fix it. (input: )"}
+{"instruction": "Write a function that uses a regex to remove HTML tags from a string, leaving inner text intact."}
+{"instruction": "Write a function `variance(xs)` returning the population variance. Example: `variance([1])`."}
+{"instruction": "Write a function `guarded_divide(a, b)` that returns a/b, or None if b is 0. Example: `guarded_divide((0, 5))`."}
+{"instruction": "Write a function `n_from_oct2(s)` parsing an octal string as int. Example: `n_from_oct2('2')`."}
+{"instruction": "Write a Python function that returns the minimum sum path in a triangle of numbers from top to bottom, moving only to adjacent numbers on the row below."}
+{"instruction": "Write a function `format_us_phone(s)` formatting a 10-digit US phone as '(NNN) NNN-NNNN'. Example: `format_us_phone('')`."}
+{"instruction": "Write a function `sample_sigma(xs)` returning the sample standard deviation. Example: `sample_sigma([-1, 0, 1])`."}
+{"instruction": "Write a function `to_query2(params)` that builds a URL query string from a dict. Example: `to_query2(({'a': 1, 'b': None}))`."}
+{"instruction": "Show `textwrap.dedent` in `str_dedent`. (input:     hello\\n    world)"}
+{"instruction": "Write a function `left_minus_right(a, b)` returning keys present in `a` but not `b`, with `a`'s values. `left_minus_right({'x': 1, 'y': 2}, {'x': 1, 'y': 2})`."}
+{"instruction": "Write a function `do_span2(xs, pred)` returning (taken, rest). `do_span2([1, 2, 3, 4, 5], lambda x: x < 3)`."}
+{"instruction": "Write a function named `prime_p(n)` that returns True if n is prime. Example: `prime_p(2)`."}
+{"instruction": "Write a function `is_alnum_v2(s)` returning True iff `s` is alphanumeric. Example: `is_alnum_v2('abc1')`."}
+{"instruction": "Show `round` in `round_basic`. (input: 3.5)"}
+{"instruction": "Write a function `do_count_if_v2(xs, pred)` returning the count of items satisfying `pred`. `do_count_if_v2([1.5, 2.5, 3.5], lambda x: x > 2)`."}
+{"instruction": "Write a function `compute_sample_stdev(xs)` returning the sample standard deviation. Example: `compute_sample_stdev([1])`."}
+{"instruction": "Count paths in a 3x3 grid; answer 6."}
+{"instruction": "Write a function `alnum_check_v2(s)` returning True iff `s` is alphanumeric. Example: `alnum_check_v2('hello')`."}
+{"instruction": "Write a function `k_avg(xs, k)` returning the rolling average over windows of size `k`. `k_avg([5, 5, 5, 5], 2)`."}
+{"instruction": "Write a function `params_to_qs(params)` building a URL query string from a dict. Example: `params_to_qs(({'a': True}))`."}
+{"instruction": "Write a function `factorial_iter_v2(n)` that returns n! computed iteratively. Example: `factorial_iter_v2(3)`."}
+{"instruction": "Write a function `do_tally2(xs)` returning a dict of element -> count. Example: `do_tally2([1, 2, 3, 4])`."}
+{"instruction": "Write a function `uniform(xs)` returning True iff all elements are equal (empty -> True). Example: `uniform([True, True])`."}
+{"instruction": "Write a function `remove_keys_strict(d, keys)` returning a dict without the given keys. `remove_keys_strict({'a': 1, 'b': 2}, [])`."}
+{"instruction": "Write a function `month_length(year, month)` returning the number of days in that month. `month_length(2023, 2)`."}
+{"instruction": "Search 13 in same matrix; False."}
+{"instruction": "Write a function `only_evens_v2(xs)` returning only the even numbers. Example: `only_evens_v2([100])`."}
+{"instruction": "Write a function `swap_axes(m)` that transposes a 2D matrix. Example: `swap_axes([[1], [2], [3]])`."}
+{"instruction": "Write a function `dict_keys_intersect_v2(a, b)` returning keys present in both with `a`'s values. `dict_keys_intersect_v2({}, {})`."}
+{"instruction": "Write a function `repeats2(xs)` returning the list of elements that appear more than once. Example: `repeats2([])`."}
+{"instruction": "Write a function `fmt_safe(template, args)` safely formatting; returns template if args mismatch. `fmt_safe('value: {}', (42,))`."}
+{"instruction": "Write an infinite generator that yields primes using a 2/3/5-wheel factorization with trial division."}
+{"instruction": "Write a function `square_sum_to_n(n)` returning 1^2 + 2^2 + ... + n^2. Example: `square_sum_to_n(5)`."}
+{"instruction": "Write a function `strict_int2(s)` that parses `s` as int, or returns None if not parseable. Example: `strict_int2('-7')`."}
+{"instruction": "Write a function `find_pos2(xs, target)` returning the index of `target` or -1 if absent. `find_pos2([1, 2, 3], 1)`."}
+{"instruction": "Write a function `right_drop(xs, n)` returning `xs` minus the last `n` items. `right_drop('hi', 10)`."}
+{"instruction": "Write a function `for_all(xs, pred)` returning True iff pred(x) is true for all x. Example: `for_all(([1, 2, None], lambda x: x is not None))`."}
+{"instruction": "Write a Python function that returns True if a string can be segmented into a sequence of one or more dictionary words (a set of strings)."}
+{"instruction": "Write a function `celsius_to_kelvin(c)` converting Celsius to Kelvin. Example: `celsius_to_kelvin(100)`."}
+{"instruction": "Write a function `unique(xs)` that dedupes while preserving first-seen order. Example: `unique([True, False, True, True])`."}
+{"instruction": "Write a function `do_dict_to_qs(params)` building a URL query string from a dict. Example: `do_dict_to_qs(({'q': 'hello world'}))`."}
+{"instruction": "Write a function `do_lower_v2(s)` returning True iff `s` is all lowercase. Example: `do_lower_v2('abc123')`."}
+{"instruction": "Write a function `sum_matching2(xs, pred)` returning the sum of items satisfying `pred`. `sum_matching2([1, 2, 3, 4], lambda x: x % 2 == 0)`."}
+{"instruction": "invert binary tree bfs"}
+{"instruction": "Write a function `collect_until(xs, pred)` taking items while pred is true. Example: `collect_until(([1, 2, 1, 2], lambda x: x < 2))`."}
+{"instruction": "Write a `cache_results` decorator that caches results by positional args (use it for `power`)."}
+{"instruction": "Write a function `age_p(birth, today)` returning integer age in years between two ISO dates. `age_p('2000-01-01', '2026-09-07')`."}
+{"instruction": "Write a function `iso_format2(d)` that returns the ISO 8601 string for a `date`. Example: `iso_format2(date(1999, 7, 4))`."}
+{"instruction": "Write a function `do_lcp(strs)` returning the longest common prefix. Example: `do_lcp((['abc', 'abd', 'abe']))`."}
+{"instruction": "Write a function `split_every(xs, n)` chunking into size-`n` lists. `split_every([1], 1)`."}
+{"instruction": "Write a function `do_interleave(a, b)` that interleaves two lists element-by-element. `do_interleave([1, 2, 3], [4, 5, 6, 7, 8])`."}
+{"instruction": "Write a function `vowel_count_v4(s)` that counts the vowels in `s` (case-sensitive: a/e/i/o/u both cases). Example: `vowel_count_v4('')`."}
+{"instruction": "Write a function `make_n_copies2(s, n)` returning `s` repeated `n` times. `make_n_copies2(' ', 3)`."}
+{"instruction": "Write a function `argmin_v2(xs)` returning the index of the minimum (or -1 if empty). Example: `argmin_v2([-1, -2, -3])`."}
+{"instruction": "permutations with dups"}
+{"instruction": "Write a function `sum_sq_to(n)` returning 1^2 + 2^2 + ... + n^2. Example: `sum_sq_to(3)`."}
+{"instruction": "Find all unique triplets in [-1, 0, 1, 2, -1, -4] that sum to 0."}
+{"instruction": "Write a function `str_to_params2(qs)` that parses a URL query string into a dict. Example: `str_to_params2('caf%C3%A9=ok')`."}
+{"instruction": "Write a function `encode_length(s)` returning the UTF-8 byte length of `s`. Example: `encode_length('hello')`."}
+{"instruction": "Write a function `do_default_v2(x, default)` returning `x` if truthy else `default`. `do_default_v2(42, 0)`."}
+{"instruction": "Write a recursive function that reverses a list of integers in place (returning a new list)."}
+{"instruction": "Write a function `indent_each(s, n)` that prepends `n` spaces to every non-empty line. `indent_each('a\\nb\\nc', 2)`."}
+{"instruction": "Write a function `range_clip_float(x, lo, hi)` clamping float x to [lo, hi]. `range_clip_float(0.0, 0.0, 10.0)`."}
+{"instruction": "Write a function `decode_query2(qs)` that parses a URL query string into a dict. Example: `decode_query2('flag')`."}
+{"instruction": "Write a function `break_chunks(xs, n)` chunking into size-`n` lists. `break_chunks([1, 2], 10)`."}
+{"instruction": "Write a function `date_iso_str(s)` that parses an ISO date and returns the same date in ISO format, or None. Example: `date_iso_str('2025-01-01')`."}
+{"instruction": "Write a function `text_wrap(s, width)` that word-wraps `s` so each line is at most `width` chars. `text_wrap('supercalifragilisticexpialidocious', 7)`."}
+{"instruction": "Write a function `do_popcount2(n)` counting the set bits (popcount). Example: `do_popcount2(5)`."}
+{"instruction": "Write a function `center_truncate(s, n)` that truncates `s` to at most `n` chars, putting the ellipsis character in the middle. `center_truncate('hello world', 8)`."}
+{"instruction": "Write a function `indent_each(s, n)` that prepends `n` spaces to every non-empty line. `indent_each('x', 0)`."}
+{"instruction": "Write a function `is_str_alnum(s)` returning True iff `s` is alphanumeric. Example: `is_str_alnum('   ')`."}
+{"instruction": "Write a function `flatten3(xs)` that recursively flattens arbitrarily nested lists. Example: `flatten3([1, 2, 3])`."}
+{"instruction": "longest palindrome expand around center"}
+{"instruction": "Write a function `tail_v2(xs, n)` returning `xs` after dropping the first `n` items. `tail_v2([1, 2, 3], 1)`."}
+{"instruction": "Write a function `memoize(fn)` returning a memoized version of `fn` (positional args only). Example: `memoize(def slow(x): return x * 2)`."}
+{"instruction": "Write a function `byte_to_bit_str(b)` returning 8-character binary string for `b` (0-255). Example: `byte_to_bit_str(255)`."}
+{"instruction": "Write a function `starts_str2(s, prefix)` returning True iff `s` starts with `prefix`. `starts_str2('', 'a')`."}
+{"instruction": "Write a function `do_swap_kv(d)` swapping keys and values (list when duplicates). Example: `do_swap_kv({'x': 'y'})`."}
+{"instruction": "Write a function `do_sig2(x)` returning the sigmoid of `x`. Example: `do_sig2(100)`."}
+{"instruction": "Write a function `sum_of_list(xs)` returning the sum of all elements. Example: `sum_of_list([1.5, 2.5, 3.0])`."}
+{"instruction": "Write a function `median(xs)` returning the median. Example: `median([3, 1, 4, 1, 5])`."}
+{"instruction": "Write a function `parse_signed_hex(s, bits=8)` converting a hex string to signed int. Example: `parse_signed_hex('7f')`."}
+{"instruction": "Write a function named `prime_test(n)` that returns True if n is prime. Example: `prime_test(3)`."}
+{"instruction": "Write a function `anagram_check_v2(a, b)` returning True iff `a` and `b` are anagrams (case-insensitive). `anagram_check_v2('Triangle', 'integral')`."}
+{"instruction": "Write a function `relu_v2(x)` returning max(0, x) (ReLU). Example: `relu_v2(0.5)`."}
+{"instruction": "Write a function `swap_dict(d)` that swaps keys and values. Example: `swap_dict({\"x\": 10, \"y\": 20})`."}
+{"instruction": "Write a function `int_of_bin2(s)` parsing a binary string as int. Example: `int_of_bin2('101010')`."}
+{"instruction": "Write a function named `isprime(n)` that returns True if n is prime. Example: `isprime(25)`."}
+{"instruction": "Write a function `trim_lower(s)` that strips whitespace and lowercases. Example: `trim_lower('  tabs\\there  ')`."}
+{"instruction": "Write a function `into_chunks(xs, n)` to split a list into chunks of size n. Example: `into_chunks(([1], 1))`."}
+{"instruction": "Write a function `clip_float(x, lo, hi)` clamping float x to [lo, hi]. `clip_float(0.5, 0.0, 1.0)`."}
+{"instruction": "Write a function `split_paragraph2(s)` returning the lines of `s`. Example: `split_paragraph2('hello\\nworld\\n')`."}
+{"instruction": "Write a function `is_pal_sentence(s)` that returns True iff `s` is a palindrome ignoring case and non-alphanumeric characters. Example: `is_pal_sentence('A man, a plan, a canal: Panama')`."}
+{"instruction": "Write a function `flip_matrix_v2(m)` transposing a 2D matrix. Example: `flip_matrix_v2([[1, 2, 3], [4, 5, 6]])`."}
+{"instruction": "Write a function `vector_unit(v)` returning the unit-length vector. Example: `vector_unit([-3, -4])`."}
+{"instruction": "Write a function `math_sqrt2(x)` returning the square root or None if x<0. Example: `math_sqrt2(2)`."}
+{"instruction": "Write a function `sequence_of_v2(sub, s)` that returns True iff `sub` is a subsequence of `s`. `sequence_of_v2('ace', 'abcde')`."}
+{"instruction": "Write a function `do_bin_to_dec(s)` parsing a binary string into an int. Example: `do_bin_to_dec('1')`."}
+{"instruction": "Write a function `suffix2(s, suffix)` returning True iff `s` ends with `suffix`. `suffix2('test', 'test')`."}
+{"instruction": "Show the Optional type hint in `type_hint_opt`. (input: 5)"}
+{"instruction": "Write a function `n_rle_dec2(runs)` returning the string decoded from RLE pairs. Example: `n_rle_dec2([(' ', 3), ('a', 2)])`."}
+{"instruction": "Write a function `do_neg_hex(s, bits=8)` converting a hex string to signed int. Example: `do_neg_hex('8000')`."}
+{"instruction": "Write a function `num_digits(s)` that returns the count of digit characters in `s`. Example: `num_digits('  42  ')`."}
+{"instruction": "Write a function `read_iso_date(s)` that parses an ISO date, returning `date` or None. Example: `read_iso_date('2026-1-1')`."}
+{"instruction": "Write a function `sq_sum_range(lo, hi)` returning sum of squares from `lo` to `hi` inclusive. `sq_sum_range(1, 100)`."}
+{"instruction": "Write a function `rolling_average(xs, k)` returning the rolling average over windows of size `k`. `rolling_average([1], 1)`."}
+{"instruction": "Write a function `even_odd_v2(xs)` returning (evens, odds). Example: `even_odd_v2([1, 2, 3, 4, 5, 6])`."}
+{"instruction": "Write a function `kv_invert2(d)` that swaps keys and values. Example: `kv_invert2({})`."}
+{"instruction": "Write a function `digit_count(s)` that returns the count of digit characters in `s`. Example: `digit_count('12345')`."}
+{"instruction": "Write a Python function that clears the kth bit of a non-negative integer and returns the result."}
+{"instruction": "Write a function `check_palindrome(s)` that returns True iff s is a palindrome. Example: `check_palindrome(\"racecar\")`."}
+{"instruction": "Write a function `vowels_in_alpha(s)` that counts the vowels in `s` (case-sensitive: a/e/i/o/u both cases). Example: `vowels_in_alpha('HELLO')`."}
+{"instruction": "Write a function `linspace(lo, hi, n)` returning `n` linearly-spaced values. `linspace(0, 10, 5)`."}
+{"instruction": "Write a function `is_palindrome(s)` that returns True iff s is a palindrome. Example: `is_palindrome(\"abba\")`."}
+{"instruction": "Write a function `interleave(a, b)` that interleaves two lists element-by-element. `interleave([1, 2, 3], [])`."}
+{"instruction": "Write a function `do_min_max2(xs)` returning (min, max) or (None, None) if empty. Example: `do_min_max2([])`."}
+{"instruction": "Single node -> [[1]]."}
+{"instruction": "Write a function `fmt_phone(s)` formatting a 10-digit US phone as '(NNN) NNN-NNNN'. Example: `fmt_phone('123')`."}
+{"instruction": "Write a function `days_in(m, y)` returning days in month `m` of year `y`. Example: `days_in((2, 2024))`."}
+{"instruction": "Write a function `cycle_shift(xs, k)` that rotates xs by k positions. Example: `cycle_shift(([1, 2, 3, 4, 5, 6], 2))`."}
+{"instruction": "Write a function `do_rgb_to_hex(r, g, b)` returning a hex color string '#rrggbb'. `do_rgb_to_hex(0, 0, 255)`."}
+{"instruction": "Write a function `do_split_chunks(xs, n)` chunking into size-`n` lists. `do_split_chunks([1, 2, 3, 4, 5, 6], 2)`."}
+{"instruction": "Write a function `match_emails(text)` returning all email-shaped substrings. Example: `match_emails(\"Multiple: x@y.z, m@n.o, p@q.r\")`."}
+{"instruction": "Write a function `is_url_valid_strict(s)` returning True iff `s` is a valid http(s) URL. Example: `is_url_valid_strict('https://example.com')`."}
+{"instruction": "Write a function `uniq_ordered(xs)` returning xs with duplicates removed, order preserved. Example: `uniq_ordered([True, False, True])`."}
+{"instruction": "Write a function `leading_while2(xs, pred)` taking items until `pred` fails. `leading_while2([], lambda x: True)`."}
+{"instruction": "Write a function `do_pangram(s)` returning True iff `s` is a pangram. Example: `do_pangram('The five boxing wizards jump quickly')`."}
+{"instruction": "Write a function named `is_prime(n)` that returns True if n is prime. Example: `is_prime(7919)`."}
+{"instruction": "Write a function `omit_strict(d, keys)` returning a dict without the given keys. `omit_strict({'a': 1, 'b': 2, 'c': 3}, ['a', 'b', 'c'])`."}
+{"instruction": "Write a function `read_all_lines(path)` returning all lines in the file. Example: `read_all_lines('/etc/hosts')`."}
+{"instruction": "Write a function `is_between2(x, lo, hi)` returning True iff `x` is in [lo, hi]. `is_between2(10, 0, 10)`."}
+{"instruction": "Write a function `preserving_unique(xs)` that dedupes while preserving first-seen order. Example: `preserving_unique([\"x\", \"y\", \"x\", \"z\", \"y\"])`."}
+{"instruction": "Write a function `celsius_kelvin(c)` converting Celsius to Kelvin. Example: `celsius_kelvin(37)`."}
+{"instruction": "Write a function `after_true2(xs, pred)` dropping items until `pred` fails. `after_true2([1, 2, 3, 0, 1], lambda x: x > 0)`."}
+{"instruction": "Write a function `from_binary(s)` parsing a binary string into an int. Example: `from_binary('0')`."}
+{"instruction": "Write a function `format_str_safe(template, args)` safely formatting; returns template if args mismatch. `format_str_safe('static string', ('x',))`."}
+{"instruction": "Write a function `convert_kg_to_lb(kg)` converting kilograms to pounds. Example: `convert_kg_to_lb(75.5)`."}
+{"instruction": "Write a function `path_exists(p)` returning True iff the file exists. Example: `path_exists('.')`."}
+{"instruction": "Write a function `do_power_set(xs)` returning all subsets as tuples. Example: `do_power_set([1, 2])`."}
+{"instruction": "subset sum partition equal"}
+{"instruction": "Write a function `do_var(xs)` returning the population variance. Example: `do_var([-1, 0, 1])`."}
+{"instruction": "Write a function `do_interleave(a, b)` that interleaves two lists element-by-element. `do_interleave([], [1, 2])`."}
+{"instruction": "Write a function `rotate_right(xs, k)` rotating the list right by `k`. `rotate_right([1, 2, 3, 4], 4)`."}
+{"instruction": "Write a function `parse_hex_color(s)` parsing a hex color to RGB tuple. Example: `parse_hex_color('#FFFFFF')`."}
+{"instruction": "Write a function `do_rle2(s)` returning run-length encoding of `s`. Example: `do_rle2('ABABAB')`."}
+{"instruction": "Write a function `hex_to_int_safe(s)` parsing a hex string as int, or None. Example: `hex_to_int_safe('deadbeef')`."}
+{"instruction": "Write a Python function that counts the number of 1 bits (set bits) in the binary representation of a non-negative integer."}
+{"instruction": "Write a function `n_trail2(xs, n)` returning the last `n` items. `n_trail2('hi', 10)`."}
+{"instruction": "Write a function `qs_to_dict(qs)` parsing a URL query string into a dict. Example: `qs_to_dict('k=%26%3D%3F')`."}
+{"instruction": "Write a function `begins2(s, prefix)` returning True iff `s` starts with `prefix`. `begins2('hello world', 'hello')`."}
+{"instruction": "Write a function `group_sum(items, key)` summing items by key. Example: `group_sum([{'x': 1, 'n': 5}, {'x': 2, 'n': 3}, {'x': 1, 'n': 2}], 'x')`."}
+{"instruction": "Write a function `is_str_upper(s)` returning True iff `s` is all uppercase. Example: `is_str_upper(' ')`."}
+{"instruction": "Write a function named `compute_factorial(n)` that returns the factorial of a non-negative integer n. Example: `compute_factorial(5)`."}
+{"instruction": "Write a function `parse_hex2(s)` parsing a hex string as int. Example: `parse_hex2('1')`."}
+{"instruction": "Write a function `oct_from_v2(s)` parsing an octal string as int. Example: `oct_from_v2('777')`."}
+{"instruction": "Write a function `str_contains_v2(s, sub)` returning True iff `sub` is in `s`. `str_contains_v2('test', 'es')`."}
+{"instruction": "Write a function that returns both the quotient and remainder of two integers, mimicking Python's divmod()."}
+{"instruction": "Write a function `clamp(x, lo, hi)` clamping x to [lo, hi]. Example: `clamp((10, 0, 10))`."}
+{"instruction": "Write a Python function that returns the minimum cost to paint houses in a row such that no two adjacent houses have the same color."}
+{"instruction": "Write a function `cumulative_sum(xs)` returning the running (cumulative) sum. Example: `cumulative_sum([0, 0, 0])`."}
+{"instruction": "Write a function `any_match(xs, pred)` returning True iff pred(x) is true for any x. Example: `any_match(([0, 0, 1], lambda x: x))`."}
+{"instruction": "Write a function `resolve_dots(p)` returning the normalized absolute path. Example: `resolve_dots('/usr/./local/../bin')`."}
+{"instruction": "Write a function `extrema_v2(xs)` returning (min, max) or (None, None) if empty. Example: `extrema_v2([1, 2, 3, 4])`."}
+{"instruction": "Write a function `ordinal_suffix(n)` returning the ordinal string (1->1st, 2->2nd, 11->11th). Example: `ordinal_suffix(21)`."}
+{"instruction": "Write a function `kelvin_from_celsius(c)` converting Celsius to Kelvin. Example: `kelvin_from_celsius(0)`."}
+{"instruction": "Write a function `fit_range_float(x, lo, hi)` clamping float x to [lo, hi]. `fit_range_float(5.5, 0.0, 10.0)`."}
+{"instruction": "Write a function `sort_by_freq(xs)` sorting by descending frequency. Example: `sort_by_freq(['a'])`."}
+{"instruction": "Write a function `fmt_usd(n)` returning USD format with 2 decimals and thousands separators. Example: `fmt_usd(-50)`."}
+{"instruction": "Write a function `list_rotate(xs, k)` that rotates xs by k positions. Example: `list_rotate(([1, 2, 3, 4, 5], 2))`."}
+{"instruction": "Write a function `rotate_left(xs, k)` rotating the list left by `k`. `rotate_left([1, 2], 5)`."}
+{"instruction": "Topological order of single node."}
+{"instruction": "Write a function `format_duration_sec(secs)` returning HH:MM:SS for the given seconds. Example: `format_duration_sec(3661)`."}
+{"instruction": "LCA of 2 and 8 in BST [6,2,8,0,4,7,9,null,null,3,5] -> 6."}
+{"instruction": "Write a function `digit_count(s)` that returns the count of digit characters in `s`. Example: `digit_count('hello123world')`."}
+{"instruction": "Write a function named `gcd_of(a, b)` using the Euclidean algorithm. Example: `gcd_of((17, 23))`."}
+{"instruction": "Write a function `do_rotate(xs, k)` that rotates xs by k positions. Example: `do_rotate(([1, 2, 3, 4, 5], 2))`."}
+{"instruction": "Implement a function that returns the first sequence of digits found in a string, or an empty string if there are none."}
+{"instruction": "Write a function `days_between_v2(a, b)` returning the number of days between two `date`s (b - a). `days_between_v2(date(2026, 9, 7), date(2026, 9, 1))`."}
+{"instruction": "Write a function `even_odd_v2(xs)` returning (evens, odds). Example: `even_odd_v2([])`."}
+{"instruction": "Write a function `rotate_right(xs, k)` that rotates xs by k positions. Example: `rotate_right(([\"a\", \"b\", \"c\"], 1))`."}
+{"instruction": "Write a function `shared_prefix(strs)` returning the longest common prefix. Example: `shared_prefix((['flower', 'flow', 'flight']))`."}
+{"instruction": "Write a function `do_rle_dec2(runs)` returning the string decoded from RLE pairs. Example: `do_rle_dec2([])`."}
+{"instruction": "Write a function `sum_squares_range(lo, hi)` returning sum of squares from `lo` to `hi` inclusive. `sum_squares_range(1, 5)`."}
+{"instruction": "Write a function `f_to_c2(f)` that converts Fahrenheit to Celsius. Example: `f_to_c2(32)`."}
+{"instruction": "Implement a function that returns a list of elements that appear in more than one of the input lists, preserving first-seen order."}
+{"instruction": "Write a function `concat2(a, b)` returning the concatenation of two lists. `concat2([1], [2, 3, 4])`."}
+{"instruction": "Write a function named `fact(n)` that returns the factorial of a non-negative integer n. Example: `fact(3)`."}
+{"instruction": "Write a function `do_format_dur(secs)` returning HH:MM:SS for the given seconds. Example: `do_format_dur(0)`."}
+{"instruction": "Write a function `ss_range(lo, hi)` returning sum of squares from `lo` to `hi` inclusive. `ss_range(5, 10)`."}
+{"instruction": "Write a function `do_normalize(v)` returning the unit-length vector. Example: `do_normalize([2, 3, 6])`."}
+{"instruction": "Write a function `str_sub2(s, old, new)` replacing all occurrences of `old` with `new`. `str_sub2('test', 'x', 'y')`."}
+{"instruction": "Write a function `n_to_oct2(n)` returning the octal string for `n`. Example: `n_to_oct2(8)`."}
+{"instruction": "Write a function `to_iso_date2(d)` that returns the ISO 8601 string for a `date`. Example: `to_iso_date2(date(9999, 12, 31))`."}
+{"instruction": "Write a function `dict_sort_value(d)` returning the dict sorted by value (ascending). Example: `dict_sort_value({'one': 1})`."}
+{"instruction": "Write a function `find_email_addresses(text)` returning all email-shaped substrings. Example: `find_email_addresses(\"Contact alice@example.com or bob@foo.co.uk.\")`."}
+{"instruction": "Show `enum.Enum` in `enum_basic`. (input: 'RED')"}
+{"instruction": "Write a function `n_back2(xs, n)` returning the last `n` items. `n_back2([], 3)`."}
+{"instruction": "Write a function `conditional_sum2(xs, pred)` returning the sum of items satisfying `pred`. `conditional_sum2([-1, -2, -3], lambda x: x < 0)`."}
+{"instruction": "Write a function `do_fact2(n)` that returns n! computed iteratively. Example: `do_fact2(10)`."}
+{"instruction": "Write a function `sub_proper(a, b)` returning True iff `a` is a strict subset of `b`. `sub_proper([], [1])`."}
+{"instruction": "Show wrong log level in `log_err`. Input: `'something failed'`. (input: 'something failed')"}
+{"instruction": "Write a function `every_match(xs, pred)` returning True iff pred(x) is true for all x. Example: `every_match(([1, 2, 3], lambda x: x > 0))`."}
+{"instruction": "Write a function `prefix_n(xs, n)` returning the first `n` items. `prefix_n('abcdef', 2)`."}
+{"instruction": "Write a function `verify_ipv42(s)` that returns True iff `s` is a dotted-decimal IPv4 address. Example: `verify_ipv42('256.0.0.1')`."}
+{"instruction": "Write a function `normalize_path(p)` returning the normalized absolute path. Example: `normalize_path('/usr/./local/../bin')`."}
+{"instruction": "Write a function `capitalize_words(s)` capitalizing the first letter of each word. Example: `capitalize_words('one')`."}
+{"instruction": "Write a function `do_clamp3(x, lo, hi)` returning `x` clamped to [lo, hi]. `do_clamp3(0, -1, 1)`."}
+{"instruction": "Write a function `index_of_min2(xs)` returning the index of the minimum (or -1 if empty). Example: `index_of_min2([10, 0, 10])`."}
+{"instruction": "Write a function `fib_seq(n)` returning the first `n` Fibonacci numbers. Example: `fib_seq(20)`."}
+{"instruction": "Write a function `drop_while(xs, pred)` dropping items while pred is true. Example: `drop_while(([], lambda x: True))`."}
+{"instruction": "Write a function `is_sorted_asc(xs)` checking if list is sorted ascending. Example: `is_sorted_asc([1,3,2])`."}
+{"instruction": "Write a function `title_case(s)` capitalizing the first letter of each word. Example: `title_case('')`."}
+{"instruction": "Write a function `abs_subtract2(a, b)` returning |a - b|. `abs_subtract2(0, 0)`."}
+{"instruction": "Write a function `split_p(xs, pred)` returning (matches, non-matches). `split_p([], lambda x: True)`."}
+{"instruction": "Write a function `titlecase(s)` capitalizing the first letter of each word. Example: `titlecase('hello world')`."}
+{"instruction": "Write a function `entropy_str2(s)` returning the Shannon entropy of character frequencies. Example: `entropy_str2('abcd')`."}
+{"instruction": "Write a function `dist_same_len2(a, b)` returning the Hamming distance, or -1 if lengths differ. `dist_same_len2('hello', 'world')`."}
+{"instruction": "Write a function `int_of_hex2(s)` parsing a hex string as int. Example: `int_of_hex2('cafebabe')`."}
+{"instruction": "Write a function `fixed_window_sum(xs, k)` returning sliding sums over windows of size `k`. `fixed_window_sum([10, 20, 30, 40], 2)`."}
+{"instruction": "add two numbers reverse"}
+{"instruction": "Write a function `psi_bar(psi)` converting PSI to bar. Example: `psi_bar(14.5038)`."}
+{"instruction": "Write a function `safe_float2(s)` that parses `s` as float, or returns None if not parseable. Example: `safe_float2('inf')`."}
+{"instruction": "Write a Python function that returns the maximum number of non-overlapping subarrays in a list whose sums equal k."}
+{"instruction": "Write a function `is_substring_of(sub, s)` that returns True iff `sub` is a subsequence of `s`. Example: `is_substring_of(('xyz', 'abc'))`."}
+{"instruction": "Write a Python function named `create_slug(s)` that converts a string to a URL-safe slug. Example: `create_slug('Hello, World!')` returns a hyphenated lowercase string."}
+{"instruction": "The module-level code runs on import. Wrap it in `if __name__ == '__main__':`. (input: demo)"}
