@@ -8,10 +8,12 @@ GPU with an unattended-safe, auto-resuming pipeline.
 file is the **repo supplement**: it maps every durable document to its job
 and fixes the repo-specific conventions CLAUDE.md points here for.
 
-> CLAUDE.md's read-order table also lists harness-internal targets
+> CLAUDE.md's read-order table and cross-references were trimmed
+> (2026-09-07) to match this map — the harness-internal targets
 > (`packages/`, `examples/`, `vendor/`, `planning/`, `docs/`,
-> `.agents/notes/`). Those trees do not exist in this repository; those
-> rows do not apply. The map below is the real one.
+> `.agents/notes/`) do not exist in this repository. If you find a stale
+> cross-link in CLAUDE.md, report it — do not follow it. The map below is
+> the real one.
 
 ## 1) Document map — one authoritative home per concern
 
@@ -25,6 +27,7 @@ and fixes the repo-specific conventions CLAUDE.md points here for.
 | **Environment** (what we run on) | [ENVIRONMENT.md](./ENVIRONMENT.md) | before running anything | after any machine/venv/version/disk change |
 | Usage (humans) | [README.md](./README.md) | for command syntax | when commands or usage change |
 | Research | [research/](research) | when touching architecture/data direction | new studies live here; raw payloads under `research/raw/` |
+| **Web UI spec** | [WEBUI_PRD.md](./WEBUI_PRD.md) | before any `webui/` work | when a UI decision or milestone scope changes (user-gated) |
 
 The plan / state / task / memory / environment docs are the five an agent
 needs before doing anything; the table is how they chain together. Mnemonic:
@@ -45,6 +48,7 @@ nano_SLMs/
 ├─ runs/               <phase>/checkpoint-* · <phase>/final · <phase>/logs (TensorBoard)
 ├─ resources/          original user-supplied study notes (pseudo-code skeletons)
 ├─ research/           web-research notes + raw Exa payloads (c12 distillation plan/report)
+├─ webui/              Gradio web UI (spec: WEBUI_PRD.md; milestones U1-U5)
 ├─ checkpoint_backup/  untracked; user-staged machine-move checkpoint zips (HANDOFF §3b) — check for a newer checkpoint-*.zip first
 └─ .venv/              uv-managed CPython 3.12.9 (never pip)
 ```
@@ -60,8 +64,12 @@ All Python runs through the venv — never bare `python`, never `pip`:
 & .\.venv\Scripts\python.exe scripts\train.py         --config configs\<phase>.yaml
 & .\.venv\Scripts\python.exe scripts\eval.py          --config configs\<phase>.yaml
 & .\.venv\Scripts\python.exe scripts\vram_probe.py    --config configs\target.yaml
+& .\.venv\Scripts\python.exe scripts\sft_data.py      --config configs\sft_t1.yaml
 & .\.venv\Scripts\python.exe scripts\sft.py           --config configs\sft_t1.yaml --pilot
 ```
+
+- `sft_data.py` is CPU + network only — safe to run while a train job is
+  active (it touches nothing under `runs/`).
 
 - `train.py` auto-resumes: after ANY crash/kill re-run the exact command —
   zero flags (the user's hard requirement, PLAN §5.3).
@@ -84,6 +92,10 @@ All Python runs through the venv — never bare `python`, never `pip`:
    moves are recorded in [MEMORY.md](./MEMORY.md).
 5. The GPU thermally throttles under sustained training — pace swings are normal;
    never kill a run for pace alone.
+6. The GPU is a single shared resource: never launch another GPU job
+   (`eval.py`, `infer`, `vram_probe.py`, `sft.py`) while a `train.py` run is
+   active — it can OOM and kill the training run. CPU-only scripts
+   (`sft_data.py`) are exempt.
 
 ## 5) Git / LFS rules (summary — details in HANDOFF §7)
 
