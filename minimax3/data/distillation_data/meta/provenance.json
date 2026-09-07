@@ -1,0 +1,91 @@
+{
+  "dataset_name": "minimax3_distillation_v1",
+  "owner_model": "MiniMax-M3",
+  "generated_at": "2026-09-06T22:02:30+00:00",
+  "purpose": "Proof-of-concept SFT corpus for the 226M target (M3). Demonstrates the four-shape distillation design (instruction->code, completion, bug fix, reasoning trace). Not large enough to replace the project's planned 28k-pair Tier 1 corpus.",
+  "shapes": {
+    "shape_a_instruction_code": {
+      "format": "{instruction, response}",
+      "seed_pairs": 10,
+      "train_pairs": 40,
+      "author": {
+        "seed": "hand-crafted by MiniMax-M3",
+        "train": "AI subagent (claude-sonnet-4-5)"
+      }
+    },
+    "shape_b_completion": {
+      "format": "{text}",
+      "seed_pairs": 8,
+      "train_pairs": 40,
+      "author": {
+        "seed": "hand-crafted by MiniMax-M3",
+        "train": "AI subagent (claude-sonnet-4-5); idempotency-validated"
+      },
+      "notes": "First draft failed idempotency on timing decorator and timer context manager (non-deterministic elapsed-time printing). Rewrote both to record deltas into module-global containers and emit only deterministic output. Final: 40 snippets, 34 functions + 9 classes across 8 class-based snippets, 6 self-recursive."
+    },
+    "shape_c_bugfix": {
+      "format": "{instruction, response}",
+      "seed_pairs": 10,
+      "train_pairs": 25,
+      "author": {
+        "seed": "hand-crafted by MiniMax-M3",
+        "train": "hand-crafted by MiniMax-M3 (subagent stalled in planning mode)"
+      }
+    },
+    "shape_d_reasoning": {
+      "format": "{instruction, response}",
+      "seed_pairs": 10,
+      "train_pairs": 25,
+      "author": {
+        "seed": "hand-crafted by MiniMax-M3",
+        "train": "AI subagent (claude-sonnet-4-5)"
+      }
+    }
+  },
+  "totals": {
+    "pairs": 168,
+    "train_pairs": 152,
+    "val_pairs": 16,
+    "est_tokens": 43614
+  },
+  "splits": {
+    "train": "combined/all_train.jsonl",
+    "val": "combined/all_val.jsonl",
+    "val_fraction": 0.1,
+    "seed": 42
+  },
+  "validation": {
+    "ast_parse_ok": true,
+    "shape_c_bugwas_present": true,
+    "shape_d_fenced_block_present": true,
+    "dedupe_against_seeds": true,
+    "no_markdown_in_responses": true
+  },
+  "prompts_for_paid_teacher": {
+    "shape_a": "prompts/paid_model_shape_a.txt",
+    "shape_b": "prompts/paid_model_shape_b.txt",
+    "shape_c": "prompts/paid_model_shape_c.txt",
+    "shape_d": "prompts/paid_model_shape_d.txt"
+  },
+  "cost_to_scale": {
+    "deepseek_v3": "~$3 for 28k pairs",
+    "gpt_4o_mini": "~$5 for 28k pairs",
+    "claude_sonnet_4_5": "~$115 for 28k pairs",
+    "gpt_4o": "~$80 for 28k pairs"
+  },
+  "limitations": [
+    "Not benchmark-contamination-cleaned. Pairs include common Python problems but were not screened against HumanEval/MBPP/APPS/LeetCode verbatim.",
+    "Generation by subagents, not a paid teacher model. Quality is high but not the gold-standard of GPT-4o / Claude Opus 4.",
+    "Total ~168 pairs is far below the 28k recommended for a meaningful Tier 1 distillation run. Use the prompts/ folder to scale up with a paid teacher when ready."
+  ],
+  "files": {
+    "top_readme": "README.md",
+    "schema_a": "shape_a_instruction_code/schema.md",
+    "schema_b": "shape_b_completion/schema.md",
+    "schema_c": "shape_c_bugfix/schema.md",
+    "schema_d": "shape_d_reasoning/schema.md",
+    "combined_train": "combined/all_train.jsonl",
+    "combined_val": "combined/all_val.jsonl",
+    "stats": "meta/stats.json"
+  }
+}

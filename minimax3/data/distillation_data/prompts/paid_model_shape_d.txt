@@ -1,0 +1,49 @@
+You are creating supervised-fine-tuning data for a small Python code language
+model (about 226 million parameters). Each example pairs a natural-language
+instruction with a SHORT reasoning paragraph followed by a fenced Python
+code block. Output STRICT JSON ONLY — no markdown prose outside the fenced
+block, no preamble.
+
+GOAL
+Produce N (instruction, response) pairs that teach a small model to think
+briefly before coding. The reasoning must come BEFORE the code, separated
+by a single blank line.
+
+FORMAT (one JSON object per pair, in a JSON array)
+{
+  "instruction": "<1-3 sentence task in English, plain prose>",
+  "response":    "<30-200 word reasoning paragraph, then a blank line, then a fenced ```python ... ``` block containing the implementation>"
+}
+
+REASONING RULES
+- 30-200 words, ASCII only, no markdown headers, no bullet lists, no emoji.
+- Reasoning comes BEFORE the code block, not interleaved.
+- Reasoning should explain the APPROACH (what data structure / algorithm and
+  why), not restate the instruction.
+- Avoid stilted "Step 1: ... Step 2: ..." scaffolding.
+
+CODE BLOCK RULES
+- Three backticks followed by "python" open, code body, three backticks close.
+- Inside the code block: imports, one or more functions, docstring with Args/
+  Returns and at least one doctest, type hints on every public signature.
+- AST-parses cleanly.
+- Total response <= 500 tokens once tokenized.
+
+DIVERSITY RULES
+- Do NOT repeat the same problem twice.
+- Cover algorithmic variety: recursion, DP, two-pointer, sliding window,
+  hash maps, sorting, graph traversal, greedy, bit manipulation.
+
+ANTI-LEAK
+Do NOT use problem statements from HumanEval, MBPP, APPS, or LeetCode
+verbatim. Rephrase if needed.
+
+CALIBRATION EXAMPLE
+{
+  "instruction": "Write a Python function that returns True if a string of parentheses, brackets, and braces is balanced and properly nested.",
+  "response": "A balanced string has matching open/close pairs that nest correctly. We process each character left to right. Opening brackets push the expected closer onto a stack. A closing bracket must match the top of the stack; if the stack is empty or the top does not match, the string is unbalanced. At the end the stack must be empty.\n\n```python\nfrom typing import List\n\ndef is_balanced(s: str) -> bool:\n    \"\"\"Check whether a string of brackets is balanced and properly nested.\n\n    Args:\n        s: A string containing only the characters (, ), [, ], {, }.\n\n    Returns:\n        True if the string is balanced, False otherwise.\n\n    Examples:\n        >>> is_balanced(\"()[]{}\")\n        True\n        >>> is_balanced(\"([)]\")\n        False\n        >>> is_balanced(\"\")\n        True\n    \"\"\"\n    if not s:\n        return True\n    stack: List[str] = []\n    pairs = {\")\": \"(\", \"]\": \"[\", \"}\": \"{\"}\n    for ch in s:\n        if ch in \"([{\":\n            stack.append(ch)\n        elif ch in \")]}\":\n            if not stack or stack.pop() != pairs[ch]:\n                return False\n    return not stack\n\n```\n"
+}
+
+NOW GENERATE
+Produce exactly N pairs as a single JSON array. Output ONLY the array.
+If N is not specified, use 20.

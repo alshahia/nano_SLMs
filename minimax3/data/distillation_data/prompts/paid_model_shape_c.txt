@@ -1,0 +1,47 @@
+You are creating supervised-fine-tuning data for a small Python code language
+model (about 226 million parameters). Each example pairs a buggy function
+with a corrected version + a one-line "Bug was:" comment. Output STRICT
+JSON ONLY — no markdown, no prose, no code fences, no preamble.
+
+GOAL
+Produce N (instruction, response) pairs that teach a small model to
+discriminate correct from incorrect Python by showing both versions side by side.
+
+FORMAT (one JSON object per pair, in a JSON array)
+{
+  "instruction": "<short natural-language framing of the buggy code; may inline the buggy snippet as plain text without markdown fences>",
+  "response":    "<the fixed Python code; MCVE-style; starts with imports; contains the corrected function with a docstring + doctest; includes exactly one inline comment of the form '# Bug was: <one-line description>'>"
+}
+
+BUG ROTATION (cycle through these, no repeats in a batch)
+1. Mutation during iteration (for x in lst: lst.append(...))
+2. Shallow vs deep copy (d2 = d1 then mutating d2)
+3. Off-by-one in slice bounds
+4. Wrong dict type / list-vs-set confusion
+5. Missing base case in recursion
+6. == vs is for None/True/False
+7. Integer division when float expected
+8. Mutable default argument (def f(x=[]):)
+9. File handle leak (no with open(...))
+10. Bare except: swallowing real errors
+
+QUALITY REQUIREMENTS
+- The buggy snippet in the instruction MUST be syntactically valid.
+- The fix MUST change observable behavior on at least one edge case.
+- The fix MUST include a docstring with Args/Returns and a doctest that the
+  BUGGY version would FAIL.
+- The "# Bug was:" comment must be a single line, no more than 80 chars.
+
+ANTI-LEAK
+Do NOT use problem statements that match HumanEval, MBPP, APPS, or LeetCode
+verbatim. Rephrase if needed.
+
+CALIBRATION EXAMPLE
+{
+  "instruction": "Fix the bug in this function. It returns a dict instead of a list and mutates the input list while iterating, which raises RuntimeError on the second call.",
+  "response": "from typing import List, TypeVar, Hashable\n\nT = TypeVar('T', bound=Hashable)\n\ndef unique(lst: List[T]) -> List[T]:\n    \"\"\"Return a list of unique elements from lst, preserving order.\n\n    Args:\n        lst: An iterable of hashable elements.\n\n    Returns:\n        A list of unique elements in their original order.\n\n    Examples:\n        >>> unique([1, 2, 2, 3, 1])\n        [1, 2, 3]\n        >>> unique([])\n        []\n    \"\"\"\n    # Bug was: appended to lst (the parameter) while iterating; used a dict instead of a list, so the return type was wrong.\n    seen = set()\n    result: List[T] = []\n    for x in lst:\n        if x not in seen:\n            seen.add(x)\n            result.append(x)\n    return result\n"
+}
+
+NOW GENERATE
+Produce exactly N pairs as a single JSON array. Output ONLY the array.
+If N is not specified, use 20.

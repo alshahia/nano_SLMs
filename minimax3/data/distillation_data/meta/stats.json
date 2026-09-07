@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-09-07T04:14:31.672241+00:00",
+  "shapes": {
+    "shape_a_instruction_code": {
+      "seed_pairs": 10,
+      "batch_pairs": 919,
+      "total_pairs": 929,
+      "est_tokens": 236569
+    },
+    "shape_b_completion": {
+      "seed_pairs": 8,
+      "batch_pairs": 215,
+      "total_pairs": 223,
+      "est_tokens": 47085
+    },
+    "shape_c_bugfix": {
+      "seed_pairs": 10,
+      "batch_pairs": 25,
+      "total_pairs": 35,
+      "est_tokens": 9105
+    },
+    "shape_d_reasoning": {
+      "seed_pairs": 10,
+      "batch_pairs": 323,
+      "total_pairs": 333,
+      "est_tokens": 113881
+    }
+  },
+  "totals": {
+    "pairs": 1520,
+    "tokens_est": 406640,
+    "train_pairs": 1444,
+    "val_pairs": 76
+  },
+  "files": {
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\seed.jsonl": "c11e2b074fb931c14a9836c18808ee42fe0cec4488883a9a236450c1eef66157",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_000.jsonl": "9ce17de9b7450c44b41db672294891172d95a6d319daee8f6fa06087a8dbc007",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_001.jsonl": "279d06ccd64d324446a3fc936dca725e16a4eeabd63878667acdbe58024d1d85",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_002.jsonl": "37bca9e397899bca867c49e4c1b3580aefb36fc6bb7390548b6b029702a58fee",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_003.jsonl": "610022f6b9c0331a4292391055c5a586c9df3fab88443b92eb8f22984fd74650",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_004.jsonl": "fbd3deecaf9564f567cd5f44c855a16c910aff8c89eb9b590ff8e9acdd7764da",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_005.jsonl": "380163361dde92fccaccda8d9cb036ed5fda9fa51935d0f3ad54aababb74c397",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_006.jsonl": "2602b0901341e1c474a5085eb2769247d03fd6c46a8385a08642e7a5fc9a7bfd",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_007.jsonl": "cac986a85e4ad26c4f7d2e4e928f1c7f291f007a749721dfa604c2918c82fcfb",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_008.jsonl": "1501522bde6df6c6603628e66665e2eaaf4f19812a8d23db34774a01d610de82",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_009.jsonl": "fb1c6bf5fa5c4de4e7c6b0102aa761967cdecb2328f76baecea711d4a22b943d",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\batches\\batch_010.jsonl": "4bcc5e4a51f4afea9402d7ff27e9e458b98782d32f2648e82b4f3158bba6ab3e",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_b_completion\\seed.jsonl": "678d01a343646ea62b35f08190f4d69f05d7aa7eb237889a94a9100dd31e4dfd",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_b_completion\\batches\\batch_000.jsonl": "c53fa89760f0c6cb9b5ef4597c8ac75f821b5179e2e40e8298c62f751eb6e243",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_b_completion\\batches\\batch_007.jsonl": "90f02f7dfdef85ff88c81d23a25eeedb00fae18e043a980edcf0991a15644f8c",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_c_bugfix\\seed.jsonl": "c9f654777ba3443775a74ca2ddd9c4dae8ee9c85020c51d12ba5a0c83d10ce41",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_c_bugfix\\batches\\batch_000.jsonl": "6c76097a039e7a2da2f2dc7cf42688ab8d35dcb3328d5331cda6020acd75e0b9",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\seed.jsonl": "ee1c39525d4ac5c7832f69d2ce06caa91d3129f8c91e188487c951515874cce9",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\batches\\batch_000.jsonl": "37dbb5bd9aeeef8a324be6bb83359deccbceed2ec8f5829b78ef78774e434f24",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\batches\\batch_002.jsonl": "6bd48a15212bd91d525da99bf1b4e2c9eed403d583fa5962ca2d9547daa08aa4",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\batches\\batch_004.jsonl": "3fda239f44bc77915ac23c21b3e0a53771b1fcf9fc437c68dc62d5c686681850",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\batches\\batch_005.jsonl": "a18e73d626016cdd4976bd739ae1d549334252eeb95e0c082827e784e7cce838",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\batches\\batch_006.jsonl": "9cd65bdb23bff58c1d78c89d4e5148e9b867acc33899c1bc20c1345fbe84a6d3",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\batches\\batch_009.jsonl": "f9635a417635781d885e6c41dc9a2bf3f2d4c609dfdc40968db5fd253d7e7a55",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\batches\\batch_010.jsonl": "3027a87a038144156b5ef6db6baf9dbd57781a13c0b3bc73cc91009b628c4886",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_a_instruction_code\\train.jsonl": "c7418bdf5fc61499f06683ea217a1c79b8013c6a3a5847e1e93f0cc05f1e3a4b",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_b_completion\\train.jsonl": "12aeb179e44ab0f17f8c4154411fa9acbb291c2055ea3a0170b3d4976e58848c",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_c_bugfix\\train.jsonl": "6e002995f59d5d76b6781abcf339d89b28070519b0234c6f234e7e9cd699b9e5",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\shape_d_reasoning\\train.jsonl": "bbecb917f302603ce58515534939adcd144357e09aa2a4f20b1eeec9915986b8",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\combined\\all_train.jsonl": "a8e23c3e36a41d82525b46171210277cd613f14c156eb14e0e164f771b24e2ad",
+    "E:\\python_projects\\nano_SLMs\\minimax3\\data\\distillation_data\\combined\\all_val.jsonl": "3bacc2fc244d3545a621cf0c0e736ea0fa332d39fad0db55dc5df11c50a37ae9"
+  }
+}

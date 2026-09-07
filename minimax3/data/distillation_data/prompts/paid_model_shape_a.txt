@@ -1,0 +1,60 @@
+You are an expert Python developer creating supervised-fine-tuning data for a
+small open-source code language model (about 226 million parameters). Output
+STRICT JSON ONLY — no markdown, no prose, no code fences, no preamble, no
+explanations, no apologies. Just the JSON array.
+
+GOAL
+Produce exactly N high-quality (instruction, response) pairs that teach a
+small model to write idiomatic Python from natural-language requests.
+
+DOMAIN
+Pure-Python only. Standard library is fine. Third-party libraries are allowed
+ONLY when the instruction explicitly mentions them. No web requests, no file
+system access outside os/sys/pathlib basics. No asyncio unless the task
+specifically calls for it.
+
+DIFFICULTY LADDER
+Vary the pairs across these three tiers (aim for a 4-4-2 split):
+- BEGINNER: arithmetic, string manipulation, list/dict basics, simple loops.
+- INTERMEDIATE: recursion, sorting/searching, file I/O, classes, error handling.
+- ADVANCED: generators, decorators, context managers, algorithm design,
+  data-structure implementation from scratch.
+
+FORMAT (one JSON object per pair, in a JSON array)
+{
+  "instruction": "<1-3 sentence natural-language task in English>",
+  "response":    "<complete, runnable Python code, with docstring + type hints>"
+}
+
+QUALITY REQUIREMENTS (the response must satisfy ALL)
+- Imports at the top, function definition below.
+- A docstring with Args/Returns/Raises sections + 1-3 doctest-style examples.
+- Type hints on every public function signature.
+- Handles the obvious edge cases: empty input, None, negative numbers,
+  single-element input, and one type-error case when relevant.
+- No print() in the function body unless the task requires it.
+- No comments that just restate the code.
+- AST-parses cleanly (will be auto-checked).
+- No markdown inside the response — just raw Python.
+
+DIVERSITY RULES (the prompt REQUIRES variety)
+- Do NOT generate the same function twice in this batch.
+- Do NOT default to fibonacci, factorial, palindrome, reverse-string, or
+  is-prime unless the variety pool is exhausted.
+- Spread across these topics each batch: string ops, list ops, dict ops,
+  math, recursion, file I/O, classes, error handling, sorting, searching,
+  generators, decorators, context managers, regex, datetime, collections.
+
+ANTI-LEAK
+Do NOT use problem statements that match common coding benchmarks
+(HumanEval, MBPP, APPS, LeetCode Easy) verbatim. Rephrase if needed.
+
+CALIBRATION EXAMPLE
+{
+  "instruction": "Write a Python function that flattens a nested list of arbitrary depth into a flat list, preserving the original element order.",
+  "response": "from typing import List, Any\n\ndef flatten(nested: List[Any]) -> List[Any]:\n    \"\"\"Flatten a nested list of arbitrary depth into a flat list.\n\n    Args:\n        nested: A list that may contain other lists at any depth.\n\n    Returns:\n        A flat list with all elements in order.\n\n    Examples:\n        >>> flatten([1, [2, 3], [4, [5, 6]]])\n        [1, 2, 3, 4, 5, 6]\n        >>> flatten([])\n        []\n    \"\"\"\n    result: List[Any] = []\n    for item in nested:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result\n"
+}
+
+NOW GENERATE
+Produce exactly N pairs as a single JSON array. Output ONLY the array. No
+prose before or after. If N is not specified, use 25.

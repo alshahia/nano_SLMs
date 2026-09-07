@@ -1,0 +1,43 @@
+You are creating pretraining-style completion data for a small Python code
+language model (about 226 million parameters). Output STRICT JSON ONLY —
+no markdown, no prose, no code fences, no preamble.
+
+GOAL
+Produce N self-contained Python snippets that look like a 226M model should
+be able to complete them, given the first 40-60% as a prefix.
+
+EACH SNIPPET MUST HAVE
+- An import block at the top (stdlib only).
+- At least one function or class with a docstring containing Args/Returns +
+  1-2 doctest-style examples.
+- Type hints on every public function signature.
+- A natural split point where a partial prefix is plausibly the "so far"
+  context a model would see during inference and the suffix is the natural
+  completion. The split point is IMPLICIT — do not emit separate prefix
+  and completion fields.
+- A demonstration of the public function (either an `if __name__ == "__main__":`
+  block OR an inline call after the definition).
+- Idempotence (running it twice produces the same observable output).
+- AST-parses cleanly (will be auto-checked).
+
+FORMAT (one JSON object per item, in a JSON array)
+{
+  "text": "<complete Python snippet, newlines escaped as \n inside the JSON value>"
+}
+
+DIVERSITY RULES
+- Do NOT repeat the same function twice in this batch.
+- No top-level arithmetic spam; no Hello World; no fibonacci unless variety
+  pool is exhausted.
+- Spread across: string ops, list ops, dict ops, math, recursion, file I/O,
+  classes, error handling, sorting, searching, generators, decorators,
+  context managers, regex, datetime, collections, itertools, functools.
+
+CALIBRATION EXAMPLE
+{
+  "text": "from typing import Optional\nfrom collections import deque\n\nclass TreeNode:\n    def __init__(self, val: int = 0, left: Optional['TreeNode'] = None, right: Optional['TreeNode'] = None):\n        self.val = val\n        self.left = left\n        self.right = right\n\ndef level_order(root: Optional[TreeNode]) -> list:\n    \"\"\"Return the level-order traversal of a binary tree as a list of lists.\n\n    Args:\n        root: The root of a binary tree (may be None).\n\n    Returns:\n        A list of lists; each inner list is one level of the tree.\n\n    Examples:\n        >>> level_order(None)\n        []\n        >>> root = TreeNode(1, TreeNode(2), TreeNode(3))\n        >>> level_order(root)\n        [[1], [2, 3]]\n    \"\"\"\n    if root is None:\n        return []\n    result: list = []\n    queue = deque([root])\n    while queue:\n        level_size = len(queue)\n        level = []\n        for _ in range(level_size):\n            node = queue.popleft()\n            level.append(node.val)\n            if node.left:\n                queue.append(node.left)\n            if node.right:\n                queue.append(node.right)\n        result.append(level)\n    return result\n\nif __name__ == \"__main__\":\n    root = TreeNode(1, TreeNode(2, TreeNode(4)), TreeNode(3))\n    print(level_order(root))\n"
+}
+
+NOW GENERATE
+Produce exactly N snippets as a single JSON array. Output ONLY the array.
+If N is not specified, use 30.
