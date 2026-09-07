@@ -22,7 +22,7 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | M0 smoke (12.3M) | **DONE — PASSED** | loss 10.4→4.95 in 200 steps; kill at ~step 100 → relaunch resumed at exactly 101/200, zero flags; rotation works (limit 3); artifacts in runs/smoke/final (train_summary.json, eval_report.json); eval_loss 4.7926, ppl 120.6 |
 | M1 VRAM probe (226.5M target config) | **DONE — PASSED** | peak 4.24 GB allocated / 4.4 reserved @ 2214 tok/s → target APPROVED for M3; no 8-bit Adam needed; headroom for ctx 1024 |
 | M2 pilot (100.7M) | **DONE — PASSED** | 3000/3000 with auto-resume from checkpoint-1000; eval_loss 2.206→1.161 monotonic (final ppl 3.19); no OOM (peak ~3.3 GB of 6 GB); locally-syntactic samples; artifacts in runs/pilot/final (train_summary.json, eval_report.json) |
-| M3 target (226.5M) | **RESUMED on TU09FBO at step 2000/5000** (2026-09-06 18:36, from the arrived MUO4QK5 bundle) — cadence now save+eval every 100, limit 3 | eval curve 2.8567 @500 → 2.265 @1000 → 2.0903 @1500 → **1.9972 @2000** (best; seed-42 determinism vs the abandoned TU09FBO run's 2.2755 @1000); log runs/target/train_resume.log; see §3b |
+| M3 target (226.5M) | **PAUSED by user 2026-09-07 07:14 at step 4593/5000** — global_step 4500 on disk (cadence save+eval every 100, limit 3); zip checkpoint_backup\checkpoint-4500.zip | eval curve 2.8567 @500 → 2.265 @1000 → 2.0903 @1500 → 1.9972 @2000 → **1.8512 @4000 (best)** → 1.8610 @4500 (slight rise — curve near floor); seed-42 determinism vs the abandoned TU09FBO run's 2.2755 @1000; log runs/target/train_resume.log; see §3b |
 
 ## 3. M2 pilot run — how to check / resume / finish
 
@@ -175,6 +175,18 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   died pre-step and left a header-only tfevents file (removed). If 153
   faults repeat: suspect the SW-power-capped hardware state (underpowered
   adapter), not the training code — check System log for nvlddmkm.
+- **2026-09-07 07:14: user STOPPED the run at step 4593/5000 — checkpoint-4500
+  zipped.** Killed cleanly BETWEEN saves (no save in flight; GPU released to
+  103 MiB). Last complete checkpoint = **checkpoint-4500** (11 files;
+  global_step 4500, best_metric 1.8512 @4000, last eval 1.8610 @4500 — slight
+  rise over the best, curve near floor; ~2.5 GB). Steps 4501–4593 discarded
+  (no save-on-interrupt; the 100-step cadence capped the loss). Zipped:
+  checkpoint_backup\checkpoint-4500.zip (2,368 MB, 12 entries, tar exit 0,
+  ~76 s) beside the kept checkpoint-2000.zip. On-disk dirs 3500/4000/4500
+  (rotation untouched). RESUME = exact zero-flag train command → continues at
+  4501/5000. If the zip moves machines, patch best_model_checkpoint in its
+  trainer_state.json (machine-local absolute path; same fix as the 2000
+  bundle).
 
 ## 4. Environment (verified working)
 
