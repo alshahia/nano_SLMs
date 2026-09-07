@@ -31,6 +31,7 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 | 2026-09-06 | Milestones B-G EXECUTED in the window (user GO after the create-only round): CPU-safe parts done beside live M3 - B: A/B configs + protocol doc + train.py env fingerprint (bnb 0.50.2 already present); C: scripts/mini_eval.py (canned 16/16; smoke-final CPU x2 identical) + status.py tokens/sec+MFU; D: research/pretrain_mix_proposal.md + prepare_data.py .env loader (gated probe OK); E: tier-order framework (rec: Tier 3 before Tier 2 V1) + frozen judge rubric; F: scripts/backup_to_hub.py dry-run PASS (upload = user repo-name gate); G1: research/gdn_sandbox_design.md (impl post-M3); G2: scripts/run_custom.py (dry-run PASS) - ALL GPU work deliberately staged post-M3, nothing co-ran | use the M3 window without touching the live run; CPU-testable acceptance measured, GPU acceptance deferred with explicit gates | TASKS rows 11-17; HANDOFF §8 |
 | 2026-09-06 | M3 checkpoint cadence = save+eval every 100 steps (user allowed 100–200; HF requires save_steps to be a multiple of eval_steps with load_best_model_at_end), save_total_limit 3 = best + 2 latest | bounds crash loss to ~100 steps (~40 min throttled); 36 GB free at resume; eval adds ~7% wall time | configs/target.yaml; HANDOFF §3b |
 | standing | no long runs, deletions, pushes, or purchases without user approval | safety policy | CLAUDE.md §7–8 |
+| 2026-09-07 | User GO: "create milestones ... then proceed" — Milestone B GPU arms + row 10 LoRA hook + vram_probe, Tier 3 KD BEFORE Tier 2, SFT v2 on the minimax3 corpus from runs/target/final | GPU window open post-M3/Tier-1; sequential never-co-run discipline | TASKS rows 18-20; configs/pilot_b8*.yaml, sft_v2.yaml, kd_s_*.yaml |
 
 ## Lessons (seeded from HANDOFF §5)
 
@@ -78,13 +79,24 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
     multiple of eval_steps when load_best_model_at_end is on — cadence
     changes must move both keys together.
 
-11. **nvlddmkm Event 153 = GPU driver engine fault** — kills a CUDA run
+ 11. **nvlddmkm Event 153 = GPU driver engine fault** — kills a CUDA run
     instantly with python exit 1 (found 2026-09-06 19:07, killing the M3
     resume mid-step before the step-2100 save). Distinct from Modern Standby
     (freeze; process survives) and OOM (traceback says so). Recovery = rerun
     the exact train command (auto-resume); identify it via the System log
     (nvlddmkm 153). If it repeats, suspect the SW-power-capped hardware
     state (underpowered adapter), not the training code.
+ 12. **Windows: `CUDA_VISIBLE_DEVICES=""` does NOT hide the GPU** (empty
+    string = all devices visible; found 2026-09-07 when a "CPU-only" sanity
+    check ran on cuda beside arm A). Use `-1`. Gotcha 2: `Start-Process`
+    from a fresh shell inherits NO such var — set it in the launching
+    session before Start-Process, or the child lands on GPU.
+ 13. **Kill mid-checkpoint-write corrupts the checkpoint and crashed
+    auto-resume** (FileNotFoundError on trainer_state.json; found 2026-09-07
+    during the LoRA kill/resume drill). trainer_state.json is written LAST
+    by the saver, so `find_latest_checkpoint` (train.py/sft.py/kd.py) now
+    requires it — a partial checkpoint is skipped instead of crashing the
+    unattended resume.
 
 ## Data-source knowledge (seeded from HANDOFF §6)
 

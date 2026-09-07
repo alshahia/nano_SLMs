@@ -46,3 +46,14 @@ data/teacher/
 # Machine-move checkpoint zips the user stages here between machines (2.7 GB
 # archives; weights stay local per the LFS decision, HANDOFF section 7)
 checkpoint_backup/
+
+# Milestone B A/B arms (8-bit Adam study): weights stay local - same LFS
+# decision as target/sft (384 MB fp32 per ckpt x4 would blow the ~1 GB quota).
+# Metrics, logs, trainer_state and tfevents stay tracked. optimizer.pt is
+# globally ignored above.
+runs/pilot-ab-base/checkpoint-*/
+runs/pilot-ab-base/final/model.safetensors
+runs/pilot-b8/checkpoint-*/
+
+# Web UI transient launch state (pid etc.) - never meaningful in git
+webui/job_state.json
