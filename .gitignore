@@ -54,6 +54,9 @@ checkpoint_backup/
 runs/pilot-ab-base/checkpoint-*/
 runs/pilot-ab-base/final/model.safetensors
 runs/pilot-b8/checkpoint-*/
+runs/pilot-b8/final/model.safetensors
+runs/pilot-b8-r2x16/checkpoint-*/
+runs/pilot-b8-r2x16/final/model.safetensors
 
 # Web UI transient launch state (pid etc.) - never meaningful in git
 webui/job_state.json

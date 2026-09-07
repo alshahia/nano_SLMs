@@ -1,3 +1,32 @@
 [train] blocks: train=40907 val=846 seq_len=512
 [train] params=100.7M vocab=32768 fp16=True grad_ckpt=True
 [resume] found checkpoint-250 -> auto-resume enabled
+{'loss': '3.021', 'grad_norm': '0.7808', 'learning_rate': '0.0002223', 'epoch': '0.2034'}
+{'loss': '2.978', 'grad_norm': '0.7703', 'learning_rate': '0.0002084', 'epoch': '0.2112'}
+{'loss': '2.825', 'grad_norm': '0.7837', 'learning_rate': '0.0001944', 'epoch': '0.219'}
+{'loss': '2.875', 'grad_norm': '0.727', 'learning_rate': '0.0001805', 'epoch': '0.2269'}
+{'loss': '2.787', 'grad_norm': '0.7935', 'learning_rate': '0.0001666', 'epoch': '0.2347'}
+{'loss': '2.795', 'grad_norm': '0.8495', 'learning_rate': '0.000153', 'epoch': '0.2425'}
+{'loss': '2.72', 'grad_norm': '0.8111', 'learning_rate': '0.0001395', 'epoch': '0.2503'}
+{'loss': '2.741', 'grad_norm': '0.7817', 'learning_rate': '0.0001264', 'epoch': '0.2581'}
+{'loss': '2.722', 'grad_norm': '0.8051', 'learning_rate': '0.0001136', 'epoch': '0.266'}
+{'loss': '2.691', 'grad_norm': '0.77', 'learning_rate': '0.0001012', 'epoch': '0.2738'}
+{'loss': '2.661', 'grad_norm': '0.8734', 'learning_rate': '8.932e-05', 'epoch': '0.2816'}
+{'loss': '2.63', 'grad_norm': '0.7479', 'learning_rate': '7.797e-05', 'epoch': '0.2894'}
+{'eval_loss': '2.654', 'eval_runtime': '19.47', 'eval_samples_per_second': '43.46', 'eval_steps_per_second': '10.89', 'epoch': '0.2933'}
+{'loss': '2.603', 'grad_norm': '0.8113', 'learning_rate': '6.721e-05', 'epoch': '0.2973'}
+{'loss': '2.691', 'grad_norm': '0.7185', 'learning_rate': '5.711e-05', 'epoch': '0.3051'}
+{'loss': '2.54', 'grad_norm': '0.76', 'learning_rate': '4.769e-05', 'epoch': '0.3129'}
+{'loss': '2.607', 'grad_norm': '0.7211', 'learning_rate': '3.902e-05', 'epoch': '0.3207'}
+{'loss': '2.588', 'grad_norm': '0.7648', 'learning_rate': '3.113e-05', 'epoch': '0.3286'}
+{'loss': '2.479', 'grad_norm': '0.7243', 'learning_rate': '2.407e-05', 'epoch': '0.3364'}
+{'loss': '2.544', 'grad_norm': '0.7013', 'learning_rate': '1.786e-05', 'epoch': '0.3442'}
+{'loss': '2.537', 'grad_norm': '0.6741', 'learning_rate': '1.254e-05', 'epoch': '0.352'}
+{'loss': '2.565', 'grad_norm': '0.6935', 'learning_rate': '8.137e-06', 'epoch': '0.3598'}
+{'loss': '2.488', 'grad_norm': '0.7381', 'learning_rate': '4.666e-06', 'epoch': '0.3677'}
+{'loss': '2.455', 'grad_norm': '0.7557', 'learning_rate': '2.146e-06', 'epoch': '0.3755'}
+{'loss': '2.446', 'grad_norm': '0.69', 'learning_rate': '5.894e-07', 'epoch': '0.3833'}
+{'loss': '2.465', 'grad_norm': '0.7158', 'learning_rate': '4.874e-09', 'epoch': '0.3911'}
+{'eval_loss': '2.56', 'eval_runtime': '22.5', 'eval_samples_per_second': '37.61', 'eval_steps_per_second': '9.424', 'epoch': '0.3911'}
+{'train_runtime': '1441', 'train_samples_per_second': '11.11', 'train_steps_per_second': '0.347', 'train_loss': '1.329', 'epoch': '0.3911'}
+[final] summary: {"phase": "pilot-b8", "params_m": 100.68, "best_eval_loss": 2.560288667678833, "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\pilot-b8\\checkpoint-500", "final_eval": {"eval_loss": 2.560288667678833, "eval_runtime": 24.0772, "eval_samples_per_second": 35.137, "eval_steps_per_second": 8.805, "epoch": 0.39113110225633757}, "resumed_from": "checkpoint-250", "env": {"timestamp_utc": "2026-09-07T16:12:39+00:00", "python": "3.12.9", "platform": "Windows-11-10.0.26200-SP0", "torch": "2.14.0+cu126", "transformers": "5.16.1", "tokenizers": "0.23.2", "datasets": "5.0.1", "accelerate": "1.14.0", "peft": "0.20.0", "bitsandbytes": "0.50.2", "git_commit": "df0dd5e", "gpu": "Quadro RTX 3000, 6144 MiB", "resolved_config": {"name": "pilot-b8", "tokenizer": {"name": "codellama/CodeLlama-7b-hf", "vocab_size": 32768}, "model": {"layers": 12, "hidden": 768, "heads": 12, "kv_heads": 4, "ffn": 2048, "ctx": 512, "dropout": 0.0, "tie_embeddings": true}, "data": {"dataset_candidates": [{"name": "bigcode/the-stack-smol", "config": "python"}, {"name": "bigcode/starcoderdata", "config": "python"}, {"name": "nickrosh/Evol-Instruct-Code-80k-v1"}], "rows": 50000, "val_fraction": 0.02, "dedupe": true, "min_chars": 200, "shard_tokens": 8000000, "raw_dir": "data/pilot/raw", "tokens_dir": "data/pilot/tokens"}, "train": {"output_dir": "runs/pilot-b8", "final_dir": "runs/pilot-b8/final", "max_steps": 500, "batch": 1, "eval_batch": 4, "accum": 32, "lr": 0.0004, "scheduler": "cosine", "warmup_steps": 50, "weight_decay": 0.1, "max_grad_norm": 1.0, "logging_steps": 10, "eval_steps": 125, "save_steps": 250, "save_total_limit": 2, "fp16": true, "grad_ckpt": true, "optim": "adamw_bnb_8bit", "dataloader_num_workers": 0, "seed": 42}, "eval": {"max_new_tokens": 64, "prompts": ["def fibonacci(n):", "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):", "class Stack:"]}}}}
