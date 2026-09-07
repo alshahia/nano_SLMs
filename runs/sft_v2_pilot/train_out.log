@@ -1,0 +1,15 @@
+[sft] PILOT: 5000 pairs, 1 epoch
+[sft] pairs: train=5000 val=500 ctx=512 epochs=1
+[sft] tokenizer has no pad token -> pad = eos
+[sft] base=E:\python_projects\nano_SLMs\runs\target\final params=226.5M fp16=True grad_ckpt=True
+[sft] pilot output: E:\python_projects\nano_SLMs\runs\sft_v2_pilot
+{'loss': '1.403', 'grad_norm': '2.16', 'learning_rate': '1.47e-05', 'epoch': '0.16'}
+{'loss': '0.8854', 'grad_norm': '1.857', 'learning_rate': '2.97e-05', 'epoch': '0.32'}
+{'loss': '0.6854', 'grad_norm': '1.424', 'learning_rate': '2.625e-05', 'epoch': '0.48'}
+{'loss': '0.5693', 'grad_norm': '1.714', 'learning_rate': '1.666e-05', 'epoch': '0.64'}
+{'loss': '0.4873', 'grad_norm': '1.456', 'learning_rate': '6.201e-06', 'epoch': '0.8'}
+{'eval_loss': '0.4051', 'eval_runtime': '8.207', 'eval_samples_per_second': '60.92', 'eval_steps_per_second': '15.23', 'epoch': '0.8'}
+{'loss': '0.489', 'grad_norm': '1.34', 'learning_rate': '3.187e-07', 'epoch': '0.96'}
+{'eval_loss': '0.3989', 'eval_runtime': '7.75', 'eval_samples_per_second': '64.52', 'eval_steps_per_second': '16.13', 'epoch': '1'}
+{'train_runtime': '1115', 'train_samples_per_second': '4.484', 'train_steps_per_second': '0.281', 'train_loss': '0.7406', 'epoch': '1'}
+[final] summary: {"phase": "sft_v2", "base_model": "runs/target/final", "pilot": true, "pairs": 5000, "params_m": 226.53, "best_eval_loss": 0.39893561601638794, "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\sft_v2_pilot\\checkpoint-313", "final_eval": {"eval_loss": 0.39893561601638794, "eval_runtime": 7.9254, "eval_samples_per_second": 63.089, "eval_steps_per_second": 15.772, "epoch": 1.0}, "resumed_from": null}

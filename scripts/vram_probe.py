@@ -17,6 +17,20 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 
+def _make_optimizer(model, tcfg):
+    """Honor the config's optim so per-arm peaks are honest (Milestone B)."""
+    params = [p for p in model.parameters() if p.requires_grad]
+    name = tcfg.get("optim", "adamw_torch")
+    if name == "adamw_bnb_8bit":
+        import bitsandbytes as bnb
+        return bnb.optim.AdamW8bit(params, lr=1e-4, betas=(0.9, 0.95),
+                                   weight_decay=0.1)
+    if name != "adamw_torch":
+        raise SystemExit(f"vram_probe supports adamw_torch/adamw_bnb_8bit, got {name}")
+    import torch
+    return torch.optim.AdamW(params, lr=1e-4, betas=(0.9, 0.95), weight_decay=0.1)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/target.yaml")
@@ -49,8 +63,7 @@ def main() -> None:
     model.train()
     n_params = sum(p.numel() for p in model.parameters())
     n_train = sum(p.numel() for p in model.parameters() if p.requires_grad)
-    opt = torch.optim.AdamW((p for p in model.parameters() if p.requires_grad),
-                            lr=1e-4, betas=(0.9, 0.95), weight_decay=0.1)
+    opt = _make_optimizer(model, t)
     scaler = torch.amp.GradScaler("cuda")
     print(f"[probe] {cfg['name']}: {n_params / 1e6:.1f}M params seq={seq} "
           f"batch={batch} accum={accum}", flush=True)

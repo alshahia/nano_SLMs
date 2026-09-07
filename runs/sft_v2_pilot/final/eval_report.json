@@ -1,0 +1,42 @@
+{
+  "ckpt": "runs\\sft_v2_pilot\\final",
+  "val_loss": 1.932506656048188,
+  "perplexity": 6.906801536708262,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nfrom typing import List\n\ndef nthFibonacci(n: int) -> int:\n    \"\"\"Return the nth Fibonacci number.\n\n    Args:\n        n: A non-negative integer.\n\n    Returns:\n        The nth Fibonacci number.\n\n    Examples:\n        >>> nthFibonacci(10)\n        10\n        >>> nthFibonacci(10)\n        10\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be >= 0\")\n    return n // 2\n    return 1 + (n // 2) // 2",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import List\n\ndef pop_with(a: Optional[str], b: Optional[str]) -> int:\n    \"\"\"Return the number of bytes removed, or -1.\n\n    Args:\n        a: The stack.\n        b: The stack.\n\n    Returns:\n        The number of bytes removed.\n\n    Examples:\n        >>> pop_with([1, 2, 3, 4, 5], 2)\n        5\n        >>> pop_with([], 1)\n        1\n    \"\"\"\n    if a is None:\n        return -1\n    return a + b"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.94,
+    "sampled_ast_pass_rate": 0.92,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set of iterables, each iterable is a set of distinct integers. We use a set",
+        "sampled": "We have many pairs of pairs of length of 4, so we have 3 items per character.\n\n```python\nfrom collections import Counter\ndef is_number(s: str) -> bool:\n    \"\"\"Return True iff `s` is a number.\n\n    Args:\n        s: Input string.\n\n    Returns:\n        True iff `s` is a number (either a string or a sequence, a tuple, or a `list` of lists).\n\n    Examples:\n        >>> is_number(1)\n        True\n        >>> is_number(1)\n        True\n        >>> is_number(1)\n        False\n    \"\"\"\n    if not isinstance(s, str):\n        raise TypeError(\"s must be a string\")\n    return all(c in s for c in s)"
+      },
+      {
+        "instruction": "Show `Never` in `typing_never`. (input: )",
+        "greedy": "deftyping_never(s, t):\n    return s.set(t, t)\n\n# Bug was: `Never` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried` is a number; `Tried`",
+        "sampled": "deftyping_never(s, t):\n    return s.result\n\n# Bug was: `Never` is `not False` returns `True` if all elements are `True`\n\n# pair:typing_never /\n\n# pair:typing_never /"
+      },
+      {
+        "instruction": "Show asdict recursion in `asd`. Input: `{'x': 1}`. (input: {'x': 1})",
+        "greedy": "def asd(x):\n    return {k: v for k, v in x.items() if k not in ('x', 'x'))}\n\n# Bug was: `x = {'x': 1}` returns a dict with keys 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x",
+        "sampled": "def asd(self):\n    return {k: self[k] for k in self.keys() &\n            'x' for k in self.keys()}"
+      },
+      {
+        "instruction": "Write a function `strict_vowel_count(s)` that counts the vowels in `s` (case-sensitive: a/e/i/o/u both cases). Example: `strict_vowel_count('')`.",
+        "greedy": "def strict_vowel_count(s):\n    return sum(1 for c in s if c in 'aeiouAEIOU')",
+        "sampled": "def s='u:':\n    return sum(1 for c in s if c in 'aeiouAEIOU')"
+      },
+      {
+        "instruction": "Given [1, 2, 3, 4], compute product of array except self for each index.",
+        "greedy": "We use a list of indices to keep the first index.\n\n```python\ndef given_array(arrays):\n    out = []\n    for x in arrays:\n        if x == out[-1][-1]:\n            out.append(x)\n        else:\n            out.append(x)\n    return out\n```",
+        "sampled": "Return a new array of array, shape [N, 2] with the length of self.array.\n\nFor Given [1, 2, 3, 4], compute product of array\nor self for each index.\n\n```python\ndef g(a):\n    if len(a) != len(a):\n        return a\n    return a / len(a)"
+      }
+    ]
+  }
+}
