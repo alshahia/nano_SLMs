@@ -1,12 +1,17 @@
-r"""Web UI dashboard + chat - WEBUI_PRD.md milestones U1 (dashboard) and U2 (chat).
+r"""Web UI dashboard + chat - WEBUI_PRD.md milestones U1-U5.
 
-Read-only over runs/; the only component allowed to allocate GPU VRAM is the
-chat model service, and only under the VRAM policy of WEBUI_PRD.md §2:
-GPU by default when idle, warn + CPU while a training run is live, reject +
-CPU when free VRAM is too small for the checkpoint.
+Read-only over runs/ except two places: the chat model service (the only
+component allowed to allocate GPU VRAM, under the VRAM policy of WEBUI_PRD.md
+§2: GPU by default when idle, warn + CPU while a training run is live, reject
++ CPU when free VRAM is too small) and the Monitor tab's delete flow
+(checkpoint folders, confirmation-gated, refused while that run is live).
 
 Run: & .\.venv\Scripts\python.exe webui\app.py   (http://127.0.0.1:7860)
+LAN: & .\.venv\Scripts\python.exe webui\app.py --lan --auth user:pass
+     [--webhook URL] [--port N] [--no-browser]
 """
+import json
+import os
 import shutil
 import subprocess
 import sys
@@ -200,9 +205,13 @@ def load_model(label: str):
     ctx = int(cfg.get("model", {}).get("ctx", 1024))
     need_mib = _weights_mb(path) * 2.048 + 600  # fp32 on GPU + activation headroom
 
-    if run_custom.gpu_compute_pids():
+    # our own process shows up in nvidia-smi once it has ever held a CUDA
+    # context (it lingers after unload) - it is not a co-running trainer
+    others = [h for h in run_custom.gpu_compute_pids()
+              if not h.startswith(f"{os.getpid()},")]
+    if others:
         device, note = "cpu", ("⚠️ A training run is live on the GPU — chat "
-                              "loads on CPU (slower) so the run is never touched.")
+                               "loads on CPU (slower) so the run is never touched.")
     else:
         free = _free_vram_mib()
         if free is None:
@@ -271,6 +280,9 @@ def pick_checkpoint(label):
 
 
 # ------------------------------------------------------------- U3: monitor
+
+_LAST_FIG = None
+
 
 def _full_curve(logs_dir: Path, tag: str):
     if not logs_dir.is_dir():
@@ -344,6 +356,10 @@ def monitor_data(phase: str):
         import matplotlib
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
+        global _LAST_FIG
+        if _LAST_FIG is not None:  # timer creates a fig every tick: close the old
+            plt.close(_LAST_FIG)
+            _LAST_FIG = None
         ts_steps, ts_vals = _full_curve(d / "logs", "train/loss")
         ev_steps, ev_vals = _full_curve(d / "logs", "eval/loss")
         fig, ax = plt.subplots(figsize=(8, 4))
@@ -360,13 +376,126 @@ def monitor_data(phase: str):
         else:
             ax.text(0.5, 0.5, "no tensorboard curves yet", ha="center")
         fig.tight_layout()
+        _LAST_FIG = fig
     except Exception as e:  # noqa: BLE001
         import matplotlib.pyplot as plt
         plt.close("all")
         return None, f"(plot failed: {e})\n\nGPU: {status.gpu_line()}", \
-            _latest_log(phase)
+            _latest_log(phase), eval_card(phase)
     prog = _eta_line(phase) + f"\n\nGPU: {status.gpu_line()}"
-    return fig, prog, _latest_log(phase)
+    return fig, prog, _latest_log(phase), eval_card(phase)
+
+
+# ------------------------------------------------------------- U5: polish
+
+WEBHOOK_URL = os.environ.get("WEBUI_WEBHOOK_URL")
+_NOTIFIED: set[str] = set()
+
+
+def eval_card(phase: str) -> str:
+    """U5: eval report card (val/ppl, ast rates, sample generations)."""
+    if not phase:
+        return "*No run selected.*"
+    final = RUNS / phase / "final"
+    rep = status.load_json(final / "eval_report.json") \
+        or status.load_json(final / "mini_eval_report.json")
+    if not rep:
+        return (f"*No eval report for `{phase}` yet — it appears here when "
+                "the run finishes and eval completes.*")
+    lines = [f"### Eval report — {phase}"]
+    vl, ppl = rep.get("val_loss"), rep.get("perplexity")
+    if isinstance(vl, (int, float)):
+        lines.append(f"**val_loss {vl:.4f} · ppl {ppl:.2f}**")
+    ie = rep.get("instruction_eval")
+    if ie:
+        lines.append(f"instruction eval: greedy ast **{ie.get('greedy_ast_pass_rate')}"
+                     f"** · sampled ast **{ie.get('sampled_ast_pass_rate')}**")
+    for i, (prompt, gen) in enumerate((rep.get("samples") or {}).items()):
+        if i >= 3:
+            break
+        g = (gen or "").strip()
+        if len(g) > 220:
+            g = g[:220] + " …"
+        lines.append(f"**prompt:** `{prompt.strip()[:80]}`\n```\n{g}\n```")
+    return "\n\n".join(lines)
+
+
+def _notify(msg: str, event: str = "run_finished"):
+    try:
+        gr.Info(msg)
+    except Exception:  # noqa: BLE001 - toast is best-effort (headless runs)
+        pass
+    if WEBHOOK_URL:
+        try:
+            import urllib.request
+            req = urllib.request.Request(
+                WEBHOOK_URL,
+                data=json.dumps({"event": event, "message": msg,
+                                 "job": _job()}).encode(),
+                headers={"Content-Type": "application/json"})
+            urllib.request.urlopen(req, timeout=5).read()
+        except Exception:  # noqa: BLE001 - webhook must never break polling
+            pass
+
+
+def _check_done():
+    """U5: fire a done/crashed notification once per launched job."""
+    job = _job()
+    if not job or not job.get("phase"):
+        return
+    key = f"{job.get('phase')}@{job.get('started_utc', '')}"
+    if key in _NOTIFIED:
+        return
+    phase = job["phase"]
+    summ = status.load_json(RUNS / phase / "final" / "train_summary.json")
+    if summ:
+        _NOTIFIED.add(key)
+        _notify(f"✅ Run `{phase}` finished — best_eval "
+                f"{summ.get('best_eval_loss', '?')}. Eval report is in the "
+                "Monitor tab.")
+    elif job.get("pid") and not _job_alive(job):
+        _NOTIFIED.add(key)
+        _notify(f"⚠️ Run `{phase}` is no longer alive and has no final "
+                "summary — if it crashed, re-launching the same config "
+                "auto-resumes from the last checkpoint.",
+                event="run_crashed")
+
+
+def _ckpt_choices(phase: str) -> list[str]:
+    d = RUNS / phase if phase else None
+    if not d or not d.is_dir():
+        return []
+    return sorted((p.name for p in d.glob("checkpoint-*") if p.is_dir()),
+                  reverse=True)
+
+
+def _delete_ckpt(phase, ckpt, confirm):
+    """U5: delete-with-confirmation. Refuses while that run is live, while
+    any python GPU job is live if the folder is the live job's, and when the
+    chat service still has the folder loaded."""
+    remaining = gr.update(choices=_ckpt_choices(phase), value=None)
+    if not phase or not ckpt:
+        return "Pick a run and a checkpoint first.", remaining, gr.update()
+    path = RUNS / phase / ckpt
+    if (not ckpt.startswith("checkpoint-")
+            or path.resolve().parent != (RUNS / phase).resolve()
+            or not path.is_dir()):
+        return f"Invalid checkpoint: {ckpt}", remaining, gr.update()
+    job = _job()
+    if job and job.get("phase") == phase and (_job_alive(job)
+                                              or run_custom.gpu_compute_pids()):
+        return (f"❌ Refused: run `{phase}` is live — no deletes while it "
+                "runs.", remaining, gr.update())
+    if _MODEL is not None and Path(_MODEL["path"]).resolve() == path.resolve():
+        return "❌ Refused: unload this checkpoint in Chat first.", \
+            remaining, gr.update()
+    if not confirm:
+        return "❌ Tick the confirmation box first — deletion is irreversible.", \
+            remaining, gr.update()
+    mb = sum(f.stat().st_size for f in path.rglob("*") if f.is_file()) / 2**20
+    shutil.rmtree(path)
+    return (f"🗑️ Deleted `{phase}/{ckpt}` (freed ~{mb:.0f} MB).",
+            remaining, gr.update(value=False))
 
 
 # ---------------------------------------------------------------- U4: train
@@ -391,10 +520,18 @@ def _job() -> dict | None:
 
 
 def _job_alive(job: dict) -> bool:
-    try:
-        import psutil
-        return psutil.pid_exists(int(job.get("pid", 0)))
-    except Exception:  # noqa: BLE001 - no psutil: can't tell, assume not live
+    pid = int(job.get("pid", 0))
+    if not pid:
+        return False
+    try:  # Windows: OpenProcess + close - no psutil needed (was an honest gap)
+        import ctypes
+        k32 = ctypes.windll.kernel32
+        h = k32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+        if h:
+            k32.CloseHandle(h)
+            return True
+        return False
+    except Exception:  # noqa: BLE001 - can't tell, assume not live
         return False
 
 
@@ -456,9 +593,16 @@ def preflight(name, preset, ctx, dataset_mode, hf_name, hf_config,
         return f"❌ {msg}", None
     lines = [f"✅ {msg}", f"GPU: {status.gpu_line()}"]
     blockers = []
-    if run_custom.gpu_compute_pids():
+    # our own lingering CUDA context (chat loaded+unloaded earlier) is not a
+    # co-running trainer - but a chat model STILL on the GPU blocks the launch
+    others = [h for h in run_custom.gpu_compute_pids()
+              if not h.startswith(f"{os.getpid()},")]
+    if others:
         blockers.append("a python GPU compute process is live — the chain "
                         "would refuse at the train step")
+    elif _MODEL is not None and _MODEL["device"] == "cuda":
+        blockers.append("the chat model is loaded on the GPU — unload it in "
+                        "the Chat tab first (single-job rule)")
     free_gb = shutil.disk_usage(ROOT).free / 2**30
     lines.append(f"Disk free: {free_gb:.1f} GB")
     if free_gb < MIN_DISK_GB_BLOCK:
@@ -491,7 +635,6 @@ def launch_job(name, preset, ctx, dataset_mode, hf_name, hf_config,
     name = cfg_path.stem.removeprefix("webui_")
     out_dir = RUNS / name
     out_dir.mkdir(parents=True, exist_ok=True)
-    import json as _json
     import time as _time
     log_o = (out_dir / "chain_out.log").open("w", encoding="utf-8")
     log_e = (out_dir / "chain_err.log").open("w", encoding="utf-8")
@@ -499,11 +642,14 @@ def launch_job(name, preset, ctx, dataset_mode, hf_name, hf_config,
         [str(ROOT / ".venv" / "Scripts" / "python.exe"),
          str(ROOT / "scripts" / "run_custom.py"), "--config", str(cfg_path)],
         cwd=str(ROOT), stdout=log_o, stderr=log_e)
-    JOB_STATE.write_text(_json.dumps(
-        {"phase": name, "config": cfg_path.name, "pid": proc.pid,
-         "started_utc": _time.strftime("%Y-%m-%dT%H:%M:%SZ", _time.gmtime())}),
+    JOB_STATE.write_text(
+        json.dumps({"phase": name, "config": cfg_path.name, "pid": proc.pid,
+                    "started_utc": _time.strftime("%Y-%m-%dT%H:%M:%SZ",
+                                                  _time.gmtime())}),
         encoding="utf-8")
-    return report + f"\n\n🚀 **Launched** `{name}` (pid {proc.pid}). Watch it in the Monitor tab."
+    return report + (f"\n\n🚀 **Launched** `{name}` (pid {proc.pid}). Watch "
+                     "it in the Monitor tab; you'll get a toast when it "
+                     "finishes.")
 
 
 with gr.Blocks(title="nano_SLMs") as demo:
@@ -542,23 +688,44 @@ with gr.Blocks(title="nano_SLMs") as demo:
         mon_plot = gr.Plot(label="Loss curves")
         mon_prog = gr.Markdown()
         mon_log = gr.Markdown()
+        gr.Markdown("### Eval report card")
+        mon_eval = gr.Markdown()
+        with gr.Accordion("Danger zone — delete a checkpoint", open=False):
+            gr.Markdown("Permanent `shutil.rmtree` of `runs/<run>/checkpoint-*` "
+                        "folders. Refused while that run is live or the chat "
+                        "service has it loaded.")
+            del_dd = gr.Dropdown(choices=[], label="Checkpoint (under the selected run)",
+                                 interactive=True)
+            del_confirm = gr.Checkbox(
+                label="I understand this permanently deletes the folder")
+            del_btn = gr.Button("Delete checkpoint", variant="stop")
+            del_md = gr.Markdown()
 
-        def mon_refresh(name):
+        def mon_all(name):
+            _check_done()
             if not name:
                 ps = phases()
                 if not ps:
-                    return None, "No runs yet.", ""
+                    return (None, "No runs yet.", "", "",
+                            gr.update(), gr.update(choices=[]))
                 name = ps[-1]
-            fig, prog, log = monitor_data(name)
-            return fig, prog, log, gr.update(choices=phases(), value=name)
+            fig, prog, log, ev = monitor_data(name)
+            return (fig, prog, log, ev,
+                    gr.update(choices=phases(), value=name),
+                    gr.update(choices=_ckpt_choices(name), value=None))
 
-        demo.load(mon_refresh, inputs=mon_dd,
-                  outputs=[mon_plot, mon_prog, mon_log, mon_dd])
+        demo.load(mon_all, inputs=mon_dd,
+                  outputs=[mon_plot, mon_prog, mon_log, mon_eval, mon_dd, del_dd])
         mon_timer = gr.Timer(10)
-        mon_timer.tick(mon_refresh, inputs=mon_dd,
-                       outputs=[mon_plot, mon_prog, mon_log, mon_dd])
-        mon_dd.change(monitor_data, inputs=mon_dd,
-                      outputs=[mon_plot, mon_prog, mon_log])
+        mon_timer.tick(mon_all, inputs=mon_dd,
+                       outputs=[mon_plot, mon_prog, mon_log, mon_eval,
+                                mon_dd, del_dd])
+        mon_dd.change(mon_all, inputs=mon_dd,
+                      outputs=[mon_plot, mon_prog, mon_log, mon_eval,
+                               mon_dd, del_dd])
+        del_btn.click(_delete_ckpt,
+                      inputs=[mon_dd, del_dd, del_confirm],
+                      outputs=[del_md, del_dd, del_confirm])
 
     with gr.Tab("Train"):
         gr.Markdown(
@@ -645,4 +812,25 @@ with gr.Blocks(title="nano_SLMs") as demo:
         ckpt_dd.change(pick_checkpoint, inputs=ckpt_dd, outputs=instruct_box)
 
 if __name__ == "__main__":
-    demo.launch(server_name="127.0.0.1", server_port=CHAT_PORT, inbrowser=True)
+    import argparse
+    ap = argparse.ArgumentParser(description="nano_SLMs web UI (WEBUI_PRD U1-U5)")
+    ap.add_argument("--lan", action="store_true",
+                    help="listen on 0.0.0.0 (LAN) instead of localhost")
+    ap.add_argument("--auth", metavar="USER:PASS",
+                    help="require basic auth (recommended with --lan)")
+    ap.add_argument("--webhook", default=None, metavar="URL",
+                    help="POST run-finished/crashed notifications to this URL "
+                         "(else $WEBUI_WEBHOOK_URL)")
+    ap.add_argument("--port", type=int, default=CHAT_PORT)
+    ap.add_argument("--no-browser", action="store_true")
+    a = ap.parse_args()
+    if a.webhook:
+        WEBHOOK_URL = a.webhook
+    auth = None
+    if a.auth:
+        user, _, pw = a.auth.partition(":")
+        if not user or not pw:
+            sys.exit("--auth expects USER:PASS")
+        auth = (user, pw)
+    demo.launch(server_name="0.0.0.0" if a.lan else "127.0.0.1",
+                server_port=a.port, auth=auth, inbrowser=not a.no_browser)

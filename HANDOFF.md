@@ -24,7 +24,7 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | M2 pilot (100.7M) | **DONE — PASSED** | 3000/3000 with auto-resume from checkpoint-1000; eval_loss 2.206→1.161 monotonic (final ppl 3.19); no OOM (peak ~3.3 GB of 6 GB); locally-syntactic samples; artifacts in runs/pilot/final (train_summary.json, eval_report.json) |
 | M3 target (226.5M) | **DONE — PASSED 2026-09-07 ~08:16 UTC on TU09FBO** | 5000/5000 with zero-flag auto-resume from checkpoint-4500 (restored from checkpoint_backup\checkpoint-4500.zip); eval curve 2.8567 @500 → 2.265 @1000 → 2.0903 @1500 → 1.9972 @2000 → **1.8512 @4000 (best)** → 1.8610 @4500 → 1.8641 @5000 (curve at floor, slight rise = normal noise); final eval.py: val_loss 1.8641, ppl 6.45 (runs/target/final/eval_report.json); train_summary.json carries the env fingerprint (git c16179c, torch 2.14.0+cu126, transformers 5.16.1); weights stay LOCAL (§7); see §3b |
 | C12 Tier 1 SFT (full + pilot) | **DONE — PASSED 2026-09-07** | full: 16,376 pairs × 2 epochs, 2048 steps, eval 0.836; instruction ast greedy 0.86 / sampled 0.88; forgetting guard CSN +12.6% (within ≤ +10-15% gate, near edge); weights in checkpoint_backup zips (TASKS row 4) |
-| Web UI U1-U4 (TASKS row 21) | **BUILT + VERIFIED 2026-09-07** (gradio 6.26) | webui/app.py: dashboard / monitor (plot+ETA+GPU+log) / chat (VRAM policy: GPU idle → warn+CPU during training → reject+CPU low VRAM; warn+reject branches VERIFIED, GPU branch pending idle window) / train launcher (webui_*.yaml + run_custom chain; sanity_check 4/4 + dry-run PASS; NO kill button); server start: `& .\.venv\Scripts\python.exe webui\app.py` → 127.0.0.1:7860; spec = WEBUI_PRD.md |
+| Web UI U1-U5 (TASKS row 21) | **DONE — PASSED 2026-09-08 (full e2e)** (gradio 6.26) | webui/app.py: dashboard / monitor (plot+ETA+GPU+log+eval card, Danger-zone delete) / chat (VRAM policy all branches incl. GPU verified live) / train launcher (webui_*.yaml + run_custom chain; NO kill button) / U5: --lan, --auth login flow, --webhook run_finished+run_crashed notifications; e2e: launch → train 100 steps (best_eval 6.1545) → webhook → eval card → chat from fresh final; server start: `& .\.venv\Scripts\python.exe webui\app.py` → 127.0.0.1:7860 (--port/--no-browser/--lan/--auth/--webhook); spec = WEBUI_PRD.md |
 | Milestone B + LoRA hook (TASKS rows 18/10) | **DONE — ALL GATES PASS 2026-09-07** (GPU-queue session) | arms: A 2.5644 / B 8-bit 2.5603 / C b2a16 2.5604; honest probes (vram_probe optim fix): B 1.36 GB (−550 MiB) vs A 1.91 GB; C pace FAIL on real run (1,680 tok/s) → rejected; **decision: adamw_bnb_8bit b1/a32 = next-pretrain default**; arm B kill/resume drill PASS; LoRA: hook merged (src/model.py:maybe_wrap_peft + save_final), probe 0.72 GB @ 2.5% trainable, CPU e2e + kill/resume PASS |
 | SFT v2 (TASKS row 19) | **DONE — DELIVERABLE runs/sft_v2_e1/final 2026-09-08** | minimax3 corpus 19,252 pairs (min_chars 30 gotcha); 2-epoch run: ast 0.98/1.00 but forgetting +19.7% FAIL -> e2 kept as overfit evidence; **e1 (1 epoch): ast 0.98/0.96, forgetting +9.8% PASS — beats Tier 1 (0.86/0.88, +12.6%)**; NOTE: runs/target/final/model.safetensors had been de-weighted in the disk cleanup — RESTORED bit-exact from runs/target/checkpoint-4000 (best@4000) |
 | Tier 3 KD (TASKS row 20) | **DONE — KD BEATS BASELINE 2026-09-08** | P (pilot/final) teaches S (12.3M), 0.5*KL(τ=1)+0.5*CE, fair A/B 2,000 steps: KD 2.4755 vs baseline 2.6201; at 1/3 steps 3.4142 vs 3.5325 -> plan §5 criterion PASS, the ~1/10 claim transfers; KD cost ~35 min GPU (baseline ~3 min — S-scale is nearly free on this GPU) |
@@ -443,6 +443,95 @@ live status for the UI; rows 18-20 own the in-flight GPU milestones.
    the sanctioned exception); resume = the exact same command, zero flags;
    weights stay local (LFS quota — gitignore rules cover the A/B arms);
    report before deleting anything; never commit secrets (.env stays out).
+
+### 2026-09-08 — web UI U5 finished (full e2e PASS); run_custom guard root-caused
+
+TASKS row 21 is DONE. Commit still pending user go — everything from the
+U5 work is uncommitted on top of 4e0a551. What landed and how it was
+verified:
+
+- **U5 in webui/app.py:** --lan (0.0.0.0), --auth USER:PASS (gradio login
+  flow), --webhook URL / $WEBUI_WEBHOOK_URL done-notifications (gr.Info
+  toast + best-effort POST, 5 s timeout), eval report card in Monitor,
+  checkpoint-delete Danger zone (traversal-safe path, refuses live runs +
+  chat-loaded checkpoints, typed confirmation, freed-MB report). Webhook
+  events: run_finished (final/train_summary.json appears) and
+  run_crashed (job pid dead, no final) — both received by a live local
+  receiver during verification (the crashed branch initially hardcoded
+  event "run_finished" — found and fixed during this verification).
+- **Full e2e PASS** (e2etest, Small preset, 1500 rows, 100 steps):
+  launch → sanity 4/4 (CUDA) → prepare 1470/30 rows → tokenize 2589
+  blocks → train → eval (best_eval 6.1545, checkpoint-100) → webhook
+  run_finished → eval card rendered → e2etest/final chat-able on CUDA
+  (696 MiB, real gen). train_summary env fingerprint: git 4e0a551,
+  torch 2.14.0+cu126, transformers 5.16.1.
+- **Boot/auth check PASS:** --port 7861 --no-browser → HTTP 200; --auth
+  verified by content: unauth / = 44.7 KB login shell, POST /login good
+  creds → {"success":true} + session cookies → / serves the full app
+  (142 KB); gated API /config → 401 unauth and wrong-password. GOTCHA
+  for future probes: gradio 6 auth is form+cookie, NOT per-request HTTP
+  Basic — curl -u alone gets 401 even with valid creds.
+- **Integration bug #3 ROOT CAUSE (three aborted attempts):** on Windows,
+  .venv\Scripts\python.exe is a launcher shim that spawns the real base
+  interpreter as a child and waits — so run_custom.py's os.getppid() is
+  its own launcher shim, NOT the webui server/probe that launched the
+  chain; that grandparent holds the lingering CUDA context after a chat
+  unload, so parent-pid exclusion can never work. Fix in
+  scripts/run_custom.py: _ancestor_pids() walks the FULL ancestor chain
+  via a Toolhelp32 snapshot — the _PE32W struct must byte-match
+  PROCESSENTRY32W (size_t heap id + 4-byte LONG priority; an 8-byte
+  pointer field silently inflates dwSize and Process32FirstW fails with
+  an empty walk) — and gpu_busy_others() excludes own + ancestors;
+  _pid_alive() drops stale WDDM entries of dead pids (measured: exited
+  CUDA children linger 0 s in the listing, filter kept as cheap
+  insurance); the abort message now prints the offending pids. Real
+  co-run protection unchanged: a non-ancestor python with a compute
+  context still aborts (micro-test: live CUDA-holding probe excluded
+  from the guard but still visible in the raw nvidia-smi listing).
+- **Also fixed en route:** _job_alive via ctypes OpenProcess (psutil
+  absent); the app preflight filters its own pid (lingering CUDA context
+  after chat unload) and separately blocks launch while the chat model
+  sits on cuda; matplotlib figure leaked per 10 s monitor tick
+  (close-before-create).
+- **Environment event:** the parallel session rebuilt the venv — gradio
+  6.26.0 + matplotlib 3.11.1 reinstalled via uv pip (imports verified).
+- **Cleanup proposal (user-gated, nothing deleted):** runs/e2etest/,
+  data/e2etest/, configs/webui_e2etest.yaml are regenerable e2e test
+  artifacts. Suggested commit set when approved: webui/app.py,
+  scripts/run_custom.py, README.md, TASKS.md, HANDOFF.md — never
+  configs/distill_custom*.yaml or runs/* logs (the parallel session's).
+
+### 2026-09-08 — web UI U6-U11 scope approved by the user; plan written
+
+The user approved EVERY proposed GUI addition except the Hub-backup
+button, and added a requirement: train from user-named HF datasets with
+two data modes (fetch the data locally vs. stream the needed rows over
+the net when disk is low) plus a persistent API-key field (show where
+it is saved; allow override and delete).
+
+Grounding found while planning: `prepare_data.py` ALREADY streams HF
+datasets (`load_dataset(..., streaming=True)` — only the needed rows
+are written, so disk is bounded by `rows`, not dataset size) and
+already auto-loads the gitignored project-root `.env` (HF_TOKEN path
+verified in TASKS row 13). Design therefore locked in WEBUI_PRD §2:
+stream-pack = default mode; full local cache = opt-in; literal
+per-step net-feeding into `train.py` REJECTED (deterministic zero-flag
+auto-resume, PLAN §5.3, + memmap shard contract) — revisitable only by
+explicit user decision. Keys live in the existing .env behind a masked
+Settings tab (add/override/delete, path shown; never in configs/logs).
+
+Milestones written into WEBUI_PRD §5: **U6** hardening & resume UX
+(resume button, collision guard, --lan auth gate, 8-bit optim default,
+chat length guard, chain-step indicator, picker refresh, job banner,
+tok/s) → **U7** data & keys → **U8** transparency (dataset preview,
+YAML disclosure, MB breakdown, overlay) → **U9** chat streaming →
+**U10** SFT/LoRA launch path → **U11** cooperative stop-at-checkpoint
++ browser notifications + HTTPS. TASKS rows 22-27, all `pending` user
+go. U11's stop-flag amends the PRD no-kill rule (user-approved):
+checkpoint-aligned clean exit only, never a process kill. Note: the
+U5 work above was committed and pushed as `fd2e79a` (post-push tree
+clean; untracked: parallel session's distill configs/logs + the e2e
+artifacts still awaiting the cleanup decision).
 
 ## 9. Conventions
 

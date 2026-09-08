@@ -18,6 +18,7 @@ Run:  .venv/Scripts/python scripts/run_custom.py --config configs/custom_example
 """
 import argparse
 import json
+import os
 import subprocess
 import sys
 import time
@@ -26,6 +27,26 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 STEPS = ["sanity_check", "prepare_data", "tokenize_data", "train", "eval"]
 GPU_STEPS = {"train", "eval"}
+
+
+def _pid_alive(pid):
+    """False only when no live process owns the pid.
+
+    Windows WDDM can keep a just-exited CUDA process listed in
+    query-compute-apps for a while; such a stale entry can never train.
+    Conservative on any doubt: probe errors / access-denied count as alive
+    so the never-co-run guard is never weakened.
+    """
+    try:
+        import ctypes
+        k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        h = k32.OpenProcess(0x1000, False, int(pid))  # QUERY_LIMITED_INFORMATION
+        if h:
+            k32.CloseHandle(h)
+            return True
+        return ctypes.get_last_error() != 87  # 87 = no such process
+    except Exception:  # noqa: BLE001
+        return True
 
 
 def gpu_compute_pids():
@@ -37,15 +58,90 @@ def gpu_compute_pids():
         ).stdout.strip()
         # Windows WDDM quirk: query-compute-apps lists EVERY process with a
         # GPU context (desktop apps, WebView...). Only python compute
-        # processes can be a co-running trainer - filter to those.
+        # processes can be a co-running trainer - filter to those, and drop
+        # pids whose process is already gone (stale WDDM entries).
         hits = []
         for line in out.splitlines():
             line = line.strip()
             if line and "," in line and "python" in line.partition(",")[2].lower():
-                hits.append(line)
+                if _pid_alive(line.partition(",")[0]):
+                    hits.append(line)
         return hits
     except Exception:  # noqa: BLE001 - never block the chain on a probe error
         return []
+
+
+def _ancestor_pids():
+    r"""Pids of every ancestor of this process (empty on probe errors).
+
+    .venv\Scripts\python.exe on Windows is a launcher that spawns the real
+    base interpreter as a child and waits for it, so this chain process's
+    getppid() is the chain's OWN launcher shim - NOT the webui server (or
+    probe) that launched the whole thing. The server, which may hold a
+    lingering CUDA context after a chat unload, sits one launcher level
+    higher. Walk the full ancestor chain via the Toolhelp32 snapshot so
+    every shim between here and the chain launcher is covered: an ancestor
+    can never be a co-running trainer (it spawned this chain and waits).
+    """
+    try:
+        import ctypes
+        from ctypes import wintypes
+        k32 = ctypes.WinDLL("kernel32", use_last_error=True)
+
+        class _PE32W(ctypes.Structure):
+            # Must byte-match PROCESSENTRY32W exactly (the API validates
+            # dwSize): size_t for the heap id, 4-byte LONG for the priority.
+            _fields_ = [("dwSize", wintypes.DWORD),
+                        ("cntUsage", wintypes.DWORD),
+                        ("th32ProcessID", wintypes.DWORD),
+                        ("th32DefaultHeapID", ctypes.c_size_t),
+                        ("th32ModuleID", wintypes.DWORD),
+                        ("cntThreads", wintypes.DWORD),
+                        ("th32ParentProcessID", wintypes.DWORD),
+                        ("pcPriClassBase", wintypes.LONG),
+                        ("dwFlags", wintypes.DWORD),
+                        ("szExeFile", wintypes.WCHAR * 260)]
+
+        k32.CreateToolhelp32Snapshot.restype = wintypes.HANDLE
+        k32.CreateToolhelp32Snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
+        k32.Process32FirstW.restype = wintypes.BOOL
+        k32.Process32FirstW.argtypes = [wintypes.HANDLE, ctypes.POINTER(_PE32W)]
+        k32.Process32NextW.restype = wintypes.BOOL
+        k32.Process32NextW.argtypes = [wintypes.HANDLE, ctypes.POINTER(_PE32W)]
+
+        snap = k32.CreateToolhelp32Snapshot(0x2, 0)  # TH32CS_SNAPPROCESS
+        if not snap or snap == wintypes.HANDLE(-1).value:
+            return set()
+        parent_of, entry = {}, _PE32W()
+        entry.dwSize = ctypes.sizeof(_PE32W)
+        ok = k32.Process32FirstW(snap, ctypes.byref(entry))
+        while ok:
+            parent_of[entry.th32ProcessID] = entry.th32ParentProcessID
+            ok = k32.Process32NextW(snap, ctypes.byref(entry))
+        k32.CloseHandle(snap)
+        anc, pid, hops = set(), os.getpid(), 0
+        while pid in parent_of and hops < 32:
+            pid = parent_of[pid]
+            if not pid:
+                break
+            anc.add(pid)
+            hops += 1
+        return anc
+    except Exception:  # noqa: BLE001 - degrade to own/parent exclusion
+        return set()
+
+
+def gpu_busy_others():
+    """GPU python compute pids that are NOT this chain or its ancestors.
+
+    The chain cannot be training when its own train step starts, and an
+    ancestor (webui server / probe / shell) only ever holds a lingering
+    CUDA context from a chat unload - neither is a co-running trainer.
+    Anything else still aborts the chain (never-co-run rule).
+    """
+    own = {os.getpid(), os.getppid()} | _ancestor_pids()
+    return [h for h in gpu_compute_pids()
+            if not h.startswith(tuple(f"{p}," for p in own))]
 
 
 def main() -> None:
@@ -93,9 +189,9 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     for s in plan:
         if s in GPU_STEPS and not args.allow_gpu_share:
-            busy = gpu_compute_pids()
+            busy = gpu_busy_others()
             if busy:
-                msg = (f"GPU busy ({len(busy)} compute process/es) - "
+                msg = (f"GPU busy ({len(busy)} compute process/es: {busy}) - "
                        "never-co-run rule; pass --allow_gpu_share to override")
                 print(f"[run_custom] ABORT before '{s}': {msg}", flush=True)
                 chain["status"] = "aborted_gpu_busy"
