@@ -1,0 +1,22 @@
+{
+  "ckpt": "runs\\sft_v2\\checkpoint-2250",
+  "val_loss": 2.2322648339690523,
+  "perplexity": 9.320952601810504,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nWe slide a window and maintain a window of the first two chars. When the window is 0 we shrink the window from the left to find the first two chars. This is O(n) time and O(1) space.\n\n```python\ndef fib_window(n: int) -> int:\n    \"\"\"Return the n-th Fibonacci number (0-indexed).\n\n    Args:\n        n: A non-negative integer index.\n\n    Returns:\n        The n-th Fibonacci number.\n\n    Examples:\n        >>> fib_window(0)\n        0\n        >>> fib_window(0)\n        1\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    if n == 0:\n        return 0\n    return (n - 1) // 2\n```",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import Any, Optional\n\nclass stack:\n    \"\"\"A stack with push, pop and peek.\n\n    Examples:\n        >>> stack = stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n        >>> stack.pop()\n    \"\"\"\n    def __init__(self, value: Any) -> None:\n        self._value: Any = value\n\n    def push(self, value: Any) -> None:\n        self._value = value\n\n    def pop(self) -> Any:\n        if not self._value:\n            raise ValueError(\"value must be non-empty\")\n        self._value = value\n\n    def pop(self) -> Any:\n        if not self._value:\n            raise ValueError(\"value must be non-empty\")\n        return self._value.pop()\n\n    def pop(self) -> Any:"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.98,
+    "sampled_ast_pass_rate": 1.0,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "from typing import Iterable, List\n\ndef iter_proba(xs: Iterable[int]) -> Iterator[int]:\n    \"\"\"Yield each element of a sequence of integers and a list of lists of lists.\n\n    Args:\n        xs: Iterable of integers.\n\n    Yields:\n        Each element of the list is a list of integers.\n\n    Examples:\n        >>> list(iter_proba([1, 2, 3, 4, 5], [2, 4, 6, 7]))\n        [[1, 2], [3, 4], [5]]\n        >>> list(iter_proba([1, 2, 3], [2, 4, 6], [3, 4, 6]))\n        [[1, 2], [3, 4], [5]]\n    \"\"\"\n    if not xs:\n        return []\n    out: List[int] = []\n    i = j = 0\n    while i < len(xs) and j < len(xs):\n        if xs[i] == xs[i-1]:",
+        "sampled": "from typing import Iterable, Iterator\n\ndef iter_strain_sat(root: str) -> Iterator[str]:\n    \"\"\"Yield a list of (given_alnum, sat_rna_alnum) for each of the sats in 'root'.\n\n    Args:\n        root: Source file path.\n\n    Returns:\n        A list of (given_alnum, sat_rna_alnum) tuples.\n\n    Examples:\n        >>> list(iter_strain_sat(\"abcdef\", \"cabr\"))\n        [('a', 3), ('b', 2), ('a', 2), ('c', 2), ('c', 1)]\n    \"\"\"\n    if not root:\n        return []\n    sats = list(itertools.islice(root, 2))\n    sats[0] = 2\n    for i in range(2, len(sats) - 1):\n        sats[sats[i]] = sats[i + 1] + sats[i + 1]\n    return"
+      }
+    ]
+  }
+}

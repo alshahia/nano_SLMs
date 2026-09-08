@@ -1,0 +1,77 @@
+{
+  "best_global_step": 250,
+  "best_metric": 0.40505632758140564,
+  "best_model_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\sft_v2_pilot\\checkpoint-250",
+  "epoch": 0.8,
+  "eval_steps": 250,
+  "global_step": 250,
+  "is_hyper_param_search": false,
+  "is_local_process_zero": true,
+  "is_world_process_zero": true,
+  "log_history": [
+    {
+      "epoch": 0.16,
+      "grad_norm": 2.160032272338867,
+      "learning_rate": 1.47e-05,
+      "loss": 1.402596435546875,
+      "step": 50
+    },
+    {
+      "epoch": 0.32,
+      "grad_norm": 1.8570343255996704,
+      "learning_rate": 2.97e-05,
+      "loss": 0.8853766632080078,
+      "step": 100
+    },
+    {
+      "epoch": 0.48,
+      "grad_norm": 1.4244201183319092,
+      "learning_rate": 2.6250202842853602e-05,
+      "loss": 0.6853997039794922,
+      "step": 150
+    },
+    {
+      "epoch": 0.64,
+      "grad_norm": 1.7139102220535278,
+      "learning_rate": 1.665590993122905e-05,
+      "loss": 0.5692615127563476,
+      "step": 200
+    },
+    {
+      "epoch": 0.8,
+      "grad_norm": 1.4560469388961792,
+      "learning_rate": 6.201129403713628e-06,
+      "loss": 0.4873244094848633,
+      "step": 250
+    },
+    {
+      "epoch": 0.8,
+      "eval_loss": 0.40505632758140564,
+      "eval_runtime": 8.2075,
+      "eval_samples_per_second": 60.92,
+      "eval_steps_per_second": 15.23,
+      "step": 250
+    }
+  ],
+  "logging_steps": 50,
+  "max_steps": 313,
+  "num_input_tokens_seen": 0,
+  "num_train_epochs": 1,
+  "save_steps": 250,
+  "stateful_callbacks": {
+    "TrainerControl": {
+      "args": {
+        "should_epoch_stop": false,
+        "should_evaluate": false,
+        "should_log": false,
+        "should_save": true,
+        "should_training_stop": false
+      },
+      "attributes": {}
+    }
+  },
+  "total_flos": 532569682501632.0,
+  "train_batch_size": 1,
+  "trial_name": null,
+  "trial_params": null
+}

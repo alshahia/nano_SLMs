@@ -1,0 +1,27 @@
+{
+  "ckpt": "runs\\sft_v2\\checkpoint-2000",
+  "val_loss": 2.2308049461332824,
+  "perplexity": 9.307354984402476,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nWe slide a window and maintain a window of the first two chars. The window length\nfrom typing import Optional\n\ndef fib_window(n: int) -> int:\n    \"\"\"Return the n-th Fibonacci number.\n\n    Args:\n        n: A non-negative integer.\n\n    Returns:\n        The n-th Fibonacci number.\n\n    Examples:\n        >>> fib_window(0)\n        0\n        >>> fib_window(1)\n        1\n        >>> fib_window(12345)\n        12345\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    if n == 0:\n        return 0\n    return n * (n - 1) // 2",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import Any, Optional\n\nclass stack:\n    \"\"\"A stack with push, pop, peek, peek.\n\n    Examples:\n        >>> a = stack.pop()\n        >>> b = stack.pop()\n        >>> b == a and b == b\n        True\n        >>> stack.pop()\n        'pop'\n    \"\"\"\n    def __init__(self, x: int) -> None:\n        if x is None:\n            raise TypeError(\"x must be a number\")\n        self.x: int = x\n        self.y: int = y\n\n    def push(self, x: int) -> None:\n        if x is None:\n            raise TypeError(\"x must be a number\")\n        self.x: int = x\n        self.y: int = y\n\n    def push(self, x: int) -> None:\n        if x is None:\n            raise TypeError(\"x must be a number\")\n        self.x: int = x\n        self.y: int = y\n\n    def peek(self, x: int) -> int:\n        if x is None:\n"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.98,
+    "sampled_ast_pass_rate": 0.98,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "from typing import Iterable, List\n\ndef iter_proba(a: int, b: int) -> Iterator[int]:\n    \"\"\"Yield each distinct characters in a and b as a list.\n\n    Args:\n        a: First character.\n        b: Second character.\n\n    Yields:\n        Each character of a and b as a list.\n\n    Examples:\n        >>> list(iter_proba(1, 2))\n        [[1, 2], [1, 2]]\n        >>> list(iter_proba(0, 1))\n        []\n    \"\"\"\n    if len(a) <= len(b):\n        return\n    for i in range(len(a)):\n        if a[i] == b[i]:\n            yield a[i] + b[i]\n    return",
+        "sampled": "from typing import Iterator, TypeVar\n\nT = TypeVar('T')\n\ndef algorithm(it: Iterable[T], b: Iterable[T]) -> Iterator[List[T]]:\n    \"\"\"Yield an iterable of integers and b overlap.\n\n    Args:\n        it: Iterable of integers.\n        b: Iterable of integers.\n\n    Yields:\n        A list of tuples, each in increasing order.\n\n    Examples:\n        >>> list(algorithm(0, 2))\n        [[1, 2], [1, 2]]\n        >>> list(algorithm(1, 2))\n        [[1, 2], [1, 2]]\n    \"\"\"\n    if len(it) == len(b):\n        return list(it)\n    if len(it) == len(b):\n        return list(it)\n    while b[len(b):\n        it, b = b, b\n        if it in b:\n            yield b[len(b):], b"
+      },
+      {
+        "instruction": "Write a function that returns the k-th prime number (1-indexed).",
+        "greedy": "def kth_prime(n: int) -> int:\n    \"\"\"Return the k-th prime number (1-indexed).\n\n    Args:\n        n: A non-negative integer index.\n\n    Returns:\n        The k-th prime number.\n\n    Examples:\n        >>> kth_prime(0)\n        1\n        >>> kth_prime(1)\n        1\n    \"\"\"\n    if n < 1:\n        raise ValueError(\"n must be >= 1\")\n    if n == 0:\n        return 1\n    return n * 1.index(n) + 1",
+        "sampled": "def kth_prime(n: int) -> int:\n    \"\"\"Return the k-th prime number (0-indexed).\n\n    Args:\n        n: A non-negative integer index.\n\n    Returns:\n        The k-th prime number (0-indexed).\n\n    Examples:\n        >>> kth_prime(255)\n        12\n        >>> kth_prime(42)\n        11\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    if n < 1:\n        return n\n    return n % 10 + kth_prime(n // 10)"
+      }
+    ]
+  }
+}
