@@ -1,0 +1,18 @@
+{
+  "phase": "kd-s-t1",
+  "kd_teacher": "runs/pilot/final",
+  "kd_tau": 1.0,
+  "kd_alpha": 0.5,
+  "student_params_m": 12.32,
+  "teacher_params_m": 100.68,
+  "best_eval_loss": 2.475543975830078,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\kd-s-t1\\checkpoint-2000",
+  "final_eval": {
+    "eval_loss": 2.475543975830078,
+    "eval_runtime": 3.3493,
+    "eval_samples_per_second": 252.593,
+    "eval_steps_per_second": 31.649,
+    "epoch": 0.39108330074305825
+  },
+  "resumed_from": null
+}

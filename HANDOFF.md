@@ -26,7 +26,25 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | C12 Tier 1 SFT (full + pilot) | **DONE — PASSED 2026-09-07** | full: 16,376 pairs × 2 epochs, 2048 steps, eval 0.836; instruction ast greedy 0.86 / sampled 0.88; forgetting guard CSN +12.6% (within ≤ +10-15% gate, near edge); weights in checkpoint_backup zips (TASKS row 4) |
 | Web UI U1-U4 (TASKS row 21) | **BUILT + VERIFIED 2026-09-07** (gradio 6.26) | webui/app.py: dashboard / monitor (plot+ETA+GPU+log) / chat (VRAM policy: GPU idle → warn+CPU during training → reject+CPU low VRAM; warn+reject branches VERIFIED, GPU branch pending idle window) / train launcher (webui_*.yaml + run_custom chain; sanity_check 4/4 + dry-run PASS; NO kill button); server start: `& .\.venv\Scripts\python.exe webui\app.py` → 127.0.0.1:7860; spec = WEBUI_PRD.md |
 | Milestone B + LoRA hook (TASKS rows 18/10) | **DONE — ALL GATES PASS 2026-09-07** (GPU-queue session) | arms: A 2.5644 / B 8-bit 2.5603 / C b2a16 2.5604; honest probes (vram_probe optim fix): B 1.36 GB (−550 MiB) vs A 1.91 GB; C pace FAIL on real run (1,680 tok/s) → rejected; **decision: adamw_bnb_8bit b1/a32 = next-pretrain default**; arm B kill/resume drill PASS; LoRA: hook merged (src/model.py:maybe_wrap_peft + save_final), probe 0.72 GB @ 2.5% trainable, CPU e2e + kill/resume PASS |
-| SFT v2 (TASKS row 19) | **PILOT PASSED 2026-09-07; FULL RUN LIVE** | minimax3 corpus 19,252 pairs (min_chars 30 gotcha); pilot: eval 0.3989, ast 0.94/0.92 (beats T1's 0.86/0.88), forgetting +3.7% PASS; full ~2,344 steps ETA ~2h40m; NOTE: runs/target/final/model.safetensors had been de-weighted in the disk cleanup — RESTORED bit-exact from runs/target/checkpoint-4000 (best@4000); Tier 3 KD (row 20, scripts/kd.py + A/B configs, CPU-validated) queued behind this run |
+| SFT v2 (TASKS row 19) | **DONE — DELIVERABLE runs/sft_v2_e1/final 2026-09-08** | minimax3 corpus 19,252 pairs (min_chars 30 gotcha); 2-epoch run: ast 0.98/1.00 but forgetting +19.7% FAIL -> e2 kept as overfit evidence; **e1 (1 epoch): ast 0.98/0.96, forgetting +9.8% PASS — beats Tier 1 (0.86/0.88, +12.6%)**; NOTE: runs/target/final/model.safetensors had been de-weighted in the disk cleanup — RESTORED bit-exact from runs/target/checkpoint-4000 (best@4000) |
+| Tier 3 KD (TASKS row 20) | **DONE — KD BEATS BASELINE 2026-09-08** | P (pilot/final) teaches S (12.3M), 0.5*KL(τ=1)+0.5*CE, fair A/B 2,000 steps: KD 2.4755 vs baseline 2.6201; at 1/3 steps 3.4142 vs 3.5325 -> plan §5 criterion PASS, the ~1/10 claim transfers; KD cost ~35 min GPU (baseline ~3 min — S-scale is nearly free on this GPU) |
+
+### 2026-09-08 GPU-queue session incidents (lessons 14-15 in MEMORY)
+
+- **Sleep kills**: Modern Standby fired twice mid-run (Kernel-Power 506/507);
+  runs survived via auto-resume; one save died mid-write (partial ckpt) and
+  exposed that `resume_from_checkpoint=True` bypassed the completeness guard
+  — all three trainers now pass the checkpoint PATH. Sleep-on-AC disable
+  remains a USER-owned hardware fix (HANDOFF §3 note).
+- **Disk filled to 3.9 MB** during SFT v2 (SFT ckpts ~2.7 GB each): writes
+  HANG at a fixed offset (E: healthy). Agent cleaned its OWN post-run scratch
+  (~13 GB: e1 + A/B-era redundant ckpts). **Cleanup candidates awaiting user
+  decision (row 2 rules — nothing deleted without approval):**
+  `runs/sft_v2/checkpoint-{2000,2250,2344}` (~8 GB, e2 overfit evidence),
+  `runs/pilot-ab-base/checkpoint-500`, `runs/pilot-b8/checkpoint-500`,
+  `runs/pilot-b8-r2x16/checkpoint-*` (arm scratch, finals committed),
+  `runs/target/checkpoint-{3500,4000,4500}` (~7.7 GB; ckpt-4000 = source of
+  the restored final — keep until a backup zip of the FINAL exists).
 
 ## 3. M2 pilot run — how to check / resume / finish
 
