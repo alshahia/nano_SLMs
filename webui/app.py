@@ -1,4 +1,4 @@
-r"""Web UI dashboard + chat - WEBUI_PRD.md milestones U1-U5.
+r"""Web UI dashboard + chat - WEBUI_PRD.md milestones U1-U6.
 
 Read-only over runs/ except two places: the chat model service (the only
 component allowed to allocate GPU VRAM, under the VRAM policy of WEBUI_PRD.md
@@ -15,6 +15,8 @@ import os
 import shutil
 import subprocess
 import sys
+import threading
+import time as _time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -47,6 +49,7 @@ def curve(logs_dir: Path, tag: str, n: int | None = None):
 def snapshot():
     free_gb = shutil.disk_usage(ROOT).free / 2**30
     head = f"GPU: {status.gpu_line()} | Disk free: {free_gb:.1f} GB"
+    head += _runs_footprint()  # U8: runs/ footprint on the Dashboard
 
     rows = []
     for name in phases():
@@ -248,10 +251,30 @@ def _default_instruct(label: str) -> bool:
     return "template" in cfg.get("data", {})
 
 
-def chat_generate(message, history, instruct, sample, max_new, temp, top_p, top_k):
+_STOP_EVENT = threading.Event()
+
+
+class _StopOnFlag:
+    """U9: generation-level stop - generate() halts at the next token step;
+    no process kill, the model stays usable."""
+
+    def __call__(self, input_ids, scores, **_):
+        return _STOP_EVENT.is_set()
+
+
+def _stop_gen():
+    _STOP_EVENT.set()
+    return "Stop requested."
+
+
+def chat_stream(message, history, instruct, sample, max_new, temp, top_p,
+                top_k):
+    """U9: TextIteratorStreamer progressive output; yields partial text."""
     if _MODEL is None or message.strip() == "":
-        return "_(load a checkpoint above, then send a code prefix)_"
+        yield "_(load a checkpoint above, then send a code prefix)_"
+        return
     import torch
+    from transformers import StoppingCriteriaList, TextIteratorStreamer
 
     prompt = message
     if instruct:
@@ -264,14 +287,41 @@ def chat_generate(message, history, instruct, sample, max_new, temp, top_p, top_
     tok, model, device, ctx = (_MODEL["tok"], _MODEL["model"],
                                _MODEL["device"], _MODEL["ctx"])
     room = max(ctx - int(max_new), 16)
-    ids = tok(prompt, return_tensors="pt").input_ids[:, -room:].to(device)
+    ids_full = tok(prompt, return_tensors="pt").input_ids
+    warn = ""
+    if ids_full.shape[1] > room:  # U6: degrade gracefully, never crash
+        warn = (f"?? input was {ids_full.shape[1]} tokens - truncated to the "
+                f"last {room} (ctx {ctx} - max_new {int(max_new)}).\n\n")
+    ids = ids_full[:, -room:].to(device)
     kwargs = {"max_new_tokens": int(max_new)}
     if sample:
         kwargs.update(do_sample=True, temperature=float(temp),
                       top_p=float(top_p), top_k=int(top_k))
-    with torch.no_grad():
-        out = model.generate(ids, pad_token_id=tok.eos_token_id, **kwargs)
-    return tok.decode(out[0][ids.shape[1]:], skip_special_tokens=True)
+
+    _STOP_EVENT.clear()
+    streamer = TextIteratorStreamer(tok, skip_prompt=True,
+                                    skip_special_tokens=True)
+    gen_kwargs = dict(input_ids=ids, pad_token_id=tok.eos_token_id,
+                      streamer=streamer, stopping_criteria=StoppingCriteriaList(
+                          [_StopOnFlag()]), **kwargs)
+
+    def _run():
+        try:
+            with torch.no_grad():
+                model.generate(**gen_kwargs)
+        except Exception as e:  # noqa: BLE001 - keep the UI from hanging
+            streamer.end()
+
+    threading.Thread(target=_run, daemon=True).start()
+    out = warn
+    try:
+        for piece in streamer:
+            out += piece
+            yield out
+    finally:
+        # normal end OR client-cancel (GeneratorExit): make sure the
+        # generate thread stops so the model is immediately reusable
+        _STOP_EVENT.set()
 
 
 def pick_checkpoint(label):
@@ -383,6 +433,13 @@ def monitor_data(phase: str):
         return None, f"(plot failed: {e})\n\nGPU: {status.gpu_line()}", \
             _latest_log(phase), eval_card(phase)
     prog = _eta_line(phase) + f"\n\nGPU: {status.gpu_line()}"
+    cfg = status.load_phase_cfg(phase)
+    thr = status.throughput_line(d, cfg) if cfg else None
+    if thr:  # U6: tok/s + MFU in Monitor (status.py already computes it)
+        prog += f"\n\nThroughput: {thr}"
+    chain = _chain_line(phase)
+    if chain:
+        prog += f"\n\n{chain}"
     return fig, prog, _latest_log(phase), eval_card(phase)
 
 
@@ -461,12 +518,13 @@ def _check_done():
                 event="run_crashed")
 
 
-def _ckpt_choices(phase: str) -> list[str]:
+def _ckpt_choices(phase: str) -> list[tuple[str, str]]:
     d = RUNS / phase if phase else None
     if not d or not d.is_dir():
         return []
-    return sorted((p.name for p in d.glob("checkpoint-*") if p.is_dir()),
-                  reverse=True)
+    # U8: per-checkpoint MB on the label (value stays the bare folder name)
+    return sorted((f"{p.name} ({_dir_mb(p):.0f} MB)", p.name)
+                  for p in d.glob("checkpoint-*") if p.is_dir())
 
 
 def _delete_ckpt(phase, ckpt, confirm):
@@ -513,6 +571,78 @@ LR_PRESETS = {"Pretrain 4e-4": 4.0e-4, "Conservative 2e-4": 2.0e-4,
 MIN_DISK_GB_BLOCK = 5.0
 MIN_DISK_GB_WARN = 15.0
 JOB_STATE = ROOT / "webui" / "job_state.json"
+ENV_PATH = ROOT / ".env"  # U7: gitignored secrets (verified .gitignore L8)
+KNOWN_KEYS = ("HF_TOKEN", "EXA_API_KEY")
+MAX_ROWS = 500_000  # U7 hard cap: bounds net time + raw/tokens footprint
+
+
+def _env_lines() -> list[str]:
+    if not ENV_PATH.is_file():
+        return []
+    return ENV_PATH.read_text(encoding="utf-8", errors="replace").splitlines()
+
+
+def _env_get(key: str) -> str:
+    for line in _env_lines():
+        s = line.strip()
+        if s.startswith(f"{key}=") or s.startswith(f"{key} ="):
+            v = s.partition("=")[2].strip()
+            return v.strip('"').strip("'")
+    return ""
+
+
+def _mask(v: str) -> str:
+    if not v:
+        return "—"
+    return f"••••••{v[-4:]}"
+
+
+def keys_status_md() -> str:
+    known = {k: _env_get(k) for k in KNOWN_KEYS}
+    rows = "\n".join(f"| `{k}` | {_mask(v)} |"
+                     f" {'set' if v else '**missing**'} |"
+                     for k, v in known.items())
+    ignored = any(line.strip() == ".env"
+                  for line in (ROOT / ".gitignore").read_text(
+                      encoding="utf-8", errors="replace").splitlines())
+    return (f"`.env` at `{ENV_PATH}` — gitignored: "
+            f"{'✅ yes' if ignored else '❌ NO — fix .gitignore!'}\n\n"
+            f"| key | value | status |\n|---|---|---|\n{rows}\n\n"
+            "Values are never displayed, logged, or written into configs "
+            "(masked = last 4 chars). `prepare_data.py` auto-loads this "
+            "file (real env vars win).")
+
+
+def set_key(key: str, value: str):
+    if key not in KNOWN_KEYS:
+        return keys_status_md(), f"❌ Unknown key: {key}"
+    value = (value or "").strip().strip('"').strip("'")
+    if not value:
+        return keys_status_md(), "❌ Empty value — nothing written."
+    out, replaced = [], False
+    for line in _env_lines():
+        s = line.strip()
+        if "=" in s and s.partition("=")[0].strip() == key:
+            out.append(f"{key}={value}")
+            replaced = True
+        else:
+            out.append(line)
+    if not replaced:
+        out.append(f"{key}={value}")
+    ENV_PATH.write_text("\n".join(out) + "\n", encoding="utf-8")
+    return keys_status_md(), f"✅ `{key}` stored ({_mask(value)}); never shown again."
+
+
+def del_key(key: str):
+    if key not in KNOWN_KEYS:
+        return keys_status_md(), f"❌ Unknown key: {key}"
+    had = bool(_env_get(key))
+    out = [line for line in _env_lines()
+           if not (line.strip().partition("=")[0].strip() == key
+                   and "=" in line)]
+    ENV_PATH.write_text("\n".join(out) + ("\n" if out else ""), encoding="utf-8")
+    return keys_status_md(), (f"🗑️ `{key}` deleted." if had
+                              else f"`{key}` was not set.")
 
 
 def _job() -> dict | None:
@@ -537,7 +667,7 @@ def _job_alive(job: dict) -> bool:
 
 def build_config(name, preset, ctx, dataset_mode, hf_name, hf_config,
                  local_path, rows, val_fraction, min_chars, max_steps,
-                 lr_label):
+                 lr_label, optim, data_mode):
     p = PRESETS[preset]
     name = (name or "").strip().lower().replace(" ", "-")
     import re as _re
@@ -549,6 +679,12 @@ def build_config(name, preset, ctx, dataset_mode, hf_name, hf_config,
         return None, "HF dataset name is empty."
     if dataset_mode == "Local file" and not (ROOT / local_path.strip()).is_file():
         return None, f"Local file not found: {local_path}"
+    if optim not in ("adamw_bnb_8bit", "adamw_torch"):
+        return None, f"Unsupported optimizer: {optim}"
+    if data_mode not in ("stream", "download"):
+        return None, f"Unsupported data mode: {data_mode}"
+    if int(rows) > MAX_ROWS:
+        return None, f"Rows above the hard cap {MAX_ROWS} (net time + disk)."
 
     data_cand = ([{"name": hf_name.strip(),
                    **({"config": hf_config.strip()} if hf_config.strip() else {})}]
@@ -565,6 +701,7 @@ def build_config(name, preset, ctx, dataset_mode, hf_name, hf_config,
         "data": {"dataset_candidates": data_cand, "rows": int(rows),
                  "val_fraction": float(val_fraction), "dedupe": True,
                  "min_chars": int(min_chars), "shard_tokens": 8000000,
+                 "data_mode": data_mode,
                  "raw_dir": f"data/{name}/raw", "tokens_dir": f"data/{name}/tokens"},
         "train": {"output_dir": f"runs/{name}", "final_dir": f"runs/{name}/final",
                   "max_steps": int(max_steps), "batch": 1, "eval_batch": 4,
@@ -573,25 +710,55 @@ def build_config(name, preset, ctx, dataset_mode, hf_name, hf_config,
                   "weight_decay": 0.1, "max_grad_norm": 1.0,
                   "logging_steps": 50, "eval_steps": 500, "save_steps": 500,
                   "save_total_limit": 3, "fp16": True, "grad_ckpt": True,
-                  "optim": "adamw_torch", "dataloader_num_workers": 0,
+                  "optim": optim, "dataloader_num_workers": 0,
                   "seed": 42},
         "eval": {"max_new_tokens": 64,
                  "prompts": ["def fibonacci(n):", "class Stack:"]},
     }
     out = CONFIGS / f"webui_{name}.yaml"
     import yaml as _yaml
+    if out.is_file():
+        # U6 resume-collision guard: a mismatched regenerated config must
+        # never auto-resume over an old checkpoint of the same run name.
+        old = _yaml.safe_load(out.read_text(encoding="utf-8"))
+        if old != cfg:
+            return None, (f"❌ Resume-collision: `configs/{out.name}` exists "
+                          "with DIFFERENT settings than this form. Re-use a "
+                          "fresh run name, or set the form back to the exact "
+                          "original values to resume.")
+        return out, f"Config unchanged (resume-safe): `{out.name}`"
     out.write_text(_yaml.safe_dump(cfg, sort_keys=False), encoding="utf-8")
     return out, f"Config written: `{out.name}`"
 
 
 def preflight(name, preset, ctx, dataset_mode, hf_name, hf_config,
-              local_path, rows, val_fraction, min_chars, max_steps, lr_label):
+              local_path, rows, val_fraction, min_chars, max_steps, lr_label,
+              optim, data_mode):
     cfg_path, msg = build_config(name, preset, ctx, dataset_mode, hf_name,
                                  hf_config, local_path, rows, val_fraction,
-                                 min_chars, max_steps, lr_label)
+                                 min_chars, max_steps, lr_label, optim,
+                                 data_mode)
     if cfg_path is None:
         return f"❌ {msg}", None
     lines = [f"✅ {msg}", f"GPU: {status.gpu_line()}"]
+    # U7 disk estimate for the chosen mode (raw ≈ rows × ~0.8 KB avg chars;
+    # tokens ≈ rows × ~200 tok × 4 B uint32 — same order), + rotated
+    # checkpoint footprint by preset (save_total_limit 3).
+    rows_i = int(rows)
+    if dataset_mode == "Local file":
+        raw_mb = (ROOT / local_path.strip()).stat().st_size / 2**20
+    else:
+        raw_mb = rows_i * 0.8 / 2**10
+        raw_mb *= {"download": 3.0, "stream": 1.0}[data_mode]  # dl keeps full cache
+    tok_mb = rows_i * 0.8 / 2**10
+    # per-ckpt GB measured on this machine (SFT 226M ckpt = 2.7 GB: ~906 MB
+    # weights + 1.8 GB optimizer); save_total_limit caps at 3 rotated
+    est_gb = {"Small (~12M, smoke)": 0.14, "Medium (~101M, pilot)": 1.2,
+              "Large (~226M, target)": 2.7}[preset]
+    lines.append(f"Disk estimate: raw ~{raw_mb:.0f} MB + tokens ~{tok_mb:.0f} MB"
+                 f" + ~3 rotated ckpts ~{est_gb * 1024:.0f} MB"
+                 + (" (download mode keeps the full HF cache — stream keeps "
+                    "only your rows)" if data_mode == "download" else ""))
     blockers = []
     # our own lingering CUDA context (chat loaded+unloaded earlier) is not a
     # co-running trainer - but a chat model STILL on the GPU blocks the launch
@@ -624,12 +791,14 @@ def preflight(name, preset, ctx, dataset_mode, hf_name, hf_config,
 
 
 def launch_job(name, preset, ctx, dataset_mode, hf_name, hf_config,
-               local_path, rows, val_fraction, min_chars, max_steps, lr_label):
+               local_path, rows, val_fraction, min_chars, max_steps, lr_label,
+               optim, data_mode):
     """Preflight, then start the chain as a detached subprocess. NO kill button:
     crash/kill is recoverable by re-running (auto-resume), never by the UI."""
     report, cfg_path = preflight(name, preset, ctx, dataset_mode, hf_name,
                                  hf_config, local_path, rows, val_fraction,
-                                 min_chars, max_steps, lr_label)
+                                 min_chars, max_steps, lr_label, optim,
+                                 data_mode)
     if cfg_path is None or "❌ BLOCKED" in report:
         return report
     name = cfg_path.stem.removeprefix("webui_")
@@ -652,10 +821,416 @@ def launch_job(name, preset, ctx, dataset_mode, hf_name, hf_config,
                      "finishes.")
 
 
+# ------------------------------------------------------- U10: SFT launch path
+
+SFT_TEMPLATE = "### Instruction:\n{instruction}\n### Response:\n"
+SFT_DATASET = "nickrosh/Evol-Instruct-Code-80k-v1"  # ungated (sft_t1 uses it)
+
+
+def build_sft_config(name, base_label, lora):
+    """U10: SFT config from a picked checkpoint (base, template, FT-LR,
+    forgetting-guard eval kept); LoRA checkbox -> peft block (row 10 hook)."""
+    name = (name or "").strip().lower().replace(" ", "-")
+    import re as _re
+    if not _re.fullmatch(r"[a-z0-9][a-z0-9_-]{0,30}", name):
+        return None, "Invalid run name (a-z, 0-9, '-', '_')."
+    if name in ("smoke", "pilot", "target", "sft_t1", "custom_example",
+                "lora_example"):
+        return None, f"'{name}' is a reserved shipped-config name."
+    base = _ckpts().get(base_label)
+    if base is None or not (base / "config.json").is_file():
+        return None, (f"Base checkpoint not found or has no config.json: "
+                      f"{base_label}")
+    base_rel = base.relative_to(ROOT).as_posix()          # runs/<r>/<ckpt>
+    base_run = base_rel.split("/")[1]
+    if not (ROOT / "data" / base_run / "tokens").is_dir():
+        # the forgetting-guard regression check packs these val shards
+        return None, (f"Forgetting-guard shards missing: data/{base_run}/tokens "
+                      "- pick a checkpoint from a run that was tokenized.")
+    import json as _json
+    base_ctx = _json.loads((base / "config.json").read_text(
+        encoding="utf-8")).get("max_position_embeddings", 1024)
+    cfg = {
+        "name": name,
+        "base_model": base_rel,
+        "tokenizer": {"name": "codellama/CodeLlama-7b-hf", "vocab_size": 32768},
+        "model": {"ctx": base_ctx},
+        "data": {"dataset": SFT_DATASET, "raw_dir": f"data/{name}/raw",
+                 "dataset_dir": f"data/{name}/ds",
+                 "tokens_dir": f"data/{base_run}/tokens", "rows": 20000,
+                 "val_fraction": 0.02, "min_chars": 200,
+                 "min_instruction_chars": 20, "dedupe": True,
+                 "ast_filter": True, "template": SFT_TEMPLATE},
+        "sft": {"ctx": 512, "pilot_rows": 5000},
+        "train": {"output_dir": f"runs/{name}",
+                  "final_dir": f"runs/{name}/final", "epochs": 2, "batch": 1,
+                  "eval_batch": 4, "accum": 16, "lr": 3.0e-5,
+                  "scheduler": "cosine", "warmup_steps": 100,
+                  "weight_decay": 0.1, "max_grad_norm": 1.0,
+                  "logging_steps": 50, "eval_steps": 250, "save_steps": 250,
+                  "save_total_limit": 3, "fp16": True, "grad_ckpt": True,
+                  "optim": "adamw_torch", "dataloader_num_workers": 0,
+                  "seed": 42},
+        "eval": {"max_new_tokens": 256,
+                 "instructions_file":
+                     f"data/{name}/raw/val_instructions.jsonl",
+                 "n_instructions": 50, "sample_temperature": 0.8,
+                 "prompts": [
+                     "### Instruction:\nWrite a Python function that returns "
+                     "the nth Fibonacci number.\n### Response:\n",
+                     "### Instruction:\nWrite a Python class that implements a "
+                     "stack with push, pop and peek.\n### Response:\n"]},
+    }
+    if lora:  # maybe_wrap_peft: adapter-only checkpoints, merged final
+        cfg["peft"] = {"r": 16, "lora_alpha": 32, "lora_dropout": 0.05,
+                       "target_modules": ["q_proj", "k_proj", "v_proj",
+                                          "o_proj", "gate_proj", "up_proj",
+                                          "down_proj"],
+                       "bias": "none"}
+    out = CONFIGS / f"{name}.yaml"
+    import yaml as _yaml
+    if out.is_file():  # same resume-collision guard as build_config
+        old = _yaml.safe_load(out.read_text(encoding="utf-8"))
+        if old != cfg:
+            return None, (f"⚠️ Resume-collision: `configs/{out.name}` exists "
+                          "with DIFFERENT settings than this form. Re-use a "
+                          "fresh run name, or set the form back to the exact "
+                          "original values to resume.")
+        return out, f"Config unchanged (resume-safe): `{out.name}`"
+    out.write_text(_yaml.safe_dump(cfg, sort_keys=False), encoding="utf-8")
+    # chat-lookup stub: the pilot final lands in runs/<name>_pilot, and
+    # load_phase_cfg reads configs/<phase>.yaml - without the stub the pilot
+    # chat load finds no data.template (instruct mode would degrade to raw)
+    n_layers = _json.loads((base / "config.json").read_text(
+        encoding="utf-8")).get("num_hidden_layers", 4)
+    stub = {"name": f"{name}_pilot",
+            "model": {"ctx": base_ctx, "layers": n_layers},
+            "data": {"template": SFT_TEMPLATE}, "sft": {"ctx": 512}}
+    (CONFIGS / f"{name}_pilot.yaml").write_text(
+        _yaml.safe_dump(stub, sort_keys=False), encoding="utf-8")
+    return out, (f"Config written: `{out.name}` (+ `{name}_pilot.yaml` "
+                 "chat stub)")
+
+
+def launch_sft(name, base_label, lora, pilot):
+    """U10: preflight, then chain sft_data (CPU) -> sft (GPU guard) detached."""
+    blockers = []
+    job = _job()
+    if job and _job_alive(job):
+        blockers.append(f"webui job already live: {job.get('phase')} (pid "
+                        f"{job.get('pid')})")
+    others = [h for h in run_custom.gpu_compute_pids()
+              if not h.startswith(f"{os.getpid()},")]
+    if others:
+        blockers.append("a python GPU compute process is live")
+    elif _MODEL is not None and _MODEL["device"] == "cuda":
+        blockers.append("the chat model is loaded on the GPU - unload it in "
+                        "the Chat tab first (single-job rule)")
+    free_gb = shutil.disk_usage(ROOT).free / 2**30
+    if free_gb < MIN_DISK_GB_BLOCK:
+        blockers.append(f"only {free_gb:.1f} GB free")
+    cfg_path, msg = build_sft_config(name, base_label, bool(lora))
+    if cfg_path is None:
+        blockers.append(msg)
+    lines = [f"✅ {msg}", f"GPU: {status.gpu_line()}",
+             f"Disk free: {free_gb:.1f} GB"]
+    if cfg_path is not None:
+        w_mb = _weights_mb(_ckpts()[base_label])
+        # full-FT ckpt ~= fp32 weights + 2x fp32 Adam moments (~12 B/param vs
+        # the fp16 file's ~2 B/param -> ~6x); LoRA checkpoints are adapter-only
+        mult = 0.05 if lora else 6.0
+        lines.append(f"Disk estimate: base weights {w_mb:.0f} MB -> ~3 rotated "
+                     f"ckpts ~{w_mb * mult * 3 / 1024:.1f} GB"
+                     + (", LoRA saves adapter-only" if lora else ""))
+        lines.append("Chain: sft_data (CPU, co-run safe) -> sft (GPU, "
+                     "never-co-run guard, auto-resume) via run_custom.py --sft")
+    if blockers:
+        lines.append("⛔ BLOCKED: " + "; ".join(blockers))
+        return "\n\n".join(lines), gr.update(visible=False)
+    import time as _time
+    out_dir = RUNS / cfg_path.stem
+    out_dir.mkdir(parents=True, exist_ok=True)
+    log_o = (out_dir / "chain_out.log").open("w", encoding="utf-8")
+    log_e = (out_dir / "chain_err.log").open("w", encoding="utf-8")
+    cmd = [str(ROOT / ".venv" / "Scripts" / "python.exe"),
+           str(ROOT / "scripts" / "run_custom.py"), "--config", str(cfg_path),
+           "--sft"] + (["--pilot"] if pilot else [])
+    proc = subprocess.Popen(cmd, cwd=str(ROOT), stdout=log_o, stderr=log_e)
+    JOB_STATE.write_text(
+        json.dumps({"phase": cfg_path.stem, "config": cfg_path.name,
+                    "pid": proc.pid, "sft": True, "pilot": bool(pilot),
+                    "started_utc": _time.strftime("%Y-%m-%dT%H:%M:%SZ",
+                                                  _time.gmtime())}),
+        encoding="utf-8")
+    base_rel = _ckpts()[base_label].relative_to(ROOT).as_posix()
+    base_run = base_rel.split("/")[1]
+    report = (f"🚀 **Launched** SFT `{cfg_path.stem}`"
+              + (" (pilot)" if pilot else "") + f" (pid {proc.pid}).\n"
+              f"Base = `{base_rel}`; forgetting-guard eval kept (tokens_dir "
+              f"-> `data/{base_run}/tokens`).\nWeights land in "
+              f"`runs/{cfg_path.stem}{'_pilot' if pilot else ''}/final`; "
+              "after the run, chat-able in instruct mode.")
+    return report, gr.update(value=cfg_path.read_text(encoding="utf-8"),
+                             visible=True)
+
+
+
+# ----------------------------------------------------------------- U6: resume
+
+def _stop_requested(phase: str) -> bool:
+    return (RUNS / phase / "STOP").is_file() or \
+        (RUNS / f"{phase}_pilot" / "STOP").is_file()
+
+
+def request_stop():
+    """U11 cooperative stop: drop a flag the trainer sees at the next save.
+    NEVER a process kill - the trainer exits cleanly with a valid
+    checkpoint; the exact same command relaunches to resume."""
+    job = _job()
+    if not job or not _job_alive(job):
+        return "⛔ No live job to stop."
+    phase = job.get("phase", "?")
+    out = RUNS / (f"{phase}_pilot"
+                  if job.get("sft") and job.get("pilot") else phase)
+    (out / "STOP").write_text(
+        _time.strftime("%Y-%m-%dT%H:%M:%SZ", _time.gmtime()), encoding="utf-8")
+    return (f"⏹ STOP flag set in `{out.name}/` — the trainer checks it at "
+            "the next checkpoint save, exits cleanly (valid checkpoint on "
+            "disk), and the exact same zero-flag command relaunches to "
+            "resume.")
+
+
+def _job_banner() -> str:
+    """U6: current-job banner for Dashboard + Train (phase, pid, started, ETA)."""
+    job = _job()
+    if not job:
+        return "_No webui-launched job._"
+    phase = job.get("phase", "?")
+    alive = _job_alive(job)
+    started = job.get("started_utc", "?")
+    if alive:
+        note = ("\n\n⏹ **Stop requested** — the trainer will exit cleanly "
+                "at the next checkpoint save." if _stop_requested(phase) else "")
+        return (f"?? **Live job: `{phase}`** - pid {job.get('pid')}, "
+                f"started {started} UTC\n\n{_eta_line(phase)}" + note)
+    # U10: SFT pilots write final to runs/<phase>_pilot - the completed
+    # chain json is the one honest "finished" signal for both pipelines
+    chain = status.load_json(RUNS / phase / "custom_chain.json")
+    if (chain and chain.get("status") == "completed") or \
+            (RUNS / phase / "final" / "train_summary.json").is_file() or \
+            (RUNS / f"{phase}_pilot" / "final" / "train_summary.json").is_file():
+        return (f"? **Last job: `{phase}`** finished "
+                f"(started {started} UTC). No job running.")
+    return (f"⚠️ **Job `{phase}` is not alive** (pid {job.get('pid')}, "
+            f"started {started} UTC) and has no final summary — resume it "
+            "from the Monitor tab.")
+
+
+def _chain_line(phase: str) -> str:
+    """U6: chain-step indicator from runs/<phase>/custom_chain.json, so the
+    pre-checkpoint phase is visible instead of only 'No checkpoint yet.'"""
+    chain = status.load_json(RUNS / phase / "custom_chain.json")
+    if not chain:
+        return ""
+    marks = []
+    done = {s["step"]: s["exit"] for s in chain.get("steps", [])}
+    for step in ["sanity_check", "prepare_data", "tokenize_data", "train",
+                 "eval"]:
+        if step in done:
+            marks.append(f"{'✅' if done[step] == 0 else '❌'} {step}")
+        elif chain.get("status") == f"failed_at_{step}":
+            marks.append(f"❌ {step}")
+        else:
+            marks.append(f"⏳ {step}")
+    st = chain.get("status", "?")
+    txt = " → ".join(marks) + f"  (chain status: `{st}`)"
+    log = RUNS / phase / "chain_out.log"
+    if log.is_file():
+        try:
+            tail = log.read_text(encoding="utf-8", errors="replace")\
+                .splitlines()[-6:]
+            txt += "\n\nchain_out.log tail:\n```\n" + "\n".join(tail) + "\n```"
+        except OSError:
+            pass
+    return txt
+
+
+# ------------------------------------------------------- U8: transparency
+
+def _dir_mb(p: Path) -> float:
+    return sum(f.stat().st_size for f in p.rglob("*") if f.is_file()) / 2**20
+
+
+def _runs_footprint() -> str:
+    """U8: runs/ disk footprint on the Dashboard."""
+    if not RUNS.is_dir():
+        return ""
+    rows = sorted(((_dir_mb(p), p.name) for p in RUNS.iterdir() if p.is_dir()),
+                  reverse=True)
+    if not rows:
+        return ""
+    tops = ", ".join(f"`{n}` {mb:.0f} MB" for mb, n in rows[:5])
+    return (f"\n\n**runs/ footprint:** {sum(m for m, _ in rows) / 1024:.2f} GB "
+            f"across {len(rows)} runs - largest: {tops}")
+
+
+def preview_data(ds_mode, hf_name, hf_config, local_path, rows, min_chars):
+    """U8: first rows + drop counts BEFORE committing, using the exact
+    prepare_data rules (text_of + min_chars + sha1-dedupe) on a bounded
+    window - so preview counts match a small prepare run 1:1."""
+    from prepare_data import iter_local, text_of
+    try:
+        rows, min_chars = max(int(rows or 0), 10), max(int(min_chars or 0), 0)
+    except (TypeError, ValueError):
+        return "Rows / min-chars must be numbers."
+    cap = min(rows, 2000)  # ponytail: preview cap; unbounded scans stay in prepare_data
+    scanned = kept = dmin = ddupe = 0
+    seen, samples = set(), []
+    it = None
+    try:
+        if ds_mode == "Local file":
+            p = ROOT / str(local_path or "").strip()
+            if not p.is_file():
+                return f"? Local file not found: `{local_path}`"
+            it = iter_local(p)
+        else:
+            name = str(hf_name or "").strip()
+            if not name:
+                return "? Give an HF dataset name first."
+            from datasets import load_dataset
+            it = iter(load_dataset(name, str(hf_config or "").strip() or None,
+                                   split="train", streaming=True))
+        for ex in it:
+            if kept >= cap:
+                break
+            scanned += 1
+            text = text_of(ex)
+            if len(text) < min_chars:
+                dmin += 1
+                continue
+            h = __import__("hashlib").sha1(text.encode("utf-8")).hexdigest()
+            if h in seen:
+                ddupe += 1
+                continue
+            seen.add(h)
+            if len(samples) < 3:
+                samples.append(text[:120].replace("\n", " "))
+            kept += 1
+    except Exception as e:  # noqa: BLE001 - network/format errors are data
+        return f"? Preview failed after {scanned} rows: {e}"
+    n_val = max(1, round(rows * 0.02))
+    lines = [f"**Preview** (window: {scanned} scanned, kept {kept} / target "
+             f"{rows}):",
+             f"- dropped by min_chars ({min_chars}): {dmin}",
+             f"- dropped as duplicates: {ddupe}",
+             f"- projected split at target rows: ~{max(rows - n_val, 0)} train "
+             f"+ {n_val} val (prepare's formula)"]
+    lines += [f"- sample {i+1}: `{s}`" for i, s in enumerate(samples)]
+    if scanned < rows:
+        lines.append(f"- ? stream ended at {scanned} rows - a full run would "
+                     "fail prepare's row check")
+    return "\n".join(lines)
+
+
+_LAST_OVERLAY_FIG = None
+
+
+def overlay_fig(selected):
+    """U8: eval/loss overlay across runs (compare phases)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    global _LAST_OVERLAY_FIG
+    if _LAST_OVERLAY_FIG is not None:
+        plt.close(_LAST_OVERLAY_FIG)
+    fig, ax = plt.subplots(figsize=(8, 4))
+    found = False
+    for name in selected or []:
+        d = RUNS / name
+        if not d.is_dir():
+            continue
+        s, v = _full_curve(d / "logs", "eval/loss")
+        if s:
+            ax.plot(s, v, marker="o", markersize=3, linewidth=1.2, label=name)
+            found = True
+    if not found:
+        ax.text(0.5, 0.5, "no eval curves in the selected runs", ha="center")
+        ax.set_xticks([]), ax.set_yticks([])
+    else:
+        ax.set_xlabel("step"), ax.set_ylabel("eval/loss")
+        ax.legend(), ax.grid(alpha=0.3)
+    fig.tight_layout()
+    _LAST_OVERLAY_FIG = fig
+    return fig
+
+
+def resume_job():
+    """U6: one-click Resume — re-launch the exact same config with ZERO
+    flags (the auto-resume contract); never edits the config."""
+    job = _job()
+    if not job:
+        return _job_banner(), "Nothing to resume — no webui job recorded."
+    if _job_alive(job):
+        return _job_banner(), f"Job `{job.get('phase')}` is still live (pid "\
+            f"{job.get('pid')}) — nothing to resume."
+    cfg_name = job.get("config", "")
+    cfg_path = CONFIGS / cfg_name
+    if not cfg_name or not cfg_path.is_file():
+        return _job_banner(), (f"❌ Resume refused: `{cfg_name}` is missing "
+                               "from configs/ — regenerate it in the Train "
+                               "tab (identical form inputs) and launch.")
+    phase = job.get("phase", cfg_path.stem.removeprefix("webui_"))
+    import time as _time
+    log_o = (RUNS / phase / "chain_out.log").open("a", encoding="utf-8")
+    log_e = (RUNS / phase / "chain_err.log").open("a", encoding="utf-8")
+    proc = subprocess.Popen(
+        [str(ROOT / ".venv" / "Scripts" / "python.exe"),
+         str(ROOT / "scripts" / "run_custom.py"), "--config", str(cfg_path)],
+        cwd=str(ROOT), stdout=log_o, stderr=log_e)
+    JOB_STATE.write_text(
+        json.dumps({"phase": phase, "config": cfg_name, "pid": proc.pid,
+                    "started_utc": job.get("started_utc", ""),
+                    "resumed_utc": _time.strftime("%Y-%m-%dT%H:%M:%SZ",
+                                                  _time.gmtime())}),
+        encoding="utf-8")
+    _NOTIFIED.discard(f"{phase}@{job.get('started_utc', '')}")
+    return _job_banner(), (f"🚀 **Resumed** `{phase}` (new pid {proc.pid}) — "
+                           "same config, zero flags; auto-resume picks up "
+                           "from the last checkpoint.")
+
+
+# ------------------------------------------------------------------ U11: JS
+
+_POLL_JS = """() => {
+  let last = null;
+  const tick = async () => {
+    try {
+      if (localStorage.getItem('u11_notif') !== '1') { last = null; return; }
+      const j = await (await fetch('/api/job_done')).json();
+      if (j.finished && last && !last.finished && window.Notification &&
+          Notification.permission === 'granted')
+        new Notification('nano_SLMs',
+                         {body: 'Run ' + (j.phase || '?') + ' finished'});
+      last = j;
+    } catch (e) {}
+  };
+  setInterval(tick, 20000);
+  tick();
+}"""
+
+_ENABLE_NOTIF_JS = """async () => {
+  if (!window.Notification) return '⚠️ Notifications not supported here';
+  const p = await Notification.requestPermission();
+  localStorage.setItem('u11_notif', p === 'granted' ? '1' : '0');
+  return p === 'granted' ? '✅ Browser notifications enabled for run completion'
+      : '⚠️ Permission: ' + p;
+}"""
+
 with gr.Blocks(title="nano_SLMs") as demo:
     with gr.Tab("Dashboard"):
         gr.Markdown("# nano_SLMs - run dashboard (read-only)")
         head = gr.Markdown()
+        dash_job = gr.Markdown(value=_job_banner())
         table = gr.Dataframe(
             headers=["phase", "latest ckpt", "step", "best_eval", "params",
                      "eval/loss tail", "eval report"],
@@ -666,23 +1241,31 @@ with gr.Blocks(title="nano_SLMs") as demo:
 
         def refresh():
             h, t, ps = snapshot()
-            return h, t, gr.update(choices=ps)
+            return h, t, gr.update(choices=ps), _job_banner()
 
         def refresh_and_keep(name):
             h, t, ps = snapshot()
             if name not in ps and ps:
                 name = ps[-1]
-            return h, t, gr.update(choices=ps, value=name), detail(name)
+            return (h, t, gr.update(choices=ps, value=name), detail(name),
+                    _job_banner())
 
         demo.load(refresh_and_keep, inputs=pick,
-                  outputs=[head, table, pick, info])
+                  outputs=[head, table, pick, info, dash_job])
         timer = gr.Timer(30)
         timer.tick(refresh_and_keep, inputs=pick,
-                   outputs=[head, table, pick, info])
+                   outputs=[head, table, pick, info, dash_job])
         pick.change(detail, inputs=pick, outputs=info)
 
     with gr.Tab("Monitor"):
         gr.Markdown("# Live monitor (read-only)")
+        mon_job_md = gr.Markdown(value=_job_banner())
+        stop_btn = gr.Button("⏹ Request stop (cooperative: exits at next "
+                             "checkpoint save — never a kill)", variant="stop")
+        stop_md = gr.Markdown()
+        stop_btn.click(request_stop, inputs=None, outputs=[stop_md])
+        resume_btn = gr.Button("♻️ Resume dead job (same config, zero flags)")
+        resume_md = gr.Markdown()
         mon_dd = gr.Dropdown(choices=phases(), label="Run",
                              allow_custom_value=True)
         mon_plot = gr.Plot(label="Loss curves")
@@ -690,10 +1273,15 @@ with gr.Blocks(title="nano_SLMs") as demo:
         mon_log = gr.Markdown()
         gr.Markdown("### Eval report card")
         mon_eval = gr.Markdown()
+        with gr.Accordion("U8: multi-run loss overlay", open=False):
+            ov_pick = gr.Dropdown(choices=phases(), multiselect=True,
+                                  label="Runs to overlay (eval/loss)")
+            ov_btn = gr.Button("Render overlay")
+            ov_plot = gr.Plot()
         with gr.Accordion("Danger zone — delete a checkpoint", open=False):
             gr.Markdown("Permanent `shutil.rmtree` of `runs/<run>/checkpoint-*` "
-                        "folders. Refused while that run is live or the chat "
-                        "service has it loaded.")
+                        "folders (sizes shown per checkpoint). Refused while "
+                        "that run is live or the chat service has it loaded.")
             del_dd = gr.Dropdown(choices=[], label="Checkpoint (under the selected run)",
                                  interactive=True)
             del_confirm = gr.Checkbox(
@@ -707,25 +1295,29 @@ with gr.Blocks(title="nano_SLMs") as demo:
                 ps = phases()
                 if not ps:
                     return (None, "No runs yet.", "", "",
-                            gr.update(), gr.update(choices=[]))
+                            gr.update(), gr.update(choices=[]), _job_banner())
                 name = ps[-1]
             fig, prog, log, ev = monitor_data(name)
             return (fig, prog, log, ev,
                     gr.update(choices=phases(), value=name),
-                    gr.update(choices=_ckpt_choices(name), value=None))
+                    gr.update(choices=_ckpt_choices(name), value=None),
+                    _job_banner())
 
         demo.load(mon_all, inputs=mon_dd,
-                  outputs=[mon_plot, mon_prog, mon_log, mon_eval, mon_dd, del_dd])
+                  outputs=[mon_plot, mon_prog, mon_log, mon_eval, mon_dd,
+                           del_dd, mon_job_md])
         mon_timer = gr.Timer(10)
         mon_timer.tick(mon_all, inputs=mon_dd,
                        outputs=[mon_plot, mon_prog, mon_log, mon_eval,
-                                mon_dd, del_dd])
+                                mon_dd, del_dd, mon_job_md])
         mon_dd.change(mon_all, inputs=mon_dd,
                       outputs=[mon_plot, mon_prog, mon_log, mon_eval,
-                               mon_dd, del_dd])
+                               mon_dd, del_dd, mon_job_md])
+        resume_btn.click(resume_job, inputs=[], outputs=[mon_job_md, resume_md])
         del_btn.click(_delete_ckpt,
                       inputs=[mon_dd, del_dd, del_confirm],
                       outputs=[del_md, del_dd, del_confirm])
+        ov_btn.click(overlay_fig, inputs=ov_pick, outputs=ov_plot)
 
     with gr.Tab("Train"):
         gr.Markdown(
@@ -733,7 +1325,8 @@ with gr.Blocks(title="nano_SLMs") as demo:
             "Generates `configs/webui_<name>.yaml` and starts the standard "
             "chain via `run_custom.py` (sanity → data → tokenize → train → "
             "eval, stop-on-fail, auto-resume). There is **no stop button** — "
-            "a crashed run resumes by re-launching the same thing.")
+            "a crashed/killed run resumes via the one-click Resume button in "
+            "the Monitor tab (same config, zero flags).")
         with gr.Row():
             tr_name = gr.Textbox(label="Run name", placeholder="my_first_run")
             tr_preset = gr.Dropdown(choices=list(PRESETS), value=list(PRESETS)[0],
@@ -748,6 +1341,11 @@ with gr.Blocks(title="nano_SLMs") as demo:
             hf_cfg = gr.Textbox(label="HF config (optional)", value="")
             local_path = gr.Textbox(label="Local file (repo-relative)",
                                     visible=False)
+        # U7: stream-pack default (disk bounded by rows); download caches the
+        # full dataset first. Per-step net-feeding was REJECTED in the PRD.
+        ds_data_mode = gr.Radio(
+            ["Stream (low disk)", "Download full local cache"],
+            value="Stream (low disk)", label="Data mode")
         with gr.Row():
             tr_rows = gr.Number(value=20000, label="Rows", precision=0)
             tr_val = gr.Number(value=0.02, label="Val fraction")
@@ -757,6 +1355,13 @@ with gr.Blocks(title="nano_SLMs") as demo:
                                  label="Max steps")
             tr_lr = gr.Dropdown(choices=list(LR_PRESETS), value=list(LR_PRESETS)[0],
                                 label="Learning-rate preset")
+            # U6: 8-bit is the Milestone B default (TASKS rows 11/18); fp32
+            # kept as the manual fallback.
+            tr_optim = gr.Dropdown(choices=["adamw_bnb_8bit", "adamw_torch"],
+                                   value="adamw_bnb_8bit",
+                                   label="Optimizer (8-bit = Milestone B default)")
+        train_job_md = gr.Markdown(value=_job_banner())
+        gr.Timer(30).tick(_job_banner, inputs=[], outputs=train_job_md)
 
         def ds_toggle(mode):
             return gr.update(visible=mode == "HF dataset"), \
@@ -766,13 +1371,53 @@ with gr.Blocks(title="nano_SLMs") as demo:
         ds_mode.change(ds_toggle, inputs=ds_mode,
                        outputs=[hf_name, hf_cfg, local_path])
         pre_md = gr.Markdown()
+        # U8: read-only disclosure of the generated config before Start
+        yaml_code = gr.Code(label="Generated config (read-only)",
+                            interactive=False, language="yaml",
+                            visible=False)
+
+        def pre_and_yaml(*a):
+            report, cfg_path = preflight(*a)
+            txt = cfg_path.read_text(encoding="utf-8") if cfg_path else ""
+            return report, gr.update(value=txt, visible=bool(txt))
+
+        # U8: dataset preview before committing (same rules as prepare_data)
+        pre_data_md = gr.Markdown()
+        prev_btn = gr.Button("Preview dataset (first rows + drop counts)")
+        prev_args = [ds_mode, hf_name, hf_cfg, local_path, tr_rows, tr_min]
         with gr.Row():
             pre_btn = gr.Button("Preflight (writes config)")
-            go_btn = gr.Button("🚀 Start training", variant="primary")
+            go_btn = gr.Button("?? Start training", variant="primary")
         args = [tr_name, tr_preset, tr_ctx, ds_mode, hf_name, hf_cfg,
-                local_path, tr_rows, tr_val, tr_min, tr_steps, tr_lr]
-        pre_btn.click(preflight, inputs=args, outputs=pre_md)
+                local_path, tr_rows, tr_val, tr_min, tr_steps, tr_lr,
+                tr_optim, ds_data_mode]
+        pre_btn.click(pre_and_yaml, inputs=args, outputs=[pre_md, yaml_code])
         go_btn.click(launch_job, inputs=args, outputs=pre_md)
+        prev_btn.click(preview_data, inputs=prev_args, outputs=pre_data_md)
+
+        # ------- U10: SFT from checkpoint (sft_data -> sft chain, pilot-first)
+        with gr.Accordion("SFT from checkpoint (fine-tune, U10)", open=False):
+            gr.Markdown(
+                "Fine-tunes a **picked checkpoint** on Evol-Instruct pairs "
+                "(instruct template, Fine-tune LR 3e-5, forgetting-guard eval "
+                "kept). LoRA = adapter-only checkpoints + merged final. "
+                "Chain: `sft_data.py` (CPU, co-run safe) -> `sft.py` under "
+                "the single-job lock.")
+            sft_name = gr.Textbox(label="SFT run name", placeholder="sft_fib")
+            with gr.Row():
+                sft_base = gr.Dropdown(choices=list(_ckpts()),
+                                       label="Base checkpoint")
+                with gr.Column():
+                    sft_lora = gr.Checkbox(label="LoRA adapter (peft, r=16)")
+                    sft_pilot = gr.Checkbox(
+                        label="Pilot (5k pairs, 1 epoch)", value=True)
+            sft_btn = gr.Button("Preflight + launch SFT", variant="primary")
+        sft_md = gr.Markdown()
+        sft_yaml = gr.Code(label="Generated SFT config (read-only)",
+                           interactive=False, language="yaml", visible=False)
+        sft_btn.click(launch_sft, inputs=[sft_name, sft_base, sft_lora,
+                                          sft_pilot],
+                      outputs=[sft_md, sft_yaml])
 
     with gr.Tab("Chat"):
         gr.Markdown(
@@ -798,8 +1443,14 @@ with gr.Blocks(title="nano_SLMs") as demo:
             topp = gr.Slider(0.1, 1.0, value=0.95, step=0.05, label="Top-p")
             topk = gr.Slider(1, 200, value=50, step=1, label="Top-k")
 
+        # U9: generation-level stop (token-level; the model stays usable)
+        with gr.Row():
+            stop_btn = gr.Button("Stop generation", variant="stop", scale=0)
+            stop_md = gr.Markdown()
+        stop_btn.click(_stop_gen, inputs=[], outputs=stop_md)
+
         chat = gr.ChatInterface(
-            chat_generate,
+            chat_stream,
             additional_inputs=[instruct_box, sample_box, n_new, temp,
                                topp, topk],
             title=None,
@@ -810,6 +1461,62 @@ with gr.Blocks(title="nano_SLMs") as demo:
         load_btn.click(load_model, inputs=ckpt_dd, outputs=model_md)
         unload_btn.click(unload_model, outputs=model_md)
         ckpt_dd.change(pick_checkpoint, inputs=ckpt_dd, outputs=instruct_box)
+
+        def refresh_ckpts(current):
+            return gr.update(choices=list(_ckpts()), value=current)
+
+        # U6: a fresh run's checkpoints appear in the picker without a reload
+        gr.Timer(15).tick(refresh_ckpts, inputs=ckpt_dd, outputs=ckpt_dd)
+
+    with gr.Tab("Settings"):
+        gr.Markdown(
+            "# Settings — API keys (U7)\n"
+            "Secrets live in the gitignored project-root `.env` "
+            "(`prepare_data.py` auto-loads it for gated HF datasets; "
+            "`exa_search.py` reads `EXA_API_KEY` from it). Values are "
+            "**never displayed, logged, or written into configs** — the "
+            "table below shows only the last 4 chars.")
+        keys_md = gr.Markdown(value=keys_status_md())
+        key_dd = gr.Dropdown(choices=list(KNOWN_KEYS), value="HF_TOKEN",
+                             label="Key")
+        key_val = gr.Textbox(label="Value (write-only; stored to .env)",
+                             type="password")
+        with gr.Row():
+            key_set_btn = gr.Button("Add / override", variant="primary")
+            key_del_btn = gr.Button("Delete key", variant="stop")
+        key_md = gr.Markdown()
+        key_set_btn.click(set_key, inputs=[key_dd, key_val],
+                          outputs=[keys_md, key_md])
+        key_del_btn.click(del_key, inputs=[key_dd], outputs=[keys_md, key_md])
+
+        with gr.Accordion("U11: browser notifications (run finished)",
+                          open=False):
+            gr.Markdown("Asks the browser for permission (stored locally); a "
+                        "desktop notification fires when a webui job "
+                        "finishes — beside the in-page toast + webhook.")
+            notif_btn = gr.Button("Enable browser notifications")
+            notif_md = gr.Markdown()
+        notif_btn.click(fn=None, inputs=None, outputs=[notif_md],
+                        js=_ENABLE_NOTIF_JS)
+    demo.load(fn=None, inputs=None, outputs=None, js=_POLL_JS)
+
+# ------------------------------------------------------------------ U11: API
+
+def _api_job_done() -> dict:
+    """Client-side poller endpoint for browser notifications."""
+    job = _job() or {}
+    alive = bool(job) and _job_alive(job)
+    phase = job.get("phase")
+    finished = False
+    if phase and not alive:
+        chain = status.load_json(RUNS / phase / "custom_chain.json")
+        finished = bool(chain and chain.get("status") == "completed") or \
+            (RUNS / phase / "final" / "train_summary.json").is_file() or \
+            (RUNS / f"{phase}_pilot" / "final" / "train_summary.json").is_file()
+    return {"phase": phase, "live": alive, "finished": finished}
+
+
+demo.app.add_api_route("/api/job_done", _api_job_done, methods=["GET"])
 
 if __name__ == "__main__":
     import argparse
@@ -823,7 +1530,13 @@ if __name__ == "__main__":
                          "(else $WEBUI_WEBHOOK_URL)")
     ap.add_argument("--port", type=int, default=CHAT_PORT)
     ap.add_argument("--no-browser", action="store_true")
+    ap.add_argument("--ssl-certfile", default=None, metavar="PEM",
+                    help="U11: optional HTTPS for LAN (with --ssl-keyfile)")
+    ap.add_argument("--ssl-keyfile", default=None, metavar="PEM")
     a = ap.parse_args()
+    if a.lan and not a.auth:  # U6: delete + launch must never be LAN-open
+        sys.exit("--lan requires --auth USER:PASS (a LAN-exposed unauthenticated "
+                 "UI could delete checkpoints or launch GPU jobs).")
     if a.webhook:
         WEBHOOK_URL = a.webhook
     auth = None
@@ -833,4 +1546,5 @@ if __name__ == "__main__":
             sys.exit("--auth expects USER:PASS")
         auth = (user, pw)
     demo.launch(server_name="0.0.0.0" if a.lan else "127.0.0.1",
-                server_port=a.port, auth=auth, inbrowser=not a.no_browser)
+                server_port=a.port, auth=auth, inbrowser=not a.no_browser,
+                ssl_certfile=a.ssl_certfile, ssl_keyfile=a.ssl_keyfile)

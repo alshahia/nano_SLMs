@@ -97,6 +97,11 @@ def main() -> None:
     n_train = n_rows - n_val
     min_chars = int(d.get("min_chars", 60))
     dedupe = bool(d.get("dedupe", True))
+    # U7 data modes (WEBUI_PRD.md 2): "stream" (default) bounds disk by
+    # rows; "download" caches the full dataset under raw_dir/hf_cache first.
+    mode = d.get("data_mode", "stream")
+    if mode not in ("stream", "download"):
+        raise SystemExit(f"[prepare] unsupported data_mode: {mode!r}")
 
     out_train = raw_dir / "train.jsonl"
     out_val = raw_dir / "val.jsonl"
@@ -114,6 +119,12 @@ def main() -> None:
         try:
             if "path" in cand:
                 ds = iter_local(loc)
+            elif mode == "download":
+                print(f"[prepare] mode=download: fetching full {name} into "
+                      f"{raw_dir / 'hf_cache'} first (disk-bounded, not "
+                      "row-bounded)", flush=True)
+                ds = load_dataset(name, sub, split="train", streaming=False,
+                                  cache_dir=str(raw_dir / "hf_cache"))
             else:
                 ds = load_dataset(name, sub, split="train", streaming=True)
             seen = set()
@@ -147,9 +158,16 @@ def main() -> None:
             return
         except Exception as e:
             last_err = e
-            print(f"[prepare] {name} failed: {type(e).__name__}: {e}", flush=True)
+            es = str(e)
+            hint = ""
+            if "401" in es or "403" in es or "gated" in es.lower():
+                hint = (" [gated dataset - add HF_TOKEN to the project-root "
+                        ".env (web UI: Settings tab), then retry]")
+            print(f"[prepare] {name} failed: {type(e).__name__}: {es}{hint}",
+                  flush=True)
 
-    raise SystemExit(f"[prepare] all dataset candidates failed; last error: {last_err}")
+    raise SystemExit(f"[prepare] all dataset candidates failed; last error: "
+                     f"{last_err}")
 
 
 if __name__ == "__main__":

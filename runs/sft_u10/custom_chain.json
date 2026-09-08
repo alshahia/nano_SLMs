@@ -1,0 +1,18 @@
+{
+  "config": "E:\\python_projects\\nano_SLMs\\configs\\sft_u10.yaml",
+  "phase": "sft_u10",
+  "steps": [
+    {
+      "step": "sft_data",
+      "exit": 0,
+      "seconds": 77.0
+    },
+    {
+      "step": "sft",
+      "exit": 0,
+      "seconds": 325.3
+    }
+  ],
+  "started": "2026-09-08T21:07:12",
+  "status": "completed"
+}

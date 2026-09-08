@@ -27,6 +27,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 STEPS = ["sanity_check", "prepare_data", "tokenize_data", "train", "eval"]
 GPU_STEPS = {"train", "eval"}
+# U10: fine-tune chain (Train tab "SFT from checkpoint"). sft_data is CPU +
+# network only (co-run safe); sft obeys the never-co-run rule like train.
+SFT_STEPS = ["sft_data", "sft"]
+SFT_GPU_STEPS = {"sft"}
 
 
 def _pid_alive(pid):
@@ -153,6 +157,11 @@ def main() -> None:
                     help="print the planned commands and exit")
     ap.add_argument("--allow_gpu_share", action="store_true",
                     help="permit train/eval while another GPU process runs")
+    ap.add_argument("--sft", action="store_true",
+                    help="fine-tune chain (sft_data -> sft) instead of the "
+                         "pretrain pipeline")
+    ap.add_argument("--pilot", action="store_true",
+                    help="passed to sft.py: first sft.pilot_rows pairs, 1 epoch")
     args = ap.parse_args()
 
     import yaml
@@ -166,10 +175,21 @@ def main() -> None:
     cfg_arg = str(cfg_path if cfg_path.is_absolute() else
                   Path("configs") / cfg_path.name)
 
-    start_i = STEPS.index(args.from_step)
-    plan = [s for s in STEPS[start_i:]]
-    commands = {s: [sys.executable, str(ROOT / "scripts" / f"{s}.py"),
-                    "--config", cfg_arg] for s in plan}
+    steps_all = SFT_STEPS if args.sft else STEPS
+    gpu_steps = SFT_GPU_STEPS if args.sft else GPU_STEPS
+    start_i = steps_all.index(args.from_step) \
+        if args.from_step in steps_all else 0
+    plan = [s for s in steps_all[start_i:]]
+    if args.sft:
+        sft_cmd = [sys.executable, str(ROOT / "scripts" / "sft.py"),
+                   "--config", cfg_arg] + (["--pilot"] if args.pilot else [])
+        commands = {"sft_data": [sys.executable,
+                                 str(ROOT / "scripts" / "sft_data.py"),
+                                 "--config", cfg_arg],
+                    "sft": sft_cmd}
+    else:
+        commands = {s: [sys.executable, str(ROOT / "scripts" / f"{s}.py"),
+                        "--config", cfg_arg] for s in plan}
 
     print(f"[run_custom] phase={phase} steps={plan} dry_run={args.dry_run}",
           flush=True)
@@ -188,7 +208,7 @@ def main() -> None:
     out_dir = ROOT / "runs" / phase
     out_dir.mkdir(parents=True, exist_ok=True)
     for s in plan:
-        if s in GPU_STEPS and not args.allow_gpu_share:
+        if s in gpu_steps and not args.allow_gpu_share:
             busy = gpu_busy_others()
             if busy:
                 msg = (f"GPU busy ({len(busy)} compute process/es: {busy}) - "

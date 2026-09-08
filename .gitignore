@@ -62,5 +62,11 @@ runs/sft_v2*/final/model.safetensors
 runs/kd-s-*/checkpoint-*/
 runs/kd-s-*/final/model.safetensors
 
+# Web UI gate-run pilots (U10/U11): weights stay local like sft_t1/sft_v2 -
+# only summaries, chain json, tokenizer files and tfevents stay tracked.
+runs/sft_u1*/checkpoint-*/
+runs/sft_u1*/final/model.safetensors
+runs/sft_u1*/*.log
+
 # Web UI transient launch state (pid etc.) - never meaningful in git
 webui/job_state.json

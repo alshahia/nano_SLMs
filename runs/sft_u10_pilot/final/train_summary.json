@@ -1,0 +1,17 @@
+{
+  "phase": "sft_u10",
+  "base_model": "runs/smoke/final",
+  "pilot": true,
+  "pairs": 5000,
+  "params_m": 12.32,
+  "best_eval_loss": 4.197136402130127,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\sft_u10_pilot\\checkpoint-313",
+  "final_eval": {
+    "eval_loss": 4.197136402130127,
+    "eval_runtime": 3.3361,
+    "eval_samples_per_second": 119.899,
+    "eval_steps_per_second": 29.975,
+    "epoch": 1.0
+  },
+  "resumed_from": null
+}

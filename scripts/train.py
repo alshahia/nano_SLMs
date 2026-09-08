@@ -19,6 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 
+from src.stop import CoopStopCallback, clear_stop_flag  # noqa: E402
+
+
 def find_latest_checkpoint(output_dir: Path):
     if not output_dir.is_dir():
         return None
@@ -109,6 +112,8 @@ def main() -> None:
     resume_from = find_latest_checkpoint(output_dir)
     if resume_from is not None:
         print(f"[resume] found {resume_from.name} -> auto-resume enabled", flush=True)
+    if clear_stop_flag(output_dir):
+        print("[stop] cleared stale STOP flag -> continuing", flush=True)
 
     targs = TrainingArguments(
         output_dir=str(output_dir),
@@ -142,6 +147,7 @@ def main() -> None:
     )
 
     trainer = Trainer(
+        callbacks=[CoopStopCallback()],
         model=model,
         args=targs,
         train_dataset=train_ds,
