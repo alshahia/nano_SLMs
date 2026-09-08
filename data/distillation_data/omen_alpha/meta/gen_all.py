@@ -5,10 +5,10 @@ Targets: A 11250 / B 8750 / C 2500 / D 2500 = 25000.
 Growth history: 5k (topics to A23/B18/C10/D25), 10k (A46/B36/C20/D50),
 25k (A114/B89/C50/D125). D topics 51-125 live in D_TOPICS_EXT, concatenated
 onto D_TOPICS just above main().
-Topic machinery mirrors minimax3/data/distillation_data/gen_shape_*.py,
+Topic machinery mirrors data/distillation_data/minimax3/gen_shape_*.py,
 including the _strip_outer_parens fix from that corpus HANDOFF section 16.
 
-Run:  & .venv/Scripts/python.exe minimax3/data/omen_alpha/meta/gen_all.py
+Run:  & .venv/Scripts/python.exe data/distillation_data/omen_alpha/meta/gen_all.py
 Out:  omen_alpha/<shape>/batches/batch_gNNN.jsonl  (one per topic)
 
 Design rules (gen_lib): build code as line lists, validate with ast.parse

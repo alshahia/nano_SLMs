@@ -21,7 +21,7 @@ model:
 
 data:
   # minimax3 distillation corpus (local pairs file; sft_data.py local path)
-  dataset: minimax3/data/distillation_data/combined/all_train.jsonl
+  dataset: data/distillation_data/minimax3/combined/all_train.jsonl
   raw_dir: data/sft/minimax3           # source.txt, meta.json, val_instructions.jsonl
   dataset_dir: data/sft/minimax3/ds
   # CSN val shards for the forgetting-guard regression check (same gate as T1):

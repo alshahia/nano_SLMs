@@ -4,7 +4,7 @@ import json, hashlib, sys, os
 from pathlib import Path
 from datetime import datetime, timezone
 
-ROOT = Path('E:/python projects/nano_SLMs/minimax3/data/distillation_data')
+ROOT = Path('E:/python_projects/nano_SLMs/data/distillation_data/distillation_data')
 
 def sha256(p):
     h = hashlib.sha256()

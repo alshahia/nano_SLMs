@@ -73,7 +73,7 @@ def fix_pair(pair):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--root', default='minimax3/data/distillation_data')
+    ap.add_argument('--root', default='data/distillation_data/distillation_data')
     ap.add_argument('--dry', action='store_true')
     args = ap.parse_args()
 

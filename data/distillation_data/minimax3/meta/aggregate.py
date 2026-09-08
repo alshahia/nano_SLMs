@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
-"""Aggregate per-shape batches into train.jsonl + combined/ + meta/stats.json
-for the omen_alpha corpus. Same logic as distillation_data/meta/aggregate.py,
-with ROOT pointing at omen_alpha. Exits 2 on any validation error."""
+"""Aggregate per-shape seed.jsonl + batches/batch_*.jsonl into train.jsonl + combined/ + meta/stats.json."""
 import json, hashlib, random, re, sys, ast
 from pathlib import Path
 from datetime import datetime, timezone
 
-ROOT = Path('E:/python projects/nano_SLMs/minimax3/data/omen_alpha')
+ROOT = Path('E:/python_projects/nano_SLMs/data/distillation_data/distillation_data')
 SHAPES = ['shape_a_instruction_code', 'shape_b_completion', 'shape_c_bugfix', 'shape_d_reasoning']
 _D_FENCE = re.compile(r'```python\n(.*?)```', re.DOTALL)
-VAL_FRACTION = 0.05  # 5% val
+VAL_FRACTION = 0.05  # 5% val from the larger corpus
 
 def sha256(p):
     h = hashlib.sha256()
@@ -37,7 +35,7 @@ def load_pairs(shape_dir):
 
 def validate(shape_name, rows):
     errors = []
-    seen_responses = {}
+    seen_responses = {}  # for cross-batch dedup detection
     for i, (src, r) in enumerate(rows):
         try:
             if shape_name == 'shape_b_completion':
@@ -90,15 +88,20 @@ def main():
             for e in errs[:15]: print(' ', e, file=sys.stderr)
             if len(errs) > 15: print(f'  ... and {len(errs)-15} more', file=sys.stderr)
             sys.exit(2)
-        n_batch = len(rows)
-        token_est = sum((len(json.dumps(r)) // 4) for _, r in rows)
+        n_seed = sum(1 for s, _ in rows if s == 'seed')
+        n_batch = sum(1 for s, _ in rows if s.startswith('batch:'))
+        n_total = len(rows)
+        token_est = sum(
+            (len(json.dumps(r)) // 4)
+            for _, r in rows
+        )
         stats['shapes'][shape] = {
-            'seed_pairs': 0,
+            'seed_pairs': n_seed,
             'batch_pairs': n_batch,
-            'total_pairs': n_batch,
+            'total_pairs': n_total,
             'est_tokens': token_est,
         }
-        print(f'{shape}: batch={n_batch} est_tokens={token_est}')
+        print(f'{shape}: seed={n_seed} batch={n_batch} total={n_total} est_tokens={token_est}')
 
         for src, r in rows:
             r2 = dict(r)
@@ -106,6 +109,9 @@ def main():
             r2['_shape'] = shape
             all_train.append(r2)
 
+        seed_path = sdir / 'seed.jsonl'
+        if seed_path.exists():
+            stats['files'][str(seed_path)] = sha256(seed_path)
         batches_dir = sdir / 'batches'
         if batches_dir.exists():
             for bf in sorted(batches_dir.glob('batch_*.jsonl')):
@@ -127,10 +133,13 @@ def main():
             r2 = {k: v for k, v in r.items() if not k.startswith('_')}
             f.write(json.dumps(r2, ensure_ascii=False) + '\n')
 
+    # Per-shape train.jsonl (seeds + all batches, shuffled, no metadata fields)
     for shape in SHAPES:
         sdir = ROOT / shape
         rows = load_pairs(sdir)
-        shape_rows = [dict(r) for _, r in rows]
+        shape_rows = []
+        for src, r in rows:
+            shape_rows.append({k: v for k, v in r.items()})
         rng.shuffle(shape_rows)
         train_path_shape = sdir / 'train.jsonl'
         with open(train_path_shape, 'w', encoding='utf-8') as f:
@@ -153,7 +162,9 @@ def main():
         json.dump(stats, f, indent=2, ensure_ascii=False)
 
     print(f'\nWrote {len(all_train_remaining)} train + {len(all_val)} val to {combined_dir}')
+
     print(f'Stats: {stats_path}')
+
 
 if __name__ == '__main__':
     main()

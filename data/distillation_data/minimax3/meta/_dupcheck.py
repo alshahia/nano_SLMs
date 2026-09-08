@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-ROOT = Path('minimax3/data/distillation_data')
+ROOT = Path('data/distillation_data/distillation_data')
 SHAPES = ['shape_a_instruction_code', 'shape_b_completion', 'shape_c_bugfix', 'shape_d_reasoning']
 
 for shape in SHAPES:

@@ -21,7 +21,7 @@ from typing import Iterable, List, Tuple
 
 # Anchor at this file's location so the generators work regardless of CWD.
 META_DIR = Path(__file__).resolve().parent
-DATA_ROOT = META_DIR.parent  # .../minimax3/data/distillation_data
+DATA_ROOT = META_DIR.parent  # .../data/distillation_data/distillation_data
 
 SHAPES = [
     'shape_a_instruction_code',

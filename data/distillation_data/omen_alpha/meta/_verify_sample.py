@@ -7,12 +7,12 @@ with the example arguments from the instruction / prefix comment. A call that
 raises marks the pair FAIL; A/B pairs whose args cannot be parsed count as
 no_call. Exit code 1 if any FAIL.
 
-Run:  & .venv/Scripts/python.exe minimax3/data/omen_alpha/meta/_verify_sample.py
+Run:  & .venv/Scripts/python.exe data/distillation_data/omen_alpha/meta/_verify_sample.py
 """
 import ast, io, json, re, sys, contextlib
 from pathlib import Path
 
-ROOT = Path('E:/python projects/nano_SLMs/minimax3/data/omen_alpha')
+ROOT = Path('E:/python_projects/nano_SLMs/data/distillation_data/omen_alpha')
 FENCE = re.compile(r'```python\n(.*?)```', re.DOTALL)
 CALL_RE = re.compile(r'`(\w+)\((.*)\)`')
 PREFIX_RE = re.compile(r'^# (\w+) :: (.*)$', re.MULTILINE)
