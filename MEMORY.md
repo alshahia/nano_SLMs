@@ -98,6 +98,17 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
     by the saver, so `find_latest_checkpoint` (train.py/sft.py/kd.py) now
     requires it — a partial checkpoint is skipped instead of crashing the
     unattended resume.
+ 14. **The partial-checkpoint guard was DEFEATED by `resume_from_checkpoint=True`**
+    (found live 2026-09-08 on sft_v2_e1: sleep killed a save mid-write; the
+    guard picked ckpt-750 but the boolean made HF Trainer run its OWN
+    discovery, which picked the partial ckpt-1000 -> crash). FIX: all three
+    scripts now pass `str(resume_from)` (the path) instead of True.
+ 15. **Disk-full signature: checkpoint writes HANG at the same byte offset**
+    (E: hit 3.9 MB free; optimizer.pt stalled at exactly 482,394,112 bytes
+    twice; GPU idle 0%, process alive in disk-wait; nvlddmkm/disk events
+    clean — check `Get-Volume E` SizeRemaining FIRST when a run freezes
+    mid-save). Prevention: keep >5 GB free before any SFT-scale run;
+    SFT checkpoints are ~2.7 GB each (906 MB model + 1.8 GB optimizer).
 
 ## Data-source knowledge (seeded from HANDOFF §6)
 
