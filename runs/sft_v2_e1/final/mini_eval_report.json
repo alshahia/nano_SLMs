@@ -1,0 +1,206 @@
+{
+  "ckpt": "runs\\sft_v2_e1\\final",
+  "model_mode": "llm",
+  "device": "cuda",
+  "max_new_tokens": 256,
+  "timeout_s": 10.0,
+  "n_tasks": 16,
+  "n_tests": 32,
+  "pass_at_1": 0.0,
+  "test_credit": 0.0625,
+  "runtime_s": 47.4,
+  "per_task": [
+    {
+      "id": "add",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert add(2, 3) == 5",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_p9n_gbx0\\candidate.py\", line 8, in <module>\n    assert add(2, 3) == 5\n           ^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_p9n_gbx0\\candidate.py\", line 2, in add\n    returna, b\n    ^^^^^^^\nNameError: name 'returna' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "is_even",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert is_even(4) is True",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_7ikklpzo\\candidate.py\", line 15\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 21)\n"
+        }
+      ]
+    },
+    {
+      "id": "max_of_two",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert max_of_two(3, 9) == 9",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_8zev5omj\\candidate.py\", line 16\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 22)\n"
+        }
+      ]
+    },
+    {
+      "id": "reverse_string",
+      "passed": false,
+      "tests_passed": 1,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert reverse_string('abc') == 'cba'",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_lj562008\\candidate.py\", line 4, in <module>\n    assert reverse_string('abc') == 'cba'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+        }
+      ]
+    },
+    {
+      "id": "count_vowels",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert count_vowels('hello') == 2",
+          "error": "ost recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_gqb19dqt\\candidate.py\", line 4, in <module>\n    assert count_vowels('hello') == 2\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_gqb19dqt\\candidate.py\", line 2, in count_vowels\n    returnsum(1 for c in s if c in 'aeiouAEIOU')\n    ^^^^^^^^^\nNameError: name 'returnsum' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "sum_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert sum_list([1, 2, 3]) == 6",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval__lela82d\\candidate.py\", line 6\n    0\n     ^\nIndentationError: unindent does not match any outer indentation level\n"
+        }
+      ]
+    },
+    {
+      "id": "abs_diff",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert abs_diff(3, 10) == 7",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_qkyhxh6z\\candidate.py\", line 8, in <module>\n    assert abs_diff(3, 10) == 7\n           ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_qkyhxh6z\\candidate.py\", line 2, in abs_diff\n    returna + b\n    ^^^^^^^\nNameError: name 'returna' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "last_char",
+      "passed": false,
+      "tests_passed": 1,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert last_char('py') == 'y'",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_vhsko4wj\\candidate.py\", line 10, in <module>\n    assert last_char('py') == 'y'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+        }
+      ]
+    },
+    {
+      "id": "repeat",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert repeat('ab', 3) == 'ababab'",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_diht7cxe\\candidate.py\", line 14, in <module>\n    assert repeat('ab', 3) == 'ababab'\n           ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_diht7cxe\\candidate.py\", line 2, in repeat\n    returns[n:]\n    ^^^^^^^\nNameError: name 'returns' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "celsius_to_fahrenheit",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert abs(celsius_to_fahrenheit(100) - 212) < 1e-9",
+          "error": "nt call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_p272i57x\\candidate.py\", line 4, in <module>\n    assert abs(celsius_to_fahrenheit(100) - 212) < 1e-9\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_p272i57x\\candidate.py\", line 2, in celsius_to_fahrenheit\n    returnc * 9 / 5 + 32\n    ^^^^^^^\nNameError: name 'returnc' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "string_length",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert string_length('code') == 4",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_uhg43vfm\\candidate.py\", line 4, in <module>\n    assert string_length('code') == 4\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_uhg43vfm\\candidate.py\", line 2, in string_length\n    returnlen(s) + len(s)\n    ^^^^^^^^^\nNameError: name 'returnlen' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "min_in_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert min_in_list([4, 2, 9]) == 2",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_71bybf8s\\candidate.py\", line 15\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 21)\n"
+        }
+      ]
+    },
+    {
+      "id": "double_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert double_list([1, 2]) == [2, 4]",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_6_03t3j8\\candidate.py\", line 3\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 12)\n"
+        }
+      ]
+    },
+    {
+      "id": "greeting",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert greeting('Ada') == 'Hello, Ada'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_cae3wxjk\\candidate.py\", line 18\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 24)\n"
+        }
+      ]
+    },
+    {
+      "id": "is_positive",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert is_positive(5) is True",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_5i62dnxa\\candidate.py\", line 15\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 21)\n"
+        }
+      ]
+    },
+    {
+      "id": "square",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert square(7) == 49",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_a4szd8wb\\candidate.py\", line 15\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 21)\n"
+        }
+      ]
+    }
+  ]
+}

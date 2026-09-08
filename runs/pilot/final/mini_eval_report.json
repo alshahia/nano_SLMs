@@ -1,0 +1,206 @@
+{
+  "ckpt": "runs\\pilot\\final",
+  "model_mode": "llm",
+  "device": "cuda",
+  "max_new_tokens": 128,
+  "timeout_s": 10.0,
+  "n_tasks": 16,
+  "n_tests": 32,
+  "pass_at_1": 0.0,
+  "test_credit": 0.0312,
+  "runtime_s": 50.9,
+  "per_task": [
+    {
+      "id": "add",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert add(2, 3) == 5",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_6wdjod8r\\candidate.py\", line 11\n    print(\n         ^\nSyntaxError: '(' was never closed\n"
+        }
+      ]
+    },
+    {
+      "id": "is_even",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert is_even(4) is True",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_s0q5fovg\\candidate.py\", line 25\n    assert is_even(4) is True\n    ^^^^^^\nIndentationError: expected an indented block after function definition on line 22\n"
+        }
+      ]
+    },
+    {
+      "id": "max_of_two",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert max_of_two(3, 9) == 9",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_k6_xtuwy\\candidate.py\", line 10\n    print(\n         ^\nSyntaxError: '(' was never closed\n"
+        }
+      ]
+    },
+    {
+      "id": "reverse_string",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert reverse_string('abc') == 'cba'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_36rd3jec\\candidate.py\", line 8\n    ```\n    ^\nSyntaxError: invalid syntax\n"
+        }
+      ]
+    },
+    {
+      "id": "count_vowels",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert count_vowels('hello') == 2",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_wmfd5r1w\\candidate.py\", line 6, in <module>\n    print(count_vowels(input_string))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_wmfd5r1w\\candidate.py\", line 2, in count_vowels\n    returnlen(s)\n    ^^^^^^^^^\nNameError: name 'returnlen' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "sum_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert sum_list([1, 2, 3]) == 6",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_oxrz0vaa\\candidate.py\", line 10\n    ```\n    ^\nSyntaxError: invalid syntax\n"
+        }
+      ]
+    },
+    {
+      "id": "abs_diff",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert abs_diff(3, 10) == 7",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_v9zs2xmd\\candidate.py\", line 10\n    print(float_d\n         ^\nSyntaxError: '(' was never closed\n"
+        }
+      ]
+    },
+    {
+      "id": "last_char",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert last_char('py') == 'y'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_zj5xq51y\\candidate.py\", line 8\n    ```\n    ^\nSyntaxError: invalid syntax\n"
+        }
+      ]
+    },
+    {
+      "id": "repeat",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert repeat('ab', 3) == 'ababab'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_5_kpw673\\candidate.py\", line 25\n    assert repeat('ab', 3) == 'ababab'\n    ^^^^^^\nIndentationError: expected an indented block after function definition on line 22\n"
+        }
+      ]
+    },
+    {
+      "id": "celsius_to_fahrenheit",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert abs(celsius_to_fahrenheit(100) - 212) < 1e-9",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_kffuctl8\\candidate.py\", line 16\n    def convert_to_fahren\n                         ^\nSyntaxError: expected '('\n"
+        }
+      ]
+    },
+    {
+      "id": "string_length",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert string_length('code') == 4",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_f6lhvork\\candidate.py\", line 6, in <module>\n    print(string_length(input_string))\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_f6lhvork\\candidate.py\", line 2, in string_length\n    returnlen(s)\n    ^^^^^^^^^\nNameError: name 'returnlen' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "min_in_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert min_in_list([4, 2, 9]) == 2",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_hrinsocq\\candidate.py\", line 6, in <module>\n    print(min_in_list(nums))  # Output: 1\n          ^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_hrinsocq\\candidate.py\", line 2, in min_in_list\n    returnnums[0]\n    ^^^^^^^^^^\nNameError: name 'returnnums' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "double_list",
+      "passed": false,
+      "tests_passed": 1,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert double_list([1, 2]) == [2, 4]",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_e94kiubn\\candidate.py\", line 9, in <module>\n    assert double_list([1, 2]) == [2, 4]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+        }
+      ]
+    },
+    {
+      "id": "greeting",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert greeting('Ada') == 'Hello, Ada'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_vuin0_bs\\candidate.py\", line 25\n    def greeting\n                ^\nSyntaxError: expected '('\n"
+        }
+      ]
+    },
+    {
+      "id": "is_positive",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert is_positive(5) is True",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_mclte80q\\candidate.py\", line 25\n    def is_\n           ^\nSyntaxError: expected '('\n"
+        }
+      ]
+    },
+    {
+      "id": "square",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert square(7) == 49",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_puzdtfxn\\candidate.py\", line 18\n    def sum_\n            ^\nSyntaxError: expected '('\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "ckpt": "runs\\target\\final",
+  "model_mode": "llm",
+  "device": "cuda",
+  "max_new_tokens": 128,
+  "timeout_s": 10.0,
+  "n_tasks": 16,
+  "n_tests": 32,
+  "pass_at_1": 0.0,
+  "test_credit": 0.0,
+  "runtime_s": 88.1,
+  "per_task": [
+    {
+      "id": "add",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert add(2, 3) == 5",
+          "error": " b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b + b +\n                                                                                                                                                                                                                                                                         ^\nSyntaxError: invalid syntax\n"
+        }
+      ]
+    },
+    {
+      "id": "is_even",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert is_even(4) is True",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_hlyinta8\\candidate.py\", line 4\n    if n < 0:\n             ^\nIndentationError: unindent does not match any outer indentation level\n"
+        }
+      ]
+    },
+    {
+      "id": "max_of_two",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert max_of_two(3, 9) == 9",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_ld8jmv06\\candidate.py\", line 4\n    Args:\n         ^\nIndentationError: unindent does not match any outer indentation level\n"
+        }
+      ]
+    },
+    {
+      "id": "reverse_string",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert reverse_string('abc') == 'cba'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_7yx0ps37\\candidate.py\", line 4\n    s = s.replace('\\\\', '\\\\\\\\')\n                               ^\nIndentationError: unindent does not match any outer indentation level\n"
+        }
+      ]
+    },
+    {
+      "id": "count_vowels",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert count_vowels('hello') == 2",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_wygcg5sv\\candidate.py\", line 3\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 7)\n"
+        }
+      ]
+    },
+    {
+      "id": "sum_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert sum_list([1, 2, 3]) == 6",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_gjlfh8nj\\candidate.py\", line 7, in <module>\n    assert sum_list([1, 2, 3]) == 6\n           ^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_gjlfh8nj\\candidate.py\", line 5, in sum_list\n    returntotal\nNameError: name 'returntotal' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "abs_diff",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert abs_diff(3, 10) == 7",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_4oxpz0i9\\candidate.py\", line 4\n    >>> a = [1, 2, 3, 4, 5]\n    ^^\nSyntaxError: invalid syntax\n"
+        }
+      ]
+    },
+    {
+      "id": "last_char",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert last_char('py') == 'y'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_uap9u6kx\\candidate.py\", line 10\n    s = s.replace('0x', '\n                        ^\nSyntaxError: unterminated string literal (detected at line 10)\n"
+        }
+      ]
+    },
+    {
+      "id": "repeat",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert repeat('ab', 3) == 'ababab'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_klj6boyg\\candidate.py\", line 4\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 12)\n"
+        }
+      ]
+    },
+    {
+      "id": "celsius_to_fahrenheit",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert abs(celsius_to_fahrenheit(100) - 212) < 1e-9",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_lb77r2ja\\candidate.py\", line 4\n    >>> c.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.Pickle.\n    ^^\nSyntaxError: invalid syntax\n"
+        }
+      ]
+    },
+    {
+      "id": "string_length",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert string_length('code') == 4",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_ahiqev05\\candidate.py\", line 16\n    assert string_length('code') == 4\nIndentationError: expected an indented block after 'if' statement on line 13\n"
+        }
+      ]
+    },
+    {
+      "id": "min_in_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert min_in_list([4, 2, 9]) == 2",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_6d5si_3w\\candidate.py\", line 4\n    >>> list(min_in_list(4))\n                            ^\nIndentationError: unindent does not match any outer indentation level\n"
+        }
+      ]
+    },
+    {
+      "id": "double_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert double_list([1, 2]) == [2, 4]",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_rs74y5sa\\candidate.py\", line 6\n    num_unique_items = nums.shape[0]\n                                    ^\nIndentationError: unindent does not match any outer indentation level\n"
+        }
+      ]
+    },
+    {
+      "id": "greeting",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert greeting('Ada') == 'Hello, Ada'",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_k87js1wz\\candidate.py\", line 9\n    'https://www.google.\n    ^\nSyntaxError: unterminated string literal (detected at line 9)\n"
+        }
+      ]
+    },
+    {
+      "id": "is_positive",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert is_positive(5) is True",
+          "error": "nd (n > 0) and (n > 0) and (n > 0) and (n > 0) and (n > 0) and (n > 0) and (n > 0) and (n > 0) and (n > 0) and (n > 0) and (n > 0) and (n\n                                                                                                                                                                                                                                  ^\nSyntaxError: '(' was never closed\n"
+        }
+      ]
+    },
+    {
+      "id": "square",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert square(7) == 49",
+          "error": "  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_mtx91bpl\\candidate.py\", line 4\n    \"\"\"\n    ^\nSyntaxError: unterminated triple-quoted string literal (detected at line 8)\n"
+        }
+      ]
+    }
+  ]
+}
