@@ -99,6 +99,27 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
     requires it — a partial checkpoint is skipped instead of crashing the
     unattended resume.
 
+ 14. **Windows venv python.exe is a launcher shim — pid genealogy skips a
+     level:** .venv\Scripts\python.exe spawns the real base interpreter
+     (the uv cpython) as a CHILD and waits, so a child's os.getppid() is
+     its own launcher shim, NOT the webui server/probe that launched it —
+     and the grandparent is the one holding a lingering CUDA context after
+     a chat unload (found 2026-09-08: run_custom's parent-pid exclusion
+     aborted every launch with "GPU busy (1 compute process)" three times).
+     Fix: _ancestor_pids() Toolhelp32 walk — the _PE32W struct MUST
+     byte-match PROCESSENTRY32W (size_t heap id + 4-byte LONG priority; an
+     8-byte pointer field silently inflates dwSize and Process32FirstW
+     fails with an empty ancestor walk). Note "Get-Process python*" shows
+     TWO pids for one logical venv python run; nvidia-smi lists the base
+     interpreter pid.
+
+ 15. **Gradio 6 auth= is a form+cookie flow, NOT HTTP Basic:** unauth /
+     returns a 200 login shell; valid login = POST /login →
+     {"success":true} + session cookies; the gated API (/config) answers
+     401 until the cookie is present — curl -u user:pass alone gets 401
+     even with VALID creds (probe with a cookie jar, not -u; found
+     2026-09-08 verifying the web UI --auth).
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF
