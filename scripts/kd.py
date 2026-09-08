@@ -152,7 +152,11 @@ def main() -> None:
         processing_class=tok,
     )
 
-    trainer.train(resume_from_checkpoint=True if resume_from is not None else None)
+    # Pass the PATH, not True: HF's internal discovery ignores the
+    # completeness guard and would pick a partial checkpoint (seen live
+    # 2026-09-08: sleep killed a save mid-write -> FileNotFoundError).
+    trainer.train(resume_from_checkpoint=str(resume_from)
+                  if resume_from is not None else None)
 
     final_dir = ROOT / t["final_dir"]
     final_dir.mkdir(parents=True, exist_ok=True)

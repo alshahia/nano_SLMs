@@ -189,7 +189,11 @@ def main() -> None:
         processing_class=tok,
     )
 
-    trainer.train(resume_from_checkpoint=True if resume_from is not None else None)
+    # Pass the PATH, not True: HF's internal discovery ignores the
+    # completeness guard and would pick a partial checkpoint (seen live
+    # 2026-09-08: sleep killed a save mid-write -> FileNotFoundError).
+    trainer.train(resume_from_checkpoint=str(resume_from)
+                  if resume_from is not None else None)
 
     # §5.3.5 keep-final-forever: in-memory model is the BEST checkpoint
     # (load_best_model_at_end). PeftModel is merged to a full model first;
