@@ -1,6 +1,9 @@
 # WEBUI_PRD.md — web UI for the nano_SLMs pipeline
 
-Status: SPEC (approved direction, not yet built). Owner: user + agent.
+Status: U1-U5 BUILT — full e2e PASS 2026-09-08. U6-U11 scope APPROVED by
+the user 2026-09-08 (every proposed item except the Hub-backup button;
+new requirement: HF-dataset training with local-fetch vs stream modes +
+persistent keys). Owner: user + agent.
 Builds on the brainstorm session of 2026-09-07 (Gradio chosen; GPU/CPU chat
 policy decided; localhost-first).
 
@@ -31,6 +34,9 @@ The auto-resume contract (PLAN §5.3) is never touched.
 | Train launch | UI generates a config YAML + runs the existing chain (`run_custom.py` already implements sanity → prepare → tokenize → train → eval with stop-on-fail and a never-co-run guard — reuse it, do not rebuild the chain) |
 | Kill policy | **No Stop/Kill button on a live run.** Crash-and-resume is legitimate (auto-resume, zero flags); killing for pace is forbidden. Deleting checkpoints requires typed confirmation + free-disk report |
 | Presets | smoke / pilot / target / SFT configs ARE the presets; ~5 visible knobs (preset, dataset, rows, epochs/steps, LR preset), everything else behind an "advanced" YAML disclosure |
+| Data modes (2026-09-08) | **Stream-pack is the default**: HF rows stream over the net and only the needed rows are written (this is what `prepare_data.py` already does, `streaming=True`) — disk stays bounded by `rows`, never by dataset size. Opt-in **full local cache** mode downloads the dataset under `data/<name>/raw/` first. Literal per-step net-feeding into the trainer is REJECTED: deterministic zero-flag auto-resume (PLAN §5.3) and the memmap shard contract require fixed local shards. Revisitable only by explicit user decision |
+| Keys (2026-09-08) | Secrets live in the gitignored project-root `.env` (already auto-loaded by `prepare_data.py`), managed by a masked Settings tab: add / override / delete, path shown; never in configs, logs, or UI state |
+| Cooperative stop (2026-09-08) | A checkpoint-aligned stop flag is APPROVED (U11) as the single exception to "no stop on a live run" — still never a process kill from the UI |
 
 ## 3) Functional spec
 
@@ -75,7 +81,8 @@ The auto-resume contract (PLAN §5.3) is never touched.
 
 - No multi-user accounts/DB, no remote/cloud, no training logic in the web
   layer, no React/frontend build chain, no rewrite of train.py/sft.py resume
-  behavior, no raw-YAML-first editing, no killing live runs from the UI.
+  behavior, no raw-YAML-first editing, no killing live runs from the UI (the U11
+checkpoint-aligned stop flag is the single user-approved exception).
 
 ## 5) Milestones (U1–U5)
 
@@ -111,6 +118,82 @@ GPU-touching milestones only run when the GPU is free (TASKS single-job rule).
 ### U5 — Polish (each item user-gated)
 - LAN exposure + Gradio `auth=`; done-notification (browser or webhook);
   eval report cards in Monitor; checkpoint delete-with-confirmation flow.
+
+### U6 — Hardening & resume UX (approved 2026-09-08)
+- One-click **Resume** in Monitor when the job pid is dead: re-launches
+  the exact config, zero flags (the whole contract) instead of telling a
+  non-technical user to open a terminal.
+- Resume-collision guard in Train preflight: if `runs/<name>` exists and
+  the regenerated config differs from the one on disk → refuse/warn (a
+  mismatched arch must never auto-resume over an old checkpoint).
+- Refuse `--lan` without `--auth` (delete + launch must not be
+  LAN-exposed unauthenticated).
+- Optimizer dropdown: `adamw_bnb_8bit` DEFAULT (Milestone B decision,
+  TASKS rows 11/18) with fp32 fallback — replaces the `adamw_torch`
+  hardcode in `build_config`.
+- Chat input-length guard: truncate/warn at ctx − max_new.
+- Chain-step indicator from `runs/<name>/custom_chain.json` +
+  `chain_out.log` (sanity → prepare → tokenize → train → eval); today
+  everything before the first checkpoint shows only "No checkpoint yet."
+- Chat checkpoint-picker refresh (currently computed once at startup).
+- Current-job banner (phase, pid, started, ETA) on Dashboard + Train.
+- tok/s + MFU line in Monitor (`status.py` already computes it).
+- **PASS:** UI e2e incl. a kill → Resume drill to completion; `--lan`
+  alone exits with a clear error; a UI-launched smoke run trains with
+  8-bit optim; an over-long paste degrades gracefully; a fresh run
+  appears in the Chat picker without a page reload.
+
+### U7 — Data & keys: HF datasets, two modes (approved 2026-09-08)
+- Settings tab key manager over the project-root `.env`: known keys
+  `HF_TOKEN`, `EXA_API_KEY`; masked display (last 4 chars only), add /
+  override / delete, path displayed; never logged, never written into
+  configs or UI state; verify `.env` stays gitignored.
+- Train tab data-mode radio: **Stream (low disk — default)** vs
+  **Download full local cache** (see §2 for the locked semantics).
+- Preflight disk estimate for the chosen mode (raw ≈ rows × avg chars,
+  tokens ≈ rows × tok/row) + a hard rows cap; gated-dataset 401/403
+  failures surface as "gated dataset — add HF_TOKEN in Settings".
+- **PASS:** gated dataset without key → clear prompt; with key in .env →
+  prepare succeeds; both modes produce the same `tokens/*.bin` layout;
+  key override + delete verified on disk; stream-mode e2e from the UI
+  (prepare → tokenize → 100-step train).
+
+### U8 — Transparency & monitor polish (approved 2026-09-08)
+- Dataset preview (PRD §3.3, now actually built): first N rows +
+  dedupe/filter drop counts before committing.
+- Advanced YAML disclosure (PRD §2) + read-only preview of the generated
+  config before Start.
+- Per-checkpoint MB in the Danger zone; `runs/` footprint on Dashboard.
+- Multi-run loss overlay in Monitor (compare phases).
+- **PASS:** preview counts match prepare on a small dataset; YAML
+  preview equals the written file; overlay renders ≥2 phases.
+
+### U9 — Chat streaming + stop (approved 2026-09-08)
+- `TextIteratorStreamer` progressive output + generation-level stop
+  (never process-level).
+- **PASS:** streaming on GPU and CPU-fallback; stop halts generation
+  cleanly; the model stays usable after stop.
+
+### U10 — Fine-tune launch path: SFT + LoRA (approved 2026-09-08)
+- Train tab "SFT from checkpoint" preset → generates an SFT config (base
+  = picked checkpoint, instruct template, Fine-tune LR preset,
+  forgetting-guard eval kept); LoRA checkbox (peft hook, TASKS row 10).
+- Chain = `sft_data.py` (CPU, co-run safe) → `sft.py` under the existing
+  job_state / single-lock mechanism; `run_custom.py` stays pretrain-only.
+- KD (`kd.py`) optional / deferred.
+- **PASS:** UI-launched SFT pilot to completion → appears in Monitor →
+  chat-able in instruct mode; LoRA checkbox emits the peft block; the
+  single-job lock holds across both stages.
+
+### U11 — Cooperative stop + polish (approved 2026-09-08; runs LAST)
+- Stop-at-next-checkpoint flag file, checked by `train.py`/`sft.py` at
+  save boundaries: clean exit, valid checkpoint, resume = exact same
+  command. Amends the §2 no-kill rule (user-approved): checkpoint-
+  aligned cooperative stop only, NEVER a process kill from the UI.
+- Browser notifications (Web Notifications API) beside toast + webhook.
+- Optional HTTPS for LAN (`--ssl-certfile/--ssl-keyfile`).
+- **PASS:** flag set mid-run → clean stop at the next save, zero-flag
+  relaunch resumes with no loss bump; no other trainer behavior change.
 
 ## 6) Risks / honest notes
 

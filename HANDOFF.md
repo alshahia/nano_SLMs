@@ -481,6 +481,38 @@ verified:
   scripts/run_custom.py, README.md, TASKS.md, HANDOFF.md — never
   configs/distill_custom*.yaml or runs/* logs (the parallel session's).
 
+### 2026-09-08 — web UI U6-U11 scope approved by the user; plan written
+
+The user approved EVERY proposed GUI addition except the Hub-backup
+button, and added a requirement: train from user-named HF datasets with
+two data modes (fetch the data locally vs. stream the needed rows over
+the net when disk is low) plus a persistent API-key field (show where
+it is saved; allow override and delete).
+
+Grounding found while planning: `prepare_data.py` ALREADY streams HF
+datasets (`load_dataset(..., streaming=True)` — only the needed rows
+are written, so disk is bounded by `rows`, not dataset size) and
+already auto-loads the gitignored project-root `.env` (HF_TOKEN path
+verified in TASKS row 13). Design therefore locked in WEBUI_PRD §2:
+stream-pack = default mode; full local cache = opt-in; literal
+per-step net-feeding into `train.py` REJECTED (deterministic zero-flag
+auto-resume, PLAN §5.3, + memmap shard contract) — revisitable only by
+explicit user decision. Keys live in the existing .env behind a masked
+Settings tab (add/override/delete, path shown; never in configs/logs).
+
+Milestones written into WEBUI_PRD §5: **U6** hardening & resume UX
+(resume button, collision guard, --lan auth gate, 8-bit optim default,
+chat length guard, chain-step indicator, picker refresh, job banner,
+tok/s) → **U7** data & keys → **U8** transparency (dataset preview,
+YAML disclosure, MB breakdown, overlay) → **U9** chat streaming →
+**U10** SFT/LoRA launch path → **U11** cooperative stop-at-checkpoint
++ browser notifications + HTTPS. TASKS rows 22-27, all `pending` user
+go. U11's stop-flag amends the PRD no-kill rule (user-approved):
+checkpoint-aligned clean exit only, never a process kill. Note: the
+U5 work above was committed and pushed as `fd2e79a` (post-push tree
+clean; untracked: parallel session's distill configs/logs + the e2e
+artifacts still awaiting the cleanup decision).
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).
