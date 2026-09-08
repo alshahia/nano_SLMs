@@ -1,3 +1,27 @@
 [sft] pairs: train=18752 val=500 ctx=512 epochs=1
 [sft] tokenizer has no pad token -> pad = eos
 [sft] base=E:\python_projects\nano_SLMs\runs\target\final params=226.5M fp16=True grad_ckpt=True
+{'loss': '1.304', 'grad_norm': '1.885', 'learning_rate': '1.47e-05', 'epoch': '0.04266'}
+{'loss': '0.9143', 'grad_norm': '1.622', 'learning_rate': '2.97e-05', 'epoch': '0.08532'}
+{'loss': '0.7216', 'grad_norm': '1.021', 'learning_rate': '2.985e-05', 'epoch': '0.128'}
+{'loss': '0.5411', 'grad_norm': '1.39', 'learning_rate': '2.937e-05', 'epoch': '0.1706'}
+{'loss': '0.5754', 'grad_norm': '1.785', 'learning_rate': '2.859e-05', 'epoch': '0.2133'}
+{'eval_loss': '0.399', 'eval_runtime': '5.647', 'eval_samples_per_second': '88.54', 'eval_steps_per_second': '22.13', 'epoch': '0.2133'}
+{'loss': '0.4583', 'grad_norm': '1.626', 'learning_rate': '2.752e-05', 'epoch': '0.256'}
+{'loss': '0.4498', 'grad_norm': '1.112', 'learning_rate': '2.618e-05', 'epoch': '0.2986'}
+{'loss': '0.4657', 'grad_norm': '1.39', 'learning_rate': '2.46e-05', 'epoch': '0.3413'}
+{'loss': '0.4153', 'grad_norm': '1.674', 'learning_rate': '2.281e-05', 'epoch': '0.384'}
+{'loss': '0.3953', 'grad_norm': '1.277', 'learning_rate': '2.086e-05', 'epoch': '0.4266'}
+{'eval_loss': '0.3274', 'eval_runtime': '5.589', 'eval_samples_per_second': '89.47', 'eval_steps_per_second': '22.37', 'epoch': '0.4266'}
+{'loss': '0.4007', 'grad_norm': '1.546', 'learning_rate': '1.878e-05', 'epoch': '0.4693'}
+{'loss': '0.386', 'grad_norm': '1.24', 'learning_rate': '1.662e-05', 'epoch': '0.5119'}
+{'loss': '0.4017', 'grad_norm': '1.308', 'learning_rate': '1.443e-05', 'epoch': '0.5546'}
+{'loss': '0.3689', 'grad_norm': '1.578', 'learning_rate': '1.225e-05', 'epoch': '0.5973'}
+{'loss': '0.3964', 'grad_norm': '1.358', 'learning_rate': '1.012e-05', 'epoch': '0.6399'}
+{'eval_loss': '0.292', 'eval_runtime': '5.603', 'eval_samples_per_second': '89.23', 'eval_steps_per_second': '22.31', 'epoch': '0.6399'}
+{'loss': '0.4284', 'grad_norm': '0.989', 'learning_rate': '8.104e-06', 'epoch': '0.6826'}
+{'loss': '0.3579', 'grad_norm': '1.358', 'learning_rate': '6.233e-06', 'epoch': '0.7253'}
+{'loss': '0.3212', 'grad_norm': '0.9988', 'learning_rate': '4.55e-06', 'epoch': '0.7679'}
+{'loss': '0.3812', 'grad_norm': '1.395', 'learning_rate': '3.091e-06', 'epoch': '0.8106'}
+{'loss': '0.3318', 'grad_norm': '1.112', 'learning_rate': '1.887e-06', 'epoch': '0.8532'}
+{'eval_loss': '0.281', 'eval_runtime': '9.702', 'eval_samples_per_second': '51.53', 'eval_steps_per_second': '12.88', 'epoch': '0.8532'}

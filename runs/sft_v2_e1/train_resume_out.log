@@ -1,0 +1,10 @@
+[sft] pairs: train=18752 val=500 ctx=512 epochs=1
+[sft] tokenizer has no pad token -> pad = eos
+[sft] base=E:\python_projects\nano_SLMs\runs\target\final params=226.5M fp16=True grad_ckpt=True
+[resume] found checkpoint-750 -> auto-resume enabled
+{'loss': '0.4284', 'grad_norm': '0.9888', 'learning_rate': '8.104e-06', 'epoch': '0.6826'}
+{'loss': '0.3579', 'grad_norm': '1.358', 'learning_rate': '6.233e-06', 'epoch': '0.7253'}
+{'loss': '0.3212', 'grad_norm': '0.9988', 'learning_rate': '4.55e-06', 'epoch': '0.7679'}
+{'loss': '0.3812', 'grad_norm': '1.395', 'learning_rate': '3.091e-06', 'epoch': '0.8106'}
+{'loss': '0.3318', 'grad_norm': '1.112', 'learning_rate': '1.887e-06', 'epoch': '0.8532'}
+{'eval_loss': '0.281', 'eval_runtime': '10.66', 'eval_samples_per_second': '46.91', 'eval_steps_per_second': '11.73', 'epoch': '0.8532'}
