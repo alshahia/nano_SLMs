@@ -3,7 +3,10 @@
 Status: U1-U5 BUILT — full e2e PASS 2026-09-08. U6-U11 scope APPROVED by
 the user 2026-09-08 (every proposed item except the Hub-backup button;
 new requirement: HF-dataset training with local-fetch vs stream modes +
-persistent keys). Owner: user + agent.
+persistent keys). U12-U13 (Model tab: Architecture Explorer + real-run-replay
+Training Simulator) designed in a brainstorm session and APPROVED by the user
+2026-09-09 — Approach A: Gradio-native SVG, read-only + CPU-only, no new deps
+(spec in §5). Owner: user + agent.
 Builds on the brainstorm session of 2026-09-07 (Gradio chosen; GPU/CPU chat
 policy decided; localhost-first).
 
@@ -194,6 +197,72 @@ GPU-touching milestones only run when the GPU is free (TASKS single-job rule).
 - Optional HTTPS for LAN (`--ssl-certfile/--ssl-keyfile`).
 - **PASS:** flag set mid-run → clean stop at the next save, zero-flag
   relaunch resumes with no loss bump; no other trainer behavior change.
+
+### U12 — Model tab: Architecture Explorer (designed + user-APPROVED 2026-09-09)
+- New top-level **"Model"** tab with a nested switcher: Architecture Explorer |
+  Training Simulator (U13). Shared model/run picker; nav grows to 6 tabs.
+- Graph built LIVE from real artifacts, read-only + CPU-only (the wraps-never-
+  reimplements and zero-GPU rules stay intact): `configs/<phase>.yaml`,
+  `runs/<phase>/final/config.json` (+ `adapter_config.json` on LoRA runs), and
+  the **safetensors HEADER only** (tensor names/shapes/dtypes — weights are
+  never loaded). Configs without a checkpoint render the same diagram labeled
+  "projected — no checkpoint yet"; totals cross-check the known ladder numbers
+  (S ~12M / P 100.7M / T 226.5M).
+- Diagram = SVG stack: Token IDs → Embedding (tied?) → N × [RMSNorm → GQA
+  Attention (RoPE, causal) → +residual → RMSNorm → SwiGLU FFN → +residual] →
+  RMSNorm → lm_head → logits. Layer tiles expand to their sub-blocks,
+  color-coded; click any block (SVG via a tiny JS shim; robust fallback =
+  clickable gr.Dataset layer list) → detail panel.
+- Detail panel, TWO LEVELS (locked in brainstorm): plain-English what/why by
+  default; a "technical" toggle adds real tensor names/shapes/dtypes from the
+  header, per-block param math, and the config values feeding the block
+  (rope_theta, rms_eps, head_dim…). Computed bonus: KV-cache bytes/token.
+  All numbers computed live — nothing hardcoded.
+- **Trace a prompt**: the real CodeLlama tokenizer on CPU → tokens + IDs →
+  step-through of shapes flowing through every block. No weights involved.
+- v1 cut line: attention heatmaps + next-token probability bars are OUT
+  (they need a CPU forward pass — approved-as-future option); guided tour
+  optional.
+- Files: `webui/model_tab.py` (thin tab + wiring; app.py passes its existing
+  `_ckpts`/`_full_curve` helpers in — no duplication, no circular import),
+  `webui/explorer.py` (graph builder + shape math + info text),
+  `webui/artifacts.py` (shared read-only readers). No new dependencies;
+  app.py grows by ~5 lines.
+- **PASS:** real shapes render for smoke/pilot/target finals and totals match
+  12M/100.7M/226.5M; every configs/*.yaml loadable; token trace correct on a
+  sample prompt; ZERO GPU/VRAM touched (file reads only); usable while a
+  training run is live.
+
+### U13 — Model tab: Training Simulator — real-run REPLAY (designed + user-APPROVED 2026-09-09)
+- Educational replay, NOT training (satisfies §4 "no training logic in the web
+  layer"): a technique radio (Pretrain / SFT / LoRA / KD) filters a run
+  dropdown to real runs on disk (pretrain: smoke/pilot/target; SFT: sft_t1,
+  sft_v2_e1; LoRA: h2_copy_lora, h2p2_mixed_lora; KD pairs:
+  kd-t2p-kd+kd-t2p-baseline, kd-s-t1+kd-s-baseline). Curves/params/eval numbers
+  are REAL (tfevents + train_summary.json + eval_report.json); only TIME is
+  compressed. Permanent banner: "SIMULATION — real data, compressed time;
+  reads runs/ only, writes nothing, zero GPU/VRAM".
+- Stage cards light up in virtual time per technique: pretrain (stream →
+  filter+dedupe → tokenize+pack → train loop → eval → final), SFT (pairs →
+  template → filters → tokenize ctx512 → train → forgetting-guard + AST eval →
+  merged final), LoRA (+ frozen base / adapter-only ckpts / merge_and_unload),
+  KD (frozen teacher fwd → student fwd → 0.5·KL(τ=1)+0.5·CE → student step).
+  Cards carry real numbers where available (rows, drop counts, chain timings,
+  tok/s).
+- Replay engine: curve parsed once (existing tfevents parsing), animated by a
+  Gradio generator on a virtual clock — play/pause/step, speed 60×–3600×, and
+  a scrubber (drag to any step → cards + gauges jump). Checkpoint toasts fire
+  at the run's REAL save_steps; the 3-slot disk rotation animates the real
+  behavior; VRAM gauge anchored to real probe numbers (4.24/4.4 GB full-FT,
+  1.36 GB 8-bit, 0.72 GB LoRA); KD pairs draw two synchronized curves + a live
+  delta readout; end card = the run's real summary + eval-report numbers.
+- Curve source is a small pluggable interface: replay = v1; synthetic
+  what-if + real-CPU-toy are approved-as-FUTURE, not v1 scope.
+- Files: `webui/simulator.py` (+ `webui/artifacts.py` shared with U12).
+- **PASS:** smoke replay e2e with curve values matching status.py's; an SFT
+  replay and a KD pair replay correct; play/pause/step/speed/scrub work;
+  rotation events match the real save steps; ZERO writes anywhere; banner
+  always visible; usable while a training run is live.
 
 ## 6) Risks / honest notes
 
