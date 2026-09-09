@@ -128,6 +128,15 @@ def _explorer_ui(ckpts_fn):
         trace_btn = gr.Button("Trace", variant="primary")
     trace_md = gr.Markdown()
 
+    tour_btn = gr.Button("Guided tour (walks every block)")
+
+    def _tour(tech):
+        blocks = state_blocks.value or []
+        for b in blocks:
+            yield _detail_md(blocks, b["id"], bool(tech))
+            _time.sleep(1.6)
+    tour_btn.click(_tour, [tech], detail_md)
+
     # SVG click shim handles (the shim script lands in Task 7; harmless now)
     shim_ta = gr.Textbox(visible=False, elem_id="model_tab_sel")
     shim_btn = gr.Button(visible=False, elem_id="model_tab_sel_btn")
