@@ -67,6 +67,13 @@ runs/sft_v2*/final/model.safetensors
 runs/kd-s-*/checkpoint-*/
 runs/kd-s-*/final/model.safetensors
 
+# Track C T->P KD arms (TASKS row 31): weights stay local (same LFS decision
+# as kd-s: ~906 MB fp32 x3 would blow the quota); checkpoints + root-level
+# run logs stay local. Summaries, tfevents and eval_curves.json stay tracked.
+runs/kd-t2p-*/checkpoint-*/
+runs/kd-t2p-*/final/model.safetensors
+runs/kd-t2p-*.log
+
 # Web UI gate-run pilots (U10/U11): weights stay local like sft_t1/sft_v2 -
 # only summaries, chain json, tokenizer files and tfevents stay tracked.
 runs/sft_u1*/checkpoint-*/

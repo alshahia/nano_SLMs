@@ -1,0 +1,77 @@
+{
+  "phase": "kd-t2p-baseline",
+  "params_m": 100.68,
+  "best_eval_loss": 2.9452691078186035,
+  "best_checkpoint": "E:\\python projects\\nano_SLMs\\runs\\kd-t2p-baseline\\checkpoint-2000",
+  "final_eval": {
+    "eval_loss": 2.9452691078186035,
+    "eval_runtime": 24.5393,
+    "eval_samples_per_second": 38.958,
+    "eval_steps_per_second": 9.739,
+    "epoch": 0.3417927027257968
+  },
+  "resumed_from": null,
+  "env": {
+    "timestamp_utc": "2026-09-09T09:46:43+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "132fc58",
+    "gpu": "Quadro RTX 4000, 8192 MiB",
+    "resolved_config": {
+      "name": "kd-t2p-baseline",
+      "tokenizer": {
+        "name": "codellama/CodeLlama-7b-hf",
+        "vocab_size": 32768
+      },
+      "model": {
+        "layers": 12,
+        "hidden": 768,
+        "heads": 12,
+        "kv_heads": 4,
+        "ffn": 2048,
+        "ctx": 1024,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "raw_dir": "data/target/raw",
+        "tokens_dir": "data/target/tokens"
+      },
+      "train": {
+        "output_dir": "runs/kd-t2p-baseline",
+        "final_dir": "runs/kd-t2p-baseline/final",
+        "max_steps": 2000,
+        "batch": 4,
+        "eval_batch": 4,
+        "accum": 2,
+        "lr": 0.0004,
+        "scheduler": "cosine",
+        "warmup_steps": 100,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 25,
+        "eval_steps": 100,
+        "save_steps": 100,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": true,
+        "optim": "adamw_bnb_8bit",
+        "dataloader_num_workers": 0,
+        "seed": 42
+      },
+      "eval": {
+        "max_new_tokens": 64,
+        "prompts": [
+          "def fibonacci(n):"
+        ]
+      }
+    }
+  }
+}

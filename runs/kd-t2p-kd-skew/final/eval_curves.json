@@ -1,0 +1,93 @@
+{
+  "phase": "kd-t2p-kd-skew",
+  "note": "DistiLLM alpha-SKL skew=0.1 KD; best 2.8104279041290 @2000 (+2.29 pct vs plain-KD, -4.58 pct vs baseline - NOT adopted)",
+  "max_steps": 2000,
+  "eval_every": 100,
+  "seed": 42,
+  "optimizer": "adamw_bnb_8bit",
+  "micro_batch": 4,
+  "accum": 2,
+  "effective_batch": 8,
+  "eval_curves": [
+    {
+      "step": 100,
+      "eval_loss": 5.612125396728516
+    },
+    {
+      "step": 200,
+      "eval_loss": 4.7571892738342285
+    },
+    {
+      "step": 300,
+      "eval_loss": 4.371873378753662
+    },
+    {
+      "step": 400,
+      "eval_loss": 4.181854248046875
+    },
+    {
+      "step": 500,
+      "eval_loss": 3.995151996612549
+    },
+    {
+      "step": 600,
+      "eval_loss": 3.8728721141815186
+    },
+    {
+      "step": 700,
+      "eval_loss": 3.6983048915863037
+    },
+    {
+      "step": 800,
+      "eval_loss": 3.5270402431488037
+    },
+    {
+      "step": 900,
+      "eval_loss": 3.374372959136963
+    },
+    {
+      "step": 1000,
+      "eval_loss": 3.24817156791687
+    },
+    {
+      "step": 1100,
+      "eval_loss": 3.140265941619873
+    },
+    {
+      "step": 1200,
+      "eval_loss": 3.0590579509735107
+    },
+    {
+      "step": 1300,
+      "eval_loss": 2.9892241954803467
+    },
+    {
+      "step": 1400,
+      "eval_loss": 2.9281396865844727
+    },
+    {
+      "step": 1500,
+      "eval_loss": 2.8881728649139404
+    },
+    {
+      "step": 1600,
+      "eval_loss": 2.8548543453216553
+    },
+    {
+      "step": 1700,
+      "eval_loss": 2.832805633544922
+    },
+    {
+      "step": 1800,
+      "eval_loss": 2.818056583404541
+    },
+    {
+      "step": 1900,
+      "eval_loss": 2.8119406700134277
+    },
+    {
+      "step": 2000,
+      "eval_loss": 2.8104279041290283
+    }
+  ]
+}

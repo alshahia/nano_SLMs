@@ -1,0 +1,19 @@
+{
+  "phase": "kd-t2p-kd",
+  "kd_teacher": "runs/target/final",
+  "kd_tau": 1.0,
+  "kd_alpha": 0.5,
+  "kd_skew": 0.0,
+  "student_params_m": 100.68,
+  "teacher_params_m": 226.53,
+  "best_eval_loss": 2.747582197189331,
+  "best_checkpoint": "E:\\python projects\\nano_SLMs\\runs\\kd-t2p-kd\\checkpoint-2000",
+  "final_eval": {
+    "eval_loss": 2.747582197189331,
+    "eval_runtime": 25.5562,
+    "eval_samples_per_second": 37.408,
+    "eval_steps_per_second": 9.352,
+    "epoch": 0.3417927027257968
+  },
+  "resumed_from": null
+}

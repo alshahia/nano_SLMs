@@ -2,16 +2,19 @@
 
 Verified facts about the machine this repo trains on. Update this file the
 moment anything below changes (machine move, venv rebuild, version bump,
-disk event). Last verified: 2026-09-06 18:29 (M3 step-2000 resume session on TU09FBO).
+disk event). Last verified: 2026-09-09 (Track C session — machine moved
+back to MUO4QK5; verify at every session start, the box pair-flips).
 
 ## Machine
 
-- Windows; project root `E:\python_projects\nano_SLMs` on TU09FBO (MUO4QK5
-  used `E:\python projects\nano_SLMs` — with a space; bundle trainer_state
-  paths carry the source machine's root, patch on arrival); drive E: 36.0 GB
-  free / 159.3 GB used (2026-09-06 18:29 probe).
-- Current session GPU: Quadro RTX 3000, 6 GB, driver 580.92 (nvidia-smi).
-  Turing sm_75 → **fp16 only**, no bf16, no flash-attn (SDPA instead).
+- **Current session (verified 2026-09-09, Track C start): DESKTOP-MUO4QK5 —
+  Quadro RTX 4000, 8192 MiB, driver 595.97** (nvidia-smi + $env:COMPUTERNAME);
+  project root `E:\python projects\nano_SLMs` (WITH a space; bundle
+  trainer_state paths carry the source machine's root, patch on arrival);
+  drive E: 48.7 GB free / C: 29.4 GB free (2026-09-09 pre-Track-C probe).
+- Prior session (2026-09-06 18:29): TU09FBO, RTX 3000 6 GB, driver 580.92,
+  root `E:\python_projects\nano_SLMs` (no space), E: 36.0 GB free.
+- Turing sm_75 on BOTH cards → **fp16 only**, no bf16, no flash-attn (SDPA).
 - Machine-move history: DESKTOP-MUO4QK5 (RTX 4000 8 GB, driver 595.97) ↔
   DESKTOP-TU09FBO (RTX 3000 6 GB, driver 580.92). M3 ran fresh on MUO4QK5
   (2026-09-06) and resumed at step 2000 on TU09FBO; M2 + the M3 probe ran on

@@ -671,6 +671,65 @@ runs/h2p2_mixed_lora/final (+eval_report.json, train_summary.json),
 runs/h2p2_mixed_lora_pilot/, runs/agent_memory_h2p2_prompted/,
 runs/agent_memory_h2p2_deterministic/, data/sft/h2p2_mixed/.
 
+### 2026-09-09 — Track C executed (T→P KD + skew-KL A/B): gate PASS, plain-KD adopted, skew rejected
+
+User decision (2026-09-09): Track C picked from the row-38 follow-up menu as
+the next track (the trained path; accept/variant/stronger-student declined).
+Machine note: the box moved BACK to DESKTOP-MUO4QK5 — Quadro RTX 4000
+8192 MiB, driver 595.97, root `E:\python projects\nano_SLMs` (with space);
+ENVIRONMENT.md updated (its "RTX 3000 6 GB" line was the TU09FBO session).
+
+Setup (adoption_plan §C): teacher = frozen 226.5M runs/target/final loaded
+fp32 (~0.9 GB); student = P-arch 12L/768 = 100.68M; data = data/target/tokens
+(CSN, ctx 1024; 46811 train / 956 val blocks); 2000 steps; batch 4 × accum 2
+(effective 8); eval+save 100; adamw_bnb_8bit (row 11 next-pretrain default,
+SHARED by all arms → internally fair; deviation from row 20's adamw_torch
+recorded); lr 4e-4 cosine, warmup 100; seed 42.
+
+VRAM probe ladder (the fp32 KD logits are the memory hog — 8192-token window
+× 32768 vocab): micro-b8 peaked 7897/8192 MiB (96%, OOM-risk) → micro-b4/a2
+completed a FULL probe cycle (train+eval+save) at 7010 (86%) = chosen for
+both C1 arms; a b2/a4 probe trained at only 4926 but its eval_batch-8
+eval transient spiked 7486 → eval stays at 4. The C2 skew path (chunked
+per-sample) probed at 7447 (91%) and ran clean. 0 OOM, 0 interruptions
+across all 3 full arms (~3.5 h GPU incl probes).
+
+Results (full-precision curves committed at runs/kd-t2p-*/final/eval_curves.json):
+- baseline (plain train.py, runs/kd-t2p-baseline): best eval **2.9453** @2000
+  (curve 5.617 → 2.945, saturating under cosine-to-0).
+- plain-KD (runs/kd-t2p-kd, tau 1.0 alpha 0.5): best eval **2.7476** @2000
+  (curve 5.507 → 2.748). Ahead of the baseline at EVERY matched step:
+  100 −2.0%, 500 −2.5%, 600 **−3.05%** (= the ≤1/3-steps gate point →
+  **GATE PASS**), 1000 −4.0%, 1500 −6.4%, 2000 **−6.71%**. The row-20
+  "distilled rung" claim transfers to P scale even at 2.25× compression
+  (row 20's teacher/student ratio was 8.2×). The winner is the candidate
+  distilled-P rung for future use.
+- skew-KD (runs/kd-t2p-kd-skew, DistiLLM α-SKL λ=0.1): best eval **2.8104**
+  = +2.29% vs plain-KD → **NOT adopted**. It led only in the 800–1000
+  window (−0.6/−1.0%) and lost late; both KD arms' final grad norms are
+  healthy (1.0–1.6) → the fp16 instability the skew floor exists to fix
+  never appeared at tau 1 / alpha 0.5 / this scale. kd.py's skew branch
+  stays config-gated with default 0.0 = byte-identical legacy path.
+- Process honesty: a mid-run live-log comparison briefly suggested a dead
+  heat — the streamed eval lines were steps 500/600, not 600/700; the
+  full-precision trainer_state curves supersede and no wrong verdict was
+  ever written to the ledger.
+
+New gotchas (MEMORY lesson 25): F.kl_div needs probabilities or
+log_target=True (log-prob targets silently NaN — caught by the CPU math
+test before any GPU spend); the CPU validation recipe (exact vs
+brute-force mixture-KL at several λ + monotonicity + finite-grad checks)
+is the template for any future loss change.
+
+Evidence: runs/kd-t2p-{baseline,kd,kd-skew}/final/{train_summary.json,
+eval_curves.json} + logs tfevents + train_out.log (moved from the root
+Tee logs, row-20 pattern); configs/kd_t2p_{baseline,kd,kd_skew}.yaml;
+scripts/kd.py (skew_lambda config-gated); probe scratch (dirs + configs +
+logs) deleted after read-out per the established scratch policy. Disk:
+E: 41.1 GB free post-run; the three 403 MB fp32 arm weights + rotated
+checkpoints (~1.5 GB/arm) stay on disk pending user cleanup decision
+(keep runs/kd-t2p-kd/final at minimum — it is the distilled-P rung).
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).

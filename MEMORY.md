@@ -194,6 +194,23 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
      includes('GPU-FREE-SENTINEL')), or count raw csv lines before any
      message text. Same rule for every grep-then-branch tool pattern.
 
+ 25. **KD loss + VRAM gotchas at full-vocab logits** (2026-09-09, Track C):
+      (a) F.kl_div treats `target` as PROBABILITIES by default — passing
+      log-probs as the target silently yields NaN (log of a negative);
+      with log-prob targets pass `log_target=True` (loss =
+      exp(target)·(target − input) = exact KL). The CPU math test caught
+      this BEFORE any GPU run — always validate new loss math on CPU
+      random logits (exact-vs-brute-force + limits + finite-grad checks)
+      first. (b) KD's fp32 full-vocab logit tensors dominate VRAM: at
+      P-arch/ctx 1024 the KD arm's VRAM ladder measured micro-b8 = 7897
+      MiB of 8192 (96 pct, OOM-risk) -> b4/accum2 = 7010 (86 pct, chosen
+      for BOTH A/B arms — fairness needs identical micro-batching) ->
+      b2/a4 train was only 4926 but an eval_batch-8 transient on top of
+      the train cache spiked 7486 (eval batch must also drop). A 50-step
+      probe per NEW loss shape (incl. its eval) is the cheap way to see
+      the true peak. (c) A DistiLLM skew floor (skew=0.1) costs ~+0.44 GB
+      even chunked per-sample.
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF

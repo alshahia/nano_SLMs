@@ -1,11 +1,18 @@
-"""C12 Tier 3: intra-ladder logit KD (plan §5) - frozen teacher P teaches an
-S-sized student on the same packed pretraining shards.
+"""C12 Tier 3 / Track C: intra-ladder logit KD - frozen teacher teaches a
+smaller student on the same packed pretraining shards.
 
 Loss = alpha * KL(teacher_probs || student_probs, tau) + (1-alpha) * CE,
 standard distillation direction (match the teacher distribution; plan's
 "KL(student || teacher)" notation, tau=1 default, alpha=0.5 default). The
-fair A/B baseline (from-scratch S, identical steps/data/seed) is a plain
-train.py run with an S-dims config - no KD code involved.
+fair A/B baseline (from-scratch student, identical steps/data/seed) is a
+plain train.py run with a student-dims config - no KD code involved.
+
+kd.skew_lambda (Track C2, default 0.0 = the exact plain path above): the
+KD term becomes DistiLLM alpha-SKL (Ko et al. 2024, sec. 3.1) -
+KL(t || m), m = skew*t + (1-skew)*s - same forward-KL direction, but the
+mixture floor removes the -log q explosion that makes plain KLD unstable
+in fp16. Paper ablation optimum: skew = 0.1. CPU-validated exact vs a
+brute-force mixture-KL at skew in {0.1, 0.3, 0.9} (diff <= 2.4e-7).
 
 Auto-resume contract (PLAN.md §5.3) - identical to scripts/train.py: scans
 runs/<name>/ for complete checkpoint-* dirs and continues with no flags.
@@ -13,6 +20,7 @@ GATE: never while another training run is live on the GPU.
 """
 import argparse
 import json
+import math
 import os
 import re
 import sys
@@ -61,6 +69,9 @@ def main() -> None:
     seq_len = int(cfg["model"]["ctx"])
     tau = float(kd_cfg.get("tau", 1.0))
     alpha = float(kd_cfg.get("alpha", 0.5))
+    skew = float(kd_cfg.get("skew_lambda", 0.0))
+    if not (0.0 <= skew < 1.0):
+        raise ValueError(f"kd.skew_lambda must be in [0, 1); got {skew}")
 
     tok = AutoTokenizer.from_pretrained(tcfg["name"])
     train_ds = PackedDataset((ROOT / d["tokens_dir"]).glob("train_*.bin"), seq_len)
@@ -94,17 +105,37 @@ def main() -> None:
             with torch.no_grad():
                 t_logits = teacher(input_ids=ids).logits.float()
             out = model(input_ids=ids, labels=ids)
-            n_tok = ids.numel()
-            t_soft = F.softmax(t_logits / tau, dim=-1).view(n_tok, -1)
-            s_logp = F.log_softmax(out.logits.float() / tau, dim=-1).view(n_tok, -1)
-            kd = F.kl_div(s_logp, t_soft, reduction="batchmean") * (tau * tau)
+            if skew > 0.0:
+                # DistiLLM alpha-SKL: KL(t || m), m = skew*t + (1-skew)*s.
+                # Exact log-mixture via logaddexp; CHUNKED over the batch dim
+                # so the [T, V] fp32 intermediates stay one-sequence small
+                # (the full-batch form pushed the b8 probe to 7897/8192 MiB).
+                V = out.logits.shape[-1]
+                t_logp = F.log_softmax(t_logits / tau, dim=-1)
+                t_logp = t_logp.view(ids.shape[0], -1, V)
+                terms = []
+                for b in range(ids.shape[0]):
+                    t = t_logp[b]
+                    s = F.log_softmax(out.logits[b].float() / tau, dim=-1)
+                    log_m = torch.logaddexp(t + math.log(skew),
+                                            s + math.log1p(-skew))
+                    # F.kl_div(input=log m, target=log t, log_target=True)
+                    # = sum t * (log t - log m) = KL(t || m)
+                    terms.append(F.kl_div(log_m, t, reduction="batchmean",
+                                          log_target=True))
+                kd = torch.stack(terms).mean() * (tau * tau)
+            else:
+                n_tok = ids.numel()
+                t_soft = F.softmax(t_logits / tau, dim=-1).view(n_tok, -1)
+                s_logp = F.log_softmax(out.logits.float() / tau, dim=-1).view(n_tok, -1)
+                kd = F.kl_div(s_logp, t_soft, reduction="batchmean") * (tau * tau)
             loss = alpha * kd + (1.0 - alpha) * out.loss
             return (loss, out) if return_outputs else loss
 
     n_params = sum(p.numel() for p in student.parameters())
     t_params = sum(p.numel() for p in teacher.parameters())
     print(f"[kd] student={n_params / 1e6:.1f}M teacher={t_params / 1e6:.1f}M "
-          f"tau={tau} alpha={alpha} device={device}", flush=True)
+          f"tau={tau} alpha={alpha} skew={skew} device={device}", flush=True)
 
     output_dir = ROOT / t["output_dir"]
     os.environ.setdefault("TENSORBOARD_LOGGING_DIR", str(output_dir / "logs"))
@@ -169,6 +200,7 @@ def main() -> None:
         "kd_teacher": kd_cfg["teacher"],
         "kd_tau": tau,
         "kd_alpha": alpha,
+        "kd_skew": skew,
         "student_params_m": round(n_params / 1e6, 2),
         "teacher_params_m": round(t_params / 1e6, 2),
         "best_eval_loss": trainer.state.best_metric,

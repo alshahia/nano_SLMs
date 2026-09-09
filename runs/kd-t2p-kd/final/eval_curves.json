@@ -1,0 +1,93 @@
+{
+  "phase": "kd-t2p-kd",
+  "note": "plain-KL KD, teacher runs/target/final, tau=1.0 alpha=0.5; best 2.7475821971893 @2000 (-6.71 pct vs baseline)",
+  "max_steps": 2000,
+  "eval_every": 100,
+  "seed": 42,
+  "optimizer": "adamw_bnb_8bit",
+  "micro_batch": 4,
+  "accum": 2,
+  "effective_batch": 8,
+  "eval_curves": [
+    {
+      "step": 100,
+      "eval_loss": 5.506577491760254
+    },
+    {
+      "step": 200,
+      "eval_loss": 4.633856296539307
+    },
+    {
+      "step": 300,
+      "eval_loss": 4.293406963348389
+    },
+    {
+      "step": 400,
+      "eval_loss": 4.092790603637695
+    },
+    {
+      "step": 500,
+      "eval_loss": 3.9220664501190186
+    },
+    {
+      "step": 600,
+      "eval_loss": 3.7947006225585938
+    },
+    {
+      "step": 700,
+      "eval_loss": 3.669074535369873
+    },
+    {
+      "step": 800,
+      "eval_loss": 3.5491976737976074
+    },
+    {
+      "step": 900,
+      "eval_loss": 3.4272677898406982
+    },
+    {
+      "step": 1000,
+      "eval_loss": 3.2807745933532715
+    },
+    {
+      "step": 1100,
+      "eval_loss": 3.135342836380005
+    },
+    {
+      "step": 1200,
+      "eval_loss": 3.031203031539917
+    },
+    {
+      "step": 1300,
+      "eval_loss": 2.9448835849761963
+    },
+    {
+      "step": 1400,
+      "eval_loss": 2.8776285648345947
+    },
+    {
+      "step": 1500,
+      "eval_loss": 2.8372864723205566
+    },
+    {
+      "step": 1600,
+      "eval_loss": 2.795445680618286
+    },
+    {
+      "step": 1700,
+      "eval_loss": 2.7716078758239746
+    },
+    {
+      "step": 1800,
+      "eval_loss": 2.755039691925049
+    },
+    {
+      "step": 1900,
+      "eval_loss": 2.7490005493164062
+    },
+    {
+      "step": 2000,
+      "eval_loss": 2.747582197189331
+    }
+  ]
+}

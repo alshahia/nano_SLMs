@@ -81,6 +81,26 @@ per repo convention.
   scale). Opens later: true on-policy KD (GKD student-sampling reverse-KL
   vs T logits) as C3 — design doc only, not in this plan.
 - Files: `scripts/kd.py` (skew-KL option), `configs/kd_t2p*.yaml`.
+- **RESULT 2026-09-09 (Track C executed — TASKS row 31; GATE PASS, plain-KD
+  adopted, skew-KL rejected)**: teacher = frozen 226.5M `runs/target/final`,
+  student = P-arch 12L/768 **100.68M** (not the ~110M estimate above), data =
+  `data/target/tokens` CSN ctx 1024, 2000 steps, batch 4×accum 2 (effective 8),
+  adamw_bnb_8bit (row 11 default; deviation from row 20's adamw_torch is
+  deliberate and shared by all arms → internally fair), seed 42, eval+save 100.
+  **Baseline 2.9453 → plain-KD 2.7476 @2000 (−6.71%)**; KD ahead at EVERY
+  matched step (100: −2.0%, 500: −2.5%, 600: **−3.05%**, 1000: −4.0%, 1500:
+  −6.4%) → the §5 gate "distilled ≥ baseline at ≤ 1/3 steps" **PASSES at P
+  scale**; future P rungs can be distilled. The gap persists at only 2.25×
+  compression (row 20's was 8.2×) — the advantage is not a compression artifact.
+  **C2 skew-KL (DistiLLM α-SKL, λ=0.1, CPU-validated exact vs brute-force
+  mixture-KL to ≤2.4e-7): 2.8104 @2000 = +2.29% vs plain-KD — REJECTED.** It
+  led only in the 800–1000 window (−0.6/−1.0%) and lost late; both KD arms'
+  end-of-run grad norms healthy (1.0–1.6) → no fp16 instability for the skew
+  floor to fix; `skew_lambda=0` (byte-identical legacy path) stays the default.
+  VRAM ladder (fp32 KD logits dominate): micro-b8 7897/8192 (96%) → b4/a2
+  full-cycle 7010 (86%) chosen; skew chunked-per-sample 7447 (91%). 3 full
+  arms, ~3.5 h GPU total incl probes, 0 OOM, 0 interruptions. Evidence:
+  `runs/kd-t2p-{baseline,kd,kd-skew}/final/{train_summary.json,eval_curves.json}`.
 
 ## D — Tier 2 V1 → V2b (SODA-style preference rerank) — 4-6 h impl + ~1 h pilot GPU
 
