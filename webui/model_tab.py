@@ -70,7 +70,7 @@ def _detail_md(blocks, bid, tech):
     return "\n".join(lines)
 
 
-def _select_block(blocks, tech, evt=None):
+def _select_block(blocks, tech, evt: gr.SelectData | None = None):
     if evt is None:
         bid = blocks[0]["id"] if blocks else ""
     else:
