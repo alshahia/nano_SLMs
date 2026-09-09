@@ -256,6 +256,16 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
      nvidia-smi memory.used (per-process values report [N/A] on Windows
      WDDM); every GPU gate re-checks immediately before firing.
 
+  31. **A restored final's eval_report.json is stale provenance** (2026-09-09,
+      Track A): runs/target/final was bit-exact-restored from checkpoint-4000
+      (row 19 gotcha 1), so a fresh knobs-off re-eval gives 1.8512 == the
+      trainer's recorded best@4000, while the on-disk eval_report.json still
+      says 1.8641 (computed 2026-09-07 on the PRE-restore final weights).
+      After ANY final-dir reweight/restore, re-run eval before quoting the
+      baseline; cross-check against the trainer's own eval curve
+      (train_summary/tfevents), not the stale report. e1 was never
+      reweighted - its 2.0466 reproduced exactly.
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF

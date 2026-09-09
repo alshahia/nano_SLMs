@@ -30,6 +30,17 @@ per repo convention.
 
 ## A — Context eval probes (no training) — ~1-2 h GPU
 
+> **RESULT 2026-09-09 (row 29 done, user go):** A-gate FIRED — NTK@2048
+> = -4.17% (target) / -3.43% (e1) vs the 1024 baselines; NTK@4096 = +1.75%
+> (base) / +3.9% (e1); raw noop extension +12-58%; StreamingLLM pos_shift
+> remap collapses at every width (sink 4 ~= sink 0 — no sink
+> specialization in a from-scratch 1024 model); window+sink mask with
+> ABSOLUTE positions = near-baseline @2048 (-0.65%/+0.26%). **Decision:
+> B targets ctx 4096 (YaRN factor 4); 2048/factor-2 fallback if the
+> 8-bit-Adam vram_probe @4096 OOMs.** Full tables + provenance:
+> track_a_result.md; runs/ctx_probes/20260909T184503Z/. Knobs shipped in
+> src/model.py + eval.py flags (defaults off; sanity 4/4, selftest 5/5).
+
 - **A1 Dynamic-NTK**: inference-only RoPE base scaling when seq > 1024.
   Eval-only knobs (`eval.ctx_override`, `rope.scaling: dynamic-ntk`); run
   on BOTH `runs/target/final` (pure-LM surface — cleanest CSN signal) and

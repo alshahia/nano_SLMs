@@ -1,0 +1,20 @@
+{
+  "point": "base_1024",
+  "ctx": 1024,
+  "rope": null,
+  "factor": 1.0,
+  "window": null,
+  "sink": 4,
+  "positions": null,
+  "batch": 8,
+  "blocks": 956,
+  "batches": 120,
+  "tokens": 978944,
+  "val_loss": 2.046582,
+  "perplexity": 7.7414,
+  "quick": null,
+  "wall_s": 165.3,
+  "peak_vram_gb": 4.383,
+  "historical_eval_report_val_loss": 2.0465822439313435,
+  "delta_vs_history": -0.0
+}

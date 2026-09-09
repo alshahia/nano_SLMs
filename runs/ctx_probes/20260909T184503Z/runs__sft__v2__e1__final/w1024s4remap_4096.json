@@ -1,0 +1,18 @@
+{
+  "point": "w1024s4remap_4096",
+  "ctx": 4096,
+  "rope": null,
+  "factor": 1.0,
+  "window": 1024,
+  "sink": 4,
+  "positions": "remapped",
+  "batch": 1,
+  "blocks": 239,
+  "batches": 239,
+  "tokens": 978944,
+  "val_loss": 4.35452,
+  "perplexity": 77.8294,
+  "quick": null,
+  "wall_s": 271.4,
+  "peak_vram_gb": 2.633
+}

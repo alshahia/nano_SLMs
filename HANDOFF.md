@@ -803,6 +803,51 @@ per HANDOFF §7):
   checkpoint-sft_v2_e1-final.zip stays (redundant with the pack — delete
   per user decision only).
 
+### 2026-09-09 — Track A context eval probes DONE (row 29; machine back on TU09FBO)
+
+User go on Row 29 (Track A, adoption_plan §A). Implemented eval-only
+context knobs — NO training code touched, defaults OFF:
+`src/model.py` helpers (apply_rope_scaling / reset_rope_scaling via HF
+transformers 5.16.1 native dynamic rope; build_streaming_sink_mask;
+streaming_position_ids) + `scripts/eval.py` flags (--ctx,
+--rope-scaling, --rope-factor, --stream-window, --sink-tokens,
+--stream-positions, --batch, --quick, --skip-gen, --report-out,
+--label; also reads the same knobs from config eval.*). Contract
+gates: sanity_check 4/4 PASS; new `scripts/ctx_probe.py --selftest`
+5/5 PASS on CPU (mask==causal identity, mask semantics, exact Qwen
+dynamic-NTK inv_freq check, pos_shift clamp).
+
+Full matrix (runs/ctx_probes/20260909T184503Z, ~2.1 h GPU, 0 OOM,
+0 interruptions; full 978,944-token CSN val per point; RTX 3000 fp32,
+batch 8/4/1 by ctx):
+
+- target/final: base_1024 **1.8512** (== trainer best@4000 — the 2026-09-09
+  checkpoint-4000 restore; the on-disk eval_report.json 1.8641 is STALE
+  pre-restore, see MEMORY lesson 26) → ntk_2048 **1.7740 (−4.17%)**,
+  ntk_4096 **1.8836 (+1.75%)**, noop_2048 +12.3%, noop_4096 +55.8%,
+  w1024s4abs_2048 −0.65%; remapped (pos_shift) arms +78-126%.
+- sft_v2_e1/final: base_1024 **2.0466** (== recorded report, clean) →
+  ntk_2048 **−3.43%**, ntk_4096 +3.90%, w1024s4abs_2048 +0.26%;
+  remapped arms +70-113%.
+
+Findings: Dynamic-NTK @2048 is a free lunch (improves over the 1024
+baseline); @4096 eval-only is +1.75% base / +3.9% e1; **StreamingLLM
+pos_shift is wrong for this from-scratch model** (collapses at every
+width; sink 4 ≈ sink 0 → no attention-sink specialization; the model
+needs correct relative distances); window+sink mask with ABSOLUTE
+positions is the only working window variant (near-baseline @2048,
+inference-time lever). VRAM 4.39 GB @1024/2048, 2.63 GB @4096 — KV
+non-binding as computed in note 04.
+
+**DECISION (row 29 result → row 30): Track B targets ctx 4096 with YaRN
+factor 4** (the plan §A gate fired: NTK@2048 holds within +2%), 2048 /
+factor-2 as the recorded fallback IF the 8-bit-Adam vram_probe @4096
+OOMs (B must probe BOTH ctx first). B gates now: val lift on BOTH
+surfaces + the @1024 forgetting guard. Result note:
+research/distill_survey/track_a_result.md; TASKS rows 29/30 updated.
+ENVIRONMENT.md flipped to TU09FBO (RTX 3000 6 GB, driver 580.92,
+E: ~36.35 GB free at session start).
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).
