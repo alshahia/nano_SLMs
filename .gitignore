@@ -11,6 +11,9 @@ __pycache__/
 data/*/raw/
 # nested corpus raw dir (h2_copy) - data/*/raw/ is one segment deep only
 data/sft/h2_copy/raw/
+# nested corpus raw dir (h2p2_mixed): QA slices + build_meta (regenerable via
+# scripts/h2p2_build_corpus.py; pairs.jsonl + validate_meta.json stay tracked)
+data/sft/h2p2_mixed/raw/
 
 # Checkpoint optimizer states exceed GitHub LFS free quota (~1 GB):
 # full resume state stays local; pushed checkpoints carry model + trainer state.
@@ -70,6 +73,8 @@ runs/sft_u1*/checkpoint-*/
 runs/sft_u1*/final/model.safetensors
 runs/h2_copy_lora*/checkpoint-*/
 runs/h2_copy_lora*/final/model.safetensors
+runs/h2p2_mixed_lora*/checkpoint-*/
+runs/h2p2_mixed_lora*/final/model.safetensors
 runs/sft_u1*/*.log
 
 # Web UI transient launch state (pid etc.) - never meaningful in git

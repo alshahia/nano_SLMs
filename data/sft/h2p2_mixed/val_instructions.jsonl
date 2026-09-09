@@ -1,0 +1,73 @@
+{"instruction": "Given the question: Here's a question and a few possible answers:   Q: James didn't like bringing his suit to court.   He didn't wear it when he heard what? Possible A: resentment, crime, tensions, going to court, verdict  Why is \"verdict\" an answer aligned with human common sense?\nThe answer is:"}
+{"instruction": "What geographic area do Sephardic Jews originate from?"}
+{"instruction": "You need to quickly analyze the given text and find all the proper nouns within it.\nThe president of France Emmanuel Macron addressed the crowd of protestors in Paris saying that he sympathised with their grievances but emphasized the need for responsibility and sobriety."}
+{"instruction": "Here is what I remember:\n- The parent-teacher meeting for Elena is on May 6\n- It is at 17:15 in the library\n- Elena's math grade came up this term\nQuestion: Where is the parent-teacher meeting?"}
+{"instruction": "Who was Christopher Columbus?"}
+{"instruction": "List five titles by J.K. Rowling."}
+{"instruction": "What is the difference between regular staph infections and MRSA?"}
+{"instruction": "which weighs more, cold or hot water?"}
+{"instruction": "Notes:\n- The object store endpoint is s3.corp.local on port 9000\n- Bucket retention is 90 days\n- Replication runs at 03:20\nNote about the user: The object store endpoint is s3.corp.local on port"}
+{"instruction": "What are the names of the three largest United States Virgin Islands?"}
+{"instruction": "Who was Bhagat Singh?"}
+{"instruction": "I need a mnemonic device to remember the following names in this order: Rebecca, Ashley, Elliott, Frankie, Paul, Lois, Grant, Michael. It's OK if you include the actual names, as long as it makes sense in the sentence."}
+{"instruction": "Describe the landscape of the Oregon National Forest."}
+{"instruction": "Notes:\n- Greta owns a red piano\n- She tunes the keys herself\n- She plays blues standards on Sundays\n- Her dog howls along\nQuestion: What does Greta play on Sundays?"}
+{"instruction": "create a table with the following spec:\n\ncolumns - 'cached fps', 'uncached fps'\nrows - '{filetype} / {size} ' where filetype is jpg, png, mov, mp4  and size is 100KB, 1MB, 20MB\n\nuse markdown format table, no code block."}
+{"instruction": "Here is what I remember:\n- Petra shops at the weekly market on Thursdays\n- Her shopping bag is the green canvas one\n- She buys tomatoes, basil, and olive oil every week\nQuestion: Where does Petra shop?"}
+{"instruction": "What is the difference between archaeology and paleontology?"}
+{"instruction": "Notes:\n- The metrics agent pushes numbers at 06:00\n- The metrics agent reads the events table\n- The metrics agent skips weekends\nNote about the user: The metrics agent pushes numbers at"}
+{"instruction": "Write a paragraph that includes all 5-letter anagrams of the word earth."}
+{"instruction": "At what temperature does water boil?"}
+{"instruction": "Imagine you are a time traveler visiting the 18th century. Describe the scene around you and your reactions to the sights, sounds, and smells."}
+{"instruction": "Here is what I remember:\n- Kofi reserved a rental car in Palermo\n- The booking code is SIC5510\n- Pickup is on March 3 at 09:00\n- The car is a small blue hatchback\nQuestion: What is the booking code for the rental car?"}
+{"instruction": "How many continents are there on Earth?"}
+{"instruction": "What is a star and what are they made of?"}
+{"instruction": "Historically, what are the largest animals on earth? Please include dinosaurs"}
+{"instruction": "What is the primary cause of rain?"}
+{"instruction": "Rewrite the given paragraph to make it suitable for a children's story.\nThe scientist conducted an experiment on the rats placed in a complex maze. The objective was to observe their learning behavior over time. The lab was filled with equipment monitoring their progress and recording vital information."}
+{"instruction": "Known facts about the user:\n- Brother's name is Stefan Kraus\n- Stefan works in Leipzig\n- Stefan's birthday is July 22\nHer brother's name is"}
+{"instruction": "Notes:\n- Greta's electricity bill is due on the 12th\n- The bill is 67 dollars\n- The gas bill of 54 dollars is due on the 19th\nQuestion: When is Greta's electricity bill due?"}
+{"instruction": "Write a few sentences about how hydration is important before workouts"}
+{"instruction": "What is the value of x if x^2 = 4?"}
+{"instruction": "Who is Daniel Ricciardo?"}
+{"instruction": "How many types of elk are found in North America?"}
+{"instruction": "Could you write a casual text for my groupchat just quickly letting them know I can't make the brunch tomorrow but would love to do something else later this week. put a brunch pun at the end"}
+{"instruction": "What is a Put option in finance?"}
+{"instruction": "Categorize the following sentences based on their function: \n1) \"Do you have time to meet?\"\n2) \"Go for a walk.\"\n3) \"How many people are there?\"\nOnce you've classified them, assign each sentence a color:\n- Green for statements\n- Blue for questions\n- Red for commands\nWhat color is sentence 1? \nWhat color is sentence 2?\nWhat color is sentence 3?"}
+{"instruction": "Notes:\n- The mirror host is mirror-us1.internal\n- The mirror host pushes to 3 regions\n- Its sync finishes by 05:30\nQuestion: What is the mirror host?"}
+{"instruction": "What is COBOL used for?"}
+{"instruction": "Notes:\n- Bram panics at the sight of blood\n- Faints during injections at the clinic\n- Wants to become a nurse anyway\nQuestion: What is Bram afraid of at the clinic?"}
+{"instruction": "What is the largest city in Ecuador by population?"}
+{"instruction": "Given a piece of text, identify the types of figurative language used in the text.\nLife is like a roller coaster, with its highs and lows"}
+{"instruction": "Who wrote Mahabharata?"}
+{"instruction": "What is the net ATP production from the breakdown of one glucose molecule during glycolysis?"}
+{"instruction": "What is the First Amendment of the US constitution?"}
+{"instruction": "Conversation summary so far:\n- Omar practices chess openings every evening.\n- His rating climbed two hundred points this year.\n- He plays blitz games at the cafe on Fifth.\nQuestion: What game does Omar play every evening?"}
+{"instruction": "Find a word in French that means \"beautiful\"."}
+{"instruction": "Conversation summary so far:\n- The archive script frees about 60 GB each week\n- It prunes exports older than 30 days\n- The exports dir peaked at 500 GB\nQuestion: How much space does the archive script free?"}
+{"instruction": "Notes:\n- Otto's flight to Lisbon leaves at 6:40\n- The gate closes at 6:10\nNote about the user: His gate closes at"}
+{"instruction": "Give me two scientific facts about plants."}
+{"instruction": "Who was declared as Person of the Year by  Time Magazine in 2019?"}
+{"instruction": "Simplify $(7b^3)^2 \\cdot (4b^2)^{-3},$ given that $b$ is non-zero."}
+{"instruction": "Notes:\n- The on-call rota swaps Ana and Ben on May 20\n- Ana covers the east region\n- Ben covers the west region\nQuestion: When does the on-call rota swap Ana and Ben?"}
+{"instruction": "What is data science?"}
+{"instruction": "What continent is Peru a part of?"}
+{"instruction": "Notes:\n- The recycling pickup moved to Wednesday\n- The old pickup day was Monday\n- Bins go out by 7:00\nQuestion: What day is the recycling pickup?"}
+{"instruction": "Notes:\n- Niko collects vinyl records\n- He owns 40 jazz records\n- He cleans them every month\n- His favourite album is Blue Train\nQuestion: How many jazz records does Niko own?"}
+{"instruction": "Notes:\n- Ines prefers sushi on Fridays\n- Her favourite dessert is lemon tart\n- She bakes it herself\nHer favourite dessert is"}
+{"instruction": "Conversation summary so far:\n- The restore tool lives at opt-restore on the staging server\n- It needs port 8443 to reach the vault\n- Restores were tested on 2026-08-14\nQuestion: Where does the restore tool live?"}
+{"instruction": "Bobby wanted pancakes for breakfast.  The recipe on the box makes 21 pancakes.  While he ate 5 pancakes, his dog jumped up and was able to eat 7 before being caught.  How many pancakes does Bobby have left?"}
+{"instruction": "What year was the car manufacturer Ferrari founded in?"}
+{"instruction": "Conversation summary so far:\n- The water bill is 29 dollars a month\n- The sewer bill is 18 dollars a month\n- Both bills are due on the 28th\nQuestion: What is the sewer bill?"}
+{"instruction": "Notes:\n- Livia renewed her passport in February\n- Her passport number is 548912076\n- It is valid until January 2034\n- She keeps it in the blue drawer\nQuestion: What is Livia's passport number?"}
+{"instruction": "Known facts about the user:\n- Wife's name is Lucia\n- Lucia is a nurse\n- Lucia works night shifts at the hospital\nQuestion: What is the user's wife's name?"}
+{"instruction": "Determine which planet, among the eight in our solar system, the following description refers to: It has a thick atmosphere composed mainly of carbon dioxide, and surface temperatures hot enough to melt lead."}
+{"instruction": "What is Crohn's Disease and what are some of the symptoms?"}
+{"instruction": "What teams currently play in the English Premier League?"}
+{"instruction": "In which Harry Potter's book did we learn about Voldemort's childhood?"}
+{"instruction": "Jamie collects glass balls. He had 16 red balls and two times more blue balls. Later on, he lost 6 of the red balls, so he decided to buy some yellow balls to fill up his collection. How many yellow balls did he buy if, after all, he had 74 balls in total?"}
+{"instruction": "When has the movie The Ride been released"}
+{"instruction": "Imagine you are a world-class botanist, and you have discovered a new plant species on a remote island. Describe its unique features, habitat, and potential uses."}
+{"instruction": "If Jane's goal is to exercise for 1 hour per day, 5 days a week, and she successfully achieves this goal for 8 weeks, what is the total number of hours that Jane has exercised?"}
+{"instruction": "What is the largest spider on earth?"}
+{"instruction": "Where is Mt. Etna located?"}

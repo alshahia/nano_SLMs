@@ -1,0 +1,17 @@
+{
+  "phase": "h2p2_mixed_lora",
+  "base_model": "runs/sft_v2_e1/final",
+  "pilot": false,
+  "pairs": 1457,
+  "params_m": 231.38,
+  "best_eval_loss": 4.946077823638916,
+  "best_checkpoint": "E:\\python projects\\nano_SLMs\\runs\\h2p2_mixed_lora\\checkpoint-184",
+  "final_eval": {
+    "eval_loss": 4.946102142333984,
+    "eval_runtime": 1.0696,
+    "eval_samples_per_second": 68.252,
+    "eval_steps_per_second": 17.764,
+    "epoch": 2.0
+  },
+  "resumed_from": null
+}

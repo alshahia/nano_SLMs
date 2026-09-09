@@ -611,8 +611,65 @@ recall misses = prompted extractor corrupted the stored facts ("March 15"
 -> "ISO 15", wifi value echoed), 1 = copy-out failure (f2). Evidence:
 runs/h2_copy_lora/final (+eval_report.json, train_summary.json),
 runs/h2_copy_lora_pilot/, runs/agent_memory_h2_rerun/report.json. Phase 1
-DONE per the ladder; Phase 2 (teacher-distilled general QA) stays
-user-gated (teacher TBD, NOT Qwen3.5-0.8B).
+DONE per the ladder; Phase 2 EXECUTED 2026-09-09 (next section).
+
+### 2026-09-09 — Track H2 Phase 2 executed (mixed general-QA corpus): all gates PASS, recall at threshold
+
+User decisions (2026-09-09): Phase 2 GO via the dataset path (NO local
+teacher inference; NOT Qwen3.5-0.8B per the standing veto); deterministic
+extractor arm ADDED for the recall rerun (prompted arm kept for
+comparability); mid-build upgrade sanctioned by the user ("more powerful
+datasets", HF token added to .env): an OpenHermes-2.5 GPT-4 distillate
+slice added on top of dolly/no_robots.
+
+Corpus (scripts/h2p2_build_corpus.py -> scripts/h2p2_validate_corpus.py):
+947 QA pairs kept (371 dolly open_qa CC-BY-SA-3.0; 223 no_robots
+OpenQA/Brainstorm/Generation CC-BY-NC-4.0 — Chat is multi-turn by
+construction, 795/796 skipped; 353 OpenHermes-2.5 GPT-4 ShareGPT
+self-contained pairs, ungated) + the 585 Phase 1 copy pairs appended
+verbatim = 1532 mixed pairs (data/sft/h2p2_mixed/, validate_meta.json).
+Builder attrition was honest: ~30-50% dropped by the <=5-sentence /
+<=130-word prose caps. sft_data: kept 1530 (train 1457 / val 73;
+1 drop_short, 1 drop_long).
+
+Training (configs/h2p2_mixed_lora.yaml, LoRA r=16 on runs/sft_v2_e1/final —
+the Phase 1 recipe): sanity PASS (trainable 4,849,664 = 2.096%); pilot PASS
+(runs/h2p2_mixed_lora_pilot, 19 steps, eval 5.590); FULL PASS
+(runs/h2p2_mixed_lora, 184 steps in 1151 s ~19 min, eval 5.36 -> 4.9461
+best=final@184, zero interruptions).
+
+Gates (eval.py on final): CSN 2.0077 vs e1 2.0466 = **-1.9% — the mixed
+corpus IMPROVED the forgetting guard** (gate <= +10%); ast greedy 0.86
+(gate >= 0.85 PASS; sampled 0.78 vs Phase 1 0.82 — honest decline).
+
+Decisive reruns (agent_memory_eval.py on the new final, fresh --out dirs):
+- prompted arm (unchanged harness): gate_recall PASS **2/6** (probe 2:
+  rust, neovim; qa 1; control 0/6), extractor 5 prompted / 2 deterministic
+  fallback, scripted coverage 6/6 — 2 stored facts corrupted by the
+  prompted path again.
+- deterministic arm (--extractor deterministic): gate_recall PASS **2/6**
+  (probe 2: rust, layla; qa 1: pineapple42; control 0/6). The store is
+  VERBATIM-PERFECT — all 6 scripted facts byte-exact including "March 15"
+  and "Pineapple42" (the exact two the prompted extractor corrupted in
+  Phase 1); f6 wifi qa flipped to PASS vs Phase 1, f5 neovim flipped to a
+  copy-out miss — net 2/6: the extractor corruption is FIXED, the wall is
+  now purely the student's copy-out.
+- gate_regression PASSes trivially (ast 0/4 preamble = 0/4 plain in both
+  arms — worse than Phase 1's 0/4 vs 2/4; recorded honestly).
+- summarizer 0 folds in both arms (as in Phase 1 — mechanism stays
+  extract/store/retrieve/copy only, overhead 1.0-1.4% of ctx).
+
+Honest deltas vs Phase 1: recall 3/6 -> 2/6 (still >= the 2/6 gate; the
+copy share fell 100% -> 38% and cost ~1 recall point); ast greedy
+0.90 -> 0.86; sampled 0.82 -> 0.78; QA-template tautologies persist on
+hard prompts (43/50 greedy; the canned config prompts still tautologize)
+— the 947-pair QA mix did NOT visibly cure the collapse at this LoRA
+scale, but CSN improved. Follow-up is USER-GATED (TASKS row 38): accept
+the threshold + residual tautologies, or the stronger-student path
+(H2_RESUME section 6 options). Evidence:
+runs/h2p2_mixed_lora/final (+eval_report.json, train_summary.json),
+runs/h2p2_mixed_lora_pilot/, runs/agent_memory_h2p2_prompted/,
+runs/agent_memory_h2p2_deterministic/, data/sft/h2p2_mixed/.
 
 ## 9. Conventions
 

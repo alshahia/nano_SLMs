@@ -1,0 +1,24 @@
+{"fact": "f1", "style": "qa", "arm": "control", "answer": "The user was your own user.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 34, "injected_tokens": 0}
+{"fact": "f1", "style": "qa", "arm": "store", "answer": "The user was not a valid email.", "matched": [], "pass": false, "retrieved": ["m1"], "preamble_tokens": 53, "injected_tokens": 9}
+{"fact": "f1", "style": "probe", "arm": "control", "answer": "The user is a user with the user.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 33, "injected_tokens": 0}
+{"fact": "f1", "style": "probe", "arm": "store", "answer": "The user is Rust.", "matched": ["rust"], "pass": true, "retrieved": ["m1"], "preamble_tokens": 52, "injected_tokens": 9}
+{"fact": "f2", "style": "qa", "arm": "control", "answer": "The user is not authorized to the server.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 41, "injected_tokens": 0}
+{"fact": "f2", "style": "qa", "arm": "store", "answer": "The user is listening on the server.", "matched": [], "pass": false, "retrieved": ["m3"], "preamble_tokens": 70, "injected_tokens": 19}
+{"fact": "f2", "style": "probe", "arm": "control", "answer": "The user is not authorized.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 33, "injected_tokens": 0}
+{"fact": "f2", "style": "probe", "arm": "store", "answer": "The user is not authorized.", "matched": [], "pass": false, "retrieved": ["m3"], "preamble_tokens": 62, "injected_tokens": 19}
+{"fact": "f3", "style": "qa", "arm": "control", "answer": "The user was created with the user.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 35, "injected_tokens": 0}
+{"fact": "f3", "style": "qa", "arm": "store", "answer": "The user was created with the user.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 35, "injected_tokens": 0}
+{"fact": "f3", "style": "probe", "arm": "control", "answer": "The user is a user's name.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 34, "injected_tokens": 0}
+{"fact": "f3", "style": "probe", "arm": "store", "answer": "The user is a user's name.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 34, "injected_tokens": 0}
+{"fact": "f4", "style": "qa", "arm": "control", "answer": "The project deadline is the user.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 34, "injected_tokens": 0}
+{"fact": "f4", "style": "qa", "arm": "store", "answer": "The project deadline is the user message.", "matched": [], "pass": false, "retrieved": ["m5"], "preamble_tokens": 54, "injected_tokens": 10}
+{"fact": "f4", "style": "probe", "arm": "control", "answer": "The project deadline is", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 33, "injected_tokens": 0}
+{"fact": "f4", "style": "probe", "arm": "store", "answer": "The project deadline is the user message.", "matched": [], "pass": false, "retrieved": ["m5"], "preamble_tokens": 53, "injected_tokens": 10}
+{"fact": "f5", "style": "qa", "arm": "control", "answer": "The user was sent to the user.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 34, "injected_tokens": 0}
+{"fact": "f5", "style": "qa", "arm": "store", "answer": "The editor Neovim with the Dracula theme.", "matched": ["neovim"], "pass": true, "retrieved": ["m6"], "preamble_tokens": 57, "injected_tokens": 13}
+{"fact": "f5", "style": "probe", "arm": "control", "answer": "The user is a valid person.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 32, "injected_tokens": 0}
+{"fact": "f5", "style": "probe", "arm": "store", "answer": "The editor Neovim with the Dracula theme.", "matched": ["neovim"], "pass": true, "retrieved": ["m6"], "preamble_tokens": 55, "injected_tokens": 13}
+{"fact": "f6", "style": "qa", "arm": "control", "answer": "The wifi password for the election network is the wifi password.", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 38, "injected_tokens": 0}
+{"fact": "f6", "style": "qa", "arm": "store", "answer": "The wifi password is a valid wifi password.", "matched": [], "pass": false, "retrieved": ["m7"], "preamble_tokens": 60, "injected_tokens": 12}
+{"fact": "f6", "style": "probe", "arm": "control", "answer": "The wifi password is", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 33, "injected_tokens": 0}
+{"fact": "f6", "style": "probe", "arm": "store", "answer": "The wifi password is a valid wifi password.", "matched": [], "pass": false, "retrieved": ["m7"], "preamble_tokens": 55, "injected_tokens": 12}

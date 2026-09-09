@@ -1,0 +1,17 @@
+{
+  "copy_pairs": 585,
+  "qa_seen": 1300,
+  "qa_kept": 947,
+  "qa_dropped": 353,
+  "drop_reasons": {
+    "dup_instruction_vs_copy": 1,
+    "response_sentences": 331,
+    "response_words": 21
+  },
+  "mixed_total": 1532,
+  "sources": [
+    "qa_dolly.jsonl",
+    "qa_no_robots.jsonl",
+    "qa_openhermes.jsonl"
+  ]
+}

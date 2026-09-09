@@ -1,0 +1,42 @@
+{
+  "ckpt": "E:\\python projects\\nano_SLMs\\runs\\h2p2_mixed_lora\\final",
+  "val_loss": 2.0076787820919786,
+  "perplexity": 7.446013452264414,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nThe nth Fibonacci number is the nth Fibonacci number.",
+    "### Instruction:\nWrite a Python function that checks whether a string is a palindrome.\n### Response:\n": "### Instruction:\nWrite a Python function that checks whether a string is a palindrome.\n### Response:\nThe palindrome is a palindrome, and the string is a palindrome."
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.86,
+    "sampled_ast_pass_rate": 0.78,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "The algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order. The algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order.\nThe algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order.\n\nThe algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order.\n\nThe algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order.\n\nThe algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order.\n\nThe algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order.\n\nThe algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order.\n\nThe algorithm is a generator pipeline that takes an iterable of integers and returns only those for which they are in the same order.\n\nThe algorithm is a generator pipeline that",
+        "sampled": "The algorithm works as a function for the first call to a set of characters of the set. When the second call has a set of characters, the set must be in the set set. The result is an iterable of three lists and the two lists with the same length. The list is the set of characters, the answer is the set of characters that it was set."
+      },
+      {
+        "instruction": "Write a function `hinge2(x)` returning max(0, x) (ReLU). Example: `hinge2(0)`.",
+        "greedy": "def lere2(x):\n    return max(0.0, x)",
+        "sampled": "Use a hinge."
+      },
+      {
+        "instruction": "combination sum no reuse",
+        "greedy": "We use a set of hashable hashable values. We use a hashable hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the hashable hashable by the",
+        "sampled": "In a multi-thread, a sub-threaded-sum-of-threads-in-threading\nThe max of the maximum running in the average sum."
+      },
+      {
+        "instruction": "Write a function that returns the k-th prime number (1-indexed).",
+        "greedy": "The k-th prime number is the k-th prime number.",
+        "sampled": "Wall was: 1-indexed.\nWall was: 1-indexed."
+      },
+      {
+        "instruction": "Show `Never` in `typing_never`. (input: )",
+        "greedy": "Never is the answer of the world.\n\nThe world is a 2-tuple of 3-tuples: (1, 2, ..., 3), (2, 3, ..., 3), (3, 4, ..., 3)\n\nThe world is a 3-tuple of 3-tuples: (1, 2, ..., 3), (2, 3, ..., 3)\n\nThe world is a 3-tuple of 3-tuples: (1, 2, ..., 3), (2, 3, ..., 3)\n\nThe world is a 3-tuple of 3-tuples: (1, 2, ..., 3), (2, 3, ..., 3)\n\nThe world is a 3-tuple of 3-tuples: (1, 2, ..., 3), (2, 3, ..., 3)\n\nThe world is a 3-tuple of 3-tuples: (1, 2, ..., 3), (2, 3, ..., 3)\n\n",
+        "sampled": "The `Never` is defined as a stack of the `Never` in a standard library\nThe `Never` is used as a stack of `Never`."
+      }
+    ]
+  }
+}

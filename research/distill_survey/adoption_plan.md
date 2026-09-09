@@ -243,6 +243,24 @@ per repo convention.
   15" -> "ISO 15", wifi value echoed) - deterministic-only extraction is
   the obvious next mechanism patch. Evidence:
   runs/agent_memory_h2_rerun/report.json.
+- **ADDENDUM 2 2026-09-09 (Track H2 Phase 2 executed — all gates PASS,
+  recall at threshold)**: mixed corpus = 585 copy + 947 general-QA (371
+  dolly open_qa + 223 no_robots prose cats + 353 OpenHermes-2.5 GPT-4
+  slice, user-sanctioned "more powerful datasets"; NO local teacher; NOT
+  Qwen3.5-0.8B). LoRA r=16 from e1, 184 steps, eval 4.9461. Gates: CSN
+  2.0077 vs e1 2.0466 = **-1.9% (improved)**; ast greedy 0.86 >= 0.85
+  (sampled 0.78); Track H rerun on the new final = **2/6 BOTH arms**
+  (prompted 2/6, deterministic 2/6; control 0/6; Phase 1 was 3/6 — the
+  copy share fell 100% -> 38%). The deterministic arm stored all 6
+  scripted facts VERBATIM (incl "March 15" + "Pineapple42", the exact two
+  the prompted extractor corrupted in Phase 1; f6 wifi qa flipped to
+  PASS) — extractor corruption FIXED; remaining wall = pure copy-out.
+  Honest: summarizer still 0 folds; regression gate PASSes trivially
+  (0/4 = 0/4); canned-prompt tautologies persist (43/50 greedy) — the QA
+  mix did NOT visibly cure the collapse at this LoRA scale. Follow-up
+  user-gated (TASKS row 38): accept, higher-copy-share variant, stronger
+  student, or Track C. Evidence: runs/agent_memory_h2p2_prompted/,
+  runs/agent_memory_h2p2_deterministic/, runs/h2p2_mixed_lora/final.
 
 ## Order & independence
 

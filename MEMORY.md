@@ -172,6 +172,27 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
     note-completion answer ("Anna.", "port 6379."); ast_filter: false is
     mandatory for plain-English corpora. The current script math is a
     no-op for big corpora, so no script change was made.
+ 23. **Probe a dataset's schema before bulk sampling** (2026-09-09, h2p2):
+     the v3 builder sampled 0/500 from teknium/OpenHermes-2.5 because it
+     assumed instruction/output keys — the real schema is ShareGPT-style
+     conversations [{from, value}] (self-contained pool 611,945 after
+     skipping system_prompt/multi-turn; fixed after a one-row schema
+     probe). Also: HuggingFaceH4/no_robots Chat is multi-turn by
+     construction (795/796 rows have >2 messages) so a single-turn filter
+     yields ~nothing from that category; dolly categories are
+     brainstorming/classification/closed_qa/creative_writing/general_qa/
+     information_extraction/open_qa/summarization (open_qa 3742). Keep the
+     builder's per-source category/pool census print for any new HF slice,
+     and probe candidate teacher/corpus repos via HfApi (gated status +
+     safetensors sizes) before downloading. .env keys load by NAME-ONLY
+     prints — never values.
+ 24. **Unambiguous sentinels — a sentinel string can self-match** (2026-09-09):
+     a GPU-free check whose empty branch printed "no python compute apps"
+     and whose harness then tested output.contains("python") reported BUSY
+     on an empty GPU. Make the empty-state output a string that cannot
+     contain the searched token (GPU-FREE-SENTINEL matched via
+     includes('GPU-FREE-SENTINEL')), or count raw csv lines before any
+     message text. Same rule for every grep-then-branch tool pattern.
 
 ## Data-source knowledge (seeded from HANDOFF §6)
 

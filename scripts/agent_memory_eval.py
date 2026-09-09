@@ -225,6 +225,12 @@ def main():
     ap.add_argument("--probe-max-new", type=int, default=160)
     ap.add_argument("--no-model", action="store_true",
                     help="CPU mechanics preflight: no torch load, generations stubbed empty")
+    ap.add_argument("--extractor", choices=("auto", "deterministic"), default="auto",
+                    help="auto = prompted-first with deterministic fallback (the "
+                         "Phase 1 harness, unchanged); deterministic = store facts "
+                         "verbatim from the transcript, never prompted (Phase 2 "
+                         "mechanism arm - the prompted extractor corrupted 2 of 3 "
+                         "stored facts in the Phase 1 rerun)")
     args = ap.parse_args()
 
     import yaml
@@ -286,6 +292,14 @@ def main():
     last_gen = [None]  # token/time bookkeeping of the most recent generation
 
     def extract_facts(turn_text):
+        if args.extractor == "deterministic":
+            # Phase 2 arm: facts stored verbatim from the turn - zero prompt
+            # means zero rewrite risk (Phase 1 rerun evidence: the prompted
+            # extractor corrupted "March 15" -> "ISO 15" and echoed the wifi
+            # value into "the wifi password", both while passing the overlap
+            # validation). The overlap check still applies to the det facts
+            # downstream via the scripted match, so reporting stays honest.
+            return [("deterministic", s) for s in det_extract(turn_text)]
         # prompted extraction first, validated against the turn; deterministic
         # fallback keeps the store populated when the 226M extractor fails
         raw = gen(EXTRACT_INSTR.format(text=turn_text), 40)
@@ -471,6 +485,7 @@ def main():
         "track": "H", "date": datetime.now(timezone.utc).isoformat(),
         "model": str(ckpt) if real else "none", "config": args.config,
         "no_model": not real, "device": device, "ctx": ctx,
+        "extractor_mode": args.extractor,
         "budgets": {"raw": args.raw_budget, "summary": args.summary_budget,
                     "top_k": args.top_k},
         "token_overhead": overhead,
@@ -499,7 +514,7 @@ def main():
     print(f"gate_recall     : {gate_recall['result']} (best style: {best_style}, store {best_s}/6 vs control {best_c}/6; qa {qa_s}/6, probe {pr_s}/6)", flush=True)
     print(f"gate_regression : {gate_reg['result']} (ast {gate_reg['preamble_ast']} preamble vs {gate_reg['plain_ast']} plain)", flush=True)
     print(f"overhead        : summary {overhead['summary_tokens']}tok, injected ~{overhead['avg_injected_tokens_per_question']}tok/question ({overhead['budget_share_of_ctx_pct']}% of ctx)", flush=True)
-    print(f"extractor       : {extract_stats['prompted']} prompted / {extract_stats['deterministic']} deterministic; scripted coverage {len(scripted_covered)}/6", flush=True)
+    print(f"extractor       : [{args.extractor}] {extract_stats['prompted']} prompted / {extract_stats['deterministic']} deterministic; scripted coverage {len(scripted_covered)}/6", flush=True)
     print(f"summarizer      : {sorted({e['mode'] for e in fold_events}) or 'no folds'}", flush=True)
     print(f"store           : {args.store} ({len(store['facts'])} facts)", flush=True)
     print(f"report          : {args.out}/report.json", flush=True)
