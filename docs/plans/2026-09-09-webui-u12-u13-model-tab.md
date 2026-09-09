@@ -127,7 +127,7 @@ def t_header_smoke():
     assert h, "no safetensors under runs/smoke/final"
     emb = h.get("model.embed_tokens.weight")
     assert emb and emb["shape"] == [32768, 256], f"embed shape {emb}"
-    assert emb["dtype"] in ("float16", "float32", "bfloat16"), emb["dtype"]
+    assert emb["dtype"] in ("F16", "F32", "BF16"), emb["dtype"]  # safetensors dtype strings
 
 
 def t_totals_match_ladder():
@@ -147,7 +147,7 @@ def t_module_aggregation():
     assert mods.get("embed") == 32768 * 256, mods.get("embed")
     assert mods.get("L0.self_attn"), "attn module missing"
     assert mods.get("L3.mlp"), "mlp module missing"
-    assert mods.get("model.norm"), "final norm missing"
+    assert mods.get("model.norm"), "final norm missing (key must be model.norm)"
 
 
 def t_hf_dims_and_yaml_dims_agree():
@@ -302,7 +302,8 @@ def module_param_totals(header: dict) -> dict[str, int]:
         elif name.startswith("lm_head"):
             key = "lm_head"
         elif len(parts) >= 3 and parts[0] == "model":
-            key = ".".join(parts[1:3])
+            # model.norm.weight -> "model.norm" (drop trailing param name)
+            key = name.removesuffix("." + parts[-1])
         else:
             key = name
         out[key] = out.get(key, 0) + n
