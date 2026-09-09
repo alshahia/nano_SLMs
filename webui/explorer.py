@@ -205,7 +205,7 @@ def tokenize_trace(run_path: Path | None, text: str) -> str:
     if not text.strip():
         return "*Type some text to trace.*"
     from transformers import AutoTokenizer
-    tok = AutoTokenizer.from_pretrained(str(run_path))
+    tok = AutoTokenizer.from_pretrained(str(run_path), local_files_only=True)
     ids = tok(text, add_special_tokens=False).input_ids
     toks = tok.convert_ids_to_tokens(ids)
     shown = list(zip(toks, ids))[:24]

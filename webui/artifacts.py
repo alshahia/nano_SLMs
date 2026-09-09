@@ -2,8 +2,10 @@ r"""Read-only artifact readers for the Model tab (WEBUI_PRD.md §5 U12/U13).
 
 Hard rules (PRD §1): the UI wraps, never reimplements; this module is
 read-only + CPU-only — it opens small JSON files and safetensors HEADERS
-(tensor names, shapes, dtypes) and never reads tensor data, never imports
-torch, never allocates GPU memory, never writes. Safe beside a live run.
+(tensor names, shapes, dtypes) and never reads tensor data, never loads
+weights, never allocates GPU memory, never writes. (Reading a header does
+import the torch module as a side effect of the safetensors PT backend —
+no tensor data and no GPU memory are touched.) Safe beside a live run.
 """
 from __future__ import annotations
 

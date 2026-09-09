@@ -75,6 +75,9 @@ def t_vram_estimates_anchored():
     assert abs(S.vram_est_gb(rd_t, "Pretrain") - 4.24) < 0.3   # measured 4.24
     kd_est = S.vram_est_gb(_rd("kd-t2p-kd", "KD"), "KD")
     assert kd_est is not None and abs(kd_est - 7.0) < 1.0  # measured peak 7.01
+    kd_s_est = S.vram_est_gb(_rd("kd-s-t1", "KD"), "KD")
+    assert kd_s_est is not None and kd_s_est < 3.5, kd_s_est \
+        # pilot teacher (100.7M), NOT the target-teacher offset
 
 
 def t_all_technique_runs_load():

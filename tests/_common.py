@@ -32,3 +32,15 @@ def run(tests: dict):
     n_pass = sum(results)
     print(f"\n{n_pass}/{len(tests)} checks passed")
     sys.exit(0 if n_pass == len(tests) else 1)
+
+
+if __name__ == "__main__":
+    # Allow `python tests/_common.py tests/test_<name>.py` as an alias for
+    # the canonical direct form `python tests/test_<name>.py`. Without this
+    # dispatcher the two-arg form printed NOTHING and exited 0 while running
+    # zero checks (final-review minor 4) — a silent false-green footgun.
+    import runpy
+    if len(sys.argv) < 2:
+        print("usage: python tests/_common.py tests/test_<name>.py")
+        sys.exit(2)
+    runpy.run_path(sys.argv[1], run_name="__main__")

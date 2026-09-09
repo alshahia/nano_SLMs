@@ -872,8 +872,8 @@ E: ~36.35 GB free at session start).
   bit-exact; guided tour; real-tokenizer trace. Simulator: 9 configured replays / 4
   techniques; stage cards + anchored VRAM gauges + events + disk-slot rotation;
   play/pause/tick/restart/scrub/speed 60-3600x; KD baseline pair + delta line.
-- Browser drill (agent-browser, live Gradio session): ALL GATES PASS — dataset/SVG click ->
-  detail updates; technical toggle shows tensor names/shapes; target/final 16 tiles; trace
+- Browser drill (agent-browser, live Gradio session): ALL GATES PASS — dataset click -> detail
+  updates; technical toggle shows tensor names/shapes; target/final 16 tiles; trace
   gives real CodeLlama IDs; load -> play -> pause freeze -> finish (200/200, best 4.7926,
   end card); KD end card + "KD vs baseline @ step 100: baseline - KD = +0.1106 (KD ahead)"
   + Disk slots ckpt-100. Drill-only bug found + fixed: technique switch left the run

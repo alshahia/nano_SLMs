@@ -80,9 +80,11 @@ def vram_est_gb(rd: RunData, technique: str):
         per_b = 6.0
     est = params_m * per_b / 1024.0
     if technique == "KD":
-        # frozen teacher = runs/target/final, 226.5M fp32 (TASKS row 31);
-        # measured kd-t2p-kd peak 7.01 GB = student full-FT + teacher + logits
-        est += 4.3
+        # frozen teacher: summaries carry teacher_params_m (kd-t2p -> target
+        # 226.5M, kd-s -> pilot 100.7M); fallback assumes the target teacher.
+        # Measured kd-t2p-kd peak 7.01 GB vs this linear 6.07 — the residual
+        # is the full-vocab logits/optimizer transient (UI labels it 'est').
+        est += (rd.summary.get("teacher_params_m") or 226.5) * 19.0 / 1024.0
     return est
 
 

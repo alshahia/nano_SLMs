@@ -74,7 +74,10 @@ def _detail_md(blocks, bid, tech):
 def _select_block(blocks, tech, evt: gr.SelectData):
     idx = evt.index if not isinstance(evt.index, (list, tuple)) else evt.index[0]
     bid = blocks[min(int(idx), len(blocks) - 1)]["id"]
-    return _detail_md(blocks, bid, bool(tech))
+    # (detail, bid): the bid output persists the selection into state_sel so
+    # the Technical toggle re-renders the CLICKED block, not the first one
+    # (final-review major 1: state_sel was only written by rebuild before).
+    return _detail_md(blocks, bid, bool(tech)), bid
 
 
 def _explorer_ui(ckpts_fn):
@@ -130,12 +133,14 @@ def _explorer_ui(ckpts_fn):
 
     tour_btn = gr.Button("Guided tour (walks every block)")
 
-    def _tour(tech):
-        blocks = state_blocks.value or []
-        for b in blocks:
+    def _tour(tech, blocks):
+        # blocks arrives as an EVENT INPUT (live session graph); reading
+        # state_blocks.value here would return the build-time init graph
+        # (custom_example) after any source/config/run change (major 2).
+        for b in (blocks or []):
             yield _detail_md(blocks, b["id"], bool(tech))
             _time.sleep(1.6)
-    tour_btn.click(_tour, [tech], detail_md)
+    tour_btn.click(_tour, [tech, state_blocks], detail_md)
 
     def rebuild(source, cfg_name, run_name):
         dims, header, note, cfg, path = _dims_for(
@@ -160,7 +165,8 @@ def _explorer_ui(ckpts_fn):
                           gr.update(visible=s == "From trained run")),
                [src], [cfg_dd, run_dd])
 
-    pick_list.select(_select_block, [state_blocks, tech], detail_md)
+    pick_list.select(_select_block, [state_blocks, tech],
+                     [detail_md, state_sel])
     tech.change(lambda t, blocks, sel: _detail_md(blocks, sel, bool(t)),
                 [tech, state_blocks, state_sel], detail_md)
     trace_btn.click(explorer.tokenize_trace, [state_path, trace_in], trace_md)
