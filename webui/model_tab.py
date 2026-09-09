@@ -318,5 +318,6 @@ def _simulator_ui(curve_fn):
     scrub.change(_render_at, [scrub], frame_out)
 
     tech_radio.change(
-        lambda t: gr.update(choices=simulator.TECHNIQUES[t]),
+        lambda t: gr.update(choices=simulator.TECHNIQUES[t],
+                            value=(simulator.TECHNIQUES[t] or [None])[0]),
         [tech_radio], run_dd)
