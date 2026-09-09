@@ -34,6 +34,7 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 | standing | no long runs, deletions, pushes, or purchases without user approval | safety policy | CLAUDE.md §7–8 |
 | 2026-09-07 | User GO: "create milestones ... then proceed" — Milestone B GPU arms + row 10 LoRA hook + vram_probe, Tier 3 KD BEFORE Tier 2, SFT v2 on the minimax3 corpus from runs/target/final | GPU window open post-M3/Tier-1; sequential never-co-run discipline | TASKS rows 18-20; configs/pilot_b8*.yaml, sft_v2.yaml, kd_s_*.yaml |
 | 2026-09-07 | Milestone B DECISION (gates measured): **adamw_bnb_8bit + batch 1/accum 32 = default for the NEXT pretrain** — loss parity (2.5603 vs fp32 2.5644), pace 1.02x, VRAM −563 MiB (1.36 vs 1.91 GB probe peak), kill/resume drill PASS; batch 2/accum 16 REJECTED (0.60x pace, no loss gain on the 6 GB card — activations/grad-ckpt dominate, batching gains nothing); LoRA hook GPU peak 0.72 GB @ 2.61M trainable | any future full retrain should set optim adamw_bnb_8bit; fp32 AdamW stays the fallback if bnb misbehaves | research/milestone_b_8bit_ab.md; TASKS rows 11/18 |
+| 2026-09-09 | Rows 2/13/16 executed beside a CONCURRENT Track A session: USER-APPROVED deletion of checkpoint-sft_v2_e1-final.zip (868 MB, CRC-verified redundant vs disk + pack); Milestone D wired+measured+sized — token-proportional smol-capped mix 10000/37500/59000/16900 (~133.65M kept tokens, max_steps 4100) derived from MEASURED tok/row after the proposal's row targets proved 3.75x over budget; RUN stays user-gated until the next pretrain window; Milestone G1 implemented + CPU-validated (G1.a staged on a GPU window) | shared working tree with Track A -> targeted re-read edits only for shared files; GPU is global (total nvidia-smi memory.used = busy signal); nothing deleted/pushed without approval | research/milestone_d_actual.json; research/milestone_d_measurement.md; research/gdn_sandbox_design.md; TASKS rows 2/13/16 |
 
 ## Lessons (seeded from HANDOFF §5)
 
@@ -211,6 +212,50 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
       the true peak. (c) A DistiLLM skew floor (skew=0.1) costs ~+0.44 GB
       even chunked per-sample.
 
+ 26. **transformers 5.16.1 custom-arch auto_map is DOUBLE-BROKEN** (2026-09-09,
+     G1 sandbox): dynamic loads are hard-gated behind trust_remote_code=True
+     (no env bypass; Windows has no SIGALRM so it raises immediately), AND the
+     ref parser accepts only two-part dotted paths (split('.') expects exactly
+     2 — 'src.model.X' crashes with 'too many values to unpack'). WORKING
+     PATH: idempotent AutoConfig.register + AutoModelForCausalLM.register at
+     src.model import — any process importing src.model then loads the
+     checkpoint natively (eval.py's existing 'from src.model import ...'
+     fires it). Proven fresh-process: save_pretrained -> from_pretrained ->
+     generate, 60/60 weights. Related 5.16 drift: model configs are strict
+     dataclasses (a 4.x-style __init__ collides on reload); _tied_weights_keys
+     is a dict now; torch.autocast downcasts fp32 matmuls INSIDE its region —
+     GDN-style fp32 state must run under autocast(enabled=False), .float()
+     alone is not enough.
+
+ 27. **HF gated=auto: a VALID token is NOT access** (2026-09-09,
+     starcoderdata): 403 GatedRepoError with a whoami-OK token means the
+     dataset's terms were never accepted for THIS account; acceptance on the
+     dataset page grants immediately (no re-auth). The 2026-09-06 "verified
+     unlockable" evidence covered the-stack-smol only — verify access PER
+     REPO before planning a mix around it.
+
+ 28. **bigcode per-language builder configs are GONE** (2026-09-09):
+     the-stack-smol AND starcoderdata accept only the 'default' config —
+     load_dataset(..., 'python') dies with BuilderConfig-not-found; the
+     working form is data_dir= ('data/python' / 'python' respectively).
+     prepare_data.py now supports a data_dir passthrough; legacy
+     pilot.yaml/pilot_b8.yaml were fixed the same day.
+
+ 29. **Whole-file code sources measure ~4x their function-source estimates**
+     (2026-09-09, Milestone D): the-stack-smol 2,717 tok/row (est ~700),
+     starcoderdata 2,346 (est ~600) vs CSN 272 and Evol 474. Sizing a mix by
+     ROWS inherits the estimate error — the proposal's row targets were 3.75x
+     the 134M budget. MEASURE tok/row per source (2k-row samples, cheap)
+     BEFORE sizing, then derive rows from measured rates.
+
+ 30. **Concurrent agent sessions on one working tree** (2026-09-09): a second
+     session edited src/model.py + scripts/eval.py mid-flight. Protocol that
+     held: edit shared files ONLY as targeted re-read edits (never whole-file
+     writes from memory); snapshot WIP before edits
+     (data/snapshot_row13_row16_wip/); the GPU-busy signal is TOTAL
+     nvidia-smi memory.used (per-process values report [N/A] on Windows
+     WDDM); every GPU gate re-checks immediately before firing.
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF
@@ -227,3 +272,13 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
   8M tokens/shard, memmap-loaded at train time.
 - A user-supplied `HF_TOKEN` (after browser terms-acceptance) would unlock
   the gated sources — never invent one.
+- starcoderdata python MEASURED (2026-09-09, 2k rows): 2,345.7 tok/row
+  (median 921, p90 5,317, max 146,310) — whole files; the ~600 estimate was
+  ~4x low. the-stack-smol python: 2,717.2 (median 929, max 121,723).
+  CSN python: 271.8. Evol-Instruct: 474.4. Cross-source SHA1 exact-dup over
+  8,000 measured rows = 0.0000 (within-source 0 everywhere).
+- starcoderdata terms accepted 2026-09-09 (gated=auto grants immediately);
+  HF_TOKEN access works; BOTH bigcode repos need the data_dir load form.
+- Next-pretrain mix SIZED on those measurements (TASKS row 13): 10000 smol /
+  37500 starcoder / 59000 csn / 16900 evol rows ~= 133.65M kept tokens;
+  configs/next_pretrain.yaml; the RUN is user-gated at the next window.

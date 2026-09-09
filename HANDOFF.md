@@ -35,6 +35,48 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
 | SFT v2 (TASKS row 19) | **DONE — DELIVERABLE runs/sft_v2_e1/final 2026-09-08** | minimax3 corpus 19,252 pairs (min_chars 30 gotcha); 2-epoch run: ast 0.98/1.00 but forgetting +19.7% FAIL -> e2 kept as overfit evidence; **e1 (1 epoch): ast 0.98/0.96, forgetting +9.8% PASS — beats Tier 1 (0.86/0.88, +12.6%)**; NOTE: runs/target/final/model.safetensors had been de-weighted in the disk cleanup — RESTORED bit-exact from runs/target/checkpoint-4000 (best@4000) |
 | Tier 3 KD (TASKS row 20) | **DONE — KD BEATS BASELINE 2026-09-08** | P (pilot/final) teaches S (12.3M), 0.5*KL(τ=1)+0.5*CE, fair A/B 2,000 steps: KD 2.4755 vs baseline 2.6201; at 1/3 steps 3.4142 vs 3.5325 -> plan §5 criterion PASS, the ~1/10 claim transfers; KD cost ~35 min GPU (baseline ~3 min — S-scale is nearly free on this GPU) |
 
+
+### 2026-09-09 evening — rows 2/13/16 session (disk watch, Milestone D, Milestone G1 build)
+
+- **Row 2 (disk watch)**: the three Track C (kd-t2p-*) arm weights were ALREADY
+  de-weighted from disk (2026-09-09 triage) — the final/ dirs hold ~4 MB of
+  configs/tokenizer/summaries; the weights survive ONLY inside
+  resume_pack_2026-09-09.zip (all 3 model.safetensors entries verified).
+  USER-APPROVED deletion: checkpoint_backup/checkpoint-sft_v2_e1-final.zip,
+  868 MB, after pre-delete CRC verify (pack entry == on-disk file, 906,121,272 B,
+  CRC 0xb9dcefc1) → E: 35.48 → 36.35 GB; milestone-D measurement −50 MB → 36.30.
+  runs/target/checkpoint-4000 (2.6 GB) untouched (user keep-decision 2026-09-08).
+- **Row 13 (Milestone D) DONE — run stays user-gated**: mix mode in
+  prepare_data.py (per-candidate target_rows, ONE shared SHA1 set across
+  sources, source_stats.json additive in both modes; legacy 5-row regression
+  BYTE-IDENTICAL) + data_dir passthrough (the-stack-smol AND starcoderdata
+  lost their per-language builder configs — data_dir is the only working
+  form; pilot.yaml/pilot_b8.yaml fixed). Measured rev 2 (2k rows/source,
+  CodeLlama): smol 2717.2 / starcoder 2345.7 / csn 271.8 / evol 474.4 tok/row
+  — whole-file sources ~4x above the proposal's estimates → its row targets
+  were 3.75x the 134M budget. starcoderdata gate: 403 with a VALID token =
+  terms never accepted (user accepted 2026-09-09 → re-measured; the
+  2026-09-06 "verified unlockable" evidence covered the-stack-smol only).
+  SIZING (user-delegated): token-proportional smol-capped 10000/37500/59000/
+  16900 rows ≈ 133.65M kept tokens (~20/63/11/6% shares), max_steps 4100;
+  cross-source SHA1 dedupe over 8,000 rows = 0.0000. Config ready:
+  configs/next_pretrain.yaml (pilot dims @ ctx 1024, adamw_bnb_8bit b1/a32).
+- **Row 16 (Milestone G1) implemented, gates pending**: src/gdn.py (pure-PyTorch
+  chunked delta rule, fp32-state under a disable-autocast guard), model.py
+  gdn_hybrid dispatch + idempotent auto-registration (transformers 5.16.1
+  auto_map is double-broken — see MEMORY 26), configs/gdn_smoke{,_ab}.yaml
+  (13,331,952 vs control 13,330,688 params, +0.0095%, both reuse the M0 smoke
+  corpus); CPU math equivalence 13/13 (rel ≤ 4.8e-6); fresh-process
+  save→load→generate roundtrip PROVEN. G1.a sanity BLOCKED on the concurrent
+  Track A ctx-probe matrix (~4.9 GB held since ~21:56); watcher
+  scripts/_tmp_g1a_gate_runner2.ps1 armed to auto-fire both sanity runs when a
+  <500 MiB window opens (job pwsh-7). G1.b 200-step train + kill/resume drill
+  + G1.c eval A/B remain orchestrator-owned, strictly sequential.
+- **Concurrent session**: the user's Track A session shares this working tree
+  (edited eval.py + model.py helpers + ctx_probe.py). Protocol that held:
+  targeted re-read edits only for shared files; GPU is global — every gate
+  re-checks nvidia-smi (total used) before firing.
+
 ### 2026-09-08 GPU-queue session incidents (lessons 14-15 in MEMORY)
 
 - **Sleep kills**: Modern Standby fired twice mid-run (Kernel-Power 506/507);

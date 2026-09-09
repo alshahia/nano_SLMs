@@ -20,7 +20,7 @@ data:
   # cannot be used from this session; these are public, ungated equivalents.
   dataset_candidates:
     - name: bigcode/the-stack-smol
-      config: python
+      data_dir: data/python   # 'config: python' builder is GONE from the Hub (only 'default' remains; probed 2026-09-09)
     - name: bigcode/starcoderdata
       config: python
     - name: nickrosh/Evol-Instruct-Code-80k-v1
