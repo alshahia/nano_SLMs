@@ -72,6 +72,13 @@ auto-resume with no manual flags is the user's hard requirement (PLAN.md
   scripts/_tmp_g1a_gate_runner2.ps1 armed to auto-fire both sanity runs when a
   <500 MiB window opens (job pwsh-7). G1.b 200-step train + kill/resume drill
   + G1.c eval A/B remain orchestrator-owned, strictly sequential.
+- **Row 16 GATES ALL PASS (2026-09-10 ~00:47 local)**: G1.a 4/4 both arms
+  (hybrid peak 0.30 GB); G1.b hybrid 200 steps eval/loss 5.004 → 3.593
+  monotonic + kill/resume drill PASS (killed at step 103, resumed exactly at
+  101/200, train_summary resumed_from checkpoint-100); control gdn_smoke_ab
+  4.5795; G1.c hybrid 3.6040 / ppl 36.75 vs control 4.5795 / ppl 97.47 →
+  Δ −0.9755 ≤ 0 GATE PASS. fp32-state ≈ 1 MB of 0.30 GB peak. Row-16
+  deliverable met; a P-scale hybrid trial is a separate user decision (row 6).
 - **Concurrent session**: the user's Track A session shares this working tree
   (edited eval.py + model.py helpers + ctx_probe.py). Protocol that held:
   targeted re-read edits only for shared files; GPU is global — every gate

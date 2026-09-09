@@ -1,0 +1,10 @@
+{
+  "ckpt": "E:\\python_projects\\nano_SLMs\\runs\\gdn_smoke\\final",
+  "val_loss": 3.604036985881745,
+  "perplexity": 36.746279626519616,
+  "samples": {
+    "def fibonacci(n):": "def fibonacci(n):\n    if n <= 1:\n        return False\n    return True\n\ndef is_prime(n):\n    if n <= 1:\n        return False\n    return True\n\ndef is_prime(n):\n    if n <= 1:\n        return False\n   ",
+    "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):": "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):\n    if n <= 1:\n        return False\n    return True\n\ndef is_prime(n):\n    if n <= 1:\n        return False\n    return True\n\ndef is_prime(n):\n    if n <= 1:\n        return False\n   ",
+    "class Stack:": "class Stack:\n    return \" + \" + 1\n\n    # Check if the `is_prime` function is a list of the `is_prime` function.\n\nThe `is_prime` function is a list of the `is_prime` function.\n\nThe `is_prime` function"
+  }
+}

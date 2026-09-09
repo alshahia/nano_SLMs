@@ -1,0 +1,39 @@
+{
+  "arch": "gdn_hybrid",
+  "architectures": [
+    "GDNHybridForCausalLM"
+  ],
+  "attention_dropout": 0.0,
+  "auto_map": {
+    "AutoConfig": "src.model.GDNHybridConfig",
+    "AutoModelForCausalLM": "src.model.GDNHybridForCausalLM"
+  },
+  "bos_token_id": 1,
+  "conv_kernel_size": 4,
+  "dtype": "float32",
+  "eos_token_id": 2,
+  "gdn_state_dtype": "fp32",
+  "head_k_dim": 64,
+  "head_v_dim": 64,
+  "hidden_size": 256,
+  "hybrid_period": 4,
+  "hybrid_step": 1,
+  "initializer_range": 0.02,
+  "intermediate_size": 1024,
+  "max_position_embeddings": 256,
+  "model_type": "gdn_hybrid",
+  "num_attention_heads": 4,
+  "num_hidden_layers": 4,
+  "num_k_heads": 4,
+  "num_key_value_heads": 2,
+  "num_v_heads": 8,
+  "rms_norm_eps": 1e-05,
+  "rope_theta": 10000.0,
+  "tie_word_embeddings": true,
+  "transformers_version": "5.16.1",
+  "use_cache": true,
+  "use_short_conv": true,
+  "use_sigmoid_gate": true,
+  "use_zero_centered_rmsnorm": true,
+  "vocab_size": 32768
+}
