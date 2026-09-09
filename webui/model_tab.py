@@ -137,10 +137,6 @@ def _explorer_ui(ckpts_fn):
             _time.sleep(1.6)
     tour_btn.click(_tour, [tech], detail_md)
 
-    # SVG click shim handles (the shim script lands in Task 7; harmless now)
-    shim_ta = gr.Textbox(visible=False, elem_id="model_tab_sel")
-    shim_btn = gr.Button(visible=False, elem_id="model_tab_sel_btn")
-
     def rebuild(source, cfg_name, run_name):
         dims, header, note, cfg, path = _dims_for(
             source, cfg_name, run_name, ckpts_fn)
@@ -169,14 +165,6 @@ def _explorer_ui(ckpts_fn):
                 [tech, state_blocks, state_sel], detail_md)
     trace_btn.click(explorer.tokenize_trace, [state_path, trace_in], trace_md)
     trace_in.submit(explorer.tokenize_trace, [state_path, trace_in], trace_md)
-
-    def _shim_pick(bid, blocks, tech_val):
-        if not bid and blocks:
-            bid = blocks[0]["id"]
-        return _detail_md(blocks, bid, bool(tech_val)), bid or ""
-    shim_ta.change(_shim_pick, [shim_ta, state_blocks, tech],
-                   [detail_md, state_sel])
-    shim_btn.click(lambda: None, None, None)
 
 
 def render_model_tab(ckpts_fn, curve_fn):
