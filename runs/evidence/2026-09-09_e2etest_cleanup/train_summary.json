@@ -1,0 +1,88 @@
+{
+  "phase": "e2etest",
+  "params_m": 12.32,
+  "best_eval_loss": 6.1544575691223145,
+  "best_checkpoint": "E:\\python projects\\nano_SLMs\\runs\\e2etest\\checkpoint-100",
+  "final_eval": {
+    "eval_loss": 6.1544575691223145,
+    "eval_runtime": 0.2282,
+    "eval_samples_per_second": 245.419,
+    "eval_steps_per_second": 61.355,
+    "epoch": 1.234839706450367
+  },
+  "resumed_from": null,
+  "env": {
+    "timestamp_utc": "2026-09-08T11:27:26+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "4e0a551",
+    "gpu": "Quadro RTX 4000, 8192 MiB",
+    "resolved_config": {
+      "name": "e2etest",
+      "tokenizer": {
+        "name": "codellama/CodeLlama-7b-hf",
+        "vocab_size": 32768
+      },
+      "model": {
+        "layers": 4,
+        "hidden": 256,
+        "heads": 4,
+        "kv_heads": 2,
+        "ffn": 1024,
+        "ctx": 256,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "dataset_candidates": [
+          {
+            "path": "data/smoke/raw/train.jsonl"
+          }
+        ],
+        "rows": 1500,
+        "val_fraction": 0.02,
+        "dedupe": true,
+        "min_chars": 100,
+        "shard_tokens": 8000000,
+        "raw_dir": "data/e2etest/raw",
+        "tokens_dir": "data/e2etest/tokens"
+      },
+      "train": {
+        "output_dir": "runs/e2etest",
+        "final_dir": "runs/e2etest/final",
+        "max_steps": 100,
+        "batch": 1,
+        "eval_batch": 4,
+        "accum": 32,
+        "lr": 0.0004,
+        "scheduler": "cosine",
+        "warmup_steps": 10,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 50,
+        "eval_steps": 500,
+        "save_steps": 500,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": true,
+        "optim": "adamw_torch",
+        "dataloader_num_workers": 0,
+        "seed": 42
+      },
+      "eval": {
+        "max_new_tokens": 64,
+        "prompts": [
+          "def fibonacci(n):",
+          "class Stack:"
+        ]
+      }
+    }
+  }
+}

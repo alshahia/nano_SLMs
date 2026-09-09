@@ -1,0 +1,9 @@
+{
+  "ckpt": "E:\\python projects\\nano_SLMs\\runs\\e2etest\\final",
+  "val_loss": 6.154456751687186,
+  "perplexity": 470.8110056911768,
+  "samples": {
+    "def fibonacci(n):": "def fibonacci(n):\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+    "class Stack:": "class Stack:\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+  }
+}
