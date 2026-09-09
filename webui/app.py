@@ -27,6 +27,7 @@ import gradio as gr
 
 import run_custom
 import status
+import model_tab
 
 RUNS = ROOT / "runs"
 CONFIGS = ROOT / "configs"
@@ -1499,6 +1500,8 @@ with gr.Blocks(title="nano_SLMs") as demo:
         notif_btn.click(fn=None, inputs=None, outputs=[notif_md],
                         js=_ENABLE_NOTIF_JS)
     demo.load(fn=None, inputs=None, outputs=None, js=_POLL_JS)
+
+    model_tab.render_model_tab(_ckpts, _full_curve)
 
 # ------------------------------------------------------------------ U11: API
 
