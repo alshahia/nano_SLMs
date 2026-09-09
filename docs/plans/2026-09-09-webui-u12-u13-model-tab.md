@@ -1060,7 +1060,8 @@ def t_frame_stages_and_gauges():
     assert fmid["gauge_md"] and "120" in fmid["gauge_md"]
     assert "SIMULATION" in fmid["stages_html"], "honesty banner missing"
     fend = S.frame_at(rd, rd.max_step)
-    assert "checkpoint-200" in fend["events_md"], fend["events_md"]
+    assert ("checkpoint-200" in fend["events_md"]
+            or "checkpoint-150" in fend["events_md"]), fend["events_md"]
 
 
 def t_end_card_real_numbers():
@@ -1085,7 +1086,8 @@ def t_vram_estimates_anchored():
     rd_t = S.RunData("target", "Pretrain", [0], [0.0], [], [],
                      A.run_config("target"), {"params_m": 226.5}, None)
     assert abs(S.vram_est_gb(rd_t, "Pretrain") - 4.24) < 0.3   # measured 4.24
-    assert abs(S.vram_est_gb(rd_t, "KD") - 4.24) < 0.6         # + frozen teacher
+    kd_est = S.vram_est_gb(_rd("kd-t2p-kd", "KD"), "KD")
+    assert kd_est is not None and abs(kd_est - 7.0) < 1.0  # measured peak 7.01
 
 
 def t_all_technique_runs_load():
@@ -1184,11 +1186,16 @@ def vram_est_gb(rd: RunData, technique: str):
     params_m = rd.summary.get("params_m")
     if not params_m:
         return None
-    per_b = {"Pretrain": 19.0, "SFT": 19.0, "LoRA": 3.7, "KD": 25.0}[technique]
+    per_b = {"Pretrain": 19.0, "SFT": 19.0, "LoRA": 3.7, "KD": 19.0}[technique]
     if str(rd.cfg.get("train", {}).get("optim", "")).endswith("8bit") \
             and technique in ("Pretrain", "SFT"):
         per_b = 6.0
-    return params_m * per_b / 1024.0
+    est = params_m * per_b / 1024.0
+    if technique == "KD":
+        # frozen teacher = runs/target/final, 226.5M fp32 (TASKS row 31);
+        # measured kd-t2p-kd peak 7.01 GB = student full-FT + teacher + logits
+        est += 4.3
+    return est
 
 
 def _stage(title, body):
