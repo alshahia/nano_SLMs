@@ -61,5 +61,14 @@ def t_shape_trace():
     assert mid[1] == f"[1, 64, {dims['hidden']}]", mid
 
 
+def t_render_svg():
+    dims, header = _smoke_dims_header()
+    blocks = E.build_graph(dims, header, label="smoke/final", lora=None)
+    svg = E.render_svg(blocks, selected_id="L1.attn")
+    assert "L1.attn" in svg and "data-bid" in svg, "no clickable ids"
+    assert "http" not in svg, "external asset leaked into SVG"
+    assert svg.count("<svg") == 1
+
+
 if __name__ == "__main__":
     run({k[2:]: v for k, v in sorted(globals().items()) if k.startswith("t_")})
