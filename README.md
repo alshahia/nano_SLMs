@@ -120,7 +120,7 @@ run is live or the checkpoint is loaded in chat). When a launched run
 finishes — or dies without a final summary — the UI pops a toast and, if
 a webhook is configured, POSTs a JSON notification (`event`:
 `run_finished` / `run_crashed`; best-effort, 5 s timeout — a dead
-webhook never blocks the UI). The chat model service follows the VRAM
+webhook never blocks the UI). A **Model** tab (WEBUI_PRD.md U12/U13) adds read-only, CPU-only introspection: the **Architecture Explorer** draws the real block graph of any config or on-disk checkpoint from safetensors *headers* only — tensor data is never read, weights never loaded — with plain-English + technical per-block info, a guided tour and a real-tokenizer prompt trace; the **Training Simulator** replays this repo's real runs (Pretrain/SFT/LoRA/KD — curves from tfevents, only the clock is fake) with play/pause/scrub/speed, stage cards and KD-vs-baseline deltas. The chat model service follows the VRAM
 policy: GPU when idle, warn + CPU while a training run is live, reject +
 CPU if free VRAM is too small — a live training run is never touched:
 

@@ -266,6 +266,17 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
       (train_summary/tfevents), not the stale report. e1 was never
       reweighted - its 2.0466 reproduced exactly.
 
+ 32. **pwsh tool-call children — servers AND daemons — die with the call** (2026-09-09,
+     U12/U13 drill): an ended/aborted run_code pwsh call reaped the UI-server child AND the
+     agent-browser daemon + its browser (same class as the Start-Process reaping); afterward
+     every agent-browser command hung with EMPTY output (no daemon). Pattern that works: run
+     long-lived processes as harness BACKGROUND jobs (run_in_background keeps the tree alive
+     across calls) and attach foreground calls to them ($env:AGENT_BROWSER_SESSION set in
+     every call). CLI gotchas from the same drill: quote snapshot refs ('@e10' — bare @e10
+     parses as PowerShell splatting); refs go stale after any re-render (re-snapshot before
+     each click); a regex passed from a JS string into pwsh loses its backslashes (arrives as
+     [^\"]-style mangled) — use IndexOf string surgery for ref extraction instead.
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF

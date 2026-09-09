@@ -855,6 +855,40 @@ research/distill_survey/track_a_result.md; TASKS rows 29/30 updated.
 ENVIRONMENT.md flipped to TU09FBO (RTX 3000 6 GB, driver 580.92,
 E: ~36.35 GB free at session start).
 
+### 2026-09-09 night — Web UI U12/U13 DONE (Model tab: Architecture Explorer + Training Simulator)
+
+- Spec WEBUI_PRD.md §5 U12/U13 (user-approved design: replay-only simulator v1, two-level
+  info, ONE Model tab with nested views, Approach A = Gradio-native SVG + clickable
+  gr.Dataset, no new deps, read-only + CPU-only, no frontend build chain). Plan:
+  docs/plans/2026-09-09-webui-u12-u13-model-tab.md. Executed Subagent-Driven (implementer +
+  reviewer per task, 9 tasks, all reviews SPEC PASS / QUALITY APPROVED; ledger in
+  .superpowers/sdd/progress.md).
+- Shipped: webui/explorer.py (graph/math/render/tokenize), webui/simulator.py (replay
+  engine), webui/model_tab.py (thin wiring; nested tabs), webui/artifacts.py additions
+  (header-only safetensors parse, module_param_totals, config loaders), tests (19/19: 6
+  artifacts + 6 explorer + 7 simulator), app.py two-line integration.
+  Explorer: any config or runs/ checkout; 16 layer tiles on target/final; dtype gate
+  F16/F32/BF16 (real header shows F32 embedding); KV-cache KiB/token; projected params
+  bit-exact; guided tour; real-tokenizer trace. Simulator: 9 configured replays / 4
+  techniques; stage cards + anchored VRAM gauges + events + disk-slot rotation;
+  play/pause/tick/restart/scrub/speed 60-3600x; KD baseline pair + delta line.
+- Browser drill (agent-browser, live Gradio session): ALL GATES PASS — dataset/SVG click ->
+  detail updates; technical toggle shows tensor names/shapes; target/final 16 tiles; trace
+  gives real CodeLlama IDs; load -> play -> pause freeze -> finish (200/200, best 4.7926,
+  end card); KD end card + "KD vs baseline @ step 100: baseline - KD = +0.1106 (KD ahead)"
+  + Disk slots ckpt-100. Drill-only bug found + fixed: technique switch left the run
+  dropdown's stale value -> Gradio preprocess Error; fix 57055b1 sets value to the new
+  technique's first run in the same gr.update (unit tests cannot see preprocess validation).
+- Commits (feature, in order): 789cd9f 5f37048 fc229a2 d4ba99c 96c943f b6a4bc0 0fbd729
+  31ad265 b7ad778 b711a9d a5991ab 40d77bb 76b917a b06f6ef 70446ca 57055b1 (Task 7 =
+  sanctioned no-commit shim removal; 70446ca its cleanup). WEBUI_PRD.md spec commit a61ee19.
+  Zero writes to runs/ or configs/ verified (drill + commit audit); probe server + browser
+  torn down after the drill (7879 down, agent-browser session closed).
+- Triage list (minor, non-blocking): technical-toggle resets block selection to default;
+  LoRA VRAM est ~16% high vs the 0.72 anchor; playback pace re-render-bound at low speed;
+  unused label param in explorer.build_graph; guarded SVG onclick no-op (shim removed);
+  _play stride recomputed per frame.
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).
