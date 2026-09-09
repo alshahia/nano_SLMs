@@ -12,9 +12,17 @@ tokenizer:
   vocab_size: 32768
 
 model:
-  # dims come from the base checkpoint (sft_v2_e1); ctx here is the trained
-  # context used by the CSN forgetting-guard eval (same as e1).
+  # dims come from the base checkpoint (sft_v2_e1) - sft.py loads them from
+  # the checkpoint's config.json; sanity_check builds fresh from this block,
+  # so the T dims are mirrored here (16L/1024/16Q/4KV/ffn3072 = 226.5M).
   ctx: 1024
+  layers: 16
+  hidden: 1024
+  heads: 16
+  kv_heads: 4
+  ffn: 3072
+  dropout: 0.0
+  tie_embeddings: true
 
 peft:
   # row-10 hook (measured 0.72 GB peak @ 2.5% trainable) - near-zero
@@ -31,13 +39,19 @@ data:
   dataset_dir: data/sft/h2_copy/ds
   # CSN val shards for the forgetting-guard regression check (same gate as e1)
   tokens_dir: data/target/tokens
-  rows: 5000
+  # corpus is 585 validated pairs: rows sets the split TARGET, and sft_data
+  # computes val = round(rows * val_fraction) from the target -> rows 556
+  # gives val 28 / train 556 (5% of the ACTUAL corpus, not 250 of 585).
+  rows: 556
   val_fraction: 0.05
   dedupe: true
   # English copy-behavior pairs: do NOT ast-filter (e1's code-corpus filter
-  # would drop every response); keep the short-pair floor small.
+  # would drop every response). min_chars floors the RESPONSE length
+  # (sft_data.py line-check: len(response) < min_chars) - 30 would kill the
+  # note-completion answers ("Anna.", "port 6379."); 4 keeps every
+  # validator-passing response (validator enforces 1-30 words, no code).
   ast_filter: false
-  min_chars: 30
+  min_chars: 4
   min_instruction_chars: 10
   template: "### Instruction:\n{instruction}\n### Response:\n"
 

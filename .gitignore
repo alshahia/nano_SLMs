@@ -9,6 +9,8 @@ __pycache__/
 
 # Raw JSONL is regenerable via scripts/prepare_data.py (keep packed .bin)
 data/*/raw/
+# nested corpus raw dir (h2_copy) - data/*/raw/ is one segment deep only
+data/sft/h2_copy/raw/
 
 # Checkpoint optimizer states exceed GitHub LFS free quota (~1 GB):
 # full resume state stays local; pushed checkpoints carry model + trainer state.
@@ -66,6 +68,8 @@ runs/kd-s-*/final/model.safetensors
 # only summaries, chain json, tokenizer files and tfevents stay tracked.
 runs/sft_u1*/checkpoint-*/
 runs/sft_u1*/final/model.safetensors
+runs/h2_copy_lora*/checkpoint-*/
+runs/h2_copy_lora*/final/model.safetensors
 runs/sft_u1*/*.log
 
 # Web UI transient launch state (pid etc.) - never meaningful in git

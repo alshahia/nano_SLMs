@@ -136,7 +136,42 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 
  17. **TheGamingMahi/TinyCode's corrupt shard is mode-dependent death:** streaming=True + a row cap below the shard (<= ~1,250 rows) works fine; a row request past the shard CastErrors mid-stream, and FULL download (streaming=False) always dies (DatasetGenerationError @ ~1,900 ex). Keep it as the UI default only with small row caps; use other ungated sources for bigger pulls. Also: bigcode/the-stack-smol is now UNGATED (namespace moves changed access) - only the-stack-v2 / starcoderdata-class repos still gate. Found 2026-09-08 (U7 e2e + download-mode probe).
 
- 18. **The 226M SFT student answers QA with import boilerplate and cannot reliably copy injected facts out of context** (Track H, 2026-09-08): runs/sft_v2_e1/final continues `### Response:` with `import re` / `from typing import Optional` for QA-style recall; an explicit "reply with one short sentence, do not write code" cue made it WORSE (1/6 -> 0/6); a needle-style completion probe ("My sister's name is") also failed 0/6. The copied fact, when it surfaces at all, appears late in a long continuation — score FULL continuations, never first lines. Deterministic across runs (f3 PASS identical twice, greedy). The memory MECHANISM itself validated: store 6/6, retrieval 6/6 correct fact per question, model-mode rolling summary 7/7 folds (61 tok), AST regression 4/4 with preamble vs 2/4 plain. Also: the prompted fact extractor echoes code fragments ('"""', '>>>', 'def ') — validate extractions against the turn and filter code markers; the deterministic fallback carried 6/6 coverage. Conclusion: orchestration memory works; copy-out is a model-capability wall — the trained path (Track C) or a stronger student is the fix.
+ 18. **The 226M SFT student answers QA with import boilerplate and cannot reliably copy injected facts out of context** (Track H, 2026-09-08): runs/sft_v2_e1/final continues `### Response:` with `import re` / `from typing import Optional` for QA-style recall; an explicit "reply with one short sentence, do not write code" cue made it WORSE (1/6 -> 0/6); a needle-style completion probe ("My sister's name is") also failed 0/6. The copied fact, when it surfaces at all, appears late in a long continuation — score FULL continuations, never first lines. Deterministic across runs (f3 PASS identical twice, greedy). The memory MECHANISM itself validated: store 6/6, retrieval 6/6 correct fact per question, model-mode rolling summary 7/7 folds (61 tok), AST regression 4/4 with preamble vs 2/4 plain. Also: the prompted fact extractor echoes code fragments ('"""', '>>>', 'def ') — validate extractions against the turn and filter code markers; the deterministic fallback carried 6/6 coverage. Conclusion: orchestration memory works; copy-out is a model-capability wall — the trained path (Track C) or a stronger student is the fix. **UPDATE 2026-09-09: the copy wall is TRAINABLE — after copy-behavior LoRA-SFT (row 37 Phase 1) the recall gate passes 3/6 (probe style); QA-template code answers turned into tautologies as the cost.**
+
+ 19. **A foreground subagent inside run_code dies with the 600 s wall-clock
+    ceiling** (found 2026-09-09, Track H2): the ceiling kills the run_code
+    worker AND the child mid-call — empty children registry, no file, no
+    closing message (the 2026-09-08 "subagent infra dead" foreground
+    ToolCallError matches this signature). Background subagents live
+    outside any single run_code call — spawn with run_in_background: true
+    and collect via the settle notice / list_agents; keep foreground
+    subagent calls for tasks that finish well under 10 minutes.
+ 20. **Open-ended long quotas make subagents loop in thought** (2026-09-09,
+    Track H2): one 150-pair corpus author deliberated until the user
+    killed it — no file, no closing message. Fix that went 20/20: chunk to
+    ~30 units per spawn with a mechanical procedure (compose in your head
+    -> ONE write call -> 3-line reply; no reads, no scripts, ~4-min
+    budget), disjoint per-chunk file names (the validator globs + dedupes
+    across files), rotated name pools per chunk.
+ 21. **Subagent JSONL output needs a mechanical repair pass** (2026-09-09):
+    two defect classes seen in 20 authoring chunks — (a) real newlines
+    inside JSON string values (30 pairs became 150 physical lines; repair:
+    rejoin the regular head/bullets/tail groups with literal backslash-n),
+    (b) missing opening quotes after the JSON keys ({"instruction":
+    Notes:...). Both repaired losslessly by scanning for the
+    '{"instruction"' group anchor, re-escaping, json.loads-verifying,
+    rewriting only on 100% parse success. A full exemplar LINE in the
+    prompt stopped (a) in later waves; (b) still needs the post-write
+    parse check.
+ 22. **sft_data.py small-corpus gotchas** (2026-09-09, h2_copy_lora):
+    n_val = round(rows * val_fraction) uses the TARGET rows, not the kept
+    count — a 585-pair corpus configured rows: 5000 got an INVERTED
+    250 val / 110 train split (fix without touching the script: set rows
+    ~= corpus size so target ≈ kept); min_chars floors the RESPONSE
+    length (len(response) < min_chars) — 30 chars killed every
+    note-completion answer ("Anna.", "port 6379."); ast_filter: false is
+    mandatory for plain-English corpora. The current script math is a
+    no-op for big corpora, so no script change was made.
 
 ## Data-source knowledge (seeded from HANDOFF §6)
 

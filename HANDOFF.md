@@ -576,6 +576,44 @@ in that session (2x background -> empty children registry + 4 failure
 notices; 1x foreground -> ToolCallError). Full resume package with a
 10-step command ladder: research/distill_survey/H2_RESUME.md.
 
+### 2026-09-09 — Track H2 Phase 1 executed (copy-behavior SFT): recall gate PASS
+
+Resumed from H2_RESUME.md with the user's "test the subagents on a
+simple/fast task first". Infra test PASSED foreground (fast task); the
+first 150-pair corpus author then hung in open-ended deliberation and the
+user killed it — two new infra lessons (MEMORY 19-20): foreground
+subagents die with run_code's 600 s ceiling (use background), and long
+open-ended quotas loop (chunk to ~30 units with a mechanical
+compose->write->reply procedure). Corpus: 4 slices x 5 chunks x 30 pairs =
+600 raw pairs by 20 background subagents (personal / technical-ops /
+logistics / note-completion); 2 chunks needed lossless format repair (real
+newlines inside JSON strings; missing opening quotes — MEMORY 21); the
+official validator PASSED 585/600 (15 drops, response > 2 sentences) ->
+data/sft/h2_copy/pairs.jsonl. Two sft_data gotchas fixed in the CONFIG only
+(MEMORY 22): min_chars 30->4 (it floors the response — killed every
+completion answer), rows 5000->556 (n_val computed from the target rows
+had inverted the split 250/110 -> now 28/556); the T dims were mirrored
+into configs/h2_copy_lora.yaml because sanity_check builds fresh (sft.py
+loads dims from the checkpoint — training behavior unchanged). Pilot PASS
+(19 steps, eval 3.161); FULL SFT PASS (556 pairs x 2 epochs, 70 steps
+~7 min, eval 2.3612 -> 2.0944 -> 2.0680). Code guards PASS: CSN 2.0492 vs
+e1 2.0466 (+0.13%, gate <= +10% — LoRA near-zero forgetting as designed);
+ast greedy 0.90 (gate >= 0.85; sampled 0.82 vs e1 0.96 — honest note).
+DECISIVE RERUN (H2_RESUME step 9) PASS: gate_recall store arm 3/6
+(required >= 2; baseline 1/6) — probe 3/6 (rust, layla, neovim), qa 2/6,
+controls 0/6, retrieval 6/6 correct. Honest deltas recorded in TASKS row
+37 + adoption_plan addendum: the Track H regression probe collapsed to
+0/4 ast in BOTH arms (gate preamble >= plain still PASSes — QA-template
+code-gen now emits copy-tautologies while eval.py ast on the SFT template
+stays 0.90); the summarizer stopped folding (7/7 -> 0) so the mechanism
+runs extract/store/retrieve/copy only (overhead 1.3% of ctx); 2 of 3
+recall misses = prompted extractor corrupted the stored facts ("March 15"
+-> "ISO 15", wifi value echoed), 1 = copy-out failure (f2). Evidence:
+runs/h2_copy_lora/final (+eval_report.json, train_summary.json),
+runs/h2_copy_lora_pilot/, runs/agent_memory_h2_rerun/report.json. Phase 1
+DONE per the ladder; Phase 2 (teacher-distilled general QA) stays
+user-gated (teacher TBD, NOT Qwen3.5-0.8B).
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).

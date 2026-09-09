@@ -1,0 +1,28 @@
+{"instruction": "Notes:\n- Marco's favourite dish is carbonara\n- He cooks it on Sundays\n- His kitchen is tiny\nMarco's favourite dish is"}
+{"instruction": "Notes:\n- Office wifi password is falcon22\n- The office wifi network is corvid5\n- The front door code is 4471\nNote about the user: The office wifi password is"}
+{"instruction": "Notes:\n- The car insurance bill of 410 dollars is due on November 14\n- Lena pays it in two parts of 205 dollars\n- The second part is due on December 14\nQuestion: How many dollars is the car insurance bill?"}
+{"instruction": "Known facts about the user:\n- Sister studies biology in Padua\n- Her exams start on June 3\n- Her name is Bianca\nQuestion: Where does the sister study?"}
+{"instruction": "Notes:\n- Birthday is April 12\n- Party at the lake house that weekend\nNote about the user: The user's birthday is"}
+{"instruction": "Conversation summary so far:\n- The phone contract costs 22 dollars a month\n- Felix upgraded the plan in February\n- The new plan costs 31 dollars a month\nQuestion: What is the cost of the new plan?"}
+{"instruction": "Notes:\n- The build agent image is ubuntu-22.04\n- The build agent pool has 12 runners\n- Backups run at 03:00\nQuestion: What image does the build agent use?"}
+{"instruction": "Conversation summary so far:\n- The etl host reports 42 GB free on scratch\n- It needs 20 GB for each batch\n- Batches run twice nightly\nQuestion: How much free space does the etl host report on scratch?"}
+{"instruction": "Known facts about the user:\n- Favourite season is autumn.\n- Loves mushroom soup.\n- Dislikes loud crowds.\n- Collects pinecones in October.\nQuestion: What is your favourite season?"}
+{"instruction": "Notes:\n- Nadia awaits a book shipment\n- It was shipped on April 2\n- Estimated arrival is April 7\n- Carrier is BlueDart\nQuestion: When is the estimated arrival?"}
+{"instruction": "Notes:\n- The db replica lags under 2 seconds\n- It runs postgres 13.9\n- Snapshots pause during heavy reads\nQuestion: Which postgres version does the db replica run?"}
+{"instruction": "- Amina flies from Cairo to Paris on flight MS799\n- The flight takes 4 hours and 25 minutes\n- It departs at 02:10\n- She has an aisle seat\nQuestion: How long is flight MS799?"}
+{"instruction": "Known facts about the user:\n- The mailbox key is on the red keyring\n- The red keyring also holds the bike shed key\n- Ada keeps a spare mailbox key at work\nQuestion: Where is the spare mailbox key?"}
+{"instruction": "Notes:\n- Felix drums in a garage band\n- The band practices twice a week\n- The neighbors tolerate the noise\n- Felix dreams of a world tour\nQuestion: Where does Felix drum?"}
+{"instruction": "Notes:\n- Favourite food is ramen\n- Ramen night is every Friday\nNote about the user: The user's favourite food is"}
+{"instruction": "Notes:\n- Hugo cheers for Willem II every weekend\n- Owns a red and white striped scarf\n- His brother prefers NAC Breda\n- Watches from the home stand\nQuestion: Who cheers for Willem II?"}
+{"instruction": "Known facts about the user:\n- The user's billing database uses port 5439.\n- Maintenance for the billing database runs from 01:00 to 02:00.\n- The billing database stores invoices and refunds.\nQuestion: Which port does the billing database use?"}
+{"instruction": "Here is what I remember:\n- The on-call shift for payments starts June 2\n- The shift lasts one week\n- Sasha takes nights and Rao takes days\nQuestion: When does the on-call shift for payments start?"}
+{"instruction": "- Sergio's doctor appointment is on April 27 at 08:45\n- The clinic is at 19 Bayview Road\n- Sergio should not eat before the appointment\nQuestion: What time is Sergio's doctor appointment?"}
+{"instruction": "- Sam naps for 20 minutes after lunch\n- Sam sleeps at 9 pm sharp\n- The dog wakes Sam at dawn\n- Sam works from home\n- Sam drinks tea at four\nQuestion: How long does Sam nap?"}
+{"instruction": "Conversation summary so far:\n- The medical bill of 260 dollars was sent on January 9\n- It is due on February 8\n- Ruth set up a payment plan of 65 dollars a month\nQuestion: When is the medical bill due?"}
+{"instruction": "Conversation summary so far:\n- User adopted a hamster named Pip\n- Pip has a white spot on one ear\nSummary: The hamster's name is"}
+{"instruction": "Known facts about the user:\n- Strong fear of spiders\n- Avoids the garden shed in summer\n- Enjoys horror films otherwise\nQuestion: What are you afraid of?"}
+{"instruction": "Conversation summary so far:\n- The user bakes for friends.\n- Famous for lemon bars.\n- Uses a hand mixer.\n- Cuts bars into nine squares.\nQuestion: What is the user famous for?"}
+{"instruction": "Conversation summary so far:\n- vol-media is 78 percent full\n- The render node writes scratch files there\n- Cleanup runs on fridays\nQuestion: How full is vol-media?"}
+{"instruction": "Conversation summary so far:\n- The user moved to Leeds in 2021.\n- Flat overlooks the market.\n- Commutes by bus 12.\n- Enjoys weekend flea markets.\nQuestion: Where did the user move in 2021?"}
+{"instruction": "Known facts about the user:\n- Paul has a parent-teacher meeting on February 21\n- The meeting starts at 16:45\n- It is in classroom 3B with Ms. Reed\nQuestion: What time does the parent-teacher meeting start?"}
+{"instruction": "Known facts about the user:\n- Iris's doctor appointment is on January 16\n- The appointment is at the Riverside clinic, room 4\n- Iris must fast before the blood test\nQuestion: Where is Iris's doctor appointment?"}

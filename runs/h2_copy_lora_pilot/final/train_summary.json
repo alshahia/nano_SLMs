@@ -1,0 +1,17 @@
+{
+  "phase": "h2_copy_lora",
+  "base_model": "runs/sft_v2_e1/final",
+  "pilot": true,
+  "pairs": 300,
+  "params_m": 231.38,
+  "best_eval_loss": 3.1607067584991455,
+  "best_checkpoint": "E:\\python projects\\nano_SLMs\\runs\\h2_copy_lora_pilot\\checkpoint-19",
+  "final_eval": {
+    "eval_loss": 3.160815715789795,
+    "eval_runtime": 0.445,
+    "eval_samples_per_second": 62.921,
+    "eval_steps_per_second": 15.73,
+    "epoch": 1.0
+  },
+  "resumed_from": null
+}

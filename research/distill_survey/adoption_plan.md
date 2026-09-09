@@ -229,6 +229,20 @@ per repo convention.
   trained path (Track C) or a stronger student is the fix. Evidence:
   runs/agent_memory_h/report.json (+ iter2_qa_cue/ snapshot),
   scripts/agent_memory_eval.py, data/agent_memory/store.json (gitignored).
+- **ADDENDUM 2026-09-09 (Track H2 Phase 1 fix executed - gate_recall PASS)**:
+  copy-behavior LoRA-SFT (TASKS row 37 Phase 1: 585 subagent-authored copy
+  pairs, LoRA r=16, 70 steps) flipped the gate - store arm 3/6 (probe 3/6,
+  qa 2/6, controls 0/6; required >= 2; baseline 1/6), retrieval 6/6. Code
+  guards: CSN +0.13% (near-zero forgetting), ast greedy 0.90. Honest deltas:
+  the Track H regression PROBE collapsed to 0/4 ast in BOTH arms (gate =
+  preamble >= plain still PASSes) - the QA-style template now elicits
+  copy-tautologies while the SFT-template ast stays 0.90; the model-mode
+  summarizer stopped folding (7/7 -> 0), so the mechanism runs
+  extract/store/retrieve/copy only (overhead 1.3% of ctx); 2 of 3 recall
+  misses came from the prompted extractor corrupting stored facts ("March
+  15" -> "ISO 15", wifi value echoed) - deterministic-only extraction is
+  the obvious next mechanism patch. Evidence:
+  runs/agent_memory_h2_rerun/report.json.
 
 ## Order & independence
 
