@@ -142,6 +142,13 @@ same three gates + the Track H recall rerun.
 
 ## 8) Machine-move package (fresh clone + ONE zip = everything)
 
+> **2026-09-09 UPDATE:** a full resume pack now exists —
+> `checkpoint_backup/resume_pack_2026-09-09.zip` (5.8 GiB, sha256
+> ceda94ad…705bd4e, 10 finals, extract AT THE REPO ROOT, in-zip RESUME.md
+> + BUNDLE_MANIFEST.json). It SUPERSEDES the e1-only zip below (kept) and
+> adds every other weights-bearing final. Steps 1-10 below need nothing
+> else from git either way.
+
 - Clone: git clone https://github.com/alshahia/nano_SLMs (branch main).
   The clone brings ALL code, configs, tracked data (data/target/tokens CSN
   shards for the forgetting guard, data/sft/minimax3 val instructions),

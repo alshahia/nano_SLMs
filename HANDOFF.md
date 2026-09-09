@@ -730,6 +730,37 @@ E: 41.1 GB free post-run; the three 403 MB fp32 arm weights + rotated
 checkpoints (~1.5 GB/arm) stay on disk pending user cleanup decision
 (keep runs/kd-t2p-kd/final at minimum — it is the distilled-P rung).
 
+### 2026-09-09 — resume pack built (fresh clone + ONE zip = fully working setup)
+
+User request: "create a zip file for all checkpoint need, that user with it
+and remote repo can resume the work without any issue". Built
+`checkpoint_backup/resume_pack_2026-09-09.zip` (gitignored dir, out of git
+per HANDOFF §7):
+
+- **6,227,497,311 B (5.8 GiB), 80 entries, verify OK (every entry present,
+  sizes match, all CRC pass).**
+- sha256 `ceda94adbce10e7af5bcd85a7b58fbbe550072bd1f02bf0c91d68437f705bd4e`.
+- Arcnames are REPO-ROOT-RELATIVE (`runs/<name>/final/...`): extract AT THE
+  REPO ROOT — no strip-components gymnastics. Zip root also carries
+  `RESUME.md` (step-by-step new-machine runbook: clone → extract → venv
+  rebuild → sanity gates → .env/teacher notes → machine hard facts → what's
+  in/out → where the work stands) and `BUNDLE_MANIFEST.json` (per-file size
+  + CRC, git_commit aad7f94, created_utc).
+- Contents = ALL 10 weights-bearing finals (target, sft_v2_e1, sft_t1,
+  h2p2_mixed_lora, h2_copy_lora, pilot, kd-t2p-kd, kd-t2p-baseline,
+  kd-t2p-kd-skew, smoke — roles tabled in RESUME.md).
+- Excluded by design (documented in RESUME.md + TASKS row 2): the 3
+  superseded pilot finals; the 4 de-weighted finals (kd-s ×2 reproducible
+  ~35 min each via scripts/kd.py); mid-run checkpoints of completed runs
+  (incl. target/checkpoint-4500 + pilot/checkpoint-1000 — source-disk
+  only); data/teacher (re-download ~3 min); .env (secrets).
+- Builder: `scripts/bundle_resume_pack.py` (new, committed; multi-source
+  STORED zip64 + manifest + verify + sha256, inherits the
+  bundle_checkpoint.py conventions).
+- Disk after: E: 35.48 GB free (the pack cost ~5.8 GiB). The older
+  checkpoint-sft_v2_e1-final.zip stays (redundant with the pack — delete
+  per user decision only).
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).
