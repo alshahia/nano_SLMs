@@ -28,6 +28,7 @@ and fixes the repo-specific conventions CLAUDE.md points here for.
 | Usage (humans) | [README.md](./README.md) | for command syntax | when commands or usage change |
 | Research | [research/](research) | when touching architecture/data direction | new studies live here; raw payloads under `research/raw/` |
 | **Web UI spec** | [WEBUI_PRD.md](./WEBUI_PRD.md) | before any `webui/` work | when a UI decision or milestone scope changes (user-gated) |
+| Implementation plans | [docs/plans/](docs/plans) | before executing a planned feature | when a plan is created or completed (kept as historical record) |
 
 The plan / state / task / memory / environment docs are the five an agent
 needs before doing anything; the table is how they chain together. Mnemonic:
