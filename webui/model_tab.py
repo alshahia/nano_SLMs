@@ -70,9 +70,12 @@ def _detail_md(blocks, bid, tech):
     return "\n".join(lines)
 
 
-def _select_block(blocks, tech, evt):
-    idx = evt.index if not isinstance(evt.index, (list, tuple)) else evt.index[0]
-    bid = blocks[min(int(idx), len(blocks) - 1)]["id"]
+def _select_block(blocks, tech, evt=None):
+    if evt is None:
+        bid = blocks[0]["id"] if blocks else ""
+    else:
+        idx = evt.index if not isinstance(evt.index, (list, tuple)) else evt.index[0]
+        bid = blocks[min(int(idx), len(blocks) - 1)]["id"]
     return _detail_md(blocks, bid, bool(tech))
 
 
