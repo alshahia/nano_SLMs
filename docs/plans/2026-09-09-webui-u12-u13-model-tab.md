@@ -396,8 +396,12 @@ def t_build_graph_smoke_real():
 def t_build_graph_projected_flagged():
     dims = A.yaml_config_dims(A.phase_config("smoke"))
     blocks = E.build_graph(dims, None, label="smoke (config)", lora=None)
-    assert all(not b["real"] for b in blocks)
-    assert all(b["params"] > 0 for b in blocks)
+    # tok/logits need no header (real=True); tied lm_head + logits are 0-param
+    assert [b["id"] for b in blocks if b["real"]] == ["tok", "logits"]
+    assert [b["id"] for b in blocks
+            if b["params"] == 0] == ["tok", "lm_head", "logits"]
+    assert all(b["params"] > 0 for b in blocks
+               if b["id"] not in ("tok", "lm_head", "logits"))
 
 
 def t_kv_cache_token_target_16kib():
@@ -410,7 +414,7 @@ def t_shape_trace():
     dims, header = _smoke_dims_header()
     blocks = E.build_graph(dims, header, label="smoke/final", lora=None)
     walk = E.shape_walk(blocks)
-    assert walk[0][1] == "[text]" and walk[-1][2] == "[1, 64, 32768]"
+    assert walk[0][1] == "[text]" and walk[-1][1] == "[1, 64, 32768]"
     mid = next(w for w in walk if w[0].endswith("attn"))
     assert mid[1] == f"[1, 64, {dims['hidden']}]", mid
 
