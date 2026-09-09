@@ -1,0 +1,24 @@
+{"fact": "f1", "style": "qa", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 106, "injected_tokens": 0}
+{"fact": "f1", "style": "qa", "arm": "store", "answer": "import re", "matched": [], "pass": false, "retrieved": ["m1"], "preamble_tokens": 125, "injected_tokens": 9}
+{"fact": "f1", "style": "probe", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 105, "injected_tokens": 0}
+{"fact": "f1", "style": "probe", "arm": "store", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": ["m1"], "preamble_tokens": 124, "injected_tokens": 9}
+{"fact": "f2", "style": "qa", "arm": "control", "answer": "import re", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 113, "injected_tokens": 0}
+{"fact": "f2", "style": "qa", "arm": "store", "answer": "import time", "matched": [], "pass": false, "retrieved": ["m2"], "preamble_tokens": 142, "injected_tokens": 19}
+{"fact": "f2", "style": "probe", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 105, "injected_tokens": 0}
+{"fact": "f2", "style": "probe", "arm": "store", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": ["m2"], "preamble_tokens": 134, "injected_tokens": 19}
+{"fact": "f3", "style": "qa", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 107, "injected_tokens": 0}
+{"fact": "f3", "style": "qa", "arm": "store", "answer": "import re", "matched": ["layla"], "pass": true, "retrieved": ["m3"], "preamble_tokens": 134, "injected_tokens": 17}
+{"fact": "f3", "style": "probe", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 106, "injected_tokens": 0}
+{"fact": "f3", "style": "probe", "arm": "store", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": ["m3"], "preamble_tokens": 133, "injected_tokens": 17}
+{"fact": "f4", "style": "qa", "arm": "control", "answer": "import re", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 106, "injected_tokens": 0}
+{"fact": "f4", "style": "qa", "arm": "store", "answer": "import re", "matched": [], "pass": false, "retrieved": ["m4"], "preamble_tokens": 127, "injected_tokens": 11}
+{"fact": "f4", "style": "probe", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 105, "injected_tokens": 0}
+{"fact": "f4", "style": "probe", "arm": "store", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": ["m4"], "preamble_tokens": 126, "injected_tokens": 11}
+{"fact": "f5", "style": "qa", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 106, "injected_tokens": 0}
+{"fact": "f5", "style": "qa", "arm": "store", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": ["m5"], "preamble_tokens": 131, "injected_tokens": 15}
+{"fact": "f5", "style": "probe", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 104, "injected_tokens": 0}
+{"fact": "f5", "style": "probe", "arm": "store", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": ["m5"], "preamble_tokens": 129, "injected_tokens": 15}
+{"fact": "f6", "style": "qa", "arm": "control", "answer": "import re", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 110, "injected_tokens": 0}
+{"fact": "f6", "style": "qa", "arm": "store", "answer": "import re", "matched": [], "pass": false, "retrieved": ["m6"], "preamble_tokens": 136, "injected_tokens": 16}
+{"fact": "f6", "style": "probe", "arm": "control", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": [], "preamble_tokens": 105, "injected_tokens": 0}
+{"fact": "f6", "style": "probe", "arm": "store", "answer": "from typing import Optional", "matched": [], "pass": false, "retrieved": ["m6"], "preamble_tokens": 131, "injected_tokens": 16}

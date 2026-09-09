@@ -1,0 +1,47 @@
+{
+  "kind": "answer",
+  "question": "I have a 226M parameter code model and API access only to a strong teacher LLM (text outputs, no logits, different tokenizer). What are the proven ways to distill the teacher into the student: sequence-level KD on teacher outputs, chain-of-thought distillation, on-policy distillation using the teacher as a judge/reward model, rejection-sampling then SFT, DPO on teacher preference pairs? Describe each method, its data requirements, and known results.",
+  "model": "exa",
+  "answer": "To distill your 226M parameter model using a black-box teacher, use the following methods:\n\nSequence-level Knowledge Distillation (SeqKD) involves supervised fine-tuning (SFT) on teacher-generated outputs [1][2]. It requires a corpus of high-quality prompts and corresponding teacher responses. While simple, it often suffers from exposure bias and distribution mismatch because the student is trained on fixed teacher trajectories rather than its own [3][4].\n\nChain-of-Thought (CoT) distillation teaches reasoning by having the student imitate the teacher's rationale [5]. Proven techniques include CoTD-PO, which uses reinforcement learning to allow the student to explore its own answer paths while using teacher-provided preference scores as guidance, effectively mitigating mode collapse [3]. \n\nOn-policy distillation (OPD) queries the teacher on prefixes sampled from the student's current policy to align generations with the teacher's distribution [4][2]. Because tokenizers differ, methods like SimCT construct a shared supervision space using minimal aligned units, avoiding the need for exact token matches or learned projections [4].\n\nRejection sampling involves generating multiple candidates from the student, scoring them with the teacher (or a reward model), and using the high-scoring samples for SFT [1]. This filters out low-quality reasoning paths and improves student performance [5].\n\nDPO-based distillation creates a preference dataset where teacher outputs are winners and student outputs are losers [6][7]. Distribution-Aware DPO (daDPO) improves on standard DPO by integrating the teacher's distribution into the DPO loss, providing more stable and effective alignment across different tokenizer families [6].",
+  "citations": [
+    {
+      "title": "ORPO-Distill: Mixed-Policy Preference Optimization for Cross-Architecture LLM Distillation",
+      "url": "https://arxiv.org/html/2509.25100"
+    },
+    {
+      "title": "Rethinking On-Policy Distillation of Large Language Models: Phenomenology, Mechanism, and Recipe",
+      "url": "https://www.arxiv.org/pdf/2604.13016"
+    },
+    {
+      "title": "CoTD-PO: Chain-of-Thought Distillation with Preference Optimization",
+      "url": "https://aclanthology.org/2025.findings-emnlp.1087.pdf"
+    },
+    {
+      "title": "SimCT: Recovering Lost Supervision for Cross-Tokenizer On-Policy Distillation",
+      "url": "https://arxiv.org/html/2605.07711"
+    },
+    {
+      "title": "Symbolic Chain-of-Thought Distillation: Small Models Can Also “Think” Step-by-Step",
+      "url": "https://arxiv.org/html/2306.14050v1"
+    },
+    {
+      "title": "daDPO: Distribution-Aware DPO for Distilling Conversational Abilities",
+      "url": "https://arxiv.org/html/2506.15717v1"
+    },
+    {
+      "title": "Preference Distillation via Value based Reinforcement Learning",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2025/file/98e967164ae2f6811b975d686dece3eb-Paper-Conference.pdf"
+    },
+    {
+      "title": "CTPD: Cross Tokenizer Preference Distillation",
+      "url": "https://ojs.aaai.org/index.php/AAAI/article/download/41114/45075",
+      "author": "Truong Nguyen, Phi Van Dat, Ngan Nguyen, Linh Ngo Van, Trung Le, Thanh Hong Nguyen"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-08T18:27:36.334202+00:00"
+}

@@ -70,3 +70,7 @@ runs/sft_u1*/*.log
 
 # Web UI transient launch state (pid etc.) - never meaningful in git
 webui/job_state.json
+
+# Track H agent-memory store (regenerable experiment state; the eval report
+# and transcripts under runs/agent_memory_h/ stay tracked)
+data/agent_memory/

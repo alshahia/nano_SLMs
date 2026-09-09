@@ -539,6 +539,43 @@ U5 work above was committed and pushed as `fd2e79a` (post-push tree
 clean; untracked: parallel session's distill configs/logs + the e2e
 artifacts still awaiting the cleanup decision).
 
+### 2026-09-08 — Track H executed (agent-side memory, zero training): mechanism PASS, recall gate FAIL
+
+User go ("best outcome track first") picked Track H from the
+distill-survey adoption plan. scripts/agent_memory_eval.py (new):
+scripted 12-turn session -> prompted-extraction fact store
+(data/agent_memory/, gitignored) + model-mode rolling summary inside the
+1024-token budget -> context swap -> 2-arm recall (store vs summary-only
+control) in two probe styles (QA + needle completion) -> single-session
+AST regression probe. CPU mechanics preflight PASS (--no-model stub:
+folds/extract/retrieve/score exercised; small budgets forced folds).
+
+Three GPU iterations on runs/sft_v2_e1/final (~3-7 min each; iter1
+snapshot NOT kept — overwritten; iter2 kept under
+runs/agent_memory_h/iter2_qa_cue/): the memory mechanism fully validated
+(store 6/6 scripted coverage, retrieval 6/6 correct fact per question,
+model-mode rolling summary 7/7 folds at 61 tok, AST regression 4/4
+preamble vs 2/4 plain, overhead ~7.4% of ctx) but the recall gate FAILED
+1/6 (required >= 2): the student continues every QA/needle prompt with
+import boilerplate and only sporadically surfaces the injected fact
+(f3, deterministic across two runs; the format cue made it 0/6). Root
+cause = MEMORY lesson 18; this validates the plan's honest framing —
+orchestration memory, NOT model memory; the trained path is Track C.
+Evidence: runs/agent_memory_h/report.json + session transcripts;
+TASKS row 36 (follow-up DECIDED by the user: fix via distillation ->
+row 37).
+
+Same-day continuation: Track H2 (row 37) started with user approval -
+Phase 1 = copy-behavior LoRA-SFT with a SUBAGENT-authored needle-QA corpus,
+Phase 2 = teacher distillation queued (teacher NOT Qwen3.5-0.8B, user
+veto). Prep complete: research/h2_corpus_spec.md (contract),
+scripts/h2_validate_corpus.py (copy-fidelity gate, < 200 pairs = FAIL),
+configs/h2_copy_lora.yaml (LoRA r=16 on sft_v2_e1, ast_filter FALSE,
+CSN guard kept). BLOCKED before any corpus landed: subagent spawning died
+in that session (2x background -> empty children registry + 4 failure
+notices; 1x foreground -> ToolCallError). Full resume package with a
+10-step command ladder: research/distill_survey/H2_RESUME.md.
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).

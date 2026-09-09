@@ -1,0 +1,50 @@
+{
+  "kind": "answer",
+  "question": "As of September 2026: do DeepSeek-V4 (Flash/Pro variants) and Qwen3.8 (the Last / Next-Flash) exist? What training techniques and distillation/context-handling innovations did they introduce, and what can be borrowed for training very small code models?",
+  "model": "exa",
+  "answer": "Yes, both model series exist as of September 2026. DeepSeek-V4 (Flash/Pro) is a Mixture-of-Experts series optimized for long-context efficiency [1][2], while Qwen3.8-Flash-Next serves as an open-weight architectural preview for the upcoming Qwen4 generation [3][4].\n\nKey innovations include:\n\nHybrid Attention: DeepSeek-V4 uses Compressed Sparse Attention (CSA) and Heavily Compressed Attention (HCA) [1][5]. Qwen3.8-Flash-Next utilizes a hybrid of Gated DeltaNet (GDN) for recurrent history compression and Qwen Sparse Attention (QSA) for targeted retrieval [6][3].\n\nResidual/Capacity Scaling: DeepSeek-V4 introduced Manifold-Constrained Hyper-Connections (mHC) to stabilize signal propagation [1][5]. Qwen3.8-Flash-Next employs Gated Residual (GR) branches and an N-gram Embedding lookup table (51B parameters) to expand memory capacity without increasing per-token compute [6][3].\n\nOptimization: Both use the Muon optimizer to improve training stability and convergence speed [1][6][5].\n\nPost-Training: DeepSeek-V4 uses a two-stage paradigm: independent domain-expert training (SFT/RL) followed by unified model consolidation via on-policy distillation [1][5].\n\nFor training very small code models, the most borrowable techniques are:\n1. N-gram Embedding: Provides significant pattern-recognition capacity with negligible latency, ideal for resource-constrained environments [3][4].\n2. Sparse Indexing: Implementing a lightweight indexer (like QSA or Lightning Indexer) allows models to ignore irrelevant context, maintaining efficiency in long-horizon coding tasks [6][7].\n3. Muon Optimizer: Enhances convergence for smaller models without the compute overhead of standard AdamW [1][6][4].\n4. On-policy Distillation: Using specialized experts to supervise a unified student model prevents catastrophic forgetting in multi-task scenarios (e.g., math vs. agentic coding) [1][5].",
+  "citations": [
+    {
+      "title": "DeepSeek-V4: Towards Highly Efficient Million-Token Context Intelligence",
+      "url": "https://arxiv.org/html/2606.19348"
+    },
+    {
+      "title": "README.md · deepseek-ai/DeepSeek-V4-Flash at main",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash/blob/main/README.md"
+    },
+    {
+      "title": "QwenLM/Qwen3.8-Flash-Next",
+      "url": "https://github.com/QwenLM/Qwen3.8-Flash-Next/"
+    },
+    {
+      "title": "Qwen3.8-Flash Matches DeepSeek V4 Pro at a Quarter of the Price",
+      "url": "https://www.intelligentliving.co/qwen38-flash-matches-deepseek-v4-pro/",
+      "published_date": "2026-08-27T20:50:08.000Z"
+    },
+    {
+      "title": "DeepSeek V4 Flash: Technical Deep Dive into the 284B-A13B Hybrid-Attention MoE - Local AI Zone",
+      "url": "https://local-ai-zone.github.io/blog/deepseek-v4-flash-deep-dive.html",
+      "published_date": "2026-04-26T00:00:00.000Z",
+      "author": "Local AI Zone"
+    },
+    {
+      "title": "On the Design of Qwen3.8-Next Architecture: Evaluation, Efficiency, and Training Stability",
+      "url": "https://arxiv.org/html/2608.30320"
+    },
+    {
+      "title": "FlashMemory-DeepSeek-V4: Lightning Index Ultra-Long Context via Lookahead Sparse Attention",
+      "url": "https://arxiv.org/html/2606.09079"
+    },
+    {
+      "title": "Three Local Flagships, One Idea: Qwen3.8-Flash-Next vs DeepSeek-V4-Flash vs Qwen3.8-27B — ai.rs",
+      "url": "https://ai.rs/ai-developer/qwen3-8-flash-next-vs-deepseek-v4-flash-vs-qwen3-8-27b",
+      "published_date": "2026-08-28T00:00:00.000Z"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-08T18:27:43.033823+00:00"
+}

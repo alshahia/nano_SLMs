@@ -1,0 +1,352 @@
+{
+  "track": "H",
+  "date": "2026-09-08T21:14:51.403098+00:00",
+  "model": "E:\\python_projects\\nano_SLMs\\runs\\sft_v2_e1\\final",
+  "config": "configs\\sft_v2_e1.yaml",
+  "no_model": false,
+  "device": "cuda",
+  "ctx": 1024,
+  "budgets": {
+    "raw": 400,
+    "summary": 220,
+    "top_k": 3
+  },
+  "token_overhead": {
+    "summary_tokens": 61,
+    "facts_stored_tokens": 87,
+    "avg_injected_tokens_per_question": 14.5,
+    "avg_preamble_tokens_per_question": 137.2,
+    "budget_share_of_ctx_pct": 7.4
+  },
+  "session1": {
+    "turns": 12,
+    "fold_events": [
+      {
+        "after_turn": 6,
+        "mode": "model",
+        "dropped_tokens": 64
+      },
+      {
+        "after_turn": 8,
+        "mode": "model",
+        "dropped_tokens": 59
+      },
+      {
+        "after_turn": 8,
+        "mode": "model",
+        "dropped_tokens": 65
+      },
+      {
+        "after_turn": 9,
+        "mode": "model",
+        "dropped_tokens": 72
+      },
+      {
+        "after_turn": 10,
+        "mode": "model",
+        "dropped_tokens": 70
+      },
+      {
+        "after_turn": 11,
+        "mode": "model",
+        "dropped_tokens": 67
+      },
+      {
+        "after_turn": 12,
+        "mode": "model",
+        "dropped_tokens": 62
+      }
+    ],
+    "summarizer_modes": [
+      "model"
+    ],
+    "extractor": {
+      "prompted": 0,
+      "deterministic": 6,
+      "scripted_facts_covered": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "scripted_coverage": "6/6"
+    },
+    "raw_tokens_at_swap": 344,
+    "seconds": 402.5
+  },
+  "store_path": "data/agent_memory/store.json",
+  "facts_stored": [
+    {
+      "id": "m1",
+      "text": "My favorite programming language is Rust.",
+      "turn": 2,
+      "via": "deterministic",
+      "scripted": "f1"
+    },
+    {
+      "id": "m2",
+      "text": "Our deploy server is called falcon and it runs on port 8081.",
+      "turn": 4,
+      "via": "deterministic",
+      "scripted": "f2"
+    },
+    {
+      "id": "m3",
+      "text": "My sister's name is Layla and she lives in Oslo.",
+      "turn": 5,
+      "via": "deterministic",
+      "scripted": "f3"
+    },
+    {
+      "id": "m4",
+      "text": "The project deadline is March 15.",
+      "turn": 7,
+      "via": "deterministic",
+      "scripted": "f4"
+    },
+    {
+      "id": "m5",
+      "text": "I use the editor Neovim with the Dracula theme.",
+      "turn": 8,
+      "via": "deterministic",
+      "scripted": "f5"
+    },
+    {
+      "id": "m6",
+      "text": "The wifi password for the office network is Pineapple42.",
+      "turn": 10,
+      "via": "deterministic",
+      "scripted": "f6"
+    }
+  ],
+  "recall": {
+    "f1": {
+      "question": "What is my favorite programming language?",
+      "expected": [
+        "rust"
+      ],
+      "fact_text": "My favorite programming language is Rust.",
+      "arms": {
+        "control": {
+          "answer": "from typing import Optional",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 123,
+          "injected_tokens": 0
+        },
+        "store": {
+          "answer": "import re",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m1"
+          ],
+          "preamble_tokens": 142,
+          "injected_tokens": 9
+        }
+      }
+    },
+    "f2": {
+      "question": "What is our deploy server called and which port does it run on?",
+      "expected": [
+        "falcon",
+        "8081"
+      ],
+      "fact_text": "Our deploy server is called falcon and it runs on port 8081.",
+      "arms": {
+        "control": {
+          "answer": "import re",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 130,
+          "injected_tokens": 0
+        },
+        "store": {
+          "answer": "import time",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m2"
+          ],
+          "preamble_tokens": 159,
+          "injected_tokens": 19
+        }
+      }
+    },
+    "f3": {
+      "question": "What is my sister's name?",
+      "expected": [
+        "layla"
+      ],
+      "fact_text": "My sister's name is Layla and she lives in Oslo.",
+      "arms": {
+        "control": {
+          "answer": "from typing import Optional",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 124,
+          "injected_tokens": 0
+        },
+        "store": {
+          "answer": "from typing import Optional",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m3"
+          ],
+          "preamble_tokens": 151,
+          "injected_tokens": 17
+        }
+      }
+    },
+    "f4": {
+      "question": "When is the project deadline?",
+      "expected": [
+        "march 15",
+        "15 march"
+      ],
+      "fact_text": "The project deadline is March 15.",
+      "arms": {
+        "control": {
+          "answer": "import re",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 123,
+          "injected_tokens": 0
+        },
+        "store": {
+          "answer": "import re",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m4"
+          ],
+          "preamble_tokens": 144,
+          "injected_tokens": 11
+        }
+      }
+    },
+    "f5": {
+      "question": "Which code editor do I use?",
+      "expected": [
+        "neovim"
+      ],
+      "fact_text": "I use the editor Neovim with the Dracula theme.",
+      "arms": {
+        "control": {
+          "answer": "from typing import Optional",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 123,
+          "injected_tokens": 0
+        },
+        "store": {
+          "answer": "from typing import Optional",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m5"
+          ],
+          "preamble_tokens": 148,
+          "injected_tokens": 15
+        }
+      }
+    },
+    "f6": {
+      "question": "What is the wifi password for the office network?",
+      "expected": [
+        "pineapple42"
+      ],
+      "fact_text": "The wifi password for the office network is Pineapple42.",
+      "arms": {
+        "control": {
+          "answer": "import re",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 127,
+          "injected_tokens": 0
+        },
+        "store": {
+          "answer": "import re",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m6"
+          ],
+          "preamble_tokens": 153,
+          "injected_tokens": 16
+        }
+      }
+    }
+  },
+  "gate_recall": {
+    "required": 2,
+    "store_arm_passes": 0,
+    "control_arm_passes": 0,
+    "result": "FAIL"
+  },
+  "regression": [
+    {
+      "prompt": "Write a Python function that returns the nth Fibonacci number.",
+      "plain": {
+        "ast": false,
+        "chars": 571
+      },
+      "preamble": {
+        "ast": true,
+        "chars": 392
+      }
+    },
+    {
+      "prompt": "Write a Python function that counts the vowels in a string.",
+      "plain": {
+        "ast": false,
+        "chars": 601
+      },
+      "preamble": {
+        "ast": true,
+        "chars": 446
+      }
+    },
+    {
+      "prompt": "Write a Python function that checks whether a string is a palindrome.",
+      "plain": {
+        "ast": true,
+        "chars": 529
+      },
+      "preamble": {
+        "ast": true,
+        "chars": 380
+      }
+    },
+    {
+      "prompt": "Write a Python function that merges two sorted lists into one sorted list.",
+      "plain": {
+        "ast": true,
+        "chars": 453
+      },
+      "preamble": {
+        "ast": true,
+        "chars": 450
+      }
+    }
+  ],
+  "gate_regression": {
+    "plain_ast": "2/4",
+    "preamble_ast": "4/4",
+    "result": "PASS"
+  },
+  "timings": {
+    "session1_s": 402.5,
+    "session2_s": 190.5,
+    "regression_s": 176.7
+  }
+}

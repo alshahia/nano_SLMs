@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "created": "2026-09-08T21:02:01.786013+00:00",
+    "model": "E:\\python_projects\\nano_SLMs\\runs\\sft_v2_e1\\final",
+    "config": "configs\\sft_v2_e1.yaml",
+    "pattern": "rolling-summary+fact-store"
+  },
+  "facts": [
+    {
+      "id": "m1",
+      "text": "My favorite programming language is Rust.",
+      "turn": 2,
+      "via": "deterministic",
+      "scripted": "f1"
+    },
+    {
+      "id": "m2",
+      "text": "Our deploy server is called falcon and it runs on port 8081.",
+      "turn": 4,
+      "via": "deterministic",
+      "scripted": "f2"
+    },
+    {
+      "id": "m3",
+      "text": "My sister's name is Layla and she lives in Oslo.",
+      "turn": 5,
+      "via": "deterministic",
+      "scripted": "f3"
+    },
+    {
+      "id": "m4",
+      "text": "The project deadline is March 15.",
+      "turn": 7,
+      "via": "deterministic",
+      "scripted": "f4"
+    },
+    {
+      "id": "m5",
+      "text": "I use the editor Neovim with the Dracula theme.",
+      "turn": 8,
+      "via": "deterministic",
+      "scripted": "f5"
+    },
+    {
+      "id": "m6",
+      "text": "The wifi password for the office network is Pineapple42.",
+      "turn": 10,
+      "via": "deterministic",
+      "scripted": "f6"
+    }
+  ]
+}

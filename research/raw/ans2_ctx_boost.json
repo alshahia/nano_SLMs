@@ -1,0 +1,52 @@
+{
+  "kind": "answer",
+  "question": "A small GQA transformer (226M params) was trained at context 1024 on a 6GB GPU. What are the most practical ways to make it effectively handle 4k-32k context: RoPE/YaRN fine-tuning, sliding-window attention, context compression into soft tokens (ICAE/gisting), memory modules (RMT, Infini-attention, Titans), KV-cache tricks? Rank by feasibility and cost.",
+  "model": "exa",
+  "answer": "To scale your 226M parameter GQA transformer from 1k to 4k–32k context on a 6GB GPU, prioritize techniques by their impact on memory and implementation feasibility.\n\n1. KV Cache Quantization (High Feasibility): Compressing the KV cache to INT8 or INT4 is the most practical way to reduce memory usage by 50–75% with minimal quality degradation [1]. This is standard for production and highly effective.\n\n2. PagedAttention (High Feasibility): Use vLLM or similar frameworks to implement PagedAttention. It eliminates memory fragmentation and improves memory efficiency by 60–80%, allowing for larger batch sizes or longer contexts within the same 6GB limit [1].\n\n3. RoPE Scaling (Moderate Feasibility): To prevent performance collapse beyond the 1024-token training limit, apply YaRN or NTK-aware scaling during a brief continued-pretraining stage. This is necessary to keep positional encodings usable at 4k–32k lengths [2][3].\n\n4. Sliding-Window Attention (Moderate Feasibility): This limits KV cache growth to O(window_size) rather than O(sequence_length), providing fixed memory overhead [1]. Note that it may degrade long-range retrieval accuracy [3][1].\n\n5. Memory Modules / Compression (Low Feasibility): Techniques like ICAE or Infini-attention offer significant compression but typically require additional training (pretraining or fine-tuning) to integrate effectively [4][5]. These are more complex to deploy than inference-time cache management [6].\n\nFor a 6GB constraint, combine GQA (already present), INT8 KV cache quantization, and PagedAttention as your baseline strategy [1]. If you must exceed 32k, research implementations of Ring Attention or memory-efficient linear attention variations [1].",
+  "citations": [
+    {
+      "title": "Chaos and Order",
+      "url": "https://www.youngju.dev/transcribe/llm/2026-03-07-llm-long-context-kv-cache-optimization.en",
+      "published_date": "2026-03-07T00:00:00.000Z"
+    },
+    {
+      "title": "Long-context LLMs: training and serving techniques · mlmentorship",
+      "url": "https://mlmentorship.com/concepts/long-context-llms/",
+      "published_date": "2025-11-15T00:00:00.000Z",
+      "author": "Hamidreza Saghir"
+    },
+    {
+      "title": "Long Context Engineering: RoPE Scaling, KV Compression & Memory Optimization — Attention & Transformers — Continuous Function",
+      "url": "https://continuousfunction.ai/domains/attention-transformers/long-context/",
+      "published_date": "2026-02-16T00:00:00.000Z"
+    },
+    {
+      "title": "In-context Autoencoder for Context Compression in a Large Language Model",
+      "url": "https://arxiv.org/html/2307.06945v4"
+    },
+    {
+      "title": "Leave No Context Behind: Efficient Infinite Context Transformers with Infini-attention",
+      "url": "https://storage.prod.researchhub.com/uploads/papers/2024/04/15/2404.07143.pdf"
+    },
+    {
+      "title": "[2406.17808] Training-Free Exponential Extension of Sliding Window Context with Cascading KV Cache",
+      "url": "https://ar5iv.labs.arxiv.org/html/2406.17808"
+    },
+    {
+      "title": "RocketKV: Accelerating Long-Context LLM Inference via Two-Stage KV Cache Compression",
+      "url": "https://arxiv.org/html/2502.14051v2"
+    },
+    {
+      "title": "KARA: Efficient Reasoning LLM Serving via Sliding-Window KV Cache Compression | alphaXiv",
+      "url": "https://www.alphaxiv.org/abs/2607.01237",
+      "published_date": "2026-07-03T00:00:00.000Z",
+      "author": "Olexandr Isayev"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-08T18:27:39.704561+00:00"
+}

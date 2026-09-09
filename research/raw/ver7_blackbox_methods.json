@@ -1,0 +1,50 @@
+{
+  "kind": "answer",
+  "question": "Do these three black-box LLM distillation methods exist as named published techniques, and what is each in one sentence: (1) Proxy-KD - train a small proxy model to imitate a black-box teacher from text+scores, then distill the student from the proxy with soft labels; (2) ROPD - rubric-based on-policy distillation scoring student outputs against structured rubrics; (3) KED - knowledge explaining distillation where the teacher provides explanations as auxiliary supervision. Give arxiv IDs or URLs where possible.",
+  "model": "exa",
+  "answer": "Yes, all three of these black-box distillation methods exist as named, published techniques.\n\nProxy-KD introduces a white-box proxy model between a student and a black-box teacher to align with the teacher's capabilities, allowing the student to train using soft labels and KL divergence from the proxy [1][2][3]. The paper can be found at arXiv:2401.07013 [3].\n\nROPD (Rubric-based On-policy Distillation) is a framework that induces prompt-specific rubrics by contrasting teacher and student outputs, then uses those rubrics to score student rollouts for on-policy optimization [4][5][6]. It is detailed at arXiv:2605.07396 [4][6].\n\nKED (Knowledge Explaining Distillation) uses \"superfeature-explaining teachers\" to provide both soft predictions and auxiliary explanations as supervision for the student model [7]. It is documented in an OpenReview submission available at https://openreview.net/pdf?id=3Y6gc7sesn [7].",
+  "citations": [
+    {
+      "title": "Improving Knowledge Distillation with Teacher’s Explanation",
+      "url": "https://openreview.net/pdf?id=3Y6gc7sesn"
+    },
+    {
+      "title": "Knowledge Distillation of Black-Box Large Language Models",
+      "url": "https://arxiv.org/html/2401.07013v2"
+    },
+    {
+      "title": "Proxy-KD: A Proxy-Based Distillation Framework for Black-Box Large Language Models | OpenReview",
+      "url": "https://openreview.net/forum?id=MYb7hT6D9e"
+    },
+    {
+      "title": "Knowledge Distillation of Black-Box Large Language Models",
+      "url": "https://doi.org/10.48550/arxiv.2401.07013",
+      "published_date": "2024-01-13T00:00:00.000Z",
+      "author": "Hongzhan Chen, Chen, Ruijun, Yi, Yuqi, Xiaojun Quan, Li, Chenliang, Ming Yan, et al."
+    },
+    {
+      "title": "Rubric-based On-policy Distillation",
+      "url": "https://arxiv.org/html/2605.07396"
+    },
+    {
+      "title": "Peregrine123/ROPD_official",
+      "url": "https://github.com/Peregrine123/ROPD_official"
+    },
+    {
+      "title": "Rubric-based On-policy Distillation",
+      "url": "https://doi.org/10.48550/arxiv.2605.07396",
+      "published_date": "2026-05-08T00:00:00.000Z",
+      "author": "Junfeng Fang, Zhepei Hong, Mao Zheng, Mingyang Song, Gengsheng Li, H. B. Jiang, et al."
+    },
+    {
+      "title": "Black-Box On-Policy Distillation of Large Language Models",
+      "url": "https://arxiv.org/html/2511.10643v3"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-08T20:37:18.050207+00:00"
+}

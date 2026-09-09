@@ -1,0 +1,47 @@
+{
+  "kind": "answer",
+  "question": "For each of these context/KV compression methods, state whether it exists as a published paper and give its one-line mechanism plus arxiv ID if findable: CompLLM (segmented context compression into concept embeddings, frozen base LLM), AdmTree (adaptive semantic-tree gist compression), AttnComp (attention-guided compression for RAG), AMS (adaptive mass-segmented KV cache eviction with region quotas), TurboQuant (3.5-bit KV cache quantization), ARMT (associative recurrent memory transformer), InfLLM (training-free external memory units).",
+  "model": "exa",
+  "answer": "CompLLM is a published paper [1] (arXiv:2509.19228) that compresses context into concept embeddings using independent segments to achieve linear scaling and reusability. AdmTree is a published paper [2][3] (arXiv:2512.04550) that uses gist tokens and a bottom-up semantic binary tree to achieve adaptive, hierarchical context compression. AttnComp is a published paper [4] (arXiv:2509.17486) that uses attention weights to perform Top-P filtering of documents for RAG. AMS is a published paper [5] (arXiv:2605.23200) that performs adaptive region-aware quota allocation for KV cache eviction. TurboQuant is a published paper [6] (arXiv:2504.19874) that uses random rotation and Lloyd-Max quantization to achieve 4-bit KV cache compression. ARMT and InfLLM are not described in the provided search results.",
+  "citations": [
+    {
+      "title": "CompLLM: Compression for Long Context Q&A",
+      "url": "https://arxiv.org/html/2509.19228v1"
+    },
+    {
+      "title": "AdmTree: Compressing Lengthy Context with Adaptive Semantic Trees",
+      "url": "https://arxiv.org/html/2512.04550"
+    },
+    {
+      "title": "AdmTree: Compressing Lengthy Context with Adaptive Semantic Trees",
+      "url": "https://papers.neurips.cc/paper_files/paper/2025/file/39a397e1721555ddfa83cea2de225760-Paper-Conference.pdf"
+    },
+    {
+      "title": "AttnComp: Attention-Guided Adaptive Context Compression for Retrieval-Augmented Generation",
+      "url": "https://www.emergentmind.com/papers/2509.17486",
+      "published_date": "2025-09-22T00:00:00.000Z"
+    },
+    {
+      "title": "Adaptive Mass-Segmented KV Compression for Long-Form Reasoning",
+      "url": "https://arxiv.org/html/2605.23200"
+    },
+    {
+      "title": "turboquant-impl v0.1.0",
+      "url": "https://pypi.org/project/turboquant-impl/"
+    },
+    {
+      "title": "EIT-NLP/AdaptiveMassSegment",
+      "url": "https://github.com/EIT-NLP/AdaptiveMassSegment"
+    },
+    {
+      "title": "KVComp: A High-Performance, LLM-Aware, Lossy Compression Framework for KV Cache",
+      "url": "https://arxiv.org/pdf/2509.00579"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-08T20:37:22.997930+00:00"
+}
