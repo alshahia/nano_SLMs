@@ -210,7 +210,7 @@ def tokenize_trace(run_path: Path | None, text: str) -> str:
     toks = tok.convert_ids_to_tokens(ids)
     shown = list(zip(toks, ids))[:24]
     lines = [f"**{len(ids)} tokens** (showing first {len(shown)}):", ""]
-    lines += [f"\`{t!r}\` -> id {i}" for t, i in shown]
+    lines += [f"`{t!r}` -> id {i}" for t, i in shown]
     if len(ids) > len(shown):
         lines.append(f"... +{len(ids) - len(shown)} more")
     lines += ["", "These IDs index rows of the embedding table — that is "
