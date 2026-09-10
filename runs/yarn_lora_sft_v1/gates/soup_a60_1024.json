@@ -1,0 +1,42 @@
+{
+  "ckpt": "runs\\soup_repair_41\\a60",
+  "val_loss": 1.8917226447221125,
+  "perplexity": 6.6307813287115716,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nfrom typing import List\n\ndef nthFibonacci(n):\n    \"\"\"Return the nth Fibonacci number.\n\n    Args:\n        n: A non-negative integer.\n\n    Returns:\n        The nth Fibonacci number.\n\n    Examples:\n        >>> n = [1, 2, 3, 4, 5]\n        >>> n.n = 1\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n = 5\n        >>> n.n =",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import List, List\n\ndef pop_with_peek(text: str) -> List[str]:\n    \"\"\"Return a list of peek strings.\n\n    Args:\n        text: The text to pop.\n\n    Returns:\n        A list of strings.\n\n    Examples:\n        >>> pop_with_peek(\"foo\", 1)\n        [('foo', 1), ('bar', 2)]\n        >>> pop_with_peek(\"foo\", 1)\n        []\n    \"\"\"\n    if not text:\n        return []\n    return [text] + text.split(text)"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.9,
+    "sampled_ast_pass_rate": 0.96,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "from itertools import Counter\nfrom itertools import Counter\nfrom itertools import Counter\nfrom itertools import Counter\n\ndef iter_generator(rna_list):\n    \"\"\"Iterate over the values in rna_list.\n\n    Args:\n        rna_list (list): A list of integers.\n\n    Returns:\n        A list of values.\n\n    Examples:\n        >>> iter_generator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])\n        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]\n        >>> iter_generator([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])\n        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]\n    \"\"\"\n    if not rna",
+        "sampled": "from itertools import itertools\n\ndef iterate(iterator, nums):\n    if nums == 0:\n        return []\n    p = iter(iterator)\n    i = 0\n    while i < len(p) and p[i] == 1:\n        i += 1\n    while i < len(p) and p[i] == 0:\n        p[i] = p[i]\n        i += 1\n    return p"
+      },
+      {
+        "instruction": "Write a function that returns the k-th prime number (1-indexed).",
+        "greedy": "from typing import List\n\ndef kth_prime(n: int) -> int:\n    \"\"\"Return the k-th prime number (1-indexed).\n\n    Args:\n        n: Number of digits.\n\n    Returns:\n        Number of digits.\n\n    Examples:\n        >>> kth_prime(\"123456\")\n        123456\n        >>> kth_prime(\"123456\")\n        123456\n        >>> kth_prime(\"123456\")\n        123456\n        >>> kth_prime(\"123456\")\n        123456\n        >>> kth_prime(\"123456\")\n        123456\n        >>> kth_prime(\"123456\")\n        123456\n        >>> kth_prime(\"123456\")\n        123456\n        >>> kth_prime(\"123456\")\n        123456\n        >>> kth_",
+        "sampled": "from collections import defaultdict\n\ndef kth_prime_to_num(nums, num):\n    if len(num) > 1:\n        raise ValueError(\"num and num must be >= 1\")\n    k = kp_kit.num_items_to_nums(num)\n    r = k.num_items()\n    while k:\n        v = k.num_items()\n        if v > 1:\n            num = v\n            r = v\n        else:\n            k = k.num_items()\n            r = k.num_items()\n    return k"
+      },
+      {
+        "instruction": "Show `Never` in `typing_never`. (input: )",
+        "greedy": "import typing\n\ndeftyping_never(s):\n    return typing.Optional(int, default=0)\n\n# Bug was: `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never` is a `int` so `Never`",
+        "sampled": "import timer\n\ndef trac(x, y):\n    return timer(x, y)\n\n# Bug was: `n` seconds as a loop or `n` seconds as a timer\n\n# pair: timer / 2.0 / 476.\n\n# pair: trac / 476.\n\ndef trac(x, y):\n    return timer(x, y)\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n# pair: trac / 476.\n\n\n# pair: trac / 476.\n\n# pair: trac / 476"
+      },
+      {
+        "instruction": "Show the `@lru_cache` requirement in `cache_decorator`. (input: 10)",
+        "greedy": "import re\n\ndef cache_decorator(func):\n    @wraps(func)\n    def wrapper(*args):\n        return func(*args)\n\n# Bug was: `func` is the decorator function itself; `func(1)` is the decorator function itself.\n\n# pair: cache_decorator / 10",
+        "sampled": "from typing import Dict\n\ndef cache_decorator(a: Dict[str, Any], b: Dict[str, Any]) -> None:\n    \"\"\"Creates `b` as the cache.\n\n    Args:\n        a: The argument.\n        b: The argument.\n\n    Returns:\n        None.\n\n    Examples:\n        >>> cache = {'c1': {'x': 10, 'y': 20}}\n        >>> cache['c1'] = {'x': 10, 'y': 20}\n        >>> cache['c1'] = {'x': 10, 'y': 20}\n        >>> cache['c1'] = {'x': 10, 'y': 20}\n        >>> cache['c1'] = {'x': 10, 'y': 20}\n        >>> cache['c1'] = {'x': 10, 'y': 20}\n        >>> cache['c1'] = {'x': 10, 'y': 20}\n        >>> cache['c1'] = {'x': 1"
+      },
+      {
+        "instruction": "Write a function `palindrome(s)` that returns True iff s is a palindrome. Example: `palindrome(\"Madam\")`.",
+        "greedy": "def {{s: {{}}` for True.\n\ndef {{s: {{}}} for True.\n\ndef {{s: {{}}} for True.\n\ndef {{s: {{}}} for True.\n\ndef {{s: {{}}} for True.\n\ndef {{s: {{}}} for True.\n\ndef {{s: {{}}} for True.\n\ndef {{s: {{}}} for True.\n\n    return {{}} if s is {{}} else {{}} if s is {{}} else {{}}",
+        "sampled": "def hydindrome(s):\n    s = s.lower()\n    return s.lower() in [1.0-1, 2.0]"
+      }
+    ]
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "answer",
+  "question": "A 226M-parameter from-scratch code LLM got a YaRN context-extension continued pretrain (1000 steps, val loss -8% at 4096 ctx vs 1024, forgetting guard +1.15%). Next we must re-apply instruction SFT (1 epoch, ~19k short instruction/code pairs, lr 3e-5) on top WITHOUT losing the base LM surface: our guard tolerance is +10-15% on the pretraining val loss; a previous full SFT drifted +9.8%, while an in-house LoRA-SFT drifted only +0.13% (at a lower instruction pass-rate 0.90 vs 0.98). Compare strategies: (a) LoRA-SFT with merge afterwards, (b) full SFT mixed with 20-30% pretraining replay tokens, (c) post-hoc weight averaging (model soup / wiSE-FT interpolation) between the fine-tuned model and its own base. Which minimizes forgetting at roughly equal instruction gains, and what ranks, alphas, learning rates and replay ratios does the literature recommend for very small (~0.2B) models?",
+  "model": "exa",
+  "answer": "For a 0.2B model, the literature suggests using LoRA-SFT combined with regularization techniques to minimize forgetting. While all three strategies affect the base model, LoRA-SFT is most effective when paired with approximate replay or KL divergence.\n\nStrategy (b), full SFT mixed with pretraining replay tokens, is highly recommended to preserve base performance. Aim for a replay ratio of 30-50% for high-specialization tasks. For LoRA-SFT, targeting all transformer modules with a rank of 256 and alpha of 512 (alpha=2r) is best practice for coding tasks to match full-fine-tuning performance.\n\nRecommended hyperparameters for this scale include a learning rate between 1e-5 and 5e-4, favoring the higher end for LoRA. If using KL regularization to further prevent drift, a coefficient of 0.001 to 0.01 provides the best stability-plasticity tradeoff. Post-hoc weight averaging (Strategy c) does not reliably mitigate forgetting in post-training pipelines and is often outperformed by active regularization during training.",
+  "citations": [
+    {
+      "title": "Soup to go: mitigating forgetting during continual learning with model averaging | alphaXiv",
+      "url": "https://www.alphaxiv.org/abs/2501.05559",
+      "published_date": "2025-01-09T00:00:00.000Z",
+      "author": "Mansheej Paul"
+    },
+    {
+      "title": "LoRA Learns Less and Forgets Less",
+      "url": "https://gwern.net/doc/www/arxiv.org/39c1fa5d2b5b00883a1e7c58f710c9be6712e05f.pdf"
+    },
+    {
+      "title": "The Effectiveness of Approximate Regularized Replay for Efficient Supervised Fine-Tuning of Large Language Models",
+      "url": "https://arxiv.org/pdf/2512.22337"
+    },
+    {
+      "title": "Continued pretraining + SFT pipeline | Fine Tuning Llm Advanced Course | The Neural Base",
+      "url": "https://theneuralbase.com/fine-tuning-llm/learn/advanced/continued-pretraining-sft-pipeline/"
+    },
+    {
+      "title": "Mapping Post-Training Forgetting in Language Models at Scale",
+      "url": "https://arxiv.org/html/2510.17776v1"
+    },
+    {
+      "title": "Catastrophic Forgetting in SFT: Detection and Mitigation | Sft Advanced Course | The Neural Base",
+      "url": "https://theneuralbase.com/sft/learn/advanced/catastrophic-forgetting/"
+    },
+    {
+      "title": "Disperse-Then-Merge: Pushing the Limits of Instruction Tuning via Alignment Tax Reduction",
+      "url": "https://aclanthology.org/2024.findings-acl.175.pdf"
+    },
+    {
+      "title": "eth-sri/rlm-training-merging",
+      "url": "https://github.com/eth-sri/rlm-training-merging"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-10T08:33:20.286755+00:00"
+}

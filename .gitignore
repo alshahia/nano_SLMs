@@ -98,3 +98,15 @@ runs/yarn_4096/checkpoint-*/
 runs/yarn_4096/final/model.safetensors
 runs/yarn_4096/*.log
 runs/yarn_4096_train_*.log
+
+# Row 41 LoRA-SFT on the YaRN base (weights local; adapter checkpoints are
+# re-derivable from the merged final + base): same policy as yarn_4096.
+runs/yarn_lora_sft_v1/checkpoint-*/
+runs/yarn_lora_sft_v1/final/model.safetensors
+runs/yarn_lora_sft_v1/final_a60/model.safetensors
+runs/yarn_lora_sft_v1/*.log
+runs/yarn_lora_sft_v1_train_*.log
+
+# Soup P0 merged weights (eval-only scratch; reports under runs/soup_p0/reports/
+# stay tracked as evidence)
+runs/soup_p0/alpha*/model.safetensors

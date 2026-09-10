@@ -1,0 +1,19 @@
+{
+  "ckpt": "runs\\yarn_lora_sft_v1\\final",
+  "val_loss": 1.7824843383733198,
+  "perplexity": 5.944606502954042,
+  "samples": {},
+  "probe": {
+    "label": "lora41_c4096",
+    "ctx": 4096,
+    "trained_ctx": 1024,
+    "rope_scaling": null,
+    "rope_factor": 1.0,
+    "stream_window": null,
+    "sink_tokens": 4,
+    "stream_positions": null,
+    "batch": 2,
+    "quick_batches": null,
+    "val_tokens": 978944
+  }
+}

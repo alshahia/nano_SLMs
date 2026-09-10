@@ -1,0 +1,37 @@
+{
+  "ckpt": "runs\\yarn_lora_sft_v1\\final",
+  "val_loss": 1.9470874734503454,
+  "perplexity": 7.008246123994205,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nWe use a string to store the nth Fibonacci number.\n\n```python\ndef nth_fibonacci(n):\n    \"\"\"Return the nth Fibonacci number.\n\n    Args:\n        n: A non-empty string.\n\n    Returns:\n        The nth Fibonacci number.\n\n    Examples:\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = 'abc'\n        >>> n = '",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import Optional\n\ndef pop_all(a: Optional[str]) -> Optional[str]:\n    \"\"\"Return a single string with a stack.\n\n    Args:\n        a: The input string.\n\n    Returns:\n        A new string with a stack.\n\n    Examples:\n        >>> pop_all(\"a\", \"b\")\n        'a'\n        >>> pop_all(\"a\", \"b\")\n        'b'\n        >>> pop_all(\"a\", \"b\")\n        'a'\n    \"\"\"\n    if not a:\n        return None\n    a = a[0]\n    b = a[1]\n    while b:\n        a, b = b, a\n    return b"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.94,
+    "sampled_ast_pass_rate": 0.92,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "We use a set of iterables with the same number of bases. O(n log n).\n\n```python\ndef iter_combinations(nums: List[int]) -> List[int]:\n    \"\"\"Return a list of pairs of integers and their indexes.\n\n    Args:\n        nums: A list of integers.\n\n    Returns:\n        A list of pairs of integers.\n\n    Examples:\n        >>> iter_combinations([1, 2, 3, 4, 5, 6, 7, 8, 9])\n        [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\n        >>> iter_combinations([1, 2, 3, 4, 5, 6, 7, 8, 9])\n        [[1, 2, 3], [4, 5, 6], [7, 8, 9]]\n    \"\"\"\n    out: List[int] = []\n    for i, x in enumerate(nums):\n        out.append(x)\n",
+        "sampled": "Sort each iterable by 'themulated-in'. O(n^2) * 2 = O(n^2)x.\n\nFor Map a sequence of floats, each iterable is a list of indices for each phrase.\n\n```python\ndef map_all(xs: List[int]) -> List[int]:\n    \"\"\"Map all possible out points into a set of indices and their respective ones.\n\n    Args:\n        xs: A list of integers.\n\n    Returns:\n        A set of all possible outliers.\n\n    Examples:\n        >>> map_all([0, 1, 2, 3, 5, 6])\n        [0, 1, 2, 3, 4, 5]\n        >>> map_all([-1, 0, -1, 1])\n        [0, 1, 2, 3]\n    \"\"\"\n    if not xs:\n        return xs\n    out = [[xs[i]]]\n    for x in xs[1:]:\n        for x in x:\n            out.append(x)\n    return"
+      },
+      {
+        "instruction": "Write a function that returns the k-th prime number (1-indexed).",
+        "greedy": "def kth prime(n: int) -> int:\n    \"\"\"Return the k-th prime number (1-indexed).\n\n    Args:\n        n: A non-negative integer.\n\n    Returns:\n        The k-th prime number.\n\n    Examples:\n        >>> kth prime(10)\n        10\n        >>> kth prime(10)\n        10\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    if n < 1:\n        raise ValueError(\"n must be non-negative\")\n    if n < 2:\n        return n\n    return kth prime(n - 1)",
+        "sampled": "import k-terms\n\ndef kthetic(n: int) -> int:\n    \"\"\"Return the k-th prime number (1-indexed) with n.\n\n    Args:\n        n: A non-negative integer.\n\n    Returns:\n        The k-th prime number.\n\n    Examples:\n        >>> kthetic(1)\n        1\n        >>> kthetic(2)\n        4\n        >>> kthetic(1)\n        4\n        >>> kthetic(1)\n        1\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be non-negative\")\n    if n < 2:\n        return 1\n    if n < 4:\n        return 2\n    return 1 + 2 * (n - 1) // 2"
+      },
+      {
+        "instruction": "Show `Never` in `typing_never`. (input: )",
+        "greedy": "deftyping_never(s):\n    return s.c()\n\n# Bug was: `Never` is `Never`; `Never` is `Never`; `Never` is `Never`\n\n# pair:typing_never /",
+        "sampled": "deftyping_never(x):\n    return x + 273.15"
+      },
+      {
+        "instruction": "Write a function `palindrome(s)` that returns True iff s is a palindrome. Example: `palindrome(\"Madam\")`.",
+        "greedy": "def palindrome(s):\n    \"\"\"Return True iff s is a palindrome (ignoring case and non-alnum).\"\"\"\n    cleaned = \"\".join(c.lower() for c in s if c.isalnum())\n    return cleaned == cleaned[::-1]",
+        "sampled": "defpalindrome(s):\n    \"\"\"Return True iff s is a palindrome (ignoring case and non-alnum).\"\"\"\n    cleaned = \"\".join(c.lower() for c in s if c.isalnum())\n    return cleaned == cleaned[::-1]"
+      }
+    ]
+  }
+}

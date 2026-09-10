@@ -1,0 +1,42 @@
+{
+  "ckpt": "runs\\soup_p0\\alpha050",
+  "val_loss": 1.9238874842432254,
+  "perplexity": 6.847526445699533,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nThe function is a generator that yields the nth Fibonacci number.\n\n```python\ndef nth_fibonacci(n):\n    \"\"\"Return the nth Fibonacci number.\n\n    Args:\n        n: The number of Fibonacci numbers.\n\n    Returns:\n        The nth Fibonacci number.\n\n    Examples:\n        >>> n = [1, 2, 3, 4, 5, 6, 7, 8, 9]\n        >>> n.nth_fibonacci\n        3\n        >>> n.nth_fibonacci\n        4\n        >>> n.nth_fibonacci\n        5\n        >>> n.nth_fibonacci\n        6\n        >>> n.nth_fibonacci\n        7\n        >>> n.nth_fibonacci\n        7\n        >>> n.nth_fibonacci\n        7\n    \"\"\"\n    if n < 0:\n        raise ValueError(\"n must be >= 0\")\n    if n == 0:\n",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import List, Tuple\n\ndef push(self, item):\n    \"\"\"Insert a single item into a list.\n\n    Args:\n        item: The item to insert.\n\n    Returns:\n        A list of items.\n\n    Raises:\n        TypeError: If the item is not a list.\n        ValueError: If the item is not a list.\n\n    Examples:\n        >>> item = [1, 2, 3, 4, 5, 6]\n        >>> push(item)\n        [1, 2, 3, 4, 5, 6]\n    \"\"\"\n    if not isinstance(item, list):\n        raise TypeError(\"item must be a list\")\n    if not isinstance(item, list):\n        raise TypeError(\"item must be a list\")\n    return [item]"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.84,
+    "sampled_ast_pass_rate": 0.68,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "from typing import Iterable\n\ndef is_iterable(a: Iterable[int]) -> bool:\n    \"\"\"Return True if the iterable is a pair of integers.\n\n    Args:\n        a: First integer.\n\n    Returns:\n        True if the iterable is a pair of integers.\n\n    Examples:\n        >>> is_iterable([1, 2, 3])\n        True\n        >>> is_iterable([1, 2, 3])\n        False\n        >>> is_iterable([1, 2, 3])\n        True\n        >>> is_iterable([1, 2, 3])\n        False\n        >>> is_iterable([1, 2, 3])\n        True\n        >>> is_iterable([1, 2, 3])\n        False\n        >>> is_iterable([1, 2, 3])\n        True\n    \"\"\"\n    if not isinstance(a, Iterable):\n        raise TypeError(\"a must be iterable\")\n    if not isinstance(b, Iterable):\n        raise TypeError(\"b must be iterable",
+        "sampled": "The algorithm uses a generator as a single iteration; the top-left corner of each set is to be the right.\n\n```python\ndef compare_ranges(ranges, ranges):\n    \"\"\"Return the pairwise lists of integers.\n\n    Args:\n        ranges: The list of integers in the order that you want to compare.\n        ranges: The iterable of integers in the order that you want to compare.\n\n    Returns:\n        A generator over all integers that satisfy the given set.\n\n    Examples:\n        >>> compare_ranges([1, 2, 3], 2)\n        [1, 2, 3, 4, 5, 6, 7, 8, 9]\n        >>> compare_ranges([], 2)\n        [1, 2, 3]\n    \"\"\"\n    for i, r in enumerate(ranges):\n        yield r[0]"
+      },
+      {
+        "instruction": "Write a function `date_format2(d)` that returns the ISO 8601 string for a `date`. Example: `date_format2(date(2000, 12, 31))`.",
+        "greedy": "def date_format2(d):\n    return d.isoformat()",
+        "sampled": "def date_format2(d):\n    return d.strftime('%Y%m%d')\n\n# Bug: Date format for a `date()` in Py3.0.0.\n\n# values:\nfrom datetime import datetime\n\n# is there a human-readable date format\n    try:\n        return datetime.strptime(d, '%Y%m%d')\n    except (ValueError, TypeError):\n        return None"
+      },
+      {
+        "instruction": "Write a function `hinge2(x)` returning max(0, x) (ReLU). Example: `hinge2(0)`.",
+        "greedy": "def lere2(x):\n    return max(0, x)\n\n# Bug was: `lere2` returns max(0, x) if `x` is a valid value.\n\n# pair: lere2\ndef lere2(x):\n    return max(0, x)\n\n# pair: lere2\ndef lere2(x):\n    return max(0, x)\n\n# pair: lere2\ndef lere2(x):\n    return max(0, x)\n\n# pair: lere2\ndef lere2(x):\n    return max(0, x)\n\n# pair: lere2\ndef lere2(x):\n    return max(0, x)\n\n# pair: lere2\ndef lere2(x):\n    return max(0, x)\n\n# pair: lere2\ndef lere2(x):\n    return max(0, x)\n\n# pair: lere2\ndef lere2(x):\n    return max",
+        "sampled": "def lerce(x):\n    return max(0, x)\n    ###\n\n    >>> from math import lerce\n    >>> lerce(10)\n    5\n    >>> lerce(10)\n    >>> lerce(10)\n    Traceback (most recent call last):\n        ...\n    TypeError: max(10) argument must be a number, not %\n    %\n    >>> lerce(10)\n    Traceback (most recent call last):\n        ...\n    ValueError: max(10) is not of size 10:00:00.\n\n    This function works on an arbitrary number:\n    >>> lerce(10)\n    Traceback (most recent call last):\n        ...\n    ValueError: max(10) is not of size 10:00:00.\n\n    This function works on a float:\n    >>> max(10)\n    (10)\n    \"\"\"\n    if not isinstance(x, float):\n        raise TypeError(\"max(x) must be a number, not %\n    if isinstance"
+      },
+      {
+        "instruction": "Write a function `min_pos2(xs)` returning the index of the minimum (or -1 if empty). Example: `min_pos2([])`.",
+        "greedy": "def min_pos2(xs):\n    if not xs:\n        return 0\n    return min(xs)",
+        "sampled": "def min_pos2(xs):\n    return -1\n    \"\"\"\n    if xs is None:\n        return 0\n    return min(xs)"
+      },
+      {
+        "instruction": "combination sum no reuse",
+        "greedy": "Blob: sum over all the elements in the current step\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n### This is the sum of the elements in the current step.\n\n###",
+        "sampled": "For each element:\nM':1,2,3\n\nReturn:\n    a,b,c,c,d = 0,1,2,3,4,5,6,4,6\n\n    >>> sorted(d) == sorted(d.values())\n    [('a', 2), ('b', 4), ('c', 4), ('d', 3)]\n    >>> sorted(d[0,1]) == sorted(d[1,2])\n    True\n    >>> sorted(d[0,1]) == sorted(d[1,2])\n    True\n    >>> sorted(d[1,2]) == sorted(d[1,2]):\n    ...    d[0] = 2 == d[1]\n    True\n\n    >>> sorted(d) == sorted(d[1,2]):\n    ...    a,b,c,d\n    ...    b,c,d\n    ...    d\n    >>> sorted(d) == sorted(d[1,2]):\n    ...    d[1] = 2 == d[1]\n    True\n    >>>"
+      }
+    ]
+  }
+}

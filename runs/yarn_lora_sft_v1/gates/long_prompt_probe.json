@@ -1,0 +1,14 @@
+{
+  "ckpt": "runs/yarn_lora_sft_v1/final_a60",
+  "paste_lines": 240,
+  "probes": {
+    "summary": {
+      "prompt_tokens": 3452,
+      "response": "from collections import defaultdict\n\ndef load_config(config: dict) -> dict:\n    for key, value in config.items():\n        if key not in config:\n            raise ValueError(\"config key %s not in %s\" % (key, config[key]))\n        config[key] = value\n\n    return config"
+    },
+    "needle": {
+      "prompt_tokens": 3473,
+      "response": "from collections import deque\n\nfrom collections import deque\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+    }
+  }
+}

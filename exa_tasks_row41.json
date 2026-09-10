@@ -1,0 +1,37 @@
+[
+  {
+    "kind": "search",
+    "slug": "r41a_lora_forgets_less",
+    "query": "LoRA learns less and forgets less than full fine-tuning catastrophic forgetting code math Biderman 2024",
+    "num": 8
+  },
+  {
+    "kind": "search",
+    "slug": "r41b_lora_small_model_hyperparams",
+    "query": "LoRA hyperparameters small language model rank alpha learning rate all linear layers best practices underfitting",
+    "num": 8
+  },
+  {
+    "kind": "search",
+    "slug": "r41c_replay_mixing_sft_forgetting",
+    "query": "mixing pretraining data into supervised fine-tuning prevents catastrophic forgetting replay ratio LLM",
+    "num": 8
+  },
+  {
+    "kind": "search",
+    "slug": "r41d_wise_ft_model_soup",
+    "query": "wiSE-FT model soup weight interpolation fine-tuned pretrained robustness forgetting LLM",
+    "num": 8
+  },
+  {
+    "kind": "search",
+    "slug": "r41e_longctx_alignment_order",
+    "query": "LongAlign long context instruction tuning recipe context extension before or after SFT alignment",
+    "num": 8
+  },
+  {
+    "kind": "answer",
+    "slug": "r41f_strategy_advice",
+    "query": "A 226M-parameter from-scratch code LLM got a YaRN context-extension continued pretrain (1000 steps, val loss -8% at 4096 ctx vs 1024, forgetting guard +1.15%). Next we must re-apply instruction SFT (1 epoch, ~19k short instruction/code pairs, lr 3e-5) on top WITHOUT losing the base LM surface: our guard tolerance is +10-15% on the pretraining val loss; a previous full SFT drifted +9.8%, while an in-house LoRA-SFT drifted only +0.13% (at a lower instruction pass-rate 0.90 vs 0.98). Compare strategies: (a) LoRA-SFT with merge afterwards, (b) full SFT mixed with 20-30% pretraining replay tokens, (c) post-hoc weight averaging (model soup / wiSE-FT interpolation) between the fine-tuned model and its own base. Which minimizes forgetting at roughly equal instruction gains, and what ranks, alphas, learning rates and replay ratios does the literature recommend for very small (~0.2B) models?"
+  }
+]

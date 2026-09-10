@@ -1,0 +1,19 @@
+{
+  "ckpt": "runs\\soup_p0\\alpha050",
+  "val_loss": 1.7534736888678004,
+  "perplexity": 5.774627134493806,
+  "samples": {},
+  "probe": {
+    "label": "soup_p0_a50_c4096",
+    "ctx": 4096,
+    "trained_ctx": 1024,
+    "rope_scaling": null,
+    "rope_factor": 1.0,
+    "stream_window": null,
+    "sink_tokens": 4,
+    "stream_positions": null,
+    "batch": 2,
+    "quick_batches": null,
+    "val_tokens": 978944
+  }
+}

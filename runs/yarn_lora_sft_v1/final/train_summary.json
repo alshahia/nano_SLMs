@@ -1,0 +1,17 @@
+{
+  "phase": "yarn_lora_sft_v1",
+  "base_model": "runs/yarn_4096/final",
+  "pilot": false,
+  "pairs": 18752,
+  "params_m": 236.23,
+  "best_eval_loss": 0.3844742476940155,
+  "best_checkpoint": "E:\\python projects\\nano_SLMs\\runs\\yarn_lora_sft_v1\\checkpoint-1172",
+  "final_eval": {
+    "eval_loss": 0.38446930050849915,
+    "eval_runtime": 5.4453,
+    "eval_samples_per_second": 91.823,
+    "eval_steps_per_second": 22.956,
+    "epoch": 1.0
+  },
+  "resumed_from": null
+}

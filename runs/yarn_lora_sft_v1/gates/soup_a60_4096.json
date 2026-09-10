@@ -1,0 +1,19 @@
+{
+  "ckpt": "runs\\soup_repair_41\\a60",
+  "val_loss": 1.725539355098453,
+  "perplexity": 5.615548988024675,
+  "samples": {},
+  "probe": {
+    "label": "repair41_a60_c4096",
+    "ctx": 4096,
+    "trained_ctx": 1024,
+    "rope_scaling": null,
+    "rope_factor": 1.0,
+    "stream_window": null,
+    "sink_tokens": 4,
+    "stream_positions": null,
+    "batch": 2,
+    "quick_batches": null,
+    "val_tokens": 978944
+  }
+}
