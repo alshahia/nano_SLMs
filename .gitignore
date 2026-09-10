@@ -90,3 +90,11 @@ webui/job_state.json
 # Track H agent-memory store (regenerable experiment state; the eval report
 # and transcripts under runs/agent_memory_h/ stay tracked)
 data/agent_memory/
+
+# Track B YaRN ctx-4096 fine-tune (TASKS row 30): weights stay local (same
+# LFS decision as target/sft_v2 - 906 MB fp32). Checkpoints + run logs stay
+# local; final-dir metrics, gates/*.json probe reports and tfevents tracked.
+runs/yarn_4096/checkpoint-*/
+runs/yarn_4096/final/model.safetensors
+runs/yarn_4096/*.log
+runs/yarn_4096_train_*.log

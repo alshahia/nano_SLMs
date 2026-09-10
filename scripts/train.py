@@ -88,7 +88,8 @@ def main() -> None:
                               default_data_collator)
 
     from src.data import PackedDataset
-    from src.model import build_model, maybe_wrap_peft, save_final
+    from src.model import (build_model, load_finetune_init, maybe_wrap_peft,
+                           save_final)
 
     cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
     tcfg, d, t = cfg["tokenizer"], cfg["data"], cfg["train"]
@@ -102,6 +103,14 @@ def main() -> None:
 
     vocab = max(int(tcfg["vocab_size"]), len(tok))
     model = build_model(cfg, vocab_size=vocab)
+    # Track B (row 30): config-gated fine-tune init (defaults off). The base
+    # apex is loaded into the NEW run's model; the base dir itself is never
+    # touched in place (adoption_plan B base discipline).
+    init_from = t.get("init_from")
+    if init_from:
+        diag = load_finetune_init(model, ROOT / init_from)
+        print(f"[init] fine-tune init from {init_from}: "
+              f"{diag['tensors']} tensors loaded", flush=True)
     model = maybe_wrap_peft(model, cfg)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"[train] params={n_params / 1e6:.1f}M vocab={vocab} fp16={t['fp16']} "

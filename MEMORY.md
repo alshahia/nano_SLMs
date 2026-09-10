@@ -35,6 +35,7 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 | 2026-09-07 | User GO: "create milestones ... then proceed" — Milestone B GPU arms + row 10 LoRA hook + vram_probe, Tier 3 KD BEFORE Tier 2, SFT v2 on the minimax3 corpus from runs/target/final | GPU window open post-M3/Tier-1; sequential never-co-run discipline | TASKS rows 18-20; configs/pilot_b8*.yaml, sft_v2.yaml, kd_s_*.yaml |
 | 2026-09-07 | Milestone B DECISION (gates measured): **adamw_bnb_8bit + batch 1/accum 32 = default for the NEXT pretrain** — loss parity (2.5603 vs fp32 2.5644), pace 1.02x, VRAM −563 MiB (1.36 vs 1.91 GB probe peak), kill/resume drill PASS; batch 2/accum 16 REJECTED (0.60x pace, no loss gain on the 6 GB card — activations/grad-ckpt dominate, batching gains nothing); LoRA hook GPU peak 0.72 GB @ 2.61M trainable | any future full retrain should set optim adamw_bnb_8bit; fp32 AdamW stays the fallback if bnb misbehaves | research/milestone_b_8bit_ab.md; TASKS rows 11/18 |
 | 2026-09-09 | Rows 2/13/16 executed beside a CONCURRENT Track A session: USER-APPROVED deletion of checkpoint-sft_v2_e1-final.zip (868 MB, CRC-verified redundant vs disk + pack); Milestone D wired+measured+sized — token-proportional smol-capped mix 10000/37500/59000/16900 (~133.65M kept tokens, max_steps 4100) derived from MEASURED tok/row after the proposal's row targets proved 3.75x over budget; RUN stays user-gated until the next pretrain window; Milestone G1 implemented + CPU-validated (G1.a staged on a GPU window) | shared working tree with Track A -> targeted re-read edits only for shared files; GPU is global (total nvidia-smi memory.used = busy signal); nothing deleted/pushed without approval | research/milestone_d_actual.json; research/milestone_d_measurement.md; research/gdn_sandbox_design.md; TASKS rows 2/13/16 |
+| 2026-09-10 | Track B EXECUTED (user go): YaRN ctx-4096 fine-tune of runs/target/final -> runs/yarn_4096 via config-gated train.init_from (base untouched); 4096 CONFIRMED by the mandatory 8-bit-Adam probe (peak 4.24 GiB alloc); val @4096 1.7035 = -8.0% vs the 1024 baseline (-9.6% vs eval-only NTK@4096), forgetting guard @1024 +1.15% PASS, extrapolation @8192 2.1240 (better than eval-only NTK@8192); instruct re-SFT = row 41 (user-gated) | plan §B gate fired at row 29 (NTK@2048 -4.17%); artifact = context-extended BASE | TASKS row 30; runs/yarn_4096/final/train_summary.json |
 
 ## Lessons (seeded from HANDOFF §5)
 
@@ -294,6 +295,22 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
       fresh (reboot if 153 repeats). Persist per-point results as they
       finish - the ctx_probe driver now flushes every point to disk
       immediately, so crashes are lossless.
+
+ 34. **transformers 5.16 LlamaConfig keeps rope theta INSIDE rope_parameters**
+     (2026-09-10, Track B): there is NO config.rope_theta attribute
+     (AttributeError) - build_config passes rope_theta=10000.0 to the
+     constructor but the value lives in the rope_parameters dict. A
+     config-gated yarn must set the FULL dict explicitly ("rope_type",
+     "rope_theta", "factor", "original_max_position_embeddings" - the
+     apply_rope_scaling pattern). HF-native yarn is COMPLETE (per-band
+     ramp beta 32/1 + mscale attention temperature 0.1*ln(factor)+1;
+     verified live: 26/32 dims changed, temp 1.1386 @ factor 4) - never
+     reimplement YaRN math. Same-day ctx-extension facts: PackedDataset
+     slices fixed-length windows from flat shards at ANY seq_len, so a
+     ctx extension needs NO token re-pack; and eval.py materializes full
+     logits (batch 8 @4096 = ~4.3 GB of logits alone) - always pass
+     --batch explicitly on long-ctx evals (the trainer's loss-only eval
+     path does not need this; batch 2 @4096 fine).
 
 ## Data-source knowledge (seeded from HANDOFF §6)
 

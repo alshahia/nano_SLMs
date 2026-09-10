@@ -981,6 +981,59 @@ disk (this also resolves the pending kd-t2p-residue cleanup question —
 the weights are back; disk now ~27.9 GB free). The 09-09 pack is
 redundant with this one — keep/delete per user decision.
 
+### 2026-09-10 morning - Track B DONE (row 30): YaRN ctx-4096 fine-tune of the target apex
+
+User go ("go to Track B"). Target ctx 4096 / YaRN factor 4 per the row-29
+decision; the 2048/factor-2 fallback was NOT needed.
+
+- Implementation (config-gated, defaults OFF; smoke sanity 4/4 =
+  byte-compat proof): src/model.py build_config honors a rope.yarn
+  {factor, original_max} block -> HF-native yarn (verified live: 26/32
+  rotary dims re-parametrized per the beta 32/1 band ramp; attention
+  temperature 0.1*ln(4)+1 = 1.1386 active). New load_finetune_init() +
+  config-gated train.init_from in train.py: the base apex's weights load
+  into the NEW run's model (base dir never touched; unit check 146
+  tensors, tied lm_head intact). Transformers 5.16 gotcha -> MEMORY 34:
+  LlamaConfig has NO rope_theta attribute (theta lives INSIDE
+  rope_parameters).
+- Mandatory probe FIRST (row 30): vram_probe BOTH ctx with 8-bit Adam -
+  @4096 peak 4.24 GiB alloc / 5.02 reserved (6,599 tok/s); @2048
+  3.34 / 3.60. No OOM -> 4096 CONFIRMED; 8-bit Adam made the 4x jump
+  ~free (same peak as the old seq-1024 fp32-AdamW run).
+- Data: NO re-pack needed - PackedDataset re-slices the existing
+  data/target/tokens stream at ctx 4096 (11,702 train / 239 val blocks).
+- Train (configs/yarn_4096.yaml): 1000 steps, batch 1 x accum 8 (32k
+  tok/step), lr 3e-5 cosine (repo fine-tune precedent, ~1/13 of the 4e-4
+  pretrain LR), adamw_bnb_8bit, seed 42, warmup 50, eval+save 100.
+  Eval curve 1.713 -> 1.7035 (best = ckpt-1000 = final). Wall ~1h50m;
+  pace 5.3-15.4 s/it across thermal throttle phases (never killed);
+  zero OOM, zero interruptions; git at train time 412616f.
+- GATES (eval.py, the same instrument as Track A):
+  - val @4096 native: 1.7035 = -8.0% vs the 1024 baseline (1.8512) and
+    -9.6% vs eval-only NTK@4096 (1.8836) - plan §B gate (<= +2%) PASS
+    with ~10 pts of margin.
+  - Forgetting guard @1024 (trained yarn rope): 1.8724 = +1.15% PASS
+    (tolerance +10-15%). Default-rope @1024 diagnostic: 1.9277 = +4.13%
+    (weights adapted to the yarn rotary - expected; the deployed model
+    at 1024 uses its own yarn rope).
+  - Honest extrapolation @8192 (2x beyond the trained ctx): 2.1240 =
+    +14.8% vs the 1024 baseline, but BETTER than eval-only NTK@8192
+    (2.1616, -1.7%) and far better than noop_8192 (3.9409) - the 2x
+    extrapolation stays coherent (YaRN's own extrapolation claim).
+  - Instruct surface: NOT directly liftable by B (e1 untouched by
+    design; the artifact is a context-extended BASE). Follow-up row 41
+    (user-gated): re-apply the e1/SFT recipe on runs/yarn_4096/final;
+    the number to beat is e1 NTK@4096 +3.9%.
+- Evidence: runs/yarn_4096/final/{train_summary.json, eval_report.json,
+  config.json, generation_config.json, tokenizer*}; gates
+  runs/yarn_4096/gates/{eval_1024_yarn,eval_1024_default,eval_8192_native}.json;
+  raw stdout runs/yarn_4096_train_20260910.log + gates_gate*.log
+  (untracked). TASKS row 30 -> done; row 41 created (pending).
+- NEXT ACTIONS: (1) user go for row 41 (instruct re-SFT on the YaRN base)
+  if the 4096 instruct model is wanted; (2) push decision for the local
+  commits (412616f + this one); (3) powercfg standby restore still
+  pending user call (standby-timeout-ac currently 0).
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).

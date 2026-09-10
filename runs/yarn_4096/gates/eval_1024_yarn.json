@@ -1,0 +1,19 @@
+{
+  "ckpt": "E:\\python projects\\nano_SLMs\\runs\\yarn_4096\\final",
+  "val_loss": 1.8724276879841313,
+  "perplexity": 6.5040670939100576,
+  "samples": {},
+  "probe": {
+    "label": "guard_1024_trained",
+    "ctx": 1024,
+    "trained_ctx": 4096,
+    "rope_scaling": null,
+    "rope_factor": 1.0,
+    "stream_window": null,
+    "sink_tokens": 4,
+    "stream_positions": null,
+    "batch": 8,
+    "quick_batches": null,
+    "val_tokens": 978944
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "phase": "yarn_4096",
+  "params_m": 226.53,
+  "best_eval_loss": 1.7035168409347534,
+  "best_checkpoint": "E:\\python projects\\nano_SLMs\\runs\\yarn_4096\\checkpoint-1000",
+  "final_eval": {
+    "eval_loss": 1.7035168409347534,
+    "eval_runtime": 40.7987,
+    "eval_samples_per_second": 5.858,
+    "eval_steps_per_second": 2.941,
+    "epoch": 0.6836438215689625
+  },
+  "resumed_from": null,
+  "env": {
+    "timestamp_utc": "2026-09-10T07:47:49+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "412616f",
+    "gpu": "Quadro RTX 4000, 8192 MiB",
+    "resolved_config": {
+      "name": "yarn_4096",
+      "tokenizer": {
+        "name": "codellama/CodeLlama-7b-hf",
+        "vocab_size": 32768
+      },
+      "rope": {
+        "yarn": {
+          "factor": 4,
+          "original_max": 1024
+        }
+      },
+      "model": {
+        "layers": 16,
+        "hidden": 1024,
+        "heads": 16,
+        "kv_heads": 4,
+        "ffn": 3072,
+        "ctx": 4096,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "tokens_dir": "data/target/tokens"
+      },
+      "train": {
+        "output_dir": "runs/yarn_4096",
+        "final_dir": "runs/yarn_4096/final",
+        "init_from": "runs/target/final",
+        "max_steps": 1000,
+        "batch": 1,
+        "eval_batch": 2,
+        "accum": 8,
+        "lr": 3e-05,
+        "scheduler": "cosine",
+        "warmup_steps": 50,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 25,
+        "eval_steps": 100,
+        "save_steps": 100,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": true,
+        "optim": "adamw_bnb_8bit",
+        "dataloader_num_workers": 0,
+        "seed": 42
+      },
+      "eval": {
+        "max_new_tokens": 64,
+        "prompts": [
+          "def fibonacci(n):",
+          "import numpy as np\ndef mean_absolute_error(y_true, y_pred):",
+          "class Stack:"
+        ]
+      }
+    }
+  }
+}

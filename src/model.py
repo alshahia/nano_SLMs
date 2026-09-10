@@ -8,6 +8,8 @@ Ampere+), and plugs into HF Trainer's checkpoint/resume machinery unchanged.
 """
 from __future__ import annotations
 
+from pathlib import Path
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -38,7 +40,7 @@ from src.gdn import (
 
 def build_config(cfg: dict, vocab_size: int | None = None) -> LlamaConfig:
     m = cfg["model"]
-    return LlamaConfig(
+    config = LlamaConfig(
         vocab_size=int(vocab_size or cfg["tokenizer"]["vocab_size"]),
         hidden_size=int(m["hidden"]),
         intermediate_size=int(m["ffn"]),
@@ -52,6 +54,23 @@ def build_config(cfg: dict, vocab_size: int | None = None) -> LlamaConfig:
         attention_dropout=float(m.get("dropout", 0.0)),
         use_cache=False,  # disabled while training; eval.py re-enables for generation
     )
+    # Track B (TASKS row 30): config-gated YaRN re-param, defaults OFF (no
+    # rope.yarn block -> every existing config stays byte-identical).
+    # Delegates to HF's native yarn (5.16.1 _compute_yarn_parameters):
+    # per-frequency-band interpolation ramp (beta_fast 32 / beta_slow 1) +
+    # the YaRN attention temperature (mscale-derived attention_factor).
+    # Zero extra VRAM — a re-parametrization of the existing rotary (note 04 §1).
+    yarn = cfg.get("rope", {}).get("yarn")
+    if yarn:
+        config.rope_parameters = {
+            "rope_type": "yarn",
+            # LlamaConfig (5.16) keeps theta inside rope_parameters — there is
+            # no rope_theta attribute; 10000.0 matches the constructor constant.
+            "rope_theta": 10000.0,
+            "factor": float(yarn["factor"]),
+            "original_max_position_embeddings": int(yarn["original_max"]),
+        }
+    return config
 
 
 def build_model(cfg: dict, vocab_size: int | None = None):
@@ -174,6 +193,36 @@ def maybe_wrap_peft(model, cfg: dict):
     model.enable_input_require_grads()
     model.print_trainable_parameters()
     return model
+
+
+def load_finetune_init(model, init_dir) -> dict:
+    """Track B (row 30): seed a freshly built model with a saved apex's weights.
+
+    Used to fine-tune an existing checkpoint (e.g. runs/target/final) under a
+    NEW config (YaRN rope @ longer ctx) without touching the base in place
+    (adoption_plan B base discipline). The architecture must match; only
+    config-level fields may differ. Tied-head note: safetensors saved from a
+    tied model omit lm_head.weight (same storage as embed_tokens.weight), so
+    loading embed_tokens updates the head through the existing tie.
+    """
+    from safetensors.torch import load_file
+
+    init_dir = Path(init_dir)
+    shards = sorted(init_dir.glob("*.safetensors"))
+    if not shards:
+        raise FileNotFoundError(f"no .safetensors under {init_dir}")
+    sd = {}
+    for f in shards:
+        sd.update(load_file(str(f)))
+    missing, unexpected = model.load_state_dict(sd, strict=False)
+    allowed_missing = {"lm_head.weight"}  # tied to embed_tokens (same storage)
+    bad_missing = [k for k in missing if k not in allowed_missing]
+    if bad_missing or unexpected:
+        raise RuntimeError(
+            f"finetune init mismatch from {init_dir}: "
+            f"missing={bad_missing} unexpected={sorted(unexpected)}")
+    return {"tensors": len(sd), "missing": sorted(missing),
+            "shards": [f.name for f in shards]}
 
 
 def save_final(trainer, final_dir) -> None:

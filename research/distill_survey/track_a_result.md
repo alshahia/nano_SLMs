@@ -92,6 +92,16 @@ and @4096 eval-only is +1.75% (base) / +3.9% (e1). Therefore:
   window+sink masks with absolute positions remain an inference-time
   option only.
 
+RESULT (2026-09-10, Track B executed - TASKS row 30): 4096 CONFIRMED by
+the mandatory 8-bit-Adam vram_probe (@4096 peak 4.24 GiB alloc / 5.02
+reserved, 6.6k tok/s; @2048 3.34/3.60 - fallback not needed). Fine-tune
+1000 steps @4096 from runs/target/final (config-gated train.init_from;
+HF-native yarn factor 4, attention temp 1.1386): **val @4096 1.7035 =
+-8.0% vs the 1024 baseline (-9.6% vs the eval-only NTK@4096 1.8836)**,
+forgetting guard @1024 +1.15% (1.8724), honest extrapolation @8192
+2.1240 (+14.8% vs baseline but -1.7% vs eval-only NTK@8192 - coherent
+2x). Instruct re-SFT on the extended base = row 41 (user-gated).
+
 ## 8k-16k extension (2026-09-09/10, row 29 follow-up)
 
 Presets long/extreme added to scripts/ctx_probe.py. Same protocol (full

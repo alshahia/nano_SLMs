@@ -1,0 +1,10 @@
+{
+  "ckpt": "E:\\python projects\\nano_SLMs\\runs\\yarn_4096\\final",
+  "val_loss": 1.7035147555203618,
+  "perplexity": 5.493220829409982,
+  "samples": {
+    "def fibonacci(n):": "def fibonacci(n):\n    \"\"\"\n    Returns the number of bytes in the given n.\n\n    :param n: the number of bytes to generate\n    :return: the number of bytes in the given n\n    \"\"\"\n    if n > 10000000000000",
+    "import numpy as np\ndef mean_absolute_error(y_true, y_pred):": "import numpy as np\ndef mean_absolute_error(y_true, y_pred):\n    \"\"\"\n    Compute the absolute error of the y_true and y_pred\n    \"\"\"\n    y_true = np.array(y_true, copy=False)\n    y_pred = np.array(y_pred, copy=False)\n    return np.mean",
+    "class Stack:": "class Stack:\n        \"\"\"\n        Return a list of all available classes.\n\n        :param str|unicode|list[str|unicode]|list[str|unicode]|list[str|unicode]|list[str|unicode]|list[str|unicode]|list"
+  }
+}
