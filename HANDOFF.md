@@ -955,6 +955,23 @@ resume point.**
       later (it is the only working long-context inference lever; NOT
       part of row 40).
 
+#### Resume pack rebuilt (2026-09-10, user request)
+
+`checkpoint_backup/resume_pack_2026-09-10.zip` — fresh clone + THIS zip =
+fully working setup. 6,229,439,224 B (5.8 GiB), 79 weight/config entries +
+RESUME.md + BUNDLE_MANIFEST.json, verify OK (all CRC pass).
+sha256 `e18f05de9d93ea944382b8e300d721c5fc002453e68be97767f35679fd259e45`.
+git_commit c17dd28; REMOTE REQUIREMENT: the clone must include c17dd28
+(it was the ONLY unpushed commit at build time — push it before relying
+on remote+zip). Contents = the same 10 weights-bearing finals as the
+2026-09-09 pack. To rebuild it, 6 finals whose weights had been removed
+from disk were RESTORED bit-exact from the 09-09 pack (sha256-verified
+source): sft_t1, h2_copy_lora, h2p2_mixed_lora (906,121,272 B each) +
+kd-t2p-{kd,baseline,kd-skew} (402,742,216 B each) = +3.93 GB back on
+disk (this also resolves the pending kd-t2p-residue cleanup question —
+the weights are back; disk now ~27.9 GB free). The 09-09 pack is
+redundant with this one — keep/delete per user decision.
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).
