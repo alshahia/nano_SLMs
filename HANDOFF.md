@@ -894,7 +894,8 @@ E: ~36.35 GB free at session start).
 User asked to extend row 29 to 8192/12288/16384. Target surface is
 COMPLETE and analyzed; the e1 (instruct) surface is missing exactly 2
 points because the machine slept twice mid-run. **This section is the
-resume point.**
+resume point. RESOLVED 2026-09-10: the e1 rescue ran clean (checklist
+below); TASKS row 40 is DONE.**
 
 #### What already happened (evidence committed)
 
@@ -946,11 +947,19 @@ resume point.**
 
 #### Not yet done (resume checklist)
 
-- [ ] e1 rescue run (2 points above).
-- [ ] Commit of the extension (driver presets + long/extreme/rescue
-      evidence + docs) - see WIP commit 2026-09-10; the extension was
-      committed as WORK-IN-PROGRESS deliberately (concurrent session,
-      crash protection).
+- [x] e1 rescue run — DONE 2026-09-10 05:29-05:45 UTC on MUO4QK5 under
+      the awake guard (powercfg /change standby-timeout-ac 0 applied;
+      original AC value was 0x0e10 = 60 min — restore with
+      `powercfg /change standby-timeout-ac 60`): ntk_16384 2.9597
+      (+44.6% vs base 2.0466; slightly above the predicted 2.8-2.9 band,
+      honest note) + w1024s4abs_8192 2.0444 (-0.11%, flat); wall
+      270+296 s, peak VRAM 7.92/4.45 GiB (fits the 8 GB card, no spill),
+      zero interruptions, no nvlddmkm recurrence. Evidence:
+      runs/ctx_probes/20260909T214837Z_e1_rescue; folded into
+      track_a_result.md (8k-16k table complete); TASKS row 40 -> done.
+- [x] Commit of the extension + rescue evidence + docs (this commit;
+      the extension itself was committed as WORK-IN-PROGRESS
+      deliberately, concurrent session, crash protection).
 - [ ] Optional: fold the window+absolute mask into the webui chat path
       later (it is the only working long-context inference lever; NOT
       part of row 40).

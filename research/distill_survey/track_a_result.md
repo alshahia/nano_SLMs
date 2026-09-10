@@ -107,29 +107,35 @@ for one point).
 | noop_8192 | 3.9409 | +112.9% | 4.3577 | +112.9% |
 | ntk_8192 | 2.1616 | +16.8% | 2.4586 | +20.2% |
 | ntk_12288 | 2.4096 | +30.2% | 2.7336 | +33.6% |
-| ntk_16384 | 2.6159 | +41.3% | MISSING (rescue) | - |
-| w1024s4abs_8192 | 1.8236 | **-1.50%** | MISSING (rescue) | - |
+| ntk_16384 | 2.6159 | +41.3% | 2.9597 | +44.6% |
+| w1024s4abs_8192 | 1.8236 | **-1.50%** | 2.0444 | **-0.11%** |
 | w1024s4abs_16384 | **1.8512** | **+0.00%** | not planned | - |
 
 (e1 ntk_16384 + w1024s4abs_8192 were lost to two machine-sleep incidents;
-rescue preset + command in HANDOFF / TASKS row 39. e1 dirs:
-runs/ctx_probes/20260909T224806Z = partial, recovered from stdout;
-20260909T214837Z_e1_rescue = the crashed rescue attempt, empty.)
+RESCUED 2026-09-10 05:29-05:45 UTC on MUO4QK5 (RTX 4000 8 GB) under the
+standby guard (standby-timeout-ac 0, was 60 min): ntk_16384 2.9597
+(wall 270 s, peak 7.92 GiB - fits the 8 GB card, no spill) and
+w1024s4abs_8192 2.0444 (wall 296 s, peak 4.45 GiB), zero interruptions.
+Evidence: runs/ctx_probes/20260909T214837Z_e1_rescue (completed rescue);
+20260909T224806Z = the earlier partial, recovered from stdout.)
 
 Findings (extends the four above):
 
 5. **Eval-only NTK is NOT free past ~4-6k.** The NTK curve bends up:
    1024 1.8512 -> 2048 1.7740 -> 4096 1.8836 -> 8192 2.1616 (+16.8%) ->
    12288 2.4096 (+30.2%) -> 16384 2.6159 (+41.3%). Raw noop at 8192 is
-   already total collapse (+112.9%). NTK holds the model COHERENT to 16k
-   but nowhere near the gate.
+   already total collapse (+112.9%). The instruct surface bends the same
+   way (e1 @16384 2.9597 = +44.6% vs its 2.0466 baseline; slightly above
+   the +37-42% trend-band prediction - honest note). NTK holds the model
+   COHERENT to 16k but nowhere near the gate.
 6. **The window+sink absolute mask holds the baseline FLAT to 16k**:
    @8192 -1.5%, @16384 1.851194 vs baseline 1.851243 = +0.00%. This
    from-scratch model's CSN predictions are effectively LOCAL: capping
    each query to 4 sinks + the last 1024 tokens costs nothing measurable
    at 16x the trained context - but recall of anything older than the
    window is gone by construction (the flat loss measures the local
-   surface, not long-range recall).
+   surface, not long-range recall). e1 confirms it: w1024s4abs_8192
+   2.0444 = -0.11% vs its 2.0466 baseline.
 
 (Track B decision UNCHANGED by the extension: 4096 stays the fine-tune
  target; 8k+ eval-only is +17..+41% and the window mask is inference-only.)

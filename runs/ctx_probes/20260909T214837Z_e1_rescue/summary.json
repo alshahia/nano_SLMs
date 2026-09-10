@@ -1,0 +1,49 @@
+{
+  "started_utc": "20260910T052956Z",
+  "points_preset": "rescue",
+  "quick_batches": null,
+  "ckpt_runs": [
+    {
+      "ckpt": "runs\\sft_v2_e1\\final",
+      "config": "configs/sft_v2_e1.yaml",
+      "points": [
+        {
+          "point": "ntk_16384",
+          "ctx": 16384,
+          "rope": "dynamic-ntk",
+          "factor": 1.0,
+          "window": null,
+          "sink": 4,
+          "positions": null,
+          "batch": 1,
+          "blocks": 59,
+          "batches": 59,
+          "tokens": 966656,
+          "val_loss": 2.959686,
+          "perplexity": 19.2919,
+          "quick": null,
+          "wall_s": 269.8,
+          "peak_vram_gb": 7.915
+        },
+        {
+          "point": "w1024s4abs_8192",
+          "ctx": 8192,
+          "rope": null,
+          "factor": 1.0,
+          "window": 1024,
+          "sink": 4,
+          "positions": "absolute",
+          "batch": 1,
+          "blocks": 119,
+          "batches": 119,
+          "tokens": 974848,
+          "val_loss": 2.044381,
+          "perplexity": 7.7244,
+          "quick": null,
+          "wall_s": 296.4,
+          "peak_vram_gb": 4.446
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "point": "w1024s4abs_8192",
+  "ctx": 8192,
+  "rope": null,
+  "factor": 1.0,
+  "window": 1024,
+  "sink": 4,
+  "positions": "absolute",
+  "batch": 1,
+  "blocks": 119,
+  "batches": 119,
+  "tokens": 974848,
+  "val_loss": 2.044381,
+  "perplexity": 7.7244,
+  "quick": null,
+  "wall_s": 296.4,
+  "peak_vram_gb": 4.446
+}
