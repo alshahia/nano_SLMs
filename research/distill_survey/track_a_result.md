@@ -92,6 +92,48 @@ and @4096 eval-only is +1.75% (base) / +3.9% (e1). Therefore:
   window+sink masks with absolute positions remain an inference-time
   option only.
 
+## 8k-16k extension (2026-09-09/10, row 29 follow-up)
+
+Presets long/extreme added to scripts/ctx_probe.py. Same protocol (full
+val stream per point; tail remainder dropped by packing: 974,848 tokens
+@8192 / 970,752 @12288 / 966,656 @16384 = 99.5-98.7% of val). VRAM NOTE
+(MEMORY 32): 12288/16384 exceed the 6 GiB card and Windows sysmem
+fallback silently spills (peak_allocated 6.15 / 7.9 / 8.17 GiB measured,
+never an OOM); pace collapses accordingly (wabs_16384 23 s/batch, 29 min
+for one point).
+
+| point | target/final | delta | sft_v2_e1/final | delta |
+|---|---|---|---|---|
+| noop_8192 | 3.9409 | +112.9% | 4.3577 | +112.9% |
+| ntk_8192 | 2.1616 | +16.8% | 2.4586 | +20.2% |
+| ntk_12288 | 2.4096 | +30.2% | 2.7336 | +33.6% |
+| ntk_16384 | 2.6159 | +41.3% | MISSING (rescue) | - |
+| w1024s4abs_8192 | 1.8236 | **-1.50%** | MISSING (rescue) | - |
+| w1024s4abs_16384 | **1.8512** | **+0.00%** | not planned | - |
+
+(e1 ntk_16384 + w1024s4abs_8192 were lost to two machine-sleep incidents;
+rescue preset + command in HANDOFF / TASKS row 39. e1 dirs:
+runs/ctx_probes/20260909T224806Z = partial, recovered from stdout;
+20260909T214837Z_e1_rescue = the crashed rescue attempt, empty.)
+
+Findings (extends the four above):
+
+5. **Eval-only NTK is NOT free past ~4-6k.** The NTK curve bends up:
+   1024 1.8512 -> 2048 1.7740 -> 4096 1.8836 -> 8192 2.1616 (+16.8%) ->
+   12288 2.4096 (+30.2%) -> 16384 2.6159 (+41.3%). Raw noop at 8192 is
+   already total collapse (+112.9%). NTK holds the model COHERENT to 16k
+   but nowhere near the gate.
+6. **The window+sink absolute mask holds the baseline FLAT to 16k**:
+   @8192 -1.5%, @16384 1.851194 vs baseline 1.851243 = +0.00%. This
+   from-scratch model's CSN predictions are effectively LOCAL: capping
+   each query to 4 sinks + the last 1024 tokens costs nothing measurable
+   at 16x the trained context - but recall of anything older than the
+   window is gone by construction (the flat loss measures the local
+   surface, not long-range recall).
+
+(Track B decision UNCHANGED by the extension: 4096 stays the fine-tune
+ target; 8k+ eval-only is +17..+41% and the window mask is inference-only.)
+
 ## Reproduce
 
 ```powershell

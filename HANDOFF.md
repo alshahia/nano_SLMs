@@ -889,6 +889,72 @@ E: ~36.35 GB free at session start).
   unused label param in explorer.build_graph; guarded SVG onclick no-op (shim removed);
   _play stride recomputed per frame.
 
+### 2026-09-10 morning — Track A 8k/12k/16k extension: STATE + RESUME (row 40)
+
+User asked to extend row 29 to 8192/12288/16384. Target surface is
+COMPLETE and analyzed; the e1 (instruct) surface is missing exactly 2
+points because the machine slept twice mid-run. **This section is the
+resume point.**
+
+#### What already happened (evidence committed)
+
+- Driver: scripts/ctx_probe.py grew presets `long` (noop_8192, ntk_8192,
+  ntk_12288, ntk_16384, w1024s4abs_8192), `extreme` (w1024s4abs_16384),
+  `rescue` (e1's two missing points); per-point disk flush (crash-safe)
+  and a RuntimeError catch so a CUDA fault no longer kills the matrix.
+- target/final (base_1024 = 1.8512): noop_8192 3.9409 (+112.9%),
+  ntk_8192 2.1616 (+16.8%), ntk_12288 2.4096 (+30.2%), ntk_16384 2.6159
+  (+41.3%), **w1024s4abs_8192 1.8236 (-1.50%)**, **w1024s4abs_16384
+  1.8512 (+0.00% - the window+sink absolute mask holds the 1024
+  baseline FLAT at 16x context)**. Evidence: runs/ctx_probes/
+  20260909T214837Z (long) + 20260909T221824Z (extreme).
+- sft_v2_e1/final (base 2.0466): noop_8192 4.3577, ntk_8192 2.4586
+  (+20.2%), ntk_12288 2.7336 (+33.6%) - evidence RECOVERED FROM STDOUT
+  into runs/ctx_probes/20260909T224806Z (marked as such in its
+  summary.json).
+- Result note: research/distill_survey/track_a_result.md has the full
+  8k-16k section (findings 5-6). Track B decision UNCHANGED: 4096 stays
+  the YaRN target; eval-only NTK is +17..+41% at 8k+; the window+absolute
+  mask is an inference-only lever (recall capped at window+sink).
+
+#### Incidents (why e1 is incomplete) — Event Log verified
+
+1. During the e1 long run the machine SLEPT (Kernel-Power 506/507):
+   e1 ntk_8192 shows wall_s 17995 (~5 h, mostly suspended) but finished;
+   the NEXT point (ntk_16384) died with CUBLAS_STATUS_EXECUTION_FAILED
+   (damaged CUDA context after the wake).
+2. The rescue attempt (presets rescue) was killed at 2026-09-10 07:01-07:09
+   by ANOTHER sleep; nvlddmkm Event 153 (driver reset) at 07:09; process
+   died hard, no traceback; runs/ctx_probes/20260909T214837Z_e1_rescue is
+   empty. GPU reads healthy now (nvidia-smi OK).
+3. VRAM discovery (-> MEMORY 32): at 12288/16384 the fp32 eval exceeds
+   the 6 GiB card and **Windows sysmem fallback silently spills** -
+   torch.cuda.max_memory_allocated measured 6.15 / 7.9 / 8.17 GiB with
+   NO OOM; the tell is pace (23 s/batch at the 16384 mask arm).
+
+#### NEXT ACTIONS (in order)
+
+1. **Keep the machine awake during GPU runs** - user call:
+   `powercfg /change standby-timeout-ac 0` (and lid-close plan), or
+   accept the e1 gap as best-effort (the decision does not hinge on it).
+2. Re-run the rescue (~20 min; fresh process, GPU idle):
+   `& .\.venv\Scripts\python.exe scripts\ctx_probe.py --points rescue --ckpt runs/sft_v2_e1/final --out-dir runs/ctx_probes/20260909T214837Z_e1_rescue`
+   Expected by trend: e1 ntk_16384 ~2.8-2.9 (+37-42%), w1024s4abs_8192
+   ~2.0-2.1 (near baseline). If nvlddmkm 153 fires again - reboot first.
+3. Fold the rescue numbers into track_a_result.md (8k-16k table), then
+   set TASKS row 40 -> done and commit.
+
+#### Not yet done (resume checklist)
+
+- [ ] e1 rescue run (2 points above).
+- [ ] Commit of the extension (driver presets + long/extreme/rescue
+      evidence + docs) - see WIP commit 2026-09-10; the extension was
+      committed as WORK-IN-PROGRESS deliberately (concurrent session,
+      crash protection).
+- [ ] Optional: fold the window+absolute mask into the webui chat path
+      later (it is the only working long-context inference lever; NOT
+      part of row 40).
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).

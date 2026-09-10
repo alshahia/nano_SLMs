@@ -277,6 +277,24 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
      each click); a regex passed from a JS string into pwsh loses its backslashes (arrives as
      [^\"]-style mangled) — use IndexOf string surgery for ref extraction instead.
 
+  33. **Windows sysmem fallback masks VRAM OOM; a suspend kills CUDA
+      contexts** (2026-09-10, Track A 8k-16k): (a) at ctx 12288/16384 the
+      fp32 eval exceeded the 6 GiB card and the driver silently spilled
+      to system RAM - torch.cuda.max_memory_allocated measured 6.15 / 7.9 /
+      8.17 GiB with NO OOM ever raised; the only tell is PACE collapse
+      (23 s/batch vs ~14 expected). When sizing GPU runs, compare
+      max_memory_allocated against nvidia-smi memory.total, not against
+      success/failure. (b) A mid-run suspend (Kernel-Power 506/507) can
+      leave the process alive but the CUDA context damaged: the next big
+      op dies with CUBLAS_STATUS_EXECUTION_FAILED, or the NEXT process
+      launch dies hard at the first forward with nvlddmkm Event 153
+      (driver reset) in the Event Log and no Python traceback.
+      nvidia-smi answering != a healthy context. After ANY suspend during
+      a GPU run: expect the run to fail, check the Event Log, relaunch
+      fresh (reboot if 153 repeats). Persist per-point results as they
+      finish - the ctx_probe driver now flushes every point to disk
+      immediately, so crashes are lossless.
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF

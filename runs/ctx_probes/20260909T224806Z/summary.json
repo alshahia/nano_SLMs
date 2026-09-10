@@ -1,0 +1,71 @@
+{
+  "points_preset": "long",
+  "ckpt_runs": [
+    {
+      "ckpt": "runs/sft_v2_e1/final",
+      "config": "configs/sft_v2_e1.yaml",
+      "points": [
+        {
+          "point": "noop_8192",
+          "ctx": 8192,
+          "rope": null,
+          "factor": 1.0,
+          "window": null,
+          "sink": 4,
+          "positions": null,
+          "batch": 1,
+          "blocks": 119,
+          "batches": 119,
+          "tokens": 974848,
+          "val_loss": 4.357685,
+          "perplexity": 78.0762,
+          "quick": null,
+          "wall_s": 271.4,
+          "peak_vram_gb": 4.383
+        },
+        {
+          "point": "ntk_8192",
+          "ctx": 8192,
+          "rope": "dynamic-ntk",
+          "factor": 1.0,
+          "window": null,
+          "sink": 4,
+          "positions": null,
+          "batch": 1,
+          "blocks": 119,
+          "batches": 119,
+          "tokens": 974848,
+          "val_loss": 2.458617,
+          "perplexity": 11.6886,
+          "quick": null,
+          "wall_s": 17995.5,
+          "peak_vram_gb": 4.383,
+          "note": "wall_s inflated ~5 h: machine suspended mid-point"
+        },
+        {
+          "point": "ntk_12288",
+          "ctx": 12288,
+          "rope": "dynamic-ntk",
+          "factor": 1.0,
+          "window": null,
+          "sink": 4,
+          "positions": null,
+          "batch": 1,
+          "blocks": 79,
+          "batches": 79,
+          "tokens": 970752,
+          "val_loss": 2.733621,
+          "perplexity": 15.3885,
+          "quick": null,
+          "wall_s": 411.5,
+          "peak_vram_gb": 6.15
+        }
+      ]
+    }
+  ],
+  "note": "partial run - died after ntk_12288 on ntk_16384 with CUBLAS_STATUS_EXECUTION_FAILED after a machine sleep (nvlddmkm 153, 2026-09-10 07:09); files recovered verbatim from job stdout",
+  "missing_points": [
+    "ntk_16384",
+    "w1024s4abs_8192"
+  ]
+}

@@ -192,6 +192,38 @@ def quick_points() -> list[dict]:
     ]
 
 
+def long_points() -> list[dict]:
+    """8k-16k extension (row 29 follow-up, 2026-09-09): NTK arms + noop
+    reference @8192 + the only working window variant (mask + absolute
+    positions). No pos_shift remap arms: proven broken at 2048/4096. No
+    noop @12k/16k: the collapse pattern is established; NTK is the question."""
+    return [
+        {"name": "noop_8192", "ctx": 8192},
+        {"name": "ntk_8192", "ctx": 8192, "rope": "dynamic-ntk"},
+        {"name": "ntk_12288", "ctx": 12288, "rope": "dynamic-ntk"},
+        {"name": "ntk_16384", "ctx": 16384, "rope": "dynamic-ntk"},
+        {"name": "w1024s4abs_8192", "ctx": 8192, "window": 1024, "sink": 4,
+         "positions": "absolute"},
+    ]
+
+
+def rescue_points() -> list[dict]:
+    """e1 rescue set after the 2026-09-09 suspend/CUBLAS crash in the long run."""
+    return [
+        {"name": "ntk_16384", "ctx": 16384, "rope": "dynamic-ntk"},
+        {"name": "w1024s4abs_8192", "ctx": 8192, "window": 1024, "sink": 4,
+         "positions": "absolute"},
+    ]
+
+
+def extreme_points() -> list[dict]:
+    """Best-effort window+absolute arm at 16384 (mask 16384^2; OOM-skipped)."""
+    return [
+        {"name": "w1024s4abs_16384", "ctx": 16384, "window": 1024, "sink": 4,
+         "positions": "absolute"},
+    ]
+
+
 def load_model(ckpt: Path):
     import torch
     from transformers import AutoModelForCausalLM
@@ -276,7 +308,8 @@ def main() -> None:
                     help="model dir (repeatable); default target/final + sft_v2_e1/final")
     ap.add_argument("--config", action="append", default=None,
                     help="eval config per ckpt, same order (default auto-detect)")
-    ap.add_argument("--points", default="full", choices=["full", "quick"])
+    ap.add_argument("--points", default="full",
+                    choices=["full", "quick", "long", "extreme", "rescue"])
     ap.add_argument("--quick", type=int, default=None,
                     help="cap batches per point (VRAM/pace probe)")
     ap.add_argument("--out-dir", default=None)
@@ -300,7 +333,9 @@ def main() -> None:
         if name not in auto_cfg:
             raise SystemExit(f"no config known for ckpt {cand}; pass --config")
         cfgs.append(auto_cfg[name])
-    points = full_points() if args.points == "full" else quick_points()
+    points = {"full": full_points, "quick": quick_points,
+              "long": long_points, "extreme": extreme_points,
+              "rescue": rescue_points}[args.points]()
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     out_dir = Path(args.out_dir or ROOT / "runs" / "ctx_probes" / stamp)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -317,28 +352,45 @@ def main() -> None:
             except (KeyError, json.JSONDecodeError):
                 hist = None
         rows = []
-        for p in points:
-            try:
-                rows.append(run_point(model, cfg_path, p, args.quick))
-            except torch.OutOfMemoryError as exc:
-                torch.cuda.empty_cache()
-                print(f"[OOM] {ckpt.name}/{p['name']}: {exc}", flush=True)
-                rows.append({"point": p["name"], "error": "OOM"})
-        base = next((r for r in rows
-                     if r.get("point") == "base_1024" and "val_loss" in r), None)
-        if base is not None and hist is not None:
-            base["historical_eval_report_val_loss"] = hist
-            base["delta_vs_history"] = round(base["val_loss"] - hist, 6)
         # safe dir name: "runs/target/final" -> "target__final" (ckpt.name
         # alone would collide - two finals once overwrote each other)
         safe = re.sub(r"[^A-Za-z0-9]+", "__", str(ckpt)).strip("_")
         ckpt_dir = out_dir / safe
         ckpt_dir.mkdir(parents=True, exist_ok=True)
-        for r in rows:
-            (ckpt_dir / f"{r['point']}.json").write_text(
-                json.dumps(r, indent=2), encoding="utf-8")
-        summary["ckpt_runs"].append({"ckpt": str(ckpt), "config": cfg_path,
-                                     "points": rows})
+
+        entry = {"ckpt": str(ckpt), "config": cfg_path, "points": rows}
+        summary["ckpt_runs"].append(entry)
+
+        def _flush(row: dict) -> None:
+            """Persist each point immediately: a crash/suspend mid-matrix
+            (nvlddmkm 153, 2026-09-10) must not lose finished points. entry
+            references the same rows list, so summary stays current too."""
+            (ckpt_dir / (row["point"] + ".json")).write_text(
+                json.dumps(row, indent=2), encoding="utf-8")
+            (out_dir / "summary.json").write_text(
+                json.dumps(summary, indent=2), encoding="utf-8")
+
+        for p in points:
+            try:
+                row = run_point(model, cfg_path, p, args.quick)
+            except torch.OutOfMemoryError as exc:
+                torch.cuda.empty_cache()
+                print(f"[OOM] {ckpt.name}/{p['name']}: {exc}", flush=True)
+                row = {"point": p["name"], "error": "OOM"}
+            except RuntimeError as exc:
+                # CUDA context faults (e.g. CUBLAS_STATUS_EXECUTION_FAILED after
+                # a suspend/wake) must not kill the whole matrix; record and go on.
+                torch.cuda.empty_cache()
+                print(f"[CUDA-ERR] {ckpt.name}/{p['name']}: {exc}", flush=True)
+                row = {"point": p["name"], "error": "RuntimeError: " + str(exc)[:120]}
+            rows.append(row)
+            _flush(row)
+        base = next((r for r in rows
+                     if r.get("point") == "base_1024" and "val_loss" in r), None)
+        if base is not None and hist is not None:
+            base["historical_eval_report_val_loss"] = hist
+            base["delta_vs_history"] = round(base["val_loss"] - hist, 6)
+            _flush(base)
         (out_dir / "summary.json").write_text(json.dumps(summary, indent=2),
                                               encoding="utf-8")
         del model
