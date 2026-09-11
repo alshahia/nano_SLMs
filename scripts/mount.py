@@ -358,6 +358,22 @@ def main() -> None:
         gradient_checkpointing_kwargs={"use_reentrant": False},
         optim=t.get("optim", "adamw_bnb_8bit"),
         dataloader_num_workers=int(t.get("dataloader_num_workers", 0)),
+        # MountDataset is a plain torch Dataset (not datasets.Dataset), so the
+        # Trainer's _get_dataloader wraps OUR collator in RemoveColumnsCollator
+        # (signature columns = the model's forward args) and strips
+        # teacher_ids/teacher_pad_mask BEFORE default_data_collator runs ->
+        # KeyError: 'teacher_ids' in compute_loss (GPU drill mount_fill_drill3).
+        # Keep the paired keys: they are consumed in MountTrainer.compute_loss;
+        # the model's forward only ever receives input_ids/labels explicitly.
+        remove_unused_columns=False,
+        # Eval batches carry no "labels" key: with the default
+        # label_names=["labels"], prediction_step's has_labels is False and
+        # eval NEVER routes through compute_loss's pure-CE branch
+        # (model(**inputs) with labels=None -> loss=None -> no eval_loss at
+        # all, cliff book + A/B metric inert). Route it there via input_ids.
+        # Safe for training math: _get_num_items_in_batch only fires on a
+        # literal "labels" key, so the /accum loss normalization is unchanged.
+        label_names=["input_ids"],
         report_to=["tensorboard"],
     )
 
