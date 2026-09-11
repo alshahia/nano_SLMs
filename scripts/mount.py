@@ -188,7 +188,14 @@ def main() -> None:
     vocab = max(int(tcfg["vocab_size"]), len(tok))
     student = build_model(cfg, vocab_size=vocab)
 
+    # Force the teacher fp32: SmolLM2's config carries torch_dtype bfloat16,
+    # and a bf16 teacher forward feeds bf16 hidden states into the fp32
+    # student probes (fill) / mount_kv_proj (gate/drop/hybrid) -> "mat1 and
+    # mat2 must have the same dtype, but got BFloat16 and Float" at the
+    # first micro-batch (GPU drill mount_fill_drill3). fp32 teacher keeps
+    # every consumption site homogeneous with the fp32 student params.
     teacher = AutoModelForCausalLM.from_pretrained(str(teacher_path),
+                                                   dtype=torch.float32,
                                                    attn_implementation="sdpa")
     teacher.eval()
     teacher.config.use_cache = False
