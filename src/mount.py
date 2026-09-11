@@ -110,7 +110,14 @@ def attach_mounts(student, teacher_layers: int):
         b.teacher_anchor = round((l + 0.5) / n_layers * teacher_layers)
         bridges.append(b)
         student.model.layers[l] = WrappedLayer(student.model.layers[l], b)
-    student._mount_bridges = nn.ModuleList(bridges)
+    # PLAIN list, NOT nn.ModuleList: each bridge is ALREADY registered
+    # inside its WrappedLayer (model.layers.<l>.bridge.*). A ModuleList
+    # would register every bridge a SECOND time under _mount_bridges.<l>.*
+    # -> shared tensors in the state_dict -> safetensors duplicate-name
+    # RuntimeError on EVERY checkpoint save (bridge-mode drill crash).
+    # detach_mounts only checks truthiness here and the trainer iterates
+    # the attach_mounts() return value, so a plain list is sufficient.
+    student._mount_bridges = bridges
     return bridges
 
 
