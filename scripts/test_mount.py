@@ -82,7 +82,7 @@ bridges = attach_mounts(m, teacher_layers=6)
 assert len(bridges) == 4
 assert [br.teacher_anchor for br in bridges] == [1, 2, 4, 5]  # round((l+0.5)*6/4)
 assert isinstance(m.model.layers[0], WrappedLayer)
-assert isinstance(m._mount_bridges, nn.ModuleList)
+assert isinstance(m._mount_bridges, list)   # bridges registered ONCE, in their WrappedLayer (mount.py) — plain-list registry, no ModuleList dup
 
 ids = torch.randint(0, 64, (2, 16))
 for br in bridges:
