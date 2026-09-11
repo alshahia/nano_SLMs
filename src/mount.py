@@ -47,8 +47,11 @@ class MountBridge(nn.Module):
         self._sev_rescale = 1.0
         self._current_kv = None
         self._current_pad = None
-        nn.init.zeros_(self.attn.out_proj.weight)
-        nn.init.zeros_(self.attn.out_proj.bias)
+        # out_proj keeps nn.MultiheadAttention default init (F1 fix, user
+        # decision): with a := 0 zero-init, tanh(a)=0 makes step 0 a bitwise
+        # identity regardless of out_proj, and the bridge stays trainable
+        # (a.grad != 0; zero out_proj also zeroed the attention weight
+        # gradient path).
 
     def set_severance(self, pct: float, seed: int):
         if pct <= 0:
