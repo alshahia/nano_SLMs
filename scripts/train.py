@@ -83,6 +83,7 @@ def main() -> None:
     ap.add_argument("--config", required=True, help="path to configs/<phase>.yaml")
     args = ap.parse_args()
 
+    import torch
     import yaml
     from transformers import (AutoTokenizer, Trainer, TrainingArguments,
                               default_data_collator)
@@ -111,6 +112,26 @@ def main() -> None:
         diag = load_finetune_init(model, ROOT / init_from)
         print(f"[init] fine-tune init from {init_from}: "
               f"{diag['tensors']} tensors loaded", flush=True)
+    # KT ladder Phase 1 (row 43): config-gated embedding transplant, DEFAULT
+    # OFF. Applied AFTER init_from (embeddings override) and BEFORE
+    # maybe_wrap_peft; the tied lm_head follows via _tied_weights_keys.
+    # Auto-resume untouched: a resumed run overwrites every weight from its
+    # checkpoint right after this, so the init only ever seeds step 0.
+    init_embeddings = t.get("init_embeddings")
+    if init_embeddings:
+        blob = torch.load(ROOT / init_embeddings, map_location="cpu",
+                          weights_only=True)
+        emb = blob["embed_tokens"] if isinstance(blob, dict) else blob
+        cur = model.get_input_embeddings().weight
+        if tuple(emb.shape) != tuple(cur.shape):
+            raise ValueError(
+                f"[init] init_embeddings shape {tuple(emb.shape)} != model "
+                f"{tuple(cur.shape)} - refusing (vocab/dim mismatch)")
+        with torch.no_grad():
+            cur.copy_(emb.to(cur.dtype))
+        print(f"[init] embeddings transplanted from {init_embeddings} "
+              f"({emb.shape[0]}x{emb.shape[1]} -> fp{8 * cur.element_size()}, "
+              f"tied head follows)", flush=True)
     model = maybe_wrap_peft(model, cfg)
     n_params = sum(p.numel() for p in model.parameters())
     print(f"[train] params={n_params / 1e6:.1f}M vocab={vocab} fp16={t['fp16']} "

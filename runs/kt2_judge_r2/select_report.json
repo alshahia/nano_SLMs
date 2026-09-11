@@ -1,0 +1,10 @@
+{
+  "winners": 1490,
+  "drops": {
+    "no_ast": 9,
+    "all_fail": 0,
+    "dup": 0,
+    "short": 1
+  },
+  "verdict_ll_agreement": 1.0
+}

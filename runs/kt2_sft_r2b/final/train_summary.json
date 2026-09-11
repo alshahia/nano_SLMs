@@ -1,0 +1,17 @@
+{
+  "phase": "kt2_sft_r2b",
+  "base_model": "runs/yarn_lora_sft_v1/final_a60",
+  "pilot": false,
+  "pairs": 1634,
+  "params_m": 236.23,
+  "best_eval_loss": 0.37017586827278137,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\kt2_sft_r2b\\checkpoint-100",
+  "final_eval": {
+    "eval_loss": 0.3701842725276947,
+    "eval_runtime": 1.8754,
+    "eval_samples_per_second": 55.454,
+    "eval_steps_per_second": 6.932,
+    "epoch": 1.0
+  },
+  "resumed_from": null
+}

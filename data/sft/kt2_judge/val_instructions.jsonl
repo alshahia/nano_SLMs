@@ -1,0 +1,20 @@
+{"instruction": "Write a function `hex_to_rgb(s)` parsing a hex color to RGB tuple. Example: `hex_to_rgb('#fff')`."}
+{"instruction": "Complete the following Python code (continue it naturally, do not repeat the given part):\n\n# extra_pay_of :: 3, 22\ndef extra_pay_of(hours, rate):\n    \"\"\"Overtime pay at 1.5x the hourly rate.\"\"\"\n    return hours * rate * 1.5"}
+{"instruction": "Write a function `common_indent(s)` that removes the common leading whitespace from all non-empty lines. Example: `common_indent(('  a\\n    b\\n  c',))`."}
+{"instruction": "Write a Python function named `bools_true_count(flags)` that counts how many booleans in the list flags are True. Example: `bools_true_count([True, False])`."}
+{"instruction": "Write a Python function named `parity_even(n)` that returns True when the integer n is even. Example: `parity_even(-11)`."}
+{"instruction": "Write a function `qs_build2(params)` that builds a URL query string from a dict. Example: `qs_build2(({'x': 'a&b=c'}))`."}
+{"instruction": "Write a function `is_luhn2(s)` that returns True iff `s` passes the Luhn checksum. Example: `is_luhn2('5555555555554444')`."}
+{"instruction": "Write a Python function named `dict_keys_sorted(d)` that returns the list of the dictionary's keys in sorted order. Example: `dict_keys_sorted({'k9': 9, 'k1': 1})`."}
+{"instruction": "Complete the following Python code (continue it naturally, do not repeat the given part):\n\n# ratio_calc :: 7, 2\ndef ratio_calc(a, b):\n    \"\"\"Ratio of a to b.\"\"\"\n    return a / b"}
+{"instruction": "Write a Python function named `pow2_p(n)` that returns True if n is a positive integer power of two. Example: `pow2_p(512)`."}
+{"instruction": "Complete the following Python code (continue it naturally, do not repeat the given part):\n\n# char_counts :: 'xyz'\ndef char_counts(s):\n    \"\"\"Map each character to its occurrence count.\"\"\"\n    counts = {}\n    for ch in s:\n        counts[ch] = counts.get(ch, 0) + 1"}
+{"instruction": "Write a function `first_n_fibs(n)` returning the first `n` Fibonacci numbers. Example: `first_n_fibs(5)`."}
+{"instruction": "Write a Python function named `word_frequencies(s)` that returns a dictionary mapping each word in the string to the number of times it occurs. Example: `word_frequencies('apple banana apple cherry')`."}
+{"instruction": "Write a function `nested_get2(d, keys, default=None)` that looks up nested dict keys, returning `default` if any key is missing. `nested_get2({'a': {'b': {'c': 1}}}, ('a', 'b', 'c'))`."}
+{"instruction": "Complete the following Python code (continue it naturally, do not repeat the given part):\n\n# done_fraction :: 1.5, 2\ndef done_fraction(rate, hours):\n    \"\"\"Work completed at a constant rate over hours.\"\"\"\n    return rate * hours"}
+{"instruction": "Write a function `flatten_one_level(xs)` flattening exactly one level of nesting. Example: `flatten_one_level([[1], [2], [3]])`."}
+{"instruction": "Write a function `tally(xs, target)` returning how many times `target` appears. Example: `tally(([], 1))`."}
+{"instruction": "Show `bytes.decode` in `bytes_str`. (input: b'hello')"}
+{"instruction": "Write a function `minus_dict(a, b)` returning keys present in `a` but not `b`, with `a`'s values. `minus_dict({'a': 1}, {})`."}
+{"instruction": "Write a function `km_miles2(k)` that converts kilometers to miles. Example: `km_miles2(5)`."}

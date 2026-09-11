@@ -1,0 +1,32 @@
+{"prompt_id": "063e35c7373f", "cand_id": 0, "ll_mean": -2.1178, "ll_total": -48.71, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "063e35c7373f", "cand_id": 1, "ll_mean": -2.164, "ll_total": -218.56, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "063e35c7373f", "cand_id": 2, "ll_mean": -1.7013, "ll_total": -69.75, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "063e35c7373f", "cand_id": 3, "ll_mean": -1.3482, "ll_total": -163.13, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "78fc25866202", "cand_id": 0, "ll_mean": -1.0478, "ll_total": -143.55, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "78fc25866202", "cand_id": 1, "ll_mean": -1.1434, "ll_total": -198.96, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "78fc25866202", "cand_id": 2, "ll_mean": -0.8291, "ll_total": -138.46, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "78fc25866202", "cand_id": 3, "ll_mean": -1.0135, "ll_total": -192.57, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "77c17cb9b310", "cand_id": 0, "ll_mean": -1.9665, "ll_total": -60.96, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "77c17cb9b310", "cand_id": 1, "ll_mean": -0.7393, "ll_total": -23.66, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "77c17cb9b310", "cand_id": 2, "ll_mean": -1.1667, "ll_total": -145.83, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "77c17cb9b310", "cand_id": 3, "ll_mean": -1.2769, "ll_total": -62.57, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "38ef385fc7c8", "cand_id": 0, "ll_mean": -0.5434, "ll_total": -138.01, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "38ef385fc7c8", "cand_id": 1, "ll_mean": -1.596, "ll_total": -63.84, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "38ef385fc7c8", "cand_id": 2, "ll_mean": -1.7388, "ll_total": -438.17, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "38ef385fc7c8", "cand_id": 3, "ll_mean": -1.1001, "ll_total": -38.5, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "871bf2c90e4c", "cand_id": 0, "ll_mean": -0.8877, "ll_total": -39.06, "ast_pass": false, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "871bf2c90e4c", "cand_id": 1, "ll_mean": -2.5253, "ll_total": -45.46, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "871bf2c90e4c", "cand_id": 2, "ll_mean": -2.068, "ll_total": -97.2, "ast_pass": false, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "871bf2c90e4c", "cand_id": 3, "ll_mean": -3.0136, "ll_total": -87.39, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "06cd564970c0", "cand_id": 0, "ll_mean": -1.0812, "ll_total": -14.06, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "06cd564970c0", "cand_id": 1, "ll_mean": -0.7258, "ll_total": -37.01, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "06cd564970c0", "cand_id": 2, "ll_mean": -1.1298, "ll_total": -73.44, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "06cd564970c0", "cand_id": 3, "ll_mean": -0.9291, "ll_total": -31.59, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "be90bc8fc6ba", "cand_id": 0, "ll_mean": -1.0065, "ll_total": -22.14, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "be90bc8fc6ba", "cand_id": 1, "ll_mean": -0.6472, "ll_total": -165.02, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "be90bc8fc6ba", "cand_id": 2, "ll_mean": -1.8392, "ll_total": -189.44, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "be90bc8fc6ba", "cand_id": 3, "ll_mean": -0.5449, "ll_total": -138.95, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "570fc8b6698f", "cand_id": 0, "ll_mean": -0.6727, "ll_total": -172.2, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "570fc8b6698f", "cand_id": 1, "ll_mean": -0.7858, "ll_total": -201.17, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}
+{"prompt_id": "570fc8b6698f", "cand_id": 2, "ll_mean": -5.2863, "ll_total": -26.43, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "", "parse_path": "regex_keys"}
+{"prompt_id": "570fc8b6698f", "cand_id": 3, "ll_mean": -1.6588, "ll_total": -102.85, "ast_pass": true, "verdict": "pass", "score": 2, "reason": "one short sentence", "parse_path": "json_block"}

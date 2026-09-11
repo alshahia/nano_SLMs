@@ -1,0 +1,42 @@
+{
+  "ckpt": "runs\\kt2_sft_r2\\final",
+  "val_loss": 1.9093555596084275,
+  "perplexity": 6.748738237330886,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nfrom typing import List\n\ndef nthFibon(n):\n    \"\"\"Return the nth Fibon.\n\n    Args:\n        n: The number of Fibon.\n\n    Returns:\n        The nth Fibon.\n\n    Examples:\n        >>> n = [1, 2, 3, 4, 5, 6, 7, 8, 9]\n        >>> n.n = 2\n        >>> n.n = 3\n        >>> n.n = 4\n        >>> n.n = 5\n        >>> n.n = 6\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = 7\n        >>> n.n = ",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import List\n\ndef _find_peek(a, b):\n    \"\"\"Return a new string with a new value, and a new value.\n\n    Args:\n        a: The string to search.\n        b: The string to search.\n\n    Returns:\n        A new string with a new value, or None.\n\n    Examples:\n        >>> _find_peek('a', 'b')\n        'a'\n        >>> _find_peek('a', 'b')\n        'b'\n        >>> _find_peek('a', 'b')\n        'a'\n        >>> _find_peek('a', 'b')\n        'b'\n    \"\"\"\n    if not a:\n        return None\n    return a[0] if b else None"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.86,
+    "sampled_ast_pass_rate": 0.88,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "from typing import List\n\ndef is_iterable(s: str) -> bool:\n    \"\"\"Return True if s is a string, or False if s is a string.\n\n    Args:\n        s: The string to be checked.\n\n    Returns:\n        True if s is a string, or False if s is a string.\n\n    Examples:\n        >>> is_iterable(1)\n        True\n        >>> is_iterable(1)\n        False\n        >>> is_iterable(1)\n        False\n        >>> is_iterable(1)\n        False\n    \"\"\"\n    if not isinstance(s, str):\n        return False\n    return all(c in s for c in s)",
+        "sampled": "import math\n\ndef write(x: np.ndarray, n: int = 2) -> np.ndarray:\n    \"\"\"Add a n-th element in the sequence of integers to the left and right.\n\n    Args:\n        x: A 2D array-like object.\n        n: Number of elements in the sequence.\n\n    Returns:\n        A 2D array-like object containing a vector of indices.\n\n    Examples:\n        >>> write([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 4)\n        array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])\n        >>> write([1, 2, 3, 4, 5, 6, 7, 8, 9])\n        array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])\n    \"\"\"\n    return np."
+      },
+      {
+        "instruction": "Write a function `midpoint_v2(p1, p2)` returning the midpoint of two points. `midpoint_v2((0, 0), (0, 0))`.",
+        "greedy": "def midpoint_v2(p1, p2):\n    return (p1[0] + p2[0]) / (p1[1] + p2[1])",
+        "sampled": "def midpoint_v2(p1, p2):\n    return (p1[0], p2[0])\n\n# Bug was: `midpoint_v2(p1, p2)` returns a list of points with the same\n    points.\n\n# pair: midpoint_v2\n    >>> midpoint_v2((0, 0), (0, 0))\n    [0, 0]\n    >>> midpoint_v2((0, 0), (0, 0))\n    [0, 0]\n    >>> midpoint_v2((0, 0), (0, 0))\n    [0, 0]\n    >>> midpoint_v2((0, 0), (0, 0))\n    [0, 0]\n    >>> midpoint_v2((0, 0), (0, 0))\n    [0, 0]\n    \"\"\"\n    if not isinstance(p1, list):\n        p1 = [p1]\n    if not isinstance(p2, list):\n        p2 = [p2]\n    return"
+      },
+      {
+        "instruction": "combination sum no reuse",
+        "greedy": "For a single image, compute the sum of the image's values.\n\nFor a single image, compute the sum of the image's values.\n\n```python\ndef sum_sum(a, b):\n    out = 0\n    for i in range(len(a)):\n        out += a[i]\n    return out\n```",
+        "sampled": "For a single image, we count the image by 200.\n\nFor a single image, we count the image by 200.\n\n    Args:\n        image: The input image.\n        max_num: The maximum number of images.\n        max_num: The maximum number of images.\n        max_num: The maximum number of images.\n\n    Returns:\n        The number of images.\n\n    Examples:\n        >>> import turicreate\n        >>> # Create an image for a single image\n        >>> image = turicreate.SFrame({'image': [0, 2], 'image': [2, 4]})\n        >>> # This is the total number of images.\n        >>> len(image.max_num)\n        200\n        >>> # Create an image for a single image\n        >>> image = turicreate.SFrame({'image': [0, 2], 'image': [2, 4]})\n        >>> # This is the total number of images.\n        >>> len(image.max_num)\n        300\n        >>> image.max_num\n"
+      },
+      {
+        "instruction": "Write a function `duplicates2(xs)` returning the list of elements that appear more than once. Example: `duplicates2([True, False, True])`.",
+        "greedy": "def duplicates2(xs):\n    \"\"\"Return a list of elements that appear more than once. Example: `duplicates2([True, False, True])`.\n\n    Args:\n        xs: The list of elements to check.\n\n    Returns:\n        A list of elements that appear more than once. Example: `duplicates2([True, False, True])`.\n\n    Examples:\n        >>> duplicates2([True, False, True])\n        [True, False, True]\n        >>> duplicates2([True, False, True])\n        [True, False, True]\n        >>> duplicates2([True, False, True])\n        [True, False, True]\n        >>> duplicates2([True, False, True])\n        [True, False, True]\n    \"\"\"\n    if xs is None:\n        return []\n    return [xs[0] for xs in xs if xs[0] != xs[0]",
+        "sampled": "def consecutives2(xs):\n    if not xs:\n        return []\n    out = []\n    for x in xs:\n        out.append(x)\n        out.append(x)\n    return out"
+      },
+      {
+        "instruction": "Write a function that returns the k-th prime number (1-indexed).",
+        "greedy": "from typing import List\n\ndef kth_k_k_k(k):\n    \"\"\"Return the k-th prime number (1-indexed).\n\n    Args:\n        k: The k-th prime number.\n\n    Returns:\n        The k-th prime number (1-indexed).\n\n    Examples:\n        >>> k = '1'\n        >>> k = '2'\n        >>> k = '3'\n        >>> k = '4'\n        >>> k = '5'\n        >>> k = '5'\n        >>> k = '6'\n        >>> k = '7'\n        >>> k = '8'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k = '9'\n        >>> k",
+        "sampled": "from collections import deque\n\ndef kth prime(a, b):\n    return deque(a, b)\n\n# Bug was: `k` is the number of items in `a` in `a` and `b`\n\n# pair: k, a, b = a, b = b\n\n# pair: k, a, b = b\n\n# pair: k, a, b = b\n\n# pair: k, a, b = b\n\n# pair: k, a, b = b\n\n# pair: k, a, b = b"
+      }
+    ]
+  }
+}

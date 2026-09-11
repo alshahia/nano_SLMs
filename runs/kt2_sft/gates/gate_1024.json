@@ -1,0 +1,42 @@
+{
+  "ckpt": "runs\\kt2_sft\\final",
+  "val_loss": 1.8987156137761712,
+  "perplexity": 6.6773126838894985,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nfrom typing import List\n\ndef nthFibonacci(n):\n    \"\"\"Return the nth Fibonacci number.\n\n    Args:\n        n: A non-negative integer.\n\n    Returns:\n        The nth Fibonacci number.\n\n    Examples:\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n =",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import List, List\n\ndef pop(a, b):\n    \"\"\"Remove a list from a and b.\n\n    Args:\n        a: The list to remove.\n        b: The list to remove.\n\n    Returns:\n        The list of removed items.\n\n    Examples:\n        >>> pop([1, 2, 3, 4, 5, 6, 7, 8, 9])\n        [1, 2, 3, 4, 5, 6, 7, 8, 9]\n    \"\"\"\n    if a is None:\n        return []\n    a, b = b, a\n    b = b + a\n    for i in range(len(a)):\n        a[i] = a[i] + b[i]\n    return a"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.9,
+    "sampled_ast_pass_rate": 0.92,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "from itertools import Counter\n\ndef iter_combinations(a, b):\n    \"\"\"Iterate over a list of integers and yield each element in a.\n\n    Args:\n        a: The first element of a list.\n        b: The second element of b list.\n\n    Returns:\n        A list of lists with only the elements in a and b.\n\n    Examples:\n        >>> iter_combinations([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11])\n        [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]\n    \"\"\"\n    if a == 0:\n        return []\n    if b == 0:\n        return a\n    if b == 0:\n        return a\n    return [a] + a + b",
+        "sampled": "from typing import Iterable\n\n@decompose(nums)\ndef find_comps_by_class(nums: List[int]) -> None:\n    \"\"\"Return a generator object with the number of bases in `nums` in the first element.\n\n    Args:\n        nums: An iterable of numbers.\n\n    Returns:\n        A generator object with the number of bases in `nums`.\n\n    Examples:\n        >>> find_comps_by_class([5, 6, 8, 1, 3, 1], 2)\n        [5, 6]\n        >>> find_comps_by_class([5, 6, 8, 1, 3, 1], 4)\n        [5, 6]\n    \"\"\"\n    if not isinstance(nums, list):\n        raise TypeError(\"nums must be a list\")\n    if not all(a.is_bool_map() for a in nums):\n        raise ValueError(\"nums must be a list\")\n    if not all(a.is_bool_map() for a"
+      },
+      {
+        "instruction": "Write a function `hinge2(x)` returning max(0, x) (ReLU). Example: `hinge2(0)`.",
+        "greedy": "def es2(x):\n    return max(0, x)\n\n# Bug was: `inspect.getargspec` returns a function that returns a list of\n    arguments.\n\n# pair: es2(x)\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n    # or\n",
+        "sampled": "def es2(x):\n    return max(0, x)"
+      },
+      {
+        "instruction": "combination sum no reuse",
+        "greedy": "For each element, compute the sum over the sum.\n\n```python\ndef sum_sum(a, b):\n    return sum(a) / b",
+        "sampled": "   {x: 4, p: 5} -> 4\n\n    This is the algorithm used by the HMM output: `x, p` is the sum of the sum of the\n    sum of the rows in the output.\n\n    Parameters:\n    -----------\n    x: int\n    p: int\n    Returns:\n    --------\n    out: float\n    The sum of the rows in the output.\n\n    Examples:\n        >>> x = [5, 5, 5, 5, 5, 5]\n        >>> p = [5, 5, 5, 5, 5]\n        >>> y = [0, 1, 2]\n        >>> x = [x, 1, 2]\n        >>> y = [y, 2, 3]\n        >>> y = [y, 2, 3]\n        >>> x = [x, 1, 2]\n        >>> y = [y, 2, 3]\n        >>> y = [y, 2, 3]\n        >>> y = [y, 2, 3"
+      },
+      {
+        "instruction": "Show `Never` in `typing_never`. (input: )",
+        "greedy": "deftyping_never(s):\n    return s.send(1024)\n\n# Bug was: `Never` is a 1024-bit integer.\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_never\n\n# pair: int_",
+        "sampled": "from math import E\n\ndef degree_never(s):\n    return EOL\n\n# Bug was: `Never` is not a number (or `int`), or `EOL` is not a number.\n\n# pair: 1. i+1.\n\n# pair: Never / EOL\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n\n# pair: i / 2.\n\n\n# pair: i / 2.\n\n# pair: i / 2.\n\n\n# pair: i / 2.\n\n"
+      },
+      {
+        "instruction": "Write a function `palindrome(s)` that returns True iff s is a palindrome. Example: `palindrome(\"Madam\")`.",
+        "greedy": "def {{s: {{}}``.\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}] }\n\ndef {{s: {{}}",
+        "sampled": "defpalindrome(s):\n    \"\"\"Return True iff s is a cylindrome (a substring).\"\"\"\n    if not s:\n        return False\n    s = s.split(\"_\")\n    s = s[0]\n    return len(s) == 1"
+      }
+    ]
+  }
+}

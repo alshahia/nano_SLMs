@@ -1,0 +1,77 @@
+{
+  "phase": "kt_ab_transplant",
+  "params_m": 226.53,
+  "best_eval_loss": 2.290245294570923,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\kt_ab_transplant\\checkpoint-1000",
+  "final_eval": {
+    "eval_loss": 2.290245294570923,
+    "eval_runtime": 49.1558,
+    "eval_samples_per_second": 19.448,
+    "eval_steps_per_second": 9.724,
+    "epoch": 0.6836000085450001
+  },
+  "resumed_from": null,
+  "env": {
+    "timestamp_utc": "2026-09-11T00:42:20+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "e08ec9a",
+    "gpu": "Quadro RTX 3000, 6144 MiB",
+    "resolved_config": {
+      "name": "kt_ab_transplant",
+      "tokenizer": {
+        "name": "codellama/CodeLlama-7b-hf",
+        "vocab_size": 32768
+      },
+      "model": {
+        "layers": 16,
+        "hidden": 1024,
+        "heads": 16,
+        "kv_heads": 4,
+        "ffn": 3072,
+        "ctx": 1024,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "tokens_dir": "data/target/tokens"
+      },
+      "train": {
+        "output_dir": "runs/kt_ab_transplant",
+        "final_dir": "runs/kt_ab_transplant/final",
+        "max_steps": 1000,
+        "batch": 1,
+        "eval_batch": 2,
+        "accum": 32,
+        "lr": 0.0004,
+        "scheduler": "cosine",
+        "warmup_steps": 150,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 50,
+        "eval_steps": 100,
+        "save_steps": 100,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": true,
+        "optim": "adamw_torch",
+        "dataloader_num_workers": 0,
+        "seed": 42,
+        "init_embeddings": "data/kt/embed_init_smol360.pt"
+      },
+      "eval": {
+        "max_new_tokens": 64,
+        "prompts": [
+          "def fibonacci(n):"
+        ]
+      }
+    }
+  }
+}

@@ -110,3 +110,18 @@ runs/yarn_lora_sft_v1_train_*.log
 # Soup P0 merged weights (eval-only scratch; reports under runs/soup_p0/reports/
 # stay tracked as evidence)
 runs/soup_p0/alpha*/model.safetensors
+
+# KT ladder (KT-1 A/B + KT-2 judge rounds/r2/r2b, TASKS rows 43/44/56): weights
+# stay LOCAL (same LFS decision as target/sft_v2 - 864 MB fp16 x many arms);
+# optimizer.pt is globally ignored above. Reports, gates, trainer_state,
+# tfevents and the irreproducible judge sample/verdict artifacts stay tracked.
+data/kt/
+runs/kt_ab_control/checkpoint-*/
+runs/kt_ab_control/final/model.safetensors
+runs/kt_ab_control/*.log
+runs/kt_ab_transplant/checkpoint-*/
+runs/kt_ab_transplant/final/model.safetensors
+runs/kt_ab_transplant/*.log
+runs/kt2_sft*/checkpoint-*/
+runs/kt2_sft*/final/model.safetensors
+runs/kt2_sft*/*.log

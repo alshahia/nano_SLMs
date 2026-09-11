@@ -1,0 +1,7 @@
+{
+  "candidates": 1000,
+  "unparseable": 3,
+  "parsed": 997,
+  "unparseable_rate": 0.003,
+  "gate_10pct": "PASS"
+}
