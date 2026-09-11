@@ -37,10 +37,25 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 | 2026-09-09 | Rows 2/13/16 executed beside a CONCURRENT Track A session: USER-APPROVED deletion of checkpoint-sft_v2_e1-final.zip (868 MB, CRC-verified redundant vs disk + pack); Milestone D wired+measured+sized — token-proportional smol-capped mix 10000/37500/59000/16900 (~133.65M kept tokens, max_steps 4100) derived from MEASURED tok/row after the proposal's row targets proved 3.75x over budget; RUN stays user-gated until the next pretrain window; Milestone G1 implemented + CPU-validated (G1.a staged on a GPU window) | shared working tree with Track A -> targeted re-read edits only for shared files; GPU is global (total nvidia-smi memory.used = busy signal); nothing deleted/pushed without approval | research/milestone_d_actual.json; research/milestone_d_measurement.md; research/gdn_sandbox_design.md; TASKS rows 2/13/16 |
 | 2026-09-10 | Track B EXECUTED (user go): YaRN ctx-4096 fine-tune of runs/target/final -> runs/yarn_4096 via config-gated train.init_from (base untouched); 4096 CONFIRMED by the mandatory 8-bit-Adam probe (peak 4.24 GiB alloc); val @4096 1.7035 = -8.0% vs the 1024 baseline (-9.6% vs eval-only NTK@4096), forgetting guard @1024 +1.15% PASS, extrapolation @8192 2.1240 (better than eval-only NTK@8192); instruct re-SFT = row 41 (user-gated) | plan §B gate fired at row 29 (NTK@2048 -4.17%); artifact = context-extended BASE | TASKS row 30; runs/yarn_4096/final/train_summary.json |
 | 2026-09-10 | Row 41 vehicle DECIDED (user 4-option menu): instruct re-SFT on runs/yarn_4096 = LoRA-SFT r=32/alpha=64/lr 1e-4/1 epoch -> merged final (row-34 Track F repurposed as the row-41 vehicle), P0 soup probe FIRST (e1+yarn_4096 alpha sweep 0.25/0.5/0.75, eval-only, scripts/soup_merge.py); gates STRICT (CSN guard <= +5% vs 1.8724; base surface @4096 <= +2% vs 1.7035; instruct val < 2.1265-equiv; ast). Grounds: in-repo LoRA forgetting +0.13% (h2) vs full SFT +9.8% (e1) / +19.7% FAIL (e2); literature LoRA Learns Less and Forgets Less (arXiv 2405.09673), replay-mix anti-forgetting (PMLR v267 bethune25a, arXiv 2603.04964), LongAlign = extend THEN align (2024.findings-emnlp.74); long-PROMPT instruct ability stays untested by short-ctx SFT (add a long-prompt probe to gates) | user picks; ctx-expansion ranking: trained YaRN > NTK@<=2048 > window+sink-abs (flat to 16k, recall-capped) >> pos_shift (never) | TASKS row 41; research/raw/r41*.json; OUTCOME 2026-09-10: gates 3/4 (base @4096 +4.64% FAIL on the raw merged) -> repair soup a60 (0.6 LoRA + 0.4 yarn) passes ALL 4 (guard +1.03%, ast 0.90/0.96, @4096 +1.29%) -> user picked BOTH (final_a60 = chat-default candidate, raw = instruct-max); long-prompt probe @3.4k tok FAIL (short-ctx SFT does not align long prompts - LongAlign lever = future long-instruct slice, TASKS row 42); commit made, push user-gated |
+| 2026-09-10 | KT ladder APPROVED (Q1 both capability+research / Q2 architecture AFTER the KT-1 A/B numbers / Q3 evening + multi-day GPU windows / Q4 SmolLM2-360M teacher first); Route 0 warm-start SmolLM2-135M stays the Q2 fallback, never rejected | a poor base stays poor through SFT - get A/B evidence before architecture calls | docs/plans/2026-09-10_kt_ladder_plan.md; TASKS rows 43-46 |
+| 2026-09-10 | KT-1 A/B RESULT + Q2 DECIDED: transplant init WINS -6.24% eval @1000 (2.2902 vs 2.4426; plan gate >=3-5% MET; gap still growing at 1000; train/loss corroborates -7.64%); user KEEPS OUR ARCHITECTURE - Route 0 warm-start SmolLM2-135M queued as a LATER test (row 47). Checkpoint policy CONFIRMED: keep best + last two (= exactly what save_total_limit=3 + load_best_model_at_end already does during runs); completed-run kt_ab ckpt-800s deleted; checkpoint_backup row41 zip (2.88 GB) deleted after restore verification - new packs can be rebuilt from on-disk originals later | single-variable A/B (same seed/GPU/stack); user call | TASKS rows 43/47; runs/kt_ab_* |
+| 2026-09-11 | ARABIC DIACRITIZATION D-LINE APPROVED (user go, full design session): (D1) build route = OUR architecture blocks as a NEW bidirectional char encoder + 15-class per-letter classification head inside a self-contained diacritizer/ submodule — NOT an M3/e1 fine-tune (Sadeed 2504.21635 shows decoder-LM frame = hallucination/copying; English/code weights transfer nothing), NOT a CATT fork (baseline only); (D2) pilot size = ~30M (evidence sweet spot: CATT EO, rababa ~30M ~1% DER claim, Mishkala 12.5M 1.66% claim); 100M stretch only if pilot plateaus; (D3) placement = submodule-form; no edits to M3-line src/configs; (D4) input-policy ladder STAGED: A2 strip-and-rediacritize -> A3 preserve-known+fill-gaps (two-stream + partial-diacritic curriculum) -> A4 dual modes (preserve + rewrite); each stage gated on prior eval; (D5) Phase-1 domain = mixed general (SadeedDiac-25-shaped ~50/50), scale-up path to poetry/Quran later; (D6) NON-ARABIC POLICY = copy-by-construction: context-visible, zero-predictable, byte-exact reassembly; tatweel passthrough never diacritized; Quranic marks + invisibles (RLM/LRM/ZWJ/ZWNJ) byte-exact passthrough; eval harness (DER/WER +-case endings, text-preservation, preservation) built BEFORE any training (A0 CPU-only exit gate = selftest 4/4 PASS) | whole D-line structured evidence: DESIGN research/arabic_diacritization/DESIGN.md + plan docs/plans/2026-09-11-arabic-diacritization-specialist.md + TASKS rows 50-55 |
+
 
 ## Lessons (seeded from HANDOFF §5)
 
-1. **transformers 5.16.1 drift:** TrainingArguments has NO `logging_dir` and
+1. **Windows console cp1252:** any script printing Arabic/emoji crashes with
+   `UnicodeEncodeError` unless stdout is reconfigured
+   (`sys.stdout.reconfigure(encoding='utf-8', errors='backslashreplace')`).
+   Applied in `diacritizer/scripts/selftest.py`; every future script that
+   prints non-ASCII must do the same.
+
+2. **Corpus mark order is NOT canonicalized in the wild:** real Tashkeela/
+   Fadel text writes shadda AFTER the vowel (`ثَّ`) as often as the canonical
+   shadda-first (`ثَّ`). A parser enforcing one order quarantines ~89% of a
+   classical corpus. Fold both orders to the same 15-class gemination label.
+
+3. **transformers 5.16.1 drift:** TrainingArguments has NO `logging_dir` and
    NO `save_safetensors` (safetensors is the only format). TensorBoard dir =
    env `TENSORBOARD_LOGGING_DIR` (train.py sets it to `runs/<phase>/logs`).
    Trainer takes `processing_class=` (not `tokenizer=`), `eval_strategy=`.
@@ -314,6 +329,46 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
      path does not need this; batch 2 @4096 fine).
 
  35. **LoRA on a ctx-extended base: gate BOTH surfaces, and drift is NOT linear in soup alpha** (2026-09-10, row 41): the r=32/lr 1e-4 adapter drifted the LONG-ctx surface ~1.17x the short-ctx one (guard @1024 +3.99% vs base @4096 +4.64%) - a LoRA run that only checks the 1024 guard can quietly spend the ctx-extension win; always also eval @4096 (skip-gen) after merging. Repair souping (LoRA-merged x base): ast is interpolation-fragile (a40 -> 0.68) but the ctx-surface drift is SUB-linear (a60 predicted +2.78% linearly, measured +1.29%) - a mid alpha (0.6) passed ALL gates (guard +1.03%, ast 0.90/0.96, @4096 +1.29%) where the raw adapter failed one. soup_merge.py is the reusable tool (CPU-only, config/tokenizer donor = the rope-family side).
+
+ 36. **Cross-tokenizer piece alignment works at the RAW-BYTE level** (2026-09-10,
+     KT-1 row 43): decode BOTH sides' pieces to bytes (GPT-2 byte-alphabet
+     reverse map for BPE byte chars; SP margin marker -> 0x20 + '<0xNN>'
+     byte pieces) and CodeLlama-SP <-> Llama-3-BPE exact matching becomes
+     deterministic string work, no fuzzy logic. SmolLM2-360M <-> our 32k SP
+     measured: 58.7% exact + 41.1% averaged-subpiece fallback = 99.98%
+     teacher-derived coverage. The <60% exact gate FAILED but investigation
+     JUSTIFIED it: the bug detector is the fallback sub==1 bucket (15/32,009
+     = 0.05%, all <0xC0-class byte pieces retokenizing to U+FFFD) plus the
+     frequency skew (matched mean id 13,457 vs unmatched 19,638 = tail-only
+     misses); a high sub>=2 fallback share is genuine SP-vs-BPE merge-shape
+     difference, not a bug. Isometric lift d960->d1024 = seeded QR, use
+     Q.T (orthonormal ROWS, W W^T = I) - a 1024x960 matrix CANNOT have
+     orthonormal rows (1024 > 960); the plan's wording meant the isometry.
+     Implementation: scripts/embed_transplant.py.
+ 37. **Batch-1 defaults were VRAM-era artifacts - batch where VRAM allows**
+     (2026-09-10, KT-2 row 44): judge inference ran 5.6x faster batched
+     (sample num_return_sequences=K for K candidates of ONE prompt - no
+     padding needed; teacher scoring packed by padded-token budget ~6144
+     tokens to keep fp16 full-vocab logits < ~1.6 GB - MEMORY 25b applies;
+     verdict GENERATION needs LEFT padding + explicit attention_mask).
+     LoRA-SFT at ctx 512: batch 4 / accum 4 = same effective batch 16 as the
+     old batch 1 / accum 16 -> identical training math, ~3x faster wall
+     (30 steps in 42 s). Rule: keep effective batch constant, raise
+     per-device batch until VRAM or interleave quality says stop.
+     Related: a 360M judge is LENIENT (score-2 bias) - the informative
+     signal is the judge-vs-LL agreement rate + the unparseable gate, and
+ 38. **`CUDA_VISIBLE_DEVICES=''` SHOWS the GPU, never hides it** (2026-09-11, mounting): PowerShell cannot hold an empty env value -_deletes the variable, so a ''CPU-only'' sanity check ran ON GPU beside a live judge (harmless, disclosed). Always pin '-1' for CPU-only; add `-1` semantics to any preflight relying on the empty-string form.
+ 39. **A module registered under TWO name paths kills checkpoint save** (2026-09-11, mounting, drill): attach_mounts registered bridges as model.layers.<l>.bridge.* AND student._mount_bridges (nn.ModuleList) -> same tensors under 2 names -> transformers 5.16.1 remove_tied_weights_from_state_dict RAISES (safetensors forbids duplicate names) on EVERY bridge-mode checkpoint save; fill mode (no bridges) hid it. Fix = register once in the wrapper and hold a plain python list in the attribute (plain list keeps detach_mounts truthiness + trainer bridge iteration intact).
+ 40. **RemoveColumnsCollator silently strips keys from plain torch Datasets** (2026-09-11, mounting): Trainer._get_dataloader wraps default_data_collator in RemoveColumnsCollator when remove_unused_columns=True (default) and a Dataset is not a HF datasets.Dataset -> custom batch keys (teacher_ids/teacher_pad_mask) vanish before compute_loss (KeyError at first micro-batch). Fix: remove_unused_columns=False + label_names=['input_ids'] (the labels-free batch ALSO made eval take model(**inputs) with loss=None: NO eval_loss, cliff book + A/B metric inert — label_names is the eval-liveness fix).
+ 41. **Cross-arch teacher dtype**: SmolLM2 configs load bf16; on an fp16 sm_75 pipeline force teacher dtype=float32 at from_pretrained — all teacher-hidden consumers (probes, kv_proj) are fp32 by construction; one kwarg homogenizes every site and no per-mode logic is needed (2026-09-11, mounting drill).
+ 42. **Kill BEFORE the first save leaves nothing to resume** (2026-09-11, mounting drill): trainer_state.json only exists inside a complete checkpoint dir; a partial-ckpt guard then SKIPS the partial dir and resume restarts from 0 — kill/resume drills must outlive the first save_steps boundary (drill redesigned to 50-step saves).
+ 43. **Append-only judge stages are cleanly resumable per prompt** (2026-09-11, KT-2 r2): a session kill mid-`kt2_judge.py --stage sample` left an exact prompt boundary (whole prompts x K, valid last line); `stage_sample` now reads existing `(prompt_id, cand_id)` keys from candidates.jsonl and skips fully-sampled prompts — prompts.jsonl is seed-deterministic so ids line up 1:1. Judge stages do NOT honor the train.py zero-flag auto-resume contract; rely on this file-level guard or wipe the stage's files. Torn-line tolerant.
+ 44. **sft.py auto-resume is keyed on output_dir - typos hijack the NEW run** (2026-09-11, KT-2 r2b): a config stub left `output_dir` pointing at the PRIOR run's dir -> sft.py silently resumed that run's checkpoint-206, trained 0 steps and re-exported the OLD weights as the new final (resumed_from: checkpoint-206, epoch 2.0 under a 1-epoch config). ALWAYS verify train_summary.json `resumed_from: null` before trusting a rerun. Same run exposed: transformers cosine schedule hit LR=0 at ~55% of max_steps (LR ran 0.0 for half the 206-step r2 run) - 1-epoch runs and reading train/learning_rate from tfevents both mitigate/detect it.
+ 45. **On-policy SFT scale-up did NOT stack: AST pass-rate is recipe-insensitive at this corpus scale** (2026-09-11, KT-2 r2/r2b): judge scaled 7x cleanly (1738 pairs, unparseable 0.1%, judge-vs-LL agreement 100%, all r2 gates PASS), but LoRA-SFT on it dropped AST greedy/sampled to 0.86/0.88 (floor 0.90/0.92 FAIL) and rs 1e-4->5e-5 + 1 epoch fixed CSN (best-ever 1.8974) while AST stayed EXACTLY 0.86/0.88 — the 50-instruction probe saturates against LoRA recipe knobs; moving AST needs data-quality/selection changes (or full-FT), not LR/epoch tuning. r1 final remains the row-44 student pending user decision (A keep r1 / B promote r2b / C one more knob).
+
+     LL tiebreak effectively drives winner selection.
+
+ 27. **Model-viz build gotchas** (2026-09-10, `viz/`): (a) pnpm 12 no longer reads pnpm-only settings from package.json - use 'pnpm approve-builds esbuild' once (else vite build dies with ERR_PNPM_IGNORED_BUILDS). (b) YAML scalars with an inner ': ' colon or a leading triple-quote are parse errors under the yaml pkg - quote the whole scalar; the doctor test catches it before the UI runs. (c) agent-browser has NO 'sleep' subcommand - use Start-Sleep inside a pwsh script file; 'eval -b <base64>' needs a syntactically perfect JS payload (a dropped open-quote fails silently at eval time); React state does not fire from dispatchEvent - use real 'agent-browser click' for click-path assertions.
 
 ## Data-source knowledge (seeded from HANDOFF §6)
 
