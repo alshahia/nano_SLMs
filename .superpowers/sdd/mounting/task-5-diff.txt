@@ -1,0 +1,176 @@
+a5056a1 mount: arm configs + sanity PASS 5/5 CPU (TASKS row 49 Task 5)
+ configs/mount_control.yaml | 15 +++++++++++++++
+ configs/mount_drop.yaml    | 33 +++++++++++++++++++++++++++++++++
+ configs/mount_fill.yaml    | 32 ++++++++++++++++++++++++++++++++
+ configs/mount_gate.yaml    | 30 ++++++++++++++++++++++++++++++
+ configs/mount_hybrid.yaml  | 29 +++++++++++++++++++++++++++++
+ 5 files changed, 139 insertions(+)
+diff --git a/configs/mount_control.yaml b/configs/mount_control.yaml
+new file mode 100644
+index 0000000..fe22090
+--- /dev/null
++++ b/configs/mount_control.yaml
+@@ -0,0 +1,15 @@
++# Mounting experiment (TASKS row 49) - CONTROL arm: NO mount block at all.
++# Plain scripts/train.py run (kt_ab_control rig precedent) at identical
++# data / steps / seed / optimizer as the four mount_* arms, so any eval-loss
++# delta at matched steps is attributable to the mount wiring alone. The only
++# difference vs configs/mount_gate.yaml is the absent mount block + output
++# dirs. This config is NOT consumed by scripts/mount.py.
++name: mount-control
++
++tokenizer: {name: codellama/CodeLlama-7b-hf, vocab_size: 32768}
++
++model: {layers: 12, hidden: 768, heads: 12, kv_heads: 4, ffn: 2048, ctx: 512, dropout: 0.0, tie_embeddings: true}
++
++data: {tokens_dir: data/pilot/tokens}
++
++train: {output_dir: runs/mount_control, final_dir: runs/mount_control/final, max_steps: 1000, batch: 1, accum: 32, lr: 4.0e-4, warmup_steps: 150, logging_steps: 25, eval_steps: 100, save_steps: 100, save_total_limit: 3, fp16: true, grad_ckpt: true, optim: adamw_bnb_8bit, seed: 42}
+diff --git a/configs/mount_drop.yaml b/configs/mount_drop.yaml
+new file mode 100644
+index 0000000..5929d3f
+--- /dev/null
++++ b/configs/mount_drop.yaml
+@@ -0,0 +1,33 @@
++# Mounting experiment (TASKS row 49) - arm "drop": bridges live at FIXED
++# strength 1.0 (no gate schedule applies) while progressive head severance
++# unlinks them: pct = init at unlink_start, +10 every stage_len steps, capped
++# (src/mount.py severance_pct; keep-one rule means full severance is
++# unreachable - drop never teacher-skips).
++# Delta vs mount_gate per .superpowers/sdd/mounting/task-5-brief.md Step 5.2.
++name: mount-drop
++
++tokenizer: {name: codellama/CodeLlama-7b-hf, vocab_size: 32768}
++
++model: {layers: 12, hidden: 768, heads: 12, kv_heads: 4, ffn: 2048, ctx: 512, dropout: 0.0, tie_embeddings: true}
++
++data: {tokens_dir: data/pilot/tokens}
++
++mount:
++  # SmolLM2-135M HF snapshot pin (frozen teacher; weights never trained).
++  teacher_path: C:/Users/AhmadMhmoud/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-135M/snapshots/93efa2f097d58c2a74874c7e644dbc9b0cee75a2
++  teacher_stream: data/pilot/tokens_teacher_smol135
++  mode: drop
++  teacher_hidden: 576
++  teacher_layers: 30
++  # Schema-completeness key only: attach_mounts derives bridge heads as
++  # hidden//128 = 6 at hidden 768; deliberately NOT plumbed (Task 3 review M1).
++  heads_bridge: 6
++  # Task 3 review I1: EVERY mount config carries mount.gate. Inert in drop
++  # mode (strength is fixed 1.0; gate_strength is never called) - kept for
++  # config uniformity, not schedule.
++  gate: {warmup: 150, hold: 300, anneal_end: 900}
++  drop: {unlink_start: 300, stage_len: 100, init: 10, cap: 100}
++  cliff_delta: 0.15
++  recovery_steps: 150
++
++train: {output_dir: runs/mount_drop, final_dir: runs/mount_drop/final, max_steps: 1000, batch: 1, accum: 32, lr: 4.0e-4, warmup_steps: 150, logging_steps: 25, eval_steps: 100, save_steps: 100, save_total_limit: 3, fp16: true, grad_ckpt: true, optim: adamw_bnb_8bit, seed: 42}
+diff --git a/configs/mount_fill.yaml b/configs/mount_fill.yaml
+new file mode 100644
+index 0000000..9135314
+--- /dev/null
++++ b/configs/mount_fill.yaml
+@@ -0,0 +1,32 @@
++# Mounting experiment (TASKS row 49) - arm "fill": NO bridge modules. The
++# student's own post-layer stream is pulled toward teacher anchored hidden
++# states through trained Linear(576, 768) probes (discarded at the
++# independence save). The gate schedule is consumed INVERTED as the feature
++# anneal: anneal = 1 - gate_strength(eff_step, ...) (scripts/mount.py).
++# Delta vs mount_gate per .superpowers/sdd/mounting/task-5-brief.md Step 5.2.
++name: mount-fill
++
++tokenizer: {name: codellama/CodeLlama-7b-hf, vocab_size: 32768}
++
++model: {layers: 12, hidden: 768, heads: 12, kv_heads: 4, ffn: 2048, ctx: 512, dropout: 0.0, tie_embeddings: true}
++
++data: {tokens_dir: data/pilot/tokens}
++
++mount:
++  # SmolLM2-135M HF snapshot pin (frozen teacher; weights never trained).
++  teacher_path: C:/Users/AhmadMhmoud/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-135M/snapshots/93efa2f097d58c2a74874c7e644dbc9b0cee75a2
++  teacher_stream: data/pilot/tokens_teacher_smol135
++  mode: fill
++  teacher_hidden: 576
++  teacher_layers: 30
++  # Schema-completeness key only: fill has NO bridges; inert here
++  # (attach_mounts never runs in fill mode; hidden//128 = 6 would apply).
++  heads_bridge: 6
++  # Task 3 review I1 (MANDATORY for fill): the gate block is consumed at the
++  # first training micro-batch as the inverted anneal - without it the run
++  # dies with a generic TypeError (no defaults on gate_strength).
++  gate: {warmup: 150, hold: 300, anneal_end: 900}
++  cliff_delta: 0.15
++  recovery_steps: 150
++
++train: {output_dir: runs/mount_fill, final_dir: runs/mount_fill/final, max_steps: 1000, batch: 1, accum: 32, lr: 4.0e-4, warmup_steps: 150, logging_steps: 25, eval_steps: 100, save_steps: 100, save_total_limit: 3, fp16: true, grad_ckpt: true, optim: adamw_bnb_8bit, seed: 42}
+diff --git a/configs/mount_gate.yaml b/configs/mount_gate.yaml
+new file mode 100644
+index 0000000..f924aed
+--- /dev/null
++++ b/configs/mount_gate.yaml
+@@ -0,0 +1,30 @@
++# Mounting experiment (TASKS row 49) - arm "gate": frozen-teacher
++# cross-attention bridges on every student layer; bridge strength runs
++# 0->1 over warmup, holds, then anneals to 0 by anneal_end (src/mount.py
++# gate_strength; pure step function, resume-pure). Teacher signal skipped
++# entirely whenever strength <= 0 (exact plain CE path).
++# Template: .superpowers/sdd/mounting/task-5-brief.md Step 5.1.
++name: mount-gate
++
++tokenizer: {name: codellama/CodeLlama-7b-hf, vocab_size: 32768}
++
++model: {layers: 12, hidden: 768, heads: 12, kv_heads: 4, ffn: 2048, ctx: 512, dropout: 0.0, tie_embeddings: true}
++
++data: {tokens_dir: data/pilot/tokens}
++
++mount:
++  # SmolLM2-135M HF snapshot pin (frozen teacher; weights never trained).
++  teacher_path: C:/Users/AhmadMhmoud/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-135M/snapshots/93efa2f097d58c2a74874c7e644dbc9b0cee75a2
++  teacher_stream: data/pilot/tokens_teacher_smol135
++  mode: gate
++  teacher_hidden: 576
++  teacher_layers: 30
++  # Schema-completeness key only: attach_mounts derives bridge heads as
++  # hidden//128 = 6 at hidden 768; deliberately NOT plumbed (Task 3 review M1).
++  heads_bridge: 6
++  # Task 3 review I1: EVERY mount config carries mount.gate.
++  gate: {warmup: 150, hold: 300, anneal_end: 900}
++  cliff_delta: 0.15
++  recovery_steps: 150
++
++train: {output_dir: runs/mount_gate, final_dir: runs/mount_gate/final, max_steps: 1000, batch: 1, accum: 32, lr: 4.0e-4, warmup_steps: 150, logging_steps: 25, eval_steps: 100, save_steps: 100, save_total_limit: 3, fp16: true, grad_ckpt: true, optim: adamw_bnb_8bit, seed: 42}
+diff --git a/configs/mount_hybrid.yaml b/configs/mount_hybrid.yaml
+new file mode 100644
+index 0000000..eb44230
+--- /dev/null
++++ b/configs/mount_hybrid.yaml
+@@ -0,0 +1,29 @@
++# Mounting experiment (TASKS row 49) - arm "hybrid": gate schedule AND
++# severance ladder drive the bridges at once (gate_strength on the bridge add,
++# severance_pct on heads from unlink_start).
++# Delta vs mount_gate per .superpowers/sdd/mounting/task-5-brief.md Step 5.2.
++name: mount-hybrid
++
++tokenizer: {name: codellama/CodeLlama-7b-hf, vocab_size: 32768}
++
++model: {layers: 12, hidden: 768, heads: 12, kv_heads: 4, ffn: 2048, ctx: 512, dropout: 0.0, tie_embeddings: true}
++
++data: {tokens_dir: data/pilot/tokens}
++
++mount:
++  # SmolLM2-135M HF snapshot pin (frozen teacher; weights never trained).
++  teacher_path: C:/Users/AhmadMhmoud/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-135M/snapshots/93efa2f097d58c2a74874c7e644dbc9b0cee75a2
++  teacher_stream: data/pilot/tokens_teacher_smol135
++  mode: hybrid
++  teacher_hidden: 576
++  teacher_layers: 30
++  # Schema-completeness key only: attach_mounts derives bridge heads as
++  # hidden//128 = 6 at hidden 768; deliberately NOT plumbed (Task 3 review M1).
++  heads_bridge: 6
++  # Task 3 review I1: EVERY mount config carries mount.gate.
++  gate: {warmup: 150, hold: 300, anneal_end: 900}
++  drop: {unlink_start: 300, stage_len: 100, init: 10, cap: 100}
++  cliff_delta: 0.15
++  recovery_steps: 150
++
++train: {output_dir: runs/mount_hybrid, final_dir: runs/mount_hybrid/final, max_steps: 1000, batch: 1, accum: 32, lr: 4.0e-4, warmup_steps: 150, logging_steps: 25, eval_steps: 100, save_steps: 100, save_total_limit: 3, fp16: true, grad_ckpt: true, optim: adamw_bnb_8bit, seed: 42}
