@@ -14,7 +14,17 @@
 >
 > 2026-09-11: **ARABIC DIACRITIZATION SPECIALIST (D-line) APPROVED — design done, NOT started.** New self-contained project: char-level bidirectional encoder (our GQA blocks, causal mask off) + 15-class per-Arabic-letter diacritic head, ~30M pilot, submodule `diacritizer/`. Decisions D1-D6 (route / size / placement / strip->preserve->dual-mode policy ladder / mixed-general domain / copy-by-construction non-Arabic policy incl. tatweel + Quranic-mark passthrough) in research/arabic_diacritization/DESIGN.md; build plan docs/plans/2026-09-11-arabic-diacritization-specialist.md; TASKS rows 50-55 (A0a-c CPU-only -> A1 smoke -> A2 pilot -> A3/A4). Exit gate for phase A0 = scripts/selftest.py --all 4/4 PASS; eval harness (DER/WER +-case endings + text-preservation) is built BEFORE any training. GPU was BUSY at write time (KT-2 r2 python pid; row 48 active) — GPU rows 53/54 queue behind it. No M3-line file changes planned; any exception gets its own row + diff list first.
 
-## 2026-09-11 — D-line A0a+A0b DONE (rows 50, 51)
+## 2026-09-11 — D-line A0 COMPLETE (rows 50-52); GPU rows ARMED  <- scoped: ARABIC-DIACRITIZATION agent only
+
+- A0 exit gate: selftest --all 3/3 phases (a0a 24, a0b 6, a0c 7 checks), 0 SKIPPED.
+- GPU-ready files delivered and validated on CPU ONLY (--device cpu; GPU was
+  never touched): src/model.py, scripts/train.py, scripts/tokenize_data.py,
+  scripts/eval.py, configs/diac_smoke.yaml + diac_pilot.yaml (= 30.5M params).
+- BEFORE the first GPU launch (R53 D-smoke): re-run tokenize_data.py WITHOUT
+  --max-train (current pack capped at 5k windows); never co-run with any other
+  train.py; init loss baseline ~2.7 (15-class).
+- Next: user go -> R53 D-smoke queued behind any live run, then R54 D-pilot
+  (deliverable rung). Sadeed_Tashkeela still HF-gated (user token decision).
 
 - R50: diacritizer/ scaffolded (tokenizer/labels/passthrough + selftest). a0a 24/24 PASS.
 - R51: download_data.py + prepare_data.py. Sources verified-hit (Fadel, QCRI

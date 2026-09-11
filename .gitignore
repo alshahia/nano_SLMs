@@ -52,6 +52,13 @@ data/teacher/
 # archives; weights stay local per the LFS decision, HANDOFF section 7)
 checkpoint_backup/
 
+# D-line (diacritization specialist, TASKS rows 50-55, submodule diacritizer/):
+# code + configs + docs ARE committed; data/runs artifacts stay local.
+# corpora regenerable: download_data.py + prepare_data.py (seed 20260911).
+data/diac/raw/
+data/diac/prepared/
+data/diac/smoke/
+runs/diac/
 # Milestone B A/B arms (8-bit Adam study): weights stay local - same LFS
 # decision as target/sft (384 MB fp32 per ckpt x4 would blow the ~1 GB quota).
 # Metrics, logs, trainer_state and tfevents stay tracked. optimizer.pt is
