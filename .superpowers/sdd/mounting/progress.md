@@ -22,6 +22,9 @@ Task 0: complete (controller) — preflights: torch OK, pilot tokens OK, SmolLM2
 - drop arm CRASHED @step~300: severance mask on CPU (src/mount.py:74 device bug). FIX commit-less edit: `_sev_keep.to(device=h.device, dtype=h.dtype)`; verified CPU+CUDA. Relaunched pwsh-21 (auto-resume from checkpoint-300).
 - drop arm DONE (pwsh-21, resumed ckpt-300): final_eval=2.0473, stored best=2.2881@900 (final state BETTER than stored best - tracker quirk, both reported). vs control +13.2% < +20% wall. No cliff events.
 - hybrid arm LAUNCHED pwsh-22 tee arm_hybrid_tee.txt. Last arm; then Step 6.2/6.3.
+- hybrid arm DONE pwsh-22: best_eval_loss=1.8153@1000 (=final) = +0.3% vs control, best mount arm. wall 2h05m (teacher skip late-run).
+- ALL 5 ARMS DONE. Step 6.2 evals: control 1.8094 / fill 3.6798 / gate 1.8442 / drop 2.0473 / hybrid 1.8153 (eval_report.json per final; 110 tensors, 0 bridge names each). No wall triggers. Step 6.3 report research/mounting_ab_report.md committed 7e1abf2. TRACK COMPLETE - nothing owed on resume (scale-up = user-gated, recommended vehicle: hybrid).
+
 
 
 

@@ -27,6 +27,10 @@ back to TU09FBO; verify at every session start, the box pair-flips).
   4.4 GB reserved (seq 512 AND 1024).
 - Thermal behavior: sustained training cycles 84–90 °C with SM-clock throttle;
   pace swings are normal (see MEMORY.md §Lessons).
+- Mounting arms (row 49, 2026-09-11→12): teacher-touching trainer live VRAM measured
+  2.69 GB / 6 GB (frozen SmolLM2-135M fp32 + fp16 student, ctx 512, b1/accum 32) —
+  well under the 6 GB bound; sustained ~19–20 s/it at 1000-step arms; no NaN
+  across 5 arms (honest note: fill broke its own fp16 grad norms, not VRAM).
 
 ## Software (verified this session by import)
 

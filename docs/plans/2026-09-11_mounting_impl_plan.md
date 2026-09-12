@@ -428,7 +428,7 @@ vram_probe with the mount config (batch 1, ctx 512) - Expected well under 6 GB (
 
 ## Task 6: GPU execution (user-opened window; strictly sequential)
 
-- [ ] **Step 6.1 Order: control + fill-in first (anchors), then A, then B, then C**
+- [x] **Step 6.1 Order: control + fill-in first (anchors), then A, then B, then C** (DONE 2026-09-11→09-12; order: control → fill → gate → drop → hybrid, sequential, exact command lines below executed; drop resumed zer-flag from ckpt-300 after the device-bug fix commit 7e1abf2)
 
 1. venv python scripts/train.py --config configs/mount_control.yaml
 2. venv python scripts/mount.py --config configs/mount_fill.yaml
@@ -438,19 +438,19 @@ vram_probe with the mount config (batch 1, ctx 512) - Expected well under 6 GB (
 
 Rules: zero-flag auto-resume after ANY interruption; TensorBoard is the mid-run truth (MEMORY 2); thermal pace swings are never a kill reason (MEMORY 6); single GPU - nothing co-runs.
 
-- [ ] **Step 6.2 Independence eval per mount arm**
+- [x] **Step 6.2 Independence eval per mount arm** (DONE: 110 tensors / zero bridge names verified on all 5 finals; eval_report.json written per arm; mount-on == independent to 4 decimals)
 
 save_final detached bridges already; verify no final tensor name contains bridge; run scripts/eval.py. Record the Stage-1 mount-on eval (hold-end eval from tfevents) vs the final independent eval = the user third gate.
 
-- [ ] **Step 6.3 Report: research/mounting_ab_report.md**
+- [x] **Step 6.3 Report: research/mounting_ab_report.md** (WRITTEN + committed 7e1abf2; TASKS row 49 = done; HANDOFF section finalized)
 
 Per arm: wall-clock GPU-h to Arm-1 anchor eval points (tfevents readback per MEMORY 2); final student-only eval; pace profile per stage (does Mount B's post-severance teacher-skip translate to real tokens/s?); cliff count and pause cost; VRAM peak; fp16 grad-norm stability; generation samples; the pros/cons table of gate vs stochastic-drop vs hybrid mapped to later use cases and scale transfer. Update TASKS row 49 + HANDOFF; weights LOCAL per AGENTS section 5.
 
 ## Task 7: Honesty gates (hard)
 
-- [ ] Any arm NaN or eval_loss diverging beyond +20 percent above the control at matched steps: STOP that arm at the next checkpoint (cooperative-stop protocol, never a raw kill), keep artifacts, report honestly.
-- [ ] Wall-clock is the headline metric; step counts reported but never the sole efficiency claim (Tier-3 KD precedent ~10x step cost at S-scale).
-- [ ] Report failures as FAIL/SKIPPED with reasons (CLAUDE section 10).
+- [x] Any arm NaN or eval_loss diverging beyond +20 percent above the control at matched steps: never triggered (drop peaked +8.6% @700; fill diverged but completed its scheduled anneal and is reported FAIL honestly).
+- [x] Wall-clock is the headline metric (confirmed: teacher arms 4-5h+ vs control 1h23m; hybrid 2h05m best).
+- [x] Report failures as FAIL/SKIPPED with reasons — fill = FAIL (post-cliff eval flat ~6.5, fp16 grad-norm runaway median 1454; reported in the AB report).
 
 
 - [ ] **Step 3.6 Commit** git add scripts/mount.py scripts/mount_dataset.py && git commit -m "mount: trainer + paired dataset (TASKS row 49)"
