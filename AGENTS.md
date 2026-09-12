@@ -27,6 +27,8 @@ and fixes the repo-specific conventions CLAUDE.md points here for.
 | **Environment** (what we run on) | [ENVIRONMENT.md](./ENVIRONMENT.md) | before running anything | after any machine/venv/version/disk change |
 | Usage (humans) | [README.md](./README.md) | for command syntax | when commands or usage change |
 | Research | [research/](research) | when touching architecture/data direction | new studies live here; raw payloads under `research/raw/` |
+| **Experiments ledger** | [research/EXPERIMENTS.md](research/EXPERIMENTS.md) | **before planning any experiment** (what exists, what it earned) | one row whenever a task's experiment closes; report = research/_template_experiment.md skeleton |
+| Proven levers | [research/WHAT_WORKS.md](research/WHAT_WORKS.md) | before planning/launching any new training run | whenever a verdict changes what future training should adopt/avoid |
 | **Web UI spec** | [WEBUI_PRD.md](./WEBUI_PRD.md) | before any `webui/` work | when a UI decision or milestone scope changes (user-gated) |
 | Implementation plans | [docs/plans/](docs/plans) | before executing a planned feature | when a plan is created or completed (kept as historical record) |
 
@@ -50,6 +52,7 @@ nano_SLMs/
 ├─ resources/          original user-supplied study notes (pseudo-code skeletons)
 ├─ research/           web-research notes + raw Exa payloads (c12 distillation plan/report)
 ├─ webui/              Gradio web UI (spec: WEBUI_PRD.md; milestones U1-U5)
+├─ viz/                React model-architecture explorer — config-driven, pnpm only (docs: viz/README.md; plan: docs/plans/2026-09-10-model-viz-react-platform.md)
 ├─ checkpoint_backup/  untracked; user-staged machine-move checkpoint zips (HANDOFF §3b) — check for a newer checkpoint-*.zip first
 └─ .venv/              uv-managed CPython 3.12.9 (never pip)
 ```
