@@ -70,7 +70,7 @@ class MountBridge(nn.Module):
         if self._sev_keep is None:
             return h
         H, d = self.heads, self.dim // self.heads
-        m = self._sev_keep.to(h.dtype).view(1, 1, H, 1)
+        m = self._sev_keep.to(device=h.device, dtype=h.dtype).view(1, 1, H, 1)
         h = (h.view(*h.shape[:-1], H, d) * m).reshape(h.shape)
         return h * self._sev_rescale
 

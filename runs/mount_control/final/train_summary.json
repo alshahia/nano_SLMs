@@ -1,0 +1,65 @@
+{
+  "phase": "mount-control",
+  "params_m": 100.68,
+  "best_eval_loss": 1.8093749284744263,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\mount_control\\checkpoint-1000",
+  "final_eval": {
+    "eval_loss": 1.8093749284744263,
+    "eval_runtime": 33.3348,
+    "eval_samples_per_second": 25.379,
+    "eval_steps_per_second": 25.379,
+    "epoch": 0.7822622045126751
+  },
+  "resumed_from": null,
+  "env": {
+    "timestamp_utc": "2026-09-11T17:24:30+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "083b2d1",
+    "gpu": "Quadro RTX 3000, 6144 MiB",
+    "resolved_config": {
+      "name": "mount-control",
+      "tokenizer": {
+        "name": "codellama/CodeLlama-7b-hf",
+        "vocab_size": 32768
+      },
+      "model": {
+        "layers": 12,
+        "hidden": 768,
+        "heads": 12,
+        "kv_heads": 4,
+        "ffn": 2048,
+        "ctx": 512,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "tokens_dir": "data/pilot/tokens"
+      },
+      "train": {
+        "output_dir": "runs/mount_control",
+        "final_dir": "runs/mount_control/final",
+        "max_steps": 1000,
+        "batch": 1,
+        "accum": 32,
+        "lr": 0.0004,
+        "warmup_steps": 150,
+        "logging_steps": 25,
+        "eval_steps": 100,
+        "save_steps": 100,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": true,
+        "optim": "adamw_bnb_8bit",
+        "seed": 42
+      }
+    }
+  }
+}

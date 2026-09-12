@@ -1,0 +1,37 @@
+{
+  "phase": "mount-fill",
+  "mount_mode": "fill",
+  "teacher_path": "C:/Users/AhmadMhmoud/.cache/huggingface/hub/models--HuggingFaceTB--SmolLM2-135M/snapshots/93efa2f097d58c2a74874c7e644dbc9b0cee75a2",
+  "teacher_stream": "data/pilot/tokens_teacher_smol135",
+  "cliff_delta": 0.15,
+  "recovery_steps": 150,
+  "paused_extra": 300,
+  "events": [
+    {
+      "step": 400,
+      "eval_loss": 6.298004150390625,
+      "prev_eval_loss": 3.6798415184020996,
+      "cliff": 2.6181626319885254,
+      "paused_extra": 150
+    },
+    {
+      "step": 500,
+      "eval_loss": 6.472942352294922,
+      "prev_eval_loss": 6.298004150390625,
+      "cliff": 0.17493820190429688,
+      "paused_extra": 300
+    }
+  ],
+  "student_params_m": 106.0,
+  "teacher_params_m": 134.52,
+  "best_eval_loss": 3.6798415184020996,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\mount_fill\\checkpoint-300",
+  "final_eval": {
+    "eval_loss": 3.6798415184020996,
+    "eval_runtime": 47.3916,
+    "eval_samples_per_second": 17.851,
+    "eval_steps_per_second": 17.851,
+    "epoch": 0.7822622045126751
+  },
+  "resumed_from": null
+}

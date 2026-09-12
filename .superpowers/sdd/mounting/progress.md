@@ -13,3 +13,16 @@ Task 3: complete (dc7c20d F1 fix + 107cc13 trainer/dataset; review PASS/PASS, ra
 Task 2: complete (commit 79d2afe; reviewer PASS/APPROVED; 63/63 independent checks). Adjudications: WrappedLayer container-preserving return = NECESSARY deviation (5.16.1 LlamaDecoderLayer returns plain tensor). IMPORTANT F1 OPEN for user: brief's double zero-init (a=0 AND out_proj zero) makes bridge grads exactly 0 = permanently inert mount; fixes preserving step-0 identity: (a) random out_proj + a=0 [reviewer-verified trainable], (b) trainer perturbs a once at mount. F4: hidden_states[l] recorded PRE-bridge — Task 3 must pick anchor semantics. Minors: F2 report anchor-list typo, F3 unused import math, F5 pct-seed.
 Task 1: complete (teacher stream committed; reviewer PASS/APPROVED; minor: meta.json single-run artifact — train counts from .bin sizes, NOT meta.json).
 Task 0: complete (controller) — preflights: torch OK, pilot tokens OK, SmolLM2-135M cache ABSENT (download task assigned to Task 1 subagent), GPU BUSY (kt2_judge.py --stage sample, pid 23428, 712 MiB). Disk 22.04 GB free at start (was ~36; report any further drop).
+## ARM STATUS (executed directly)
+
+- [2026-09-12 ~00:00] fill arm DONE: exit 0. best_eval_loss=3.6798 @ ckpt-300 (=final). Probe cliff 3.68→6.30@400 (pause+150) →6.47@500 → recovered to 3.68; never beat control territory (control 1.8094@1000). No gate stop needed (arm finished naturally). Evidence: runs/mount_fill/final/train_summary.json, arm_fill_tee.txt.
+- gate arm LAUNCHED: pwsh-19, `scripts/mount.py --config configs/mount_gate.yaml`, tee arm_gate_tee.txt. Then drop, hybrid.
+- gate arm DONE: exit 0. best_eval_loss=1.8442 @ ckpt-1000 (=final), vs control 1.8094 = +1.9%, no cliff events. Student 134.35M (bridges active all run). Evidence: runs/mount_gate/final/train_summary.json, arm_gate_tee.txt.
+- drop arm LAUNCHED pwsh-20, tee arm_drop_tee.txt. Then hybrid.
+- drop arm CRASHED @step~300: severance mask on CPU (src/mount.py:74 device bug). FIX commit-less edit: `_sev_keep.to(device=h.device, dtype=h.dtype)`; verified CPU+CUDA. Relaunched pwsh-21 (auto-resume from checkpoint-300).
+- drop arm DONE (pwsh-21, resumed ckpt-300): final_eval=2.0473, stored best=2.2881@900 (final state BETTER than stored best - tracker quirk, both reported). vs control +13.2% < +20% wall. No cliff events.
+- hybrid arm LAUNCHED pwsh-22 tee arm_hybrid_tee.txt. Last arm; then Step 6.2/6.3.
+
+
+
+

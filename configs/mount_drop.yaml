@@ -31,3 +31,8 @@ mount:
   recovery_steps: 150
 
 train: {output_dir: runs/mount_drop, final_dir: runs/mount_drop/final, max_steps: 1000, batch: 1, accum: 32, lr: 4.0e-4, warmup_steps: 150, logging_steps: 25, eval_steps: 100, save_steps: 100, save_total_limit: 3, fp16: true, grad_ckpt: true, optim: adamw_bnb_8bit, seed: 42}
+
+# Independence-eval block (Step 6.2): eval.py needs cfg['eval'].
+eval:
+  max_new_tokens: 64
+
