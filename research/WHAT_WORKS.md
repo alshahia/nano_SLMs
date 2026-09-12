@@ -50,6 +50,27 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
    directly into wall-clock. Honest pilot-scale framing: parity, not net gain -
    adopt when the goal is teacher-injection training infrastructure. [E-11]
 
+8. **8-bit Adam (adamw_bnb_8bit) as the recorded default optimizer** (Milestone B A/B):
+   parity -0.004 eval @500 steps at 1.02x pace and -563 MiB VRAM (1.91 -> 1.36 GB) - the
+   headroom that later enabled bigger batches and ctx work. Batch 2 / accum 16 was parity
+   but 0.60x pace: batch-2 buys nothing on the 6 GB card; keep b1/a32. [E-12]
+
+9. **One-epoch instruct SFT sweet spot** (SFT-v2): at matching AST, 1 epoch passes the
+   forgetting gate (+9.8%) while 2 epochs violates it (+19.7%); the second epoch buys
+   sample-level AST but overwrites base skills. Let the CSN forgetting gate arbitrate. [E-15]
+
+10. **Logit-KD transfers across rungs: distill instead of pretrain from scratch** (C12
+   Tier 3, P->S at tau 1): -5.5% @2000 and the distill-at-1/3-steps criterion PASSED -
+   future rungs distill from a sibling. Loss = 0.5 KL + 0.5 CE; keep eval PURE CE so the
+   A/B stays valid. [E-16]
+
+11. **Streaming-sink + absolute-positions eval for long context, no training** (Track A):
+   the w1024s4-abs mask holds val flat to 16x ctx (-1.50%..+0.00%) - an inference-only way
+   to serve 16k ctx; its recall is capped at window+sink, so true long-ctx quality still
+   comes from training (YaRN 4096 = the trained decision). [E-17]
+   serve 16k without training; hmm capped recall at window+sink, so pretraining still owns
+   true long-ctx quality (YaRN 4096 = the trained decision). [E-17]
+
 ## What NOT to repeat (with reasons)
 
 - **Skew-KL (alpha-SKL) distillation**: +2.29% over plain-KD, led only at a
@@ -70,6 +91,10 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
   separately (MEMORY 47). [E-11]
 - **CUDA_VISIBLE_DEVICES='' to hide the GPU**: PowerShell mapping DELETES the
   variable and the job lands ON the GPU; pin -1 to force CPU (MEMORY 38). [E-11 ops]
+
+- **Stale on-disk eval reports after weight restore**: the target eval_report 1.8641 was
+  stale (re-restore of best@ck-4000 measures 1.8512) - re-evaluate finals after any
+  weight restore/cleanup before trusting old numbers (MEMORY 31). [E-12/E-17]
 
 ## Standing instruments (our standard measurement kit)
 
