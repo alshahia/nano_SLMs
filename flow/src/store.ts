@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { Edge, Node, NodeChange, EdgeChange, Connection } from "@xyflow/react";
 import { applyNodeChanges } from "@xyflow/react";
+import { api, errorMessage, type FlowDocument } from "./api";
 
 /**
  * Canonical graph shape is the flow/0.1 document graph (what the backend
@@ -140,6 +141,15 @@ export interface FlowState {
   setRegistry: (r: RegistrySnapshot) => void;
   setRegistryError: (e: string | null) => void;
   setError: (e: string | null) => void;
+  /** Task 9 inspector props write-back (see updateNodePropsReducer). */
+  updateNodeProps: (id: string, props: Record<string, unknown>) => void;
+  /** Task 9 file actions: Open = GET /api/flows/{name} -> setGraph (which
+   * also resets the xyflow projection via setGraph); Save = PUT
+   * /api/flows/{name}. Both surface errors through the existing
+   * store.error toast channel and never leave a half-applied graph.
+   * saveFlow keeps the collapsed names awaitable for the toolbar modal. */
+  openFlow: (name: string) => Promise<boolean>;
+  saveFlow: (name: string) => Promise<boolean>;
   /** Pure, reducer-safe actions (each fully testable via getState()). */
   addNode: (kind: string, position: DomainPosition) => string | null;
   applyNodesChanges: (changes: NodeChange[]) => void;
@@ -258,6 +268,82 @@ export function addNodeReducer(
 }
 
 /* ------------------------------------------------------------------ */
+/* Task 9: props editing + flow name slug helpers                     */
+/* ------------------------------------------------------------------ */
+
+/** Editor widget to render for a given registry prop. The train string
+ * presets render as selects; numeric_props render as number inputs;
+ * anything else is a free-text input. Pure, registry-driven so the
+ * per-kind table in the T7 contract is honoured (empty-props kinds lead
+ * to the "(no editable properties)" note in the Inspector). */
+export type PropWidget = "number" | "select" | "text";
+
+/** The train kind's two string props are preset-name selects. */
+const SELECT_PROPS = new Set(["preset", "lr_preset"]);
+
+export function propWidgetType(spec: NodeSpec, prop: string): PropWidget {
+  if (SELECT_PROPS.has(prop)) return "select";
+  if (spec.numeric_props.includes(prop)) return "number";
+  return "text";
+}
+
+/** Placeholder select options for the train preset / lr_preset widgets.
+ * These names are copied from flow/server/config_gen.py PRESETS /
+ * LR_PRESETS (which in turn mirror webui/app.py). The inspector dropdowns
+ * are a client-side copy on purpose (MVP); actual value parity is enforced
+ * by the backend AST-parity test (T5) — a server-side rename that does not
+ * update this list shows up as a T5 failure, not a silent config drift. */
+export const TRAIN_PRESET_OPTIONS: string[] = [
+  "Small (~12M, smoke)",
+  "Medium (~101M, pilot)",
+  "Large (~226M, target)",
+];
+export const LR_PRESET_OPTIONS: string[] = [
+  "Pretrain 4e-4",
+  "Conservative 2e-4",
+  "Fine-tune 3e-5",
+];
+
+/** Options for a props select widget (empty -> fall back to free text). */
+export function propSelectOptions(
+  prop: string,
+): string[] | null {
+  if (prop === "preset") return TRAIN_PRESET_OPTIONS;
+  if (prop === "lr_preset") return LR_PRESET_OPTIONS;
+  return null;
+}
+
+/** Client-side slug validation for the Save/Open name inputs
+ * ([a-z0-9-]{1,64}). The server re-validates authoritatively; this only
+ * gives immediate feedback and avoids a doomed request round-trip. */
+export const FLOW_SLUG_RE = /^[a-z0-9-]{1,64}$/;
+
+export function isValidFlowName(name: string): boolean {
+  return FLOW_SLUG_RE.test(name);
+}
+
+/** Build the flow/0.1 PUT document for the current graph. The document
+ * meta name echoes the slug under which the graph is saved server-side. */
+export function flowDocument(name: string, graph: Graph): FlowDocument {
+  return { schema: "flow/0.1", meta: { name }, graph };
+}
+
+/** Pure props write-back: replace node.props in place-by-id and return a
+ * NEW graph (validator-agnostic here — the server validates on save and
+ * on POST /api/validate). Unknown ids return the original graph object. */
+export function updateNodePropsReducer(
+  graph: Graph,
+  id: string,
+  props: Record<string, unknown>,
+): Graph {
+  if (!graph.nodes.some((n) => n.id === id)) return graph;
+  return {
+    ...graph,
+    nodes: graph.nodes.map((n) => (n.id === id ? { ...n, props } : n)),
+  };
+}
+
+/* ------------------------------------------------------------------ */
 /* xyflow <-> domain mapping                                          */
 /* ------------------------------------------------------------------ */
 
@@ -355,6 +441,38 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   error: null,
 
   setGraph: (graph) => set({ graph, projection: [] }),
+  updateNodeProps: (id, props) => {
+    const g = get();
+    const next = updateNodePropsReducer(g.graph, id, props);
+    // Unknown id keeps the same graph object -> no state churn.
+    if (next !== g.graph) set({ graph: next });
+  },
+  openFlow: async (name) => {
+    try {
+      const doc = await api.getFlow(name);
+      set({ graph: doc.graph, projection: [], error: null });
+      return true;
+    } catch (e) {
+      set({ error: errorMessage(e) });
+      return false;
+    }
+  },
+  saveFlow: async (name) => {
+    if (!isValidFlowName(name)) {
+      set({
+        error: "flow name must match [a-z0-9-]{1,64} (lowercase letters, digits, dashes)",
+      });
+      return false;
+    }
+    try {
+      await api.saveFlow(name, flowDocument(name, get().graph));
+      set({ error: null });
+      return true;
+    } catch (e) {
+      set({ error: errorMessage(e) });
+      return false;
+    }
+  },
   setSelection: (selection) => set({ selection }),
   setInspectorTab: (inspectorTab) => set({ inspectorTab }),
   setRunStatus: (runStatus) => set({ runStatus }),

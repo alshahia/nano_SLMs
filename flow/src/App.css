@@ -1,6 +1,95 @@
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header toolbar (Task 9 File Open/Save; Run/Validate land in Task 10). */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid #ccc;
+  background: #fafafa;
+}
+
+.toolbar-title {
+  font-weight: 600;
+}
+
 .shell {
   display: flex;
-  height: 100vh;
+  flex: 1;
+  min-height: 0;
+}
+
+/* File modals (Open picker / Save name prompt). */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.modal {
+  position: fixed;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: 300px;
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+}
+
+.modal-title {
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+
+.modal input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 7px;
+  font: inherit;
+}
+
+.modal-list {
+  list-style: none;
+  margin: 6px 0;
+  padding: 0;
+  max-height: 240px;
+  overflow: auto;
+}
+
+.modal-list button {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: left;
+  padding: 5px 7px;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.modal-list button:hover {
+  background: #e6eefb;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.modal-note {
+  color: #999;
+  font-size: 12px;
 }
 
 .palette {
@@ -161,4 +250,68 @@
 
 .inspector-panel {
   margin-top: 8px;
+}
+
+/* Inspector properties tab widgets (Task 9). */
+.inspector-empty {
+  color: #666;
+  font-size: 13px;
+}
+
+.prop-kind {
+  font-size: 12px;
+  color: #555;
+  margin: 0 0 6px;
+}
+
+.prop-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.prop-row input,
+.prop-row select {
+  font: inherit;
+  padding: 4px 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.advanced-props textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font: 12px/1.4 monospace;
+}
+
+.honesty-label {
+  font-size: 11px;
+  color: #8a6d1a;
+  margin: 6px 0;
+}
+
+/* Run log tab. */
+.run-state {
+  font-size: 12px;
+  margin: 0 0 6px;
+}
+
+.run-state-error {
+  color: #b30;
+}
+
+.run-tail {
+  height: 180px;
+  overflow: auto;
+  background: #14171c;
+  color: #d6e2f0;
+  font-size: 12px;
+  line-height: 1.4;
+  padding: 8px;
+  margin: 0;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  word-break: break-word;
 }

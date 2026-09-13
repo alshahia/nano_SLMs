@@ -1,4 +1,4 @@
-import type { Graph, RegistrySnapshot } from "./store";
+import type { Graph, RegistrySnapshot, RunStatus } from "./store";
 
 /** flow/0.1 document shape (GET /api/flows/{name} and PUT body). */
 export interface FlowDocument {
@@ -56,6 +56,22 @@ export interface ApiRunStatus {
   started_at: string | null;
   exit_at: string | null;
   tail: string[];
+}
+
+/** Map the GET /api/run/status backend payload into the UI-level
+ * store.RunStatus (T7 contract + runner.py passthrough semantics):
+ * - running: true                        -> "running" (live values)
+ * - running === false, exit_code !== null -> "done" when 0, else "error"
+ * - running === false, exit_code === null -> "idle" (last run finished
+ *   before a tail existed / no run since process start) */
+export function mapRunStatus(s: ApiRunStatus): RunStatus {
+  if (s.running) return { state: "running", message: "running…" };
+  if (s.exit_code !== null) {
+    return s.exit_code === 0
+      ? { state: "done", message: "exit code 0 — done" }
+      : { state: "error", message: "exit code " + String(s.exit_code) + " — error" };
+  }
+  return { state: "idle", message: "no live run" };
 }
 
 export const api = {
