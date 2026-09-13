@@ -20,7 +20,7 @@ def make_node(id="n1", kind="dataset", position=(0, 0), props=None):
     }
 
 
-def make_edge(id="e1", frm="n1", frmPort="out", to="n2", toPort="in"):
+def make_edge(id="e1", frm="n1", frmPort="cleaned", to="n2", toPort="shard-dir"):
     return {"id": id, "from": frm, "fromPort": frmPort, "to": to, "toPort": toPort}
 
 
@@ -43,7 +43,7 @@ def valid_doc(nodes=None, edges=None, schema=SAFE, meta=None):
 class TestValidDocuments(unittest.TestCase):
     def test_completely_valid_document_returns_empty_list(self):
         doc = valid_doc(
-            edges=[make_edge("e1", "n1", "out", "n2", "in")],
+            edges=[make_edge("e1", "n1", "cleaned", "n2", "shard-dir")],
         )
         self.assertEqual(validate(doc), [])
 
@@ -175,14 +175,14 @@ class TestNodes(unittest.TestCase):
 
 class TestEdges(unittest.TestCase):
     def test_edge_to_unknown_node_id_is_rejected(self):
-        doc = valid_doc(edges=[make_edge("e1", "n1", "out", "ghost", "in")])
+        doc = valid_doc(edges=[make_edge("e1", "n1", "cleaned", "ghost", "cleaned-dir")])
         errors = validate(doc)
         joined = " ".join(errors)
         self.assertIn("ghost", joined)
         self.assertIn("e1", joined)
 
     def test_edge_from_unknown_node_id_is_rejected(self):
-        doc = valid_doc(edges=[make_edge("e1", "ghost", "out", "n2", "in")])
+        doc = valid_doc(edges=[make_edge("e1", "ghost", "cleaned", "n2", "cleaned-dir")])
         errors = validate(doc)
         joined = " ".join(errors)
         self.assertIn("ghost", joined)
@@ -222,7 +222,7 @@ class TestEdges(unittest.TestCase):
         for bad in ("", "<from_port>", "TODO", "?"):
             with self.subTest(bad=bad):
                 errors = validate(
-                    valid_doc(edges=[make_edge("e1", "n1", bad, "n2", "in")])
+                    valid_doc(edges=[make_edge("e1", "n1", bad, "n2", "shard-dir")])
                 )
                 self.assertTrue(errors, errors)
 
@@ -237,7 +237,7 @@ class TestEdges(unittest.TestCase):
 
 
     def test_self_edge_is_rejected(self):
-        doc = valid_doc(edges=[make_edge("e1", "n1", "out", "n1", "in")])
+        doc = valid_doc(edges=[make_edge("e1", "n1", "cleaned", "n1", "cleaned-dir")])
         errors = validate(doc)
         joined = " ".join(errors)
         self.assertIn("itself", joined.lower())
@@ -252,41 +252,43 @@ class TestCycles(unittest.TestCase):
         ]
 
     def test_simple_cycle_is_rejected(self):
-        edges = [make_edge("e1", "a", "out", "b", "in"),
-                 make_edge("e2", "b", "out", "c", "in"),
-                 make_edge("e3", "c", "out", "a", "in")]
+        edges = [make_edge("e1", "a", "cleaned", "b", "cleaned-dir"),
+                 make_edge("e2", "b", "shard-dir", "c", "shard-dir"),
+                 make_edge("e3", "c", "ckpt-dir", "a", "cleaned-dir")]
         doc = valid_doc(nodes=self._nodes_for(), edges=edges)
         errors = validate(doc)
         joined = " ".join(errors)
         self.assertIn("cycle", joined.lower())
 
     def test_two_node_cycle_is_rejected(self):
-        edges = [make_edge("e1", "a", "out", "b", "in"),
-                 make_edge("e2", "b", "out", "a", "in")]
+        edges = [make_edge("e1", "a", "cleaned", "b", "cleaned-dir"),
+                 make_edge("e2", "b", "shard-dir", "a", "cleaned-dir")]
         doc = valid_doc(nodes=self._nodes_for(), edges=edges)
         errors = validate(doc)
         joined = " ".join(errors)
         self.assertIn("cycle", joined.lower())
 
     def test_acyclic_chain_is_accepted(self):
-        edges = [make_edge("e1", "a", "out", "b", "in"),
-                 make_edge("e2", "b", "out", "c", "in")]
+        edges = [make_edge("e1", "a", "cleaned", "b", "cleaned-dir"),
+                 make_edge("e2", "b", "shard-dir", "c", "shard-dir")]
         doc = valid_doc(nodes=self._nodes_for(), edges=edges)
         self.assertEqual(validate(doc), [])
 
     def test_diamond_is_accepted(self):
-        edges = [make_edge("e1", "a", "out", "b", "in"),
-                 make_edge("e2", "a", "out", "c", "in"),
-                 make_edge("e3", "b", "out", "c", "in")]
+        edges = [make_edge("e1", "a", "cleaned", "b", "cleaned-dir"),
+                 make_edge("e2", "a", "cleaned", "c", "shard-dir"),
+                 make_edge("e3", "b", "shard-dir", "c", "shard-dir")]
         doc = valid_doc(nodes=self._nodes_for(), edges=edges)
         self.assertEqual(validate(doc), [])
+
+
 
 
 class TestMultipleErrors(unittest.TestCase):
     def test_multiple_violations_are_all_reported(self):
         doc = valid_doc(
             nodes=[make_node("n1"), make_node("n1", kind="quantum")],
-            edges=[make_edge("e1", "n1", "out", "ghost", "in")],
+            edges=[make_edge("e1", "n1", "cleaned", "ghost", "cleaned-dir")],
         )
         errors = validate(doc)
         self.assertGreaterEqual(len(errors), 3, errors)

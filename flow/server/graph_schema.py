@@ -3,10 +3,11 @@
 `validate(g) -> list[str]` performs NO I/O and returns [] for a valid
 document, otherwise one human-readable reason string per violation.
 
-Task 3 introduces the real node-kind registry (nodes.py). Until then the
-valid kind set lives here as a placeholder and a lazy-import hook is left
-in place: when the registry exists it becomes the source of truth for both
-kinds and per-kind ports. See _known_kinds() and _known_ports().
+The node-kind registry (flow.server.nodes, Task 3) is the source of truth
+for kinds AND per-kind ports, reached through the lazy-import hooks
+_known_kinds() and _known_ports(): when the registry answers, toPort and
+fromPort are both checked against the endpoint kinds' ports and the
+registry-free "out*"/"in*" prefix heuristic is skipped.
 """
 
 # Placeholder valid kinds. Task 3's registry (flow/server/nodes.py) is the
@@ -116,10 +117,13 @@ def _validate(g) -> "list[str]":
     elif len(nodes) == 0:
         errors.append("graph.nodes: graph is empty — at least one node is required")
 
-    edges = graph.get("edges")
-    if not isinstance(edges, list):
+    # A present-but-mistyped edges key is an error; a graph whose "edges"
+    # key is entirely missing is accepted and treated as an empty edge list.
+    if "edges" in graph and not isinstance(graph["edges"], list):
         errors.append("graph.edges: missing or not a list")
         edges = []
+    else:
+        edges = graph.get("edges") if isinstance(graph.get("edges"), list) else []
 
     # --- nodes -----------------------------------------------------------
     known_kinds = _known_kinds() or VALID_KINDS_PLACEHOLDER
@@ -257,22 +261,32 @@ def _validate(g) -> "list[str]":
                 "got %r" % (label, to_port)
             )
 
-        if frm_ok and to_ok:
-            known_ports = _known_ports(node_by_id[to].get("kind"))
-            if known_ports is not None:
-                inputs, _outputs = known_ports
-                if isinstance(to_port, str) and to_port and to_port not in inputs:
-                    errors.append(
-                        "graph.edges[%s].toPort: %r is not an input port of kind %r"
-                        % (label, to_port, node_by_id[to].get("kind"))
-                    )
+        src_ports = _known_ports(node_by_id[frm].get("kind")) if frm_ok else None
+        dst_ports = _known_ports(node_by_id[to].get("kind")) if to_ok else None
 
-        if frm_ok and to_ok:
-            # Fallback (registry-unknown) port semantics until Task 3's
-            # registry supplies per-kind ports: an edge leaves a
+        if dst_ports is not None:
+            inputs, _outputs = dst_ports
+            if isinstance(to_port, str) and to_port and to_port not in inputs:
+                errors.append(
+                    "graph.edges[%s].toPort: %r is not an input port of kind %r"
+                    % (label, to_port, node_by_id[to].get("kind"))
+                )
+
+        if src_ports is not None:
+            _inputs, src_out = src_ports
+            if isinstance(from_port, str) and from_port and from_port not in src_out:
+                errors.append(
+                    "graph.edges[%s].fromPort: %r is not an output port of kind %r"
+                    % (label, from_port, node_by_id[frm].get("kind"))
+                )
+
+        if src_ports is None and dst_ports is None:
+            # Fallback (registry-unknown) port semantics until the registry
+            # can answer for BOTH endpoint kinds: an edge leaves a
             # source-side output port ("out..."-prefixed) and lands on an
             # input-side port ("in..."-prefixed). Any other pairing is a
-            # mismatched connection.
+            # mismatched connection. When the registry answers, it is the
+            # sole source of truth and this heuristic is skipped.
             if isinstance(from_port, str) and not from_port.strip().lower().startswith("out"):
                 errors.append(
                     "graph.edges[%s]: mismatched port names — fromPort %r "
