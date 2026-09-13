@@ -173,6 +173,9 @@ def main():
         torch.save(st["model"], model_dir / "model.pt")
     else:
         torch.save(model.state_dict(), model_dir / "model.pt")
+    # cfg yaml copy beside the bare state_dict so bench.py can rebuild any arch
+    (model_dir / "config.yaml").write_text(
+        yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8")
     print({"done": step, "final": str(model_dir), "best_val_loss": best_vl})
 
 

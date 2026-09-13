@@ -129,13 +129,20 @@ def main():
                     choices=["fadel_test", "sadeed25", "wikinews2024", "wikinews2014"])
     ap.add_argument("--out", required=True, help="prediction file (1 line/sent)")
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--config", default=None,
+                    help="explicit yaml for the model shape (REQUIRED for any "
+                         "final whose arch differs from diac_pilot.yaml: "
+                         "train.py exports final/model.pt as a BARE state_dict)")
     args = ap.parse_args()
 
     ck = Path(args.ckpt)
     state_p = ck / "state.pt" if (ck / "state.pt").exists() else ck / "model.pt"
     state = torch.load(state_p, map_location="cuda", weights_only=False)
-    cfg = json.loads(state.get("config", "{}")) or yaml.safe_load(
-        (REPO / "configs" / "diac_pilot128.yaml").read_text(encoding="utf-8"))
+    if args.config:
+        cfg = yaml.safe_load(Path(args.config).read_text(encoding="utf-8"))
+    else:
+        cfg = json.loads(state.get("config", "{}")) or yaml.safe_load(
+            (REPO / "configs" / "diac_pilot128.yaml").read_text(encoding="utf-8"))
     device = "cuda"
     model = build_from_config(cfg, vocab_size=TK.VOCAB_SIZE).to(device)
     model.load_state_dict(state["model"] if "model" in state else state)
