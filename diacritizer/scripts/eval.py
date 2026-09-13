@@ -28,7 +28,9 @@ def main():
     metrics = []
     for i in range(n):
         p = pred_lines[i] if i < len(pred_lines) else ""
-        refs = [(rl[i] if i < len(rl) else "") for rl in ref_sets]
+        # multi-ref support: one line may carry alternatives tab-separated
+        refs = [(rl[i].split("\t") if i < len(rl) else [""]) for rl in ref_sets]
+        refs = [r for alt in refs for r in alt]
         metrics.append(eval_der.score_line(p, refs))
     agg = eval_der.aggregate(metrics)
     report = {"pred": args.pred, "refs": args.ref,

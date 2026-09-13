@@ -20,7 +20,17 @@ PREPARED = REPO / "data" / "diac" / "prepared"
 
 
 def read_jsonl(path):
-    return [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines()]
+    """Stream-parse lines into (bases, labels) pairs to keep RAM bounded.
+
+    The v2 corpus has 1.5M windows over ~84 MB raw text; loading full row
+    dicts into Python objects reached multi-GB and MemoryError'd.
+    """
+    out = []
+    with path.open("r", encoding="utf-8") as f:
+        for line in f:
+            r = json.loads(line)
+            out.append((r["bases"], r["labels"]))
+    return out
 
 
 def pack_rows(rows, ctx, shuffle_seed):
@@ -30,17 +40,17 @@ def pack_rows(rows, ctx, shuffle_seed):
     n = len(rows)
     ids = np.full((n, ctx), TK.PAD, dtype=np.int64)
     y = np.full((n, ctx), -1, dtype=np.int8)
-    for i, r in enumerate(rows):
-        seq = TK.encode(r["bases"])[:ctx]
+    for i, (bases, labels) in enumerate(rows):
+        seq = TK.encode(bases)[:ctx]
         L = len(seq)
         ids[i, :L] = seq
-        y[i, :L] = r["labels"][:L]
+        y[i, :L] = labels[:L]
     return ids, y
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--phase", choices=["smoke", "pilot"], default="smoke")
+    ap.add_argument("--phase", choices=["smoke", "pilot", "pilot128", "v2", "v2b"], default="smoke")
     ap.add_argument("--ctx", type=int, default=512)
     ap.add_argument("--max-train", type=int, default=None)
     args = ap.parse_args()

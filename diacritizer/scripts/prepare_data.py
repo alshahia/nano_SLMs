@@ -28,16 +28,25 @@ import passthrough as PT  # noqa: E402
 
 RAW = REPO / "data" / "diac" / "raw"
 OUT = REPO / "data" / "diac" / "prepared"
-CTX_CHARS = 1024
+CTX_CHARS = 128  # windowing must MATCH the token ctx: 1024-windows truncated at
+# tokenization waste ~75% of the text (v2 lesson 2026-09-12)
 SEED = 20260911
 
 SOURCES = {
-    # id -> (dir, files, domain)
-    "fadel_train": ("fadel", ["train.txt"], "classical"),
-    "fadel_val":   ("fadel", ["val.txt"], "classical"),
-    "fadel_test":  ("fadel", ["test.txt"], "classical"),
-    "wikinews2024": ("wikinews", ["wikinews2024_multi_ref.diac"], "msa"),
+    # id -> (dir, files, domain, kind, opts)
+    "fadel_train":  ("fadel", ["train.txt"], "classical", "lines", None),
+    "fadel_val":    ("fadel", ["val.txt"], "classical", "lines", None),
+    "fadel_test":   ("fadel", ["test.txt"], "classical", "lines", None),
+    "wikinews2024": ("wikinews", ["wikinews2024_multi_ref.diac"], "msa", "lines", None),
+    # external holdouts (Abdou MIT): never in train; valid -> val pool
+    "abdou_train":  ("abdou_tashkeel", None, "classical", "parquet", None),
+    "abdou_valid":  ("abdou_tashkeel", None, "classical", "parquet", None),
+    # pseudo-source ONLY for the val split (excluded from prepared data by policy)
+    "qcri_wiki":    ("qcri_diac_clone", None, "modern", "qcrijsonl", None),
 }
+# Sources kept OUT of the prepared shards entirely (external benchmark gates,
+# evaluated from raw files; never influencing model selection).
+EXTERNAL_SOURCES = {"fadel_test"}
 
 
 def normalize_line(t):
@@ -70,20 +79,101 @@ def window_line(text, ctx=CTX_CHARS):
         yield cur
 
 
-def stream_samples():
-    """source_id, line -> windowed raw samples with provenance."""
-    for src_id, (subdir, files, domain) in SOURCES.items():
-        for fname in files:
-            path = RAW / subdir / fname
-            if not path.exists():
-                print("  [WARN] missing raw %s (%s)" % (src_id, path))
-                continue
-            for idx, line in enumerate(path.open("r", encoding="utf-8")):
-                norm = normalize_line(line)
-                if not norm:
+def _files_in(subdir):
+    d = RAW / subdir
+    if not d.exists():
+        return []
+    return sorted(p for p in d.glob("**/*") if p.suffix in ('.parquet', '.txt', '.jsonl', '.diac', '.json'))
+
+def _iter_parquet_rows(subdir, want):
+    """(stable_row_key, vocalized_text) per parquet shard; want in {train, valid}."""
+    import pyarrow.parquet as pq
+    files = [p for p in sorted((RAW / subdir).rglob("*.parquet")) if want in p.name]
+    for fp in files:
+        import pyarrow.parquet as pq
+        pf = pq.ParquetFile(str(fp))
+        for bi, batch in enumerate(pf.iter_batches(batch_size=512, columns=["vocalized"])):
+            for i, t in enumerate(batch.column(0).to_pylist()):
+                if isinstance(t, str) and t.strip():
+                    yield (fp.name + "#" + str(bi * 512 + i)), t
+
+def _first_diac_text(obj):
+    """Find the first string field looking like diacritized text."""
+    best = None
+    for v in (obj.values() if isinstance(obj, dict) else []):
+        if isinstance(v, str) and len(v) > 40:
+            marks = sum(1 for ch in v if ch in '\u064b\u064c\u064d\u064e\u064f\u0650\u0651\u0652')
+            bases = sum(1 for ch in v if PT.is_arabic_base(ch))
+            if marks and (best is None or marks > best[0]):
+                best = (marks, v)
+    return best[1] if best else None
+
+def stream_samples(want_sources=None, exclude=None):
+    """source_id, line -> windowed raw samples with provenance.
+
+    want_sources/exclude are decided BEFORE any file IO for that source:
+    skipped sources are never read (self.scans of 1.4M-row shard sets were the
+    dominant cost when filters lived downstream).
+    """
+    for src_id, (subdir, files, domain, kind, opts) in SOURCES.items():
+        if exclude and src_id in exclude:
+            continue
+        if want_sources and src_id not in want_sources:
+            continue
+        if kind == "lines":
+            for fname in files:
+                path = RAW / subdir / fname
+                if not path.exists():
+                    print("  [WARN] missing raw %s (%s)" % (src_id, path))
                     continue
-                for wi, win in enumerate(window_line(norm)):
-                    yield {"src": src_id, "domain": domain, "line": idx, "win": wi, "text": win}
+                for idx, line in enumerate(path.open("r", encoding="utf-8")):
+                    yield {"src": src_id, "domain": domain, "line": idx, "win": "t", "text": normalize_line(line)}
+        elif kind == "parquet":
+            want = {"abdou_train": "train", "abdou_valid": "valid"}[src_id]
+            for lkey, t in _iter_parquet_rows(subdir, want):
+                yield {"src": src_id, "domain": domain, "line": lkey, "win": 0, "text": normalize_line(t)}
+        elif kind == "qcrijsonl":
+            jl = RAW / subdir / "datasets" / "wikipedia_diacritized.jsonl"
+            if not jl.exists():
+                alt = None
+                for cand in (RAW / subdir).rglob("*.jsonl"):
+                    alt = cand
+                    break
+                jl = alt
+            if not jl or not jl.exists():
+                print("  [WARN] qcrijsonl not found under %s" % (RAW / subdir))
+                continue
+            for idx, line in enumerate(jl.open("r", encoding="utf-8")):
+                try:
+                    obj = json.loads(line)
+                except ValueError:
+                    continue
+                t = _first_diac_text(obj)
+                if t:
+                    yield {"src": src_id, "domain": domain, "line": idx, "win": 0, "text": normalize_line(t)}
+
+
+def _parse_batch(chunk):
+    """Module-level batch worker (Windows spawn needs importable top-level fns)."""
+    return [_parse_pair(a) for a in chunk]
+
+
+def _parse_pair(args):
+    """Pool WORKER (module level: Windows 'spawn' needs picklable top-level fns).
+
+    Returns (quarantined, src, line, text, bases, labels, err, domain, win).
+    """
+    src, domain, line, win, text = args
+    try:
+        units = PT.parse(text)
+    except PT.QuarantineError as e:
+        return (True, src, line, text, None, None, str(e), domain, win)
+    n_targets = sum(1 for u in units if u.is_target)
+    if n_targets == 0:
+        return (False, src, line, text, None, None, "EMPTY", domain, win)
+    return (False, src, line, text,
+            "".join(u.raw for u in units if u.is_target),
+            [u.label for u in units if u.is_target], None, domain, win)
 
 
 def process(out_limit=None, sources=None):
@@ -97,40 +187,67 @@ def process(out_limit=None, sources=None):
     qfiles = {}
     rank_cache = {}
     n = 0
-    for rec in stream_samples():
-        if sources and rec["src"] not in sources:
+    import os
+    from multiprocessing import Pool
+
+    # NOTE: worker fn must stay importable at module level; rec-only arg.
+    import itertools as _it
+
+    def _recs():
+        q = 0
+        for rec in stream_samples(want_sources=sources, exclude=EXTERNAL_SOURCES):
+            if out_limit and q >= out_limit:
+                return
+            q += 1
+            yield rec
+
+    workers = int(os.environ.get("PREP_WORKERS", "0")) or (os.cpu_count() or 4)
+    n = 0
+    procs = max(1, min(workers, 16))
+    # Batched parallel parse: materialize the scan first (C-speed reads), chunk
+    # it, then pool.map. Avoids the known Windows pool teardown deadlock that
+    # lazy imap-streaming generators hit (handler thread alive at terminate).
+    args_list = [(r["src"], r["domain"], r["line"], r["win"], r["text"]) for r in _recs()]
+    results = []
+    import time as _t
+    _t0 = _t.time()
+    if procs > 1 and len(args_list) > 2 * procs:
+        size = max(1, -(-len(args_list) // (procs * 8)))
+        chunks = [args_list[i:i + size] for i in range(0, len(args_list), size)]
+        with Pool(processes=procs) as pool:
+            for ck in pool.map(_parse_batch, chunks):
+                results.extend(ck)
+    else:
+        results = [_parse_pair(a) for a in args_list]
+    for (is_q, src, line, text, bases, labels, err, domain, win) in results:
+        if err == "EMPTY":
             continue
-        if out_limit and n >= out_limit:
-            break
-        n += 1
-        try:
-            units = PT.parse(rec["text"])
-        except PT.QuarantineError as e:
+        if is_q:
             stats["quarantined"] += 1
-            qf = qfiles.setdefault(rec["src"], open(qdir / (rec["src"] + ".jsonl"), "a", encoding="utf-8"))
-            qf.write(json.dumps({"err": str(e), "text": rec["text"], "line": rec["line"]},
+            qf = qfiles.setdefault(src, open(qdir / (src + ".jsonl"), "a", encoding="utf-8"))
+            qf.write(json.dumps({"err": err, "text": text, "line": line},
                                 ensure_ascii=False) + "\n")
             continue
-        n_targets = sum(1 for u in units if u.is_target)
-        if n_targets == 0:
-            continue  # nothing to learn from
-        h = hashlib.md5(rec["text"].encode("utf-8")).hexdigest()
+        n += 1
+        units_txt, rec_base = bases, labels
+        # dedupe / doc hash logic below (parent-side, order independent)
+        txn = text
+        h = hashlib.md5(txn.encode("utf-8")).hexdigest()
         if h in seen_hashes:
             stats["deduped_dups"] += 1
             continue
         # document-level dedupe/granularity: hash the full ORIGINAL line family
-        doc_hash = hashlib.md5(("D%d:%s" % (rec["line"], rec["text"][:64])).encode("utf-8")).hexdigest()
+        doc_hash = hashlib.md5(("D%s:%s" % (line, text[:64])).encode("utf-8")).hexdigest()
         if doc_hash not in rank_cache:
             rank_cache[doc_hash] = hashlib.md5((str(SEED) + ":" + doc_hash).encode("utf-8")).hexdigest()
-        row = {"src": rec["src"], "domain": rec["domain"], "line": rec["line"], "win": rec["win"],
-               "text": rec["text"], "doc_hash": doc_hash, "win_hash": h,
-               "bases": "".join(u.raw for u in units if u.is_target),
-               "labels": [u.label for u in units if u.is_target]}
+        row = {"src": src, "domain": domain, "line": line, "win": win,
+               "text": text, "doc_hash": doc_hash, "win_hash": h,
+               "bases": bases, "labels": labels}
         seen_hashes.add(h)
         stats["windows_kept"] += 1
-        s = stats["per_source"].setdefault(rec["src"], {"kept": 0, "val": 0, "train": 0})
+        s = stats["per_source"].setdefault(src, {"kept": 0, "val": 0, "train": 0})
         s["kept"] += 1
-        if rec["src"] == "fadel_val" or rec["src"] == "fadel_test":
+        if src in ("fadel_val", "abdou_valid"):
             val_rows.append(row)
             s["val"] += 1
         else:

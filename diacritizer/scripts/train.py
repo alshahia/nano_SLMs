@@ -42,10 +42,10 @@ def load_np(names, tokens_dir):
 def evaluate_batch(model, val_ids, val_y, device, batch):
     model.eval()
     tot_loss = tot_acc = n_tokens = n_batches = 0.0
-    with torch.no_grad():
-        for i in range(0, len(val_ids), 64):
-            x = torch.from_numpy(val_ids[i:i + 64]).to(device)
-            y = torch.from_numpy(val_y[i:i + 64]).to(device)
+    with torch.no_grad(), torch.amp.autocast("cuda", dtype=torch.float16, enabled=(device == "cuda")):
+        for i in range(0, len(val_ids), 128):
+            x = torch.from_numpy(val_ids[i:i + 128]).to(device)
+            y = torch.from_numpy(val_y[i:i + 128]).to(device)
             out = model(x, y)
             m = y >= 0
             tok = int(m.sum())
@@ -72,8 +72,9 @@ def main():
     device = ("cuda" if torch.cuda.is_available() else "cpu") \
         if args.device == "auto" else "cpu"
     model = build_from_config(cfg, vocab_size=TK.VOCAB_SIZE).to(device)
-    if device == "cuda":
-        model = model.to(torch.float16)  # HARD: fp16-only on Turing
+    # fp16 COMPUTE on Turing via autocast (pure-fp16 master weights break
+    # GradScaler: it requires fp32 grads); NaN-ban = scaled loss + skip-on-overflow
+    scaler = torch.amp.GradScaler("cuda", enabled=(device == "cuda"))
     n_params = sum(p.numel() for p in model.parameters())
     print({"phase": phase, "device": device, "params": n_params,
            "train_windows": len(train_ids), "val_windows": len(val_ids)})
@@ -99,27 +100,55 @@ def main():
         print("[START] fresh (zero flags, checkpoint rotates every save_every)")
 
     save_every = cfg.get("save_every", 100)
+    patience = cfg.get("early_stop_patience", 12)   # evals without improvement
+    best_vl = float("inf")
+    bad_evals = 0
+    best_path = run_dir / "best.pt"
+    if best_path.exists():
+        st = torch.load(best_path, map_location=device, weights_only=False)
+        best_vl = float(st.get("best_val_loss", best_vl))  # survives resume
     model.train()
     t0 = time.time()
     rng = np.random.default_rng(777)
+    use_amp = device == "cuda"
     while step < total_steps:
         idx = rng.integers(0, len(train_ids), bs)
         x = torch.from_numpy(train_ids[idx]).to(device)
         y = torch.from_numpy(train_y[idx]).to(device)
-        loss_sum = None
-        for micro in range(0, 1):  # single micro-step (KV shapes already small)
+        with torch.amp.autocast("cuda", dtype=torch.float16, enabled=use_amp):
             out = model(x, y)
-            (out["loss"] / accum).backward()
-            loss_sum = out["loss"]
+        loss = out["loss"] / accum
+        scaler.scale(loss).backward()          # SCALED backward (AMP contract)
+        scaler.unscale_(opt)
+        loss_sum = out["loss"]
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        opt.step()
+        scale_before = scaler.get_scale()
+        scaler.step(opt)
+        scaler.update()
         opt.zero_grad(set_to_none=True)
+        if scaler.get_scale() < scale_before:
+            continue  # overflowed batch -> skip logging/step counting
         step += 1
-        if step % patience_log == 0:
+        if step % cfg.get("eval_every", patience_log) == 0:
             vl, va = evaluate_batch(model, val_ids, val_y, device, None)
             el = time.time() - t0
             print(f"step {step} loss {float(loss_sum):.4f} val_loss {vl:.4f} "
                   f"val_acc {va:.4f} elapsed {el:.0f}s", flush=True)
+            # EARLY STOP: patience evals without a new best val_loss.
+            if vl < best_vl - 1e-4:
+                best_vl = vl
+                bad_evals = 0
+                torch.save({"model": model.state_dict(), "step": step,
+                            "best_val_loss": best_vl, "config": json.dumps(cfg)},
+                           best_path)
+                print(f"[BEST] val_loss {best_vl:.4f} saved -> {best_path.name}", flush=True)
+            else:
+                bad_evals += 1
+                if bad_evals >= patience:
+                    print({"early_stop": step, "best_val_loss": best_vl,
+                           "best_pt": str(best_path), "reason": "no val_loss improvement "
+                           f"for {bad_evals} evals"}, flush=True)
+                    break
         if step % save_every == 0 or step == total_steps:
             sd = run_dir / f"checkpoint-{step}"
             sd.mkdir(exist_ok=True)
@@ -136,8 +165,13 @@ def main():
             print(f"[SAVE] {sd}")
     model_dir = run_dir / "final"
     model_dir.mkdir(exist_ok=True)
-    torch.save(model.state_dict(), model_dir / "model.pt")
-    print({"done": step, "final": str(model_dir)})
+    # Final export = the BEST val_loss weights when early stopping decided so.
+    if best_path.exists() and best_vl < float("inf"):
+        st = torch.load(best_path, map_location=device, weights_only=False)
+        torch.save(st["model"], model_dir / "model.pt")
+    else:
+        torch.save(model.state_dict(), model_dir / "model.pt")
+    print({"done": step, "final": str(model_dir), "best_val_loss": best_vl})
 
 
 if __name__ == "__main__":
