@@ -90,7 +90,7 @@ def validate_preflight(g):
     validation (reserved names / rows cap surface from there too).
     Returns a list of human-readable reason strings; [] means valid.
     """
-    errors = list(flows._collect_validation_errors(g))
+    errors = list(flows.collect_validation_errors(g))
     try:
         with tempfile.TemporaryDirectory(prefix="flow-validate-") as out_dir:
             config_gen.generate(g, out_dir=out_dir)
@@ -102,18 +102,6 @@ def validate_preflight(g):
 def flows_validation_response(exc):
     """400 JSONResponse carrying the newline-split validation reasons."""
     return JSONResponse(status_code=400, content={"errors": error_list(exc)})
-
-
-def delete_flow(name, flows_dir=None):
-    """Remove flows/<slug>.flow.json; FileNotFoundError when absent.
-
-    flows.py only exposes save/load/list (Task 4 contract), so the MVP
-    delete lives here and reuses flows.load for the slug/404 contract.
-    """
-    flows.load(name, flows_dir)  # slug validation + clean FileNotFoundError
-    target = flows._dir(flows_dir) / (name + flows._SUFFIX)
-    target.unlink()
-    return target
 
 
 def nodes_snapshot():
@@ -157,6 +145,8 @@ def create_app(dev=False):
             return flows.load(name)
         except FileNotFoundError as exc:
             return JSONResponse(status_code=404, content={"detail": str(exc)})
+        except ValueError as exc:
+            return flows_validation_response(exc)
 
     @app.put("/api/flows/{name}")
     async def write_flow(name: str, request: Request):
@@ -174,7 +164,7 @@ def create_app(dev=False):
     @app.delete("/api/flows/{name}")
     def remove_flow(name: str):
         try:
-            delete_flow(name)
+            flows.delete_flow(name)
         except (FileNotFoundError, ValueError) as exc:
             return JSONResponse(status_code=status_for_error(exc),
                                 content={"detail": str(exc)})

@@ -17,13 +17,14 @@ Registry snapshot (single source of truth: flow/server/nodes.py):
 {
   "valid_kinds": ["dataset", "eval", "infer", "prepare", "tokenize", "train"],
   "nodes": {
-    "<kind>": {
-      "ports": [
+    "<kind>": {   // per-kind shapes below; do NOT assume one kind
+                  // generalizes: dataset/eval/infer have NO editable props
+      "ports": [/* per-kind port objects, e.g. */
         {"name": "cleaned-dir", "direction": "out", "type": "cleaned-dir",
          "burst-format": "file-list"}
       ],
-      "props": ["rows", "val_fraction", "min_chars"],
-      "numeric_props": ["rows", "val_fraction", "min_chars"],
+      "props": "[...]",        // kind-specific, see table below
+      "numeric_props": "[...]", // kind-specific, see table below
       "gate": "gpu|gpu/cpu|null"
     }
   },
@@ -32,6 +33,18 @@ Registry snapshot (single source of truth: flow/server/nodes.py):
 }
 ```
 (`gate: null` serializes as JSON `null`; `nodes` keys are the 6 kinds.)
+
+Per-kind accurate prop shapes (single source: `flow/server/nodes.py` PROPS /
+NUMERIC_PROPS; render the editor accordingly):
+
+| kind | props | numeric_props |
+|---|---|---|
+| dataset | `[]` (no editable props) | `[]` |
+| prepare | `["min_chars", "rows", "val_fraction"]` | same as props |
+| tokenize | `["seq_len", "vocab"]` | same as props |
+| train | `["lr_preset", "preset", "steps"]` | `["steps"]` |
+| eval | `[]` (no editable props) | `[]` |
+| infer | `[]` (no editable props) | `[]` |
 
 ### GET /api/flows
 ```json
@@ -84,6 +97,16 @@ Body: `{"name": "<flow slug>"}`
   global job slot, one GPU"}`
 Side effect on success: `configs/flow_<slug>.yaml` generated and
 `scripts/run_custom.py --config <that yaml>` subprocess started.
+
+Arbitration notes (single global GPU slot, webui-mirrored):
+- The deliverable `configs/flow_<slug>.yaml` is written (content-identical
+  overwrite) BEFORE the busy-409 can occur: `config_gen.generate` runs
+  first and `runner.start` is the authoritative arbiter that then raises
+  the 409 `JobRunningError` when a job is live.
+- Preflight-vs-start TOCTOU: validation happens before `runner.start`
+  takes the slot, so between two POST /api/run calls the winner of the
+  start race holds the slot; the loser gets the 409. Inherent to the
+  single-slot design, same semantics as the webui.
 
 ### GET /api/run/status
 Passthrough of runner.status() (runner.py):

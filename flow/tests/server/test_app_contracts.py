@@ -104,6 +104,32 @@ class StatusForErrorTest(unittest.TestCase):
             app_mod.status_for_error(ValueError("schema: ...")), 400)
 
 
+class ReadFlowErrorPathTest(unittest.TestCase):
+    """A non-slug GET /api/flows/{name} must hit the 400 errors path.
+
+    Pure-function check: read_flow's handler maps exactly two exception
+    types from flows.load — FileNotFoundError -> 404 detail shape and
+    ValueError (slug/traversal) -> 400 with the flows_validation_response
+    error-list shape. Mirror that mapping without HTTP.
+    """
+
+    def test_non_slug_load_raises_valueerror_and_maps_to_400_errors_shape(self):
+        from fastapi.responses import JSONResponse
+        from flow.server import flows
+
+        with self.assertRaises(ValueError):
+            flows.load("../evil")  # what read_flow sees for this name
+        exc = ValueError("flow name: '../evil' is not a valid slug")
+        status = app_mod.status_for_error(exc)
+        self.assertEqual(status, 400)
+        # and the route builds the documented shape from that exception:
+        resp = app_mod.flows_validation_response(exc)
+        self.assertIsInstance(resp, JSONResponse)
+        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(app_mod.error_list(exc),
+                         ["flow name: '../evil' is not a valid slug"])
+
+
 class ValidatePreflightTest(unittest.TestCase):
     """Preflight assembly: pure validation, tempfile dry-run, no repo writes."""
 
@@ -115,7 +141,12 @@ class ValidatePreflightTest(unittest.TestCase):
 
     def _repo_listing(self):
         """Snapshot files under configs/ + flow/flows/ (validation must
-        not add anything in either)."""
+        not add anything in either).
+
+        Guarded scope is exactly configs/ + flow/flows/: the two repo
+        locations the preflight path can touch (deliverable yaml dir and
+        the flows store).
+        """
         listing = {}
         for d in (REPO / "configs", REPO / "flow" / "flows"):
             listing[d] = sorted(p.name for p in d.iterdir()) if d.is_dir() else []

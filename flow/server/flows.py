@@ -62,7 +62,7 @@ def _validate_slug(name) -> str:
     return name
 
 
-def _collect_validation_errors(g) -> "list[str]":
+def collect_validation_errors(g) -> "list[str]":
     """Run BOTH validators (document schema + per-node registry props)."""
     errors = list(graph_schema.validate(g))
     if isinstance(g, dict):
@@ -89,7 +89,7 @@ def save(name, g, flows_dir=None):
     a slug error) without writing anything on violation.
     """
     slug = _validate_slug(name)
-    errors = _collect_validation_errors(g)
+    errors = collect_validation_errors(g)
     if errors:
         raise ValueError("\n".join(errors))
 
@@ -117,6 +117,26 @@ def load(name, flows_dir=None):
             return json.load(f)
     except FileNotFoundError:
         raise FileNotFoundError("flow %r not found (looked for %s)" % (name, path))
+
+
+# Backward-compat alias (the public name is collect_validation_errors).
+_collect_validation_errors = collect_validation_errors
+
+
+def delete_flow(name, flows_dir=None) -> Path:
+    """Remove flows/<slug>.flow.json; FileNotFoundError when absent.
+
+    The name is slug-validated with the same contract as save/load (no
+    path traversal is possible), and a clean FileNotFoundError naming the
+    flow is raised when it does not exist. Returns the deleted Path.
+    """
+    slug = _validate_slug(name)
+    path = _dir(flows_dir) / (slug + _SUFFIX)
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        raise FileNotFoundError("flow %r not found (looked for %s)" % (name, path))
+    return path
 
 
 def list_flows(flows_dir=None):

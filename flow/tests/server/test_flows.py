@@ -137,6 +137,20 @@ class FlowsStoreTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             flows.load("a/b", flows_dir=self.dir)
 
+    # --- delete_flow -----------------------------------------------------
+
+    def test_delete_flow_removes_file_and_handles_missing(self):
+        flows.save("demo", valid_doc(), flows_dir=self.dir)
+        target = flows.delete_flow("demo", flows_dir=self.dir)
+        self.assertEqual(target, self.dir / "demo.flow.json")
+        self.assertFalse(target.exists())
+        with self.assertRaises(FileNotFoundError):
+            flows.delete_flow("demo", flows_dir=self.dir)
+
+    def test_delete_flow_rejects_non_slug_names(self):
+        with self.assertRaises(ValueError):
+            flows.delete_flow("../evil", flows_dir=self.dir)
+
     # --- list_flows ------------------------------------------------------
 
     def test_list_flows_sorted_slugs(self):
