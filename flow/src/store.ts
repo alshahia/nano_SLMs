@@ -506,7 +506,10 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     const g = get();
     const next = updateNodePropsReducer(g.graph, id, props);
     // Unknown id keeps the same graph object -> no state churn.
-    if (next !== g.graph) set({ graph: next });
+    // Any real graph edit invalidates the cached validatedDoc so the
+    // Preview card can never claim freshness over a stale document
+    // (T10 review IMPORTANT-2).
+    if (next !== g.graph) set({ graph: next, validatedDoc: null });
   },
   openFlow: async (name) => {
     try {
@@ -548,7 +551,10 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     try {
       const r = await api.validateFlow(doc);
       if (r.ok) {
-        set({ validatedDoc: doc, error: null });
+        // Distinct success marker on the toast channel ("OK:" prefix) so
+        // a passing validate is VISIBLE, not a silent null (T10 review
+        // MISSING-1). The prefix distinguishes it from error toasts.
+        set({ validatedDoc: doc, error: "OK: validation passed — document accepted" });
         return true;
       }
       set({ validatedDoc: null, error: truncateErrorList(r.errors).join(" · ") });
@@ -617,7 +623,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       set({ error: res.error });
       return null;
     }
-    set({ graph: res.graph });
+    set({ graph: res.graph, validatedDoc: null });
     return res.id;
   },
 
@@ -644,6 +650,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     set({
       graph,
       projection: xyNodes,
+      validatedDoc: null,
       ...(selection === undefined ? {} : { selection }),
     });
   },
@@ -666,7 +673,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       removals.set(e.id, pending - 1);
       return false;
     });
-    set({ graph: { ...graph, edges } });
+    set({ graph: { ...graph, edges }, validatedDoc: null });
   },
 
   connect: (c: Connection) => {
@@ -676,7 +683,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       set({ error: res.error });
       return false;
     }
-    set({ graph: res.graph });
+    set({ graph: res.graph, validatedDoc: null });
     return true;
   },
 }));

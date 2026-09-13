@@ -820,7 +820,9 @@ describe("Task 10 validate wiring (mocked fetch)", () => {
     const ok = await useFlowStore.getState().validateFlow();
     expect(ok).toBe(true);
     expect(useFlowStore.getState().validatedDoc?.meta.name).toBe("untitled");
-    expect(useFlowStore.getState().error).toBeNull();
+    // MISSING-1 fix: a successful validate is VISIBLE on the toast
+    // channel with a distinct "OK:" marker (not a silent null).
+    expect(useFlowStore.getState().error).toContain("OK:");
   });
 
   it("a saved slug is used as meta.name for the unsaved validation doc", async () => {
@@ -914,11 +916,14 @@ describe("Task 10 run arm (PUT-save then POST /api/run, mocked fetch)", () => {
     expect(st.inspectorTab).toBe("run-log");
     expect(st.error).toBeNull();
 
-    // Polling arm: the mapped live/terminal widgets stay consistent — a
-    // running status maps "running" (RunLogPanel polls only while the
-    // mapped state is running; that shapes are unit mapped above).
+    // MINOR-5 fix: assert the poll cadence the armed watcher starts at
+    // (base interval, not yet backoff) instead of a filler mapping call.
+    expect(nextPollDelay(0)).toBe(POLL_BASE_MS);
+    expect(nextPollDelay(0)).not.toBe(POLL_BACKOFF_MS);
+    // The watcher only keeps polling while the mapped state stays
+    // "running" — fed by the exact state this arm just stored.
     expect(mapRunStatus({ running: true, exit_code: null, started_at: null, exit_at: null, tail: [] }).state)
-      .toBe("running");
+      .toBe(st.runStatus?.state);
   });
 
   it("400 preflight errors[] land in the toast and do NOT arm the watcher", async () => {
@@ -1062,5 +1067,129 @@ describe("Task 10 PipelineNode dot wiring (toXYNodes runState threading)", () =>
     // Back to idle reuses a fresh object again (no lingering running flag).
     const back = toXYNodes(graph, REGISTRY, running);
     expect(back[0].data.runState).toBe("idle");
+  });
+});
+/* ------------------------------------------------------------------ */
+/* T10 review fix (IMPORTANT-2): validatedDoc invalidation invariant.   */
+/* Every action that can mutate the domain graph must clear the cached */
+/* validatedDoc, so the Preview card never claims freshness after an   */
+/* edit. Ok-validate caches a doc first, then the action runs.          */
+/* ------------------------------------------------------------------ */
+
+describe("graph-mutating actions invalidate validatedDoc (IMPORTANT-2)", () => {
+  const DOC = {
+    schema: "flow/0.1" as const,
+    meta: { name: "old" },
+    graph: { nodes: [], edges: [] },
+  };
+
+  beforeEach(() => {
+    useFlowStore.setState({
+      graph: {
+        nodes: [
+          { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
+          { id: "n2", kind: "prepare", props: {}, position: { x: 5, y: 6 } },
+        ],
+        edges: [],
+      },
+      registry: REGISTRY,
+      projection: [],
+      selection: null,
+      validatedDoc: DOC,
+      error: null,
+      currentFlowName: null,
+      runStatus: null,
+    });
+  });
+
+  it("setGraph clears validatedDoc (baseline, pre-existing behavior)", () => {
+    useFlowStore.getState().setGraph({ nodes: [], edges: [] });
+    expect(useFlowStore.getState().validatedDoc).toBeNull();
+  });
+
+  it("addNode clears validatedDoc", () => {
+    expect(useFlowStore.getState().addNode("tokenize", { x: 0, y: 0 })).not.toBeNull();
+    expect(useFlowStore.getState().validatedDoc).toBeNull();
+  });
+
+  it("applyNodesChanges clears validatedDoc even for a plain position change", () => {
+    useFlowStore.getState().applyNodesChanges([
+      { id: "n1", type: "position", position: { x: 1, y: 1 } },
+    ]);
+    expect(useFlowStore.getState().validatedDoc).toBeNull();
+  });
+
+  it("applyEdgesChanges clears validatedDoc only when removals occur", () => {
+    useFlowStore.setState({
+      graph: {
+        ...useFlowStore.getState().graph,
+        edges: [
+          { id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" },
+        ],
+      },
+      validatedDoc: DOC,
+    });
+    useFlowStore.getState().applyEdgesChanges([{ id: "e1", type: "select", selected: true }]);
+    expect(useFlowStore.getState().validatedDoc).not.toBeNull();
+    useFlowStore.getState().applyEdgesChanges([{ id: "e1", type: "remove" }]);
+    expect(useFlowStore.getState().validatedDoc).toBeNull();
+  });
+
+  it("connect clears validatedDoc on success; refusal keeps it (graph unchanged)", () => {
+    expect(
+      useFlowStore.getState().connect({ source: "n1", target: "n2", sourceHandle: "cleaned", targetHandle: "raw-dir" }),
+    ).toBe(true);
+    expect(useFlowStore.getState().validatedDoc).toBeNull();
+    // Restore the cache, then refuse a connect: the graph object is
+    // untouched, so the cached preview is still accurate and stays.
+    useFlowStore.setState({ validatedDoc: DOC });
+    expect(
+      useFlowStore.getState().connect({ source: "n2", target: "n2", sourceHandle: "raw-dir", targetHandle: "raw-dir" }),
+    ).toBe(false);
+    expect(useFlowStore.getState().validatedDoc).not.toBeNull();
+  });
+
+  it("updateNodeProps clears validatedDoc; unknown id is a no-op in both senses", () => {
+    useFlowStore.getState().updateNodeProps("n2", { rows: 3 });
+    expect(useFlowStore.getState().validatedDoc).toBeNull();
+    useFlowStore.setState({ validatedDoc: DOC });
+    useFlowStore.getState().updateNodeProps("nZZ", { rows: 3 });
+    expect(useFlowStore.getState().validatedDoc).not.toBeNull();
+  });
+});
+
+/* T10 review fix (MISSING-1): ok validate surfaces a distinct success
+ * toast through the existing error channel, "OK:"-prefixed. */
+describe("validate success ack (MISSING-1): OK: toast marker", () => {
+  beforeEach(() => {
+    useFlowStore.setState({
+      graph: { nodes: [], edges: [] },
+      currentFlowName: null,
+      validatedDoc: null,
+      error: null,
+    });
+  });
+
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("ok response toasts an OK:-marked line and caches the preview doc", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () =>
+      new Response(JSON.stringify({ ok: true, errors: [] }), { status: 200 }),
+    ));
+    const ok = await useFlowStore.getState().validateFlow();
+    expect(ok).toBe(true);
+    const err = useFlowStore.getState().error;
+    expect(err).not.toBeNull();
+    expect(err?.startsWith("OK:")).toBe(true);
+    expect(useFlowStore.getState().validatedDoc).not.toBeNull();
+  });
+
+  it("an error toast never carries the OK: marker", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () =>
+      new Response(JSON.stringify({ ok: false, errors: ["bad graph"] }), { status: 200 }),
+    ));
+    const ok = await useFlowStore.getState().validateFlow();
+    expect(ok).toBe(false);
+    expect(useFlowStore.getState().error?.startsWith("OK:")).toBe(false);
   });
 });

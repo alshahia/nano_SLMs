@@ -64,8 +64,10 @@ export default function App() {
  * setGraph; an empty projection just means an unmeasured canvas, visually
  * benign). Save = modal name prompt with client-side slug validation ->
  * store.saveFlow (PUT /api/flows/{name}). Errors surface through the
- * existing store.error toast channel (rendered in FlowCanvas). Run /
- * Validate buttons are intentionally NOT wired here (Task 10). */
+ * existing store.error toast channel (rendered in FlowCanvas). Both are
+ * wired (Task 10): Validate toasts an "OK:" success marker; Run is
+ * disabled while a run is live and routes an unsaved graph through the
+ * Save modal first. */
 function Toolbar() {
   const saveFlow = useFlowStore((s) => s.saveFlow);
   const openFlow = useFlowStore((s) => s.openFlow);
@@ -73,6 +75,7 @@ function Toolbar() {
   const validateFlow = useFlowStore((s) => s.validateFlow);
   const runGraph = useFlowStore((s) => s.runGraph);
   const currentFlowName = useFlowStore((s) => s.currentFlowName);
+  const runStatus = useFlowStore((s) => s.runStatus);
 
   /* File modal mode: null | "open" (flow list picker) | "save" (name
    * prompt). */
@@ -86,6 +89,20 @@ function Toolbar() {
   const runAfterSaveRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  /* Centralized Save-modal dismissal (T10 review CRITICAL-1): EVERY
+   * non-submit dismiss path - backdrop click, Escape, Cancel - must clear
+   * the one-shot runAfterSave flag along with closing the modal. A
+   * backdrop-dismissed Run prompt that left the flag armed would make a
+   * later ordinary Save silently launch an unintended GPU job. Opening
+   * the modal WITHOUT the run intent (plain Save button) resets it too.
+   * The flag lives in a ref, so this chokepoint is not reachable through
+   * reducer-level store tests; covered by this single-path wiring plus
+   * this comment (noted in the task report). */
+  const dismissSave = () => {
+    runAfterSaveRef.current = false;
+    setModal(null);
+  };
+
   /* Escape closes the active modal (capture phase so it wins over the
    * canvas handlers; closing twice is a no-op). */
   useEffect(() => {
@@ -93,8 +110,7 @@ function Toolbar() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.stopPropagation();
-        setModal(null);
-        runAfterSaveRef.current = false;
+        dismissSave();
       }
     };
     window.addEventListener("keydown", onKey, true);
@@ -136,7 +152,17 @@ function Toolbar() {
       <button id="toolbar-open" aria-label="Open saved flow" onClick={() => setModal("open")}>
         Open
       </button>
-      <button id="toolbar-save" aria-label="Save current flow" onClick={() => setModal("save")}>
+      {/* Plain Save opens the modal WITHOUT the run intent; reset the
+          one-shot flag here so a prior dismissed Run prompt cannot leak
+          its armed state into an ordinary save (CRITICAL-1). */}
+      <button
+        id="toolbar-save"
+        aria-label="Save current flow"
+        onClick={() => {
+          runAfterSaveRef.current = false;
+          setModal("save");
+        }}
+      >
         Save
       </button>
       {/* Task 10 wiring: Validate POSTs the UNSAVED graph document
@@ -147,9 +173,12 @@ function Toolbar() {
       <button id="toolbar-validate" aria-label="Validate current graph" onClick={() => void validateFlow()}>
         Validate
       </button>
+      {/* Running guard (T10 review MINOR-3): Run is inert while a job
+          is live, matching Stop's running-only affordance. */}
       <button
         id="toolbar-run"
         aria-label="Run current flow"
+        disabled={runStatus?.state === "running"}
         onClick={() => {
           if (currentFlowName !== null && isValidFlowName(currentFlowName)) void runGraph();
           else {
@@ -169,7 +198,7 @@ function Toolbar() {
       )}
 
       {modal === "save" && (
-        <div className="modal-backdrop" onClick={() => setModal(null)}>
+        <div className="modal-backdrop" onClick={dismissSave}>
           <div
             className="modal"
             role="dialog"
@@ -186,9 +215,7 @@ function Toolbar() {
               }}
             />
             <div className="modal-actions">
-              <button onClick={() => { setModal(null); runAfterSaveRef.current = false; }}>
-                Cancel
-              </button>
+              <button onClick={dismissSave}>Cancel</button>
               <button disabled={saving} onClick={() => void submitSave()}>
                 {modal === "save" && saving ? "saving…" : "Save"}
               </button>
