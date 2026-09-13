@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { Edge, Node, NodeChange, EdgeChange, Connection } from "@xyflow/react";
-import { applyNodeChanges, applyEdgeChanges } from "@xyflow/react";
+import { applyNodeChanges } from "@xyflow/react";
 
 /**
  * Canonical graph shape is the flow/0.1 document graph (what the backend
@@ -104,6 +104,9 @@ export const FALLBACK_REGISTRY: RegistrySnapshot = {
 
 export type InspectorTab = "properties" | "run-log" | "preview";
 
+/** UI-level run state; setRunStatus stays unwired until the Task 9/10 run
+ * wiring. The raw backend payload type is ApiRunStatus in api.ts
+ * (GET /api/run/status contract shape). */
 export interface RunStatus {
   state: "idle" | "running" | "done" | "error";
   message?: string;
@@ -111,6 +114,12 @@ export interface RunStatus {
 
 export interface FlowState {
   graph: Graph;
+  /** Last xyflow projection (full nodes, incl. measured width/height and
+   * dragging/selected flags). toXYNodes merges it back so unchanged
+   * domain nodes keep their data identity (PipelineNode is memoized) and
+   * geometry/interaction flags persist across the controlled-render
+   * round-trip (T8 review IMPORTANT-3). */
+  projection: PipelineNode[];
   selection: string | null;
   inspectorTab: InspectorTab;
   runStatus: RunStatus | null;
@@ -162,6 +171,19 @@ export function nextNodeId(graph: Graph, prefix = "n"): string {
   return prefix + (max + 1);
 }
 
+/** Deterministic unique EDGE id: mirror of nextNodeId over graph.edges.
+ * connectReducer used to call nextNodeId(graph, "e"), which only scans
+ * graph.nodes, so every new edge got id "e1" (T8 review CRITICAL-1). */
+export function nextEdgeId(graph: Graph, prefix = "e"): string {
+  let max = 0;
+  for (const edge of graph.edges) {
+    if (!edge.id.startsWith(prefix)) continue;
+    const rest = edge.id.slice(prefix.length);
+    if (/^[0-9]+$/.test(rest)) max = Math.max(max, Number(rest));
+  }
+  return prefix + (max + 1);
+}
+
 /** Validate a new edge against the registry snapshot.
  * Returns [] when acceptable, otherwise one human-readable reason. */
 export function validateConnect(
@@ -205,7 +227,7 @@ export function connectReducer(
   const reasons = validateConnect(registry, graph, c.source, c.target, fromPort, toPort);
   if (reasons.length > 0) return { graph, error: reasons[0] };
   const edge: DomainEdge = {
-    id: nextNodeId(graph, "e"),
+    id: nextEdgeId(graph),
     from: c.source,
     to: c.target,
     fromPort,
@@ -249,18 +271,45 @@ export interface PipelineNodeData extends Record<string, unknown> {
 
 export type PipelineNode = Node<PipelineNodeData, "pipeline">;
 
-export function toXYNodes(graph: Graph, registry: RegistrySnapshot): PipelineNode[] {
-  return graph.nodes.map((n) => ({
-    id: n.id,
-    type: "pipeline" as const,
-    position: n.position,
-    data: {
-      kind: n.kind,
-      ...(n.label !== undefined ? { label: n.label } : {}),
-      props: n.props,
-      ports: registry.nodes[n.kind]?.ports ?? [],
-    },
-  }));
+export function toXYNodes(
+  graph: Graph,
+  registry: RegistrySnapshot,
+  prev?: PipelineNode[],
+): PipelineNode[] {
+  const prevById = new Map((prev ?? []).map((n) => [n.id, n]));
+  return graph.nodes.map((n) => {
+    // Data identity: when the domain node is unchanged (same kind/label
+    // props/ports object references) reuse the previous data object so the
+    // memoized PipelineNode does not re-render on unrelated updates.
+    const p = prevById.get(n.id);
+    const ports = registry.nodes[n.kind]?.ports ?? [];
+    const stableData =
+      p !== undefined &&
+      p.data.kind === n.kind &&
+      p.data.label === n.label &&
+      p.data.props === n.props &&
+      p.data.ports === ports;
+    const data: PipelineNodeData = stableData
+      ? p.data
+      : {
+          kind: n.kind,
+          ...(n.label !== undefined ? { label: n.label } : {}),
+          props: n.props,
+          ports,
+        };
+    return {
+      id: n.id,
+      type: "pipeline" as const,
+      position: n.position,
+      // Keep measured geometry + interaction flags; the domain node (a
+      // flow/0.1 document shape) must not absorb xyflow-only fields.
+      width: p?.width,
+      height: p?.height,
+      dragging: p?.dragging,
+      selected: p?.selected,
+      data,
+    };
+  });
 }
 
 export function toXYEdges(graph: Graph): Edge[] {
@@ -275,7 +324,9 @@ export function toXYEdges(graph: Graph): Edge[] {
 
 /** Apply an already-projected set of xyflow nodes back onto the domain
  * graph: positions updated, deleted nodes removed, kind/props/label
- * preserved from the existing domain node. */
+ * preserved from the existing domain node. xyflow-only fields
+ * (width/height/dragging/selected) intentionally never land on the
+ * domain node — they persist on the store projection (see toXYNodes). */
 export function fromXYNodes(nodes: Node[], existing: Graph): Graph {
   const byId = new Map(nodes.map((n) => [n.id, n]));
   const keep = existing.nodes.filter((n) => byId.has(n.id));
@@ -293,6 +344,7 @@ export function fromXYNodes(nodes: Node[], existing: Graph): Graph {
 
 export const useFlowStore = create<FlowState>((set, get) => ({
   graph: { nodes: [], edges: [] },
+  projection: [],
   selection: null,
   inspectorTab: "properties",
   runStatus: null,
@@ -302,7 +354,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   registryError: null,
   error: null,
 
-  setGraph: (graph) => set({ graph }),
+  setGraph: (graph) => set({ graph, projection: [] }),
   setSelection: (selection) => set({ selection }),
   setInspectorTab: (inspectorTab) => set({ inspectorTab }),
   setRunStatus: (runStatus) => set({ runStatus }),
@@ -327,16 +379,41 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     const g = get();
     const xyNodes = applyNodeChanges(
       changes,
-      toXYNodes(g.graph, g.registry ?? FALLBACK_REGISTRY),
-    ) as Node[];
-    set({ graph: fromXYNodes(xyNodes, g.graph) });
+      toXYNodes(g.graph, g.registry ?? FALLBACK_REGISTRY, g.projection),
+    ) as PipelineNode[];
+    const graph = fromXYNodes(xyNodes, g.graph);
+    // Mirror select changes into store.selection: the last select change
+    // wins (selected:false clears — e.g. the pane click deselection).
+    let selection: string | null | undefined;
+    for (const c of changes) {
+      if (c.type === "select") selection = c.selected ? c.id : null;
+    }
+    set({
+      graph,
+      projection: xyNodes,
+      ...(selection === undefined ? {} : { selection }),
+    });
   },
 
   applyEdgesChanges: (changes) => {
+    // Only "remove" changes can alter the domain graph; every other
+    // xyflow edge change kind (select/dimensions/...) is projection-only.
+    // Removals are counted per id (NOT a keep-Set, which would collapse
+    // duplicate-id edges into one removal) so exactly one domain edge per
+    // requested remove disappears (T8 review IMPORTANT-2).
+    const removals = new Map<string, number>();
+    for (const c of changes) {
+      if (c.type === "remove") removals.set(c.id, (removals.get(c.id) ?? 0) + 1);
+    }
+    if (removals.size === 0) return;
     const graph = get().graph;
-    const xyEdges = applyEdgeChanges(changes, toXYEdges(graph));
-    const keep = new Set(xyEdges.map((e) => e.id));
-    set({ graph: { ...graph, edges: graph.edges.filter((e) => keep.has(e.id)) } });
+    const edges = graph.edges.filter((e) => {
+      const pending = removals.get(e.id) ?? 0;
+      if (pending <= 0) return true;
+      removals.set(e.id, pending - 1);
+      return false;
+    });
+    set({ graph: { ...graph, edges } });
   },
 
   connect: (c: Connection) => {

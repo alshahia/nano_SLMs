@@ -7,6 +7,7 @@ import {
   addNodeReducer,
   connectReducer,
   nextNodeId,
+  nextEdgeId,
   portTypesCompatible,
   toXYNodes,
   toXYEdges,
@@ -74,6 +75,7 @@ describe("flow store (T1 shell state)", () => {
   beforeEach(() => {
     useFlowStore.setState({
       graph: { nodes: [], edges: [] },
+      projection: [],
       selection: null,
       inspectorTab: "properties",
       runStatus: null,
@@ -199,6 +201,7 @@ describe("controlled onNodesChange applies into store.graph", () => {
         edges: [{ id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" }],
       },
       registry: REGISTRY,
+      projection: [],
       selection: null,
       inspectorTab: "properties",
       runStatus: null,
@@ -256,6 +259,7 @@ describe("connect action on the store (refuse leaves graph intact)", () => {
         edges: [],
       },
       registry: REGISTRY,
+      projection: [],
       selection: null,
       inspectorTab: "properties",
       runStatus: null,
@@ -303,3 +307,166 @@ describe("registry fetch (mocked fetch, no server)", () => {
     expect(formatApiError(500, "Oops", "/x", null)).toBe("500 Oops: /x");
   });
 });
+
+describe("edge ids (nextEdgeId, T8 fix: no more duplicate e1)", () => {
+  const graph = {
+    nodes: [
+      { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
+      { id: "n2", kind: "prepare", props: {}, position: { x: 100, y: 0 } },
+      { id: "n3", kind: "tokenize", props: {}, position: { x: 200, y: 0 } },
+    ],
+    edges: [],
+  };
+
+  it("nextEdgeId mirrors nextNodeId semantics over graph.edges", () => {
+    expect(nextEdgeId({ nodes: [], edges: [] })).toBe("e1");
+    expect(
+      nextEdgeId({
+        nodes: [],
+        edges: [
+          { id: "e3", from: "n1", to: "n2", fromPort: "a", toPort: "b" },
+          { id: "e7", from: "n2", to: "n3", fromPort: "a", toPort: "b" },
+        ],
+      }),
+    ).toBe("e8");
+  });
+
+  it("two consecutive edge creations get distinct ids", () => {
+    const one = connectReducer(REGISTRY, graph, {
+      source: "n1", target: "n2", sourceHandle: "cleaned", targetHandle: "raw-dir",
+    });
+    expect(one.error).toBeNull();
+    expect(one.graph.edges[0].id).toBe("e1");
+    const two = connectReducer(REGISTRY, one.graph, {
+      source: "n2", target: "n3", sourceHandle: "cleaned-dir", targetHandle: "cleaned-dir",
+    });
+    expect(two.error).toBeNull();
+    expect(two.graph.edges[1].id).toBe("e2");
+    expect(new Set(two.graph.edges.map((e) => e.id)).size).toBe(2);
+  });
+
+  it("invalid-connect refusal leaves the graph and the next edge id stable", () => {
+    const refused = connectReducer(REGISTRY, graph, {
+      source: "n2", target: "n2", sourceHandle: "raw-dir", targetHandle: "raw-dir",
+    });
+    expect(refused.graph).toBe(graph);
+    expect(refused.error).toContain("is not an OUT port of kind 'prepare'");
+    const after = connectReducer(REGISTRY, refused.graph, {
+      source: "n1", target: "n2", sourceHandle: "cleaned", targetHandle: "raw-dir",
+    });
+    expect(after.error).toBeNull();
+    expect(after.graph.edges.map((e) => e.id)).toEqual(["e1"]);
+  });
+});
+
+describe("applyEdgesChanges (edge deletion wired, duplicate-id guard)", () => {
+  beforeEach(() => {
+    useFlowStore.setState({
+      graph: {
+        nodes: [
+          { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
+          { id: "n2", kind: "prepare", props: {}, position: { x: 1, y: 1 } },
+        ],
+        edges: [
+          { id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" },
+          { id: "e2", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" },
+          { id: "e3", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" },
+        ],
+      },
+      registry: REGISTRY,
+      projection: [],
+      selection: null,
+      inspectorTab: "properties",
+      runStatus: null,
+      paletteCollapsed: false,
+      inspectorCollapsed: false,
+      registryError: null,
+      error: null,
+    });
+  });
+
+  it("removes exactly the requested edge and keeps the rest", () => {
+    useFlowStore.getState().applyEdgesChanges([{ id: "e2", type: "remove" }]);
+    expect(useFlowStore.getState().graph.edges.map((e) => e.id)).toEqual(["e1", "e3"]);
+  });
+
+  it("one remove request cannot collapse two same-id edges", () => {
+    useFlowStore.setState({
+      graph: {
+        nodes: [
+          { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
+          { id: "n2", kind: "prepare", props: {}, position: { x: 1, y: 1 } },
+        ],
+        edges: [
+          { id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" },
+          { id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" },
+          { id: "e2", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" },
+        ],
+      },
+    });
+    // The old keep-Set implementation removed BOTH "e1" edges here.
+    useFlowStore.getState().applyEdgesChanges([{ id: "e1", type: "remove" }]);
+    expect(useFlowStore.getState().graph.edges.map((e) => e.id)).toEqual(["e1", "e2"]);
+  });
+
+  it("non-removal change kinds leave the domain graph untouched", () => {
+    const before = useFlowStore.getState().graph;
+    useFlowStore.getState().applyEdgesChanges([{ id: "e2", type: "select", selected: true }]);
+    expect(useFlowStore.getState().graph).toBe(before);
+  });
+});
+
+describe("projection merge (dragging/selected persistence, data identity)", () => {
+  beforeEach(() => {
+    useFlowStore.setState({
+      graph: {
+        nodes: [
+          { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
+          { id: "n2", kind: "prepare", props: { rows: 2 }, position: { x: 5, y: 6 } },
+        ],
+        edges: [],
+      },
+      registry: REGISTRY,
+      projection: [],
+      selection: null,
+      inspectorTab: "properties",
+      runStatus: null,
+      paletteCollapsed: false,
+      inspectorCollapsed: false,
+      registryError: null,
+      error: null,
+    });
+  });
+
+  it("dragging survives the project -> applyNodeChanges -> project round-trip", () => {
+    useFlowStore.getState().applyNodesChanges([
+      { id: "n1", type: "position", position: { x: 42, y: 9 }, dragging: true },
+    ]);
+    const st = useFlowStore.getState();
+    expect(st.graph.nodes[0].position).toEqual({ x: 42, y: 9 });
+    const nextProjection = toXYNodes(st.graph, REGISTRY, st.projection);
+    expect(nextProjection[0].dragging).toBe(true);
+    expect(nextProjection[0].position).toEqual({ x: 42, y: 9 });
+  });
+
+  it("select changes update store.selection and the projection selected flag", () => {
+    useFlowStore.getState().applyNodesChanges([{ id: "n2", type: "select", selected: true }]);
+    const st = useFlowStore.getState();
+    expect(st.selection).toBe("n2");
+    expect(toXYNodes(st.graph, REGISTRY, st.projection)[1].selected).toBe(true);
+    useFlowStore.getState().applyNodesChanges([{ id: "n2", type: "select", selected: false }]);
+    expect(useFlowStore.getState().selection).toBeNull();
+  });
+
+  it("unchanged domain nodes keep their previous data object identity", () => {
+    const baseline = toXYNodes(useFlowStore.getState().graph, REGISTRY);
+    useFlowStore.setState({ projection: baseline });
+    useFlowStore.getState().applyNodesChanges([
+      { id: "n1", type: "position", position: { x: 9, y: 9 } },
+    ]);
+    const proj = useFlowStore.getState().projection;
+    expect(proj[0].data).toBe(baseline[0].data);
+    expect(useFlowStore.getState().graph.nodes[0].position).toEqual({ x: 9, y: 9 });
+  });
+});
+

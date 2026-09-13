@@ -47,6 +47,17 @@ export function errorMessage(e: unknown): string {
   return e instanceof Error ? e.message : String(e);
 }
 
+/** GET /api/run/status payload — flow server is the bearer of truth for
+ * this shape (T8 review MINOR-8). Mapping into the UI-level store.RunStatus
+ * happens in the Task 9/10 run wiring. */
+export interface ApiRunStatus {
+  running: boolean;
+  exit_code: null | number;
+  started_at: string | null;
+  exit_at: string | null;
+  tail: string[];
+}
+
 export const api = {
   getNodes: () => request<RegistrySnapshot>("/api/nodes"),
   getFlows: () => request<string[]>("/api/flows"),
@@ -66,6 +77,6 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ name }),
     }),
-  runStatus: () => request<unknown>("/api/run/status"),
+  runStatus: () => request<ApiRunStatus>("/api/run/status"),
   runStop: () => request<{ ok: true; stop_flag: string }>("/api/run/stop", { method: "POST" }),
 };

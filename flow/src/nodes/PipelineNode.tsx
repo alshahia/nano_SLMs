@@ -13,6 +13,9 @@ function PipelineNode({ data, selected }: NodeProps<PipelineNode>) {
   return (
     <div className={"pipeline-node" + (selected ? " selected" : "")}>
       <div className="pipeline-node-head">
+        {/* TODO(Tasks 9/10): placeholder only — wire real run state from
+            POST /api/run + GET /api/run/status into node.data.runState when
+            run wiring lands; do not fake a wire before that. */}
         <span className={"run-dot run-dot-" + (data.runState ?? "idle")} title={"run state: " + (data.runState ?? "idle")} />
         <span className="pipeline-node-title">{data.label ?? data.kind}</span>
       </div>
