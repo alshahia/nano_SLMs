@@ -26,6 +26,126 @@
 
 .canvas {
   flex: 1;
+  position: relative;
+}
+
+.palette-status {
+  font-size: 11px;
+  color: #666;
+}
+
+.palette-error {
+  color: #b30;
+}
+
+/* Right-click / add-node menu anchored at the mouse position. */
+.add-menu-wrap {
+  position: absolute;
+  z-index: 20;
+}
+
+.add-menu {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  min-width: 170px;
+  padding: 2px;
+}
+
+.add-menu-btn,
+.add-menu button {
+  border: 0;
+  background: none;
+  text-align: left;
+  padding: 5px 9px;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.add-menu button:hover,
+.add-menu button.active {
+  background: #e6eefb;
+}
+
+.add-menu-search {
+  border-top: 1px solid #ddd;
+  margin-top: 2px;
+  color: #456;
+}
+
+.search-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.search-modal {
+  position: fixed;
+  left: 50%;
+  top: 18%;
+  transform: translateX(-50%);
+  width: 260px;
+  background: #fff;
+  border: 1px solid #999;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  padding: 6px;
+}
+
+.search-modal input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 7px;
+  font: inherit;
+}
+
+.search-list {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.search-list button {
+  display: block;
+  width: 100%;
+  border: 0;
+  background: none;
+  text-align: left;
+  padding: 5px 7px;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.search-list button.active,
+.search-list button:hover {
+  background: #e6eefb;
+}
+
+.search-empty {
+  color: #999;
+  padding: 5px 7px;
+}
+
+.toast {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 40;
+  background: #c62828;
+  color: #fff;
+  padding: 7px 11px;
+  border-radius: 5px;
+  font-size: 12px;
+  max-width: 360px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
 .inspector {
