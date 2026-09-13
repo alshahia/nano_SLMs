@@ -22,6 +22,7 @@ Public API:
 """
 
 import os
+import re
 from pathlib import Path
 
 import yaml
@@ -46,6 +47,27 @@ LR_PRESETS = {"Pretrain 4e-4": 4.0e-4, "Conservative 2e-4": 2.0e-4,
               "Fine-tune 3e-5": 3.0e-5}
 TOKENIZER_NAME = "codellama/CodeLlama-7b-hf"
 SHARD_TOKENS = 8000000
+
+# Same guard as webui/app.py build_config: a run named like a shipped config
+# would collide with it and with the auto-resume state (runs/<name>,
+# data/<name>).
+RESERVED_RUN_NAMES = frozenset(
+    {"smoke", "pilot", "target", "sft_t1", "custom_example"})
+
+# Same U7 hard cap as webui/app.py MAX_ROWS: bounds net time + disk.
+MAX_ROWS = 500_000
+
+# Basic dataset-name shape: segments of letters/digits/. _ - with at most one
+# '/' (org/name) or a single name (see _valid_dataset_name).
+_HF_NAME_RE = re.compile(r"[A-Za-z0-9._-]+")
+
+
+def _valid_dataset_name(name):
+    """HF-path-shape check: one segment or org/name, no empty segments."""
+    parts = name.split("/")
+    if len(parts) > 2:
+        return False
+    return all(part and _HF_NAME_RE.fullmatch(part) for part in parts)
 
 # The only execution chain the MVP maps to a config. Branching is rejected
 # cleanly (never silently ignored) until the future F5 execution task.
@@ -192,8 +214,22 @@ def build_config(g) -> dict:
     if errors:
         raise ValueError("\n".join(errors))
 
-    # 3. Run-name slug - flows.py slug rule reused, not reimplemented.
-    slug = _slug((g.get("meta") or {}).get("name"))
+    # 3. Run-name slug - flows.py slug rule reused, not reimplemented; the
+    #    webui reserved-name guard rejects shipped-config collisions. The
+    #    raw-name check runs first: webui's own slug rule accepts '_' (so
+    #    'custom_example' is a legit webui name), while the flow slug rule
+    #    is stricter - reservation must win over the slug message.
+    raw_name = (g.get("meta") or {}).get("name")
+    if (isinstance(raw_name, str)
+            and raw_name.strip().lower() in RESERVED_RUN_NAMES):
+        slug = raw_name.strip().lower()
+    else:
+        slug = _slug(raw_name)
+    if slug in RESERVED_RUN_NAMES:
+        raise ValueError(
+            "flow name: '%s' is a reserved shipped-config name - it would "
+            "collide with the shipped configs and auto-resume state "
+            "(runs/%s, data/%s)" % (slug, slug, slug))
 
     # 4. Parse the chain nodes into knobs. Misses produce named errors.
     chain = _build_chain(g)
@@ -210,14 +246,34 @@ def build_config(g) -> dict:
             "dataset name: node '%s' has no label - the dataset node's "
             "label is the HF dataset name in this MVP" % ds_node.get("id"))
     ds_name = label.strip()
-    pp = chain["prepare"]["props"]
-    tp = chain["tokenize"]["props"]
+    if not _valid_dataset_name(ds_name):
+        # Beyond non-empty: a basic HF path shape (single name or org/name;
+        # letters, digits, '.', '_', '-').
+        raise ValueError(
+            "dataset name: node '%s' label %r is not a valid dataset name - "
+            "expected a single name or org/name using only letters, digits, "
+            "'.', '_' and '-' with at most one '/'"
+            % (ds_node.get("id"), ds_name))
+    # Props containers fail as ValueError, never KeyError (error hygiene).
+    pp = chain["prepare"].get("props")
+    tp = chain["tokenize"].get("props")
     for kind, props in (("prepare", pp), ("tokenize", tp)):
+        if not isinstance(props, dict):
+            raise ValueError(
+                "props: missing - %s node '%s' has no props object and the "
+                "config mapping requires every %s knob"
+                % (kind, chain[kind].get("id"), kind))
         for key in sorted(nodes.PROPS[kind]):
             if key not in props:
                 raise ValueError(
                     "%s: missing - %s node '%s' requires the %s knob"
                     % (key, kind, chain[kind].get("id"), key))
+
+    rows = pp["rows"]
+    if int(rows) > MAX_ROWS:
+        raise ValueError(
+            "rows: %d is above the hard cap %d (net time + disk)"
+            % (int(rows), MAX_ROWS))
 
     preset_name = tprops["preset"]
     if not isinstance(preset_name, str):
@@ -251,7 +307,7 @@ def build_config(g) -> dict:
                   "ffn": p["ffn"], "ctx": ctx, "dropout": 0.0,
                   "tie_embeddings": True},
         "data": {"dataset_candidates": [{"name": ds_name}],
-                 "rows": int(pp["rows"]),
+                 "rows": int(rows),
                  "val_fraction": float(pp["val_fraction"]),
                  "dedupe": True, "min_chars": int(pp["min_chars"]),
                  "shard_tokens": SHARD_TOKENS,

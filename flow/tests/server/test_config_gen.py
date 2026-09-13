@@ -120,9 +120,25 @@ class ConfigGenTests(unittest.TestCase):
         self.assertEqual(loaded, config_gen.build_config(linear_chain()))
 
     def test_generated_file_never_overwrites_shipped_configs(self):
-        # default out_dir is the repo configs/ dir; tests keep it injected.
-        self.assertIn("configs",
-                      str(config_gen.DEFAULT_CONFIGS_DIR).split(os.sep))
+        # Strong form: the test-written file is resolved BELOW the injected
+        # tempfile dir and NOT below the repo's configs/ directory.
+        path = config_gen.generate(linear_chain(), out_dir=self.out_dir)
+        resolved = Path(path).resolve()
+        repo_configs = config_gen.DEFAULT_CONFIGS_DIR.resolve()
+        self.assertTrue(resolved.is_relative_to(Path(self.tmp.name).resolve()))
+        self.assertFalse(resolved.is_relative_to(repo_configs))
+        self.assertFalse(resolved == repo_configs)
+        # A real attempt at a shipped run name is blocked by the run-name
+        # reservation (build_config ValueError) - and the repo configs/ dir
+        # stays untouched because generate() writes only after validation.
+        shipped = repo_configs / "flow_smoke.yaml"
+        self.assertFalse(shipped.exists())  # repo-readonly evidence base
+        g = linear_chain()
+        g["meta"]["name"] = "smoke"
+        with self.assertRaises(ValueError) as cm:
+            config_gen.generate(g, out_dir=config_gen.DEFAULT_CONFIGS_DIR)
+        self.assertIn("reserved shipped-config name", str(cm.exception))
+        self.assertFalse(shipped.exists())  # still untouched after the try
 
     # --- validation reuse ------------------------------------------------
     def test_invalid_graph_rejected_with_graph_schema_errors(self):
@@ -242,6 +258,124 @@ class ConfigGenTests(unittest.TestCase):
         with self.assertRaises(ValueError) as cm:
             config_gen.build_config(g)
         self.assertIn("preset", str(cm.exception))
+
+
+class ReviewFixTests(unittest.TestCase):
+    """Post-review fixes: reserved run names, rows cap, ValueError-only
+    failure paths, generated-path safety, webui parity, dataset-name rule.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.out_dir = self.tmp.name
+        self.addCleanup(self.tmp.cleanup)
+
+    def _named(self, name):
+        g = linear_chain()
+        g["meta"]["name"] = name
+        return g
+
+    # --- IMPORTANT-1: reserved run names ---------------------------------
+    def test_reserved_run_names_rejected(self):
+        for name in sorted(config_gen.RESERVED_RUN_NAMES):
+            self.assertEqual(name, name.lower())  # slugs are lowercase
+            with self.assertRaises(ValueError) as cm:
+                config_gen.generate(self._named(name), out_dir=self.out_dir)
+            msg = str(cm.exception)
+            self.assertIn("reserved shipped-config name", msg)
+            self.assertIn("runs/%s" % name, msg)   # collision explanation
+            self.assertIn("data/%s" % name, msg)
+            self.assertEqual(os.listdir(self.out_dir), [])  # nothing written
+
+    def test_benign_run_name_still_allowed(self):
+        path = config_gen.generate(self._named("fresh-run-42"),
+                                   out_dir=self.out_dir)
+        self.assertTrue(os.path.isfile(path))
+
+    # --- IMPORTANT-2: rows hard cap --------------------------------------
+    def test_rows_cap_boundary(self):
+        g = linear_chain()
+        g["graph"]["nodes"][1]["props"]["rows"] = config_gen.MAX_ROWS
+        cfg = config_gen.build_config(g)
+        self.assertEqual(cfg["data"]["rows"], config_gen.MAX_ROWS)
+
+    def test_rows_above_cap_rejected(self):
+        g = linear_chain()
+        g["graph"]["nodes"][1]["props"]["rows"] = config_gen.MAX_ROWS + 1
+        with self.assertRaises(ValueError) as cm:
+            config_gen.build_config(g)
+        self.assertIn("hard cap %d" % config_gen.MAX_ROWS, str(cm.exception))
+        self.assertIn("(net time + disk)", str(cm.exception))
+
+    def test_rows_cap_matches_webui_constant(self):
+        # Source-parsed (see parity test for why webui.app is not imported).
+        self.assertEqual(config_gen.MAX_ROWS,
+                         ReviewFixTests.webui_assign("MAX_ROWS"))
+
+    # --- MINOR-3: node/props failures raise ValueError, never KeyError ----
+    def test_missing_props_dict_raises_value_error_not_keyerror(self):
+        g = linear_chain()
+        g["graph"]["nodes"][1].pop("props")   # prepare node, no props key
+        with self.assertRaises(ValueError) as cm:
+            config_gen.build_config(g)
+        self.assertIn("prepare", str(cm.exception))
+        self.assertIn("props", str(cm.exception))
+        self.assertNotIn("KeyError", str(cm.exception))
+
+    # --- MINOR-5: PRESETS / LR_PRESETS parity with webui ------------------
+    @staticmethod
+    def webui_assign(name):
+        """Parse webui/app.py with ast and evaluate the module-level assign
+        to `name`. webui.app is deliberately NOT imported: importing it
+        builds the full Gradio demo (heavy deps + module side effects), so
+        the robust drift check is source parsing + evaluation of the single
+        assignment expression (no exec of statements, no gradio import).
+        """
+        import ast
+        src = (REPO / "webui" / "app.py").read_text(encoding="utf-8")
+        tree = ast.parse(src, filename="webui/app.py")
+        for stmt in tree.body:
+            if isinstance(stmt, ast.Assign) and any(
+                    isinstance(t, ast.Name) and t.id == name
+                    for t in stmt.targets):
+                code = compile(ast.Expression(stmt.value),
+                               "<webui-%s>" % name, "eval")
+                return eval(code, {"__builtins__": {}}, {"dict": dict})
+        raise AssertionError("webui/app.py has no top-level %r" % name)
+
+    def test_presets_parity_with_webui_dicts(self):
+        self.assertEqual(config_gen.PRESETS, self.webui_assign("PRESETS"))
+        self.assertEqual(config_gen.LR_PRESETS,
+                         self.webui_assign("LR_PRESETS"))
+
+    def test_reserved_names_parity_with_webui_build_config(self):
+        # The webui build_config guard tuple is the source of truth.
+        self.assertEqual(
+            sorted(config_gen.RESERVED_RUN_NAMES),
+            ["custom_example", "pilot", "sft_t1", "smoke", "target"])
+        src = (REPO / "webui" / "app.py").read_text(encoding="utf-8")
+        self.assertIn('("smoke", "pilot", "target", "sft_t1", "custom_example")',
+                      src)  # build_config guard tuple verbatim
+
+    # --- MINOR-6: dataset label as HF-name shape -------------------------
+    def test_valid_dataset_names_accepted(self):
+        for label in ("tinystories", "TheGamingMahi/TinyCode",
+                      "my_data.v2/name-1", "org/name", "0123"):
+            g = linear_chain()
+            g["graph"]["nodes"][0]["label"] = label
+            cfg = config_gen.build_config(g)
+            self.assertEqual(cfg["data"]["dataset_candidates"],
+                             [{"name": label}])
+
+    def test_invalid_dataset_names_rejected_naming_the_node(self):
+        for label in ("", "   ", "has space", "row$1", "org//name",
+                      "org/", "/name", "org/name/extra", "r\u00e9sum\u00e9"):
+            g = linear_chain()
+            g["graph"]["nodes"][0]["label"] = label
+            with self.assertRaises(ValueError) as cm:
+                config_gen.build_config(g)
+            self.assertIn("dataset name", str(cm.exception))
+            self.assertIn("n1", str(cm.exception))  # node id named
 
 
 if __name__ == "__main__":
