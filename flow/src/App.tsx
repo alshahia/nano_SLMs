@@ -70,10 +70,20 @@ function Toolbar() {
   const saveFlow = useFlowStore((s) => s.saveFlow);
   const openFlow = useFlowStore((s) => s.openFlow);
   const setError = useFlowStore((s) => s.setError);
+  const validateFlow = useFlowStore((s) => s.validateFlow);
+  const runGraph = useFlowStore((s) => s.runGraph);
+  const currentFlowName = useFlowStore((s) => s.currentFlowName);
 
   /* File modal mode: null | "open" (flow list picker) | "save" (name
    * prompt). */
   const [modal, setModal] = useState<null | "open" | "save">(null);
+  /* In-flight guard for the Save modal (carry-over T9 finding (a)): the
+   * submit button (and the Enter shortcut) are inert while the PUT is
+   * awaiting, so a double-Enter cannot fire two saves. */
+  const [saving, setSaving] = useState(false);
+  /* One-shot flag so a Run click on an unsaved graph opens the Save modal
+   * and continues with runGraph() after that save succeeds. */
+  const runAfterSaveRef = useRef(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   /* Escape closes the active modal (capture phase so it wins over the
@@ -84,6 +94,7 @@ function Toolbar() {
       if (e.key === "Escape") {
         e.stopPropagation();
         setModal(null);
+        runAfterSaveRef.current = false;
       }
     };
     window.addEventListener("keydown", onKey, true);
@@ -95,6 +106,7 @@ function Toolbar() {
   }, [modal]);
 
   const submitSave = async () => {
+    if (saving) return; // in-flight guard (T9 fix a)
     const name = inputRef.current?.value ?? "";
     if (!isValidFlowName(name)) {
       setError(
@@ -102,10 +114,19 @@ function Toolbar() {
       );
       return;
     }
-    const ok = await saveFlow(name);
-    if (ok) {
-      setModal(null);
-      setError(null);
+    setSaving(true);
+    try {
+      const ok = await saveFlow(name);
+      if (ok) {
+        setModal(null);
+        setError(null);
+        if (runAfterSaveRef.current) {
+          runAfterSaveRef.current = false;
+          await runGraph();
+        }
+      }
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -117,6 +138,27 @@ function Toolbar() {
       </button>
       <button id="toolbar-save" aria-label="Save current flow" onClick={() => setModal("save")}>
         Save
+      </button>
+      {/* Task 10 wiring: Validate POSTs the UNSAVED graph document
+        * (meta.name = saved slug or "untitled") and toasts ok / first-3
+        * errors + "+N more"; Run PUT-saves the graph under its slug and
+        * POSTs /api/run, switching to the Run log tab. An unsaved graph
+        * routes Run through the Save modal first (one-shot flag). */}
+      <button id="toolbar-validate" aria-label="Validate current graph" onClick={() => void validateFlow()}>
+        Validate
+      </button>
+      <button
+        id="toolbar-run"
+        aria-label="Run current flow"
+        onClick={() => {
+          if (currentFlowName !== null && isValidFlowName(currentFlowName)) void runGraph();
+          else {
+            runAfterSaveRef.current = true;
+            setModal("save");
+          }
+        }}
+      >
+        Run
       </button>
 
       {modal === "open" && (
@@ -144,8 +186,12 @@ function Toolbar() {
               }}
             />
             <div className="modal-actions">
-              <button onClick={() => setModal(null)}>Cancel</button>
-              <button onClick={() => void submitSave()}>Save</button>
+              <button onClick={() => { setModal(null); runAfterSaveRef.current = false; }}>
+                Cancel
+              </button>
+              <button disabled={saving} onClick={() => void submitSave()}>
+                {modal === "save" && saving ? "saving…" : "Save"}
+              </button>
             </div>
           </div>
         </div>

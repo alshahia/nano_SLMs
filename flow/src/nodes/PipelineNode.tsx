@@ -10,13 +10,20 @@ import "./PipelineNode.css";
 function PipelineNode({ data, selected }: NodeProps<PipelineNode>) {
   const ports = data.ports ?? [];
   const propEntries = Object.entries(data.props ?? {});
+  /* Task 10 dot wiring: toXYNodes threads the store's runStatus into every
+   * node's data (honest MVP simplification — the backend runs one
+   * whole-graph pipeline, so "running"/"done"/"error" are set-wide, not
+   * per node; the tooltip shows the backend exit_code at terminal states).
+   * Per-node phases are a future engine feature. */
+  const state = data.runState ?? "idle";
+  const terminal = state === "done" || state === "error";
+  const title =
+    "run state: " + state +
+    (terminal && data.exitCode != null ? " (exit code " + String(data.exitCode) + ")" : "");
   return (
     <div className={"pipeline-node" + (selected ? " selected" : "")}>
       <div className="pipeline-node-head">
-        {/* TODO(Tasks 9/10): placeholder only — wire real run state from
-            POST /api/run + GET /api/run/status into node.data.runState when
-            run wiring lands; do not fake a wire before that. */}
-        <span className={"run-dot run-dot-" + (data.runState ?? "idle")} title={"run state: " + (data.runState ?? "idle")} />
+        <span className={"run-dot run-dot-" + state} title={title} />
         <span className="pipeline-node-title">{data.label ?? data.kind}</span>
       </div>
       {propEntries.length > 0 && (

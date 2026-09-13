@@ -111,6 +111,9 @@ export type InspectorTab = "properties" | "run-log" | "preview";
 export interface RunStatus {
   state: "idle" | "running" | "done" | "error";
   message?: string;
+  /** Backend exit_code (parallel to state done/error; null while running).
+   * Shared with the PipelineNode dot tooltip ("exit code N"). */
+  exitCode?: number | null;
 }
 
 export interface FlowState {
@@ -132,6 +135,16 @@ export interface FlowState {
   registryError: string | null;
   /** User-visible error / toast line; reducers never mutate graph on reject. */
   error: string | null;
+  /** Slug of the graph as saved/opened (null while purely unsaved). Run
+   * wiring PUT-saves under this name; Validate uses it for meta.name
+   * (choice: an unsaved graph validates as meta.name "untitled" —
+   * TOCTOU-free, the server validates the document, not the slug). */
+  currentFlowName: string | null;
+  /** Graph document the server last accepted via POST /api/validate —
+   * the raw material for the read-only Preview summary card. */
+  validatedDoc: FlowDocument | null;
+  /** Confirmation line from the last successful Stop (STOP flag path). */
+  stopInfo: string | null;
   setGraph: (g: Graph) => void;
   setSelection: (id: string | null) => void;
   setInspectorTab: (t: InspectorTab) => void;
@@ -141,6 +154,12 @@ export interface FlowState {
   setRegistry: (r: RegistrySnapshot) => void;
   setRegistryError: (e: string | null) => void;
   setError: (e: string | null) => void;
+  /** Task 10 wiring: validate the UNSAVED graph (POST /api/validate),
+   * arm a run (PUT-save then POST /api/run -> runStatus running + Run log
+   * tab), and request the checkpoint-aligned stop (POST /api/run/stop). */
+  validateFlow: () => Promise<boolean>;
+  runGraph: () => Promise<boolean>;
+  stopRun: () => Promise<boolean>;
   /** Task 9 inspector props write-back (see updateNodePropsReducer). */
   updateNodeProps: (id: string, props: Record<string, unknown>) => void;
   /** Task 9 file actions: Open = GET /api/flows/{name} -> setGraph (which
@@ -322,6 +341,28 @@ export function isValidFlowName(name: string): boolean {
   return FLOW_SLUG_RE.test(name);
 }
 
+/** Toast-friendly truncation of a long validation error list: keep the
+ * first 3 lines verbatim and summarize the rest as "+N more" (the toast
+ * has a max-width and the backend can emit a line per validator check). */
+export function truncateErrorList(errors: string[], keep = 3): string[] {
+  if (errors.length <= keep) return errors;
+  return [...errors.slice(0, keep), "+" + (errors.length - keep) + " more"];
+}
+
+/** Poll interval math for the Run log watcher (carry-over T9 finding (d)):
+ * the base cadence is 2 s; after 3 consecutive poll failures stretch to
+ * ~30 s so a dead backend does not spam fetch, and the successful read
+ * resets the counter (failure count is kept by the watcher loop). */
+export const POLL_BASE_MS = 2000;
+export const POLL_BACKOFF_MS = 30000;
+export const POLL_FAILS_BEFORE_BACKOFF = 3;
+
+export function nextPollDelay(consecutiveFailures: number): number {
+  return consecutiveFailures >= POLL_FAILS_BEFORE_BACKOFF
+    ? POLL_BACKOFF_MS
+    : POLL_BASE_MS;
+}
+
 /** Build the flow/0.1 PUT document for the current graph. The document
  * meta name echoes the slug under which the graph is saved server-side. */
 export function flowDocument(name: string, graph: Graph): FlowDocument {
@@ -353,14 +394,27 @@ export interface PipelineNodeData extends Record<string, unknown> {
   props: Record<string, unknown>;
   ports: PortSpec[];
   runState?: "idle" | "running" | "done" | "error";
+  /** Backend exit_code, only shown/tooltiped in terminal dot states. */
+  exitCode?: number | null;
 }
 
 export type PipelineNode = Node<PipelineNodeData, "pipeline">;
 
+/**
+ * runState/exitCode threading (Task 10, honest MVP simplification): the
+ * backend runs one whole-graph pipeline — nodes are NOT individually
+ * resolved. So while runStatus.state === "running" EVERY node's dot
+ * shows "running"; at a terminal done/error the dots flip set-wide and
+ * the title tooltip carries the backend exit_code. Per-node phases are
+ * a future engine feature; until then this is deliberately global, not
+ * faked per node.
+ */
 export function toXYNodes(
   graph: Graph,
   registry: RegistrySnapshot,
   prev?: PipelineNode[],
+  runState: "idle" | "running" | "done" | "error" = "idle",
+  exitCode: number | null = null,
 ): PipelineNode[] {
   const prevById = new Map((prev ?? []).map((n) => [n.id, n]));
   return graph.nodes.map((n) => {
@@ -374,7 +428,9 @@ export function toXYNodes(
       p.data.kind === n.kind &&
       p.data.label === n.label &&
       p.data.props === n.props &&
-      p.data.ports === ports;
+      p.data.ports === ports &&
+      p.data.runState === runState &&
+      (p.data.exitCode ?? null) === exitCode;
     const data: PipelineNodeData = stableData
       ? p.data
       : {
@@ -382,6 +438,8 @@ export function toXYNodes(
           ...(n.label !== undefined ? { label: n.label } : {}),
           props: n.props,
           ports,
+          runState,
+          exitCode,
         };
     return {
       id: n.id,
@@ -439,8 +497,11 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   registry: null,
   registryError: null,
   error: null,
+  currentFlowName: null,
+  validatedDoc: null,
+  stopInfo: null,
 
-  setGraph: (graph) => set({ graph, projection: [] }),
+  setGraph: (graph) => set({ graph, projection: [], validatedDoc: null }),
   updateNodeProps: (id, props) => {
     const g = get();
     const next = updateNodePropsReducer(g.graph, id, props);
@@ -450,7 +511,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   openFlow: async (name) => {
     try {
       const doc = await api.getFlow(name);
-      set({ graph: doc.graph, projection: [], error: null });
+      set({ graph: doc.graph, projection: [], error: null, currentFlowName: name, validatedDoc: null });
       return true;
     } catch (e) {
       set({ error: errorMessage(e) });
@@ -466,7 +527,74 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     }
     try {
       await api.saveFlow(name, flowDocument(name, get().graph));
-      set({ error: null });
+      set({ error: null, currentFlowName: name });
+      return true;
+    } catch (e) {
+      set({ error: errorMessage(e) });
+      return false;
+    }
+  },
+  // Task 10 run wiring -------------------------------------------------
+  // Validate ALWAYS posts the unsaved graph: the doc meta.name is the
+  // saved slug when there is one, else the literal "untitled" (documented
+  // choice above). A successful response caches validatedDoc for the
+  // Preview summary; errors go to the toast, first 3 + "+N more".
+  validateFlow: async () => {
+    const name = get().currentFlowName;
+    const doc = flowDocument(
+      name !== null && isValidFlowName(name) ? name : "untitled",
+      get().graph,
+    );
+    try {
+      const r = await api.validateFlow(doc);
+      if (r.ok) {
+        set({ validatedDoc: doc, error: null });
+        return true;
+      }
+      set({ validatedDoc: null, error: truncateErrorList(r.errors).join(" · ") });
+      return false;
+    } catch (e) {
+      set({ validatedDoc: null, error: errorMessage(e) });
+      return false;
+    }
+  },
+  // Run = PUT-save the current graph under its slug, then POST /api/run.
+  // 400 preflight errors[] and 409 busy detail land in the toast channel
+  // verbatim (formatApiError already prefers the errors/detail shapes);
+  // on success runStatus arms the Run log watcher (which start polls).
+  runGraph: async () => {
+    const name = get().currentFlowName;
+    if (name === null || !isValidFlowName(name)) {
+      set({ error: "Run needs a saved flow: use Save first (name must match [a-z0-9-]{1,64})" });
+      return false;
+    }
+    try {
+      await api.saveFlow(name, flowDocument(name, get().graph));
+    } catch (e) {
+      set({ error: errorMessage(e) });
+      return false;
+    }
+    try {
+      const r = await api.runFlow(name);
+      set({
+        runStatus: { state: "running", message: "started pid " + String(r.pid), exitCode: undefined },
+        stopInfo: null,
+        inspectorTab: "run-log",
+        error: null,
+      });
+      return true;
+    } catch (e) {
+      set({ error: errorMessage(e) });
+      return false;
+    }
+  },
+  // Stop is the ONLY run control by design (NO kill button): it writes
+  // the U11 STOP flag; the trainer exits cleanly at the next checkpoint
+  // save. A 409 ("no live GPU job") surface through the toast verbatim.
+  stopRun: async () => {
+    try {
+      const r = await api.runStop();
+      set({ error: null, stopInfo: "stop flag written: " + r.stop_flag });
       return true;
     } catch (e) {
       set({ error: errorMessage(e) });
@@ -505,6 +633,13 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     let selection: string | null | undefined;
     for (const c of changes) {
       if (c.type === "select") selection = c.selected ? c.id : null;
+    }
+    // Carry-over T9 finding (b): a remove change that deletes the node the
+    // Inspector is currently editing must clear the stale selection, or the
+    // Properties panel would keep rendering a ghost node's props.
+    if (selection === undefined && get().selection !== null) {
+      const alive = new Set(graph.nodes.map((n) => n.id));
+      if (!alive.has(get().selection as string)) selection = null;
     }
     set({
       graph,

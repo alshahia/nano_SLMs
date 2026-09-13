@@ -65,13 +65,13 @@ export interface ApiRunStatus {
  * - running === false, exit_code === null -> "idle" (last run finished
  *   before a tail existed / no run since process start) */
 export function mapRunStatus(s: ApiRunStatus): RunStatus {
-  if (s.running) return { state: "running", message: "running…" };
+  if (s.running) return { state: "running", message: "running…", exitCode: undefined };
   if (s.exit_code !== null) {
     return s.exit_code === 0
-      ? { state: "done", message: "exit code 0 — done" }
-      : { state: "error", message: "exit code " + String(s.exit_code) + " — error" };
+      ? { state: "done", message: "exit code 0 — done", exitCode: 0 }
+      : { state: "error", message: "exit code " + String(s.exit_code) + " — error", exitCode: s.exit_code };
   }
-  return { state: "idle", message: "no live run" };
+  return { state: "idle", message: "no live run", exitCode: undefined };
 }
 
 export const api = {

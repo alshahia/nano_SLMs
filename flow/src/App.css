@@ -315,3 +315,44 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+/* Toolbar Save in-flight state (Task 10 carry-over fix a). */
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Run log Stop button + Preview summary card (Task 10). */
+.run-stop {
+  align-self: flex-start;
+  margin: 0 0 6px;
+}
+
+.preview-summary {
+  font-size: 12px;
+}
+
+.preview-label {
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.preview-meta {
+  margin: 0 0 6px;
+}
+
+.preview-section {
+  font-weight: 600;
+  margin: 8px 0 2px;
+}
+
+.preview-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.preview-one-liner {
+  padding: 1px 0;
+  word-break: break-word;
+}

@@ -128,6 +128,10 @@ function FlowCanvasInner() {
   const applyEdgesChanges = useFlowStore((s) => s.applyEdgesChanges);
   const registry = useFlowStore((s) => s.registry);
   const projection = useFlowStore((s) => s.projection);
+  // Task 10 dot wiring: the whole-graph run state (and terminal exit
+  // code) threads from store.runStatus into every node's data via
+  // toXYNodes — see its doc comment for the honest MVP simplification. */
+  const runStatus = useFlowStore((s) => s.runStatus);
 
   const { screenToFlowPosition } = useReactFlow();
   const { kinds } = usePaletteKinds();
@@ -251,7 +255,15 @@ function FlowCanvasInner() {
   return (
     <main ref={canvasRef} className="canvas">
       <ReactFlow
-        nodes={toXYNodes(graph, registry ?? FALLBACK_REGISTRY, projection)}
+        nodes={toXYNodes(
+          graph,
+          registry ?? FALLBACK_REGISTRY,
+          projection,
+          runStatus?.state ?? "idle",
+          (runStatus?.state === "done" || runStatus?.state === "error")
+            ? (runStatus.exitCode ?? null)
+            : null,
+        )}
         edges={toXYEdges(graph)}
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}

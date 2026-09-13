@@ -20,6 +20,10 @@ import {
   isValidFlowName,
   updateNodePropsReducer,
   flowDocument,
+  truncateErrorList,
+  nextPollDelay,
+  POLL_BASE_MS,
+  POLL_BACKOFF_MS,
 } from "./store";
 
 const REGISTRY: RegistrySnapshot = {
@@ -601,6 +605,7 @@ describe("ApiRunStatus -> RunStatus mapping", () => {
     expect(mapRunStatus(status({ running: false, exit_code: 0, exit_at: "now" }))).toEqual({
       state: "done",
       message: "exit code 0 — done",
+      exitCode: 0,
     });
   });
 
@@ -608,6 +613,7 @@ describe("ApiRunStatus -> RunStatus mapping", () => {
     expect(mapRunStatus(status({ running: false, exit_code: 1 }))).toEqual({
       state: "error",
       message: "exit code 1 — error",
+      exitCode: 1,
     });
   });
 
@@ -754,3 +760,307 @@ describe("file open/save store actions (mocked fetch)", () => {
   });
 });
 
+
+/* ------------------------------------------------------------------ */
+/* Task 10: validate + run wiring (mocked fetch, no server)            */
+/* ------------------------------------------------------------------ */
+
+describe("truncateErrorList (first 3 + +N more toast truncation)", () => {
+  it("passes through short lists untouched", () => {
+    expect(truncateErrorList([])).toEqual([]);
+    expect(truncateErrorList(["a"])).toEqual(["a"]);
+    expect(truncateErrorList(["a", "b", "c"])).toEqual(["a", "b", "c"]);
+  });
+
+  it("keeps the first 3 verbatim and summarizes the rest as +N more", () => {
+    const errs = ["e1", "e2", "e3", "e4", "e5"];
+    expect(truncateErrorList(errs)).toEqual(["e1", "e2", "e3", "+2 more"]);
+  });
+});
+
+describe("nextPollDelay (carry-over T9 fix d: polling backoff math)", () => {
+  it("stays at the base cadence below the failure threshold", () => {
+    expect(POLL_BASE_MS).toBe(2000);
+    expect(nextPollDelay(0)).toBe(2000);
+    expect(nextPollDelay(1)).toBe(2000);
+    expect(nextPollDelay(2)).toBe(2000);
+  });
+
+  it("backs off to ~30 s at 3 consecutive failures and stays there", () => {
+    expect(POLL_BACKOFF_MS).toBe(30000);
+    expect(nextPollDelay(3)).toBe(30000);
+    expect(nextPollDelay(4)).toBe(30000);
+    expect(nextPollDelay(50)).toBe(30000);
+  });
+});
+
+describe("Task 10 validate wiring (mocked fetch)", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  beforeEach(() => {
+    useFlowStore.setState({
+      graph: { nodes: [], edges: [] },
+      currentFlowName: null,
+      validatedDoc: null,
+      error: null,
+    });
+  });
+
+  it("ok response caches the UNSAVED doc as meta.name 'untitled' and clears the toast", async () => {
+    const fetchMock = vi.fn(async (path: string, init?: RequestInit) => {
+      expect(path).toBe("/api/validate");
+      expect(init?.method).toBe("POST");
+      const body = JSON.parse(String(init?.body));
+      expect(body.schema).toBe("flow/0.1");
+      expect(body.meta).toEqual({ name: "untitled" });
+      expect(body.graph).toEqual(useFlowStore.getState().graph);
+      return new Response(JSON.stringify({ ok: true, errors: [] }), { status: 200 });
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const ok = await useFlowStore.getState().validateFlow();
+    expect(ok).toBe(true);
+    expect(useFlowStore.getState().validatedDoc?.meta.name).toBe("untitled");
+    expect(useFlowStore.getState().error).toBeNull();
+  });
+
+  it("a saved slug is used as meta.name for the unsaved validation doc", async () => {
+    useFlowStore.setState({ currentFlowName: "alpha-run" });
+    let seen: unknown;
+    vi.stubGlobal("fetch", vi.fn(async (_path: string, init?: RequestInit) => {
+      seen = JSON.parse(String(init?.body));
+      return new Response(JSON.stringify({ ok: true, errors: [] }), { status: 200 });
+    }));
+    await useFlowStore.getState().validateFlow();
+    expect((seen as { meta: { name: string } }).meta.name).toBe("alpha-run");
+  });
+
+  it("errors responses truncate to first 3 + +N more in the toast and clear validatedDoc", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () =>
+        new Response(
+          JSON.stringify({ ok: false, errors: ["a", "b", "c", "d", "e"] }),
+          { status: 200 },
+        ),
+      ),
+    );
+    useFlowStore.setState({ validatedDoc: {
+      schema: "flow/0.1", meta: { name: "old" }, graph: { nodes: [], edges: [] },
+    } });
+    const ok = await useFlowStore.getState().validateFlow();
+    expect(ok).toBe(false);
+    expect(useFlowStore.getState().error).toBe("a · b · c · +2 more");
+    expect(useFlowStore.getState().validatedDoc).toBeNull();
+  });
+
+  it("network failure toasts and does not cache a preview doc", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => { throw new TypeError("fetch failed"); }));
+    const ok = await useFlowStore.getState().validateFlow();
+    expect(ok).toBe(false);
+    expect(useFlowStore.getState().error).toBe("fetch failed");
+    expect(useFlowStore.getState().validatedDoc).toBeNull();
+  });
+});
+
+describe("Task 10 run arm (PUT-save then POST /api/run, mocked fetch)", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  beforeEach(() => {
+    useFlowStore.setState({
+      graph: {
+        nodes: [{ id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } }],
+        edges: [],
+      },
+      currentFlowName: "my-run",
+      runStatus: null,
+      stopInfo: null,
+      inspectorTab: "properties",
+      error: null,
+    });
+  });
+
+  it("refuses to run an unnamed graph without any doomed request", async () => {
+    useFlowStore.setState({ currentFlowName: null });
+    const fetchMock = vi.fn();
+    vi.stubGlobal("fetch", fetchMock);
+    const ok = await useFlowStore.getState().runGraph();
+    expect(ok).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(useFlowStore.getState().error).toContain("Save first");
+  });
+
+  it("success PUT-saves, POSTs /api/run {name} and arms the Run log watcher", async () => {
+    const calls: { path: string; method?: string }[] = [];
+    vi.stubGlobal("fetch", vi.fn(async (path: string, init?: RequestInit) => {
+      calls.push({ path, method: init?.method });
+      if (init?.method === "PUT") {
+        const body = JSON.parse(String(init?.body));
+        expect(body).toEqual({
+          schema: "flow/0.1",
+          meta: { name: "my-run" },
+          graph: useFlowStore.getState().graph,
+        });
+        return new Response(JSON.stringify({ ok: true, name: "my-run" }), { status: 200 });
+      }
+      expect(path).toBe("/api/run");
+      expect(JSON.parse(String(init?.body))).toEqual({ name: "my-run" });
+      return new Response(JSON.stringify({ ok: true, pid: 4242 }), { status: 200 });
+    }));
+    const ok = await useFlowStore.getState().runGraph();
+    expect(ok).toBe(true);
+    expect(calls.map((c) => c.path)).toEqual(["/api/flows/my-run", "/api/run"]);
+    const st = useFlowStore.getState();
+    expect(st.runStatus).toEqual({ state: "running", message: "started pid 4242" });
+    expect(st.inspectorTab).toBe("run-log");
+    expect(st.error).toBeNull();
+
+    // Polling arm: the mapped live/terminal widgets stay consistent — a
+    // running status maps "running" (RunLogPanel polls only while the
+    // mapped state is running; that shapes are unit mapped above).
+    expect(mapRunStatus({ running: true, exit_code: null, started_at: null, exit_at: null, tail: [] }).state)
+      .toBe("running");
+  });
+
+  it("400 preflight errors[] land in the toast and do NOT arm the watcher", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (_path: string, init?: RequestInit) => {
+      if (init?.method === "PUT") {
+        return new Response(JSON.stringify({ ok: true, name: "my-run" }), { status: 200 });
+      }
+      return new Response(
+        JSON.stringify({ errors: ["train.preset unknown", "missing shard input"] }),
+        { status: 400, statusText: "Bad Request" },
+      );
+    }));
+    const ok = await useFlowStore.getState().runGraph();
+    expect(ok).toBe(false);
+    const st = useFlowStore.getState();
+    expect(st.error).toContain("train.preset unknown");
+    expect(st.error).toContain("missing shard input");
+    expect(st.runStatus).toBeNull();
+    expect(st.inspectorTab).toBe("properties");
+  });
+
+  it("409 busy detail surfaces prominently and does not arm", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (_path: string, init?: RequestInit) => {
+      if (init?.method === "PUT") {
+        return new Response(JSON.stringify({ ok: true, name: "my-run" }), { status: 200 });
+      }
+      return new Response(
+        JSON.stringify({ detail: "GPU job already running (pid 99) - single global job slot, one GPU" }),
+        { status: 409, statusText: "Conflict" },
+      );
+    }));
+    const ok = await useFlowStore.getState().runGraph();
+    expect(ok).toBe(false);
+    const st = useFlowStore.getState();
+    expect(st.error).toContain("GPU job already running (pid 99)");
+    expect(st.runStatus).toBeNull();
+  });
+});
+
+describe("Task 10 stop dispatch (mocked fetch)", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  beforeEach(() => {
+    useFlowStore.setState({ error: null, stopInfo: null });
+  });
+
+  it("200 records the stop flag confirmation", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (path: string, init?: RequestInit) => {
+      expect(path).toBe("/api/run/stop");
+      expect(init?.method).toBe("POST");
+      return new Response(JSON.stringify({ ok: true, stop_flag: "runs/x/STOP" }), { status: 200 });
+    }));
+    const ok = await useFlowStore.getState().stopRun();
+    expect(ok).toBe(true);
+    expect(useFlowStore.getState().stopInfo).toBe("stop flag written: runs/x/STOP");
+    expect(useFlowStore.getState().error).toBeNull();
+  });
+
+  it("409 detail surfaces verbatim", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response(JSON.stringify({ detail: "no live GPU job to stop" }), { status: 409, statusText: "Conflict" })),
+    );
+    const ok = await useFlowStore.getState().stopRun();
+    expect(ok).toBe(false);
+    expect(useFlowStore.getState().error).toBe("no live GPU job to stop");
+  });
+});
+
+describe("carry-over T9 fix (b): deleting a node clears a stale selection", () => {
+  beforeEach(() => {
+    useFlowStore.setState({
+      graph: {
+        nodes: [
+          { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
+          { id: "n2", kind: "prepare", props: {}, position: { x: 5, y: 6 } },
+        ],
+        edges: [],
+      },
+      registry: REGISTRY,
+      projection: [],
+      selection: "n2",
+      inspectorTab: "properties",
+      runStatus: null,
+      paletteCollapsed: false,
+      inspectorCollapsed: false,
+      registryError: null,
+      error: null,
+      currentFlowName: null,
+      validatedDoc: null,
+      stopInfo: null,
+    });
+  });
+
+  it("a remove change for the selected node clears store.selection", () => {
+    useFlowStore.setState({ selection: "n2" });
+    useFlowStore.getState().applyNodesChanges([{ id: "n2", type: "remove" }]);
+    expect(useFlowStore.getState().graph.nodes.map((n) => n.id)).toEqual(["n1"]);
+    expect(useFlowStore.getState().selection).toBeNull();
+  });
+
+  it("an explicit select change in the same batch still wins", () => {
+    useFlowStore.setState({ selection: null });
+    useFlowStore.getState().applyNodesChanges([
+      { id: "n2", type: "select", selected: true },
+      { id: "n1", type: "remove" },
+    ]);
+    expect(useFlowStore.getState().selection).toBe("n2");
+  });
+});
+
+describe("Task 10 PipelineNode dot wiring (toXYNodes runState threading)", () => {
+  const graph: Graph = {
+    nodes: [
+      { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
+      { id: "n2", kind: "prepare", props: {}, position: { x: 5, y: 6 } },
+    ],
+    edges: [],
+  };
+
+  it("running state lands on EVERY node (honest whole-graph MVP simplification)", () => {
+    const xy = toXYNodes(graph, REGISTRY, [], "running");
+    expect(xy.map((n) => n.data.runState)).toEqual(["running", "running"]);
+  });
+
+  it("terminal done/error carries exitCode for the dot title tooltip", () => {
+    const done = toXYNodes(graph, REGISTRY, [], "done", 0);
+    expect(done[0].data).toEqual({
+      kind: "dataset", props: {}, ports: REGISTRY.nodes.dataset.ports,
+      runState: "done", exitCode: 0,
+    });
+    const err = toXYNodes(graph, REGISTRY, [], "error", 1);
+    expect(err[1].data.exitCode).toBe(1);
+  });
+
+  it("runState participates in data identity so dots re-render without stale caches", () => {
+    const idle = toXYNodes(graph, REGISTRY);
+    const running = toXYNodes(graph, REGISTRY, idle, "running");
+    expect(running[0].data.runState).toBe("running");
+    expect(running[0].data).not.toBe(idle[0].data);
+    // Back to idle reuses a fresh object again (no lingering running flag).
+    const back = toXYNodes(graph, REGISTRY, running);
+    expect(back[0].data.runState).toBe("idle");
+  });
+});

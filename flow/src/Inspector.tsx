@@ -5,6 +5,7 @@ import {
   propWidgetType,
   propSelectOptions,
   updateNodePropsReducer,
+  nextPollDelay,
   type InspectorTab,
   type NodeSpec,
   type PropWidget,
@@ -179,13 +180,20 @@ function PropertiesPanel() {
   );
 }
 
-/** Run log tab: polls GET /api/run/status every 2 s while a run is being
- * watched (store.runStatus is set), streams the tail into a scrollable
- * pre with bottom auto-adherence (sticks unless the user scrolled up) and
- * a "no live run" empty state otherwise. */
+/** Run log tab: while a run is watched (store.runStatus.state running) it
+ * polls GET /api/run/status (nextPollDelay: 2 s base cadence, backoff to
+ * 30 s after 3 consecutive failures, restored on an OK read) in a
+ * setTimeout chain, streams the tail into a scrollable pre with bottom
+ * auto-adherence (sticks unless the user scrolled up) and clears the tail
+ * when a fresh run re-arms the watcher (carry-over T9 fix (c)) so old
+ * output cannot bleed into the new run view. A Stop button (the only run
+ * control; there is NO kill button by design) writes the checkpoint-
+ * aligned STOP flag while running. */
 function RunLogPanel() {
   const runStatus = useFlowStore((s) => s.runStatus);
   const setRunStatus = useFlowStore((s) => s.setRunStatus);
+  const stopRun = useFlowStore((s) => s.stopRun);
+  const stopInfo = useFlowStore((s) => s.stopInfo);
   const [tail, setTail] = useState<string[]>([]);
   const [pollError, setPollError] = useState<string | null>(null);
   const preRef = useRef<HTMLPreElement | null>(null);
@@ -201,33 +209,58 @@ function RunLogPanel() {
   useEffect(() => {
     if (!watching) return;
     let cancelled = false;
-    const poll = () => {
-      api
-        .runStatus()
-        .then((s) => {
-          if (cancelled) return;
-          setPollError(null);
-          const next = mapRunStatus(s);
-          setRunStatus(next);
-          if (s.tail.length > 0) setTail(s.tail);
-          if (atBottomRef.current && preRef.current) {
-            preRef.current.scrollTop = preRef.current.scrollHeight;
-          }
-          // Once the mapped state is terminal the watcher can stop (a
-          // fresh run re-arms polling via setRunStatus from the toolbar).
-        })
-        .catch((e) => {
-          if (cancelled) return;
-          setPollError(errorMessage(e));
-        });
+    let timer = 0;
+    let failures = 0; // consecutive failures feeding nextPollDelay
+    // setTimeout CHAIN (not setInterval): differing success/failure and
+    // backoff cadences cannot overlap long requests. A failed read
+    // increments the failure count (delay grows to 30 s at 3), a good
+    // read resets it to the base 2 s cadence (T9 fix d).
+    const poll = async () => {
+      try {
+        const s = await api.runStatus();
+        if (cancelled) return;
+        failures = 0;
+        setPollError(null);
+        const next = mapRunStatus(s);
+        setRunStatus(next);
+        if (s.tail.length > 0) setTail(s.tail);
+        if (atBottomRef.current && preRef.current) {
+          preRef.current.scrollTop = preRef.current.scrollHeight;
+        }
+        // Once the mapped state is terminal the watcher stops (a fresh
+        // run re-arms polling via runGraph -> setRunStatus).
+        if (next.state === "running") timer = window.setTimeout(poll, nextPollDelay(0));
+      } catch (e) {
+        if (cancelled) return;
+        failures += 1;
+        setPollError(errorMessage(e));
+        timer = window.setTimeout(poll, nextPollDelay(failures));
+      }
     };
-    poll();
-    const t = window.setInterval(poll, 2000);
+    timer = window.setTimeout(poll, 0);
     return () => {
       cancelled = true;
-      window.clearInterval(t);
+      window.clearTimeout(timer);
     };
   }, [watching, setRunStatus]);
+
+  // Carry-over T9 fix (c): when the watcher re-arms (idle/null ->
+  // running persisted across polls does not count), resets the tail so a
+  // brand-new run starts with a clean view. Cleanest: track the previous
+  // runStatus object identity — same-object updates don't clear.
+  const prevWatchedRef = useRef<unknown>(null);
+  useEffect(() => {
+    const cur = runStatus;
+    if (
+      cur !== prevWatchedRef.current &&
+      cur !== null &&
+      cur.state === "running" &&
+      prevWatchedRef.current === null
+    ) {
+      setTail([]);
+    }
+    prevWatchedRef.current = cur === null || cur.state !== "running" ? null : cur;
+  }, [runStatus]);
 
   useEffect(() => {
     if (atBottomRef.current && preRef.current) {
@@ -245,6 +278,20 @@ function RunLogPanel() {
         {runStatus.state}
         {runStatus.message ? " — " + runStatus.message : ""}
       </p>
+      {stopInfo !== null && <p className="honesty-label">{stopInfo}</p>}
+      {runStatus.state === "running" && (
+        /* Task 10 Stop: checkpoint-aligned stop ONLY — it writes the U11
+         * STOP flag; the trainer exits at the next checkpoint save. There
+         * is deliberately NO kill button (per design). 409 detail (e.g.
+         * "no live GPU job to stop") lands in the store.error toast. */
+        <button
+          className="run-stop"
+          onClick={() => void stopRun()}
+          title="write STOP flag; trainer exits at next checkpoint save"
+        >
+          Stop
+        </button>
+      )}
       {pollError !== null && <p className="honesty-label">{pollError}</p>}
       <pre
         ref={preRef}
@@ -257,6 +304,60 @@ function RunLogPanel() {
       >
         {tail.length === 0 ? "(no output yet)" : tail.join("\n")}
       </pre>
+    </div>
+  );
+}
+
+/** Preview tab (Task 10): a read-only summary card built from the graph
+ * the server ACCEPTED in the last successful POST /api/validate
+ * (store.validatedDoc). Label is explicit that this is the last
+ * Validation snapshot, not a fresh compile: NO server dry-run runs here —
+ * we simply show the document the server just accepted (naive but honest
+ * MVP); a fresh Validate refreshes it, any graph edit keeps it stale. */
+function PreviewPanel() {
+  const doc = useFlowStore((s) => s.validatedDoc);
+  if (doc === null) {
+    return <p className="inspector-empty">no successful validation yet — press Validate first</p>;
+  }
+  return (
+    <div className="preview-summary" aria-label="compiled config summary">
+      <p className="preview-label">
+        compiled config summary (from last Validation)
+      </p>
+      <p className="honesty-label">
+        honest: this is the exact graph the server just accepted in the last
+        reflection-free validation — not a separate server dry-run. Edits
+        after Validating keep this stale until the next Validate.
+      </p>
+      <p className="preview-meta">
+        meta.name: <code>{doc.meta.name}</code> · schema: {doc.schema}
+      </p>
+      <p className="preview-section">nodes ({doc.graph.nodes.length})</p>
+      <ul className="preview-list">
+        {doc.graph.nodes.map((n) => (
+          <li key={n.id} className="preview-one-liner">
+            <code>{n.id}</code> {n.kind}
+            {Object.entries(n.props).length > 0 && (
+              <span>
+                {" · "}
+                {Object.entries(n.props)
+                  .map(([k, v]) => k + "=" + String(v))
+                  .join(", ")}
+              </span>
+            )}
+          </li>
+        ))}
+        {doc.graph.nodes.length === 0 && <li className="inspector-empty">(empty graph)</li>}
+      </ul>
+      <p className="preview-section">edges ({doc.graph.edges.length})</p>
+      <ul className="preview-list">
+        {doc.graph.edges.map((e) => (
+          <li key={e.id} className="preview-one-liner">
+            <code>{e.id}</code> {e.from}.{e.fromPort} → {e.to}.{e.toPort}
+          </li>
+        ))}
+        {doc.graph.edges.length === 0 && <li className="inspector-empty">(no edges)</li>}
+      </ul>
     </div>
   );
 }
@@ -312,7 +413,7 @@ export default function Inspector() {
           ) : t.id === "run-log" ? (
             <RunLogPanel />
           ) : (
-            <p className="inspector-empty">config preview lands after validate/run wiring</p>
+            <PreviewPanel />
           )}
         </div>
       ))}
