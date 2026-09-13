@@ -41,6 +41,10 @@ SOURCES = {
     # external holdouts (Abdou MIT): never in train; valid -> val pool
     "abdou_train":  ("abdou_tashkeel", None, "classical", "parquet", None),
     "abdou_valid":  ("abdou_tashkeel", None, "classical", "parquet", None),
+    # Misraj/Sadeed_Tashkeela (user account unlocked 2026-09-13): input/output
+    # pairs; train shards -> train pool, test shard = gate-only (downloaded,
+    # never prepped).
+    "sadeedt_train": ("sadeed_tashkeela", None, "classical", "sadeedhf", None),
     # pseudo-source ONLY for the val split (excluded from prepared data by policy)
     "qcri_wiki":    ("qcri_diac_clone", None, "modern", "qcrijsonl", None),
 }
@@ -132,6 +136,14 @@ def stream_samples(want_sources=None, exclude=None):
             want = {"abdou_train": "train", "abdou_valid": "valid"}[src_id]
             for lkey, t in _iter_parquet_rows(subdir, want):
                 yield {"src": src_id, "domain": domain, "line": lkey, "win": 0, "text": normalize_line(t)}
+        elif kind == "sadeedhf":
+            for fpath in sorted((RAW / subdir).rglob("train-*.parquet")):
+                import pyarrow.parquet as pq
+                pf = pq.ParquetFile(str(fpath))
+                for bi, batch in enumerate(pf.iter_batches(batch_size=512, columns=["output"])):
+                    for i, t in enumerate(batch.column(0).to_pylist()):
+                        if isinstance(t, str) and t.strip():
+                            yield {"src": src_id, "domain": domain, "line": fpath.name + "#" + str(bi * 512 + i), "win": 0, "text": normalize_line(t)}
         elif kind == "qcrijsonl":
             jl = RAW / subdir / "datasets" / "wikipedia_diacritized.jsonl"
             if not jl.exists():
