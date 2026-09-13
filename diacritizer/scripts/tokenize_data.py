@@ -50,14 +50,18 @@ def pack_rows(rows, ctx, shuffle_seed):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--phase", choices=["smoke", "pilot", "pilot128", "v2", "v2b"], default="smoke")
+    ap.add_argument("--phase", choices=["smoke", "pilot", "pilot128", "v2", "v2b",
+                                        "fadel_spec", "b65"], default="smoke")
     ap.add_argument("--ctx", type=int, default=512)
     ap.add_argument("--max-train", type=int, default=None)
+    ap.add_argument("--prepared-dir", default=None,
+                    help="alternate prepared corpus dir (default data/diac/prepared)")
     args = ap.parse_args()
     out_dir = REPO / "data" / "diac" / args.phase / "tokens"
     out_dir.mkdir(parents=True, exist_ok=True)
-    train = read_jsonl(PREPARED / "train.jsonl")
-    val = read_jsonl(PREPARED / "val.jsonl")
+    src = Path(args.prepared_dir) if args.prepared_dir else PREPARED
+    train = read_jsonl(src / "train.jsonl")
+    val = read_jsonl(src / "val.jsonl")
     if args.max_train:
         train = train[:args.max_train]
     tr_ids, tr_y = pack_rows(train, args.ctx, shuffle_seed=20260911)

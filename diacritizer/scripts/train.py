@@ -65,7 +65,9 @@ def main():
     phase = cfg["phase"]
     run_dir = RUNS / phase
     run_dir.mkdir(parents=True, exist_ok=True)
-    tokens_dir = DATA / phase / "tokens"
+    # tokens_phase: reuse another phase's packed tokens (e.g. b65 trains on the
+    # v2b matched-128-window corpus) while keeping a separate run dir.
+    tokens_dir = DATA / cfg.get("tokens_phase", phase) / "tokens"
     train_ids, train_y = load_np(("train_ids", "train_y"), tokens_dir)
     val_ids, val_y = load_np(("val_ids", "val_y"), tokens_dir)
 

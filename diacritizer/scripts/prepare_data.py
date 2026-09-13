@@ -176,9 +176,12 @@ def _parse_pair(args):
             [u.label for u in units if u.is_target], None, domain, win)
 
 
-def process(out_limit=None, sources=None):
-    OUT.mkdir(parents=True, exist_ok=True)
-    qdir = OUT / "quarantine"
+def process(out_limit=None, sources=None, out_dir=None):
+    # out_dir override MUST land here (a module-global rebind in main() is only
+    # a local and silently wrote through to the general corpus - lesson 2026-09-12).
+    out = Path(out_dir) if out_dir else OUT
+    out.mkdir(parents=True, exist_ok=True)
+    qdir = out / "quarantine"
     qdir.mkdir(exist_ok=True)
     seen_hashes = set()
     train_rows, val_rows = [], []
@@ -263,15 +266,15 @@ def process(out_limit=None, sources=None):
         if r["doc_hash"] in val_docs:
             final_val.append(r)
 
-    with (OUT / "train.jsonl").open("w", encoding="utf-8") as f:
+    with (out / "train.jsonl").open("w", encoding="utf-8") as f:
         for r in final_train:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
-    with (OUT / "val.jsonl").open("w", encoding="utf-8") as f:
+    with (out / "val.jsonl").open("w", encoding="utf-8") as f:
         for r in final_val:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
     stats["train_windows"] = len(final_train)
     stats["val_windows"] = len(final_val)
-    (OUT / "prepare_stats.json").write_text(
+    (out / "prepare_stats.json").write_text(
         json.dumps(stats, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(stats, ensure_ascii=False, indent=2))
     return stats
@@ -282,9 +285,13 @@ def main():
     ap.add_argument("--max-lines", type=int, default=None)
     ap.add_argument("--sources", default=None,
                     help="comma list, e.g. fadel_train,wikinews2024; default all")
+    ap.add_argument("--out-dir", default=None,
+                    help="alternate output dir (default data/diac/prepared); "
+                         "use for single-domain specialist corpora so the "
+                         "general v2b prepared corpus is never clobbered")
     args = ap.parse_args()
     sources = set(args.sources.split(",")) if args.sources else None
-    process(args.max_lines, sources)
+    process(args.max_lines, sources, out_dir=args.out_dir)
 
 
 if __name__ == "__main__":
