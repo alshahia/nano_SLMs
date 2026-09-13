@@ -1,0 +1,44 @@
+.shell {
+  display: flex;
+  height: 100vh;
+}
+
+.palette {
+  width: 220px;
+  min-width: 32px;
+  border-right: 1px solid #ccc;
+  padding: 8px;
+}
+
+.palette-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.palette-card {
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 6px;
+  background: #f6f6f6;
+  cursor: grab;
+}
+
+.canvas {
+  flex: 1;
+}
+
+.inspector {
+  width: 280px;
+  border-left: 1px solid #ccc;
+  padding: 8px;
+}
+
+.inspector-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.inspector-panel {
+  margin-top: 8px;
+}
