@@ -1193,3 +1193,38 @@ describe("validate success ack (MISSING-1): OK: toast marker", () => {
     expect(useFlowStore.getState().error?.startsWith("OK:")).toBe(false);
   });
 });
+
+/* ------------------------------------------------------------------ */
+/* Task 11: infer render-only shortcut node (store routing + pure      */
+/* rendering pieces; window.open via vi.spyOn - no @testing-library).  */
+/* ------------------------------------------------------------------ */
+
+describe("Task 11 infer handoff (store slice)", () => {
+  beforeEach(() => {
+    useFlowStore.setState({
+      graph: { nodes: [], edges: [] },
+      registry: REGISTRY,
+      inferHandoffNodeId: null,
+      error: null,
+    });
+  });
+
+  it("addNode routes kind=infer with its single ckpt-dir in-port", () => {
+    const id = useFlowStore.getState().addNode("infer", { x: 1, y: 2 });
+    expect(id).toBe("n1");
+    const node = useFlowStore.getState().graph.nodes[0];
+    expect(node.kind).toBe("infer");
+    const xy = toXYNodes(useFlowStore.getState().graph, REGISTRY);
+    expect(xy[0].data.ports).toEqual([
+      { name: "ckpt-dir", direction: "in", type: "ckpt-dir" },
+    ]);
+  });
+
+  it("openInferHandoff / dismissInferHandoff route the dialog flag", () => {
+    useFlowStore.getState().openInferHandoff("n9");
+    expect(useFlowStore.getState().inferHandoffNodeId).toBe("n9");
+    useFlowStore.getState().dismissInferHandoff();
+    expect(useFlowStore.getState().inferHandoffNodeId).toBeNull();
+  });
+});
+

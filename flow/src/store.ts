@@ -145,6 +145,10 @@ export interface FlowState {
   validatedDoc: FlowDocument | null;
   /** Confirmation line from the last successful Stop (STOP flag path). */
   stopInfo: string | null;
+  /** Task 11 infer-handoff dialog state. */
+  inferHandoffNodeId: string | null;
+  openInferHandoff: (nodeId: string) => void;
+  dismissInferHandoff: () => void;
   setGraph: (g: Graph) => void;
   setSelection: (id: string | null) => void;
   setInspectorTab: (t: InspectorTab) => void;
@@ -500,8 +504,13 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   currentFlowName: null,
   validatedDoc: null,
   stopInfo: null,
+  inferHandoffNodeId: null,
 
   setGraph: (graph) => set({ graph, projection: [], validatedDoc: null }),
+  // Task 11 infer-handoff dialog slice (pure, reducer-safe; see
+  // src/inferHandoff.ts for the rendered content).
+  openInferHandoff: (nodeId) => set({ inferHandoffNodeId: nodeId }),
+  dismissInferHandoff: () => set({ inferHandoffNodeId: null }),
   updateNodeProps: (id, props) => {
     const g = get();
     const next = updateNodePropsReducer(g.graph, id, props);

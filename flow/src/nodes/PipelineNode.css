@@ -70,3 +70,34 @@
 .pipeline-port-label {
   color: #555;
 }
+
+.pipeline-node-infer {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.infer-note {
+  font-size: 10px;
+  color: #666;
+}
+
+.infer-open-webui {
+  font-size: 11px;
+  padding: 2px 6px;
+  cursor: pointer;
+}
+
+/* window.open attempt inside the dialog body */
+.infer-handoff-cmd {
+  display: block;
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  padding: 4px;
+  background: #eee;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  overflow: auto;
+}
+

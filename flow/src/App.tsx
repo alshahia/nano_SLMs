@@ -4,6 +4,7 @@ import FlowCanvas from "./FlowCanvas";
 import Inspector from "./Inspector";
 import { useFlowStore, isValidFlowName } from "./store";
 import { api, errorMessage } from "./api";
+import InferHandoffDialog from "./InferHandoffDialog";
 import "./App.css";
 
 /* Throttle window: a focus event refetches the registry at most once per
@@ -55,6 +56,7 @@ export default function App() {
         <FlowCanvas />
         <Inspector />
       </div>
+      <InferHandoffDialog />
     </div>
   );
 }

@@ -1,15 +1,26 @@
 import { memo } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
-import type { PipelineNodeData, PipelineNode } from "../store";
+import type { PipelineNode } from "../store";
+import { useFlowStore } from "../store";
+import { INFER_CHECKPOINT_NOTE, WEBUI_URL, inferNodeHasChatButton } from "../inferHandoff";
 
 import "./PipelineNode.css";
 
 /** xyflow node renderer: title, prop badges, run-state dot, and one
  * Handle per registered port (direction -> Handle type). Port metadata
- * comes from the registry snapshot cached in the store (via /api/nodes). */
-function PipelineNode({ data, selected }: NodeProps<PipelineNode>) {
+ * comes from the registry snapshot cached in the store (via /api/nodes).
+ *
+ * Task 11 infer node (render-only shortcut): kind=infer nodes get a
+ * visible "Open in webui Chat" button plus the honest "checkpoint:" note
+ * (the webui-recognized checkpoint path is NOT determinable client-side
+ * — the ckpt-dir value arrives only as the connected edge, never as
+ * node props). The click calls store.openInferHandoff, which App's
+ * dialog consumes (manual instructions) and which attempts
+ * window.open(WEBUI_URL) to the default webui location. */
+function PipelineNode({ id, data, selected }: NodeProps<PipelineNode>) {
   const ports = data.ports ?? [];
   const propEntries = Object.entries(data.props ?? {});
+  const openInfer = useFlowStore((s) => s.openInferHandoff);
   /* Task 10 dot wiring: toXYNodes threads the store's runStatus into every
    * node's data (honest MVP simplification — the backend runs one
    * whole-graph pipeline, so "running"/"done"/"error" are set-wide, not
@@ -33,6 +44,20 @@ function PipelineNode({ data, selected }: NodeProps<PipelineNode>) {
               {k}={String(v)}
             </span>
           ))}
+        </div>
+      )}
+      {/* Task 11: render-only infer shortcut, only for kind=infer. */}
+      {inferNodeHasChatButton(data.kind) && (
+        <div className="pipeline-node-infer">
+          <div className="infer-note">{INFER_CHECKPOINT_NOTE}</div>
+          <button
+            type="button"
+            className="infer-open-webui"
+            title={"attempt window.open(" + WEBUI_URL + ', "_blank") — manual instructions always shown'}
+            onClick={() => openInfer?.(id)}
+          >
+            Open in webui Chat
+          </button>
         </div>
       )}
       <div className="pipeline-node-ports">
