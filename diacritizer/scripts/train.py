@@ -11,6 +11,7 @@ Usage:
 """
 import argparse
 import json
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -26,6 +27,7 @@ import tokenizer as TK  # noqa: E402
 
 RUNS = REPO / "runs" / "diac"
 DATA = REPO / "data" / "diac"
+GATES = ("fadel_test", "sadeed25", "wikinews2024", "wikinews2014")
 
 
 def latest_checkpoint(run_dir):
@@ -53,6 +55,60 @@ def evaluate_batch(model, val_ids, val_y, device, batch):
             tot_acc += float(out["acc"]) * m.sum().item()
             n_tokens += tok
     return tot_loss / max(n_tokens, 1), tot_acc / max(n_tokens, 1)
+
+
+def gate_probe(cfg, model, step, run_dir):
+    """Bench the CURRENT live weights on the 4 external gates + append CSV row.
+
+    User request 2026-09-14: detect overfitting DURING arm B by scoring the
+    registered external gates every gate_eval_every steps (code: 2500) and at
+    the final step; rows append to runs/<phase>/gate_eval.csv. Subprocesses:
+    bench.py on a weight-only snapshot (gate_probe/model.pt, overwritten every
+    probe) + eval.py (CPU) - the EXACT historical gate pipeline, no drift.
+    """
+    import csv
+    probe_dir = run_dir / "gate_probe"
+    probe_dir.mkdir(exist_ok=True)
+    snap = probe_dir / "model.pt"
+    torch.save({"model": {k: v.detach().cpu() for k, v in model.state_dict().items()},
+                "step": step, "config": json.dumps(cfg)}, snap)
+    cfg_path = probe_dir / "probe_config.yaml"
+    cfg_path.write_text(yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8")
+    py = sys.executable
+    bench = str(REPO / "diacritizer" / "scripts" / "bench.py")
+    ev = str(REPO / "diacritizer" / "scripts" / "eval.py")
+    csv_path = run_dir / "gate_eval.csv"
+    fields = ["step", "gate", "DER", "WER", "DER_nocase",
+              "text_preservation", "lines", "pred"]
+    new_file = not csv_path.exists()
+    for src in GATES:
+        pred = probe_dir / f"step{step}_{src}_pred.txt"
+        r1 = subprocess.run([py, bench, "--ckpt", str(probe_dir), "--src", src,
+                             "--out", str(pred), "--config", str(cfg_path)],
+                            capture_output=True, text=True)
+        if r1.returncode != 0:
+            print("[GATE-PROBE-FAIL]", src, (r1.stderr or "")[-300:], flush=True)
+            continue
+        ref = pred.with_suffix(".ref.txt")
+        r2 = subprocess.run([py, ev, "compare", "--pred", str(pred), "--ref", str(ref)],
+                            capture_output=True, text=True)
+        try:
+            agg = json.loads(r2.stdout)["aggregate"]
+        except Exception:
+            print("[GATE-EVAL-FAIL]", src, (r2.stderr or r2.stdout)[-400:], flush=True)
+            continue
+        row = {"step": step, "gate": src, "DER": agg["DER"], "WER": agg["WER"],
+               "DER_nocase": agg.get("DER_nocase"),
+               "text_preservation": agg["text_preservation"],
+               "lines": agg.get("lines", ""), "pred": str(pred)}
+        with csv_path.open("a", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fields)
+            if new_file:
+                w.writeheader()
+                new_file = False
+            w.writerow(row)
+        print(f"[GATE] step {step} {src} DER {agg['DER']*100:.2f} "
+              f"pres {agg['text_preservation']:.4f}", flush=True)
 
 
 def main():
@@ -86,6 +142,20 @@ def main():
         # verify the transfer is REALLY the encoder stack, not a silent skip
         print({"pretrained_init": str(pi), "tensors_in": len(sd),
                "missing": len(missing), "unexpected": len(unexpected)}, flush=True)
+        # reset-last-N (CATT counterfactual arm B, user-activated 2026-09-14):
+        # re-initialize the LAST N encoder blocks from a FRESH Block of the same
+        # shape (their default-init params) - embeddings + earlier stack stay
+        # warm, the top of the stack re-learns from the bidirectional domain.
+        n_reset = int(cfg.get("reset_last_n_layers", 0))
+        if n_reset:
+            from model import Block
+            mm = cfg["model"]
+            for bi in range(len(model.layers) - n_reset, len(model.layers)):
+                fb = Block(mm["hidden"], mm["n_heads"], mm["n_kv"],
+                           mm.get("ffn") or 4 * mm["hidden"], causal=False)
+                model.layers[bi].load_state_dict(fb.state_dict())
+                fb = None
+            print({"reset_last_n_layers": n_reset, "blocks": len(model.layers)}, flush=True)
     # fp16 COMPUTE on Turing via autocast (pure-fp16 master weights break
     # GradScaler: it requires fp32 grads); NaN-ban = scaled loss + skip-on-overflow
     scaler = torch.amp.GradScaler("cuda", enabled=(device == "cuda"))
@@ -177,6 +247,12 @@ def main():
                     import shutil
                     shutil.rmtree(oldest)
             print(f"[SAVE] {sd}")
+        # IN-TRAINING REAL-GATE PROBE (overfit watchdog): every gate_eval_every
+        # steps AND at the final step, score the 4 external gates with the live
+        # weights; rows append to runs/<phase>/gate_eval.csv (user request).
+        if cfg.get("gate_eval_every", 0) and (step % cfg["gate_eval_every"] == 0
+                                              or step == total_steps):
+            gate_probe(cfg, model, step, run_dir)
     model_dir = run_dir / "final"
     model_dir.mkdir(exist_ok=True)
     # Final export = the BEST val_loss weights when early stopping decided so.
