@@ -53,6 +53,7 @@ nano_SLMs/
 ├─ research/           web-research notes + raw Exa payloads (c12 distillation plan/report)
 ├─ webui/              Gradio web UI (spec: WEBUI_PRD.md; milestones U1-U5)
 ├─ viz/                React model-architecture explorer — config-driven, pnpm only (docs: viz/README.md; plan: docs/plans/2026-09-10-model-viz-react-platform.md)
+├─ flow/               Visual flow editor MVP — drag-and-drop pipeline graph (dataset→prepare→tokenize→train→eval/infer), FastAPI backend (docs: flow/README.md; plan: docs/plans/2026-09-13-flow-editor-mvp-plan.md); `.flow.json` format flow/0.1
 ├─ checkpoint_backup/  untracked; user-staged machine-move checkpoint zips (HANDOFF §3b) — check for a newer checkpoint-*.zip first
 └─ .venv/              uv-managed CPython 3.12.9 (never pip)
 ```
@@ -70,6 +71,11 @@ All Python runs through the venv — never bare `python`, never `pip`:
 & .\.venv\Scripts\python.exe scripts\vram_probe.py    --config configs\target.yaml
 & .\.venv\Scripts\python.exe scripts\sft_data.py      --config configs\sft_t1.yaml
 & .\.venv\Scripts\python.exe scripts\sft.py           --config configs\sft_t1.yaml --pilot
+# flow/ visual flow editor (development build + server; port 3010 via FLOW_PORT)
+cd flow; pnpm build                                     # frontend -> flow/dist
+& .\.venv\Scripts\python.exe -m flow.server.app                # port 3010 (or --port)
+cd flow; pnpm test                                      # vitest (85 tests)
+& .\.venv\Scripts\python.exe -m unittest discover -s flow/server/tests  # server tests (114)
 ```
 
 - `sft_data.py` is CPU + network only — safe to run while a train job is

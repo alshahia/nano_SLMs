@@ -41,6 +41,14 @@ back to TU09FBO; verify at every session start, the box pair-flips).
   bitsandbytes 0.50.2 · tensorboard 2.21.0 · pyyaml · exa-py 2.20.0
 - git-lfs 3.6.0 (system). Git remote: github.com/alshahia/nano_SLMs (main).
 
+- flow/ dev stack (2026-09-13): fastapi 0.141.1 + uvicorn 0.52.4 already
+  present in `.venv` (no install needed, pinned in `flow/server/requirements.txt`);
+  Node frontends run through **pnpm 12** (`pnpm approve-builds esbuild`
+  persisted once in `flow/pnpm-workspace.yaml`, else ERR_PNPM_IGNORED_BUILDS);
+  server default port **3010** (`--port` or `FLOW_PORT`); E2E UI drill via
+  agent-browser 0.34.0 (`agent-browser install` downloaded Chrome 153; the
+  daemon relaunches per pwsh call, so UI drills must chain in one call).
+
 ## venv rebuild recipe (proven once after a machine move)
 
 See HANDOFF.md §4 — do not improvise. After any rebuild validate with
