@@ -194,7 +194,9 @@ function Toolbar() {
 
       {modal === "open" && (
         <FlowPicker
-          onPick={openFlow}
+          /* A pick must ALSO dismiss the modal: openFlow alone left the Open
+           * dialog covering the canvas after loading (browser drill finding). */
+          onPick={(name) => { setModal(null); void openFlow(name); }}
           onDismiss={() => setModal(null)}
         />
       )}
