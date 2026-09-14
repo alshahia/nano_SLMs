@@ -44,14 +44,6 @@ export function inferHandoffDialog(): InferHandoffDialogInfo {
   };
 }
 
-/** Pure render checker: does this node kind show the render-only
- * "Open in webui Chat" shortcut? Exported so PipelineNode's conditional
- * render is unit-testable without a DOM render (@testing-library is
- * deliberately not available). */
-export function inferNodeHasChatButton(kind: string): boolean {
-  return kind === "infer";
-}
-
 /** Best-effort open of the default webui location in a new tab via
  * window.open(WEBUI_URL, "_blank"). The result is window.open's return
  * (null when the popup is blocked); the dialog is ALWAYS shown

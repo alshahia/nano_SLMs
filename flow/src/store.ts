@@ -246,8 +246,8 @@ export function propWidgetType(spec: NodeSpec, prop: string): PropWidget {
 }
 
 /** Placeholder select options for the train preset / lr_preset widgets.
- * These names are copied from flow/server/config_gen.py PRESETS /
- * LR_PRESETS (which in turn mirror webui/app.py). The inspector dropdowns
+ * These names are copied from flow/server/nodes/builtin/train.py
+ * PRESETS / LR_PRESETS (which in turn mirror webui/app.py). The inspector dropdowns
  * are a client-side copy on purpose (MVP); actual value parity is enforced
  * by the backend AST-parity test (T5) — a server-side rename that does not
  * update this list shows up as a T5 failure, not a silent config drift. */

@@ -11,6 +11,7 @@ Pure declarations + pure methods - no I/O.
 """
 
 from dataclasses import dataclass
+from types import MappingProxyType
 
 
 @dataclass(frozen=True)
@@ -94,8 +95,11 @@ class NodeDefinition:
     features = ()
     ports: "list[PortSpec]" = ()
     props: "list[PropSpec]" = ()
-    # Shared read-only default; overriding definitions provide their own.
-    required_upstream: "dict[str, tuple[str, str]]" = {}
+    # Immutable shared default (review minor 4: a mutable class-level dict
+    # is a footgun for future definitions); participants override with
+    # their own dict AFTER class creation (or via a plain dict assignment
+    # that then must never be mutated in place).
+    required_upstream: "dict[str, tuple[str, str]]" = MappingProxyType({})
 
     def validate_semantic(self, node, ctx):
         """Kind-local semantic checks beyond validate_props (base: none).

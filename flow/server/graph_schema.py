@@ -10,9 +10,9 @@ fromPort are both checked against the endpoint kinds' ports and the
 registry-free "out*"/"in*" prefix heuristic is skipped.
 """
 
-# Placeholder valid kinds. Task 3's registry (flow/server/nodes.py) is the
-# intended source of truth; the lazy import in _known_kinds() will replace
-# this set once the registry exists (kept here to avoid an import cycle).
+# Placeholder valid kinds. The real registry (flow/server/nodes/ package)
+# is the source of truth; the lazy import in _known_kinds() reads from it
+# and this set is the fallback if the package is missing/unstable.
 VALID_KINDS_PLACEHOLDER = frozenset(
     {"dataset", "prepare", "tokenize", "train", "eval", "infer"}
 )
@@ -31,12 +31,10 @@ def _known_kinds() -> "frozenset | None":
     existing. While the registry is missing/unstable we fall back to the
     placeholder set above.
     """
-    try:  # lazy: the registry lands in Task 3 (flow/server/nodes.py)
+    try:  # lazy: the registry package (flow/server/nodes/)
         from flow.server import nodes as _registry  # noqa: F401  # type: ignore
 
         kinds = getattr(_registry, "VALID_KINDS", None)
-        if callable(kinds):
-            kinds = kinds()
         if isinstance(kinds, (set, frozenset)) and kinds:
             return frozenset(kinds)
     except (ImportError, AttributeError):

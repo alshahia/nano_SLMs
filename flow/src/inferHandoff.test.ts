@@ -3,7 +3,6 @@ import {
   WEBUI_URL,
   INFER_CHECKPOINT_NOTE,
   inferHandoffDialog,
-  inferNodeHasChatButton,
   attemptWebuiOpen,
 } from "./inferHandoff";
 import { useFlowStore, validateConnect, connectReducer, toXYNodes, type RegistrySnapshot } from "./store";
@@ -54,12 +53,9 @@ describe("Task 11 infer shortcut pure pieces", () => {
     expect(info.checkpointNote).toBe(INFER_CHECKPOINT_NOTE);
   });
 
-  it("inferNodeHasChatButton is true only for kind=infer (PipelineNode render checker)", () => {
-    for (const k of ["infer", "dataset", "prepare", "tokenize", "train", "eval"]) {
-      expect(inferNodeHasChatButton(k)).toBe(k === "infer");
-    }
-  });
-
+  /* The kind-string render checker is gone: the button visibility now
+   * comes from the registry spec's features flag (spec.features.includes(
+   * CHAT_BUTTON_FEATURE)), pinned in store.test.ts T3 wiring tests. */
   it("toXYNodes keeps the infer node's single in-port (wire-consistent F5)", () => {
     const xy = toXYNodes(
       { nodes: [{ id: "n1", kind: "infer", props: {}, position: { x: 0, y: 0 } }], edges: [] },
