@@ -210,6 +210,19 @@ def save_model(name, body, models_dir=None):
     return flows.atomic_write(path, payload)
 
 
+def read_model(name, models_dir=None):
+    """Load one model doc or return a 404 JSONResponse — mirrors
+    flows.load for the models directory (honest detail message; never
+    invents a doc)."""
+    slug = model_slug(name)
+    target = Path(models_dir) if models_dir is not None else MODELS_DIR
+    path = target / (slug + _MODEL_SUFFIX)
+    if not path.is_file():
+        return JSONResponse(status_code=404,
+                            content={"detail": "model '%s' does not exist" % slug})
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
 def nodes_snapshot():
     """Registry view for the frontend (kinds/ports/props/gates)."""
     return {
@@ -279,6 +292,15 @@ def create_app(dev=False):
     @app.get("/api/models")
     def list_all_models():
         return {"models": list_models()}
+
+    @app.get("/api/models/{name}")
+    def get_single_model(name: str):
+        """Load one model graph doc; 404 with an honest detail message.
+        Mirrors GET /api/flows/{name} for the models directory."""
+        res = read_model(name)
+        if isinstance(res, JSONResponse):
+            return res
+        return res
 
     @app.post("/api/models/{name}")
     async def write_model(name: str, request: Request):

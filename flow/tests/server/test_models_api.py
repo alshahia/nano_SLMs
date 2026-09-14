@@ -190,6 +190,15 @@ class ModelsApiTest(unittest.TestCase):
         self.assertIn("/api/models", routes)
         self.assertIn("/api/models/{name}", routes)
 
+    def test_read_model_returns_saved_doc_and_404_message(self):
+        app_mod.save_model("demo-get", valid_model_doc(), models_dir=self.dir)
+        doc = app_mod.read_model("demo-get", models_dir=self.dir)
+        self.assertEqual(doc["format"], "model/0.1")
+        self.assertEqual(doc["name"], "demo-model")
+        missing = app_mod.read_model("absent", models_dir=self.dir)
+        self.assertEqual(missing.status_code, 404)
+        self.assertIn("model 'absent' does not exist", missing.body.decode("utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
