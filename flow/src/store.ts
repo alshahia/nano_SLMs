@@ -166,6 +166,9 @@ export interface FlowState {
   stopRun: () => Promise<boolean>;
   /** Task 9 inspector props write-back (see updateNodePropsReducer). */
   updateNodeProps: (id: string, props: Record<string, unknown>) => void;
+  /** Label write-back (see updateNodeLabelReducer) — dataset nodes need it
+   * for the MVP config mapping (label = HF dataset name). */
+  updateNodeLabel: (id: string, label: string) => void;
   /** Task 9 file actions: Open = GET /api/flows/{name} -> setGraph (which
    * also resets the xyflow projection via setGraph); Save = PUT
    * /api/flows/{name}. Both surface errors through the existing
@@ -388,6 +391,29 @@ export function updateNodePropsReducer(
   };
 }
 
+/** Pure label write-back (browser drill finding): the MVP config mapping
+ * reads the dataset node's label as the HF dataset name, so the label
+ * must be editable even when the registry lists no prop widgets for the
+ * kind. Unknown ids return the original graph object. */
+export function updateNodeLabelReducer(
+  graph: Graph,
+  id: string,
+  label: string,
+): Graph {
+  if (!graph.nodes.some((n) => n.id === id)) return graph;
+  const trimmed = label.trim();
+  return {
+    ...graph,
+    nodes: graph.nodes.map((n) => {
+      if (n.id !== id) return n;
+      const next = { ...n };
+      if (trimmed === "") delete next.label;
+      else next.label = trimmed;
+      return next;
+    }),
+  };
+}
+
 /* ------------------------------------------------------------------ */
 /* xyflow <-> domain mapping                                          */
 /* ------------------------------------------------------------------ */
@@ -516,6 +542,11 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   // src/inferHandoff.ts for the rendered content).
   openInferHandoff: (nodeId) => set({ inferHandoffNodeId: nodeId }),
   dismissInferHandoff: () => set({ inferHandoffNodeId: null }),
+  updateNodeLabel: (id, label) => {
+    const g = get();
+    const next = updateNodeLabelReducer(g.graph, id, label);
+    if (next !== g.graph) set({ graph: next, validatedDoc: null });
+  },
   updateNodeProps: (id, props) => {
     const g = get();
     const next = updateNodePropsReducer(g.graph, id, props);

@@ -19,6 +19,7 @@ import {
   propSelectOptions,
   isValidFlowName,
   updateNodePropsReducer,
+  updateNodeLabelReducer,
   flowDocument,
   truncateErrorList,
   nextPollDelay,
@@ -471,7 +472,8 @@ describe("projection merge (dragging/selected persistence, data identity)", () =
 
   it("measured survives the projection round-trip (browser-drill regress: RF unhides only when the user node carries measured)", () => {
     useFlowStore.getState().applyNodesChanges([
-      { id: "n1", type: "dimensions", dimensions: { width: 152, height: 50 }, measured: { width: 152, height: 50 } },
+      // applyNodeChanges stamps node.measured from change.dimensions
+      { id: "n1", type: "dimensions", dimensions: { width: 152, height: 50 } },
     ]);
     const st = useFlowStore.getState();
     const nextProjection = toXYNodes(st.graph, REGISTRY, st.projection);
@@ -493,6 +495,31 @@ describe("projection merge (dragging/selected persistence, data identity)", () =
 /* ------------------------------------------------------------------ */
 /* Task 9: inspector widgets, run status mapping, file actions         */
 /* ------------------------------------------------------------------ */
+
+describe("updateNodeLabelReducer (browser drill finding: dataset label is the config dataset name)", () => {
+  it("writes the label, trims it, and invalidates validation state", () => {
+    const before = useFlowStore.getState();
+    useFlowStore.setState({ validatedDoc: before.validatedDoc ?? "stale" });
+    const g0 = useFlowStore.getState().graph;
+    const next = updateNodeLabelReducer(g0, "n1", "  RowTour-360 rows ");
+    expect(next.nodes[0].label).toBe("RowTour-360 rows");
+    useFlowStore.setState({ graph: next, validatedDoc: null, selection: "n1" });
+    useFlowStore.getState().updateNodeLabel("n1", "  RowTour-360 rows  ");
+    const st = useFlowStore.getState();
+    expect(st.graph.nodes[0].label).toBe("RowTour-360 rows");
+    expect(st.validatedDoc).toBeNull();
+    expect(next).not.toBe(g0);
+    expect(g0.nodes[0].label).toBeUndefined();
+  });
+
+  it("empty label removes it and unknown ids are no-ops", () => {
+    const g0 = useFlowStore.getState().graph;
+    const g1 = updateNodeLabelReducer(g0, "n1", "x");
+    const g2 = updateNodeLabelReducer(g1, "n1", "   ");
+    expect(g2.nodes[0].label).toBeUndefined();
+    expect(updateNodeLabelReducer(g1, "nope", "x")).toBe(g1);
+  });
+});
 
 describe("props widget mapping per kind (T7 contract table)", () => {
   it("numeric registry props render as number inputs", () => {

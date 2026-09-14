@@ -131,16 +131,37 @@ function PropertiesPanel() {
   const registry = useFlowStore((s) => s.registry);
   const setError = useFlowStore((s) => s.setError);
   const updateNodeProps = useFlowStore((s) => s.updateNodeProps);
+  const updateNodeLabel = useFlowStore((s) => s.updateNodeLabel);
 
   const node = selection === null ? null : graph.nodes.find((n) => n.id === selection);
   if (!node) return <p className="inspector-empty">select a node on the canvas</p>;
   const spec: NodeSpec | undefined =
     (registry ?? FALLBACK_REGISTRY).nodes[node.kind];
 
+  /* Label editor (browser drill finding): the MVP config mapping reads
+   * the dataset node's label as the HF dataset name, so the label is
+   * editable for EVERY kind regardless of registry props. */
+  const labelRow = (
+    <div className="prop-row">
+      <label htmlFor="node-label">label</label>
+      <input
+        id="node-label"
+        type="text"
+        value={node.label ?? ""}
+        placeholder={node.kind === "dataset" ? "HF dataset name" : "display name"}
+        onChange={(e) => {
+          setError(null);
+          updateNodeLabel(node.id, e.target.value);
+        }}
+      />
+    </div>
+  );
+
   if (!spec || spec.props.length === 0) {
     return (
       <>
         <p className="inspector-empty">(no editable properties)</p>
+        {labelRow}
         {spec && spec.props.length === 0 && (
           /** Advanced JSON editing still makes sense for raw round-trip
            * fidelity (e.g. an old document's extra keys) even when the
@@ -163,6 +184,7 @@ function PropertiesPanel() {
   return (
     <>
       <p className="prop-kind">kind: {node.kind}</p>
+      {labelRow}
       {spec.props.map((p) => (
         <PropRow
           key={p}
