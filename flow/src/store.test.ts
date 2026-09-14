@@ -6,6 +6,7 @@ import type { ApiRunStatus } from "./api";
 import type { Graph } from "./store";
 import {
   useFlowStore,
+  FALLBACK_REGISTRY,
   addNodeReducer,
   connectReducer,
   nextNodeId,
@@ -37,6 +38,8 @@ const REGISTRY: RegistrySnapshot = {
       props: [],
       numeric_props: [],
       gate: null,
+      label_semantic: "hf-dataset-name",
+      features: [],
     },
     prepare: {
       ports: [
@@ -79,6 +82,8 @@ const REGISTRY: RegistrySnapshot = {
       props: [],
       numeric_props: [],
       gate: "gpu/cpu",
+      label_semantic: null,
+      features: ["webui-chat-button"],
     },
   },
   gates: { dataset: null, prepare: null, tokenize: null, train: "gpu", eval: "gpu", infer: "gpu/cpu" },
@@ -1089,6 +1094,7 @@ describe("Task 10 PipelineNode dot wiring (toXYNodes runState threading)", () =>
     const done = toXYNodes(graph, REGISTRY, [], "done", 0);
     expect(done[0].data).toEqual({
       kind: "dataset", props: {}, ports: REGISTRY.nodes.dataset.ports,
+      features: [], labelSemantic: "hf-dataset-name",
       runState: "done", exitCode: 0,
     });
     const err = toXYNodes(graph, REGISTRY, [], "error", 1);
@@ -1261,6 +1267,48 @@ describe("Task 11 infer handoff (store slice)", () => {
     expect(useFlowStore.getState().inferHandoffNodeId).toBe("n9");
     useFlowStore.getState().dismissInferHandoff();
     expect(useFlowStore.getState().inferHandoffNodeId).toBeNull();
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* T3 registry promotion: FALLBACK_REGISTRY carries the new per-kind   */
+/* fields; toXYNodes threads features + label_semantic into node data  */
+/* so the renderers stay free of kind-string conditionals.             */
+/* ------------------------------------------------------------------ */
+
+describe("T3 registry promotion (features + label_semantic wiring)", () => {
+  const graph: Graph = {
+    nodes: [
+      { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
+      { id: "n2", kind: "infer", props: {}, position: { x: 10, y: 0 } },
+      { id: "n3", kind: "train", props: {}, position: { x: 20, y: 0 } },
+    ],
+    edges: [],
+  };
+
+  it("the fallback registry carries label_semantic and features fields", () => {
+    expect(FALLBACK_REGISTRY.nodes.dataset.label_semantic).toBe("hf-dataset-name");
+    expect(FALLBACK_REGISTRY.nodes.infer.features).toContain("webui-chat-button");
+    expect(FALLBACK_REGISTRY.nodes.dataset.features).toEqual([]);
+    for (const kind of ["prepare", "tokenize", "train", "eval"] as const) {
+      expect(FALLBACK_REGISTRY.nodes[kind].label_semantic).toBeNull();
+      expect(FALLBACK_REGISTRY.nodes[kind].features).toEqual([]);
+    }
+    expect(FALLBACK_REGISTRY.nodes.infer.label_semantic).toBeNull();
+  });
+
+  it("toXYNodes threads features + labelSemantic from the snapshot into node data", () => {
+    const xy = toXYNodes(graph, REGISTRY);
+    expect(xy[0].data.features).toEqual([]); // dataset
+    expect(xy[0].data.labelSemantic).toBe("hf-dataset-name");
+    expect(xy[1].data.features).toEqual(["webui-chat-button"]); // infer
+    expect(xy[2].data.features).toEqual([]); // train
+    expect(xy[2].data.labelSemantic).toBeNull();
+  });
+
+  it("portTypesCompatible stays prefix-compatible through the store re-export", () => {
+    expect(portTypesCompatible("raw-dir", "raw-dir: dataset name/rows")).toBe(true);
+    expect(portTypesCompatible("raw-dir", "cleaned-dir")).toBe(false);
   });
 });
 

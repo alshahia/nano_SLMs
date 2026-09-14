@@ -2,6 +2,19 @@ import { create } from "zustand";
 import type { Edge, Node, NodeChange, EdgeChange, Connection } from "@xyflow/react";
 import { applyNodeChanges } from "@xyflow/react";
 import { api, errorMessage, type FlowDocument } from "./api";
+// T3 registry promotion: snapshot types + the static fallback live in
+// ./nodes/registry, the port-compat rule in ./nodes/portTypes. They are
+// re-exported below so existing imports (tests, Inspector, Palette,
+// FlowCanvas, api.ts) keep resolving names from this module.
+import { FALLBACK_REGISTRY } from "./nodes/registry";
+import { portTypesCompatible } from "./nodes/portTypes";
+import type { PortSpec, NodeSpec, RegistrySnapshot } from "./nodes/registry";
+import { CHAT_BUTTON_FEATURE, DATASET_LABEL_SEMANTIC } from "./nodes/registry";
+
+export { FALLBACK_REGISTRY } from "./nodes/registry";
+export { DATASET_LABEL_SEMANTIC, CHAT_BUTTON_FEATURE } from "./nodes/registry";
+export { portTypesCompatible } from "./nodes/portTypes";
+export type { PortSpec, NodeSpec, RegistrySnapshot } from "./nodes/registry";
 
 /**
  * Canonical graph shape is the flow/0.1 document graph (what the backend
@@ -30,78 +43,6 @@ export interface Graph {
   nodes: DomainNode[];
   edges: DomainEdge[];
 }
-
-/** Registry snapshot shape from GET /api/nodes. */
-export interface PortSpec {
-  name: string;
-  direction: "in" | "out";
-  type: string;
-  "burst-format"?: string | null;
-}
-
-export interface NodeSpec {
-  ports: PortSpec[];
-  props: string[];
-  numeric_props: string[];
-  gate: string | null;
-}
-
-export interface RegistrySnapshot {
-  valid_kinds: string[];
-  nodes: Record<string, NodeSpec>;
-  gates: Record<string, string | null>;
-}
-
-/** Static fallback REGISTRY_COPY, used ONLY when GET /api/nodes fails. */
-export const FALLBACK_REGISTRY: RegistrySnapshot = {
-  valid_kinds: ["dataset", "prepare", "tokenize", "train", "eval", "infer"],
-  nodes: {
-    dataset: { ports: [{ name: "cleaned", direction: "out", type: "raw-dir" }], props: [], numeric_props: [], gate: null },
-    prepare: {
-      ports: [
-        { name: "raw-dir", direction: "in", type: "raw-dir" },
-        { name: "cleaned-dir", direction: "out", type: "cleaned-dir" },
-      ],
-      props: ["min_chars", "rows", "val_fraction"],
-      numeric_props: ["min_chars", "rows", "val_fraction"],
-      gate: null,
-    },
-    tokenize: {
-      ports: [
-        { name: "cleaned-dir", direction: "in", type: "cleaned-dir" },
-        { name: "shard-dir", direction: "out", type: "shard-dir" },
-      ],
-      props: ["seq_len", "vocab"],
-      numeric_props: ["seq_len", "vocab"],
-      gate: null,
-    },
-    train: {
-      ports: [
-        { name: "shard-dir", direction: "in", type: "shard-dir" },
-        { name: "ckpt-dir", direction: "out", type: "ckpt-dir" },
-      ],
-      props: ["lr_preset", "preset", "steps"],
-      numeric_props: ["steps"],
-      gate: "gpu",
-    },
-    eval: {
-      ports: [
-        { name: "ckpt-dir", direction: "in", type: "ckpt-dir" },
-        { name: "report", direction: "out", type: "report" },
-      ],
-      props: [],
-      numeric_props: [],
-      gate: "gpu",
-    },
-    infer: {
-      ports: [{ name: "ckpt-dir", direction: "in", type: "ckpt-dir" }],
-      props: [],
-      numeric_props: [],
-      gate: "gpu/cpu",
-    },
-  },
-  gates: { dataset: null, prepare: null, tokenize: null, train: "gpu", eval: "gpu", infer: "gpu/cpu" },
-};
 
 export type InspectorTab = "properties" | "run-log" | "preview";
 
@@ -186,15 +127,6 @@ export interface FlowState {
 /* ------------------------------------------------------------------ */
 /* Pure reducers / mappers - exported for direct unit testing.         */
 /* ------------------------------------------------------------------ */
-
-/** Port-type compatibility: exact match or one side is a prefixed
- * description of the other ("raw-dir" vs "raw-dir: dataset name/rows").
- * The dataset node's out port carries a descriptive suffix, so strict
- * string equality would refuse the primary dataset -> prepare edge. */
-export function portTypesCompatible(a: string, b: string): boolean {
-  const base = (t: string) => t.split(":")[0].trim();
-  return base(a) === base(b);
-}
 
 /** Deterministic unique id: reuse a simple counter over existing "nK". */
 export function nextNodeId(graph: Graph, prefix = "n"): string {
@@ -418,11 +350,20 @@ export function updateNodeLabelReducer(
 /* xyflow <-> domain mapping                                          */
 /* ------------------------------------------------------------------ */
 
+/** Shared empty features list for snapshots/kinds without the field
+ * (identity-stable placeholder for the data-identity check). */
+const EMPTY_FEATURES: string[] = [];
+
 export interface PipelineNodeData extends Record<string, unknown> {
   kind: string;
   label?: string;
   props: Record<string, unknown>;
   ports: PortSpec[];
+  /** Registry feature flags for this node's kind (T3: the infer node's
+   * chat button keys off this data, never off kind strings). */
+  features: string[];
+  /** Registry label semantics for the kind (dataset: "hf-dataset-name"). */
+  labelSemantic: string | null;
   runState?: "idle" | "running" | "done" | "error";
   /** Backend exit_code, only shown/tooltiped in terminal dot states. */
   exitCode?: number | null;
@@ -452,13 +393,21 @@ export function toXYNodes(
     // props/ports object references) reuse the previous data object so the
     // memoized PipelineNode does not re-render on unrelated updates.
     const p = prevById.get(n.id);
-    const ports = registry.nodes[n.kind]?.ports ?? [];
+    const spec = registry.nodes[n.kind];
+    const ports = spec?.ports ?? [];
+    // T3 registry promotion: per-kind UI data (feature flags, label
+    // semantics) is threaded from the snapshot into node data, so the
+    // renderers stay free of kind-string conditionals.
+    const features = spec?.features ?? EMPTY_FEATURES;
+    const labelSemantic = spec?.label_semantic ?? null;
     const stableData =
       p !== undefined &&
       p.data.kind === n.kind &&
       p.data.label === n.label &&
       p.data.props === n.props &&
       p.data.ports === ports &&
+      p.data.features === features &&
+      p.data.labelSemantic === labelSemantic &&
       p.data.runState === runState &&
       (p.data.exitCode ?? null) === exitCode;
     const data: PipelineNodeData = stableData
@@ -468,6 +417,8 @@ export function toXYNodes(
           ...(n.label !== undefined ? { label: n.label } : {}),
           props: n.props,
           ports,
+          features,
+          labelSemantic,
           runState,
           exitCode,
         };

@@ -2,7 +2,10 @@ import { memo } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import type { PipelineNode } from "../store";
 import { useFlowStore } from "../store";
-import { INFER_CHECKPOINT_NOTE, WEBUI_URL, inferNodeHasChatButton } from "../inferHandoff";
+import { INFER_CHECKPOINT_NOTE, WEBUI_URL } from "../inferHandoff";
+// T3 registry promotion: the chat button is a registry FEATURE flag,
+// not a kind-string check (inferNodeHasChatButton stays exported for tests).
+import { CHAT_BUTTON_FEATURE } from "../nodes/registry";
 
 import "./PipelineNode.css";
 
@@ -46,8 +49,9 @@ function PipelineNode({ id, data, selected }: NodeProps<PipelineNode>) {
           ))}
         </div>
       )}
-      {/* Task 11: render-only infer shortcut, only for kind=infer. */}
-      {inferNodeHasChatButton(data.kind) && (
+      {/* Task 11 render-only shortcut, declared by the registry feature
+        * flag (T3) — no kind-string conditional here. */}
+      {(data.features ?? []).includes(CHAT_BUTTON_FEATURE) && (
         <div className="pipeline-node-infer">
           <div className="infer-note">{INFER_CHECKPOINT_NOTE}</div>
           <button

@@ -11,6 +11,9 @@ import {
   type PropWidget,
 } from "./store";
 import { api, errorMessage, mapRunStatus } from "./api";
+// T3 registry promotion: the label placeholder semantic comes from the
+// registry (label_semantic), not from a kind-string literal.
+import { DATASET_LABEL_SEMANTIC } from "./nodes/registry";
 
 const TABS: { id: InspectorTab; label: string }[] = [
   { id: "properties", label: "Properties" },
@@ -148,7 +151,7 @@ function PropertiesPanel() {
         id="node-label"
         type="text"
         value={node.label ?? ""}
-        placeholder={node.kind === "dataset" ? "HF dataset name" : "display name"}
+        placeholder={spec?.label_semantic === DATASET_LABEL_SEMANTIC ? "HF dataset name" : "display name"}
         onChange={(e) => {
           setError(null);
           updateNodeLabel(node.id, e.target.value);
