@@ -50,6 +50,17 @@ Port: default 3010 (--port flag wins, then FLOW_PORT env). Never collides with t
 Only linear chains map to YAML (branching graphs are future F5 execution).
 Graphs persist as flow/flows/<slug>.flow.json (git-tracked).
 
+## Example workflows (Open picker)
+
+- `example-linear-smoke` — a fully-knobbed linear chain (dataset label,
+  prepare/tokenize knobs, train steps + presets); Validate returns the OK
+  toast and the Preview tab shows the compiled config summary.
+- `example-linear-untuned` — same topology with NO knobs; Validate walks
+  you through each missing knob honestly. Use as a teaching/start flow.
+- `example-infer-handoff` — the train chain plus an eval branch AND an
+  infer node; Validate honestly refuses (branching = future F5) while the
+  infer node's handoff dialog works (manual webui launch instructions).
+
 ## Future phases (not in MVP)
 
 Model-architecture graph editor (layer-by-layer, arbitrary wiring), composite/subgraph
