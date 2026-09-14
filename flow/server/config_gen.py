@@ -1,4 +1,4 @@
-"""Config generator for the flow/ MVP (Task 5).
+"""Config generator for the flow/ MVP (Task 5; registry promotion T2).
 
 Bridges a validated .flow.json graph to the repo's EXISTING config
 format (the webui train-tab contract, same wrapper via run_custom.py):
@@ -10,19 +10,26 @@ Public API:
 
 - build_config(g) -> dict
     Pure function: enforces the linear-chain mapping, validates the
-    document with flow.server.graph_schema plus flow.server.nodes.validate_props
-    per node, and returns the nested config dict. Raises ValueError with
-    human-readable reasons on any violation (nothing is ever written).
+    document with flow.server.graph_schema plus
+    flow.server.nodes.validate_props per node, and returns the nested
+    config dict. Raises ValueError with human-readable reasons on any
+    violation (nothing is ever written).
 
 - generate(g, out_dir=None) -> str
     Calls build_config, then writes YAML (deterministic byte structure for
     future diffing) to <out_dir>/flow_<slug>.yaml and fsyncs. out_dir
     defaults to the repo's configs/; tests inject tempfile dirs and never
     write there. Returns the full written path.
+
+De-hardcoding (registry promotion): the participant chain order and
+every "requires upstream" message derive from the nodes REGISTRY
+(each config participant declares required_upstream); the per-kind
+knobs, presets and hard caps live in the owning builtin node modules.
+This module keeps re-exporting the constants the Task-5 parity tests
+read, and documents the config-order contract below.
 """
 
 import os
-import re
 from pathlib import Path
 
 import yaml
@@ -33,20 +40,14 @@ from flow.server.flows import _SLUG_RE
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CONFIGS_DIR = REPO_ROOT / "configs"
 
-# Real key-name source of truth: webui/app.py PRESETS / LR_PRESETS
-# (dims copied verbatim from the shipped configs).
-PRESETS = {
-    "Small (~12M, smoke)": dict(layers=4, hidden=256, heads=4, kv_heads=2,
-                                ffn=1024, accum=32, ctx_choices=[256, 512]),
-    "Medium (~101M, pilot)": dict(layers=12, hidden=768, heads=12, kv_heads=4,
-                                  ffn=2048, accum=32, ctx_choices=[512]),
-    "Large (~226M, target)": dict(layers=16, hidden=1024, heads=16, kv_heads=4,
-                                  ffn=4096, accum=16, ctx_choices=[512, 1024]),
-}
-LR_PRESETS = {"Pretrain 4e-4": 4.0e-4, "Conservative 2e-4": 2.0e-4,
-              "Fine-tune 3e-5": 3.0e-5}
-TOKENIZER_NAME = "codellama/CodeLlama-7b-hf"
-SHARD_TOKENS = 8000000
+# Compat re-exports: these constants are OWNED by the node definitions
+# now (flow/server/nodes/builtin/{prepare,tokenize,train}.py); the
+# Task-5 webui-parity tests read them from here as before.
+from flow.server.nodes.builtin.prepare import MAX_ROWS  # noqa: E402
+from flow.server.nodes.builtin.tokenize import (  # noqa: E402
+    SHARD_TOKENS, TOKENIZER_NAME)
+from flow.server.nodes.builtin.train import (  # noqa: E402
+    LR_PRESETS, PRESETS)
 
 # Same guard as webui/app.py build_config: a run named like a shipped config
 # would collide with it and with the auto-resume state (runs/<name>,
@@ -54,38 +55,59 @@ SHARD_TOKENS = 8000000
 RESERVED_RUN_NAMES = frozenset(
     {"smoke", "pilot", "target", "sft_t1", "custom_example"})
 
-# Same U7 hard cap as webui/app.py MAX_ROWS: bounds net time + disk.
-MAX_ROWS = 500_000
 
-# Basic dataset-name shape: segments of letters/digits/. _ - with at most one
-# '/' (org/name) or a single name (see _valid_dataset_name).
-_HF_NAME_RE = re.compile(r"[A-Za-z0-9._-]+")
+def _participant_chain_order():
+    """Config-participant kinds in topological dependency order.
+
+    DERIVED from the registry: config_participant kinds, ordered so every
+    kind's required_upstream predecessors come first (dataset depends on
+    nothing; train is the terminal participant nothing depends ON).
+    Deterministic Kahn walk in canonical REGISTRY order so ties never
+    depend on dict internals. A dependency cycle is a registry bug and
+    refuses the module import itself. Edges to non-participants are
+    ignored for the ordering (the structural walk still enforces them).
+    """
+    registry = nodes.REGISTRY
+    participants = [kind for kind in registry.kinds()
+                    if registry.get(kind).config_participant]
+    participant_set = set(participants)
+    parents = {}
+    for kind in participants:
+        declared = set()
+        for up_kind, _port in registry.get(kind).required_upstream.values():
+            if up_kind in participant_set:
+                declared.add(up_kind)
+        parents[kind] = declared
+    order = []
+    placed = set()
+    remaining = list(participants)  # canonical order for stable ties
+    while remaining:
+        ready = [kind for kind in remaining if parents[kind] <= placed]
+        if not ready:
+            raise ValueError(
+                "registry bug: cycle in config_participant required_"
+                "upstream edges among %s" % (remaining,))
+        for kind in ready:
+            order.append(kind)
+            placed.add(kind)
+            remaining.remove(kind)
+    return tuple(order)
 
 
-def _valid_dataset_name(name):
-    """HF-path-shape check: one segment or org/name, no empty segments."""
-    parts = name.split("/")
-    if len(parts) > 2:
-        return False
-    return all(part and _HF_NAME_RE.fullmatch(part) for part in parts)
+_PARTICIPANT_ORDER = _participant_chain_order()
+  # dataset->prepare->tokenize->train
+_CHAIN_ARROW = "->".join(_PARTICIPANT_ORDER)
 
 # The only execution chain the MVP maps to a config. Branching is rejected
 # cleanly (never silently ignored) until the future F5 execution task.
-CHAIN = ["dataset", "prepare", "tokenize", "train"]
-
+# The arrow text is DERIVED from the registry chain order (never a second
+# hardcoded list); the wording is golden-locked.
 _LINEAR_MSG = (
     "flow/%s: linear chains only - the MVP maps exactly one linear chain "
-    "(linear chain mapping: dataset->prepare->tokenize->train) to a config; "
+    "(linear chain mapping: " + _CHAIN_ARROW + ") to a config; "
     "branching graphs run via advanced YAML only in this MVP (future F5 "
     "execution)"
 )
-
-# Child kind -> (upstream kind required, the output port that feeds it).
-_DEPENDENCIES = [
-    ["train", "tokenize", "shard-dir"],
-    ["tokenize", "prepare", "cleaned-dir"],
-    ["prepare", "dataset", "raw-dir"],
-]
 
 
 def _slug(name) -> str:
@@ -130,7 +152,7 @@ class _LinearChain:
         if not self.node_list:
             return False  # no chain at all is not a linear chain
         kinds = [n.get("kind") for n in self.node_list]
-        if any(k not in CHAIN for k in kinds if k is not None):
+        if any(k not in _PARTICIPANT_ORDER for k in kinds if k is not None):
             return False  # node kinds outside the train chain
         present = [k for k in kinds if k is not None]
         if len(set(present)) != len(present):
@@ -145,30 +167,41 @@ class _LinearChain:
 
 
 def _build_chain(g):
-    """Return {kind: node} for the dataset->prepare->tokenize->train chain.
+    """Return {kind: node} for the registry-derived participant chain.
 
     Raises the linear-only ValueError for branching graphs and the
     missing-input ValueError naming each absent required upstream node.
+    The walk starts at the terminal participant (nothing depends on it:
+    train) and follows each child's required_upstream declaration from
+    the nodes REGISTRY - no hardcoded CHAIN list, no _DEPENDENCIES.
     """
     view = _LinearChain(g)
     if not view.linear():
         raise ValueError(_LINEAR_MSG % (g.get("meta") or {}).get("name"),)
-    train = next((n for n in view.node_list if n.get("kind") == "train"),
-                 None)
-    if train is None:
+    terminal = _PARTICIPANT_ORDER[-1]
+    terminal_node = next((n for n in view.node_list
+                          if n.get("kind") == terminal), None)
+    if terminal_node is None:
         raise ValueError(
-            "train: no train node found - the MVP maps exactly one "
-            "linear chain (linear chain mapping: dataset->prepare->tokenize"
-            "->train) to a config")
-    chain = [train]
-    # Walk backwards: every link must be the exact kind/port pair.
-    for _child_kind, dep_kind, port in _DEPENDENCIES:
+            "%s: no %s node found - the MVP maps exactly one linear chain "
+            "(linear chain mapping: %s) to a config"
+            % (terminal, terminal, _CHAIN_ARROW))
+    chain = [terminal_node]
+    # Walk backwards: every link must satisfy the child's declared
+    # upstream requirements. MVP participants declare exactly one link
+    # each, so the historic per-step messages (kind/port quotes preserved)
+    # are reproduced verbatim.
+    while len(chain) < len(_PARTICIPANT_ORDER):
         child = chain[-1]
+        child_defn = nodes.REGISTRY.get(child.get("kind"))
+        if not child_defn.required_upstream:
+            break  # chain head reached (its own declaration says so)
+        dep_kind, port = next(iter(child_defn.required_upstream.values()))
         ins = view.in_edges.get(child.get("id"), [])
         if not ins:
             raise ValueError(
                 "%s requires upstream %s node providing %s; none found "
-                "(node '%s')" % (child.get("kind"), dep_kind, port,
+                "(node '%s')" % (child.get('kind'), dep_kind, port,
                                  child.get("id")))
         parent_id = ins[0][1]
         parent = view.by_id.get(parent_id, {})
@@ -180,7 +213,82 @@ def _build_chain(g):
                    parent.get("kind"), child.get("id")))
         chain.append(parent)
     chain.reverse()  # dataset, prepare, tokenize, train
-    return {kind: node for kind, node in zip(CHAIN, chain)}
+    return {node.get("kind"): node for node in chain}
+
+
+class _NodeContext:
+    """Read-only context handed to NodeDefinition.validate_semantic and
+    build_section (duck-typed in flow/server/nodes/base.py; defined here
+    because it is config-assembly state, not registry data).
+
+    - phase: the config-order contract pass, "early" or "full"; only the
+      terminal participant (train) distinguishes them today
+    - chain: {kind: node} for the registry-derived linear chain
+    - slug: the validated run-name slug
+    """
+
+    def __init__(self, phase, chain, slug):
+        self.phase = phase
+        self.chain = chain
+        self.slug = slug
+
+
+def _semantic_passes(chain, slug):
+    """(kind, node, ctx) semantic passes in the config-order contract order.
+
+    Config-order contract (pinned by the goldens + the config_gen tests):
+    semantic checks raise in the EXACT sequence the pre-registry
+    build_config used -
+
+      1. the terminal participant's early pass (train steps-knob presence)
+      2. every other participant's full pass in derived chain order
+         (dataset label shape -> prepare knobs -> tokenize knobs; new
+         participant kinds slot in here by registry order)
+      3. the terminal participant's full pass (preset / lr_preset / ctx
+         choices; the ctx check is cross-node via ctx.chain)
+
+    Raising on the FIRST reason of the FIRST failing pass reproduces the
+    historic first-message ordering byte for byte.
+    """
+    terminal = _PARTICIPANT_ORDER[-1]
+    plan = ([(terminal, "early")]
+            + [(kind, "full") for kind in _PARTICIPANT_ORDER[:-1]]
+            + [(terminal, "full")])
+    return [(kind, chain[kind], _NodeContext(phase, chain, slug))
+            for kind, phase in plan]
+
+
+def _merge_sections(cfg, chain, slug):
+    """Merge each participant's build_section into cfg, in chain order.
+
+    Section-merge contract: a top-level key may be emitted by several
+    sections ONLY as a dict on both sides - today the "data" block is
+    assembled from the dataset, prepare and tokenize sections - and
+    such shared dicts merge one level deep. Any OTHER duplicate
+    top-level key is a registry bug and raises; duplicate LEAF keys
+    inside a shared dict are impossible in the MVP but are asserted
+    anyway. Sections merge in the derived chain order, so the merged
+    config grows data -> tokenizer -> model -> train -> eval.
+    """
+    ctx = _NodeContext("full", chain, slug)
+    for kind in _PARTICIPANT_ORDER:
+        section = nodes.REGISTRY.get(kind).build_section(ctx)
+        for key, value in section.items():
+            existing = cfg.get(key)
+            if existing is None:
+                cfg[key] = value
+            elif isinstance(existing, dict) and isinstance(value, dict):
+                for leaf_key, leaf in value.items():
+                    # "data" leaf collision impossible in MVP; assert
+                    # anyway (= the documented section contract).
+                    assert leaf_key not in existing, (
+                        "registry bug: %r section re-emits %s.%s"
+                        % (kind, key, leaf_key))
+                    existing[leaf_key] = leaf
+            else:
+                raise ValueError(
+                    "registry bug: %r section re-emits top-level key %r"
+                    % (kind, key))
 
 
 def build_config(g) -> dict:
@@ -231,101 +339,22 @@ def build_config(g) -> dict:
             "collide with the shipped configs and auto-resume state "
             "(runs/%s, data/%s)" % (slug, slug, slug))
 
-    # 4. Parse the chain nodes into knobs. Misses produce named errors.
-    chain = _build_chain(g)
-    train = chain["train"]
-    tprops = train.get("props", {})
-    if "steps" not in tprops:
-        raise ValueError("steps: missing - train node '%s' requires the "
-                         "steps knob" % (train.get("id"),))
-
-    ds_node = chain["dataset"]
-    label = ds_node.get("label")
-    if not isinstance(label, str) or not label.strip():
-        raise ValueError(
-            "dataset name: node '%s' has no label - the dataset node's "
-            "label is the HF dataset name in this MVP" % ds_node.get("id"))
-    ds_name = label.strip()
-    if not _valid_dataset_name(ds_name):
-        # Beyond non-empty: a basic HF path shape (single name or org/name;
-        # letters, digits, '.', '_', '-').
-        raise ValueError(
-            "dataset name: node '%s' label %r is not a valid dataset name - "
-            "expected a single name or org/name using only letters, digits, "
-            "'.', '_' and '-' with at most one '/'"
-            % (ds_node.get("id"), ds_name))
-    # Props containers fail as ValueError, never KeyError (error hygiene).
-    pp = chain["prepare"].get("props")
-    tp = chain["tokenize"].get("props")
-    for kind, props in (("prepare", pp), ("tokenize", tp)):
-        if not isinstance(props, dict):
-            raise ValueError(
-                "props: missing - %s node '%s' has no props object and the "
-                "config mapping requires every %s knob"
-                % (kind, chain[kind].get("id"), kind))
-        for key in sorted(nodes.PROPS[kind]):
-            if key not in props:
-                raise ValueError(
-                    "%s: missing - %s node '%s' requires the %s knob"
-                    % (key, kind, chain[kind].get("id"), key))
-
-    rows = pp["rows"]
-    if int(rows) > MAX_ROWS:
-        raise ValueError(
-            "rows: %d is above the hard cap %d (net time + disk)"
-            % (int(rows), MAX_ROWS))
-
-    preset_name = tprops["preset"]
-    if not isinstance(preset_name, str):
-        raise ValueError("preset: expected a string preset name, got %r"
-                         % (preset_name,))
-    if preset_name not in PRESETS:
-        raise ValueError("preset: unknown preset %r" % (preset_name,))
-    p = PRESETS[preset_name]
-    lr_name = tprops["lr_preset"]
-    if not isinstance(lr_name, str):
-        raise ValueError("lr_preset: expected a string LR preset name, "
-                         "got %r" % (lr_name,))
-    if lr_name not in LR_PRESETS:
-        raise ValueError("lr_preset: unknown lr_preset %r" % (lr_name,))
-    lr = LR_PRESETS[lr_name]
-
-    steps = int(tprops["steps"])
-    ctx = int(tp["seq_len"])
-    if ctx not in p["ctx_choices"]:
-        raise ValueError("ctx %d not valid for preset %r (choices %s)"
-                         % (ctx, preset_name, p["ctx_choices"]))
-
-    # 5. Nested config - key structure copied verbatim from webui build_config
-    #    minus the interactive-only data_mode knob (matches shipped
+    # 4. Per-node semantic validation ( knob + label checks on the node
+    #    definitions ) walked in the config-order contract sequence and
+    #    raising on the FIRST reason - one human-readable message, as
+    #    before. Then the nested config: per-node build_section outputs
+    #    merged in the same canonical order (_merge_sections); key
+    #    structure is still copied verbatim from webui build_config minus
+    #    the interactive-only data_mode knob (matches shipped
     #    configs/smoke.yaml key structure exactly).
-    cfg = {
-        "name": slug,
-        "tokenizer": {"name": TOKENIZER_NAME, "vocab_size": int(tp["vocab"])},
-        "model": {"layers": p["layers"], "hidden": p["hidden"],
-                  "heads": p["heads"], "kv_heads": p["kv_heads"],
-                  "ffn": p["ffn"], "ctx": ctx, "dropout": 0.0,
-                  "tie_embeddings": True},
-        "data": {"dataset_candidates": [{"name": ds_name}],
-                 "rows": int(rows),
-                 "val_fraction": float(pp["val_fraction"]),
-                 "dedupe": True, "min_chars": int(pp["min_chars"]),
-                 "shard_tokens": SHARD_TOKENS,
-                 "raw_dir": "data/%s/raw" % slug,
-                 "tokens_dir": "data/%s/tokens" % slug},
-        "train": {"output_dir": "runs/%s" % slug,
-                  "final_dir": "runs/%s/final" % slug,
-                  "max_steps": steps, "batch": 1, "eval_batch": 4,
-                  "accum": p["accum"], "lr": lr, "scheduler": "cosine",
-                  "warmup_steps": max(10, steps // 20),
-                  "weight_decay": 0.1, "max_grad_norm": 1.0,
-                  "logging_steps": 50, "eval_steps": 500, "save_steps": 500,
-                  "save_total_limit": 3, "fp16": True, "grad_ckpt": True,
-                  "optim": "adamw_torch", "dataloader_num_workers": 0,
-                  "seed": 42},
-        "eval": {"max_new_tokens": 64,
-                 "prompts": ["def fibonacci(n):", "class Stack:"]},
-    }
+    chain = _build_chain(g)
+    for kind, node, ctx in _semantic_passes(chain, slug):
+        defn = nodes.REGISTRY.get(kind)
+        reasons = defn.validate_semantic(node, ctx)
+        if reasons:
+            raise ValueError(reasons[0])
+    cfg = {"name": slug}
+    _merge_sections(cfg, chain, slug)
     return cfg
 
 
