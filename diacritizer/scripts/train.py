@@ -57,21 +57,27 @@ def evaluate_batch(model, val_ids, val_y, device, batch):
     return tot_loss / max(n_tokens, 1), tot_acc / max(n_tokens, 1)
 
 
-def gate_probe(cfg, model, step, run_dir):
-    """Bench the CURRENT live weights on the 4 external gates + append CSV row.
 
-    User request 2026-09-14: detect overfitting DURING arm B by scoring the
-    registered external gates every gate_eval_every steps (code: 2500) and at
-    the final step; rows append to runs/<phase>/gate_eval.csv. Subprocesses:
-    bench.py on a weight-only snapshot (gate_probe/model.pt, overwritten every
-    probe) + eval.py (CPU) - the EXACT historical gate pipeline, no drift.
+GATE_EXTERNAL = ("fadel_test", "sadeed25", "wikinews2014")  # wn2024 = contaminated stamp (MEMORY 56); arms see the probe CSV for it either way
+
+
+def gate_probe(cfg, model, step, run_dir):
+    """Bench the CURRENT live weights on the 4 registered gates + append CSV.
+
+    User-requested overfit watchdog: rows append runs/<phase>/gate_eval.csv,
+    every gate_eval_every steps + at the final step. Durability (arm-B incident:
+    rotation deleted the live best checkpoint while the probe marked it gold):
+    every probe writes a permanent weights_step{N}.pt and the mean-external-DER
+    tracker maintains best_gate_weights.pt (superseded only by a better probe).
+    Subprocesses: bench.py + eval.py = the EXACT historical gate pipeline.
     """
-    import csv
+    import csv, shutil
     probe_dir = run_dir / "gate_probe"
     probe_dir.mkdir(exist_ok=True)
-    snap = probe_dir / "model.pt"
-    torch.save({"model": {k: v.detach().cpu() for k, v in model.state_dict().items()},
-                "step": step, "config": json.dumps(cfg)}, snap)
+    snap = {"model": {k: v.detach().cpu() for k, v in model.state_dict().items()},
+            "step": step, "config": json.dumps(cfg)}
+    torch.save(snap, probe_dir / "model.pt")                       # bench input (reused)
+    torch.save(snap, probe_dir / f"weights_step{step}.pt")          # permanent per-probe
     cfg_path = probe_dir / "probe_config.yaml"
     cfg_path.write_text(yaml.safe_dump(cfg, allow_unicode=True), encoding="utf-8")
     py = sys.executable
@@ -81,6 +87,7 @@ def gate_probe(cfg, model, step, run_dir):
     fields = ["step", "gate", "DER", "WER", "DER_nocase",
               "text_preservation", "lines", "pred"]
     new_file = not csv_path.exists()
+    ders = []
     for src in GATES:
         pred = probe_dir / f"step{step}_{src}_pred.txt"
         r1 = subprocess.run([py, bench, "--ckpt", str(probe_dir), "--src", src,
@@ -109,6 +116,27 @@ def gate_probe(cfg, model, step, run_dir):
             w.writerow(row)
         print(f"[GATE] step {step} {src} DER {agg['DER']*100:.2f} "
               f"pres {agg['text_preservation']:.4f}", flush=True)
+        ders.append((src, agg["DER"]))
+    # external-gate best tracker: mean DER over GATE_EXTERNAL
+    ext = [d for s, d in ders if s in GATE_EXTERNAL]
+    if ext:
+        mean_der = sum(ext) / len(ext)
+        best_file = probe_dir / "best_gate.json"
+        prev = None
+        if best_file.exists():
+            try:
+                prev = json.loads(best_file.read_text(encoding="utf-8"))
+            except Exception:
+                prev = None
+        if not prev or mean_der < float(prev.get("mean_der", 9.0)) - 1e-6:
+            best_file.write_text(json.dumps({"step": step, "mean_der": mean_der},
+                                             encoding="utf-8"), encoding="utf-8"
+                                  )
+            shutil.copyfile(probe_dir / f"weights_step{step}.pt",
+                            probe_dir / "best_gate_weights.pt")
+            print(f"[GATE-BEST] step {step} mean_external_DER {mean_der*100:.2f} "
+                  "-> best_gate_weights.pt", flush=True)
+
 
 
 def main():
