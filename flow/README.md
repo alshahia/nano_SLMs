@@ -48,7 +48,35 @@ Port: default 3010 (--port flag wins, then FLOW_PORT env). Never collides with t
 | infer | ckpt-dir -> (render-only) | gpu/cpu |
 
 Only linear chains map to YAML (branching graphs are future F5 execution).
-Graphs persist as flow/flows/<slug>.flow.json (git-tracked).
+Graphs persist as flow/flows/<slug>.flow.json (git-tracked) — saves are
+atomic (temp file + fsync + os.replace): a reader never sees a torn file.
+
+### Node definitions (2026-09-13 promotion refactor)
+
+Each built-in kind is a behavior-carrying `NodeDefinition` subclass
+(`flow/server/nodes/builtin/*.py`), not a dict entry. One node owns every
+fact about itself:
+
+- `spec` — ports, `PropSpec`s (type/required/widget/help), gate,
+  `label_semantic` (dataset: `hf-dataset-name`), `features`
+  (infer: `webui-chat-button`) — this is what `/api/nodes` snapshots and
+  what the frontend renders; the UI has ZERO `kind ===` conditionals.
+- `required_upstream` — structural dependency (`train` needs `shard-dir`
+  from `tokenize`, …). The linear-chain order in `config_gen` is DERIVED
+  topologically from these declarations; there is no hardcoded CHAIN list.
+- `validate_semantic(node)` — per-node knob errors (steps missing, dataset
+  name shape, rows cap MAX_ROWS, preset ctx choices) with the historic
+  message wording preserved.
+- `build_section(ctx)` — the config keys the node contributes
+  (prepare owns `data` details, tokenize owns `tokenizer`, train owns
+  `model/train/eval`; PRESETS/LR_PRESETS live in `train.py`,
+  TOKENIZER_NAME/SHARD_TOKENS in `tokenize.py`, MAX_ROWS in `prepare.py`).
+
+Registering a new kind = one module under `builtin/` exporting a
+`NodeDefinition`; the registry (`flow/server/nodes/__init__.py`) derives
+everything else. Plugin discovery for user-defined nodes is a possible next
+step (planned, not implemented). Golden files under `flow/tests/goldens/`
+lock config_gen's output so refactors cannot silently change behavior.
 
 ## Example workflows (Open picker)
 
