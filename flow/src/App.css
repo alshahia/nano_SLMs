@@ -18,6 +18,28 @@
   font-weight: 600;
 }
 
+/* Editor mode switch (F2 Task 5): Pipeline | Model tabs. */
+.mode-switch {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid #ccc;
+  background: #fafafa;
+}
+
+.mode-tab {
+  padding: 6px 16px;
+  border: none;
+  border-right: 1px solid #ccc;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.mode-tab-active {
+  background: #e8eef7;
+  font-weight: 600;
+}
+
 .shell {
   display: flex;
   flex: 1;

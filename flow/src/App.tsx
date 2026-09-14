@@ -5,6 +5,7 @@ import Inspector from "./Inspector";
 import { useFlowStore, isValidFlowName } from "./store";
 import { api, errorMessage } from "./api";
 import InferHandoffDialog from "./InferHandoffDialog";
+import ModelCanvas from "./model/ModelCanvas";
 import "./App.css";
 
 /* Throttle window: a focus event refetches the registry at most once per
@@ -17,6 +18,10 @@ const REGISTRY_REFETCH_THROTTLE_MS = 5000;
  * once per throttle window) so a late-starting backend heals without a
  * manual reload (T8 review MINOR-9). */
 export default function App() {
+  /* Top-level editor mode (F2 Task 5): the pipeline and model canvases are
+   * deliberately DIFFERENT components with separate stores — no shared
+   * mode state leaks into the pipeline graph actions. */
+  const [mode, setMode] = useState<"pipeline" | "model">("pipeline");
   const setRegistry = useFlowStore((s) => s.setRegistry);
   const setRegistryError = useFlowStore((s) => s.setRegistryError);
 
@@ -50,12 +55,36 @@ export default function App() {
 
   return (
     <div className="app-root">
-      <Toolbar />
-      <div className="shell">
-        <Palette />
-        <FlowCanvas />
-        <Inspector />
+      <div className="mode-switch" role="tablist" aria-label="editor mode">
+        <button
+          role="tab"
+          aria-selected={mode === "pipeline"}
+          className={"mode-tab" + (mode === "pipeline" ? " mode-tab-active" : "")}
+          onClick={() => setMode("pipeline")}
+        >
+          Pipeline
+        </button>
+        <button
+          role="tab"
+          aria-selected={mode === "model"}
+          className={"mode-tab" + (mode === "model" ? " mode-tab-active" : "")}
+          onClick={() => setMode("model")}
+        >
+          Model
+        </button>
       </div>
+      {mode === "pipeline" ? (
+        <>
+          <Toolbar />
+          <div className="shell">
+            <Palette />
+            <FlowCanvas />
+            <Inspector />
+          </div>
+        </>
+      ) : (
+        <ModelCanvas />
+      )}
       <InferHandoffDialog />
     </div>
   );

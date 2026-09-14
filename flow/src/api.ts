@@ -1,10 +1,20 @@
 import type { Graph, RegistrySnapshot, RunStatus } from "./store";
+import type { DomainEdge, DomainNode } from "./stores/graphStore";
 
 /** flow/0.1 document shape (GET /api/flows/{name} and PUT body). */
 export interface FlowDocument {
   schema: "flow/0.1";
   meta: { name: string };
   graph: Graph;
+}
+
+/** model/0.1 document shape (GET/POST /api/models/{name}). */
+export interface ModelDocument {
+  format: "model/0.1";
+  name: string;
+  nodes: DomainNode[];
+  edges: DomainEdge[];
+  meta: Record<string, unknown>;
 }
 
 /** Pull the payload out; 400 uses {"errors": [...]}, 404/409 {"detail"}. */
@@ -92,6 +102,16 @@ export const api = {
     request<{ ok: true; pid: number }>("/api/run", {
       method: "POST",
       body: JSON.stringify({ name }),
+    }),
+  /** Model-graph APIs (F2 Task 5): list slugs, load one doc, save one doc
+   * (server: flow/server/app.py, atomic .modelgraph.json store). */
+  getModels: async () => (await request<{ models: string[] }>("/api/models")).models,
+  getModel: (name: string) =>
+    request<ModelDocument>("/api/models/" + encodeURIComponent(name)),
+  saveModel: (name: string, doc: ModelDocument) =>
+    request<{ ok: true; name: string }>("/api/models/" + encodeURIComponent(name), {
+      method: "POST",
+      body: JSON.stringify(doc),
     }),
   runStatus: () => request<ApiRunStatus>("/api/run/status"),
   runStop: () => request<{ ok: true; stop_flag: string }>("/api/run/stop", { method: "POST" }),
