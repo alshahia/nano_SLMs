@@ -17,6 +17,17 @@ export default function InferHandoffDialog() {
   useEffect(() => {
     if (nodeId !== null) attemptWebuiOpen();
   }, [nodeId]);
+  /* Escape dismisses the dialog (drill finding: it was Escape-less).
+   * Scoped to the open state, window level so it fires regardless of
+   * focus target, like the App Escape handler does for the file modals. */
+  useEffect(() => {
+    if (nodeId === null) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") dismiss();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [nodeId, dismiss]);
   if (nodeId === null) return null;
   const info = inferHandoffDialog();
   return (
