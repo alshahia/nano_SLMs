@@ -42,13 +42,14 @@ def apply_rope(x, cos, sin):
 
 
 class GQAAttention(torch.nn.Module):
-    def __init__(self, hidden, n_heads, n_kv):
+    def __init__(self, hidden, n_heads, n_kv, causal=False):
         super().__init__()
         assert hidden % n_heads == 0
         self.n_heads = n_heads
         self.n_kv = n_kv
         self.head_dim = hidden // n_heads
         self.kv_rep = n_heads // n_kv
+        self.causal = causal
         self.q = torch.nn.Linear(hidden, hidden, bias=False)
         self.k = torch.nn.Linear(hidden, n_kv * self.head_dim, bias=False)
         self.v = torch.nn.Linear(hidden, n_kv * self.head_dim, bias=False)
@@ -65,7 +66,7 @@ class GQAAttention(torch.nn.Module):
         cos, sin = rope_freqs(T, self.head_dim, x.device)
         q = apply_rope(q, cos, sin).to(v.dtype)   # fp32 rope math -> cast back (fp16-only GPU)
         k = apply_rope(k, cos, sin).to(v.dtype)
-        out = F.scaled_dot_product_attention(q, k, v, is_causal=False)
+        out = F.scaled_dot_product_attention(q, k, v, is_causal=self.causal)
         out = out.transpose(1, 2).reshape(B, T, -1)
         return self.o(out)
 
@@ -84,10 +85,10 @@ class SwiGLU(torch.nn.Module):
 class Block(torch.nn.Module):
     """Pre-norm Llama block WITHOUT causal masking (bidirectional)."""
 
-    def __init__(self, hidden, n_heads, n_kv, ffn, dropout=0.0):
+    def __init__(self, hidden, n_heads, n_kv, ffn, dropout=0.0, causal=False):
         super().__init__()
         self.n1 = RMSNorm(hidden)
-        self.attn = GQAAttention(hidden, n_heads, n_kv)
+        self.attn = GQAAttention(hidden, n_heads, n_kv, causal)
         self.n2 = RMSNorm(hidden)
         self.mlp = SwiGLU(hidden, ffn)
         self.dropout = torch.nn.Dropout(dropout)
@@ -106,12 +107,12 @@ class DiacritizerModel(torch.nn.Module):
     """
 
     def __init__(self, vocab_size, hidden=192, layers=4, n_heads=6, n_kv=2,
-                 ffn=None, max_ctx=512, dropout=0.0, n_classes=15):
+                 ffn=None, max_ctx=512, dropout=0.0, n_classes=15, causal=False):
         super().__init__()
         ffn = ffn or 4 * hidden
         self.embed = torch.nn.Embedding(vocab_size, hidden)
         self.layers = torch.nn.ModuleList(
-            [Block(hidden, n_heads, n_kv, ffn, dropout) for _ in range(layers)])
+            [Block(hidden, n_heads, n_kv, ffn, dropout, causal=causal) for _ in range(layers)])
         self.final = RMSNorm(hidden)
         self.head = torch.nn.Linear(hidden, n_classes, bias=False)
         self.max_ctx = max_ctx
@@ -138,6 +139,7 @@ class DiacritizerModel(torch.nn.Module):
 def build_from_config(cfg, vocab_size):
     m = cfg.get("model", cfg)
     return DiacritizerModel(
+        causal=m.get("causal", False),
         vocab_size=vocab_size,
         hidden=m.get("hidden", 192),
         layers=m.get("layers", 4),
