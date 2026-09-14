@@ -397,6 +397,8 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 
  58. **flow/ built-ins are NodeDefinitions, not dict entries** (2026-09-13, registry promotion f72bd25): each node kind lives in flow/server/nodes/builtin/*.py owning its spec (ports/PropSpec/label_semantic/features), required_upstream (the config_gen chain order is DERIVED topologically from these - never re-hardcode a CHAIN list), validate_semantic (per-kind knob errors, historic wording preserved) and build_section (config keys). Golden files (flow/tests/goldens/, created PRE-refactor) lock config_gen output so behavior-moving refactors are provable; regenerate with the committed create_goldens.py. Frontend has zero kind-string conditionals: UI renders from the /api/nodes snapshot (features + label_semantic), FALLBACK_REGISTRY in flow/src/nodes/registry.ts only boots offline. flows.save is atomic (temp+os.replace) as of 53986a8.
 
+ 59. **Param-math anchors belong to TESTS, not comments** (2026-09-14, F2 66eaa28): the dense-formula engine's totals (nano 226,526,208 / SmolLM2 134,515,008) are pinned as exact-integer vitest anchors in BOTH viz (`pnpm test`) and flow (`src/model/paramMath.test.ts`), and the committed decoder graphs re-assert them via the walker (`acceptance.test.ts`). When porting math across projects, port formulas + tests together; the first T3 run caught lmHead pricing the untied head over the OUTPUT vocab-d instead of the HIDDEN input-d precisely because the anchor test disagreed.
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF

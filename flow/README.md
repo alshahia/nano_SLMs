@@ -89,9 +89,36 @@ lock config_gen's output so refactors cannot silently change behavior.
   infer node; Validate honestly refuses (branching = future F5) while the
   infer node's handoff dialog works (manual webui launch instructions).
 
+## Model mode (F2, 2026-09-13) — model-architecture editor
+
+The top-level **Pipeline | Model** switch opens a second editor: drag dense-GQA
+layer nodes (Input, Embedding, RMSNorm, RoPE, GQA-Attention, SwiGLU-FFN,
+Residual, LM-Head, LayerStack), wire tensor edges between named ports (multi-input
+honest for attention q/k/v), and read live shape inference + param counts from
+the same math as `viz/` (`flow/src/model/paramMath.ts`, anchors pinned in tests:
+nano 226,526,208 · SmolLM2 134,515,008).
+
+- Everything is registry-driven (`flow/src/model/registry.ts`): kinds, ports,
+  props, defaults, param math — **zero kind conditionals** in render/inspector,
+  same interlock rule as the pipeline side.
+- Shape/param rollup walks the DAG topologically; wiring mistakes (cycle,
+  missing/duplicate input, port-name mismatch, shape mismatch) show as per-node
+  red badges with the exact reason — never a silent number.
+- Graphs persist as `flow/models/<slug>.modelgraph.json` (format `model/0.1`,
+  git-tracked) through `GET/POST /api/models[/{name}]` — same atomic writer as
+  flow saves (`flows.atomic_write`).
+- Examples (Open picker): `smoke`, `pilot`, `target` — the repo's actual
+  decoders rebuilt as graphs; their param totals are locked to exact integers
+  by `flow/src/model/acceptance.test.ts` (smoke 12,323,072 · pilot 100,682,496 ·
+  target 226,526,208 = pTotalDense).
+- LayerStack counts ONLY the outer norms ((2N+1)·d); inner layer params come
+  from the explicitly wired body nodes — no hidden nested-graph magic.
+- NOT in this increment: model.py/YAML export, MoE/hybrid kinds, execution,
+  nested layerStack bodies.
+
 ## Future phases (not in MVP)
 
-Model-architecture graph editor (layer-by-layer, arbitrary wiring), composite/subgraph
-nodes, portable architecture export (generated model.py / trust_remote_code / ONNX),
-branching pipeline execution. Selections and layout choices were deliberately left open —
-see the design doc's future-phase section.
+Portable architecture export (generated model.py / trust_remote_code / ONNX; F2.next),
+composite/subgraph nodes, shared workspace package for param math (single source with
+`viz/`), branching pipeline execution. Selections and layout choices were deliberately
+left open — see the design doc's future-phase section.
