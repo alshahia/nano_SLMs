@@ -469,6 +469,15 @@ describe("projection merge (dragging/selected persistence, data identity)", () =
     expect(useFlowStore.getState().selection).toBeNull();
   });
 
+  it("measured survives the projection round-trip (browser-drill regress: RF unhides only when the user node carries measured)", () => {
+    useFlowStore.getState().applyNodesChanges([
+      { id: "n1", type: "dimensions", dimensions: { width: 152, height: 50 }, measured: { width: 152, height: 50 } },
+    ]);
+    const st = useFlowStore.getState();
+    const nextProjection = toXYNodes(st.graph, REGISTRY, st.projection);
+    expect(nextProjection[0].measured).toEqual({ width: 152, height: 50 });
+  });
+
   it("unchanged domain nodes keep their previous data object identity", () => {
     const baseline = toXYNodes(useFlowStore.getState().graph, REGISTRY);
     useFlowStore.setState({ projection: baseline });

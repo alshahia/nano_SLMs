@@ -451,6 +451,11 @@ export function toXYNodes(
       position: n.position,
       // Keep measured geometry + interaction flags; the domain node (a
       // flow/0.1 document shape) must not absorb xyflow-only fields.
+      // measured is REQUIRED here, not optional polish: React Flow keeps
+      // the node wrapper at visibility:hidden until the user node itself
+      // carries measured — dropping it made every node invisible and
+      // unhittable from the second render onward (browser drill finding).
+      measured: p?.measured,
       width: p?.width,
       height: p?.height,
       dragging: p?.dragging,
