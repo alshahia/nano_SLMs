@@ -83,6 +83,44 @@ def _dir(flows_dir) -> Path:
     return Path(flows_dir) if flows_dir is not None else FLOWS_DIR
 
 
+def atomic_write(path, text):
+    """Atomically (re)write `path` with `text` (UTF-8, LF newlines).
+
+    The single shared writer for the directory stores (flows.save and
+    the app.py model-graph endpoint): payload first goes to a temp file
+    IN the target dir (name derived from the target name minus its
+    dotted suffixes, e.g. demo.flow.json -> "demo-<rand>.tmp"), is
+    fsynced durable there, then os.replace() swaps it into place —
+    os.replace is atomic on Windows and POSIX, and on any crash the
+    previous (or no) file remains exactly as it was. On failure the
+    temp file is unlinked best-effort (no .tmp residue) and the
+    original error propagates. Parent directories are created when
+    missing. Returns the written Path.
+    """
+    path = Path(path)
+    target_dir = path.parent
+    target_dir.mkdir(parents=True, exist_ok=True)
+    name_base = path.name
+    for suffix in reversed(path.suffixes):
+        if name_base.endswith(suffix):
+            name_base = name_base[: -len(suffix)]
+    fd, tmp_path = tempfile.mkstemp(prefix=name_base + "-", suffix=".tmp",
+                                    dir=str(target_dir))
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
+            f.write(text)
+            f.flush()
+            os.fsync(f.fileno())  # data-preservation rule: durable before OK
+        os.replace(tmp_path, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass  # temp cleanup is best-effort; the original error propagates
+        raise
+    return path
+
+
 def save(name, g, flows_dir=None):
     """Validate then write flows/<slug>.flow.json; fsync; return the Path.
 
@@ -95,29 +133,9 @@ def save(name, g, flows_dir=None):
         raise ValueError("\n".join(errors))
 
     target = _dir(flows_dir)
-    target.mkdir(parents=True, exist_ok=True)
     path = target / (slug + _SUFFIX)
     payload = json.dumps(g, indent=2, ensure_ascii=False) + "\n"
-    # Atomic write (retro MUST-ADD: readers must never observe a torn
-    # .flow.json): payload first goes to a temp file IN the target dir,
-    # is fsynced durable there, then os.replace() swaps it into place —
-    # os.replace is atomic on Windows and POSIX, and on any crash the
-    # previous (or no) file remains exactly as it was.
-    fd, tmp_path = tempfile.mkstemp(prefix=slug + "-", suffix=".tmp",
-                                    dir=str(target))
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
-            f.write(payload)
-            f.flush()
-            os.fsync(f.fileno())  # data-preservation rule: durable before OK
-        os.replace(tmp_path, path)
-    except BaseException:
-        try:
-            os.unlink(tmp_path)
-        except OSError:
-            pass  # temp cleanup is best-effort; the original error propagates
-        raise
-    return path
+    return atomic_write(path, payload)
 
 
 def load(name, flows_dir=None):

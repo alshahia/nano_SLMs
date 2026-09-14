@@ -17,6 +17,7 @@ Prod static serving: mounts flow/dist at "/" when NOT --dev and dist exists
 """
 
 import argparse
+import json
 import os
 import tempfile
 from pathlib import Path
@@ -30,6 +31,13 @@ from flow.server import config_gen, flows, nodes, runner
 
 FLOW_ROOT = Path(__file__).resolve().parent.parent
 DIST_DIR = FLOW_ROOT / "dist"
+
+# Model-graph store (F2 Task 4): flow/models/<slug>.modelgraph.json,
+# git-tracked like flow/flows/ (same directory-store pattern; tests pass
+# a models_dir and never touch the repo one).
+MODELS_DIR = FLOW_ROOT / "models"
+_MODEL_SUFFIX = ".modelgraph.json"
+_MODEL_FORMAT = "model/0.1"
 
 DEFAULT_PORT = 3010
 # CORS is for the frontend dev server only (Vite on 5174, historical 5173).
@@ -104,6 +112,104 @@ def flows_validation_response(exc):
     return JSONResponse(status_code=400, content={"errors": error_list(exc)})
 
 
+def model_slug(name):
+    """Validate a model name with the SAME rule as flows.save/load.
+
+    Delegates to flows._validate_slug (deliberate private reuse: flow
+    names and model names must share ONE slug validation) and relabels
+    the error's "flow name:" prefix to "model name:" so the 400 message
+    names what the client actually sent.
+    """
+    try:
+        return flows._validate_slug(name)
+    except ValueError as exc:
+        raise ValueError(str(exc).replace("flow name:", "model name:", 1)) from exc
+
+
+def validate_model_graph(body):
+    """Honest model/0.1 body validation; returns [] when valid.
+
+    Checks exactly what Task 4 pins: format == "model/0.1"; nodes is a
+    list of objects carrying id/kind/props/position; edges is a list of
+    objects carrying id/from/to/fromPort/toPort. The name is validated
+    separately (model_slug) because it arrives in the URL, and "meta"
+    stays free-form (backward-open format, like flow/0.1).
+    """
+    if not isinstance(body, dict):
+        return ["body: expected a model/0.1 JSON object, got %s"
+                % type(body).__name__]
+    errors = []
+    fmt = body.get("format")
+    if fmt != _MODEL_FORMAT:
+        errors.append("format: expected %r, got %r" % (_MODEL_FORMAT, fmt))
+    node_list = body.get("nodes")
+    if not isinstance(node_list, list):
+        errors.append("nodes: expected a list, got %r" % (node_list,))
+    else:
+        for i, item in enumerate(node_list):
+            if not isinstance(item, dict):
+                errors.append("nodes[%d]: expected an object, got %s"
+                              % (i, type(item).__name__))
+                continue
+            missing = [k for k in ("id", "kind", "props", "position")
+                       if k not in item]
+            if missing:
+                errors.append("nodes[%d]: missing %s"
+                              % (i, ", ".join(repr(k) for k in missing)))
+    edge_list = body.get("edges")
+    if not isinstance(edge_list, list):
+        errors.append("edges: expected a list, got %r" % (edge_list,))
+    else:
+        for i, item in enumerate(edge_list):
+            if not isinstance(item, dict):
+                errors.append("edges[%d]: expected an object, got %s"
+                              % (i, type(item).__name__))
+                continue
+            missing = [k for k in ("id", "from", "to", "fromPort", "toPort")
+                       if k not in item]
+            if missing:
+                errors.append("edges[%d]: missing %s"
+                              % (i, ", ".join(repr(k) for k in missing)))
+    return errors
+
+
+def list_models(models_dir=None):
+    """Sorted model slugs from <models_dir|MODELS_DIR>; [] when absent.
+
+    Mirrors flows.list_flows for the models directory: slugs (without
+    the .modelgraph.json suffix), sorted; the GET /api/models route
+    wraps this list in {"models": [...]} exactly like the /api/flows
+    list response shape.
+    """
+    target = Path(models_dir) if models_dir is not None else MODELS_DIR
+    if not target.is_dir():
+        return []
+    return sorted(
+        p.name[: -len(_MODEL_SUFFIX)]
+        for p in target.iterdir()
+        if p.is_file() and p.name.endswith(_MODEL_SUFFIX)
+    )
+
+
+def save_model(name, body, models_dir=None):
+    """Validate then write <models_dir|MODELS_DIR>/<slug>.modelgraph.json.
+
+    Same contract as flows.save: a ValueError carrying the newline-joined
+    reason list (body validation, or the shared slug error) is raised
+    WITHOUT writing anything on violation; on success the document is
+    written atomically via flows.atomic_write and the written Path is
+    returned.
+    """
+    slug = model_slug(name)
+    errors = validate_model_graph(body)
+    if errors:
+        raise ValueError("\n".join(errors))
+    target = Path(models_dir) if models_dir is not None else MODELS_DIR
+    path = target / (slug + _MODEL_SUFFIX)
+    payload = json.dumps(body, indent=2, ensure_ascii=False) + "\n"
+    return flows.atomic_write(path, payload)
+
+
 def nodes_snapshot():
     """Registry view for the frontend (kinds/ports/props/gates)."""
     return {
@@ -169,6 +275,23 @@ def create_app(dev=False):
             return JSONResponse(status_code=status_for_error(exc),
                                 content={"detail": str(exc)})
         return {"ok": True}
+
+    @app.get("/api/models")
+    def list_all_models():
+        return {"models": list_models()}
+
+    @app.post("/api/models/{name}")
+    async def write_model(name: str, request: Request):
+        try:
+            doc = await request.json()
+        except Exception:
+            return JSONResponse(status_code=400,
+                                content={"errors": ["body: invalid JSON"]})
+        try:
+            save_model(name, doc)
+        except ValueError as exc:
+            return flows_validation_response(exc)
+        return {"ok": True, "name": name}
 
     @app.post("/api/validate")
     async def validate(request: Request):
