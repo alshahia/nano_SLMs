@@ -28,6 +28,7 @@ import tokenizer as TK  # noqa: E402
 RUNS = REPO / "runs" / "diac"
 DATA = REPO / "data" / "diac"
 GATES = ("fadel_test", "sadeed25", "wikinews2024", "wikinews2014")
+GATE_EXTERNAL = ("fadel_test", "sadeed25", "wikinews2014")  # wn2024 = contaminated stamp (MEMORY 56); arms see the probe CSV for it either way
 
 
 def latest_checkpoint(run_dir):
