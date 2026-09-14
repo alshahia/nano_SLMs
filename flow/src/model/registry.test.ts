@@ -144,7 +144,7 @@ describe("smoke-block digest (registry-only, wiring-free)", () => {
   // One dense transformer block + outer norm share: demonstrates the kinds
   // re-compose the Task-0 formulas exactly (embed excluded; counts are
   // per-layer body + norms only).
-  it("one smoke layer: attention + ffn + 2 norms = pLayerDense share", () => {
+  it("one smoke layer: attention + ffn body + norms recompose pTotalDense", () => {
     const d = 256;
     const body =
       LAYER_REGISTRY.gqaAttention.paramCount({ heads: 4, kv_heads: 2 }, { d }) +

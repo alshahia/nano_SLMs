@@ -33,9 +33,6 @@ export function pFFNDense(s: { d: number; ffn: number }): number {
 export function pNorms(s: { d: number; layers: number }): number {
   return (2 * s.layers + 1) * s.d;
 }
-export function pLayerDense(s: { d: number; heads: number; kv: number; ffn: number }): number {
-  return pAttentionDense(s) + pFFNDense(s) + 2 * s.d; // + per-layer weight of the two norms counted via pNorms? no — norms counted separately
-}
 // pTotal — norms counted exactly once (NOT inside the per-layer loop):
 export function pTotalDense(s: DenseShape): number {
   return pEmbed(s) + s.layers * (pAttentionDense(s) + pFFNDense(s)) + pNorms(s);

@@ -8,9 +8,9 @@ import { pNorms } from "../paramMath";
 // they exist so a stack node alone can still report norm params for its depth.
 const DEPTH: PropSpec = { name: "depth", kind: "int", default: 4, min: 1 };
 const D: PropSpec = { name: "d", kind: "int", default: 256, min: 1 };
-const HEADS: PropSpec = { name: "heads", kind: "int", default: 4, min: 1 };
-const KV: PropSpec = { name: "kv", kind: "int", default: 2, min: 1 };
-const FFN: PropSpec = { name: "ffn", kind: "int", default: 1024, min: 1 };
+// Deliberately NO heads/kv/ffn props: the locked decision keeps the stack
+// priceable from depth+dim alone (review MINOR #2 — a surface that offered
+// unused knobs would be dishonest).
 
 /**
  * layerStack: repeat-N marker. LOCKED decision — counts ONLY the outer
@@ -23,7 +23,7 @@ export const layerStack: LayerSpec = {
   summary: "Repeat-N stack marker: outer norms only ((2N+1)*d); body params live in the wired layer nodes.",
   inputs: [X],
   outputs: [{ name: "out", label: "Hidden" }],
-  props: [DEPTH, D, HEADS, KV, FFN],
+  props: [DEPTH, D],
   inferShape(_props, inputs) {
     return { ...requireIn(inputs, 0, "layerStack", X) };
   },

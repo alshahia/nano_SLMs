@@ -74,8 +74,8 @@ All Python runs through the venv — never bare `python`, never `pip`:
 # flow/ visual flow editor (development build + server; port 3010 via FLOW_PORT)
 cd flow; pnpm build                                     # frontend -> flow/dist
 & .\.venv\Scripts\python.exe -m flow.server.app                # port 3010 (or --port)
-cd flow; pnpm test                                      # vitest (85 tests)
-& .\.venv\Scripts\python.exe -m unittest discover -s flow/tests -t flow  # server tests (114)
+cd flow; pnpm test                                      # vitest (148 tests)
+& .\.venv\Scripts\python.exe -m unittest discover -s flow/tests -t flow  # server tests (145)
 ```
 
 - `sft_data.py` is CPU + network only — safe to run while a train job is
