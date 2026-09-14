@@ -131,6 +131,16 @@ def main():
             sd.mkdir(exist_ok=True)
             torch.save({'model': model.state_dict(), 'opt': opt.state_dict(), 'step': step, 'config': json.dumps(cfg)}, sd / 'state.pt')
             print('[SAVE]', sd.name, flush=True)
+            # rotation: keep only the newest ROT checkpoints (train.py parity;
+            # no-rotation variant once filled the disk mid-stage2 run)
+            ks = sorted(run_dir.glob('checkpoint-*'), key=lambda q: int(q.name.split('-')[-1]))
+            for old in ks[:-3]:
+                if old.is_dir():
+                    import shutil
+                    shutil.rmtree(old, ignore_errors=True)
+                    print('[PRUNE]', old.name, flush=True)
+            # guard: crash mid-save leaves a torn zip; a later load will fail
+            # visibly on resume, which is better than silently mixed state
     md = run_dir / 'final'
     md.mkdir(exist_ok=True)
     torch.save(model.state_dict(), md / 'model.pt')
