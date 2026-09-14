@@ -161,9 +161,7 @@ def gate_probe(cfg, model, step, run_dir):
             except Exception:
                 prev = None
         if not prev or mean_der < float(prev.get("mean_der", 9.0)) - 1e-6:
-            best_file.write_text(json.dumps({"step": step, "mean_der": mean_der},
-                                             encoding="utf-8"), encoding="utf-8"
-                                  )
+            best_file.write_text(json.dumps({"step": step, "mean_der": mean_der}), encoding="utf-8")
             shutil.copyfile(probe_dir / f"weights_step{step}.pt",
                             probe_dir / "best_gate_weights.pt")
             print(f"[GATE-BEST] step {step} mean_external_DER {mean_der*100:.2f} "
