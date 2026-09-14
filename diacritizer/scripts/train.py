@@ -58,8 +58,36 @@ def evaluate_batch(model, val_ids, val_y, device, batch):
 
 
 
-GATE_EXTERNAL = ("fadel_test", "sadeed25", "wikinews2014")  # wn2024 = contaminated stamp (MEMORY 56); arms see the probe CSV for it either way
 
+def disk_free_gb():
+    import shutil as _sh
+    return _sh.disk_usage(str(REPO)).free / (1024 ** 3)
+
+
+def disk_warn(tag, warn_gb=3.0, prune=False):
+    """User-requested disk guard: shout [DISK-WARN] when E: gets tight (the next
+    save may fail mid-run); with prune=True, auto-delete per-probe
+    weights_step{N}.pt EXCEPT the two newest + best_gate_weights.pt. Real
+    checkpoint rotation + the gate-best artifact are never touched."""
+    import shutil as _sh
+    free = _sh.disk_usage(str(REPO)).free / (1024 ** 3)
+    if free >= warn_gb:
+        return free
+    print(f"[DISK-WARN] {tag}: only {free:.2f} GB free on E: - sweeping per-probe weight snapshots ...", flush=True)
+    if prune:
+        cands = []
+        for rd in RUNS.iterdir():
+            gp = rd / "gate_probe"
+            if gp.is_dir():
+                cands += list(gp.glob("weights_step*.pt"))
+        cands.sort(key=lambda f: int(f.stem.replace("weights_step", "")))
+        for f in cands[:-2]:
+            try:
+                f.unlink()
+                print("[DISK-PRUNE]", f, flush=True)
+            except Exception:
+                pass
+    return free
 
 def gate_probe(cfg, model, step, run_dir):
     """Bench the CURRENT live weights on the 4 registered gates + append CSV.
@@ -76,6 +104,9 @@ def gate_probe(cfg, model, step, run_dir):
     probe_dir.mkdir(exist_ok=True)
     snap = {"model": {k: v.detach().cpu() for k, v in model.state_dict().items()},
             "step": step, "config": json.dumps(cfg)}
+    if disk_free_gb() < 3.0:
+        disk_warn(f"gate probe @ step {step}", warn_gb=3.0, prune=True)
+
     torch.save(snap, probe_dir / "model.pt")                       # bench input (reused)
     torch.save(snap, probe_dir / f"weights_step{step}.pt")          # permanent per-probe
     cfg_path = probe_dir / "probe_config.yaml"
@@ -262,6 +293,9 @@ def main():
                            f"for {bad_evals} evals"}, flush=True)
                     break
         if step % save_every == 0 or step == total_steps:
+            if disk_free_gb() < 3.0:
+                disk_warn(f"checkpoint save @ step {step}", warn_gb=3.0, prune=True)
+
             sd = run_dir / f"checkpoint-{step}"
             sd.mkdir(exist_ok=True)
             torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
