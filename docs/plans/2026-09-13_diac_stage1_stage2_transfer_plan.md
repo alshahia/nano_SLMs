@@ -79,7 +79,7 @@ classes) before packing.
 - B (open question, one extra run if A wins): ALSO reset the last 2 encoder layers before
   fine-tune (CATT's reset-last-layer trick) - tests whether deep bidirectional mismatch
   hurts the transferred causal stack.
-- Dedup/contamination gates on fadel_test text vs stage-1 corpus (overlap Nintendo check via
+- Dedup/contamination gates on fadel_test text vs stage-1 corpus (overlap check via
   the same dedup report helper as 2.1).
 
 ## 3) Gates & decision rules (registered BEFORE results)
