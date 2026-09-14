@@ -31,6 +31,7 @@ API contract (fixed by Task 4):
 import json
 import os
 import re
+import tempfile
 from pathlib import Path
 
 from flow.server import graph_schema, nodes
@@ -97,10 +98,25 @@ def save(name, g, flows_dir=None):
     target.mkdir(parents=True, exist_ok=True)
     path = target / (slug + _SUFFIX)
     payload = json.dumps(g, indent=2, ensure_ascii=False) + "\n"
-    with open(path, "w", encoding="utf-8", newline="\n") as f:
-        f.write(payload)
-        f.flush()
-        os.fsync(f.fileno())  # data-preservation rule: durable before OK
+    # Atomic write (retro MUST-ADD: readers must never observe a torn
+    # .flow.json): payload first goes to a temp file IN the target dir,
+    # is fsynced durable there, then os.replace() swaps it into place —
+    # os.replace is atomic on Windows and POSIX, and on any crash the
+    # previous (or no) file remains exactly as it was.
+    fd, tmp_path = tempfile.mkstemp(prefix=slug + "-", suffix=".tmp",
+                                    dir=str(target))
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8", newline="\n") as f:
+            f.write(payload)
+            f.flush()
+            os.fsync(f.fileno())  # data-preservation rule: durable before OK
+        os.replace(tmp_path, path)
+    except BaseException:
+        try:
+            os.unlink(tmp_path)
+        except OSError:
+            pass  # temp cleanup is best-effort; the original error propagates
+        raise
     return path
 
 

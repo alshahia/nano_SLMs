@@ -66,6 +66,29 @@ class FlowsStoreTest(unittest.TestCase):
         self.assertTrue(p.exists())
         self.assertEqual(json.loads(p.read_text(encoding="utf-8")), valid_doc())
 
+    def test_save_overwrite_is_atomic_no_tmp_residue(self):
+        """Atomic write (retro MUST-ADD): an overwrite replaces the file via
+        os.replace so readers never observe a torn .flow.json, and no .tmp
+        residue survives a successful save (or a failed one)."""
+        flows.save("demo", valid_doc(), flows_dir=self.dir)
+        p = self.dir / "demo.flow.json"
+        before = p.read_text(encoding="utf-8")
+        changed = valid_doc()
+        changed["meta"]["name"] = "demo-2"
+        flows.save("demo", changed, flows_dir=self.dir)
+        self.assertEqual(json.loads(p.read_text(encoding="utf-8")), changed)
+        self.assertNotEqual(before, p.read_text(encoding="utf-8"))
+        residue = [q.name for q in self.dir.iterdir()
+                   if not q.name.endswith(".flow.json")]
+        self.assertEqual(residue, [], "no temp files may survive a save")
+        # A failed save (validation error) also leaves no residue and keeps
+        # the previous file byte-identical.
+        bad = valid_doc()
+        bad["schema"] = "flow/9.9"
+        with self.assertRaises(ValueError):
+            flows.save("demo", bad, flows_dir=self.dir)
+        self.assertIn("demo-2", p.read_text(encoding="utf-8"))
+
     def test_save_creates_missing_dir(self):
         nested = self.dir / "flows-sub"
         p = flows.save("demo", valid_doc(), flows_dir=nested)
