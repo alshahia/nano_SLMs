@@ -499,7 +499,7 @@ describe("projection merge (dragging/selected persistence, data identity)", () =
 describe("updateNodeLabelReducer (browser drill finding: dataset label is the config dataset name)", () => {
   it("writes the label, trims it, and invalidates validation state", () => {
     const before = useFlowStore.getState();
-    useFlowStore.setState({ validatedDoc: before.validatedDoc ?? "stale" });
+    useFlowStore.setState({ validatedDoc: flowDocument("stale", useFlowStore.getState().graph) });
     const g0 = useFlowStore.getState().graph;
     const next = updateNodeLabelReducer(g0, "n1", "  RowTour-360 rows ");
     expect(next.nodes[0].label).toBe("RowTour-360 rows");
