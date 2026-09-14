@@ -71,6 +71,21 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
    serve 16k without training; hmm capped recall at window+sink, so pretraining still owns
    true long-ctx quality (YaRN 4096 = the trained decision). [E-17]
 
+12. **D-line diacritization: spend params on DEPTH first, data mix above all**
+   (2026-09-13, param-matched ablation trio at the same 30M budget, same
+   data/batch-stream): depth x2 (14L/384 -> 28L/272, head_dim 64->34) =
+   gates -2.0..-3.9 pp DER at ZERO extra params, decisive on Sadeed (-3.7)
+   and WN-2014 (-3.9); the 2.5x-wide 76M model bought -1..-4.6 pp for 170 MB
+   more; a Fadel-only same-arch specialist took Fadel test 47.1 -> 34.2
+   (-12.9 pp), the largest single move of the whole ladder. Verdict ladder:
+   data/domain routing >> depth-per-param > raw params; both arch axes sum
+   to ~1/10 of the gap to SOTA systems that transfer from pretrained models
+   (Fine-Tashkeel ByT5, CATT char-BERT, PTCAD BERT-class) - our next lever
+   is a v3 mixed corpus (+Sadeed_Tashkeela 1.04M windows, wired) and/or
+   transfer init on this line, e.g. the proven KT-1 transplant lever above.
+   val_loss was a dead call while gates moved - gate metrics are a more
+   sensitive read than the label loss at this scale. [E-12, E-13]
+
 ## What NOT to repeat (with reasons)
 
 - **Skew-KL (alpha-SKL) distillation**: +2.29% over plain-KD, led only at a
