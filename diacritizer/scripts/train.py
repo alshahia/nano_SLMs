@@ -74,6 +74,18 @@ def main():
     device = ("cuda" if torch.cuda.is_available() else "cpu") \
         if args.device == "auto" else "cpu"
     model = build_from_config(cfg, vocab_size=TK.VOCAB_SIZE).to(device)
+    # pretrained_init: Stage-1 char-LM warm-start (plan 2026-09-13 sec 2.2).
+    # strict=False: the LM state has no 15-class label-head counterpart -
+    # embeddings + encoder stack load, heads proceed fresh. Skipped on a
+    # checkpoint resume (the resumed state overrides this init anyway).
+    if not latest_checkpoint(run_dir) and cfg.get("pretrained_init"):
+        pi = REPO / cfg["pretrained_init"]
+        st = torch.load(pi, map_location="cpu")
+        sd = st.get("model", st) if isinstance(st, dict) else st
+        missing, unexpected = model.load_state_dict(sd, strict=False)
+        # verify the transfer is REALLY the encoder stack, not a silent skip
+        print({"pretrained_init": str(pi), "tensors_in": len(sd),
+               "missing": len(missing), "unexpected": len(unexpected)}, flush=True)
     # fp16 COMPUTE on Turing via autocast (pure-fp16 master weights break
     # GradScaler: it requires fp32 grads); NaN-ban = scaled loss + skip-on-overflow
     scaler = torch.amp.GradScaler("cuda", enabled=(device == "cuda"))

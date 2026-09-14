@@ -51,7 +51,7 @@ def pack_rows(rows, ctx, shuffle_seed):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--phase", choices=["smoke", "pilot", "pilot128", "v2", "v2b",
-                                        "fadel_spec", "b65"], default="smoke")
+                                        "fadel_spec", "b65", "v3"], default="smoke")
     ap.add_argument("--ctx", type=int, default=512)
     ap.add_argument("--max-train", type=int, default=None)
     ap.add_argument("--prepared-dir", default=None,
