@@ -1,7 +1,7 @@
 # PLAN — D-line Stage 1/Stage 2 transfer: char-LM Arabic pretraining -> diacritization specialist
 
 Date: 2026-09-13 · Status: SPEC FOR USER REVIEW (not started; GPU-days commitment = user-gated)
-Owner: ARABIC-DIACRITIZATION agent. SuperseDEes nothing; completes the 3-axis ablation chain
+Owner: ARABIC-DIACRITIZATION agent. Supersedes nothing; completes the 3-axis ablation chain
 (E-12/E-13: data/domain routing >> depth-per-param > raw params; ALL arch polish ~1/10 of the
 SOTA gap -> transfer/pretrained-init is the frontier; SOTA systems Fine-Tashkeel(CATT etc.)
 all start from pretrained weights).
