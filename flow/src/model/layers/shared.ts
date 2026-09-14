@@ -32,7 +32,9 @@ export interface LayerSpec {
   outputs: TensorPort[]; // exactly 1 everywhere
   props: PropSpec[];
   inferShape(props: Record<string, unknown>, inputs: Shape[]): Shape;
-  paramCount(props: Record<string, unknown>, out: Shape): number;
+  /** `inputs` lets projection heads price a matrix over the HIDDEN input d
+   * (the output d is the vocab they project onto, not feature width). */
+  paramCount(props: Record<string, unknown>, out: Shape, inputs?: Shape[]): number;
 }
 
 /** Validate a numeric prop against its spec; returns the coerced int/float. */

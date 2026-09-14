@@ -77,8 +77,8 @@ describe("layer spot-checks (dense GQA params, cross paramMath)", () => {
   it("lmHead tied = 0, untied = vocab*d", () => {
     expect(LAYER_REGISTRY.lmHead.paramCount({ vocab_size: 32_768, tied: true }, smokeOut)).toBe(0);
     expect(
-      LAYER_REGISTRY.lmHead.paramCount({ vocab_size: 32_768, tied: false }, smokeOut)
-    ).toBe(32_768 * 256);
+      LAYER_REGISTRY.lmHead.paramCount({ vocab_size: 32_768, tied: false }, smokeOut, [smokeOut])
+    ).toBe(32_768 * 256); // untied head prices the matrix over the HIDDEN input d
   });
 
   it("layerStack counts ONLY outer pNorms: depth 4 d 256 = 2,304", () => {

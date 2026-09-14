@@ -20,13 +20,15 @@ export const lmHead: LayerSpec = {
     const vocabSize = numProp("vocab_size", props.vocab_size, VOCAB_SIZE);
     return { ...inSh, d: vocabSize };
   },
-  paramCount(props, out) {
+  paramCount(props, _out, inputs) {
     const tied = boolProp("tied", props.tied);
     if (tied) return 0;
     const vocabSize = numProp("vocab_size", props.vocab_size, VOCAB_SIZE);
-    if (typeof out.d !== "number" || !(out.d > 0)) {
-      throw new Error("lmHead: output shape has no positive d (untied head needs the hidden d)");
+    // Untied head weight is vocab_size x HIDDEN (the input width), NOT the
+    // output's vocab-facing d — so this is priced from the hidden input shape.
+    if (!inputs?.[0] || typeof inputs[0].d !== "number" || !(inputs[0].d > 0)) {
+      throw new Error("lmHead: reference input has no positive d (untied head needs the hidden d)");
     }
-    return pEmbed({ vocab: vocabSize, d: out.d });
+    return pEmbed({ vocab: vocabSize, d: inputs[0].d });
   },
 };
