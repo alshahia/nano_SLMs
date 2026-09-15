@@ -18,6 +18,17 @@ The table says the Fadel-only specialist dominates the classical gates (fadel_te
 - **wikinews2024 = CONTAMINATED (in-domain dev, NOT external):** the gate's 356 units appear verbatim in v2b train windows (shingle Jaccard 0.968, 4-gram containment 0.972) - all WN24 numbers in this table are optimistic by construction. External-truth columns are fadel_test, sadeed25 (overlap-flagged: sadeedt IS in the stage2a/b train mix), wikinews2014.
 - In-training overfit watchdog added (user request 2026-09-14): train.py gate_probe scores all 4 gates mid-run every gate_eval_every steps -> runs/<phase>/gate_eval.csv (watch stage2b/arm B).
 
+
+## Stage-2 matched controls (E-15/E-16, 2026-09-14, arm-B gold = recipe adopted)
+
+| model | fadel_test | sadeed25 | wikinews2024* | wikinews2014 |
+|---|---|---|---|---|
+| stage2b2500 (reset-last-2 @2500, REPRO) | 33.2 | 45.7 | 57.6 | 49.0 |
+| stage2a2500 (plain warm @1250) | 35.4 | 47.1 | 59.2 | 50.7 |
+| stage2a2500 (plain warm @2500) | 35.4 | 46.8 | 58.0 | 49.7 |
+
+Arm B beats arm A on ALL four gates at the matched step; val_loss favored A -> the in-run gate probe is the correct model-selection signal. Arm-B@2500 adopted as the final-model recipe (stage-1 LM pretrain -> reset-last-2 warm fine-tune, stop at the gate peak via gate_eval watch).
+
 ## Provenance
 
 - Numbers for **v2b, v2d28, b65, fadel_spec** are **ledger-recorded** (`research/EXPERIMENTS.md` rows E-12/E-13/E-14/H arm A); no v2d28/v2b/b65/fadel_spec pred datasets exist in SCRATCH to re-verify — scores are documented values from prior scoring runs and left as-is per the reporting policy.
