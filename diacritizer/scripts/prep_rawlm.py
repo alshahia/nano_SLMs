@@ -21,6 +21,16 @@ SEED = 20260911
 CTX = 512
 BUDGET = {'abdou': 45000000, 'sadeed': 45000000, 'qcri': 25000000,
           'fadel': 5000000, 'wn2024': 5000000}
+# v4-final override (user plan 2026-09-14: WHOLE corpora, gates excluded):
+# init_rawlm(cfg-json at THIS path, if it exists, overrides BUDGET + disables
+# a source entirely when its budget is 0 (e.g. wn2024: 0 = the gate leaves
+# training for the final model per the contamination stamp MEMORY 56).
+import json as _json
+_cfg_p = REPO / 'data' / 'diac' / 'prep_rawlm_override.json'
+if _cfg_p.exists():
+    _o = _json.loads(_cfg_p.read_text(encoding='utf-8'))
+    BUDGET.update(_o)
+    print({'budget_override': _o}, flush=True)
 MARKS = set('\u064b\u064c\u064d\u064e\u064f\u0650\u0651\u0652\u0670')
 
 def norm(s):
