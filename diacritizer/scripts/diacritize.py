@@ -45,19 +45,36 @@ def main():
     model.eval()
     print(f"[loaded] {ck.name} step={snap.get('step', '?')} params={sum(p.numel() for p in model.parameters())}", file=sys.stderr)
 
-    texts = []
-    if args.text:
-        texts = args.text.splitlines()
-    elif args.file:
-        texts = Path(args.file).read_text(encoding="utf-8").splitlines()
-    else:
-        texts = sys.stdin.read().splitlines()
-    for line in texts:
+    repl = not (args.text or args.file) and sys.stdin.isatty()
+    if repl:
+        print("Enter Arabic text (one sentence per line), quit on EOF (Ctrl+Z + Enter) or 'q'.", file=sys.stderr)
+    for line in iter_lines(args, repl):
         bare = unicodedata.normalize("NFC", line.strip())
         if not bare:
-            print()
             continue
+        if repl and line.strip().lower() == "q":
+            break
         print(B.predict_bare(model, bare, ctx, device))
+        if repl:
+            print("", file=sys.stderr)  # fresh line after each answer
+
+
+def iter_lines(args, repl):
+    if args.text:
+        yield from args.text.splitlines()
+    elif args.file:
+        yield from Path(args.file).read_text(encoding="utf-8").splitlines()
+    elif repl:
+        while True:
+            try:
+                line = input("arabic> ")
+            except EOFError:
+                break
+            if line.strip().lower() == "q":
+                break
+            yield line
+    else:
+        yield from sys.stdin.read().splitlines()
 
 
 if __name__ == "__main__":
