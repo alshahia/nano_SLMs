@@ -1,0 +1,6 @@
+{
+  "ckpt": "E:\\python_projects\\nano_SLMs\\runs\\mount_drop\\final",
+  "val_loss": 2.047265241332088,
+  "perplexity": 7.746686792660531,
+  "samples": {}
+}

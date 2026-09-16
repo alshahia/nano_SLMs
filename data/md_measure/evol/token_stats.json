@@ -1,0 +1,14 @@
+{
+  "tag": "evol",
+  "rows": 2000,
+  "total_tokens": 948877,
+  "tok_per_row_mean": 474.4,
+  "median": 417,
+  "p90": 845,
+  "min": 43,
+  "max": 2272,
+  "total_chars": 3254259,
+  "tok_per_char": 0.2916,
+  "seconds": 2.5,
+  "tokenizer": "codellama/CodeLlama-7b-hf"
+}

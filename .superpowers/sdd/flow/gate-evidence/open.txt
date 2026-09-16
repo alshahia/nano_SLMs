@@ -1,0 +1,3 @@
+✓ Flow Editor
+  http://127.0.0.1:3010/
+[agent-browser] launched browser

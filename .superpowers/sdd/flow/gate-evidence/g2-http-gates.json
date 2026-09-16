@@ -1,0 +1,245 @@
+[
+ {
+  "check": "2a-validate-valid",
+  "method": "POST",
+  "path": "/api/validate",
+  "status": 200,
+  "response": {
+   "ok": true,
+   "errors": []
+  }
+ },
+ {
+  "check": "2a-save-valid",
+  "method": "PUT",
+  "path": "/api/flows/gate-demo",
+  "status": 200,
+  "response": {
+   "ok": true,
+   "name": "gate-demo"
+  }
+ },
+ {
+  "check": "2b-port-mismatch",
+  "method": "POST",
+  "path": "/api/validate",
+  "status": 200,
+  "response": {
+   "ok": false,
+   "errors": [
+    "flow/gate-demo: linear chains only - the MVP maps exactly one linear chain (linear chain mapping: dataset->prepare->tokenize->train) to a config; branching graphs run via advanced YAML only in this MVP (future F5 execution)"
+   ]
+  }
+ },
+ {
+  "check": "2c-missing-shard",
+  "method": "POST",
+  "path": "/api/validate",
+  "status": 200,
+  "response": {
+   "ok": false,
+   "errors": [
+    "train requires upstream tokenize node providing shard-dir; none found (node 'n4')"
+   ]
+  }
+ },
+ {
+  "check": "2d-reserved-name",
+  "method": "POST",
+  "path": "/api/validate",
+  "status": 200,
+  "response": {
+   "ok": false,
+   "errors": [
+    "flow name: 'smoke' is a reserved shipped-config name - it would collide with the shipped configs and auto-resume state (runs/smoke, data/smoke)"
+   ]
+  }
+ },
+ {
+  "check": "2e-rows-cap",
+  "method": "POST",
+  "path": "/api/validate",
+  "status": 200,
+  "response": {
+   "ok": false,
+   "errors": [
+    "rows: 900000 is above the hard cap 500000 (net time + disk)"
+   ]
+  }
+ },
+ {
+  "check": "2f-branching-or-cycle",
+  "method": "POST",
+  "path": "/api/validate",
+  "status": 200,
+  "response": {
+   "ok": false,
+   "errors": [
+    "graph.edges[e5].toPort: 'raw-dir' is not an input port of kind 'dataset'",
+    "graph.edges: cycle detected in execution graph involving node(s) 'n1', 'n2', 'n3', 'n4'",
+    "flow/gate-demo: linear chains only - the MVP maps exactly one linear chain (linear chain mapping: dataset->prepare->tokenize->train) to a config; branching graphs run via advanced YAML only in this MVP (future F5 execution)"
+   ]
+  }
+ },
+ {
+  "check": "extra-status",
+  "method": "GET",
+  "path": "/api/run/status",
+  "status": 200,
+  "response": {
+   "running": false,
+   "exit_code": null,
+   "started_at": null,
+   "exit_at": null,
+   "tail": []
+  }
+ },
+ {
+  "check": "extra-nodes",
+  "method": "GET",
+  "path": "/api/nodes",
+  "status": 200,
+  "response": {
+   "valid_kinds": [
+    "dataset",
+    "eval",
+    "infer",
+    "prepare",
+    "tokenize",
+    "train"
+   ],
+   "nodes": {
+    "dataset": {
+     "ports": [
+      {
+       "name": "cleaned",
+       "direction": "out",
+       "type": "raw-dir: dataset name/rows",
+       "burst-format": "row-batch"
+      }
+     ],
+     "props": [],
+     "numeric_props": [],
+     "gate": null
+    },
+    "prepare": {
+     "ports": [
+      {
+       "name": "raw-dir",
+       "direction": "in",
+       "type": "raw-dir",
+       "burst-format": "file-list"
+      },
+      {
+       "name": "cleaned-dir",
+       "direction": "out",
+       "type": "cleaned-dir",
+       "burst-format": "file-list"
+      }
+     ],
+     "props": [
+      "min_chars",
+      "rows",
+      "val_fraction"
+     ],
+     "numeric_props": [
+      "min_chars",
+      "rows",
+      "val_fraction"
+     ],
+     "gate": null
+    },
+    "tokenize": {
+     "ports": [
+      {
+       "name": "cleaned-dir",
+       "direction": "in",
+       "type": "cleaned-dir",
+       "burst-format": "file-list"
+      },
+      {
+       "name": "shard-dir",
+       "direction": "out",
+       "type": "shard-dir",
+       "burst-format": "file-list"
+      }
+     ],
+     "props": [
+      "seq_len",
+      "vocab"
+     ],
+     "numeric_props": [
+      "seq_len",
+      "vocab"
+     ],
+     "gate": null
+    },
+    "train": {
+     "ports": [
+      {
+       "name": "shard-dir",
+       "direction": "in",
+       "type": "shard-dir",
+       "burst-format": "file-list"
+      },
+      {
+       "name": "ckpt-dir",
+       "direction": "out",
+       "type": "ckpt-dir",
+       "burst-format": "checkpoint"
+      }
+     ],
+     "props": [
+      "lr_preset",
+      "preset",
+      "steps"
+     ],
+     "numeric_props": [
+      "steps"
+     ],
+     "gate": "gpu"
+    },
+    "eval": {
+     "ports": [
+      {
+       "name": "ckpt-dir",
+       "direction": "in",
+       "type": "ckpt-dir",
+       "burst-format": "checkpoint"
+      },
+      {
+       "name": "report",
+       "direction": "out",
+       "type": "report",
+       "burst-format": "single-file"
+      }
+     ],
+     "props": [],
+     "numeric_props": [],
+     "gate": "gpu"
+    },
+    "infer": {
+     "ports": [
+      {
+       "name": "ckpt-dir",
+       "direction": "in",
+       "type": "ckpt-dir",
+       "burst-format": "checkpoint"
+      }
+     ],
+     "props": [],
+     "numeric_props": [],
+     "gate": "gpu/cpu"
+    }
+   },
+   "gates": {
+    "dataset": null,
+    "prepare": null,
+    "tokenize": null,
+    "train": "gpu",
+    "eval": "gpu",
+    "infer": "gpu/cpu"
+   }
+  }
+ }
+]

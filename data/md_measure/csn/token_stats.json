@@ -1,0 +1,14 @@
+{
+  "tag": "csn",
+  "rows": 2000,
+  "total_tokens": 543524,
+  "tok_per_row_mean": 271.8,
+  "median": 172,
+  "p90": 505,
+  "min": 50,
+  "max": 7341,
+  "total_chars": 1825824,
+  "tok_per_char": 0.2977,
+  "seconds": 2.1,
+  "tokenizer": "codellama/CodeLlama-7b-hf"
+}

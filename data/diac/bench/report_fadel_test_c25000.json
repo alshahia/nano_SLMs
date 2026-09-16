@@ -1,0 +1,14 @@
+{
+  "pred": "data\\diac\\bench\\pred_fadel_test.jsonl",
+  "refs": [
+    "data\\diac\\bench\\pred_fadel_test.ref.txt"
+  ],
+  "lines": 2694,
+  "aggregate": {
+    "DER": 0.4200281388395926,
+    "DER_nocase": 0.28209986090459976,
+    "WER": 0.42041185028858297,
+    "text_preservation": 1.0,
+    "words": 125094
+  }
+}

@@ -1,0 +1,6 @@
+{'phase': 'pilot', 'device': 'cuda', 'params': 30512640, 'train_windows': 51280, 'val_windows': 8060}
+[START] fresh (zero flags, checkpoint rotates every save_every)
+step 100 loss 1.1212 val_loss 1.1771 val_acc 0.5722 elapsed 1716s
+E:\python_projects\nano_SLMs\diacritizer\scripts\train.py:128: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  print(f"step {step} loss {float(loss_sum):.4f} val_loss {vl:.4f} "

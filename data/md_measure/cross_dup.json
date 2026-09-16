@@ -1,0 +1,44 @@
+{
+  "rows_per_source": {
+    "stack_smol": 2000,
+    "starcoderdata": 2000,
+    "csn": 2000,
+    "evol": 2000
+  },
+  "unique_hashes_per_source": {
+    "stack_smol": 2000,
+    "starcoderdata": 2000,
+    "csn": 2000,
+    "evol": 2000
+  },
+  "within_source_dups": {
+    "stack_smol": 0,
+    "starcoderdata": 0,
+    "csn": 0,
+    "evol": 0
+  },
+  "pairwise_intersections": {
+    "stack_smol|starcoderdata": 0,
+    "stack_smol|csn": 0,
+    "stack_smol|evol": 0,
+    "starcoderdata|csn": 0,
+    "starcoderdata|evol": 0,
+    "csn|evol": 0
+  },
+  "cross_source_dups_first_wins": {
+    "stack_smol": 0,
+    "starcoderdata": 0,
+    "csn": 0,
+    "evol": 0
+  },
+  "total_rows": 8000,
+  "total_unique": 8000,
+  "cross_source_dup_rows": 0,
+  "cross_source_dup_rate": 0.0,
+  "labels": {
+    "stack_smol": "the-stack-smol (python)",
+    "starcoderdata": "starcoderdata (python)",
+    "csn": "code_search_net (python)",
+    "evol": "Evol-Instruct-Code-80k-v1"
+  }
+}

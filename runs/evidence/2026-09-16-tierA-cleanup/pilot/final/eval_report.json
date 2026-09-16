@@ -1,0 +1,10 @@
+{
+  "ckpt": "E:\\python_projects\\nano_SLMs\\runs\\pilot\\final",
+  "val_loss": 1.1608339982111686,
+  "perplexity": 3.192594784454541,
+  "samples": {
+    "def fibonacci(n):": "def fibonacci(n):\n    if n == 0:\n        return 0\n    elif n == 1:\n        return 1\n    else:\n        return fibonacci(n-1) + fibonacci(n-2)\n\n# Testing the function\nprint(fibonacci",
+    "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):": "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):\n    mean = np.mean(y_true, y_pred)\n    return mean\n\ndef calculate_mean(y_true, y_pred):\n    mean = np.mean(y_true, y_pred)\n    return mean\n\ndef calculate_standard_deviation",
+    "class Stack:": "class Stack:\n    def __init__(self):\n        self.stack = []\n        self.min_stack = []\n        self.min_stack = []\n\n    def push(self, item):\n        if not isinstance(item, (int, float)):\n            raise Exception(\"Stack is"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "pred": "data\\diac\\bench\\pred_wikinews2024.jsonl",
+  "refs": [
+    "data\\diac\\bench\\pred_wikinews2024.ref.txt"
+  ],
+  "lines": 356,
+  "aggregate": {
+    "DER": 0.538715146948003,
+    "DER_nocase": 0.39412207987942727,
+    "WER": 0.5388093443858327,
+    "text_preservation": 1.0,
+    "words": 10616
+  }
+}

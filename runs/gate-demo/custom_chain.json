@@ -1,0 +1,18 @@
+{
+  "config": "E:\\python_projects\\nano_SLMs\\configs\\flow_gate-demo.yaml",
+  "phase": "gate-demo",
+  "steps": [
+    {
+      "step": "sanity_check",
+      "exit": 0,
+      "seconds": 15.5
+    },
+    {
+      "step": "prepare_data",
+      "exit": 1,
+      "seconds": 23.2
+    }
+  ],
+  "started": "2026-09-14T20:54:16",
+  "status": "failed_at_prepare_data"
+}

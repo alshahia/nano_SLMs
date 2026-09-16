@@ -1,0 +1,1306 @@
+=== COMMITS ===
+97383f9 flow: inspector + run status
+=== STAT ===
+ flow/src/App.css       | 155 +++++++++++++++++++++++++-
+ flow/src/App.tsx       | 167 +++++++++++++++++++++++++++-
+ flow/src/Inspector.tsx | 290 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ flow/src/api.ts        |  18 ++-
+ flow/src/store.test.ts | 286 +++++++++++++++++++++++++++++++++++++++++++++++-
+ flow/src/store.ts      | 118 ++++++++++++++++++++
+ 6 files changed, 1019 insertions(+), 15 deletions(-)
+=== DIFF ===
+diff --git a/flow/src/App.css b/flow/src/App.css
+index 64a9b58..a52cf43 100644
+--- a/flow/src/App.css
++++ b/flow/src/App.css
+@@ -1,15 +1,104 @@
+-.shell {
++.app-root {
+   display: flex;
++  flex-direction: column;
+   height: 100vh;
+ }
+ 
++/* Header toolbar (Task 9 File Open/Save; Run/Validate land in Task 10). */
++.toolbar {
++  display: flex;
++  align-items: center;
++  gap: 8px;
++  padding: 6px 10px;
++  border-bottom: 1px solid #ccc;
++  background: #fafafa;
++}
++
++.toolbar-title {
++  font-weight: 600;
++}
++
++.shell {
++  display: flex;
++  flex: 1;
++  min-height: 0;
++}
++
++/* File modals (Open picker / Save name prompt). */
++.modal-backdrop {
++  position: fixed;
++  inset: 0;
++  z-index: 30;
++  background: rgba(0, 0, 0, 0.15);
++}
++
++.modal {
++  position: fixed;
++  left: 50%;
++  top: 18%;
++  transform: translateX(-50%);
++  width: 300px;
++  background: #fff;
++  border: 1px solid #999;
++  border-radius: 6px;
++  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
++  padding: 10px;
++}
++
++.modal-title {
++  margin: 0 0 6px;
++  font-weight: 600;
++}
++
++.modal input {
++  width: 100%;
++  box-sizing: border-box;
++  padding: 5px 7px;
++  font: inherit;
++}
++
++.modal-list {
++  list-style: none;
++  margin: 6px 0;
++  padding: 0;
++  max-height: 240px;
++  overflow: auto;
++}
++
++.modal-list button {
++  display: block;
++  width: 100%;
++  border: 0;
++  background: none;
++  text-align: left;
++  padding: 5px 7px;
++  font: inherit;
++  cursor: pointer;
++  border-radius: 4px;
++}
++
++.modal-list button:hover {
++  background: #e6eefb;
++}
++
++.modal-actions {
++  display: flex;
++  justify-content: flex-end;
++  gap: 6px;
++}
++
++.modal-note {
++  color: #999;
++  font-size: 12px;
++}
++
+ .palette {
+   width: 220px;
+   min-width: 32px;
+   border-right: 1px solid #ccc;
+   padding: 8px;
+ }
+ 
+ .palette-cards {
+   display: flex;
+   flex-direction: column;
+@@ -155,10 +244,74 @@
+ }
+ 
+ .inspector-tabs {
+   display: flex;
+   gap: 4px;
+ }
+ 
+ .inspector-panel {
+   margin-top: 8px;
+ }
++
++/* Inspector properties tab widgets (Task 9). */
++.inspector-empty {
++  color: #666;
++  font-size: 13px;
++}
++
++.prop-kind {
++  font-size: 12px;
++  color: #555;
++  margin: 0 0 6px;
++}
++
++.prop-row {
++  display: flex;
++  flex-direction: column;
++  gap: 2px;
++  margin-bottom: 8px;
++  font-size: 13px;
++}
++
++.prop-row input,
++.prop-row select {
++  font: inherit;
++  padding: 4px 6px;
++  width: 100%;
++  box-sizing: border-box;
++}
++
++.advanced-props textarea {
++  width: 100%;
++  box-sizing: border-box;
++  font: 12px/1.4 monospace;
++}
++
++.honesty-label {
++  font-size: 11px;
++  color: #8a6d1a;
++  margin: 6px 0;
++}
++
++/* Run log tab. */
++.run-state {
++  font-size: 12px;
++  margin: 0 0 6px;
++}
++
++.run-state-error {
++  color: #b30;
++}
++
++.run-tail {
++  height: 180px;
++  overflow: auto;
++  background: #14171c;
++  color: #d6e2f0;
++  font-size: 12px;
++  line-height: 1.4;
++  padding: 8px;
++  margin: 0;
++  border-radius: 4px;
++  white-space: pre-wrap;
++  word-break: break-word;
++}
+diff --git a/flow/src/App.tsx b/flow/src/App.tsx
+index adb48ef..176f508 100644
+--- a/flow/src/App.tsx
++++ b/flow/src/App.tsx
+@@ -1,15 +1,15 @@
+-import { useEffect } from "react";
++import { useEffect, useRef, useState } from "react";
+ import Palette from "./Palette";
+ import FlowCanvas from "./FlowCanvas";
+ import Inspector from "./Inspector";
+-import { useFlowStore } from "./store";
++import { useFlowStore, isValidFlowName } from "./store";
+ import { api, errorMessage } from "./api";
+ import "./App.css";
+ 
+ /* Throttle window: a focus event refetches the registry at most once per
+  * this window (the mount fetch itself counts as an attempt). */
+ const REGISTRY_REFETCH_THROTTLE_MS = 5000;
+ 
+ /** Cache the /api/nodes registry snapshot in the store on mount; on
+  * failure record the error so Palette falls back to its static copy.
+  * A refetch is also attempted whenever the window regains focus (at most
+@@ -41,17 +41,172 @@ export default function App() {
+       }
+     };
+     window.addEventListener("focus", onFocus);
+     return () => {
+       cancelled = true;
+       window.removeEventListener("focus", onFocus);
+     };
+   }, [setRegistry, setRegistryError]);
+ 
+   return (
+-    <div className="shell">
+-      <Palette />
+-      <FlowCanvas />
+-      <Inspector />
++    <div className="app-root">
++      <Toolbar />
++      <div className="shell">
++        <Palette />
++        <FlowCanvas />
++        <Inspector />
++      </div>
++    </div>
++  );
++}
++
++/** Header toolbar. Open = GET /api/flows + picker modal -> GET the picked
++ * flow -> store.openFlow (which also resets the xyflow projection via
++ * setGraph; an empty projection just means an unmeasured canvas, visually
++ * benign). Save = modal name prompt with client-side slug validation ->
++ * store.saveFlow (PUT /api/flows/{name}). Errors surface through the
++ * existing store.error toast channel (rendered in FlowCanvas). Run /
++ * Validate buttons are intentionally NOT wired here (Task 10). */
++function Toolbar() {
++  const saveFlow = useFlowStore((s) => s.saveFlow);
++  const openFlow = useFlowStore((s) => s.openFlow);
++  const setError = useFlowStore((s) => s.setError);
++
++  /* File modal mode: null | "open" (flow list picker) | "save" (name
++   * prompt). */
++  const [modal, setModal] = useState<null | "open" | "save">(null);
++  const inputRef = useRef<HTMLInputElement>(null);
++
++  /* Escape closes the active modal (capture phase so it wins over the
++   * canvas handlers; closing twice is a no-op). */
++  useEffect(() => {
++    if (!modal) return;
++    const onKey = (e: KeyboardEvent) => {
++      if (e.key === "Escape") {
++        e.stopPropagation();
++        setModal(null);
++      }
++    };
++    window.addEventListener("keydown", onKey, true);
++    return () => window.removeEventListener("keydown", onKey, true);
++  }, [modal]);
++
++  useEffect(() => {
++    if (modal === "save") inputRef.current?.focus();
++  }, [modal]);
++
++  const submitSave = async () => {
++    const name = inputRef.current?.value ?? "";
++    if (!isValidFlowName(name)) {
++      setError(
++        "flow name must match [a-z0-9-]{1,64} (lowercase letters, digits, dashes)",
++      );
++      return;
++    }
++    const ok = await saveFlow(name);
++    if (ok) {
++      setModal(null);
++      setError(null);
++    }
++  };
++
++  return (
++    <header className="toolbar">
++      <span className="toolbar-title">flow</span>
++      <button id="toolbar-open" aria-label="Open saved flow" onClick={() => setModal("open")}>
++        Open
++      </button>
++      <button id="toolbar-save" aria-label="Save current flow" onClick={() => setModal("save")}>
++        Save
++      </button>
++
++      {modal === "open" && (
++        <FlowPicker
++          onPick={openFlow}
++          onDismiss={() => setModal(null)}
++        />
++      )}
++
++      {modal === "save" && (
++        <div className="modal-backdrop" onClick={() => setModal(null)}>
++          <div
++            className="modal"
++            role="dialog"
++            aria-label="Save flow"
++            onClick={(e) => e.stopPropagation()}
++          >
++            <label htmlFor="save-name">flow name</label>
++            <input
++              ref={inputRef}
++              id="save-name"
++              placeholder="my-run"
++              onKeyDown={(e) => {
++                if (e.key === "Enter") void submitSave();
++              }}
++            />
++            <div className="modal-actions">
++              <button onClick={() => setModal(null)}>Cancel</button>
++              <button onClick={() => void submitSave()}>Save</button>
++            </div>
++          </div>
++        </div>
++      )}
++    </header>
++  );
++}
++
++/** Body for the Open modal: names come straight from GET /api/flows;
++ * the list fetch failure is shown inline and API failures from the
++ * subsequent GET/PUT land in the store.error toast. */
++function FlowPicker({
++  onPick,
++  onDismiss,
++}: {
++  onPick: (name: string) => void;
++  onDismiss: () => void;
++}) {
++  const [names, setNames] = useState<string[] | null>(null);
++  const [listError, setListError] = useState<string | null>(null);
++
++  useEffect(() => {
++    let cancelled = false;
++    api
++      .getFlows()
++      .then((n) => {
++        if (!cancelled) setNames(n);
++      })
++      .catch((e) => {
++        if (!cancelled) setListError(errorMessage(e));
++      });
++    return () => {
++      cancelled = true;
++    };
++  }, []);
++
++  return (
++    <div className="modal-backdrop" onClick={onDismiss}>
++      <div
++        className="modal"
++        role="dialog"
++        aria-label="Open flow"
++        onClick={(e) => e.stopPropagation()}
++      >
++        <p className="modal-title">saved flows</p>
++        {listError !== null && <p className="honesty-label">{listError}</p>}
++        {names === null && <p className="modal-note">loading…</p>}
++        {names !== null && names.length === 0 && (
++          <p className="modal-note">no saved flows yet</p>
++        )}
++        <ul className="modal-list">
++          {(names ?? []).map((n) => (
++            <li key={n}>
++              <button onClick={() => onPick(n)}>{n}</button>
++            </li>
++          ))}
++        </ul>
++        <div className="modal-actions">
++          <button onClick={onDismiss}>Cancel</button>
++        </div>
++      </div>
+     </div>
+   );
+ }
+diff --git a/flow/src/Inspector.tsx b/flow/src/Inspector.tsx
+index d6854e3..b88e708 100644
+--- a/flow/src/Inspector.tsx
++++ b/flow/src/Inspector.tsx
+@@ -1,43 +1,321 @@
+-import { useFlowStore, type InspectorTab } from "./store";
++import { useEffect, useRef, useState } from "react";
++import {
++  useFlowStore,
++  FALLBACK_REGISTRY,
++  propWidgetType,
++  propSelectOptions,
++  updateNodePropsReducer,
++  type InspectorTab,
++  type NodeSpec,
++  type PropWidget,
++} from "./store";
++import { api, errorMessage, mapRunStatus } from "./api";
+ 
+ const TABS: { id: InspectorTab; label: string }[] = [
+   { id: "properties", label: "Properties" },
+   { id: "run-log", label: "Run Log" },
+   { id: "preview", label: "Preview" },
+ ];
+ 
++/** One labeled editor row for a registry prop. Widget selection comes
++ * from propWidgetType (registry-driven); number inputs coerce on change. */
++function PropRow({
++  name,
++  value,
++  widget,
++  onChange,
++}: {
++  name: string;
++  value: unknown;
++  widget: PropWidget;
++  onChange: (v: unknown) => void;
++}) {
++  const options = widget === "select" ? propSelectOptions(name) : null;
++  const inputId = "prop-" + name;
++  return (
++    <div className="prop-row">
++      <label htmlFor={inputId}>{name}</label>
++      {widget === "select" && options !== null ? (
++        <select
++          id={inputId}
++          value={typeof value === "string" ? value : ""}
++          onChange={(e) => onChange(e.target.value)}
++        >
++          {!options.includes(String(value)) && <option value="">(unset)</option>}
++          {options.map((o) => (
++            <option key={o} value={o}>
++              {o}
++            </option>
++          ))}
++        </select>
++      ) : widget === "number" ? (
++        <input
++          id={inputId}
++          type="number"
++          value={typeof value === "number" && Number.isFinite(value) ? String(value) : ""}
++          onChange={(e) => {
++            if (e.target.value === "") onChange(undefined);
++            else onChange(Number(e.target.value));
++          }}
++        />
++      ) : (
++        <input
++          id={inputId}
++          type="text"
++          value={value === undefined || value === null ? "" : String(value)}
++          onChange={(e) => onChange(e.target.value)}
++        />
++      )}
++    </div>
++  );
++}
++
++/** Advanced disclosure: raw props JSON editor. Honesty label is explicit
++ * (DESIGN advanced YAML/Knobs section): what you type is the node's props
++ * object verbatim — no validation happens here; the server re-checks
++ * everything on POST /api/validate and on PUT /api/flows/{name}. */
++function AdvancedPropsEditor({ nodeId, propsJson }: { nodeId: string; propsJson: string }) {
++  const updateNodeProps = useFlowStore((s) => s.updateNodeProps);
++  const setError = useFlowStore((s) => s.setError);
++  const [open, setOpen] = useState(false);
++  const [draft, setDraft] = useState(propsJson);
++  // Reset the draft when the selected node (or its props) change.
++  useEffect(() => setDraft(propsJson), [nodeId, propsJson]);
++
++  return (
++    <details className="advanced-props" onToggle={(e) => setOpen((e.target as HTMLDetailsElement).open)}>
++      <summary>Advanced: raw props JSON</summary>
++      {open && (
++        <>
++          <p className="honesty-label">
++            honest: this is YAML-adjacent — the JSON below becomes the node's
++            props verbatim; nothing is validated here, the server does that
++            on save/validate.
++          </p>
++          <textarea
++            aria-label={"raw props JSON for node " + nodeId}
++            value={draft}
++            rows={6}
++            onChange={(e) => setDraft(e.target.value)}
++          />
++          <button
++            onClick={() => {
++              try {
++                const parsed: unknown = JSON.parse(draft);
++                if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
++                  setError("advanced props: JSON must be an object (props are key → value)");
++                  return;
++                }
++                updateNodeProps(nodeId, parsed as Record<string, unknown>);
++                setError(null);
++              } catch {
++                setError("advanced props: not valid JSON");
++              }
++            }}
++          >
++            Apply to node
++          </button>
++        </>
++      )}
++    </details>
++  );
++}
++
++/** Properties tab for store.selection: widgets per the registry snapshot
++ * (never the kind guess), "(no editable properties)" for the empty-props
++ * kinds (dataset / eval / infer per the T7 contract table). */
++function PropertiesPanel() {
++  const selection = useFlowStore((s) => s.selection);
++  const graph = useFlowStore((s) => s.graph);
++  const registry = useFlowStore((s) => s.registry);
++  const setError = useFlowStore((s) => s.setError);
++  const updateNodeProps = useFlowStore((s) => s.updateNodeProps);
++
++  const node = selection === null ? null : graph.nodes.find((n) => n.id === selection);
++  if (!node) return <p className="inspector-empty">select a node on the canvas</p>;
++  const spec: NodeSpec | undefined =
++    (registry ?? FALLBACK_REGISTRY).nodes[node.kind];
++
++  if (!spec || spec.props.length === 0) {
++    return (
++      <>
++        <p className="inspector-empty">(no editable properties)</p>
++        {spec && spec.props.length === 0 && (
++          /** Advanced JSON editing still makes sense for raw round-trip
++           * fidelity (e.g. an old document's extra keys) even when the
++           * registry lists no widgets for the kind. */
++          <AdvancedPropsEditor nodeId={node.id} propsJson={JSON.stringify(node.props, null, 2)} />
++        )}
++      </>
++    );
++  }
++
++  const setProp = (name: string, value: unknown) => {
++    const next = { ...node.props };
++    if (value === undefined) delete next[name];
++    else next[name] = value;
++    // Server validates on save/validate; the client write path keeps the
++    // reducer pure (updateNodePropsReducer) and optimism is honest here.
++    updateNodeProps(node.id, next);
++  };
++
++  return (
++    <>
++      <p className="prop-kind">kind: {node.kind}</p>
++      {spec.props.map((p) => (
++        <PropRow
++          key={p}
++          name={p}
++          value={node.props[p]}
++          widget={propWidgetType(spec, p)}
++          onChange={(v) => {
++            setError(null);
++            setProp(p, v);
++          }}
++        />
++      ))}
++      <AdvancedPropsEditor nodeId={node.id} propsJson={JSON.stringify(node.props, null, 2)} />
++    </>
++  );
++}
++
++/** Run log tab: polls GET /api/run/status every 2 s while a run is being
++ * watched (store.runStatus is set), streams the tail into a scrollable
++ * pre with bottom auto-adherence (sticks unless the user scrolled up) and
++ * a "no live run" empty state otherwise. */
++function RunLogPanel() {
++  const runStatus = useFlowStore((s) => s.runStatus);
++  const setRunStatus = useFlowStore((s) => s.setRunStatus);
++  const [tail, setTail] = useState<string[]>([]);
++  const [pollError, setPollError] = useState<string | null>(null);
++  const preRef = useRef<HTMLPreElement | null>(null);
++  // Stick-to-bottom heuristic: true until the user scrolls up away from
++  // the bottom edge; every successful tail read re-evaluates adherence.
++  const atBottomRef = useRef(true);
++
++  /* Poll only while a run is being watched AND still live; a terminal
++   * mapped state (done/error) settles the panel and stops the interval
++   * (the toolbar Run button re-arms via setRunStatus in Task 10). */
++  const watching = runStatus !== null && runStatus.state === "running";
++
++  useEffect(() => {
++    if (!watching) return;
++    let cancelled = false;
++    const poll = () => {
++      api
++        .runStatus()
++        .then((s) => {
++          if (cancelled) return;
++          setPollError(null);
++          const next = mapRunStatus(s);
++          setRunStatus(next);
++          if (s.tail.length > 0) setTail(s.tail);
++          if (atBottomRef.current && preRef.current) {
++            preRef.current.scrollTop = preRef.current.scrollHeight;
++          }
++          // Once the mapped state is terminal the watcher can stop (a
++          // fresh run re-arms polling via setRunStatus from the toolbar).
++        })
++        .catch((e) => {
++          if (cancelled) return;
++          setPollError(errorMessage(e));
++        });
++    };
++    poll();
++    const t = window.setInterval(poll, 2000);
++    return () => {
++      cancelled = true;
++      window.clearInterval(t);
++    };
++  }, [watching, setRunStatus]);
++
++  useEffect(() => {
++    if (atBottomRef.current && preRef.current) {
++      preRef.current.scrollTop = preRef.current.scrollHeight;
++    }
++  }, [tail]);
++
++  if (runStatus === null || runStatus.state === "idle") {
++    return <p className="inspector-empty">no live run</p>;
++  }
++
++  return (
++    <div className="run-log">
++      <p className={runStatus.state === "error" ? "run-state run-state-error" : "run-state"} role="status">
++        {runStatus.state}
++        {runStatus.message ? " — " + runStatus.message : ""}
++      </p>
++      {pollError !== null && <p className="honesty-label">{pollError}</p>}
++      <pre
++        ref={preRef}
++        className="run-tail"
++        aria-label="live run output tail"
++        onScroll={(e) => {
++          const el = e.currentTarget;
++          atBottomRef.current = el.scrollTop + el.clientHeight >= el.scrollHeight - 4;
++        }}
++      >
++        {tail.length === 0 ? "(no output yet)" : tail.join("\n")}
++      </pre>
++    </div>
++  );
++}
++
+ export default function Inspector() {
+   const tab = useFlowStore((s) => s.inspectorTab);
+   const setTab = useFlowStore((s) => s.setInspectorTab);
+   const collapsed = useFlowStore((s) => s.inspectorCollapsed);
+   const setCollapsed = useFlowStore((s) => s.setInspectorCollapsed);
+ 
+   if (collapsed) {
+     return (
+       <aside className="inspector inspector-collapsed">
+-        <button onClick={() => setCollapsed(false)}>«</button>
++        <button onClick={() => setCollapsed(false)} aria-label="Expand inspector">
++          «
++        </button>
+       </aside>
+     );
+   }
+ 
+   return (
+     <aside className="inspector">
+-      <button onClick={() => setCollapsed(true)}>»</button>
++      <button onClick={() => setCollapsed(true)} aria-label="Collapse inspector">
++        »
++      </button>
+       <div className="inspector-tabs" role="tablist">
+         {TABS.map((t) => (
+           <button
+             key={t.id}
+             role="tab"
++            id={"inspector-tab-" + t.id}
+             aria-selected={tab === t.id}
++            aria-controls={"inspector-panel-" + t.id}
+             onClick={() => setTab(t.id)}
+           >
+               {t.label}
+           </button>
+         ))}
+       </div>
+-      <div className="inspector-panel" role="tabpanel">
+-        <p>{TABS.find((t) => t.id === tab)?.label} panel</p>
+-      </div>
++      {/* One panel element per known tab (hidden ones inert) so each tab
++       * button's aria-controls target actually exists. */}
++      {TABS.map((t) => (
++        <div
++          key={t.id}
++          id={"inspector-panel-" + t.id}
++          role="tabpanel"
++          className="inspector-panel"
++          hidden={tab !== t.id}
++          aria-labelledby={"inspector-tab-" + t.id}
++        >
++          {tab !== t.id ? null : t.id === "properties" ? (
++            <PropertiesPanel />
++          ) : t.id === "run-log" ? (
++            <RunLogPanel />
++          ) : (
++            <p className="inspector-empty">config preview lands after validate/run wiring</p>
++          )}
++        </div>
++      ))}
+     </aside>
+   );
+ }
+diff --git a/flow/src/api.ts b/flow/src/api.ts
+index a4a2bf8..33ac7a9 100644
+--- a/flow/src/api.ts
++++ b/flow/src/api.ts
+@@ -1,11 +1,11 @@
+-import type { Graph, RegistrySnapshot } from "./store";
++import type { Graph, RegistrySnapshot, RunStatus } from "./store";
+ 
+ /** flow/0.1 document shape (GET /api/flows/{name} and PUT body). */
+ export interface FlowDocument {
+   schema: "flow/0.1";
+   meta: { name: string };
+   graph: Graph;
+ }
+ 
+ /** Pull the payload out; 400 uses {"errors": [...]}, 404/409 {"detail"}. */
+ async function request<T>(path: string, init?: RequestInit): Promise<T> {
+@@ -51,20 +51,36 @@ export function errorMessage(e: unknown): string {
+  * this shape (T8 review MINOR-8). Mapping into the UI-level store.RunStatus
+  * happens in the Task 9/10 run wiring. */
+ export interface ApiRunStatus {
+   running: boolean;
+   exit_code: null | number;
+   started_at: string | null;
+   exit_at: string | null;
+   tail: string[];
+ }
+ 
++/** Map the GET /api/run/status backend payload into the UI-level
++ * store.RunStatus (T7 contract + runner.py passthrough semantics):
++ * - running: true                        -> "running" (live values)
++ * - running === false, exit_code !== null -> "done" when 0, else "error"
++ * - running === false, exit_code === null -> "idle" (last run finished
++ *   before a tail existed / no run since process start) */
++export function mapRunStatus(s: ApiRunStatus): RunStatus {
++  if (s.running) return { state: "running", message: "running…" };
++  if (s.exit_code !== null) {
++    return s.exit_code === 0
++      ? { state: "done", message: "exit code 0 — done" }
++      : { state: "error", message: "exit code " + String(s.exit_code) + " — error" };
++  }
++  return { state: "idle", message: "no live run" };
++}
++
+ export const api = {
+   getNodes: () => request<RegistrySnapshot>("/api/nodes"),
+   getFlows: () => request<string[]>("/api/flows"),
+   getFlow: (name: string) => request<FlowDocument>("/api/flows/" + encodeURIComponent(name)),
+   saveFlow: (name: string, doc: FlowDocument) =>
+     request<{ ok: true; name: string }>("/api/flows/" + encodeURIComponent(name), {
+       method: "PUT",
+       body: JSON.stringify(doc),
+     }),
+   validateFlow: (doc: FlowDocument) =>
+diff --git a/flow/src/store.test.ts b/flow/src/store.test.ts
+index f9ebcf9..16d2bc8 100644
+--- a/flow/src/store.test.ts
++++ b/flow/src/store.test.ts
+@@ -1,25 +1,32 @@
+ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+ import type { RegistrySnapshot } from "./store";
+ import type { NodeChange } from "@xyflow/react";
+-import { api, formatApiError } from "./api";
++import { api, formatApiError, mapRunStatus, errorMessage } from "./api";
++import type { ApiRunStatus } from "./api";
++import type { Graph } from "./store";
+ import {
+   useFlowStore,
+   addNodeReducer,
+   connectReducer,
+   nextNodeId,
+   nextEdgeId,
+   portTypesCompatible,
+   toXYNodes,
+   toXYEdges,
+   fromXYNodes,
+   validateConnect,
++  propWidgetType,
++  propSelectOptions,
++  isValidFlowName,
++  updateNodePropsReducer,
++  flowDocument,
+ } from "./store";
+ 
+ const REGISTRY: RegistrySnapshot = {
+   valid_kinds: ["dataset", "prepare", "tokenize", "train", "eval", "infer"],
+   nodes: {
+     dataset: {
+       ports: [
+         { name: "cleaned", direction: "out", type: "raw-dir: dataset name/rows", "burst-format": "row-batch" },
+       ],
+       props: [],
+@@ -463,10 +470,287 @@ describe("projection merge (dragging/selected persistence, data identity)", () =
+     useFlowStore.setState({ projection: baseline });
+     useFlowStore.getState().applyNodesChanges([
+       { id: "n1", type: "position", position: { x: 9, y: 9 } },
+     ]);
+     const proj = useFlowStore.getState().projection;
+     expect(proj[0].data).toBe(baseline[0].data);
+     expect(useFlowStore.getState().graph.nodes[0].position).toEqual({ x: 9, y: 9 });
+   });
+ });
+ 
++/* ------------------------------------------------------------------ */
++/* Task 9: inspector widgets, run status mapping, file actions         */
++/* ------------------------------------------------------------------ */
++
++describe("props widget mapping per kind (T7 contract table)", () => {
++  it("numeric registry props render as number inputs", () => {
++    expect(propWidgetType(REGISTRY.nodes.prepare, "rows")).toBe("number");
++    expect(propWidgetType(REGISTRY.nodes.prepare, "min_chars")).toBe("number");
++    expect(propWidgetType(REGISTRY.nodes.tokenize, "seq_len")).toBe("number");
++    expect(propWidgetType(REGISTRY.nodes.train, "steps")).toBe("number");
++  });
++
++  it("train preset / lr_preset render as selects (server-parity lists)", () => {
++    expect(propWidgetType(REGISTRY.nodes.train, "preset")).toBe("select");
++    expect(propWidgetType(REGISTRY.nodes.train, "lr_preset")).toBe("select");
++    expect(propSelectOptions("preset")).not.toBeNull();
++    expect(propSelectOptions("lr_preset")).not.toBeNull();
++    // The placeholder copies are non-empty and align with
++    // flow/server/config_gen.py PRESETS / LR_PRESETS names.
++    expect((propSelectOptions("preset") ?? []).length).toBeGreaterThan(0);
++    expect((propSelectOptions("lr_preset") ?? []).length).toBeGreaterThan(0);
++  });
++
++  it("unknown string props fall back to free text", () => {
++    expect(propWidgetType({ ports: [], props: ["x"], numeric_props: [], gate: null }, "x")).toBe("text");
++  });
++
++  it("empty-props kinds (dataset/eval/infer) have no widgets at all", () => {
++    for (const kind of ["dataset", "eval", "infer"] as const) {
++      expect(REGISTRY.nodes[kind].props).toEqual([]);
++    }
++  });
++});
++
++describe("flow name slug validation (client-side honesty check)", () => {
++  it("accepts valid slugs only", () => {
++    expect(isValidFlowName("alpha-run")).toBe(true);
++    expect(isValidFlowName("0123456789012345678901234567890123456789012345678901234567890123")).toBe(true); // 64
++    expect(isValidFlowName("")).toBe(false);
++    expect(isValidFlowName("Alpha")).toBe(false);
++    expect(isValidFlowName("has space")).toBe(false);
++    expect(isValidFlowName("01234567890123456789012345678901234567890123456789012345678901234")).toBe(false); // 65
++  });
++});
++
++describe("props write-back (validator-agnostic, pure reducer)", () => {
++  const graph: Graph = {
++    nodes: [
++      { id: "n1", kind: "train", props: { preset: "Small (~12M, smoke)" }, position: { x: 0, y: 0 } },
++    ],
++    edges: [],
++  };
++
++  it("updateNodePropsReducer replaces props by id and keeps others", () => {
++    const res = updateNodePropsReducer(graph, "n1", { steps: 4, preset: "Large (~226M, target)" });
++    expect(res).not.toBe(graph);
++    expect(res.nodes[0].props).toEqual({ steps: 4, preset: "Large (~226M, target)" });
++    expect(res.nodes[0].kind).toBe("train");
++    expect(graph.nodes[0].props).toEqual({ preset: "Small (~12M, smoke)" }); // untouched
++  });
++
++  it("updateNodePropsReducer returns the same graph for an unknown id (no churn)", () => {
++    expect(updateNodePropsReducer(graph, "nZ", { x: 1 })).toBe(graph);
++  });
++
++  it("store action writes props back into the selected node only", () => {
++    useFlowStore.setState({
++      graph: {
++        nodes: [
++          { id: "n1", kind: "train", props: {}, position: { x: 0, y: 0 } },
++          { id: "n2", kind: "prepare", props: {}, position: { x: 1, y: 1 } },
++        ],
++        edges: [],
++      },
++      registry: REGISTRY,
++      projection: [],
++      selection: null,
++      inspectorTab: "properties",
++      runStatus: null,
++      paletteCollapsed: false,
++      inspectorCollapsed: false,
++      registryError: null,
++      error: null,
++    });
++    useFlowStore.getState().updateNodeProps("n2", { rows: 100 });
++    const g = useFlowStore.getState().graph;
++    expect(g.nodes[0].props).toEqual({});
++    expect(g.nodes[1].props).toEqual({ rows: 100 });
++    // Unknown id is a silent no-op, not a crash.
++    useFlowStore.getState().updateNodeProps("nZZ", {});
++    expect(useFlowStore.getState().graph).toBe(g);
++  });
++
++  it("flowDocument wraps the graph into the flow/0.1 PUT shape", () => {
++    const doc = flowDocument("alpha-run", graph);
++    expect(doc).toEqual({
++      schema: "flow/0.1",
++      meta: { name: "alpha-run" },
++      graph,
++    });
++  });
++});
++
++describe("ApiRunStatus -> RunStatus mapping", () => {
++  const status = (partial: Partial<ApiRunStatus>): ApiRunStatus => ({
++    running: false,
++    exit_code: null,
++    started_at: null,
++    exit_at: null,
++    tail: [],
++    ...partial,
++  });
++
++  it("running=true maps to running regardless of exit_code leftovers", () => {
++    expect(mapRunStatus(status({ running: true }))).toEqual({
++      state: "running",
++      message: "running…",
++    });
++  });
++
++  it("exit_code 0 maps to done", () => {
++    expect(mapRunStatus(status({ running: false, exit_code: 0, exit_at: "now" }))).toEqual({
++      state: "done",
++      message: "exit code 0 — done",
++    });
++  });
++
++  it("non-zero exit_code maps to error", () => {
++    expect(mapRunStatus(status({ running: false, exit_code: 1 }))).toEqual({
++      state: "error",
++      message: "exit code 1 — error",
++    });
++  });
++
++  it("not-running without exit_code maps to idle (no live run)", () => {
++    expect(mapRunStatus(status({}))).toEqual({ state: "idle", message: "no live run" });
++  });
++});
++
++describe("file open/save store actions (mocked fetch)", () => {
++  const DOC = {
++    schema: "flow/0.1" as const,
++    meta: { name: "alpha-run" },
++    graph: {
++      nodes: [{ id: "n1", kind: "dataset", props: {}, position: { x: 1, y: 2 } }],
++      edges: [],
++    },
++  };
++
++  beforeEach(() => {
++    useFlowStore.setState({
++      graph: { nodes: [], edges: [] },
++      projection: [],
++      selection: null,
++      inspectorTab: "properties",
++      runStatus: null,
++      paletteCollapsed: false,
++      inspectorCollapsed: false,
++      registry: null,
++      registryError: null,
++      error: null,
++    });
++  });
++
++  afterEach(() => {
++    vi.unstubAllGlobals();
++  });
++
++  it("openFlow success GETs the document, replaces the graph and resets the projection", async () => {
++    useFlowStore.setState({ projection: [] });
++    const fetchMock = vi.fn(async (path: string) => {
++      expect(path).toBe("/api/flows/alpha-run");
++      return new Response(JSON.stringify(DOC), { status: 200 });
++    });
++    vi.stubGlobal("fetch", fetchMock);
++    await useFlowStore.getState().openFlow("alpha-run");
++    expect(useFlowStore.getState().graph).toEqual(DOC.graph);
++    expect(useFlowStore.getState().projection).toEqual([]);
++    expect(useFlowStore.getState().error).toBeNull();
++  });
++
++  it("openFlow 404 detail failure leaves the graph intact and toasts", async () => {
++    const before = useFlowStore.getState().graph;
++    vi.stubGlobal(
++      "fetch",
++      vi.fn(async () =>
++        new Response(
++          JSON.stringify({
++            detail: 'flow \'alpha-run\' not found (looked for x)',
++          }),
++          { status: 404, statusText: "Not Found" },
++        ),
++      ),
++    );
++    const ok = await useFlowStore.getState().openFlow("alpha-run");
++    expect(ok).toBe(false);
++    const st = useFlowStore.getState();
++    expect(st.graph).toEqual(before);
++    expect(st.error).toBe("flow 'alpha-run' not found (looked for x)");
++  });
++
++  it("saveFlow success PUTs the current graph under the given name", async () => {
++    useFlowStore.setState({
++      graph: {
++        nodes: [{ id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } }],
++        edges: [],
++      },
++    });
++    const fetchMock = vi.fn(async (path: string, init?: RequestInit) => {
++      expect(path).toBe("/api/flows/my-run");
++      expect(init?.method).toBe("PUT");
++      const body = JSON.parse(String(init?.body)) as {
++        meta: { name: string };
++        schema: string;
++        graph: Graph;
++      };
++      expect(body.schema).toBe("flow/0.1");
++      expect(body.meta).toEqual({ name: "my-run" });
++      expect(body.graph).toEqual(useFlowStore.getState().graph);
++      return new Response(JSON.stringify({ ok: true, name: "my-run" }), { status: 200 });
++    });
++    vi.stubGlobal("fetch", fetchMock);
++    const ok = await useFlowStore.getState().saveFlow("my-run");
++    expect(ok).toBe(true);
++    expect(useFlowStore.getState().error).toBeNull();
++  });
++
++  it("saveFlow 400 errors[] toast keeps the client graph for another try", async () => {
++    useFlowStore.setState({
++      graph: {
++        nodes: [{ id: "n1", kind: "train", props: { preset: "warp" }, position: { x: 0, y: 0 } }],
++        edges: [],
++      },
++    });
++    const before = useFlowStore.getState().graph;
++    vi.stubGlobal(
++      "fetch",
++      vi.fn(async () =>
++        new Response(
++          JSON.stringify({ errors: ["train.preset: unknown preset 'warp'"] }),
++          { status: 400, statusText: "Bad Request" },
++        ),
++      ),
++    );
++    const ok = await useFlowStore.getState().saveFlow("my-run");
++    expect(ok).toBe(false);
++    const st = useFlowStore.getState();
++    expect(st.error).toBe("train.preset: unknown preset 'warp'");
++    expect(st.graph).toEqual(before);
++  });
++
++  it("saveFlow refuses non-slug names without a doomed request", async () => {
++    const fetchMock = vi.fn();
++    vi.stubGlobal("fetch", fetchMock);
++    const ok = await useFlowStore.getState().saveFlow("Bad Name");
++    expect(ok).toBe(false);
++    expect(fetchMock).not.toHaveBeenCalled();
++    expect(useFlowStore.getState().error).toContain("[a-z0-9-]{1,64}");
++  });
++
++  it("network failure during open lands in the toast channel", async () => {
++    vi.stubGlobal(
++      "fetch",
++      vi.fn(async () => {
++        throw new TypeError("fetch failed");
++      }),
++    );
++    const ok = await useFlowStore.getState().openFlow("alpha-run");
++    expect(ok).toBe(false);
++    expect(useFlowStore.getState().error).toBe("fetch failed");
++  });
++
++  it("errorMessage stringifies non-Error throws", () => {
++    expect(errorMessage("boom")).toBe("boom");
++  });
++});
++
+diff --git a/flow/src/store.ts b/flow/src/store.ts
+index 13324e6..a6233bf 100644
+--- a/flow/src/store.ts
++++ b/flow/src/store.ts
+@@ -1,13 +1,14 @@
+ import { create } from "zustand";
+ import type { Edge, Node, NodeChange, EdgeChange, Connection } from "@xyflow/react";
+ import { applyNodeChanges } from "@xyflow/react";
++import { api, errorMessage, type FlowDocument } from "./api";
+ 
+ /**
+  * Canonical graph shape is the flow/0.1 document graph (what the backend
+  * serves/stores). xyflow ReactFlow Node/Edge objects are a projection of
+  * this; mappers live at the bottom of this file.
+  */
+ export interface DomainPosition { x: number; y: number }
+ 
+ export interface DomainNode {
+   id: string;
+@@ -133,20 +134,29 @@ export interface FlowState {
+   error: string | null;
+   setGraph: (g: Graph) => void;
+   setSelection: (id: string | null) => void;
+   setInspectorTab: (t: InspectorTab) => void;
+   setRunStatus: (s: RunStatus | null) => void;
+   setPaletteCollapsed: (c: boolean) => void;
+   setInspectorCollapsed: (c: boolean) => void;
+   setRegistry: (r: RegistrySnapshot) => void;
+   setRegistryError: (e: string | null) => void;
+   setError: (e: string | null) => void;
++  /** Task 9 inspector props write-back (see updateNodePropsReducer). */
++  updateNodeProps: (id: string, props: Record<string, unknown>) => void;
++  /** Task 9 file actions: Open = GET /api/flows/{name} -> setGraph (which
++   * also resets the xyflow projection via setGraph); Save = PUT
++   * /api/flows/{name}. Both surface errors through the existing
++   * store.error toast channel and never leave a half-applied graph.
++   * saveFlow keeps the collapsed names awaitable for the toolbar modal. */
++  openFlow: (name: string) => Promise<boolean>;
++  saveFlow: (name: string) => Promise<boolean>;
+   /** Pure, reducer-safe actions (each fully testable via getState()). */
+   addNode: (kind: string, position: DomainPosition) => string | null;
+   applyNodesChanges: (changes: NodeChange[]) => void;
+   applyEdgesChanges: (changes: EdgeChange[]) => void;
+   connect: (c: Connection) => boolean;
+ }
+ 
+ /* ------------------------------------------------------------------ */
+ /* Pure reducers / mappers - exported for direct unit testing.         */
+ /* ------------------------------------------------------------------ */
+@@ -250,20 +260,96 @@ export function addNodeReducer(
+   }
+   const node: DomainNode = {
+     id: nextNodeId(graph, "n"),
+     kind,
+     props: {},
+     position: { x: position.x, y: position.y },
+   };
+   return { graph: { ...graph, nodes: [...graph.nodes, node] }, id: node.id, error: null };
+ }
+ 
++/* ------------------------------------------------------------------ */
++/* Task 9: props editing + flow name slug helpers                     */
++/* ------------------------------------------------------------------ */
++
++/** Editor widget to render for a given registry prop. The train string
++ * presets render as selects; numeric_props render as number inputs;
++ * anything else is a free-text input. Pure, registry-driven so the
++ * per-kind table in the T7 contract is honoured (empty-props kinds lead
++ * to the "(no editable properties)" note in the Inspector). */
++export type PropWidget = "number" | "select" | "text";
++
++/** The train kind's two string props are preset-name selects. */
++const SELECT_PROPS = new Set(["preset", "lr_preset"]);
++
++export function propWidgetType(spec: NodeSpec, prop: string): PropWidget {
++  if (SELECT_PROPS.has(prop)) return "select";
++  if (spec.numeric_props.includes(prop)) return "number";
++  return "text";
++}
++
++/** Placeholder select options for the train preset / lr_preset widgets.
++ * These names are copied from flow/server/config_gen.py PRESETS /
++ * LR_PRESETS (which in turn mirror webui/app.py). The inspector dropdowns
++ * are a client-side copy on purpose (MVP); actual value parity is enforced
++ * by the backend AST-parity test (T5) — a server-side rename that does not
++ * update this list shows up as a T5 failure, not a silent config drift. */
++export const TRAIN_PRESET_OPTIONS: string[] = [
++  "Small (~12M, smoke)",
++  "Medium (~101M, pilot)",
++  "Large (~226M, target)",
++];
++export const LR_PRESET_OPTIONS: string[] = [
++  "Pretrain 4e-4",
++  "Conservative 2e-4",
++  "Fine-tune 3e-5",
++];
++
++/** Options for a props select widget (empty -> fall back to free text). */
++export function propSelectOptions(
++  prop: string,
++): string[] | null {
++  if (prop === "preset") return TRAIN_PRESET_OPTIONS;
++  if (prop === "lr_preset") return LR_PRESET_OPTIONS;
++  return null;
++}
++
++/** Client-side slug validation for the Save/Open name inputs
++ * ([a-z0-9-]{1,64}). The server re-validates authoritatively; this only
++ * gives immediate feedback and avoids a doomed request round-trip. */
++export const FLOW_SLUG_RE = /^[a-z0-9-]{1,64}$/;
++
++export function isValidFlowName(name: string): boolean {
++  return FLOW_SLUG_RE.test(name);
++}
++
++/** Build the flow/0.1 PUT document for the current graph. The document
++ * meta name echoes the slug under which the graph is saved server-side. */
++export function flowDocument(name: string, graph: Graph): FlowDocument {
++  return { schema: "flow/0.1", meta: { name }, graph };
++}
++
++/** Pure props write-back: replace node.props in place-by-id and return a
++ * NEW graph (validator-agnostic here — the server validates on save and
++ * on POST /api/validate). Unknown ids return the original graph object. */
++export function updateNodePropsReducer(
++  graph: Graph,
++  id: string,
++  props: Record<string, unknown>,
++): Graph {
++  if (!graph.nodes.some((n) => n.id === id)) return graph;
++  return {
++    ...graph,
++    nodes: graph.nodes.map((n) => (n.id === id ? { ...n, props } : n)),
++  };
++}
++
+ /* ------------------------------------------------------------------ */
+ /* xyflow <-> domain mapping                                          */
+ /* ------------------------------------------------------------------ */
+ 
+ export interface PipelineNodeData extends Record<string, unknown> {
+   kind: string;
+   label?: string;
+   props: Record<string, unknown>;
+   ports: PortSpec[];
+   runState?: "idle" | "running" | "done" | "error";
+@@ -348,20 +434,52 @@ export const useFlowStore = create<FlowState>((set, get) => ({
+   selection: null,
+   inspectorTab: "properties",
+   runStatus: null,
+   paletteCollapsed: false,
+   inspectorCollapsed: false,
+   registry: null,
+   registryError: null,
+   error: null,
+ 
+   setGraph: (graph) => set({ graph, projection: [] }),
++  updateNodeProps: (id, props) => {
++    const g = get();
++    const next = updateNodePropsReducer(g.graph, id, props);
++    // Unknown id keeps the same graph object -> no state churn.
++    if (next !== g.graph) set({ graph: next });
++  },
++  openFlow: async (name) => {
++    try {
++      const doc = await api.getFlow(name);
++      set({ graph: doc.graph, projection: [], error: null });
++      return true;
++    } catch (e) {
++      set({ error: errorMessage(e) });
++      return false;
++    }
++  },
++  saveFlow: async (name) => {
++    if (!isValidFlowName(name)) {
++      set({
++        error: "flow name must match [a-z0-9-]{1,64} (lowercase letters, digits, dashes)",
++      });
++      return false;
++    }
++    try {
++      await api.saveFlow(name, flowDocument(name, get().graph));
++      set({ error: null });
++      return true;
++    } catch (e) {
++      set({ error: errorMessage(e) });
++      return false;
++    }
++  },
+   setSelection: (selection) => set({ selection }),
+   setInspectorTab: (inspectorTab) => set({ inspectorTab }),
+   setRunStatus: (runStatus) => set({ runStatus }),
+   setPaletteCollapsed: (paletteCollapsed) => set({ paletteCollapsed }),
+   setInspectorCollapsed: (inspectorCollapsed) => set({ inspectorCollapsed }),
+   setRegistry: (registry) => set({ registry, registryError: null }),
+   setRegistryError: (registryError) => set({ registryError }),
+   setError: (error) => set({ error }),
+ 
+   addNode: (kind, position) => {

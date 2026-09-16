@@ -1,0 +1,87 @@
+{
+  "gate": "G4 browser E2E drill (Task 12)",
+  "date": "2026-09-13",
+  "session": "flowdrill-eeb47521cf69",
+  "ui_url": "http://127.0.0.1:3010/",
+  "viewport": "1400x900 (drill) / default 957x576-note",
+  "items": [
+    {
+      "item": "app mounts: toolbar, palette 6 kinds, canvas, inspector tabs Properties/Run Log/Preview",
+      "result": "PASS",
+      "evidence": "a11y snapshot in drill log"
+    },
+    {
+      "item": "right-click Add menu: all 6 kinds one entry each + Ctrl+K row",
+      "result": "PASS"
+    },
+    {
+      "item": "right-click add x6 nodes (dataset, prepare, tokenize, train, eval, infer)",
+      "result": "PASS"
+    },
+    {
+      "item": "wire dataset->prepare->tokenize->train->eval + train->infer (5 edges) via pointer drag on handles",
+      "result": "PASS",
+      "note": "required drill-fix commit 2a0efa5"
+    },
+    {
+      "item": "invalid dataset->train connect refused with type-mismatch toast; no edge added",
+      "result": "PASS",
+      "toast": "edge: port types do not match ('raw-dir: dataset name/rows' on 'dataset.cleaned' vs 'shard-dir' on 'train.shard-dir')"
+    },
+    {
+      "item": "Save modal + Keep-Enter submit -> PUT /api/flows/gate-demo2; GET /api/flows lists gate-demo, gate-demo2",
+      "result": "PASS"
+    },
+    {
+      "item": "Open picker restores saved graph (6 nodes / 5 edges from gate-demo2)",
+      "result": "PASS"
+    },
+    {
+      "item": "Validate graph without knobs/branch graph: honest sequential server messages (missing upstream cleaned-dir; missing steps knob; linear-chains-only)",
+      "result": "PASS"
+    },
+    {
+      "item": "Validate with label + knobs filled: 'OK: validation passed — document accepted'",
+      "result": "PASS"
+    },
+    {
+      "item": "Preview card from last validation: compiled config summary + honest freshness note + node list",
+      "result": "PASS"
+    },
+    {
+      "item": "run log tab idle state 'no live run'; Stop button absent when not running (running-state already code-covered)",
+      "result": "PASS (idle)"
+    },
+    {
+      "item": "Run button, real GPU job lifecycle",
+      "result": "SKIPPED",
+      "reason": "GPU busy 99% with live python process (single-GPU rule); G3 skipped for the same reason"
+    },
+    {
+      "item": "infer node handoff dialog: honest manual instructions + manual launch command + popup to webui URL; Escape closes (drill fix commit 853e08e)",
+      "result": "PASS"
+    },
+    {
+      "item": "Ctrl+K search modal open/filter/ArrowDown/Enter add",
+      "result": "PASS"
+    },
+    {
+      "item": "node Delete key removal via applyNodesChanges",
+      "result": "PASS"
+    },
+    {
+      "item": "inspector Properties: registry widgets (selects per LR_PRESETS/PRESETS, number inputs) + Advanced raw-JSON honesty label",
+      "result": "PASS"
+    }
+  ],
+  "drill_fixes": [
+    "2a0efa5 fix(flow): keep measured on xy node projection — RF stayed visibility:hidden without it (nodes invisible + unhittable)",
+    "130171e fix(flow): editable node label in Properties (dataset label is the MVP dataset name)",
+    "853e08e fix(flow): Escape closes infer-handoff dialog"
+  ],
+  "unit_tests_after_fixes": {
+    "vitest_files": 2,
+    "tests": 85,
+    "passed": 85
+  }
+}

@@ -1,0 +1,30 @@
+# Scratch (Milestone D): PARTIAL target_rows must be refused (mix mode
+# requires it on EVERY candidate) - guards against accidental full-dataset
+# fetches. No network touched: local candidates only.
+name: mix_refusal_test
+
+tokenizer:
+  name: codellama/CodeLlama-7b-hf
+  vocab_size: 32768
+
+model:
+  layers: 4
+  hidden: 256
+  heads: 4
+  kv_heads: 2
+  ffn: 1024
+  ctx: 256
+  dropout: 0.0
+  tie_embeddings: true
+
+data:
+  dataset_candidates:
+    - path: data/legacy_check/mix_local_rows.jsonl
+      target_rows: 3
+    - path: data/legacy_check/mix_local_rows.jsonl
+  rows: 5
+  val_fraction: 0.02
+  dedupe: true
+  min_chars: 60
+  raw_dir: data/legacy_check/mix_refusal/raw
+  tokens_dir: data/legacy_check/mix_refusal/tokens

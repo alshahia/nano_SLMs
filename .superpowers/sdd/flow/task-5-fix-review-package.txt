@@ -1,0 +1,362 @@
+=== COMMITS ===
+4533c2a flow: config_gen review fixes (reserved names, rows cap, error hygiene)
+=== STAT ===
+ flow/server/config_gen.py            |  66 +++++++++++++++--
+ flow/tests/server/test_config_gen.py | 140 ++++++++++++++++++++++++++++++++++-
+ 2 files changed, 198 insertions(+), 8 deletions(-)
+=== DIFF ===
+diff --git a/flow/server/config_gen.py b/flow/server/config_gen.py
+index f323dda..8cc1a2d 100644
+--- a/flow/server/config_gen.py
++++ b/flow/server/config_gen.py
+@@ -15,20 +15,21 @@ Public API:
+     human-readable reasons on any violation (nothing is ever written).
+ 
+ - generate(g, out_dir=None) -> str
+     Calls build_config, then writes YAML (deterministic byte structure for
+     future diffing) to <out_dir>/flow_<slug>.yaml and fsyncs. out_dir
+     defaults to the repo's configs/; tests inject tempfile dirs and never
+     write there. Returns the full written path.
+ """
+ 
+ import os
++import re
+ from pathlib import Path
+ 
+ import yaml
+ 
+ from flow.server import graph_schema, nodes
+ from flow.server.flows import _SLUG_RE
+ 
+ REPO_ROOT = Path(__file__).resolve().parents[2]
+ DEFAULT_CONFIGS_DIR = REPO_ROOT / "configs"
+ 
+@@ -40,20 +41,41 @@ PRESETS = {
+     "Medium (~101M, pilot)": dict(layers=12, hidden=768, heads=12, kv_heads=4,
+                                   ffn=2048, accum=32, ctx_choices=[512]),
+     "Large (~226M, target)": dict(layers=16, hidden=1024, heads=16, kv_heads=4,
+                                   ffn=4096, accum=16, ctx_choices=[512, 1024]),
+ }
+ LR_PRESETS = {"Pretrain 4e-4": 4.0e-4, "Conservative 2e-4": 2.0e-4,
+               "Fine-tune 3e-5": 3.0e-5}
+ TOKENIZER_NAME = "codellama/CodeLlama-7b-hf"
+ SHARD_TOKENS = 8000000
+ 
++# Same guard as webui/app.py build_config: a run named like a shipped config
++# would collide with it and with the auto-resume state (runs/<name>,
++# data/<name>).
++RESERVED_RUN_NAMES = frozenset(
++    {"smoke", "pilot", "target", "sft_t1", "custom_example"})
++
++# Same U7 hard cap as webui/app.py MAX_ROWS: bounds net time + disk.
++MAX_ROWS = 500_000
++
++# Basic dataset-name shape: segments of letters/digits/. _ - with at most one
++# '/' (org/name) or a single name (see _valid_dataset_name).
++_HF_NAME_RE = re.compile(r"[A-Za-z0-9._-]+")
++
++
++def _valid_dataset_name(name):
++    """HF-path-shape check: one segment or org/name, no empty segments."""
++    parts = name.split("/")
++    if len(parts) > 2:
++        return False
++    return all(part and _HF_NAME_RE.fullmatch(part) for part in parts)
++
+ # The only execution chain the MVP maps to a config. Branching is rejected
+ # cleanly (never silently ignored) until the future F5 execution task.
+ CHAIN = ["dataset", "prepare", "tokenize", "train"]
+ 
+ _LINEAR_MSG = (
+     "flow/%s: linear chains only - the MVP maps exactly one linear chain "
+     "(linear chain mapping: dataset->prepare->tokenize->train) to a config; "
+     "branching graphs run via advanced YAML only in this MVP (future F5 "
+     "execution)"
+ )
+@@ -185,47 +207,81 @@ def build_config(g) -> dict:
+     for node in g["graph"]["nodes"]:
+         if not isinstance(node, dict):
+             continue  # graph_schema already reported the shape error
+         for reason in nodes.validate_props(node.get("kind"),
+                                            node.get("props")):
+             errors.append("graph.nodes[%s]: %s" % (node.get("id", "?"),
+                                                    reason))
+     if errors:
+         raise ValueError("\n".join(errors))
+ 
+-    # 3. Run-name slug - flows.py slug rule reused, not reimplemented.
+-    slug = _slug((g.get("meta") or {}).get("name"))
++    # 3. Run-name slug - flows.py slug rule reused, not reimplemented; the
++    #    webui reserved-name guard rejects shipped-config collisions. The
++    #    raw-name check runs first: webui's own slug rule accepts '_' (so
++    #    'custom_example' is a legit webui name), while the flow slug rule
++    #    is stricter - reservation must win over the slug message.
++    raw_name = (g.get("meta") or {}).get("name")
++    if (isinstance(raw_name, str)
++            and raw_name.strip().lower() in RESERVED_RUN_NAMES):
++        slug = raw_name.strip().lower()
++    else:
++        slug = _slug(raw_name)
++    if slug in RESERVED_RUN_NAMES:
++        raise ValueError(
++            "flow name: '%s' is a reserved shipped-config name - it would "
++            "collide with the shipped configs and auto-resume state "
++            "(runs/%s, data/%s)" % (slug, slug, slug))
+ 
+     # 4. Parse the chain nodes into knobs. Misses produce named errors.
+     chain = _build_chain(g)
+     train = chain["train"]
+     tprops = train.get("props", {})
+     if "steps" not in tprops:
+         raise ValueError("steps: missing - train node '%s' requires the "
+                          "steps knob" % (train.get("id"),))
+ 
+     ds_node = chain["dataset"]
+     label = ds_node.get("label")
+     if not isinstance(label, str) or not label.strip():
+         raise ValueError(
+             "dataset name: node '%s' has no label - the dataset node's "
+             "label is the HF dataset name in this MVP" % ds_node.get("id"))
+     ds_name = label.strip()
+-    pp = chain["prepare"]["props"]
+-    tp = chain["tokenize"]["props"]
++    if not _valid_dataset_name(ds_name):
++        # Beyond non-empty: a basic HF path shape (single name or org/name;
++        # letters, digits, '.', '_', '-').
++        raise ValueError(
++            "dataset name: node '%s' label %r is not a valid dataset name - "
++            "expected a single name or org/name using only letters, digits, "
++            "'.', '_' and '-' with at most one '/'"
++            % (ds_node.get("id"), ds_name))
++    # Props containers fail as ValueError, never KeyError (error hygiene).
++    pp = chain["prepare"].get("props")
++    tp = chain["tokenize"].get("props")
+     for kind, props in (("prepare", pp), ("tokenize", tp)):
++        if not isinstance(props, dict):
++            raise ValueError(
++                "props: missing - %s node '%s' has no props object and the "
++                "config mapping requires every %s knob"
++                % (kind, chain[kind].get("id"), kind))
+         for key in sorted(nodes.PROPS[kind]):
+             if key not in props:
+                 raise ValueError(
+                     "%s: missing - %s node '%s' requires the %s knob"
+                     % (key, kind, chain[kind].get("id"), key))
+ 
++    rows = pp["rows"]
++    if int(rows) > MAX_ROWS:
++        raise ValueError(
++            "rows: %d is above the hard cap %d (net time + disk)"
++            % (int(rows), MAX_ROWS))
++
+     preset_name = tprops["preset"]
+     if not isinstance(preset_name, str):
+         raise ValueError("preset: expected a string preset name, got %r"
+                          % (preset_name,))
+     if preset_name not in PRESETS:
+         raise ValueError("preset: unknown preset %r" % (preset_name,))
+     p = PRESETS[preset_name]
+     lr_name = tprops["lr_preset"]
+     if not isinstance(lr_name, str):
+         raise ValueError("lr_preset: expected a string LR preset name, "
+@@ -244,21 +300,21 @@ def build_config(g) -> dict:
+     #    minus the interactive-only data_mode knob (matches shipped
+     #    configs/smoke.yaml key structure exactly).
+     cfg = {
+         "name": slug,
+         "tokenizer": {"name": TOKENIZER_NAME, "vocab_size": int(tp["vocab"])},
+         "model": {"layers": p["layers"], "hidden": p["hidden"],
+                   "heads": p["heads"], "kv_heads": p["kv_heads"],
+                   "ffn": p["ffn"], "ctx": ctx, "dropout": 0.0,
+                   "tie_embeddings": True},
+         "data": {"dataset_candidates": [{"name": ds_name}],
+-                 "rows": int(pp["rows"]),
++                 "rows": int(rows),
+                  "val_fraction": float(pp["val_fraction"]),
+                  "dedupe": True, "min_chars": int(pp["min_chars"]),
+                  "shard_tokens": SHARD_TOKENS,
+                  "raw_dir": "data/%s/raw" % slug,
+                  "tokens_dir": "data/%s/tokens" % slug},
+         "train": {"output_dir": "runs/%s" % slug,
+                   "final_dir": "runs/%s/final" % slug,
+                   "max_steps": steps, "batch": 1, "eval_batch": 4,
+                   "accum": p["accum"], "lr": lr, "scheduler": "cosine",
+                   "warmup_steps": max(10, steps // 20),
+diff --git a/flow/tests/server/test_config_gen.py b/flow/tests/server/test_config_gen.py
+index e290f0a..4bd05cd 100644
+--- a/flow/tests/server/test_config_gen.py
++++ b/flow/tests/server/test_config_gen.py
+@@ -113,23 +113,39 @@ class ConfigGenTests(unittest.TestCase):
+         self.assertEqual(data["tokens_dir"], "data/my-run/tokens")
+         self.assertEqual(train["output_dir"], "runs/my-run")
+ 
+     def test_writes_yaml_equivalent_roundtrip(self):
+         path = config_gen.generate(linear_chain(), out_dir=self.out_dir)
+         with open(path, "r", encoding="utf-8") as f:
+             loaded = yaml.safe_load(f)
+         self.assertEqual(loaded, config_gen.build_config(linear_chain()))
+ 
+     def test_generated_file_never_overwrites_shipped_configs(self):
+-        # default out_dir is the repo configs/ dir; tests keep it injected.
+-        self.assertIn("configs",
+-                      str(config_gen.DEFAULT_CONFIGS_DIR).split(os.sep))
++        # Strong form: the test-written file is resolved BELOW the injected
++        # tempfile dir and NOT below the repo's configs/ directory.
++        path = config_gen.generate(linear_chain(), out_dir=self.out_dir)
++        resolved = Path(path).resolve()
++        repo_configs = config_gen.DEFAULT_CONFIGS_DIR.resolve()
++        self.assertTrue(resolved.is_relative_to(Path(self.tmp.name).resolve()))
++        self.assertFalse(resolved.is_relative_to(repo_configs))
++        self.assertFalse(resolved == repo_configs)
++        # A real attempt at a shipped run name is blocked by the run-name
++        # reservation (build_config ValueError) - and the repo configs/ dir
++        # stays untouched because generate() writes only after validation.
++        shipped = repo_configs / "flow_smoke.yaml"
++        self.assertFalse(shipped.exists())  # repo-readonly evidence base
++        g = linear_chain()
++        g["meta"]["name"] = "smoke"
++        with self.assertRaises(ValueError) as cm:
++            config_gen.generate(g, out_dir=config_gen.DEFAULT_CONFIGS_DIR)
++        self.assertIn("reserved shipped-config name", str(cm.exception))
++        self.assertFalse(shipped.exists())  # still untouched after the try
+ 
+     # --- validation reuse ------------------------------------------------
+     def test_invalid_graph_rejected_with_graph_schema_errors(self):
+         g = linear_chain()
+         g["schema"] = "flow/9.9"
+         with self.assertRaises(ValueError) as cm:
+             config_gen.generate(g, out_dir=self.out_dir)
+         self.assertIn("schema", str(cm.exception))
+ 
+     def test_unknown_props_rejected(self):
+@@ -237,12 +253,130 @@ class ConfigGenTests(unittest.TestCase):
+         self.assertEqual(os.listdir(self.out_dir), [])
+ 
+     def test_preset_and_lr_preset_are_strings_in_props(self):
+         g = linear_chain()
+         g["graph"]["nodes"][3]["props"]["preset"] = 4  # number, not string
+         with self.assertRaises(ValueError) as cm:
+             config_gen.build_config(g)
+         self.assertIn("preset", str(cm.exception))
+ 
+ 
++class ReviewFixTests(unittest.TestCase):
++    """Post-review fixes: reserved run names, rows cap, ValueError-only
++    failure paths, generated-path safety, webui parity, dataset-name rule.
++    """
++
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.out_dir = self.tmp.name
++        self.addCleanup(self.tmp.cleanup)
++
++    def _named(self, name):
++        g = linear_chain()
++        g["meta"]["name"] = name
++        return g
++
++    # --- IMPORTANT-1: reserved run names ---------------------------------
++    def test_reserved_run_names_rejected(self):
++        for name in sorted(config_gen.RESERVED_RUN_NAMES):
++            self.assertEqual(name, name.lower())  # slugs are lowercase
++            with self.assertRaises(ValueError) as cm:
++                config_gen.generate(self._named(name), out_dir=self.out_dir)
++            msg = str(cm.exception)
++            self.assertIn("reserved shipped-config name", msg)
++            self.assertIn("runs/%s" % name, msg)   # collision explanation
++            self.assertIn("data/%s" % name, msg)
++            self.assertEqual(os.listdir(self.out_dir), [])  # nothing written
++
++    def test_benign_run_name_still_allowed(self):
++        path = config_gen.generate(self._named("fresh-run-42"),
++                                   out_dir=self.out_dir)
++        self.assertTrue(os.path.isfile(path))
++
++    # --- IMPORTANT-2: rows hard cap --------------------------------------
++    def test_rows_cap_boundary(self):
++        g = linear_chain()
++        g["graph"]["nodes"][1]["props"]["rows"] = config_gen.MAX_ROWS
++        cfg = config_gen.build_config(g)
++        self.assertEqual(cfg["data"]["rows"], config_gen.MAX_ROWS)
++
++    def test_rows_above_cap_rejected(self):
++        g = linear_chain()
++        g["graph"]["nodes"][1]["props"]["rows"] = config_gen.MAX_ROWS + 1
++        with self.assertRaises(ValueError) as cm:
++            config_gen.build_config(g)
++        self.assertIn("hard cap %d" % config_gen.MAX_ROWS, str(cm.exception))
++        self.assertIn("(net time + disk)", str(cm.exception))
++
++    def test_rows_cap_matches_webui_constant(self):
++        # Source-parsed (see parity test for why webui.app is not imported).
++        self.assertEqual(config_gen.MAX_ROWS,
++                         ReviewFixTests.webui_assign("MAX_ROWS"))
++
++    # --- MINOR-3: node/props failures raise ValueError, never KeyError ----
++    def test_missing_props_dict_raises_value_error_not_keyerror(self):
++        g = linear_chain()
++        g["graph"]["nodes"][1].pop("props")   # prepare node, no props key
++        with self.assertRaises(ValueError) as cm:
++            config_gen.build_config(g)
++        self.assertIn("prepare", str(cm.exception))
++        self.assertIn("props", str(cm.exception))
++        self.assertNotIn("KeyError", str(cm.exception))
++
++    # --- MINOR-5: PRESETS / LR_PRESETS parity with webui ------------------
++    @staticmethod
++    def webui_assign(name):
++        """Parse webui/app.py with ast and evaluate the module-level assign
++        to `name`. webui.app is deliberately NOT imported: importing it
++        builds the full Gradio demo (heavy deps + module side effects), so
++        the robust drift check is source parsing + evaluation of the single
++        assignment expression (no exec of statements, no gradio import).
++        """
++        import ast
++        src = (REPO / "webui" / "app.py").read_text(encoding="utf-8")
++        tree = ast.parse(src, filename="webui/app.py")
++        for stmt in tree.body:
++            if isinstance(stmt, ast.Assign) and any(
++                    isinstance(t, ast.Name) and t.id == name
++                    for t in stmt.targets):
++                code = compile(ast.Expression(stmt.value),
++                               "<webui-%s>" % name, "eval")
++                return eval(code, {"__builtins__": {}}, {"dict": dict})
++        raise AssertionError("webui/app.py has no top-level %r" % name)
++
++    def test_presets_parity_with_webui_dicts(self):
++        self.assertEqual(config_gen.PRESETS, self.webui_assign("PRESETS"))
++        self.assertEqual(config_gen.LR_PRESETS,
++                         self.webui_assign("LR_PRESETS"))
++
++    def test_reserved_names_parity_with_webui_build_config(self):
++        # The webui build_config guard tuple is the source of truth.
++        self.assertEqual(
++            sorted(config_gen.RESERVED_RUN_NAMES),
++            ["custom_example", "pilot", "sft_t1", "smoke", "target"])
++        src = (REPO / "webui" / "app.py").read_text(encoding="utf-8")
++        self.assertIn('("smoke", "pilot", "target", "sft_t1", "custom_example")',
++                      src)  # build_config guard tuple verbatim
++
++    # --- MINOR-6: dataset label as HF-name shape -------------------------
++    def test_valid_dataset_names_accepted(self):
++        for label in ("tinystories", "TheGamingMahi/TinyCode",
++                      "my_data.v2/name-1", "org/name", "0123"):
++            g = linear_chain()
++            g["graph"]["nodes"][0]["label"] = label
++            cfg = config_gen.build_config(g)
++            self.assertEqual(cfg["data"]["dataset_candidates"],
++                             [{"name": label}])
++
++    def test_invalid_dataset_names_rejected_naming_the_node(self):
++        for label in ("", "   ", "has space", "row$1", "org//name",
++                      "org/", "/name", "org/name/extra", "r\u00e9sum\u00e9"):
++            g = linear_chain()
++            g["graph"]["nodes"][0]["label"] = label
++            with self.assertRaises(ValueError) as cm:
++                config_gen.build_config(g)
++            self.assertIn("dataset name", str(cm.exception))
++            self.assertIn("n1", str(cm.exception))  # node id named
++
++
+ if __name__ == "__main__":
+     unittest.main()

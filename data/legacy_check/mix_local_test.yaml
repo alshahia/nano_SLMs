@@ -1,0 +1,35 @@
+# Scratch (Milestone D): zero-network MIX MODE functional test.
+# Two local candidates, SAME file -> the shared SHA1 set must make source 2
+# drop A/B/C as cross-source dups and keep only D.
+# Expected: total kept 4 (A,B,C,D); seen 11; dups 5 (1 within s1 + 4 in s2);
+# too_short 1; per-source val split n_val_s = max(1, round(3*0.02)) = 1.
+# rows: 99 is deliberately present to prove it is IGNORED in mix mode.
+name: mix_local_test
+
+tokenizer:
+  name: codellama/CodeLlama-7b-hf
+  vocab_size: 32768
+
+model:
+  layers: 4
+  hidden: 256
+  heads: 4
+  kv_heads: 2
+  ffn: 1024
+  ctx: 256
+  dropout: 0.0
+  tie_embeddings: true
+
+data:
+  dataset_candidates:
+    - path: data/legacy_check/mix_local_rows.jsonl
+      target_rows: 3
+    - path: data/legacy_check/mix_local_rows.jsonl
+      target_rows: 3
+  rows: 99
+  val_fraction: 0.02
+  dedupe: true
+  min_chars: 60
+  shard_tokens: 8000000
+  raw_dir: data/legacy_check/mix_local/raw
+  tokens_dir: data/legacy_check/mix_local/tokens

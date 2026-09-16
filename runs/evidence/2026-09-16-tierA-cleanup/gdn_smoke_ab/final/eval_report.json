@@ -1,0 +1,10 @@
+{
+  "ckpt": "E:\\python_projects\\nano_SLMs\\runs\\gdn_smoke_ab\\final",
+  "val_loss": 4.579499123588441,
+  "perplexity": 97.46556377723432,
+  "samples": {
+    "def fibonacci(n):": "def fibonacci(n):\n    if is____________________________________________________________",
+    "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):": "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):\n    if if is___________________________________________________________",
+    "class Stack:": "class Stack:\n\n    if (1, 1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1"
+  }
+}

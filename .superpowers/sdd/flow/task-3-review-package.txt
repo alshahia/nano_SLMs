@@ -1,0 +1,598 @@
+=== COMMITS ===
+d9faf5c flow: node registry
+=== STAT ===
+ flow/server/graph_schema.py            |  52 +++++++-----
+ flow/server/nodes.py                   | 134 ++++++++++++++++++++++++++++++
+ flow/tests/server/test_graph_schema.py |  36 ++++----
+ flow/tests/server/test_registry.py     | 145 +++++++++++++++++++++++++++++++++
+ 4 files changed, 331 insertions(+), 36 deletions(-)
+=== DIFF ===
+diff --git a/flow/server/graph_schema.py b/flow/server/graph_schema.py
+index 60f6d08..3492b43 100644
+--- a/flow/server/graph_schema.py
++++ b/flow/server/graph_schema.py
+@@ -1,19 +1,20 @@
+ """Pure validation of .flow.json graph documents (flow/ MVP Task 2).
+ 
+ `validate(g) -> list[str]` performs NO I/O and returns [] for a valid
+ document, otherwise one human-readable reason string per violation.
+ 
+-Task 3 introduces the real node-kind registry (nodes.py). Until then the
+-valid kind set lives here as a placeholder and a lazy-import hook is left
+-in place: when the registry exists it becomes the source of truth for both
+-kinds and per-kind ports. See _known_kinds() and _known_ports().
++The node-kind registry (flow.server.nodes, Task 3) is the source of truth
++for kinds AND per-kind ports, reached through the lazy-import hooks
++_known_kinds() and _known_ports(): when the registry answers, toPort and
++fromPort are both checked against the endpoint kinds' ports and the
++registry-free "out*"/"in*" prefix heuristic is skipped.
+ """
+ 
+ # Placeholder valid kinds. Task 3's registry (flow/server/nodes.py) is the
+ # intended source of truth; the lazy import in _known_kinds() will replace
+ # this set once the registry exists (kept here to avoid an import cycle).
+ VALID_KINDS_PLACEHOLDER = frozenset(
+     {"dataset", "prepare", "tokenize", "train", "eval", "infer"}
+ )
+ 
+ SCHEMA_STRING = "flow/0.1"
+@@ -109,24 +110,27 @@ def _validate(g) -> "list[str]":
+         errors.append("graph: missing or not an object")
+         return errors
+ 
+     nodes = graph.get("nodes")
+     if not isinstance(nodes, list):
+         errors.append("graph.nodes: missing or not a list")
+         nodes = []
+     elif len(nodes) == 0:
+         errors.append("graph.nodes: graph is empty — at least one node is required")
+ 
+-    edges = graph.get("edges")
+-    if not isinstance(edges, list):
++    # A present-but-mistyped edges key is an error; a graph whose "edges"
++    # key is entirely missing is accepted and treated as an empty edge list.
++    if "edges" in graph and not isinstance(graph["edges"], list):
+         errors.append("graph.edges: missing or not a list")
+         edges = []
++    else:
++        edges = graph.get("edges") if isinstance(graph.get("edges"), list) else []
+ 
+     # --- nodes -----------------------------------------------------------
+     known_kinds = _known_kinds() or VALID_KINDS_PLACEHOLDER
+ 
+     ids = []  # list of (id, node) preserving order
+     seen_node_ids = set()
+     node_by_id = {}
+     for node in nodes:
+         if not isinstance(node, dict):
+             errors.append("graph.nodes: each node must be an object")
+@@ -250,36 +254,46 @@ def _validate(g) -> "list[str]":
+                 "got %r" % (label, from_port)
+             )
+         if to_port is None:
+             errors.append(f"graph.edges[{label}].toPort: missing port name")
+         elif _bad_port_name(to_port):
+             errors.append(
+                 "graph.edges[%s].toPort: no-placeholder port names required, "
+                 "got %r" % (label, to_port)
+             )
+ 
+-        if frm_ok and to_ok:
+-            known_ports = _known_ports(node_by_id[to].get("kind"))
+-            if known_ports is not None:
+-                inputs, _outputs = known_ports
+-                if isinstance(to_port, str) and to_port and to_port not in inputs:
+-                    errors.append(
+-                        "graph.edges[%s].toPort: %r is not an input port of kind %r"
+-                        % (label, to_port, node_by_id[to].get("kind"))
+-                    )
++        src_ports = _known_ports(node_by_id[frm].get("kind")) if frm_ok else None
++        dst_ports = _known_ports(node_by_id[to].get("kind")) if to_ok else None
++
++        if dst_ports is not None:
++            inputs, _outputs = dst_ports
++            if isinstance(to_port, str) and to_port and to_port not in inputs:
++                errors.append(
++                    "graph.edges[%s].toPort: %r is not an input port of kind %r"
++                    % (label, to_port, node_by_id[to].get("kind"))
++                )
++
++        if src_ports is not None:
++            _inputs, src_out = src_ports
++            if isinstance(from_port, str) and from_port and from_port not in src_out:
++                errors.append(
++                    "graph.edges[%s].fromPort: %r is not an output port of kind %r"
++                    % (label, from_port, node_by_id[frm].get("kind"))
++                )
+ 
+-        if frm_ok and to_ok:
+-            # Fallback (registry-unknown) port semantics until Task 3's
+-            # registry supplies per-kind ports: an edge leaves a
++        if src_ports is None and dst_ports is None:
++            # Fallback (registry-unknown) port semantics until the registry
++            # can answer for BOTH endpoint kinds: an edge leaves a
+             # source-side output port ("out..."-prefixed) and lands on an
+             # input-side port ("in..."-prefixed). Any other pairing is a
+-            # mismatched connection.
++            # mismatched connection. When the registry answers, it is the
++            # sole source of truth and this heuristic is skipped.
+             if isinstance(from_port, str) and not from_port.strip().lower().startswith("out"):
+                 errors.append(
+                     "graph.edges[%s]: mismatched port names — fromPort %r "
+                     "must be an output-side port of the source node"
+                     % (label, from_port)
+                 )
+             elif isinstance(to_port, str) and not to_port.strip().lower().startswith("in"):
+                 errors.append(
+                     "graph.edges[%s]: mismatched port names — toPort %r "
+                     "must be an input-side port of the target node"
+diff --git a/flow/server/nodes.py b/flow/server/nodes.py
+new file mode 100644
+index 0000000..fddd28a
+--- /dev/null
++++ b/flow/server/nodes.py
+@@ -0,0 +1,134 @@
++"""Node-kind registry for the flow/ MVP (Task 3).
++
++Single source of truth for node kinds, per-kind ports, editable props and
++gates. flow.server.graph_schema lazy-imports this module and uses
++VALID_KINDS / PORTS directly; the rich per-kind view lives in NODES.
++
++Pure data + pure validation - no I/O.
++"""
++
++import math
++
++VALID_KINDS = frozenset(
++    {"dataset", "prepare", "tokenize", "train", "eval", "infer"}
++)
++
++
++def _port(name, direction, ptype, burst_format=None):
++    return {
++        "name": name,
++        "direction": direction,
++        "type": ptype,
++        "burst-format": burst_format,
++    }
++
++
++# Rich per-kind port specs (the 6-node MVP table). Names agree with PORTS.
++PORT_SPECS = {
++    "dataset": [
++        _port("cleaned", "out", "raw-dir: dataset name/rows", "row-batch"),
++    ],
++    "prepare": [
++        _port("raw-dir", "in", "raw-dir", "file-list"),
++        _port("cleaned-dir", "out", "cleaned-dir", "file-list"),
++    ],
++    "tokenize": [
++        _port("cleaned-dir", "in", "cleaned-dir", "file-list"),
++        _port("shard-dir", "out", "shard-dir", "file-list"),
++    ],
++    "train": [
++        _port("shard-dir", "in", "shard-dir", "file-list"),
++        _port("ckpt-dir", "out", "ckpt-dir", "checkpoint"),
++    ],
++    "eval": [
++        _port("ckpt-dir", "in", "ckpt-dir", "checkpoint"),
++        _port("report", "out", "report", "single-file"),
++    ],
++    "infer": [
++        _port("ckpt-dir", "in", "ckpt-dir", "checkpoint"),
++    ],
++}
++
++# The shape graph_schema expects: kind -> {"in": [names], "out": [names]}.
++PORTS = {
++    kind: {
++        "in": [p["name"] for p in specs if p["direction"] == "in"],
++        "out": [p["name"] for p in specs if p["direction"] == "out"],
++    }
++    for kind, specs in PORT_SPECS.items()
++}
++
++# Allowed prop keys per kind (dataset/eval/infer take no editable props).
++PROPS = {
++    "dataset": frozenset(),
++    "prepare": frozenset({"rows", "val_fraction", "min_chars"}),
++    "tokenize": frozenset({"seq_len", "vocab"}),
++    "train": frozenset({"preset", "steps", "lr_preset"}),
++    "eval": frozenset(),
++    "infer": frozenset(),
++}
++
++# Props that, when present, must be finite real numbers (bool excluded).
++NUMERIC_PROPS = {
++    "dataset": frozenset(),
++    "prepare": frozenset({"rows", "val_fraction", "min_chars"}),
++    "tokenize": frozenset({"seq_len", "vocab"}),
++    "train": frozenset({"steps"}),
++    "eval": frozenset(),
++    "infer": frozenset(),
++}
++
++# Execution gate per kind; None means no gate (dataset row wins: gate none).
++GATES = {
++    "dataset": None,
++    "prepare": None,
++    "tokenize": None,
++    "train": "gpu",
++    "eval": "gpu",
++    "infer": "gpu/cpu",
++}
++
++NODES = {
++    kind: {
++        "ports": specs,
++        "props": sorted(PROPS[kind]),
++        "numeric_props": sorted(NUMERIC_PROPS[kind]),
++        "gate": GATES[kind],
++    }
++    for kind, specs in PORT_SPECS.items()
++}
++
++
++def _finite_number(value) -> "bool":
++    """True for finite real numbers; bools and NaN/inf excluded."""
++    if isinstance(value, bool) or not isinstance(value, (int, float)):
++        return False
++    return bool(math.isfinite(value))
++
++
++def validate_props(kind, props):
++    """Validate props for kind: key-existence and finite numbers only.
++
++    Returns [] when acceptable, otherwise one human-readable reason string
++    per violation. props must be a dict whose keys are all declared for the
++    kind; numeric props present in props must be finite real numbers
++    (bools and NaN/inf rejected).
++    """
++    if kind not in VALID_KINDS:
++        return ["kind: unknown kind %r" % (kind,)]
++    if not isinstance(props, dict):
++        return ["props: expected an object for kind %r" % (kind,)]
++    allowed = PROPS[kind]
++    numeric = NUMERIC_PROPS[kind]
++    errors = []
++    for key in sorted(props):
++        if key not in allowed:
++            errors.append(
++                "props: unknown prop %r for kind %r" % (key, kind)
++            )
++        elif key in numeric and not _finite_number(props[key]):
++            errors.append(
++                "props: %r of kind %r must be a finite number, got %r"
++                % (key, kind, props[key])
++            )
++    return errors
+diff --git a/flow/tests/server/test_graph_schema.py b/flow/tests/server/test_graph_schema.py
+index 380867f..1999dd9 100644
+--- a/flow/tests/server/test_graph_schema.py
++++ b/flow/tests/server/test_graph_schema.py
+@@ -13,21 +13,21 @@ SAFE = "flow/0.1"
+ 
+ def make_node(id="n1", kind="dataset", position=(0, 0), props=None):
+     return {
+         "id": id,
+         "kind": kind,
+         "props": props if props is not None else {},
+         "position": {"x": position[0], "y": position[1]},
+     }
+ 
+ 
+-def make_edge(id="e1", frm="n1", frmPort="out", to="n2", toPort="in"):
++def make_edge(id="e1", frm="n1", frmPort="cleaned", to="n2", toPort="shard-dir"):
+     return {"id": id, "from": frm, "fromPort": frmPort, "to": to, "toPort": toPort}
+ 
+ 
+ def valid_doc(nodes=None, edges=None, schema=SAFE, meta=None):
+     if meta is None:
+         meta = {"name": "test-graph"}
+     return {
+         "schema": schema,
+         "meta": meta,
+         "graph": {
+@@ -36,21 +36,21 @@ def valid_doc(nodes=None, edges=None, schema=SAFE, meta=None):
+                 make_node("n2", "train"),
+             ] if nodes is None else nodes,
+             "edges": [] if edges is None else edges,
+         },
+     }
+ 
+ 
+ class TestValidDocuments(unittest.TestCase):
+     def test_completely_valid_document_returns_empty_list(self):
+         doc = valid_doc(
+-            edges=[make_edge("e1", "n1", "out", "n2", "in")],
++            edges=[make_edge("e1", "n1", "cleaned", "n2", "shard-dir")],
+         )
+         self.assertEqual(validate(doc), [])
+ 
+     def test_nodes_without_edges_are_valid(self):
+         self.assertEqual(validate(valid_doc()), [])
+ 
+ 
+ class TestSchemaField(unittest.TestCase):
+     def test_missing_schema_is_rejected(self):
+         doc = valid_doc()
+@@ -168,28 +168,28 @@ class TestNodes(unittest.TestCase):
+     def test_each_known_kind_is_accepted(self):
+         for kind in ("dataset", "prepare", "tokenize", "train", "eval", "infer"):
+             doc = valid_doc(nodes=[make_node(kind, kind=kind)])
+             self.assertEqual(
+                 validate(doc), [], "kind %r should be valid" % kind
+             )
+ 
+ 
+ class TestEdges(unittest.TestCase):
+     def test_edge_to_unknown_node_id_is_rejected(self):
+-        doc = valid_doc(edges=[make_edge("e1", "n1", "out", "ghost", "in")])
++        doc = valid_doc(edges=[make_edge("e1", "n1", "cleaned", "ghost", "cleaned-dir")])
+         errors = validate(doc)
+         joined = " ".join(errors)
+         self.assertIn("ghost", joined)
+         self.assertIn("e1", joined)
+ 
+     def test_edge_from_unknown_node_id_is_rejected(self):
+-        doc = valid_doc(edges=[make_edge("e1", "ghost", "out", "n2", "in")])
++        doc = valid_doc(edges=[make_edge("e1", "ghost", "cleaned", "n2", "cleaned-dir")])
+         errors = validate(doc)
+         joined = " ".join(errors)
+         self.assertIn("ghost", joined)
+ 
+     def test_duplicate_edge_ids_are_rejected(self):
+         doc = valid_doc(
+             edges=[make_edge("e1"), make_edge("e1")],
+         )
+         errors = validate(doc)
+         joined = " ".join(errors)
+@@ -215,82 +215,84 @@ class TestEdges(unittest.TestCase):
+         edge = make_edge()
+         del edge["toPort"]
+         errors = validate(valid_doc(edges=[edge]))
+         joined = " ".join(errors)
+         self.assertIn("toPort", joined)
+ 
+     def test_empty_or_placeholder_port_names_are_rejected(self):
+         for bad in ("", "<from_port>", "TODO", "?"):
+             with self.subTest(bad=bad):
+                 errors = validate(
+-                    valid_doc(edges=[make_edge("e1", "n1", bad, "n2", "in")])
++                    valid_doc(edges=[make_edge("e1", "n1", bad, "n2", "shard-dir")])
+                 )
+                 self.assertTrue(errors, errors)
+ 
+     def test_mismatched_port_names_are_rejected(self):
+         # fromPort must be a source-side output port, toPort an input-side port
+         errors = validate(
+             valid_doc(edges=[make_edge("e1", "n1", "in", "n2", "in")])
+         )
+         joined = " ".join(errors)
+         self.assertIn("port", joined.lower())
+         self.assertIn("out", joined.lower())
+ 
+ 
+     def test_self_edge_is_rejected(self):
+-        doc = valid_doc(edges=[make_edge("e1", "n1", "out", "n1", "in")])
++        doc = valid_doc(edges=[make_edge("e1", "n1", "cleaned", "n1", "cleaned-dir")])
+         errors = validate(doc)
+         joined = " ".join(errors)
+         self.assertIn("itself", joined.lower())
+ 
+ 
+ class TestCycles(unittest.TestCase):
+     def _nodes_for(self):
+         return [
+             make_node("a", kind="dataset"),
+             make_node("b", kind="tokenize"),
+             make_node("c", kind="train"),
+         ]
+ 
+     def test_simple_cycle_is_rejected(self):
+-        edges = [make_edge("e1", "a", "out", "b", "in"),
+-                 make_edge("e2", "b", "out", "c", "in"),
+-                 make_edge("e3", "c", "out", "a", "in")]
++        edges = [make_edge("e1", "a", "cleaned", "b", "cleaned-dir"),
++                 make_edge("e2", "b", "shard-dir", "c", "shard-dir"),
++                 make_edge("e3", "c", "ckpt-dir", "a", "cleaned-dir")]
+         doc = valid_doc(nodes=self._nodes_for(), edges=edges)
+         errors = validate(doc)
+         joined = " ".join(errors)
+         self.assertIn("cycle", joined.lower())
+ 
+     def test_two_node_cycle_is_rejected(self):
+-        edges = [make_edge("e1", "a", "out", "b", "in"),
+-                 make_edge("e2", "b", "out", "a", "in")]
++        edges = [make_edge("e1", "a", "cleaned", "b", "cleaned-dir"),
++                 make_edge("e2", "b", "shard-dir", "a", "cleaned-dir")]
+         doc = valid_doc(nodes=self._nodes_for(), edges=edges)
+         errors = validate(doc)
+         joined = " ".join(errors)
+         self.assertIn("cycle", joined.lower())
+ 
+     def test_acyclic_chain_is_accepted(self):
+-        edges = [make_edge("e1", "a", "out", "b", "in"),
+-                 make_edge("e2", "b", "out", "c", "in")]
++        edges = [make_edge("e1", "a", "cleaned", "b", "cleaned-dir"),
++                 make_edge("e2", "b", "shard-dir", "c", "shard-dir")]
+         doc = valid_doc(nodes=self._nodes_for(), edges=edges)
+         self.assertEqual(validate(doc), [])
+ 
+     def test_diamond_is_accepted(self):
+-        edges = [make_edge("e1", "a", "out", "b", "in"),
+-                 make_edge("e2", "a", "out", "c", "in"),
+-                 make_edge("e3", "b", "out", "c", "in")]
++        edges = [make_edge("e1", "a", "cleaned", "b", "cleaned-dir"),
++                 make_edge("e2", "a", "cleaned", "c", "shard-dir"),
++                 make_edge("e3", "b", "shard-dir", "c", "shard-dir")]
+         doc = valid_doc(nodes=self._nodes_for(), edges=edges)
+         self.assertEqual(validate(doc), [])
+ 
+ 
++
++
+ class TestMultipleErrors(unittest.TestCase):
+     def test_multiple_violations_are_all_reported(self):
+         doc = valid_doc(
+             nodes=[make_node("n1"), make_node("n1", kind="quantum")],
+-            edges=[make_edge("e1", "n1", "out", "ghost", "in")],
++            edges=[make_edge("e1", "n1", "cleaned", "ghost", "cleaned-dir")],
+         )
+         errors = validate(doc)
+         self.assertGreaterEqual(len(errors), 3, errors)
+ 
+ 
+ if __name__ == "__main__":
+     unittest.main()
+diff --git a/flow/tests/server/test_registry.py b/flow/tests/server/test_registry.py
+new file mode 100644
+index 0000000..424358b
+--- /dev/null
++++ b/flow/tests/server/test_registry.py
+@@ -0,0 +1,145 @@
++"""Tests for the flow.server.nodes registry (Task 3).
++
++The registry owns kinds, per-kind ports (the 6-node MVP table), editable
++props and gates; flow.server.graph_schema lazy-imports VALID_KINDS/PORTS
++from it and must reject edges whose toPort OR fromPort is not a real port
++of the endpoint kind.
++"""
++import unittest
++
++from flow.server import nodes, graph_schema
++
++
++def make_node(id="n1", kind="dataset", position=(0, 0), props=None):
++    return {
++        "id": id,
++        "kind": kind,
++        "props": props if props is not None else {},
++        "position": {"x": position[0], "y": position[1]},
++    }
++
++
++def make_edge(id="e1", frm="n1", frmPort="cleaned", to="n2", toPort="cleaned-dir"):
++    return {"id": id, "from": frm, "fromPort": frmPort, "to": to, "toPort": toPort}
++
++
++def doc_for(nodes_list, edges=None):
++    return {
++        "schema": "flow/0.1",
++        "meta": {"name": "t"},
++        "graph": {"nodes": nodes_list, "edges": [] if edges is None else edges},
++    }
++
++
++class TestRegistryTable(unittest.TestCase):
++    def test_six_kinds_exactly(self):
++        self.assertEqual(
++            nodes.VALID_KINDS,
++            frozenset({"dataset", "prepare", "tokenize", "train", "eval", "infer"}),
++        )
++
++    def test_ports_match_the_six_node_table(self):
++        expected = {
++            "dataset": {"in": [], "out": ["cleaned"]},
++            "prepare": {"in": ["raw-dir"], "out": ["cleaned-dir"]},
++            "tokenize": {"in": ["cleaned-dir"], "out": ["shard-dir"]},
++            "train": {"in": ["shard-dir"], "out": ["ckpt-dir"]},
++            "eval": {"in": ["ckpt-dir"], "out": ["report"]},
++            "infer": {"in": ["ckpt-dir"], "out": []},
++        }
++        self.assertEqual(nodes.PORTS, expected)
++
++    def test_each_kind_exposes_rich_port_specs(self):
++        for kind, specs in nodes.PORT_SPECS.items():
++            for port in specs:
++                self.assertEqual(
++                    sorted(port),
++                    sorted(["name", "direction", "type", "burst-format"]),
++                    (kind, port),
++                )
++
++    def test_props_keys_and_gates_match_the_table(self):
++        self.assertEqual(nodes.PROPS["prepare"],
++                         frozenset({"rows", "val_fraction", "min_chars"}))
++        self.assertEqual(nodes.PROPS["tokenize"], frozenset({"seq_len", "vocab"}))
++        self.assertEqual(nodes.PROPS["train"],
++                         frozenset({"preset", "steps", "lr_preset"}))
++        self.assertEqual(nodes.GATES, {
++            "dataset": None,
++            "prepare": None,
++            "tokenize": None,
++            "train": "gpu",
++            "eval": "gpu",
++            "infer": "gpu/cpu",
++        })
++
++    def test_node_view_contains_ports_props_gate(self):
++        for kind in nodes.VALID_KINDS:
++            view = nodes.NODES[kind]
++            self.assertIn("ports", view)
++            self.assertIn("props", view)
++            self.assertIn("gate", view)
++
++
++class TestValidateProps(unittest.TestCase):
++    def test_known_numeric_props_accept_finite_numbers(self):
++        self.assertEqual(nodes.validate_props("prepare",
++                                              {"rows": 1000, "val_fraction": 0.1, "min_chars": 3}), [])
++        self.assertEqual(nodes.validate_props("tokenize", {"seq_len": 512, "vocab": 8000}), [])
++        self.assertEqual(nodes.validate_props("train", {"steps": 100, "preset": "smoke",
++                                                        "lr_preset": "s1"}), [])
++
++    def test_unknown_prop_key_is_rejected(self):
++        self.assertEqual(len(nodes.validate_props("prepare", {"bogus": 1})), 1)
++        self.assertEqual(len(nodes.validate_props("train", {"bogus": 1})), 1)
++
++    def test_non_finite_and_bool_numbers_are_rejected(self):
++        self.assertEqual(len(nodes.validate_props("prepare", {"rows": float("inf")})), 1)
++        self.assertEqual(len(nodes.validate_props("prepare", {"rows": float("nan")})), 1)
++        self.assertEqual(len(nodes.validate_props("tokenize", {"seq_len": True})), 1)
++        self.assertEqual(len(nodes.validate_props("tokenize", {"seq_len": "512"})), 1)
++
++    def test_empty_props_pass_for_kinds_with_no_props(self):
++        for kind in ("dataset", "eval", "infer"):
++            self.assertEqual(nodes.validate_props(kind, {}), [])
++
++    def test_props_must_be_a_dict(self):
++        self.assertEqual(len(nodes.validate_props("prepare", [1, 2])), 1)
++
++    def test_unknown_kind_is_rejected(self):
++        self.assertEqual(len(nodes.validate_props("quantum", {})), 1)
++
++
++class TestGraphSchemaUsesRegistryPorts(unittest.TestCase):
++    """The registry is the source of truth for BOTH toPort and fromPort."""
++
++    def chain(self, edges):
++        nodes_list = [
++            make_node("a", kind="dataset"),
++            make_node("b", kind="tokenize"),
++        ]
++        return doc_for(nodes_list, edges)
++
++    def test_valid_registry_port_edge_is_accepted(self):
++        doc = self.chain([make_edge("e1", "a", "cleaned", "b", "cleaned-dir")])
++        self.assertEqual(graph_schema.validate(doc), [])
++
++    def test_to_port_not_in_kind_inputs_is_rejected(self):
++        doc = self.chain([make_edge("e1", "a", "cleaned", "b", "ckpt-dir")])
++        errors = graph_schema.validate(doc)
++        self.assertEqual(len(errors), 1, errors)
++        self.assertIn("toPort", errors[0])
++
++    def test_from_port_not_in_kind_outputs_is_rejected(self):
++        doc = self.chain([make_edge("e1", "a", "raw-dir", "b", "cleaned-dir")])
++        errors = graph_schema.validate(doc)
++        self.assertEqual(len(errors), 1, errors)
++        self.assertIn("fromPort", errors[0])
++
++    def test_missing_edges_key_is_treated_as_empty(self):
++        doc = doc_for([make_node("n1", kind="dataset"), make_node("n2")])
++        del doc["graph"]["edges"]
++        self.assertEqual(graph_schema.validate(doc), [])
++
++if __name__ == "__main__":
++    unittest.main()

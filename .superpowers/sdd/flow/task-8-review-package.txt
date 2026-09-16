@@ -1,0 +1,1437 @@
+=== COMMITS ===
+a03aec9 flow: canvas + palette + add UX
+=== STAT ===
+ flow/src/App.css                | 120 +++++++++++++++
+ flow/src/App.tsx                |  23 +++
+ flow/src/FlowCanvas.tsx         | 241 ++++++++++++++++++++++++++++-
+ flow/src/Palette.tsx            |  47 +++++-
+ flow/src/api.ts                 |  74 ++++++---
+ flow/src/nodes/PipelineNode.css |  72 +++++++++
+ flow/src/nodes/PipelineNode.tsx |  45 ++++++
+ flow/src/store.test.ts          | 278 ++++++++++++++++++++++++++++++++-
+ flow/src/store.ts               | 330 ++++++++++++++++++++++++++++++++++++++--
+ 9 files changed, 1183 insertions(+), 47 deletions(-)
+=== DIFF ===
+diff --git a/flow/src/App.css b/flow/src/App.css
+index a9d645c..64a9b58 100644
+--- a/flow/src/App.css
++++ b/flow/src/App.css
+@@ -19,20 +19,140 @@
+ .palette-card {
+   border: 1px solid #999;
+   border-radius: 4px;
+   padding: 6px;
+   background: #f6f6f6;
+   cursor: grab;
+ }
+ 
+ .canvas {
+   flex: 1;
++  position: relative;
++}
++
++.palette-status {
++  font-size: 11px;
++  color: #666;
++}
++
++.palette-error {
++  color: #b30;
++}
++
++/* Right-click / add-node menu anchored at the mouse position. */
++.add-menu-wrap {
++  position: absolute;
++  z-index: 20;
++}
++
++.add-menu {
++  display: flex;
++  flex-direction: column;
++  background: #fff;
++  border: 1px solid #999;
++  border-radius: 6px;
++  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
++  min-width: 170px;
++  padding: 2px;
++}
++
++.add-menu-btn,
++.add-menu button {
++  border: 0;
++  background: none;
++  text-align: left;
++  padding: 5px 9px;
++  font: inherit;
++  cursor: pointer;
++  border-radius: 4px;
++}
++
++.add-menu button:hover,
++.add-menu button.active {
++  background: #e6eefb;
++}
++
++.add-menu-search {
++  border-top: 1px solid #ddd;
++  margin-top: 2px;
++  color: #456;
++}
++
++.search-backdrop {
++  position: fixed;
++  inset: 0;
++  z-index: 30;
++  background: rgba(0, 0, 0, 0.15);
++}
++
++.search-modal {
++  position: fixed;
++  left: 50%;
++  top: 18%;
++  transform: translateX(-50%);
++  width: 260px;
++  background: #fff;
++  border: 1px solid #999;
++  border-radius: 6px;
++  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
++  padding: 6px;
++}
++
++.search-modal input {
++  width: 100%;
++  box-sizing: border-box;
++  padding: 5px 7px;
++  font: inherit;
++}
++
++.search-list {
++  list-style: none;
++  margin: 6px 0 0;
++  padding: 0;
++  max-height: 220px;
++  overflow: auto;
++}
++
++.search-list button {
++  display: block;
++  width: 100%;
++  border: 0;
++  background: none;
++  text-align: left;
++  padding: 5px 7px;
++  font: inherit;
++  cursor: pointer;
++  border-radius: 4px;
++}
++
++.search-list button.active,
++.search-list button:hover {
++  background: #e6eefb;
++}
++
++.search-empty {
++  color: #999;
++  padding: 5px 7px;
++}
++
++.toast {
++  position: absolute;
++  left: 12px;
++  bottom: 12px;
++  z-index: 40;
++  background: #c62828;
++  color: #fff;
++  padding: 7px 11px;
++  border-radius: 5px;
++  font-size: 12px;
++  max-width: 360px;
++  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+ }
+ 
+ .inspector {
+   width: 280px;
+   border-left: 1px solid #ccc;
+   padding: 8px;
+ }
+ 
+ .inspector-tabs {
+   display: flex;
+diff --git a/flow/src/App.tsx b/flow/src/App.tsx
+index f0b984a..c351f4f 100644
+--- a/flow/src/App.tsx
++++ b/flow/src/App.tsx
+@@ -1,14 +1,37 @@
++import { useEffect } from "react";
+ import Palette from "./Palette";
+ import FlowCanvas from "./FlowCanvas";
+ import Inspector from "./Inspector";
++import { useFlowStore } from "./store";
++import { api, errorMessage } from "./api";
+ import "./App.css";
+ 
++/** Cache the /api/nodes registry snapshot in the store on mount; on
++ * failure record the error so Palette falls back to its static copy. */
+ export default function App() {
++  const setRegistry = useFlowStore((s) => s.setRegistry);
++  const setRegistryError = useFlowStore((s) => s.setRegistryError);
++
++  useEffect(() => {
++    let cancelled = false;
++    api
++      .getNodes()
++      .then((r) => {
++        if (!cancelled) setRegistry(r);
++      })
++      .catch((e) => {
++        if (!cancelled) setRegistryError(errorMessage(e));
++      });
++    return () => {
++      cancelled = true;
++    };
++  }, [setRegistry, setRegistryError]);
++
+   return (
+     <div className="shell">
+       <Palette />
+       <FlowCanvas />
+       <Inspector />
+     </div>
+   );
+ }
+diff --git a/flow/src/FlowCanvas.tsx b/flow/src/FlowCanvas.tsx
+index 84d6fef..fef4eab 100644
+--- a/flow/src/FlowCanvas.tsx
++++ b/flow/src/FlowCanvas.tsx
+@@ -1,18 +1,245 @@
+-import { ReactFlow, Background } from "@xyflow/react";
+-import { useFlowStore } from "./store";
++import { useCallback, useEffect, useRef, useState } from "react";
++import {
++  ReactFlow,
++  Background,
++  ReactFlowProvider,
++  useReactFlow,
++} from "@xyflow/react";
++import type { Connection, NodeChange } from "@xyflow/react";
++import { useFlowStore, toXYNodes, toXYEdges, FALLBACK_REGISTRY } from "./store";
++import PipelineNode from "./nodes/PipelineNode";
++import { usePaletteKinds } from "./Palette";
+ import "@xyflow/react/dist/style.css";
+ 
+-export default function FlowCanvas() {
++const nodeTypes = { pipeline: PipelineNode };
++
++/** Add-node menu opened by right-click anywhere on the canvas (MVP
++ * required UX) with one entry per registry kind plus "search… (Ctrl+K)".
++ * Adds happen at the mouse position (flow coordinates). */
++function AddMenu({
++  kinds,
++  onPick,
++  onSearch,
++}: {
++  kinds: string[];
++  onPick: (kind: string) => void;
++  onSearch: () => void;
++}) {
++  return (
++    <div className="add-menu" role="menu">
++      {kinds.map((kind) => (
++        <button key={kind} role="menuitem" onClick={() => onPick(kind)}>
++          {kind}
++        </button>
++      ))}
++      <button role="menuitem" onClick={onSearch} className="add-menu-search">
++        search… (Ctrl+K)
++      </button>
++    </div>
++  );
++}
++
++/** Ctrl+K search modal: filter box, arrow-key navigation, Enter adds the
++ * selected kind at the mouse position; Escape closes, selection no-op. */
++function SearchModal({
++  kinds,
++  onPick,
++  open,
++}: {
++  kinds: string[];
++  onPick: (kind: string) => void;
++  open: boolean;
++}) {
++  const [query, setQuery] = useState("");
++  const [index, setIndex] = useState(0);
++  const inputRef = useRef<HTMLInputElement>(null);
++
++  useEffect(() => {
++    if (open) {
++      setQuery("");
++      setIndex(0);
++      inputRef.current?.focus();
++    }
++  }, [open]);
++
++  if (!open) return null;
++  const filtered = kinds.filter((k) => k.includes(query.toLowerCase()));
++  return (
++    <div className="search-backdrop" onClick={() => onPick("__close__")}>
++      <div
++        className="search-modal"
++        role="dialog"
++        aria-label="Add node search"
++        onClick={(e) => e.stopPropagation()}
++      >
++        <input
++          ref={inputRef}
++          value={query}
++          placeholder="search kinds…"
++          onChange={(e) => {
++            setQuery(e.target.value);
++            setIndex(0);
++          }}
++          onKeyDown={(e) => {
++            if (e.key === "Escape") onPick("__close__");
++            else if (e.key === "ArrowDown") setIndex((i) => Math.min(i + 1, filtered.length - 1));
++            else if (e.key === "ArrowUp") setIndex((i) => Math.max(i - 1, 0));
++            else if (e.key === "Enter") {
++              if (filtered.length > 0 && filtered[index]) onPick(filtered[index]);
++            }
++          }}
++        />
++        <ul className="search-list">
++          {filtered.map((k, i) => (
++            <li key={k}>
++              <button
++                className={i === index ? "active" : ""}
++                onMouseEnter={() => setIndex(i)}
++                onClick={() => onPick(k)}
++              >
++                {k}
++              </button>
++            </li>
++          ))}
++          {filtered.length === 0 && <li className="search-empty">no match</li>}
++        </ul>
++      </div>
++    </div>
++  );
++}
++
++/** Canvas: controlled ReactFlow wired into the store (apply nodes/edges
++ * changes into store.graph), registry-validated onConnect (refuse +
++ * toast), HTML5 drag-from-palette, right-click add menu and Ctrl+K.
++ * Both menu paths add at the mouse position. */
++function FlowCanvasInner() {
+   const graph = useFlowStore((s) => s.graph);
+-  const onNodesChange = (changes: unknown[]) => {
+-    void changes;
+-  };
++  const error = useFlowStore((s) => s.error);
++  const setError = useFlowStore((s) => s.setError);
++  const addNode = useFlowStore((s) => s.addNode);
++  const connect = useFlowStore((s) => s.connect);
++  const applyNodesChanges = useFlowStore((s) => s.applyNodesChanges);
++  const registry = useFlowStore((s) => s.registry);
++
++  const { screenToFlowPosition } = useReactFlow();
++  const { kinds } = usePaletteKinds();
++
++  const [menu, setMenu] = useState<{ x: number; y: number } | null>(null);
++  const [searchOpen, setSearchOpen] = useState(false);
++  const lastMouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
++
++  /* Toast clears itself a moment after appearing (canvas owns the timer). */
++  useEffect(() => {
++    if (!error) return;
++    const t = window.setTimeout(() => setError(null), 4000);
++    return () => window.clearTimeout(t);
++  }, [error, setError]);
++
++  const setLastMouse = useCallback((clientX: number, clientY: number) => {
++    const rect = document.querySelector(".canvas")?.getBoundingClientRect();
++    lastMouseRef.current = { x: clientX - (rect?.left ?? 0), y: clientY - (rect?.top ?? 0) };
++  }, []);
++
++  /* Ctrl+K anywhere: open/close the search modal at the mouse position. */
++  useEffect(() => {
++    const onKey = (e: KeyboardEvent) => {
++      if ((e.ctrlKey || e.metaKey) && (e.key === "k" || e.key === "K")) {
++        e.preventDefault();
++        setSearchOpen((open) => !open);
++        setMenu(null);
++      }
++    };
++    window.addEventListener("keydown", onKey);
++    return () => window.removeEventListener("keydown", onKey);
++  }, []);
++
++  const addAtMouse = useCallback(
++    (kind: string) => {
++      setMenu(null);
++      setSearchOpen(false);
++      if (kind === "" || kind === "__close__") return;
++      const m = lastMouseRef.current;
++      const rect = document.querySelector(".canvas")?.getBoundingClientRect();
++      const pos = screenToFlowPosition({
++        x: (rect?.left ?? 0) + m.x,
++        y: (rect?.top ?? 0) + m.y,
++      });
++      addNode(kind, pos);
++    },
++    [addNode, screenToFlowPosition],
++  );
++
++  const onNodesChange = useCallback(
++    (changes: NodeChange[]) => applyNodesChanges(changes),
++    [applyNodesChanges],
++  );
++
++  const onConnect = useCallback(
++    (c: Connection) => {
++      // Registry-validated in the reducer; on reject nothing in the graph
++      // changes and store.error drives the toast below.
++      connect(c);
++    },
++    [connect],
++  );
++
++  const onDrop = useCallback(
++    (e: React.DragEvent) => {
++      e.preventDefault();
++      const kind = e.dataTransfer.getData("application/flow-node-kind");
++      if (!kind) return;
++      addNode(kind, screenToFlowPosition({ x: e.clientX, y: e.clientY }));
++    },
++    [addNode, screenToFlowPosition],
++  );
+ 
+   return (
+     <main className="canvas">
+-      <ReactFlow nodes={graph.nodes} edges={graph.edges} onNodesChange={onNodesChange}>
++      <ReactFlow
++        nodes={toXYNodes(graph, registry ?? FALLBACK_REGISTRY)}
++        edges={toXYEdges(graph)}
++        nodeTypes={nodeTypes}
++        onNodesChange={onNodesChange}
++        onConnect={onConnect}
++        onPaneContextMenu={(e) => { e.preventDefault(); setLastMouse(e.clientX, e.clientY); setMenu({ x: e.clientX, y: e.clientY }); }}
++        onNodeContextMenu={(e) => { e.preventDefault(); setLastMouse(e.clientX, e.clientY); setMenu({ x: e.clientX, y: e.clientY }); }}
++        onPaneClick={() => { setMenu(null); setSearchOpen(false); }}
++        onDragOver={(e) => { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; }}
++        onDrop={onDrop}
++        onNodeClick={() => setMenu(null)}
++      >
+         <Background />
+       </ReactFlow>
++
++      {menu !== null && (
++        <div className="add-menu-wrap" style={{ left: menu.x, top: menu.y }}>
++          <AddMenu kinds={kinds} onPick={addAtMouse} onSearch={() => { setMenu(null); setSearchOpen(true); }} />
++        </div>
++      )}
++
++      {searchOpen && (
++        <div
++          className="add-menu-wrap"
++          style={{ left: lastMouseRef.current.x, top: lastMouseRef.current.y }}
++          onClick={(e) => e.stopPropagation()}
++        >
++          <SearchModal open kinds={kinds} onPick={addAtMouse} />
++        </div>
++      )}
++
++      {error !== null && (
++        <div className="toast" role="alert">
++          {error}
++        </div>
++      )}
+     </main>
+   );
+ }
++
++export default function FlowCanvas() {
++  return (
++    <ReactFlowProvider>
++      <FlowCanvasInner />
++    </ReactFlowProvider>
++  );
++}
+diff --git a/flow/src/Palette.tsx b/flow/src/Palette.tsx
+index 910a300..9487a8b 100644
+--- a/flow/src/Palette.tsx
++++ b/flow/src/Palette.tsx
+@@ -1,25 +1,62 @@
+-import { useFlowStore } from "./store";
++import { useFlowStore, FALLBACK_REGISTRY } from "./store";
+ 
+-const NODE_KINDS = ["dataset", "tokenize", "train", "eval", "merge", "export"];
++/** Palette kinds come from GET /api/nodes (cached in the store). The T1
++ * hard-coded kind list is removed. A static fallback copy of the registry
++ * is used ONLY when the registry fetch failed (store.registryError); that
++ * is documented UX, not a hidden default. A card drag starts HTML5 dnd
++ * with the kind in "application/flow-node-kind". */
++export function usePaletteKinds(): {
++  kinds: string[];
++  source: "registry" | "fallback" | "loading";
++} {
++  const registry = useFlowStore((s) => s.registry);
++  const registryError = useFlowStore((s) => s.registryError);
++  if (registry) {
++    return { kinds: registry.valid_kinds, source: "registry" };
++  }
++  if (registryError) {
++    return { kinds: FALLBACK_REGISTRY.valid_kinds, source: "fallback" };
++  }
++  return { kinds: [], source: "loading" };
++}
+ 
+ export default function Palette() {
+   const collapsed = useFlowStore((s) => s.paletteCollapsed);
+   const setCollapsed = useFlowStore((s) => s.setPaletteCollapsed);
++  const { kinds, source } = usePaletteKinds();
+ 
+   return (
+     <aside className="palette">
+       <button onClick={() => setCollapsed(!collapsed)}>
+         {collapsed ? "»" : "«"}
+       </button>
+-      {collapsed ? null : (
++      {collapsed ? null : source === "loading" ? (
++        <p className="palette-status" aria-live="polite">
++          loading registry…
++        </p>
++      ) : (
+         <div className="palette-cards">
+-          {NODE_KINDS.map((kind) => (
+-            <div key={kind} className="palette-card">
++          {source === "fallback" && (
++            <p className="palette-status palette-error" role="status">
++              registry unavailable — built-in kinds
++            </p>
++          )}
++          {kinds.map((kind) => (
++            <div
++              key={kind}
++              className="palette-card"
++              draggable
++              data-kind={kind}
++              onDragStart={(e) => {
++                e.dataTransfer.setData("application/flow-node-kind", kind);
++                e.dataTransfer.effectAllowed = "copy";
++              }}
++            >
+               {kind}
+             </div>
+           ))}
+         </div>
+       )}
+     </aside>
+   );
+ }
+diff --git a/flow/src/api.ts b/flow/src/api.ts
+index 37107b8..48570ea 100644
+--- a/flow/src/api.ts
++++ b/flow/src/api.ts
+@@ -1,39 +1,71 @@
+-import type { Graph, RunStatus } from "./store";
++import type { Graph, RegistrySnapshot } from "./store";
+ 
+-export interface FlowSpec {
+-  id: string;
+-  name: string;
++/** flow/0.1 document shape (GET /api/flows/{name} and PUT body). */
++export interface FlowDocument {
++  schema: "flow/0.1";
++  meta: { name: string };
+   graph: Graph;
+ }
+ 
++/** Pull the payload out; 400 uses {"errors": [...]}, 404/409 {"detail"}. */
+ async function request<T>(path: string, init?: RequestInit): Promise<T> {
+   const res = await fetch(path, {
+     headers: { "Content-Type": "application/json" },
+     ...init,
+   });
+-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}: ${path}`);
+-  return res.json() as Promise<T>;
++  if (!res.ok) {
++    let body: unknown = null;
++    try {
++      body = await res.json();
++    } catch {
++      /* non-JSON error body */
++    }
++    throw new Error(formatApiError(res.status, res.statusText, path, body));
++  }
++  return (await res.json()) as T;
++}
++
++/** Human-readable message from the two backend error shapes. */
++export function formatApiError(
++  status: number,
++  statusText: string,
++  path: string,
++  body: unknown,
++): string {
++  const rec = body as Record<string, unknown> | null;
++  if (rec && Array.isArray(rec.errors) && rec.errors.length > 0) {
++    return rec.errors.map(String).join("; ");
++  }
++  if (rec && typeof rec.detail === "string" && rec.detail.length > 0) {
++    return rec.detail;
++  }
++  return status + " " + statusText + ": " + path;
++}
++
++/** Error message from a caught unknown (fetch/network or request error). */
++export function errorMessage(e: unknown): string {
++  return e instanceof Error ? e.message : String(e);
+ }
+ 
+ export const api = {
+-  getNodes: () => request<unknown[]>("/api/nodes"),
+-  getFlows: () => request<FlowSpec[]>("/api/flows"),
+-  saveFlow: (flow: FlowSpec) =>
+-    request<{ ok: true }>("/api/flows", {
+-      method: "POST",
+-      body: JSON.stringify(flow),
++  getNodes: () => request<RegistrySnapshot>("/api/nodes"),
++  getFlows: () => request<string[]>("/api/flows"),
++  getFlow: (name: string) => request<FlowDocument>("/api/flows/" + encodeURIComponent(name)),
++  saveFlow: (name: string, doc: FlowDocument) =>
++    request<{ ok: true; name: string }>("/api/flows/" + encodeURIComponent(name), {
++      method: "PUT",
++      body: JSON.stringify(doc),
+     }),
+-  validateFlow: (graph: Graph) =>
+-    request<{ valid: boolean; errors: string[] }>("/api/validate", {
++  validateFlow: (doc: FlowDocument) =>
++    request<{ ok: boolean; errors: string[] }>("/api/validate", {
+       method: "POST",
+-      body: JSON.stringify({ graph }),
++      body: JSON.stringify(doc),
+     }),
+-  runFlow: (id: string) =>
+-    request<{ runId: string }>("/api/run", {
++  runFlow: (name: string) =>
++    request<{ ok: true; pid: number }>("/api/run", {
+       method: "POST",
+-      body: JSON.stringify({ id }),
++      body: JSON.stringify({ name }),
+     }),
+-  runStatus: (runId: string) => request<RunStatus>(`/api/run/${runId}`),
+-  runStop: (runId: string) =>
+-    request<{ ok: true }>(`/api/run/${runId}/stop`, { method: "POST" }),
++  runStatus: () => request<unknown>("/api/run/status"),
++  runStop: () => request<{ ok: true; stop_flag: string }>("/api/run/stop", { method: "POST" }),
+ };
+diff --git a/flow/src/nodes/PipelineNode.css b/flow/src/nodes/PipelineNode.css
+new file mode 100644
+index 0000000..6924784
+--- /dev/null
++++ b/flow/src/nodes/PipelineNode.css
+@@ -0,0 +1,72 @@
++.pipeline-node {
++  border: 1px solid #888;
++  border-radius: 6px;
++  padding: 6px 10px;
++  background: #fff;
++  min-width: 130px;
++}
++
++.pipeline-node.selected {
++  border-color: #369;
++  box-shadow: 0 0 0 2px rgba(51, 102, 153, 0.25);
++}
++
++.pipeline-node-head {
++  display: flex;
++  align-items: center;
++  gap: 6px;
++  font-weight: 600;
++}
++
++.run-dot {
++  width: 8px;
++  height: 8px;
++  border-radius: 50%;
++  background: #aaa; /* idle */
++}
++
++.run-dot-running { background: #d80; }
++.run-dot-done { background: #2a2; }
++.run-dot-error { background: #c22; }
++
++.pipeline-node-props {
++  display: flex;
++  flex-wrap: wrap;
++  gap: 4px;
++  margin-top: 4px;
++}
++
++.prop-badge {
++  font-size: 10px;
++  background: #eee;
++  border: 1px solid #ccc;
++  border-radius: 3px;
++  padding: 0 4px;
++}
++
++.pipeline-node-ports {
++  margin-top: 6px;
++}
++
++.pipeline-port {
++  display: flex;
++  align-items: center;
++  justify-content: space-between;
++  gap: 4px;
++  font-size: 11px;
++  position: relative;
++}
++
++.pipeline-port .react-flow__handle {
++  min-width: 8px;
++  min-height: 8px;
++  width: 8px;
++  height: 8px;
++  position: static;
++  transform: none;
++  transform: translate(0, 0);
++}
++
++.pipeline-port-label {
++  color: #555;
++}
+diff --git a/flow/src/nodes/PipelineNode.tsx b/flow/src/nodes/PipelineNode.tsx
+new file mode 100644
+index 0000000..95963e6
+--- /dev/null
++++ b/flow/src/nodes/PipelineNode.tsx
+@@ -0,0 +1,45 @@
++import { memo } from "react";
++import { Handle, Position, type NodeProps } from "@xyflow/react";
++import type { PipelineNodeData, PipelineNode } from "../store";
++
++import "./PipelineNode.css";
++
++/** xyflow node renderer: title, prop badges, run-state dot, and one
++ * Handle per registered port (direction -> Handle type). Port metadata
++ * comes from the registry snapshot cached in the store (via /api/nodes). */
++function PipelineNode({ data, selected }: NodeProps<PipelineNode>) {
++  const ports = data.ports ?? [];
++  const propEntries = Object.entries(data.props ?? {});
++  return (
++    <div className={"pipeline-node" + (selected ? " selected" : "")}>
++      <div className="pipeline-node-head">
++        <span className={"run-dot run-dot-" + (data.runState ?? "idle")} title={"run state: " + (data.runState ?? "idle")} />
++        <span className="pipeline-node-title">{data.label ?? data.kind}</span>
++      </div>
++      {propEntries.length > 0 && (
++        <div className="pipeline-node-props">
++          {propEntries.map(([k, v]) => (
++            <span key={k} className="prop-badge">
++              {k}={String(v)}
++            </span>
++          ))}
++        </div>
++      )}
++      <div className="pipeline-node-ports">
++        {ports.map((p) => {
++          const isIn = p.direction === "in";
++          const label = p.name;
++          return (
++            <div key={p.name} className={"pipeline-port pipeline-port-" + p.direction}>
++              {isIn ? <span className="pipeline-port-label">{label}</span> : null}
++              <Handle id={p.name} type={isIn ? "target" : "source"} position={isIn ? Position.Left : Position.Right} isConnectable={true} />
++              {!isIn ? <span className="pipeline-port-label">{label}</span> : null}
++            </div>
++          );
++        })}
++      </div>
++    </div>
++  );
++}
++
++export default memo(PipelineNode);
+diff --git a/flow/src/store.test.ts b/flow/src/store.test.ts
+index f822ce1..6a571c1 100644
+--- a/flow/src/store.test.ts
++++ b/flow/src/store.test.ts
+@@ -1,22 +1,94 @@
+-import { describe, it, expect, beforeEach } from "vitest";
+-import { useFlowStore } from "./store";
++import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
++import type { RegistrySnapshot } from "./store";
++import type { NodeChange } from "@xyflow/react";
++import { api, formatApiError } from "./api";
++import {
++  useFlowStore,
++  addNodeReducer,
++  connectReducer,
++  nextNodeId,
++  portTypesCompatible,
++  toXYNodes,
++  toXYEdges,
++  fromXYNodes,
++  validateConnect,
++} from "./store";
+ 
+-describe("flow store", () => {
++const REGISTRY: RegistrySnapshot = {
++  valid_kinds: ["dataset", "prepare", "tokenize", "train", "eval", "infer"],
++  nodes: {
++    dataset: {
++      ports: [
++        { name: "cleaned", direction: "out", type: "raw-dir: dataset name/rows", "burst-format": "row-batch" },
++      ],
++      props: [],
++      numeric_props: [],
++      gate: null,
++    },
++    prepare: {
++      ports: [
++        { name: "raw-dir", direction: "in", type: "raw-dir", "burst-format": "file-list" },
++        { name: "cleaned-dir", direction: "out", type: "cleaned-dir", "burst-format": "file-list" },
++      ],
++      props: ["min_chars", "rows", "val_fraction"],
++      numeric_props: ["min_chars", "rows", "val_fraction"],
++      gate: null,
++    },
++    tokenize: {
++      ports: [
++        { name: "cleaned-dir", direction: "in", type: "cleaned-dir" },
++        { name: "shard-dir", direction: "out", type: "shard-dir" },
++      ],
++      props: ["seq_len", "vocab"],
++      numeric_props: ["seq_len", "vocab"],
++      gate: null,
++    },
++    train: {
++      ports: [
++        { name: "shard-dir", direction: "in", type: "shard-dir" },
++        { name: "ckpt-dir", direction: "out", type: "ckpt-dir" },
++      ],
++      props: ["lr_preset", "preset", "steps"],
++      numeric_props: ["steps"],
++      gate: "gpu",
++    },
++    eval: {
++      ports: [
++        { name: "ckpt-dir", direction: "in", type: "ckpt-dir" },
++        { name: "report", direction: "out", type: "report" },
++      ],
++      props: [],
++      numeric_props: [],
++      gate: "gpu",
++    },
++    infer: {
++      ports: [{ name: "ckpt-dir", direction: "in", type: "ckpt-dir" }],
++      props: [],
++      numeric_props: [],
++      gate: "gpu/cpu",
++    },
++  },
++  gates: { dataset: null, prepare: null, tokenize: null, train: "gpu", eval: "gpu", infer: "gpu/cpu" },
++};
++describe("flow store (T1 shell state)", () => {
+   beforeEach(() => {
+     useFlowStore.setState({
+       graph: { nodes: [], edges: [] },
+       selection: null,
+       inspectorTab: "properties",
+       runStatus: null,
+       paletteCollapsed: false,
+       inspectorCollapsed: false,
++      registry: null,
++      registryError: null,
++      error: null,
+     });
+   });
+ 
+   it("has the initial P1 shell state", () => {
+     const s = useFlowStore.getState();
+     expect(s.graph).toEqual({ nodes: [], edges: [] });
+     expect(s.selection).toBeNull();
+     expect(s.inspectorTab).toBe("properties");
+     expect(s.runStatus).toBeNull();
+   });
+@@ -24,10 +96,210 @@ describe("flow store", () => {
+   it("setters update their slices", () => {
+     const s = useFlowStore.getState();
+     s.setInspectorTab("run-log");
+     expect(useFlowStore.getState().inspectorTab).toBe("run-log");
+     s.setPaletteCollapsed(true);
+     expect(useFlowStore.getState().paletteCollapsed).toBe(true);
+     s.setInspectorCollapsed(true);
+     expect(useFlowStore.getState().inspectorCollapsed).toBe(true);
+   });
+ });
++
++describe("addNode reducer", () => {
++  it("adds nodes with unique deterministic ids n1, n2 ...", () => {
++    useFlowStore.getState().setRegistry(REGISTRY);
++    const id1 = useFlowStore.getState().addNode("dataset", { x: 10, y: 20 });
++    const id2 = useFlowStore.getState().addNode("prepare", { x: 220, y: 20 });
++    expect(id1).toBe("n1");
++    expect(id2).toBe("n2");
++    const g = useFlowStore.getState().graph;
++    expect(g.nodes.map((n) => [n.id, n.kind])).toEqual([
++      ["n1", "dataset"],
++      ["n2", "prepare"],
++    ]);
++    expect(g.nodes[0].position).toEqual({ x: 10, y: 20 });
++  });
++
++  it("default props come from the registry (empty prop objects)", () => {
++    const res = addNodeReducer(REGISTRY, { nodes: [], edges: [] }, "prepare", { x: 0, y: 0 });
++    expect(res.id).toBe("n1");
++    expect(res.graph.nodes[0].props).toEqual({});
++    const dataset = addNodeReducer(REGISTRY, { nodes: [], edges: [] }, "dataset", { x: 0, y: 0 });
++    expect(dataset.graph.nodes[0].props).toEqual({});
++  });
++
++  it("refuses unknown kinds without touching the graph or ids", () => {
++    const base = useFlowStore.getState().graph;
++    const res = addNodeReducer(REGISTRY, base, "warp", { x: 0, y: 0 });
++    expect(res.id).toBeNull();
++    expect(res.error).toContain("unknown node kind 'warp'");
++    expect(res.graph).toBe(base);
++  });
++
++  it("nK ids skip over existing ids", () => {
++    expect(nextNodeId({ nodes: [{ id: "n3", kind: "eval", props: {}, position: { x: 0, y: 0 } }], edges: [] })).toBe("n4");
++    expect(nextNodeId({ nodes: [], edges: [] })).toBe("n1");
++  });
++});
++describe("connect reducer (registry-validated edges)", () => {
++  const graph = {
++    nodes: [
++      { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
++      { id: "n2", kind: "prepare", props: {}, position: { x: 100, y: 0 } },
++      { id: "n3", kind: "tokenize", props: {}, position: { x: 200, y: 0 } },
++      { id: "n4", kind: "train", props: {}, position: { x: 300, y: 0 } },
++    ],
++    edges: [],
++  };
++
++  it("accepts dataset -> prepare and records fromPort/toPort", () => {
++    const res = connectReducer(REGISTRY, graph, {
++      source: "n1", target: "n2", sourceHandle: "cleaned", targetHandle: "raw-dir",
++    });
++    expect(res.error).toBeNull();
++    expect(res.graph.edges[0]).toEqual({ id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" });
++  });
++
++  it("refuses IN->IN and unknown-orientation connects", () => {
++    const inToIn = connectReducer(REGISTRY, graph, {
++      source: "n2", target: "n2", sourceHandle: "raw-dir", targetHandle: "raw-dir",
++    });
++    expect(inToIn.error).toContain("is not an OUT port of kind 'prepare'");
++    expect(inToIn.graph).toBe(graph);
++    const badTarget = connectReducer(REGISTRY, graph, {
++      source: "n1", target: "n2", sourceHandle: "cleaned", targetHandle: "cleaned-dir",
++    });
++    expect(badTarget.error).toContain("is not an IN port of kind 'prepare'");
++    expect(badTarget.graph).toBe(graph);
++  });
++
++  it("refuses mismatched port types with a reason string", () => {
++    const reasons = validateConnect(REGISTRY, graph, "n1", "n3", "cleaned", "shard-dir");
++    expect(reasons.length).toBe(1);
++    expect(portTypesCompatible("raw-dir", "raw-dir: dataset name/rows")).toBe(true);
++    expect(portTypesCompatible("raw-dir", "cleaned-dir")).toBe(false);
++    expect(portTypesCompatible("shard-dir", "ckpt-dir")).toBe(false);
++  });
++
++  it("refuses connects that reference missing nodes", () => {
++    const res = connectReducer(REGISTRY, graph, {
++      source: "nX", target: "n2", sourceHandle: "x", targetHandle: "raw-dir",
++    });
++    expect(res.error).toContain("nodes must exist");
++  });
++});
++
++describe("controlled onNodesChange applies into store.graph", () => {
++  beforeEach(() => {
++    useFlowStore.setState({
++      graph: {
++        nodes: [
++          { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
++          { id: "n2", kind: "prepare", props: { rows: 10 }, position: { x: 5, y: 6 } },
++        ],
++        edges: [{ id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" }],
++      },
++      registry: REGISTRY,
++      selection: null,
++      inspectorTab: "properties",
++      runStatus: null,
++      paletteCollapsed: false,
++      inspectorCollapsed: false,
++      registryError: null,
++      error: null,
++    });
++  });
++
++  it("applies a position change and keeps edges intact", () => {
++    const changes: NodeChange[] = [
++      { id: "n1", type: "position", position: { x: 42, y: 7 } },
++    ];
++    useFlowStore.getState().applyNodesChanges(changes);
++    const g = useFlowStore.getState().graph;
++    expect(g.nodes[0].position).toEqual({ x: 42, y: 7 });
++    expect(g.nodes[1].position).toEqual({ x: 5, y: 6 });
++    expect(g.edges).toEqual([{ id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" }]);
++  });
++
++  it("applies a remove change and drops the node from the graph", () => {
++    const changes: NodeChange[] = [{ id: "n2", type: "remove" }];
++    useFlowStore.getState().applyNodesChanges(changes);
++    const g = useFlowStore.getState().graph;
++    expect(g.nodes.map((n) => n.id)).toEqual(["n1"]);
++  });
++
++  it("round-trips through the xyflow projection", () => {
++    const g = useFlowStore.getState().graph;
++    const xyNodes = toXYNodes(g, REGISTRY);
++    expect(xyNodes[1].data.kind).toBe("prepare");
++    expect(xyNodes[1].data.props).toEqual({ rows: 10 });
++    expect(xyNodes[1].data.ports).toEqual(REGISTRY.nodes.prepare.ports);
++    expect(toXYEdges(g)).toEqual([
++      { id: "e1", source: "n1", target: "n2", sourceHandle: "cleaned", targetHandle: "raw-dir" },
++    ]);
++    const back = fromXYNodes(
++      xyNodes.map((n) => ({ ...n, position: { x: n.position.x + 1, y: n.position.y } })),
++      g,
++    );
++    expect(back.nodes[0].position).toEqual({ x: 1, y: 0 });
++    expect(back.nodes[1].props).toEqual({ rows: 10 });
++  });
++});
++
++describe("connect action on the store (refuse leaves graph intact)", () => {
++  beforeEach(() => {
++    useFlowStore.setState({
++      graph: {
++        nodes: [
++          { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
++          { id: "n2", kind: "prepare", props: {}, position: { x: 100, y: 0 } },
++        ],
++        edges: [],
++      },
++      registry: REGISTRY,
++      selection: null,
++      inspectorTab: "properties",
++      runStatus: null,
++      paletteCollapsed: false,
++      inspectorCollapsed: false,
++      registryError: null,
++      error: null,
++    });
++  });
++
++  it("valid connect succeeds; invalid connect refuses graph and sets toast", () => {
++    const s = useFlowStore.getState();
++    expect(s.connect({ source: "n1", target: "n2", sourceHandle: "cleaned", targetHandle: "raw-dir" })).toBe(true);
++    const afterValid = useFlowStore.getState().graph;
++    expect(afterValid.edges).toHaveLength(1);
++    const connect2 = useFlowStore.getState().connect;
++    expect(connect2({ source: "n2", target: "n2", sourceHandle: "raw-dir", targetHandle: "raw-dir" })).toBe(false);
++    const st = useFlowStore.getState();
++    expect(st.error).toContain("is not an OUT port of kind 'prepare'");
++    expect(st.graph).toEqual(afterValid);
++    st.setError(null);
++    expect(useFlowStore.getState().error).toBeNull();
++  });
++});
++
++describe("registry fetch (mocked fetch, no server)", () => {
++  afterEach(() => {
++    vi.unstubAllGlobals();
++  });
++
++  it("api.getNodes parses the /api/nodes snapshot", async () => {
++    vi.stubGlobal(
++      "fetch",
++      vi.fn(async () => new Response(JSON.stringify(REGISTRY), { status: 200 })),
++    );
++    const snap = await api.getNodes();
++    expect(snap.valid_kinds).toEqual(["dataset", "prepare", "tokenize", "train", "eval", "infer"]);
++    expect(snap.nodes.dataset.ports[0].name).toBe("cleaned");
++    expect(snap.gates.train).toBe("gpu");
++  });
++
++  it("formatApiError maps both backend error shapes", () => {
++    expect(formatApiError(400, "Bad Request", "/api/flows/x", { errors: ["a", "b"] })).toBe("a; b");
++    expect(formatApiError(404, "Not Found", "/api/flows/x", { detail: "flow x not found" })).toBe("flow x not found");
++    expect(formatApiError(500, "Oops", "/x", null)).toBe("500 Oops: /x");
++  });
++});
+diff --git a/flow/src/store.ts b/flow/src/store.ts
+index db4831c..1bb18c4 100644
+--- a/flow/src/store.ts
++++ b/flow/src/store.ts
+@@ -1,44 +1,352 @@
+ import { create } from "zustand";
+-import type { Node, Edge } from "@xyflow/react";
++import type { Edge, Node, NodeChange, EdgeChange, Connection } from "@xyflow/react";
++import { applyNodeChanges, applyEdgeChanges } from "@xyflow/react";
++
++/**
++ * Canonical graph shape is the flow/0.1 document graph (what the backend
++ * serves/stores). xyflow ReactFlow Node/Edge objects are a projection of
++ * this; mappers live at the bottom of this file.
++ */
++export interface DomainPosition { x: number; y: number }
++
++export interface DomainNode {
++  id: string;
++  kind: string;
++  label?: string;
++  props: Record<string, unknown>;
++  position: DomainPosition;
++}
++
++export interface DomainEdge {
++  id: string;
++  from: string;
++  to: string;
++  fromPort: string;
++  toPort: string;
++}
+ 
+ export interface Graph {
+-  nodes: Node[];
+-  edges: Edge[];
++  nodes: DomainNode[];
++  edges: DomainEdge[];
++}
++
++/** Registry snapshot shape from GET /api/nodes. */
++export interface PortSpec {
++  name: string;
++  direction: "in" | "out";
++  type: string;
++  "burst-format"?: string | null;
++}
++
++export interface NodeSpec {
++  ports: PortSpec[];
++  props: string[];
++  numeric_props: string[];
++  gate: string | null;
++}
++
++export interface RegistrySnapshot {
++  valid_kinds: string[];
++  nodes: Record<string, NodeSpec>;
++  gates: Record<string, string | null>;
+ }
+ 
++/** Static fallback REGISTRY_COPY, used ONLY when GET /api/nodes fails. */
++export const FALLBACK_REGISTRY: RegistrySnapshot = {
++  valid_kinds: ["dataset", "prepare", "tokenize", "train", "eval", "infer"],
++  nodes: {
++    dataset: { ports: [{ name: "cleaned", direction: "out", type: "raw-dir" }], props: [], numeric_props: [], gate: null },
++    prepare: {
++      ports: [
++        { name: "raw-dir", direction: "in", type: "raw-dir" },
++        { name: "cleaned-dir", direction: "out", type: "cleaned-dir" },
++      ],
++      props: ["min_chars", "rows", "val_fraction"],
++      numeric_props: ["min_chars", "rows", "val_fraction"],
++      gate: null,
++    },
++    tokenize: {
++      ports: [
++        { name: "cleaned-dir", direction: "in", type: "cleaned-dir" },
++        { name: "shard-dir", direction: "out", type: "shard-dir" },
++      ],
++      props: ["seq_len", "vocab"],
++      numeric_props: ["seq_len", "vocab"],
++      gate: null,
++    },
++    train: {
++      ports: [
++        { name: "shard-dir", direction: "in", type: "shard-dir" },
++        { name: "ckpt-dir", direction: "out", type: "ckpt-dir" },
++      ],
++      props: ["lr_preset", "preset", "steps"],
++      numeric_props: ["steps"],
++      gate: "gpu",
++    },
++    eval: {
++      ports: [
++        { name: "ckpt-dir", direction: "in", type: "ckpt-dir" },
++        { name: "report", direction: "out", type: "report" },
++      ],
++      props: [],
++      numeric_props: [],
++      gate: "gpu",
++    },
++    infer: {
++      ports: [{ name: "ckpt-dir", direction: "in", type: "ckpt-dir" }],
++      props: [],
++      numeric_props: [],
++      gate: "gpu/cpu",
++    },
++  },
++  gates: { dataset: null, prepare: null, tokenize: null, train: "gpu", eval: "gpu", infer: "gpu/cpu" },
++};
++
+ export type InspectorTab = "properties" | "run-log" | "preview";
+ 
+ export interface RunStatus {
+   state: "idle" | "running" | "done" | "error";
+   message?: string;
+ }
+ 
+ export interface FlowState {
+   graph: Graph;
+-  selection: Node | null;
++  selection: string | null;
+   inspectorTab: InspectorTab;
+   runStatus: RunStatus | null;
+   paletteCollapsed: boolean;
+   inspectorCollapsed: boolean;
+-  setGraph: (graph: Graph) => void;
+-  setSelection: (selection: Node | null) => void;
+-  setInspectorTab: (tab: InspectorTab) => void;
+-  setRunStatus: (status: RunStatus | null) => void;
+-  setPaletteCollapsed: (collapsed: boolean) => void;
+-  setInspectorCollapsed: (collapsed: boolean) => void;
++  /** Registry snapshot; null until GET /api/nodes resolves. */
++  registry: RegistrySnapshot | null;
++  /** Set when the registry fetch itself failed (fallback list in use). */
++  registryError: string | null;
++  /** User-visible error / toast line; reducers never mutate graph on reject. */
++  error: string | null;
++  setGraph: (g: Graph) => void;
++  setSelection: (id: string | null) => void;
++  setInspectorTab: (t: InspectorTab) => void;
++  setRunStatus: (s: RunStatus | null) => void;
++  setPaletteCollapsed: (c: boolean) => void;
++  setInspectorCollapsed: (c: boolean) => void;
++  setRegistry: (r: RegistrySnapshot) => void;
++  setRegistryError: (e: string | null) => void;
++  setError: (e: string | null) => void;
++  /** Pure, reducer-safe actions (each fully testable via getState()). */
++  addNode: (kind: string, position: DomainPosition) => string | null;
++  applyNodesChanges: (changes: NodeChange[]) => void;
++  applyEdgesChanges: (changes: EdgeChange[]) => void;
++  connect: (c: Connection) => boolean;
++}
++
++/* ------------------------------------------------------------------ */
++/* Pure reducers / mappers - exported for direct unit testing.         */
++/* ------------------------------------------------------------------ */
++
++/** Port-type compatibility: exact match or one side is a prefixed
++ * description of the other ("raw-dir" vs "raw-dir: dataset name/rows").
++ * The dataset node's out port carries a descriptive suffix, so strict
++ * string equality would refuse the primary dataset -> prepare edge. */
++export function portTypesCompatible(a: string, b: string): boolean {
++  const base = (t: string) => t.split(":")[0].trim();
++  return base(a) === base(b);
+ }
+ 
+-export const useFlowStore = create<FlowState>((set) => ({
++/** Deterministic unique id: reuse a simple counter over existing "nK". */
++export function nextNodeId(graph: Graph, prefix = "n"): string {
++  let max = 0;
++  for (const node of graph.nodes) {
++    if (!node.id.startsWith(prefix)) continue;
++    const rest = node.id.slice(prefix.length);
++    if (/^[0-9]+$/.test(rest)) max = Math.max(max, Number(rest));
++  }
++  return prefix + (max + 1);
++}
++
++/** Validate a new edge against the registry snapshot.
++ * Returns [] when acceptable, otherwise one human-readable reason. */
++export function validateConnect(
++  registry: RegistrySnapshot,
++  graph: Graph,
++  fromId: string,
++  toId: string,
++  fromPort: string,
++  toPort: string,
++): string[] {
++  const source = graph.nodes.find((n) => n.id === fromId);
++  const target = graph.nodes.find((n) => n.id === toId);
++  if (!source || !target) return ["edge: both nodes must exist"];
++  const srcSpec = registry.nodes[source.kind];
++  const dstSpec = registry.nodes[target.kind];
++  if (!srcSpec || !dstSpec) return ["edge: unknown node kind"];
++  const out = srcSpec.ports.find((p) => p.name === fromPort && p.direction === "out");
++  const inP = dstSpec.ports.find((p) => p.name === toPort && p.direction === "in");
++  if (!out) return ["edge: '" + fromPort + "' is not an OUT port of kind '" + source.kind + "'"];
++  if (!inP) return ["edge: '" + toPort + "' is not an IN port of kind '" + target.kind + "'"];
++  if (!portTypesCompatible(out.type, inP.type)) {
++    return [
++      "edge: port types do not match ('" + out.type + "' on '" + source.kind + "." + fromPort +
++      "' vs '" + inP.type + "' on '" + target.kind + "." + toPort + "')",
++    ];
++  }
++  return [];
++}
++
++/** Invalid connects must leave the graph untouched (passes through). */
++export function connectReducer(
++  registry: RegistrySnapshot,
++  graph: Graph,
++  c: Connection,
++): { graph: Graph; error: string | null } {
++  const fromPort = c.sourceHandle;
++  const toPort = c.targetHandle;
++  if (!c.source || !c.target || !fromPort || !toPort) {
++    return { graph, error: "edge: connection needs both handles" };
++  }
++  const reasons = validateConnect(registry, graph, c.source, c.target, fromPort, toPort);
++  if (reasons.length > 0) return { graph, error: reasons[0] };
++  const edge: DomainEdge = {
++    id: nextNodeId(graph, "e"),
++    from: c.source,
++    to: c.target,
++    fromPort,
++    toPort,
++  };
++  return { graph: { ...graph, edges: [...graph.edges, edge] }, error: null };
++}
++
++/** Default props for a freshly added node: the server applies its own
++ * defaults (per /api/nodes registry), so an empty {} object - which every
++ * kind accepts by /api/validate - is the registry-consistent default. */
++export function addNodeReducer(
++  registry: RegistrySnapshot,
++  graph: Graph,
++  kind: string,
++  position: DomainPosition,
++): { graph: Graph; id: string | null; error: string | null } {
++  if (!registry.nodes[kind]) {
++    return { graph, id: null, error: "unknown node kind '" + kind + "'" };
++  }
++  const node: DomainNode = {
++    id: nextNodeId(graph, "n"),
++    kind,
++    props: {},
++    position: { x: position.x, y: position.y },
++  };
++  return { graph: { ...graph, nodes: [...graph.nodes, node] }, id: node.id, error: null };
++}
++
++/* ------------------------------------------------------------------ */
++/* xyflow <-> domain mapping                                          */
++/* ------------------------------------------------------------------ */
++
++export interface PipelineNodeData extends Record<string, unknown> {
++  kind: string;
++  label?: string;
++  props: Record<string, unknown>;
++  ports: PortSpec[];
++  runState?: "idle" | "running" | "done" | "error";
++}
++
++export type PipelineNode = Node<PipelineNodeData, "pipeline">;
++
++export function toXYNodes(graph: Graph, registry: RegistrySnapshot): PipelineNode[] {
++  return graph.nodes.map((n) => ({
++    id: n.id,
++    type: "pipeline" as const,
++    position: n.position,
++    data: {
++      kind: n.kind,
++      ...(n.label !== undefined ? { label: n.label } : {}),
++      props: n.props,
++      ports: registry.nodes[n.kind]?.ports ?? [],
++    },
++  }));
++}
++
++export function toXYEdges(graph: Graph): Edge[] {
++  return graph.edges.map((e) => ({
++    id: e.id,
++    source: e.from,
++    target: e.to,
++    sourceHandle: e.fromPort,
++    targetHandle: e.toPort,
++  }));
++}
++
++/** Apply an already-projected set of xyflow nodes back onto the domain
++ * graph: positions updated, deleted nodes removed, kind/props/label
++ * preserved from the existing domain node. */
++export function fromXYNodes(nodes: Node[], existing: Graph): Graph {
++  const byId = new Map(nodes.map((n) => [n.id, n]));
++  const keep = existing.nodes.filter((n) => byId.has(n.id));
++  const changed = keep.map((n) => {
++    const xy = byId.get(n.id)!;
++    if (xy.position.x === n.position.x && xy.position.y === n.position.y) return n;
++    return { ...n, position: { x: xy.position.x, y: xy.position.y } };
++  });
++  return { nodes: changed, edges: existing.edges };
++}
++
++/* ------------------------------------------------------------------ */
++/* Store                                                              */
++/* ------------------------------------------------------------------ */
++
++export const useFlowStore = create<FlowState>((set, get) => ({
+   graph: { nodes: [], edges: [] },
+   selection: null,
+   inspectorTab: "properties",
+   runStatus: null,
+   paletteCollapsed: false,
+   inspectorCollapsed: false,
++  registry: null,
++  registryError: null,
++  error: null,
++
+   setGraph: (graph) => set({ graph }),
+   setSelection: (selection) => set({ selection }),
+   setInspectorTab: (inspectorTab) => set({ inspectorTab }),
+   setRunStatus: (runStatus) => set({ runStatus }),
+   setPaletteCollapsed: (paletteCollapsed) => set({ paletteCollapsed }),
+   setInspectorCollapsed: (inspectorCollapsed) => set({ inspectorCollapsed }),
++  setRegistry: (registry) => set({ registry, registryError: null }),
++  setRegistryError: (registryError) => set({ registryError }),
++  setError: (error) => set({ error }),
++
++  addNode: (kind, position) => {
++    const registry = get().registry ?? FALLBACK_REGISTRY;
++    const res = addNodeReducer(registry, get().graph, kind, position);
++    if (res.error) {
++      set({ error: res.error });
++      return null;
++    }
++    set({ graph: res.graph });
++    return res.id;
++  },
++
++  applyNodesChanges: (changes) => {
++    const g = get();
++    const xyNodes = applyNodeChanges(
++      changes,
++      toXYNodes(g.graph, g.registry ?? FALLBACK_REGISTRY),
++    ) as Node[];
++    set({ graph: fromXYNodes(xyNodes, g.graph) });
++  },
++
++  applyEdgesChanges: (changes) => {
++    const graph = get().graph;
++    const xyEdges = applyEdgeChanges(changes, toXYEdges(graph));
++    const keep = new Set(xyEdges.map((e) => e.id));
++    set({ graph: { ...graph, edges: graph.edges.filter((e) => keep.has(e.id)) } });
++  },
++
++  connect: (c: Connection) => {
++    const registry = get().registry ?? FALLBACK_REGISTRY;
++    const res = connectReducer(registry, get().graph, c);
++    if (res.error) {
++      set({ error: res.error });
++      return false;
++    }
++    set({ graph: res.graph });
++    return true;
++  },
+ }));

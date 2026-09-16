@@ -1,0 +1,1 @@
+mix: bigcode/the-stack-smol, bigcode/starcoderdata (python), code-search-net/code_search_net (python), nickrosh/Evol-Instruct-Code-80k-v1

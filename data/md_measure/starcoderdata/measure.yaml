@@ -1,0 +1,31 @@
+# Milestone D measurement scratch (NOT a training config) - proposal §5 items 4+11.
+# Single candidate, rows 2000, NO target_rows -> legacy prepare_data.py path.
+# Settings mirror configs/next_pretrain.yaml (min_chars 200, dedupe, vf 0.02)
+# so measured tok/row projects the real mix. Streaming/take(2000) only.
+name: md_starcoderdata
+
+tokenizer:
+  name: codellama/CodeLlama-7b-hf
+  vocab_size: 32768
+
+model:
+  layers: 12
+  hidden: 768
+  heads: 12
+  kv_heads: 4
+  ffn: 2048
+  ctx: 1024
+  dropout: 0.0
+  tie_embeddings: true
+
+data:
+  dataset_candidates:
+    - name: bigcode/starcoderdata
+      data_dir: python
+  rows: 2000
+  val_fraction: 0.02
+  dedupe: true
+  min_chars: 200
+  shard_tokens: 8000000
+  raw_dir: data/md_measure/starcoderdata/raw
+  tokens_dir: data/md_measure/starcoderdata/tokens

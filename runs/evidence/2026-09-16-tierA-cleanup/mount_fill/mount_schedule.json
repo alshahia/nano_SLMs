@@ -1,0 +1,20 @@
+{
+  "paused_extra": 300,
+  "prev_eval_loss": 3.6798415184020996,
+  "events": [
+    {
+      "step": 400,
+      "eval_loss": 6.298004150390625,
+      "prev_eval_loss": 3.6798415184020996,
+      "cliff": 2.6181626319885254,
+      "paused_extra": 150
+    },
+    {
+      "step": 500,
+      "eval_loss": 6.472942352294922,
+      "prev_eval_loss": 6.298004150390625,
+      "cliff": 0.17493820190429688,
+      "paused_extra": 300
+    }
+  ]
+}

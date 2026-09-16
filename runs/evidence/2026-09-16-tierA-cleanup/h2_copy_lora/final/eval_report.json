@@ -1,0 +1,42 @@
+{
+  "ckpt": "E:\\python projects\\nano_SLMs\\runs\\h2_copy_lora\\final",
+  "val_loss": 2.0491670764141,
+  "perplexity": 7.761433732050571,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nThe nth Fibonacci number is the nth Fibonacci number.",
+    "### Instruction:\nWrite a Python function that checks whether a string is a palindrome.\n### Response:\n": "### Instruction:\nWrite a Python function that checks whether a string is a palindrome.\n### Response:\nThe palindrome is a palindrome."
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.9,
+    "sampled_ast_pass_rate": 0.82,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a generator pipeline that takes an iterable of integers and yields only those for which Miller-Rabin with given bases says 'probably prime'.",
+        "greedy": "The algorithm is a generator function that takes an iterable of integers and returns only those for which they are in the range [0, 1].",
+        "sampled": "The algorithm is a list of integers and an array of lists of integers. When each value is not present, an array of lists are sorted. If any number is present but not present, that value is not."
+      },
+      {
+        "instruction": "Write a function `date_format2(d)` that returns the ISO 8601 string for a `date`. Example: `date_format2(date(2000, 12, 31))`.",
+        "greedy": "from datetime import date\n\ndef date_format2(d):\n    return d.isoformat()",
+        "sampled": "15:00: a 11.11.12.12.23.\n\n  Args:\n    d: A non-empty string."
+      },
+      {
+        "instruction": "Write a function `hinge2(x)` returning max(0, x) (ReLU). Example: `hinge2(0)`.",
+        "greedy": "def iee2(x):\n    return max(0.0, x)",
+        "sampled": "def lere2(x):\n    = =1. \\\\\n        x'\n    return max(0.0, x)"
+      },
+      {
+        "instruction": "Write a function `midpoint_v2(p1, p2)` returning the midpoint of two points. `midpoint_v2((0, 0), (0, 0))`.",
+        "greedy": "def midpoint_v2(p1, p2):\n    return ((p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2)",
+        "sampled": "def midpoint_v2(p1, p2):\n    = threading.get(p1, p2)\n    return [x for x, _ in p1.items() if x > 0]"
+      },
+      {
+        "instruction": "combination sum no reuse",
+        "greedy": "Weights: weights with a single step.",
+        "sampled": "Takes: t = f(x) - f(x) & f(x).\n\nForcombination sum no reuse I will compute t."
+      }
+    ]
+  }
+}

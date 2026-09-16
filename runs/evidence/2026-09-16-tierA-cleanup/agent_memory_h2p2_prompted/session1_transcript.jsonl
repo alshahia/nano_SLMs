@@ -1,0 +1,12 @@
+{"turn": 1, "kind": "filler", "user": "Write a Python function that reverses a string.", "reply": "The user is a string.", "prompt_tokens": 37, "gen_seconds": 0.48, "stored": [], "folds_after": 0}
+{"turn": 2, "kind": "fact", "user": "My favorite programming language is Rust.", "reply": "The user is a string.", "prompt_tokens": 64, "gen_seconds": 0.2, "stored": ["m1"], "folds_after": 0}
+{"turn": 3, "kind": "filler", "user": "Write a Python function that checks whether a number is prime.", "reply": "The user is a string.", "prompt_tokens": 89, "gen_seconds": 0.19, "stored": ["m2"], "folds_after": 0}
+{"turn": 4, "kind": "fact", "user": "Our deploy server is called falcon and it runs on port 8081.", "reply": "The user is a string.", "prompt_tokens": 120, "gen_seconds": 0.23, "stored": ["m3"], "folds_after": 0}
+{"turn": 5, "kind": "fact", "user": "My sister's name is Layla and she lives in Oslo.", "reply": "The user is a string.", "prompt_tokens": 149, "gen_seconds": 0.21, "stored": ["m4"], "folds_after": 0}
+{"turn": 6, "kind": "filler", "user": "Write a Python function that reads a text file line by line.", "reply": "The user is a string.", "prompt_tokens": 175, "gen_seconds": 0.19, "stored": [], "folds_after": 0}
+{"turn": 7, "kind": "fact", "user": "The project deadline is March 15.", "reply": "The project deadline is a string.", "prompt_tokens": 198, "gen_seconds": 0.26, "stored": ["m5"], "folds_after": 0}
+{"turn": 8, "kind": "fact", "user": "I use the editor Neovim with the Dracula theme.", "reply": "The user is a string.", "prompt_tokens": 227, "gen_seconds": 0.21, "stored": ["m6"], "folds_after": 0}
+{"turn": 9, "kind": "filler", "user": "Write a Python function that sorts a list of dictionaries by a given key.", "reply": "The list of dictionaries is a string.", "prompt_tokens": 256, "gen_seconds": 0.32, "stored": [], "folds_after": 0}
+{"turn": 10, "kind": "fact", "user": "The wifi password for the office network is Pineapple42.", "reply": "The wifi password for the phone network is Pine and sheUtil in a single string.", "prompt_tokens": 287, "gen_seconds": 0.68, "stored": ["m7"], "folds_after": 0}
+{"turn": 11, "kind": "filler", "user": "Write a Python class that implements a stack with push and pop.", "reply": "The stack is a string.", "prompt_tokens": 326, "gen_seconds": 0.28, "stored": [], "folds_after": 0}
+{"turn": 12, "kind": "filler", "user": "Write a Python function that prints the FizzBuzz sequence up to n.", "reply": "The stack is a string.", "prompt_tokens": 355, "gen_seconds": 0.28, "stored": [], "folds_after": 0}

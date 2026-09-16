@@ -1,0 +1,42 @@
+{
+  "seed": 20260911,
+  "ctx_chars": 1024,
+  "per_source": {
+    "fadel_train": {
+      "kept": 50000,
+      "val": 0,
+      "train": 50000
+    },
+    "fadel_val": {
+      "kept": 2500,
+      "val": 2500,
+      "train": 0
+    },
+    "wikinews2024": {
+      "kept": 356,
+      "val": 0,
+      "train": 356
+    },
+    "abdou_train": {
+      "kept": 1443972,
+      "val": 0,
+      "train": 1443972
+    },
+    "abdou_valid": {
+      "kept": 29633,
+      "val": 29633,
+      "train": 0
+    },
+    "qcri_wiki": {
+      "kept": 32818,
+      "val": 0,
+      "train": 32818
+    }
+  },
+  "quarantined": 12687,
+  "deduped_dups": 7573,
+  "windows_kept": 1559279,
+  "train_windows": 1450783,
+  "val_windows": 108496
+}
+FULL parallel prep: 7.4 min

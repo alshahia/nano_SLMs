@@ -1,0 +1,14 @@
+{
+  "pred": "data\\diac\\bench\\pred_wikinews2014.jsonl",
+  "refs": [
+    "data\\diac\\bench\\pred_wikinews2014.ref.txt"
+  ],
+  "lines": 393,
+  "aggregate": {
+    "DER": 0.6223887126763644,
+    "DER_nocase": 0.4902110904517117,
+    "WER": 0.6278026905829597,
+    "text_preservation": 1.0,
+    "words": 18286
+  }
+}

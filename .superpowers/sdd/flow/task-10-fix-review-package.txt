@@ -1,0 +1,499 @@
+=== COMMITS ===
+1325af6 flow: T10 review fixes (dismiss-arm, preview invalidation, run guard)
+=== STAT ===
+ flow/src/App.tsx       |  45 ++++++++++++----
+ flow/src/store.test.ts | 139 +++++++++++++++++++++++++++++++++++++++++++++++--
+ flow/src/store.ts      |  17 ++++--
+ 3 files changed, 182 insertions(+), 19 deletions(-)
+=== DIFF ===
+diff --git a/flow/src/App.tsx b/flow/src/App.tsx
+index cff348e..b17258c 100644
+--- a/flow/src/App.tsx
++++ b/flow/src/App.tsx
+@@ -57,51 +57,67 @@ export default function App() {
+       </div>
+     </div>
+   );
+ }
+ 
+ /** Header toolbar. Open = GET /api/flows + picker modal -> GET the picked
+  * flow -> store.openFlow (which also resets the xyflow projection via
+  * setGraph; an empty projection just means an unmeasured canvas, visually
+  * benign). Save = modal name prompt with client-side slug validation ->
+  * store.saveFlow (PUT /api/flows/{name}). Errors surface through the
+- * existing store.error toast channel (rendered in FlowCanvas). Run /
+- * Validate buttons are intentionally NOT wired here (Task 10). */
++ * existing store.error toast channel (rendered in FlowCanvas). Both are
++ * wired (Task 10): Validate toasts an "OK:" success marker; Run is
++ * disabled while a run is live and routes an unsaved graph through the
++ * Save modal first. */
+ function Toolbar() {
+   const saveFlow = useFlowStore((s) => s.saveFlow);
+   const openFlow = useFlowStore((s) => s.openFlow);
+   const setError = useFlowStore((s) => s.setError);
+   const validateFlow = useFlowStore((s) => s.validateFlow);
+   const runGraph = useFlowStore((s) => s.runGraph);
+   const currentFlowName = useFlowStore((s) => s.currentFlowName);
++  const runStatus = useFlowStore((s) => s.runStatus);
+ 
+   /* File modal mode: null | "open" (flow list picker) | "save" (name
+    * prompt). */
+   const [modal, setModal] = useState<null | "open" | "save">(null);
+   /* In-flight guard for the Save modal (carry-over T9 finding (a)): the
+    * submit button (and the Enter shortcut) are inert while the PUT is
+    * awaiting, so a double-Enter cannot fire two saves. */
+   const [saving, setSaving] = useState(false);
+   /* One-shot flag so a Run click on an unsaved graph opens the Save modal
+    * and continues with runGraph() after that save succeeds. */
+   const runAfterSaveRef = useRef(false);
+   const inputRef = useRef<HTMLInputElement>(null);
+ 
++  /* Centralized Save-modal dismissal (T10 review CRITICAL-1): EVERY
++   * non-submit dismiss path - backdrop click, Escape, Cancel - must clear
++   * the one-shot runAfterSave flag along with closing the modal. A
++   * backdrop-dismissed Run prompt that left the flag armed would make a
++   * later ordinary Save silently launch an unintended GPU job. Opening
++   * the modal WITHOUT the run intent (plain Save button) resets it too.
++   * The flag lives in a ref, so this chokepoint is not reachable through
++   * reducer-level store tests; covered by this single-path wiring plus
++   * this comment (noted in the task report). */
++  const dismissSave = () => {
++    runAfterSaveRef.current = false;
++    setModal(null);
++  };
++
+   /* Escape closes the active modal (capture phase so it wins over the
+    * canvas handlers; closing twice is a no-op). */
+   useEffect(() => {
+     if (!modal) return;
+     const onKey = (e: KeyboardEvent) => {
+       if (e.key === "Escape") {
+         e.stopPropagation();
+-        setModal(null);
+-        runAfterSaveRef.current = false;
++        dismissSave();
+       }
+     };
+     window.addEventListener("keydown", onKey, true);
+     return () => window.removeEventListener("keydown", onKey, true);
+   }, [modal]);
+ 
+   useEffect(() => {
+     if (modal === "save") inputRef.current?.focus();
+   }, [modal]);
+ 
+@@ -129,73 +145,84 @@ function Toolbar() {
+       setSaving(false);
+     }
+   };
+ 
+   return (
+     <header className="toolbar">
+       <span className="toolbar-title">flow</span>
+       <button id="toolbar-open" aria-label="Open saved flow" onClick={() => setModal("open")}>
+         Open
+       </button>
+-      <button id="toolbar-save" aria-label="Save current flow" onClick={() => setModal("save")}>
++      {/* Plain Save opens the modal WITHOUT the run intent; reset the
++          one-shot flag here so a prior dismissed Run prompt cannot leak
++          its armed state into an ordinary save (CRITICAL-1). */}
++      <button
++        id="toolbar-save"
++        aria-label="Save current flow"
++        onClick={() => {
++          runAfterSaveRef.current = false;
++          setModal("save");
++        }}
++      >
+         Save
+       </button>
+       {/* Task 10 wiring: Validate POSTs the UNSAVED graph document
+         * (meta.name = saved slug or "untitled") and toasts ok / first-3
+         * errors + "+N more"; Run PUT-saves the graph under its slug and
+         * POSTs /api/run, switching to the Run log tab. An unsaved graph
+         * routes Run through the Save modal first (one-shot flag). */}
+       <button id="toolbar-validate" aria-label="Validate current graph" onClick={() => void validateFlow()}>
+         Validate
+       </button>
++      {/* Running guard (T10 review MINOR-3): Run is inert while a job
++          is live, matching Stop's running-only affordance. */}
+       <button
+         id="toolbar-run"
+         aria-label="Run current flow"
++        disabled={runStatus?.state === "running"}
+         onClick={() => {
+           if (currentFlowName !== null && isValidFlowName(currentFlowName)) void runGraph();
+           else {
+             runAfterSaveRef.current = true;
+             setModal("save");
+           }
+         }}
+       >
+         Run
+       </button>
+ 
+       {modal === "open" && (
+         <FlowPicker
+           onPick={openFlow}
+           onDismiss={() => setModal(null)}
+         />
+       )}
+ 
+       {modal === "save" && (
+-        <div className="modal-backdrop" onClick={() => setModal(null)}>
++        <div className="modal-backdrop" onClick={dismissSave}>
+           <div
+             className="modal"
+             role="dialog"
+             aria-label="Save flow"
+             onClick={(e) => e.stopPropagation()}
+           >
+             <label htmlFor="save-name">flow name</label>
+             <input
+               ref={inputRef}
+               id="save-name"
+               placeholder="my-run"
+               onKeyDown={(e) => {
+                 if (e.key === "Enter") void submitSave();
+               }}
+             />
+             <div className="modal-actions">
+-              <button onClick={() => { setModal(null); runAfterSaveRef.current = false; }}>
+-                Cancel
+-              </button>
++              <button onClick={dismissSave}>Cancel</button>
+               <button disabled={saving} onClick={() => void submitSave()}>
+                 {modal === "save" && saving ? "saving…" : "Save"}
+               </button>
+             </div>
+           </div>
+         </div>
+       )}
+     </header>
+   );
+ }
+diff --git a/flow/src/store.test.ts b/flow/src/store.test.ts
+index a21222d..716e6c8 100644
+--- a/flow/src/store.test.ts
++++ b/flow/src/store.test.ts
+@@ -813,21 +813,23 @@ describe("Task 10 validate wiring (mocked fetch)", () => {
+       const body = JSON.parse(String(init?.body));
+       expect(body.schema).toBe("flow/0.1");
+       expect(body.meta).toEqual({ name: "untitled" });
+       expect(body.graph).toEqual(useFlowStore.getState().graph);
+       return new Response(JSON.stringify({ ok: true, errors: [] }), { status: 200 });
+     });
+     vi.stubGlobal("fetch", fetchMock);
+     const ok = await useFlowStore.getState().validateFlow();
+     expect(ok).toBe(true);
+     expect(useFlowStore.getState().validatedDoc?.meta.name).toBe("untitled");
+-    expect(useFlowStore.getState().error).toBeNull();
++    // MISSING-1 fix: a successful validate is VISIBLE on the toast
++    // channel with a distinct "OK:" marker (not a silent null).
++    expect(useFlowStore.getState().error).toContain("OK:");
+   });
+ 
+   it("a saved slug is used as meta.name for the unsaved validation doc", async () => {
+     useFlowStore.setState({ currentFlowName: "alpha-run" });
+     let seen: unknown;
+     vi.stubGlobal("fetch", vi.fn(async (_path: string, init?: RequestInit) => {
+       seen = JSON.parse(String(init?.body));
+       return new Response(JSON.stringify({ ok: true, errors: [] }), { status: 200 });
+     }));
+     await useFlowStore.getState().validateFlow();
+@@ -907,25 +909,28 @@ describe("Task 10 run arm (PUT-save then POST /api/run, mocked fetch)", () => {
+       return new Response(JSON.stringify({ ok: true, pid: 4242 }), { status: 200 });
+     }));
+     const ok = await useFlowStore.getState().runGraph();
+     expect(ok).toBe(true);
+     expect(calls.map((c) => c.path)).toEqual(["/api/flows/my-run", "/api/run"]);
+     const st = useFlowStore.getState();
+     expect(st.runStatus).toEqual({ state: "running", message: "started pid 4242" });
+     expect(st.inspectorTab).toBe("run-log");
+     expect(st.error).toBeNull();
+ 
+-    // Polling arm: the mapped live/terminal widgets stay consistent — a
+-    // running status maps "running" (RunLogPanel polls only while the
+-    // mapped state is running; that shapes are unit mapped above).
++    // MINOR-5 fix: assert the poll cadence the armed watcher starts at
++    // (base interval, not yet backoff) instead of a filler mapping call.
++    expect(nextPollDelay(0)).toBe(POLL_BASE_MS);
++    expect(nextPollDelay(0)).not.toBe(POLL_BACKOFF_MS);
++    // The watcher only keeps polling while the mapped state stays
++    // "running" — fed by the exact state this arm just stored.
+     expect(mapRunStatus({ running: true, exit_code: null, started_at: null, exit_at: null, tail: [] }).state)
+-      .toBe("running");
++      .toBe(st.runStatus?.state);
+   });
+ 
+   it("400 preflight errors[] land in the toast and do NOT arm the watcher", async () => {
+     vi.stubGlobal("fetch", vi.fn(async (_path: string, init?: RequestInit) => {
+       if (init?.method === "PUT") {
+         return new Response(JSON.stringify({ ok: true, name: "my-run" }), { status: 200 });
+       }
+       return new Response(
+         JSON.stringify({ errors: ["train.preset unknown", "missing shard input"] }),
+         { status: 400, statusText: "Bad Request" },
+@@ -1057,10 +1062,134 @@ describe("Task 10 PipelineNode dot wiring (toXYNodes runState threading)", () =>
+   it("runState participates in data identity so dots re-render without stale caches", () => {
+     const idle = toXYNodes(graph, REGISTRY);
+     const running = toXYNodes(graph, REGISTRY, idle, "running");
+     expect(running[0].data.runState).toBe("running");
+     expect(running[0].data).not.toBe(idle[0].data);
+     // Back to idle reuses a fresh object again (no lingering running flag).
+     const back = toXYNodes(graph, REGISTRY, running);
+     expect(back[0].data.runState).toBe("idle");
+   });
+ });
++/* ------------------------------------------------------------------ */
++/* T10 review fix (IMPORTANT-2): validatedDoc invalidation invariant.   */
++/* Every action that can mutate the domain graph must clear the cached */
++/* validatedDoc, so the Preview card never claims freshness after an   */
++/* edit. Ok-validate caches a doc first, then the action runs.          */
++/* ------------------------------------------------------------------ */
++
++describe("graph-mutating actions invalidate validatedDoc (IMPORTANT-2)", () => {
++  const DOC = {
++    schema: "flow/0.1" as const,
++    meta: { name: "old" },
++    graph: { nodes: [], edges: [] },
++  };
++
++  beforeEach(() => {
++    useFlowStore.setState({
++      graph: {
++        nodes: [
++          { id: "n1", kind: "dataset", props: {}, position: { x: 0, y: 0 } },
++          { id: "n2", kind: "prepare", props: {}, position: { x: 5, y: 6 } },
++        ],
++        edges: [],
++      },
++      registry: REGISTRY,
++      projection: [],
++      selection: null,
++      validatedDoc: DOC,
++      error: null,
++      currentFlowName: null,
++      runStatus: null,
++    });
++  });
++
++  it("setGraph clears validatedDoc (baseline, pre-existing behavior)", () => {
++    useFlowStore.getState().setGraph({ nodes: [], edges: [] });
++    expect(useFlowStore.getState().validatedDoc).toBeNull();
++  });
++
++  it("addNode clears validatedDoc", () => {
++    expect(useFlowStore.getState().addNode("tokenize", { x: 0, y: 0 })).not.toBeNull();
++    expect(useFlowStore.getState().validatedDoc).toBeNull();
++  });
++
++  it("applyNodesChanges clears validatedDoc even for a plain position change", () => {
++    useFlowStore.getState().applyNodesChanges([
++      { id: "n1", type: "position", position: { x: 1, y: 1 } },
++    ]);
++    expect(useFlowStore.getState().validatedDoc).toBeNull();
++  });
++
++  it("applyEdgesChanges clears validatedDoc only when removals occur", () => {
++    useFlowStore.setState({
++      graph: {
++        ...useFlowStore.getState().graph,
++        edges: [
++          { id: "e1", from: "n1", to: "n2", fromPort: "cleaned", toPort: "raw-dir" },
++        ],
++      },
++      validatedDoc: DOC,
++    });
++    useFlowStore.getState().applyEdgesChanges([{ id: "e1", type: "select", selected: true }]);
++    expect(useFlowStore.getState().validatedDoc).not.toBeNull();
++    useFlowStore.getState().applyEdgesChanges([{ id: "e1", type: "remove" }]);
++    expect(useFlowStore.getState().validatedDoc).toBeNull();
++  });
++
++  it("connect clears validatedDoc on success; refusal keeps it (graph unchanged)", () => {
++    expect(
++      useFlowStore.getState().connect({ source: "n1", target: "n2", sourceHandle: "cleaned", targetHandle: "raw-dir" }),
++    ).toBe(true);
++    expect(useFlowStore.getState().validatedDoc).toBeNull();
++    // Restore the cache, then refuse a connect: the graph object is
++    // untouched, so the cached preview is still accurate and stays.
++    useFlowStore.setState({ validatedDoc: DOC });
++    expect(
++      useFlowStore.getState().connect({ source: "n2", target: "n2", sourceHandle: "raw-dir", targetHandle: "raw-dir" }),
++    ).toBe(false);
++    expect(useFlowStore.getState().validatedDoc).not.toBeNull();
++  });
++
++  it("updateNodeProps clears validatedDoc; unknown id is a no-op in both senses", () => {
++    useFlowStore.getState().updateNodeProps("n2", { rows: 3 });
++    expect(useFlowStore.getState().validatedDoc).toBeNull();
++    useFlowStore.setState({ validatedDoc: DOC });
++    useFlowStore.getState().updateNodeProps("nZZ", { rows: 3 });
++    expect(useFlowStore.getState().validatedDoc).not.toBeNull();
++  });
++});
++
++/* T10 review fix (MISSING-1): ok validate surfaces a distinct success
++ * toast through the existing error channel, "OK:"-prefixed. */
++describe("validate success ack (MISSING-1): OK: toast marker", () => {
++  beforeEach(() => {
++    useFlowStore.setState({
++      graph: { nodes: [], edges: [] },
++      currentFlowName: null,
++      validatedDoc: null,
++      error: null,
++    });
++  });
++
++  afterEach(() => vi.unstubAllGlobals());
++
++  it("ok response toasts an OK:-marked line and caches the preview doc", async () => {
++    vi.stubGlobal("fetch", vi.fn(async () =>
++      new Response(JSON.stringify({ ok: true, errors: [] }), { status: 200 }),
++    ));
++    const ok = await useFlowStore.getState().validateFlow();
++    expect(ok).toBe(true);
++    const err = useFlowStore.getState().error;
++    expect(err).not.toBeNull();
++    expect(err?.startsWith("OK:")).toBe(true);
++    expect(useFlowStore.getState().validatedDoc).not.toBeNull();
++  });
++
++  it("an error toast never carries the OK: marker", async () => {
++    vi.stubGlobal("fetch", vi.fn(async () =>
++      new Response(JSON.stringify({ ok: false, errors: ["bad graph"] }), { status: 200 }),
++    ));
++    const ok = await useFlowStore.getState().validateFlow();
++    expect(ok).toBe(false);
++    expect(useFlowStore.getState().error?.startsWith("OK:")).toBe(false);
++  });
++});
+diff --git a/flow/src/store.ts b/flow/src/store.ts
+index 80433f7..b63679e 100644
+--- a/flow/src/store.ts
++++ b/flow/src/store.ts
+@@ -499,21 +499,24 @@ export const useFlowStore = create<FlowState>((set, get) => ({
+   error: null,
+   currentFlowName: null,
+   validatedDoc: null,
+   stopInfo: null,
+ 
+   setGraph: (graph) => set({ graph, projection: [], validatedDoc: null }),
+   updateNodeProps: (id, props) => {
+     const g = get();
+     const next = updateNodePropsReducer(g.graph, id, props);
+     // Unknown id keeps the same graph object -> no state churn.
+-    if (next !== g.graph) set({ graph: next });
++    // Any real graph edit invalidates the cached validatedDoc so the
++    // Preview card can never claim freshness over a stale document
++    // (T10 review IMPORTANT-2).
++    if (next !== g.graph) set({ graph: next, validatedDoc: null });
+   },
+   openFlow: async (name) => {
+     try {
+       const doc = await api.getFlow(name);
+       set({ graph: doc.graph, projection: [], error: null, currentFlowName: name, validatedDoc: null });
+       return true;
+     } catch (e) {
+       set({ error: errorMessage(e) });
+       return false;
+     }
+@@ -541,21 +544,24 @@ export const useFlowStore = create<FlowState>((set, get) => ({
+   // Preview summary; errors go to the toast, first 3 + "+N more".
+   validateFlow: async () => {
+     const name = get().currentFlowName;
+     const doc = flowDocument(
+       name !== null && isValidFlowName(name) ? name : "untitled",
+       get().graph,
+     );
+     try {
+       const r = await api.validateFlow(doc);
+       if (r.ok) {
+-        set({ validatedDoc: doc, error: null });
++        // Distinct success marker on the toast channel ("OK:" prefix) so
++        // a passing validate is VISIBLE, not a silent null (T10 review
++        // MISSING-1). The prefix distinguishes it from error toasts.
++        set({ validatedDoc: doc, error: "OK: validation passed — document accepted" });
+         return true;
+       }
+       set({ validatedDoc: null, error: truncateErrorList(r.errors).join(" · ") });
+       return false;
+     } catch (e) {
+       set({ validatedDoc: null, error: errorMessage(e) });
+       return false;
+     }
+   },
+   // Run = PUT-save the current graph under its slug, then POST /api/run.
+@@ -610,21 +616,21 @@ export const useFlowStore = create<FlowState>((set, get) => ({
+   setRegistryError: (registryError) => set({ registryError }),
+   setError: (error) => set({ error }),
+ 
+   addNode: (kind, position) => {
+     const registry = get().registry ?? FALLBACK_REGISTRY;
+     const res = addNodeReducer(registry, get().graph, kind, position);
+     if (res.error) {
+       set({ error: res.error });
+       return null;
+     }
+-    set({ graph: res.graph });
++    set({ graph: res.graph, validatedDoc: null });
+     return res.id;
+   },
+ 
+   applyNodesChanges: (changes) => {
+     const g = get();
+     const xyNodes = applyNodeChanges(
+       changes,
+       toXYNodes(g.graph, g.registry ?? FALLBACK_REGISTRY, g.projection),
+     ) as PipelineNode[];
+     const graph = fromXYNodes(xyNodes, g.graph);
+@@ -637,20 +643,21 @@ export const useFlowStore = create<FlowState>((set, get) => ({
+     // Carry-over T9 finding (b): a remove change that deletes the node the
+     // Inspector is currently editing must clear the stale selection, or the
+     // Properties panel would keep rendering a ghost node's props.
+     if (selection === undefined && get().selection !== null) {
+       const alive = new Set(graph.nodes.map((n) => n.id));
+       if (!alive.has(get().selection as string)) selection = null;
+     }
+     set({
+       graph,
+       projection: xyNodes,
++      validatedDoc: null,
+       ...(selection === undefined ? {} : { selection }),
+     });
+   },
+ 
+   applyEdgesChanges: (changes) => {
+     // Only "remove" changes can alter the domain graph; every other
+     // xyflow edge change kind (select/dimensions/...) is projection-only.
+     // Removals are counted per id (NOT a keep-Set, which would collapse
+     // duplicate-id edges into one removal) so exactly one domain edge per
+     // requested remove disappears (T8 review IMPORTANT-2).
+@@ -659,24 +666,24 @@ export const useFlowStore = create<FlowState>((set, get) => ({
+       if (c.type === "remove") removals.set(c.id, (removals.get(c.id) ?? 0) + 1);
+     }
+     if (removals.size === 0) return;
+     const graph = get().graph;
+     const edges = graph.edges.filter((e) => {
+       const pending = removals.get(e.id) ?? 0;
+       if (pending <= 0) return true;
+       removals.set(e.id, pending - 1);
+       return false;
+     });
+-    set({ graph: { ...graph, edges } });
++    set({ graph: { ...graph, edges }, validatedDoc: null });
+   },
+ 
+   connect: (c: Connection) => {
+     const registry = get().registry ?? FALLBACK_REGISTRY;
+     const res = connectReducer(registry, get().graph, c);
+     if (res.error) {
+       set({ error: res.error });
+       return false;
+     }
+-    set({ graph: res.graph });
++    set({ graph: res.graph, validatedDoc: null });
+     return true;
+   },
+ }));

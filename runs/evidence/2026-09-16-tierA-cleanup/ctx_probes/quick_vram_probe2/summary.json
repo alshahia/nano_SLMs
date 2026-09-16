@@ -1,0 +1,87 @@
+{
+  "started_utc": "20260909T184422Z",
+  "points_preset": "quick",
+  "quick_batches": 3,
+  "ckpt_runs": [
+    {
+      "ckpt": "runs\\target\\final",
+      "config": "configs/target.yaml",
+      "points": [
+        {
+          "point": "base_1024",
+          "ctx": 1024,
+          "rope": null,
+          "factor": 1.0,
+          "window": null,
+          "sink": 4,
+          "positions": null,
+          "batch": 8,
+          "blocks": 956,
+          "batches": 3,
+          "tokens": 24576,
+          "val_loss": 1.470904,
+          "perplexity": 4.3532,
+          "quick": 3,
+          "wall_s": 5.7,
+          "peak_vram_gb": 4.383,
+          "historical_eval_report_val_loss": 1.8641137587974261,
+          "delta_vs_history": -0.39321
+        },
+        {
+          "point": "ntk_2048",
+          "ctx": 2048,
+          "rope": "dynamic-ntk",
+          "factor": 1.0,
+          "window": null,
+          "sink": 4,
+          "positions": null,
+          "batch": 4,
+          "blocks": 478,
+          "batches": 3,
+          "tokens": 24576,
+          "val_loss": 1.396893,
+          "perplexity": 4.0426,
+          "quick": 3,
+          "wall_s": 6.1,
+          "peak_vram_gb": 4.383
+        },
+        {
+          "point": "ntk_4096",
+          "ctx": 4096,
+          "rope": "dynamic-ntk",
+          "factor": 1.0,
+          "window": null,
+          "sink": 4,
+          "positions": null,
+          "batch": 1,
+          "blocks": 239,
+          "batches": 3,
+          "tokens": 12288,
+          "val_loss": 1.644792,
+          "perplexity": 5.1799,
+          "quick": 3,
+          "wall_s": 3.5,
+          "peak_vram_gb": 2.618
+        },
+        {
+          "point": "w1024s4remap_4096",
+          "ctx": 4096,
+          "rope": null,
+          "factor": 1.0,
+          "window": 1024,
+          "sink": 4,
+          "positions": "remapped",
+          "batch": 1,
+          "blocks": 239,
+          "batches": 3,
+          "tokens": 12288,
+          "val_loss": 3.933323,
+          "perplexity": 51.0764,
+          "quick": 3,
+          "wall_s": 4.6,
+          "peak_vram_gb": 2.633
+        }
+      ]
+    }
+  ]
+}

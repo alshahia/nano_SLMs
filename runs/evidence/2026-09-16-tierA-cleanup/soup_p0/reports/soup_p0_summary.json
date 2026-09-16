@@ -1,0 +1,57 @@
+{
+  "experiment": "soup_p0 - e1 x yarn_4096 wiSE-FT interpolation sweep (row 41 P0, user-approved 2026-09-10)",
+  "tool": "scripts/soup_merge.py",
+  "weights": "alpha = dose of runs/sft_v2_e1/final; (1-alpha) = runs/yarn_4096/final; config/tokenizer donor = yarn_4096/final (yarn rope, ctx 4096)",
+  "instrument": "eval.py, full CSN val 978,944 tokens; guard surface @1024 with gen (ast 50 instructions greedy/temp0.8); base surface @4096 batch 2 skip-gen",
+  "baselines": {
+    "yarn_4096": {
+      "c1024": 1.8724,
+      "c4096": 1.7035,
+      "ast": null
+    },
+    "e1": {
+      "c1024": 2.0466,
+      "ntk4096_equiv": 2.1265,
+      "ast_greedy": 0.98,
+      "ast_sampled": 0.96
+    }
+  },
+  "points": [
+    {
+      "alpha": 0.25,
+      "c1024": 1.8848646270680127,
+      "guard_delta_pct": 0.67,
+      "ast_greedy": 0.2,
+      "ast_sampled": 0.16,
+      "c4096": 1.7142,
+      "c4096_delta_pct": 0.63,
+      "report": "alpha025_ctx1024.json / alpha025_ctx4096.json"
+    },
+    {
+      "alpha": 0.5,
+      "c1024": 1.9239,
+      "guard_delta_pct": 2.76,
+      "ast_greedy": 0.84,
+      "ast_sampled": 0.68,
+      "c4096": 1.7535,
+      "c4096_delta_pct": 2.94,
+      "report": "alpha050_ctx1024.json / alpha050_ctx4096.json"
+    },
+    {
+      "alpha": 0.75,
+      "c1024": 1.9893,
+      "guard_delta_pct": 6.26,
+      "ast_greedy": 0.98,
+      "ast_sampled": 0.96,
+      "c4096": 1.8218,
+      "c4096_delta_pct": 6.96,
+      "report": "alpha075_ctx1024.json / alpha075_ctx4096.json"
+    }
+  ],
+  "verdict": [
+    "Interpolation is near-linear end to end: instruct skill (ast) dies by alpha=0.25 (0.20) and only fully returns at alpha>=0.75 (0.98), while the guard drift climbs in lockstep (+0.67% -> +6.26%).",
+    "No magic knee: the best tradeoff (~alpha 0.5-0.6) buys ast ~0.84-0.9x at guard +2.8-4.5% - useful as a POST-HOC KNOB on any future SFT model, not as the row-41 vehicle.",
+    "The Track B ctx win dilutes proportionally with alpha; even alpha=0.75 stays far under the row-41 instruct gate (1.8218 @4096 << 2.1265-equiv).",
+    "Decision: proceed with the approved LoRA-SFT vehicle (r=32/alpha=64/lr 1e-4/1 epoch); target = beat this frontier (ast >= ~0.90 at guard <= +2%)."
+  ]
+}

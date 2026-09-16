@@ -1,0 +1,18 @@
+{
+  "point": "ntk_12288",
+  "ctx": 12288,
+  "rope": "dynamic-ntk",
+  "factor": 1.0,
+  "window": null,
+  "sink": 4,
+  "positions": null,
+  "batch": 1,
+  "blocks": 79,
+  "batches": 79,
+  "tokens": 970752,
+  "val_loss": 2.733621,
+  "perplexity": 15.3885,
+  "quick": null,
+  "wall_s": 411.5,
+  "peak_vram_gb": 6.15
+}

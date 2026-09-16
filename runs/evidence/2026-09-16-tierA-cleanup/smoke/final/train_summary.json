@@ -1,0 +1,14 @@
+{
+  "phase": "smoke",
+  "params_m": 12.32,
+  "best_eval_loss": 4.792643070220947,
+  "best_checkpoint": "E:\\python projects\\nano_SLMs\\runs\\smoke\\checkpoint-200",
+  "final_eval": {
+    "eval_loss": 4.792643070220947,
+    "eval_runtime": 0.292,
+    "eval_samples_per_second": 215.734,
+    "eval_steps_per_second": 54.79,
+    "epoch": 1.8904677323860273
+  },
+  "resumed_from": "checkpoint-100"
+}

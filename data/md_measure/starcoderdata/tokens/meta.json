@@ -1,0 +1,11 @@
+{
+  "tokenizer": "codellama/CodeLlama-7b-hf",
+  "tokenizer_vocab": 32017,
+  "model_vocab": 32768,
+  "seq_len": 1024,
+  "shard_tokens": 8000000,
+  "train_tokens": 4611364,
+  "val_tokens": 80116,
+  "train_blocks": 4503,
+  "val_blocks": 78
+}

@@ -1,0 +1,201 @@
+Traceback (most recent call last):
+  File "E:\python_projects\nano_SLMs\diacritizer\scripts\train.py", line 178, in <module>
+    main()
+  File "E:\python_projects\nano_SLMs\diacritizer\scripts\train.py", line 69, in main
+    train_ids, train_y = load_np(("train_ids", "train_y"), tokens_dir)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\diacritizer\scripts\train.py", line 38, in load_np
+    return (np.load(str(tokens_dir / (names[0] + ".npy"))),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\.venv\Lib\site-packages\numpy\lib\_npyio_impl.py", line 454, in load
+    fid = stack.enter_context(open(os.fspath(file), "rb"))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\python_projects\\nano_SLMs\\data\\diac\\v2b\\tokens\\train_ids.npy'
+Traceback (most recent call last):
+  File "E:\python_projects\nano_SLMs\diacritizer\scripts\train.py", line 178, in <module>
+    main()
+  File "E:\python_projects\nano_SLMs\diacritizer\scripts\train.py", line 69, in main
+    train_ids, train_y = load_np(("train_ids", "train_y"), tokens_dir)
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\diacritizer\scripts\train.py", line 38, in load_np
+    return (np.load(str(tokens_dir / (names[0] + ".npy"))),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\.venv\Lib\site-packages\numpy\lib\_npyio_impl.py", line 454, in load
+    fid = stack.enter_context(open(os.fspath(file), "rb"))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'E:\\python_projects\\nano_SLMs\\data\\diac\\v2b\\tokens\\train_ids.npy'
+{'phase': 'v2b', 'device': 'cuda', 'params': 30016128, 'train_windows': 1450783, 'val_windows': 108496}
+[START] fresh (zero flags, checkpoint rotates every save_every)
+step 500 loss 0.4647 val_loss 0.5093 val_acc 0.8296 elapsed 196s
+E:\python_projects\nano_SLMs\diacritizer\scripts\train.py:135: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:821.)
+  print(f"step {step} loss {float(loss_sum):.4f} val_loss {vl:.4f} "
+[BEST] val_loss 0.5093 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-500
+step 1000 loss 0.3462 val_loss 0.3954 val_acc 0.8695 elapsed 401s
+[BEST] val_loss 0.3954 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-1000
+step 1500 loss 0.3771 val_loss 0.3541 val_acc 0.8841 elapsed 610s
+[BEST] val_loss 0.3541 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-1500
+step 2000 loss 0.3236 val_loss 0.3223 val_acc 0.8934 elapsed 821s
+[BEST] val_loss 0.3223 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-2000
+step 2500 loss 0.3110 val_loss 0.2989 val_acc 0.9017 elapsed 1033s
+[BEST] val_loss 0.2989 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-2500
+step 3000 loss 0.3474 val_loss 0.2882 val_acc 0.9054 elapsed 1245s
+[BEST] val_loss 0.2882 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-3000
+step 3500 loss 0.2533 val_loss 0.2744 val_acc 0.9101 elapsed 1457s
+[BEST] val_loss 0.2744 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-3500
+step 4000 loss 0.2266 val_loss 0.2674 val_acc 0.9126 elapsed 1678s
+[BEST] val_loss 0.2674 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-4000
+step 4500 loss 0.2579 val_loss 0.2606 val_acc 0.9149 elapsed 1892s
+[BEST] val_loss 0.2606 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-4500
+step 5000 loss 0.2500 val_loss 0.2531 val_acc 0.9172 elapsed 2105s
+[BEST] val_loss 0.2531 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-5000
+step 5500 loss 0.2240 val_loss 0.2476 val_acc 0.9190 elapsed 2318s
+[BEST] val_loss 0.2476 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-5500
+step 6000 loss 0.2516 val_loss 0.2447 val_acc 0.9201 elapsed 2531s
+[BEST] val_loss 0.2447 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-6000
+step 6500 loss 0.2392 val_loss 0.2388 val_acc 0.9221 elapsed 2744s
+[BEST] val_loss 0.2388 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-6500
+step 7000 loss 0.2012 val_loss 0.2341 val_acc 0.9235 elapsed 2958s
+[BEST] val_loss 0.2341 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-7000
+step 7500 loss 0.2575 val_loss 0.2326 val_acc 0.9242 elapsed 3171s
+[BEST] val_loss 0.2326 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-7500
+step 8000 loss 0.1630 val_loss 0.2317 val_acc 0.9249 elapsed 3384s
+[BEST] val_loss 0.2317 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-8000
+step 8500 loss 0.1729 val_loss 0.2253 val_acc 0.9266 elapsed 3598s
+[BEST] val_loss 0.2253 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-8500
+step 9000 loss 0.2792 val_loss 0.2233 val_acc 0.9273 elapsed 3812s
+[BEST] val_loss 0.2233 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-9000
+step 9500 loss 0.1754 val_loss 0.2209 val_acc 0.9277 elapsed 4025s
+[BEST] val_loss 0.2209 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-9500
+step 10000 loss 0.2022 val_loss 0.2188 val_acc 0.9287 elapsed 4239s
+[BEST] val_loss 0.2188 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-10000
+step 10500 loss 0.2161 val_loss 0.2178 val_acc 0.9292 elapsed 4452s
+[BEST] val_loss 0.2178 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-10500
+step 11000 loss 0.1668 val_loss 0.2154 val_acc 0.9299 elapsed 4665s
+[BEST] val_loss 0.2154 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-11000
+step 11500 loss 0.2432 val_loss 0.2164 val_acc 0.9295 elapsed 4879s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-11500
+step 12000 loss 0.1739 val_loss 0.2116 val_acc 0.9314 elapsed 5092s
+[BEST] val_loss 0.2116 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-12000
+step 12500 loss 0.1576 val_loss 0.2115 val_acc 0.9313 elapsed 5306s
+[BEST] val_loss 0.2115 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-12500
+step 13000 loss 0.1909 val_loss 0.2099 val_acc 0.9323 elapsed 5519s
+[BEST] val_loss 0.2099 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-13000
+step 13500 loss 0.2214 val_loss 0.2105 val_acc 0.9325 elapsed 5733s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-13500
+step 14000 loss 0.3278 val_loss 0.2067 val_acc 0.9328 elapsed 5946s
+[BEST] val_loss 0.2067 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-14000
+step 14500 loss 0.1666 val_loss 0.2032 val_acc 0.9340 elapsed 6159s
+[BEST] val_loss 0.2032 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-14500
+step 15000 loss 0.1894 val_loss 0.2023 val_acc 0.9345 elapsed 6373s
+[BEST] val_loss 0.2023 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-15000
+step 15500 loss 0.2153 val_loss 0.2002 val_acc 0.9350 elapsed 6586s
+[BEST] val_loss 0.2002 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-15500
+step 16000 loss 0.2185 val_loss 0.2001 val_acc 0.9353 elapsed 6800s
+[BEST] val_loss 0.2001 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-16000
+step 16500 loss 0.1934 val_loss 0.1999 val_acc 0.9352 elapsed 7014s
+[BEST] val_loss 0.1999 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-16500
+step 17000 loss 0.2095 val_loss 0.1978 val_acc 0.9360 elapsed 7227s
+[BEST] val_loss 0.1978 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-17000
+step 17500 loss 0.2153 val_loss 0.1978 val_acc 0.9359 elapsed 7440s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-17500
+step 18000 loss 0.1866 val_loss 0.1964 val_acc 0.9362 elapsed 7653s
+[BEST] val_loss 0.1964 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-18000
+step 18500 loss 0.1898 val_loss 0.1958 val_acc 0.9366 elapsed 7866s
+[BEST] val_loss 0.1958 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-18500
+step 19000 loss 0.2335 val_loss 0.1964 val_acc 0.9359 elapsed 8080s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-19000
+step 19500 loss 0.2422 val_loss 0.1930 val_acc 0.9374 elapsed 8293s
+[BEST] val_loss 0.1930 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-19500
+step 20000 loss 0.2279 val_loss 0.1913 val_acc 0.9382 elapsed 8506s
+[BEST] val_loss 0.1913 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-20000
+step 20500 loss 0.2022 val_loss 0.1919 val_acc 0.9377 elapsed 8719s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-20500
+step 21000 loss 0.2061 val_loss 0.1910 val_acc 0.9382 elapsed 8933s
+[BEST] val_loss 0.1910 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-21000
+step 21500 loss 0.2023 val_loss 0.1907 val_acc 0.9384 elapsed 9146s
+[BEST] val_loss 0.1907 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-21500
+step 22000 loss 0.1778 val_loss 0.1907 val_acc 0.9387 elapsed 9359s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-22000
+step 22500 loss 0.1815 val_loss 0.1901 val_acc 0.9386 elapsed 9572s
+[BEST] val_loss 0.1901 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-22500
+step 23000 loss 0.2304 val_loss 0.1896 val_acc 0.9391 elapsed 9786s
+[BEST] val_loss 0.1896 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-23000
+step 23500 loss 0.1666 val_loss 0.1881 val_acc 0.9393 elapsed 9999s
+[BEST] val_loss 0.1881 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-23500
+step 24000 loss 0.1626 val_loss 0.1859 val_acc 0.9399 elapsed 10213s
+[BEST] val_loss 0.1859 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-24000
+step 24500 loss 0.1968 val_loss 0.1860 val_acc 0.9399 elapsed 10426s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-24500
+step 25000 loss 0.1978 val_loss 0.1877 val_acc 0.9395 elapsed 10639s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-25000
+step 25500 loss 0.2247 val_loss 0.1857 val_acc 0.9401 elapsed 10852s
+[BEST] val_loss 0.1857 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-25500
+step 26000 loss 0.2347 val_loss 0.1853 val_acc 0.9400 elapsed 11065s
+[BEST] val_loss 0.1853 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-26000
+step 26500 loss 0.2004 val_loss 0.1844 val_acc 0.9405 elapsed 11279s
+[BEST] val_loss 0.1844 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-26500
+step 27000 loss 0.1808 val_loss 0.1852 val_acc 0.9403 elapsed 11492s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-27000
+step 27500 loss 0.1726 val_loss 0.1827 val_acc 0.9410 elapsed 11705s
+[BEST] val_loss 0.1827 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-27500
+step 28000 loss 0.1756 val_loss 0.1810 val_acc 0.9415 elapsed 11919s
+[BEST] val_loss 0.1810 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-28000
+step 28500 loss 0.1788 val_loss 0.1842 val_acc 0.9410 elapsed 12132s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-28500
+step 29000 loss 0.2694 val_loss 0.1807 val_acc 0.9417 elapsed 12353s
+[BEST] val_loss 0.1807 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-29000
+step 29500 loss 0.1862 val_loss 0.1802 val_acc 0.9421 elapsed 12566s
+[BEST] val_loss 0.1802 saved -> best.pt
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-29500
+step 30000 loss 0.1818 val_loss 0.1811 val_acc 0.9416 elapsed 12778s
+[SAVE] E:\python_projects\nano_SLMs\runs\diac\v2b\checkpoint-30000
+{'done': 30000, 'final': 'E:\\python_projects\\nano_SLMs\\runs\\diac\\v2b\\final', 'best_val_loss': 0.18018598810893288}

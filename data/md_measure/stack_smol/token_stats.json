@@ -1,0 +1,14 @@
+{
+  "tag": "stack_smol",
+  "rows": 2000,
+  "total_tokens": 5434305,
+  "tok_per_row_mean": 2717.2,
+  "median": 929,
+  "p90": 5609,
+  "min": 58,
+  "max": 121723,
+  "total_chars": 16647323,
+  "tok_per_char": 0.3264,
+  "seconds": 8.5,
+  "tokenizer": "codellama/CodeLlama-7b-hf"
+}

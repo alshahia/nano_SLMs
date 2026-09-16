@@ -1,0 +1,18 @@
+# Task 7 brief — requirements verbatim
+
+## Task 7: FastAPI app.py — all endpoints
+
+**Files:** Create server/app.py + tests/test_app.py (tests call app routes via a fake Request through starlette TestClient — skip: no httpx in venv; instead tests exercise app functions directly).
+- [ ] Step 1: failing test calling internal handlers directly (test pure functions used by routes).
+- [ ] Step 2: implement app: GET /api/health; GET /api/nodes; GET/PUT/DELETE /api/flows/{name} (validating); POST /api/validate (evaluates graph_schema.validate + preflight: disk check 5GB ceiling, GPU lock free, config gen dry-run) ⇒ list of errors; POST /api/run {name} → 200 {ok} / 409 {errors}; GET /api/run/status → {running, phase, tail:[...], started_at}; POST /api/run/stop → sets stop flag (no kill); main: argparse --port + FLOW_PORT env (default 3010) + StaticFiles serving ../dist in prod mode (--dev flag disables).
+- [ ] Step 3: unittest PASS + commit "flow: fastapi app".
+
+## Orchestrator additions (binding, from T2-T6)
+- Deps: fastapi + uvicorn are NOT yet installed. Install via: & .\.venv\Scripts\uv.exe pip install fastapi uvicorn  (and then record exact versions in flow/server/requirements.txt pinned). If uv.exe is not on the venv path, use & .\.venv\Scripts\python.exe -m uv pip fastapi uvicorn. Report exact versions installed. NEVER pip. These are the 2 sanctioned runtime deps of the whole feature (design doc §9).
+- Reuse EXACTLY: flow/server/graph_schema.validate, flow/server/nodes (registry/GATES/validate_props), flow/server/flows (save/load/list), flow/server/config_gen.generate, flow/server/runner (start/status/request_stop; typed JobRunningError = busy).
+- Endpoints (exact): GET /api/health -> {"ok": true}; GET /api/nodes -> registry snapshot; GET /api/flows -> list_flows(); GET /api/flows/{name} -> load; PUT /api/flows/{name} body=graph json -> flows.save (invalid -> 400 {"errors": [...]}); DELETE /api/flows/{name} (no flow -> 404); POST /api/validate body=graph -> {"ok": bool, "errors": [...]} with preflight (graph_schema + per-node props + config_gen.generate into a tempfile out_dir so NO repo file is written by validation; report errors incl. reserved names/rows cap); POST /api/run {"name": <flow>} -> 409 if a GPU job is busy (runner busy error), 400 with validation errors if invalid, else build config via config_gen.generate into REPO configs/ (deliverable to run_custom.py) and runner.start -> {"ok": true}; GET /api/run/status -> runner.status() passthrough; POST /api/run/stop -> runner.request_stop(), mapping NoJobRunningError -> 409.
+- app: argparse --port default 3010, env FLOW_PORT wins if --port absent; uvicorn.run(app). Static prod mode: mount flow/dist StaticFiles when --dev is absent (and dist exists); dev mode needs nothing (frontend dev server proxies /api).
+- CORS for dev: allow http://localhost:5174 (and 5173) only.
+- Tests: no httpx in venv so skip TestClient; FASTAPI routes must be THIN — all logic in imported functions already covered by prior tests; new unittest file tests the pure pre-route assembly functions only (e.g., run preflight assembly, port resolution parse, error->HTTP-status mapping dict). Zero network calls in tests.
+- Frontend API reconciliation note for later task: api.ts current paths placeholder; implementer: APPEND to .superpowers/sdd/flow/task-7-report.md? No — create .superpowers/sdd/flow/task-7-api-contract.md listing the exact endpoint JSON shapes for the frontend implementer of Tasks 8-10.
+- Commit: only git add flow/ (+ .superpowers/sdd/flow/task-7-api-contract.md), never unrelated dirty files. Message: "flow: fastapi app".

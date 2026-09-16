@@ -1,0 +1,14 @@
+{
+  "phase": "pilot",
+  "params_m": 100.68,
+  "best_eval_loss": 1.1608319282531738,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\pilot\\checkpoint-3000",
+  "final_eval": {
+    "eval_loss": 1.1608319282531738,
+    "eval_runtime": 12.4185,
+    "eval_samples_per_second": 68.124,
+    "eval_steps_per_second": 17.071,
+    "epoch": 2.3457598943946025
+  },
+  "resumed_from": "checkpoint-1000"
+}

@@ -1,0 +1,46 @@
+{
+  "mode": "mix",
+  "generated_at": "2026-09-09T18:30:07+00:00",
+  "config": "data/legacy_check/mix_local_test.yaml",
+  "data_mode": "stream",
+  "min_chars": 60,
+  "dedupe": true,
+  "val_fraction": 0.02,
+  "sources": [
+    {
+      "name": "local:mix_local_rows.jsonl",
+      "config": null,
+      "target_rows": 3,
+      "requested": 3,
+      "rows_seen": 5,
+      "rows_kept": 3,
+      "dups_dropped": 1,
+      "too_short": 1,
+      "train_rows": 2,
+      "val_rows": 1,
+      "error": null
+    },
+    {
+      "name": "local:mix_local_rows.jsonl",
+      "config": null,
+      "target_rows": 3,
+      "requested": 3,
+      "rows_seen": 6,
+      "rows_kept": 1,
+      "dups_dropped": 4,
+      "too_short": 1,
+      "train_rows": 1,
+      "val_rows": 0,
+      "error": null
+    }
+  ],
+  "totals": {
+    "rows_seen": 11,
+    "rows_kept": 4,
+    "dups_dropped": 5,
+    "too_short": 2,
+    "train_rows": 3,
+    "val_rows": 1,
+    "dedupe_rate": 0.454545
+  }
+}

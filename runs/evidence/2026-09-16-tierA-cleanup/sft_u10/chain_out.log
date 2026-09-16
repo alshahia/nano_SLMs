@@ -1,0 +1,58 @@
+[run_custom] phase=sft_u10 steps=['sft_data', 'sft'] dry_run=False
+[run_custom] === step sft_data ===
+[sft_data] tokenizer=codellama/CodeLlama-7b-hf vocab=32017 pad_id=2 eos_id=2 ctx=512
+[sft_data] source=nickrosh/Evol-Instruct-Code-80k-v1 (target 20400 accepted pairs, ast_filter=True)
+[sft_data] 500/20400 pairs, stats={'seen': 2632, 'kept': 500, 'drop_short': 191, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 1131, 'drop_long': 810}
+[sft_data] 1000/20400 pairs, stats={'seen': 5456, 'kept': 1000, 'drop_short': 380, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 2464, 'drop_long': 1612}
+[sft_data] 1500/20400 pairs, stats={'seen': 8288, 'kept': 1500, 'drop_short': 584, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 3756, 'drop_long': 2448}
+[sft_data] 2000/20400 pairs, stats={'seen': 11329, 'kept': 2000, 'drop_short': 819, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 5215, 'drop_long': 3295}
+[sft_data] 2500/20400 pairs, stats={'seen': 14258, 'kept': 2500, 'drop_short': 1018, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 6569, 'drop_long': 4171}
+[sft_data] 3000/20400 pairs, stats={'seen': 17175, 'kept': 3000, 'drop_short': 1227, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 7909, 'drop_long': 5039}
+[sft_data] 3500/20400 pairs, stats={'seen': 19605, 'kept': 3500, 'drop_short': 1448, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 9001, 'drop_long': 5656}
+[sft_data] 4000/20400 pairs, stats={'seen': 21182, 'kept': 4000, 'drop_short': 1722, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 9637, 'drop_long': 5823}
+[sft_data] 4500/20400 pairs, stats={'seen': 22755, 'kept': 4500, 'drop_short': 1996, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 10274, 'drop_long': 5985}
+[sft_data] 5000/20400 pairs, stats={'seen': 24522, 'kept': 5000, 'drop_short': 2303, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 11058, 'drop_long': 6161}
+[sft_data] 5500/20400 pairs, stats={'seen': 26221, 'kept': 5500, 'drop_short': 2599, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 11793, 'drop_long': 6329}
+[sft_data] 6000/20400 pairs, stats={'seen': 27855, 'kept': 6000, 'drop_short': 2866, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 12483, 'drop_long': 6506}
+[sft_data] 6500/20400 pairs, stats={'seen': 29678, 'kept': 6500, 'drop_short': 3187, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 13313, 'drop_long': 6678}
+[sft_data] 7000/20400 pairs, stats={'seen': 31438, 'kept': 7000, 'drop_short': 3517, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 14054, 'drop_long': 6867}
+[sft_data] 7500/20400 pairs, stats={'seen': 33090, 'kept': 7500, 'drop_short': 3782, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 14762, 'drop_long': 7046}
+[sft_data] 8000/20400 pairs, stats={'seen': 34780, 'kept': 8000, 'drop_short': 4090, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 15460, 'drop_long': 7230}
+[sft_data] 8500/20400 pairs, stats={'seen': 36503, 'kept': 8500, 'drop_short': 4369, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 16196, 'drop_long': 7438}
+[sft_data] 9000/20400 pairs, stats={'seen': 38204, 'kept': 9000, 'drop_short': 4675, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 16915, 'drop_long': 7614}
+[sft_data] 9500/20400 pairs, stats={'seen': 40025, 'kept': 9500, 'drop_short': 4905, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 17673, 'drop_long': 7947}
+[sft_data] 10000/20400 pairs, stats={'seen': 41876, 'kept': 10000, 'drop_short': 5108, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 18431, 'drop_long': 8337}
+[sft_data] 10500/20400 pairs, stats={'seen': 44166, 'kept': 10500, 'drop_short': 5370, 'drop_instr': 0, 'drop_dup': 0, 'drop_ast': 19516, 'drop_long': 8780}
+[sft_data] 11000/20400 pairs, stats={'seen': 46100, 'kept': 11000, 'drop_short': 5581, 'drop_instr': 0, 'drop_dup': 1, 'drop_ast': 20341, 'drop_long': 9177}
+[sft_data] 11500/20400 pairs, stats={'seen': 48260, 'kept': 11500, 'drop_short': 5823, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 21345, 'drop_long': 9588}
+[sft_data] 12000/20400 pairs, stats={'seen': 50534, 'kept': 12000, 'drop_short': 6106, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 22376, 'drop_long': 10048}
+[sft_data] 12500/20400 pairs, stats={'seen': 52559, 'kept': 12500, 'drop_short': 6287, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 23303, 'drop_long': 10465}
+[sft_data] 13000/20400 pairs, stats={'seen': 54611, 'kept': 13000, 'drop_short': 6508, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 24191, 'drop_long': 10908}
+[sft_data] 13500/20400 pairs, stats={'seen': 56729, 'kept': 13500, 'drop_short': 6739, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 25138, 'drop_long': 11348}
+[sft_data] 14000/20400 pairs, stats={'seen': 58945, 'kept': 14000, 'drop_short': 7336, 'drop_instr': 0, 'drop_dup': 4, 'drop_ast': 25957, 'drop_long': 11648}
+[sft_data] 14500/20400 pairs, stats={'seen': 62602, 'kept': 14500, 'drop_short': 9758, 'drop_instr': 1, 'drop_dup': 4, 'drop_ast': 26687, 'drop_long': 11652}
+[sft_data] 15000/20400 pairs, stats={'seen': 66289, 'kept': 15000, 'drop_short': 12192, 'drop_instr': 1, 'drop_dup': 4, 'drop_ast': 27439, 'drop_long': 11653}
+[sft_data] 15500/20400 pairs, stats={'seen': 70148, 'kept': 15500, 'drop_short': 14753, 'drop_instr': 2, 'drop_dup': 4, 'drop_ast': 28234, 'drop_long': 11655}
+[sft_data] 16000/20400 pairs, stats={'seen': 73125, 'kept': 16000, 'drop_short': 16588, 'drop_instr': 3, 'drop_dup': 4, 'drop_ast': 28871, 'drop_long': 11659}
+[sft_data] 16500/20400 pairs, stats={'seen': 76619, 'kept': 16500, 'drop_short': 18843, 'drop_instr': 3, 'drop_dup': 4, 'drop_ast': 29603, 'drop_long': 11666}
+[sft_data] WARNING: stream ended early with 16776/20400 pairs
+[sft_data] meta: {"dataset": "nickrosh/Evol-Instruct-Code-80k-v1", "tokenizer": "codellama/CodeLlama-7b-hf", "pad_token_id": 2, "eos_token_id": 2, "ctx": 512, "template": "### Instruction:\n{instruction}\n### Response:\n", "ast_filter": true, "min_chars": 200, "seen": 78264, "kept": 16776, "train_pairs": 16376, "val_pairs": 400, "stats": {"seen": 78264, "kept": 16776, "drop_short": 19898, "drop_instr": 4, "drop_dup": 4, "drop_ast": 29915, "drop_long": 11667}}
+[run_custom] step 'sft_data' ok (77.0s)
+[run_custom] === step sft ===
+[sft] PILOT: 5000 pairs, 1 epoch
+[sft] pairs: train=5000 val=400 ctx=512 epochs=1
+[sft] tokenizer has no pad token -> pad = eos
+[sft] base=E:\python_projects\nano_SLMs\runs\smoke\final params=12.3M fp16=True grad_ckpt=True
+[sft] pilot output: E:\python_projects\nano_SLMs\runs\sft_u10_pilot
+{'loss': '4.59', 'grad_norm': '1.326', 'learning_rate': '1.47e-05', 'epoch': '0.16'}
+{'loss': '4.483', 'grad_norm': '2.203', 'learning_rate': '2.97e-05', 'epoch': '0.32'}
+{'loss': '4.342', 'grad_norm': '1.908', 'learning_rate': '2.625e-05', 'epoch': '0.48'}
+{'loss': '4.32', 'grad_norm': '1.748', 'learning_rate': '1.666e-05', 'epoch': '0.64'}
+{'loss': '4.189', 'grad_norm': '1.794', 'learning_rate': '6.201e-06', 'epoch': '0.8'}
+{'eval_loss': '4.207', 'eval_runtime': '3.089', 'eval_samples_per_second': '129.5', 'eval_steps_per_second': '32.37', 'epoch': '0.8'}
+{'loss': '4.208', 'grad_norm': '1.446', 'learning_rate': '3.187e-07', 'epoch': '0.96'}
+{'eval_loss': '4.197', 'eval_runtime': '3.167', 'eval_samples_per_second': '126.3', 'eval_steps_per_second': '31.58', 'epoch': '1'}
+{'train_runtime': '306.5', 'train_samples_per_second': '16.32', 'train_steps_per_second': '1.021', 'train_loss': '4.345', 'epoch': '1'}
+[final] summary: {"phase": "sft_u10", "base_model": "runs/smoke/final", "pilot": true, "pairs": 5000, "params_m": 12.32, "best_eval_loss": 4.197136402130127, "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\sft_u10_pilot\\checkpoint-313", "final_eval": {"eval_loss": 4.197136402130127, "eval_runtime": 3.3361, "eval_samples_per_second": 119.899, "eval_steps_per_second": 29.975, "epoch": 1.0}, "resumed_from": null}
+[run_custom] step 'sft' ok (325.3s)
+[run_custom] chain COMPLETED -> E:\python_projects\nano_SLMs\runs\sft_u10\custom_chain.json

@@ -1,0 +1,35 @@
+# Milestone D backward-compat regression (scratch, NOT a training config).
+# NO target_rows anywhere -> must behave exactly like today's prepare_data.py:
+# first-hit fallback chain + single data.rows cap (configs/smoke.yaml chain).
+# TinyCode gotcha (MEMORY lesson 17): row cap 5 is far below the ~1250-row
+# corrupt-shard threshold, so streaming is safe.
+name: legacy_check
+
+tokenizer:
+  name: codellama/CodeLlama-7b-hf
+  vocab_size: 32768
+
+model:
+  layers: 4
+  hidden: 256
+  heads: 4
+  kv_heads: 2
+  ffn: 1024
+  ctx: 256
+  dropout: 0.0
+  tie_embeddings: true
+
+data:
+  dataset_candidates:                # same chain as configs/smoke.yaml
+    - name: TheGamingMahi/TinyCode
+    - name: nickrosh/Evol-Instruct-Code-80k-v1
+    - name: code_search_net
+      config: python
+    - name: sahil2801/CodeAlpaca-20k
+  rows: 5
+  val_fraction: 0.02
+  dedupe: true
+  min_chars: 60
+  shard_tokens: 8000000
+  raw_dir: data/legacy_check/raw
+  tokens_dir: data/legacy_check/tokens

@@ -1,0 +1,32 @@
+{
+  "ckpt": "runs\\soup_p0\\alpha075",
+  "val_loss": 1.9893480903433955,
+  "perplexity": 7.310766249369407,
+  "samples": {
+    "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\n": "### Instruction:\nWrite a Python function that returns the nth Fibonacci number.\n### Response:\nWe use a set-up function that returns the nth Fibonacci number.\n\n```python\ndef nth_fibonacci(n):\n    \"\"\"Return the nth Fibonacci number.\n\n    Args:\n        n: A non-negative integer.\n\n    Returns:\n        The nth Fibonacci number.\n\n    Examples:\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>> n = 10\n        >>>",
+    "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\n": "### Instruction:\nWrite a Python class that implements a stack with push, pop and peek.\n### Response:\nfrom typing import Optional\n\ndef push(self, item: Any) -> None:\n    \"\"\"Return a new item with a new item.\n\n    Args:\n        item: The item to push.\n\n    Returns:\n        The new item.\n\n    Raises:\n        TypeError: If the item is not a string.\n        ValueError: If the item is not a string.\n\n    Examples:\n        >>> push('a', 1)\n        'a'\n        >>> push('a', 2)\n        'b'\n        >>> push('a', 3)\n        'b'\n        >>> push('a', 3)\n        'b'\n    \"\"\"\n    if not isinstance(item, str):\n        raise TypeError(\"item must be a string\")\n    if not isinstance(item, str):\n        raise TypeError(\"item must be a string\")\n    if not isinstance(item, str):\n        raise TypeError(\"item must be a string\")\n    if not isinstance(self.value, bytes):\n        raise TypeError(\"item must be bytes\")\n    return self.value"
+  },
+  "instruction_eval": {
+    "n": 50,
+    "greedy_ast_pass_rate": 0.98,
+    "sampled_ast_pass_rate": 0.96,
+    "temperature": 0.8,
+    "failed_examples": [
+      {
+        "instruction": "Write a function `decode_qs(qs)` parsing a URL query string into a dict. Example: `decode_qs('q=hello+world')`.",
+        "greedy": "def decode_qs(qs):\n    return {k: v for k, v in qs.items() if k not in ('', ''),\n            ''.join(c.lower() for c in qs.items())}",
+        "sampled": "from urllib.parse import parse_qs\ndef decode_qs(qs):\n    return {k: vs[0] if len(vs) == 1 else vs for k, vs in parse_qs(qs, keep_blank_values=True).items()}"
+      },
+      {
+        "instruction": "Write a function `count_digits(s)` that returns the count of digit characters in `s`. Example: `count_digits('abc')`.",
+        "greedy": "def count_digits(s):\n    return sum(1 for c in s if c.isdigit())",
+        "sampled": "def count_digits(s):\n    return sum(1 for x in s if x or '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123"
+      },
+      {
+        "instruction": "Show the `@lru_cache` requirement in `cache_decorator`. (input: 10)",
+        "greedy": "from typing import List\n\ndef cache_decorator(x):\n    cache = list(x)\n    cache.sort()\n    return cache\n\n# Bug was: `cache` is a list of tuples; `cache[0]` is a list of tuples; `cache[1]` is a list of tuples; `cache[2]` is a list of tuples; `cache[3]` is a list of tuples; `cache[4]` is a list of tuples; `cache[5]` is a list of tuples; `cache[6]` is a list of tuples; `cache[7]` is a list of tuples; `cache[8]` is a list of tuples; `cache[9]` is a list of tuples; `cache[9]` is a list of tuples; `cache[9]` is a list of tuples; `cache[9]` is a list of tuples; `cache[9]` is a list of tuples; `cache[9]` is a list of tuples; `cache[9]` is a list of tuples; `cache[9]` is a list of tuples; `cache[9",
+        "sampled": "import re\n\ndef cache_decorator(\n        url: str, cache: Dict[str, str], cache_path: str = None\n    ) -> str:\n        with open(cache_path, 'r', encoding='utf-8') as f:\n            cache = f.read()\n    return cache"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+[prepare] trying dataset: bigcode/starcoderdata
+[prepare] bigcode/starcoderdata: 250/2000 rows
+[prepare] bigcode/starcoderdata: 500/2000 rows
+[prepare] bigcode/starcoderdata: 750/2000 rows
+[prepare] bigcode/starcoderdata: 1000/2000 rows
+[prepare] bigcode/starcoderdata: 1250/2000 rows
+[prepare] bigcode/starcoderdata: 1500/2000 rows
+[prepare] bigcode/starcoderdata: 1750/2000 rows
+[prepare] bigcode/starcoderdata: 2000/2000 rows
+[prepare] OK bigcode/starcoderdata: 1960 train + 40 val rows
+EXIT=0

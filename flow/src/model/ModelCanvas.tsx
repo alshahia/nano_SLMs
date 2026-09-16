@@ -8,6 +8,7 @@ import ModelInspector from "./ModelInspector";
 import { api, errorMessage } from "../api";
 import { isValidFlowName } from "../stores/graphStore";
 import "@xyflow/react/dist/style.css";
+import "./ModelCanvas.css";
 
 const nodeTypes = { model: ModelNode };
 

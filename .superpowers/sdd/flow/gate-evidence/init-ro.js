@@ -1,0 +1,1 @@
+window.__roLog=[];var O=window.ResizeObserver;window.ResizeObserver=function(cb){var inst=new O(function(es){es.forEach(function(e){window.__roLog.push({ids:e.target.getAttribute('data-id'),cls:(e.target.className||e.target.tagName).toString().slice(0,50),w:Math.round(e.contentRect.width)})});cb(es)});return inst;};

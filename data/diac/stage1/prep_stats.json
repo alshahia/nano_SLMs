@@ -1,0 +1,15 @@
+{
+  "seed": 20260911,
+  "ctx": 512,
+  "train_windows": 1226329,
+  "val_windows": 12580,
+  "excluded_gate_docs": 7103,
+  "deduped": 4540,
+  "per_source_chars": {
+    "abdou": 181092665,
+    "sadeed": 148179573,
+    "qcri": 29844545,
+    "fadel": 11035597,
+    "wn2024": 0
+  }
+}

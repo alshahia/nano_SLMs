@@ -1,0 +1,30 @@
+# Scratch (Milestone D): legacy-mode FALLTHROUGH test. First candidate is a
+# nonexistent dataset (fast 404) -> must fall through to TinyCode and win
+# there, proving the first-hit chain still works after the mix-mode edit.
+name: legacy_fallback_test
+
+tokenizer:
+  name: codellama/CodeLlama-7b-hf
+  vocab_size: 32768
+
+model:
+  layers: 4
+  hidden: 256
+  heads: 4
+  kv_heads: 2
+  ffn: 1024
+  ctx: 256
+  dropout: 0.0
+  tie_embeddings: true
+
+data:
+  dataset_candidates:
+    - name: definitely-not-a-real-dataset-xyz/nonexistent
+    - name: TheGamingMahi/TinyCode
+  rows: 5
+  val_fraction: 0.02
+  dedupe: true
+  min_chars: 60
+  shard_tokens: 8000000
+  raw_dir: data/legacy_check/fallback/raw
+  tokens_dir: data/legacy_check/fallback/tokens

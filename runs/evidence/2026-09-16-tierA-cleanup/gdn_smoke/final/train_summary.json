@@ -1,0 +1,108 @@
+{
+  "phase": "gdn_smoke",
+  "params_m": 13.33,
+  "best_eval_loss": 3.5933597087860107,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\gdn_smoke\\checkpoint-200",
+  "final_eval": {
+    "eval_loss": 3.5933597087860107,
+    "eval_runtime": 0.6635,
+    "eval_samples_per_second": 94.95,
+    "eval_steps_per_second": 24.114,
+    "epoch": 1.8904677323860273
+  },
+  "resumed_from": "checkpoint-100",
+  "env": {
+    "timestamp_utc": "2026-09-09T21:35:49+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "76b917a",
+    "gpu": "Quadro RTX 3000, 6144 MiB",
+    "resolved_config": {
+      "name": "gdn_smoke",
+      "tokenizer": {
+        "name": "codellama/CodeLlama-7b-hf",
+        "vocab_size": 32768
+      },
+      "model": {
+        "arch": "gdn_hybrid",
+        "layers": 4,
+        "hidden": 256,
+        "heads": 4,
+        "kv_heads": 2,
+        "linear_heads": 4,
+        "head_dim_gdn": 64,
+        "expand_v": 2,
+        "ffn": 1024,
+        "ctx": 256,
+        "dropout": 0.0,
+        "tie_embeddings": true,
+        "hybrid_step": 1,
+        "use_short_conv": true,
+        "use_sigmoid_gate": true,
+        "use_zero_centered_rmsnorm": true,
+        "gdn_state_dtype": "fp32"
+      },
+      "data": {
+        "dataset_candidates": [
+          {
+            "name": "TheGamingMahi/TinyCode"
+          },
+          {
+            "name": "nickrosh/Evol-Instruct-Code-80k-v1"
+          },
+          {
+            "name": "code_search_net",
+            "config": "python"
+          },
+          {
+            "name": "sahil2801/CodeAlpaca-20k"
+          }
+        ],
+        "rows": 2000,
+        "val_fraction": 0.02,
+        "dedupe": true,
+        "min_chars": 60,
+        "shard_tokens": 8000000,
+        "raw_dir": "data/smoke/raw",
+        "tokens_dir": "data/smoke/tokens"
+      },
+      "train": {
+        "output_dir": "runs/gdn_smoke",
+        "final_dir": "runs/gdn_smoke/final",
+        "max_steps": 200,
+        "batch": 1,
+        "eval_batch": 4,
+        "accum": 32,
+        "lr": 0.0004,
+        "scheduler": "cosine",
+        "warmup_steps": 10,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 10,
+        "eval_steps": 50,
+        "save_steps": 50,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": true,
+        "optim": "adamw_torch",
+        "dataloader_num_workers": 0,
+        "seed": 42
+      },
+      "eval": {
+        "max_new_tokens": 64,
+        "prompts": [
+          "def fibonacci(n):",
+          "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):",
+          "class Stack:"
+        ]
+      }
+    }
+  }
+}

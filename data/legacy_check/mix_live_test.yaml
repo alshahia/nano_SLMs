@@ -1,0 +1,41 @@
+# Scratch (Milestone D): LIVE mix-mode test over the REAL four candidates,
+# same field shape/order as configs/next_pretrain.yaml but tiny target_rows.
+# Verifies: data_dir passthrough (stack-smol), gated-source error handling
+# (starcoderdata 403 -> recorded, run continues), shared SHA1 set, stats.
+# Writes ONLY to data/legacy_check/mix_live/ - never to data/next_pretrain.
+name: mix_live_test
+
+tokenizer:
+  name: codellama/CodeLlama-7b-hf
+  vocab_size: 32768
+
+model:
+  layers: 4
+  hidden: 256
+  heads: 4
+  kv_heads: 2
+  ffn: 1024
+  ctx: 256
+  dropout: 0.0
+  tie_embeddings: true
+
+data:
+  dataset_candidates:
+    - name: bigcode/the-stack-smol
+      data_dir: data/python
+      target_rows: 30
+    - name: bigcode/starcoderdata
+      config: python
+      target_rows: 10
+    - name: code-search-net/code_search_net
+      config: python
+      target_rows: 30
+    - name: nickrosh/Evol-Instruct-Code-80k-v1
+      target_rows: 20
+  rows: 80
+  val_fraction: 0.02
+  dedupe: true
+  min_chars: 200
+  shard_tokens: 8000000
+  raw_dir: data/legacy_check/mix_live/raw
+  tokens_dir: data/legacy_check/mix_live/tokens

@@ -1,0 +1,10 @@
+{
+  "ckpt": "E:\\python projects\\nano_SLMs\\runs\\smoke\\final",
+  "val_loss": 4.792636167435419,
+  "perplexity": 120.61892159116603,
+  "samples": {
+    "def fibonacci(n):": "def fibonacci(n):\n    if (1 = 100000000000000000000000000000000000000000000000000000000",
+    "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):": "import numpy as np\n\ndef mean_absolute_error(y_true, y_pred):\n    if_____________________________________________________________",
+    "class Stack:": "class Stack:\n\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return 1\n    return"
+  }
+}

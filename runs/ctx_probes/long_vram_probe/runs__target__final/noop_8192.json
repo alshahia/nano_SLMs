@@ -1,0 +1,18 @@
+{
+  "point": "noop_8192",
+  "ctx": 8192,
+  "rope": null,
+  "factor": 1.0,
+  "window": null,
+  "sink": 4,
+  "positions": null,
+  "batch": 1,
+  "blocks": 119,
+  "batches": 2,
+  "tokens": 16384,
+  "val_loss": 3.564955,
+  "perplexity": 35.3379,
+  "quick": 2,
+  "wall_s": 4.2,
+  "peak_vram_gb": 4.383
+}

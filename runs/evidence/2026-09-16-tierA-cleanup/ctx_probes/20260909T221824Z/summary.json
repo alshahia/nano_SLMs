@@ -1,0 +1,31 @@
+{
+  "started_utc": "20260909T221824Z",
+  "points_preset": "extreme",
+  "quick_batches": null,
+  "ckpt_runs": [
+    {
+      "ckpt": "runs\\target\\final",
+      "config": "configs/target.yaml",
+      "points": [
+        {
+          "point": "w1024s4abs_16384",
+          "ctx": 16384,
+          "rope": null,
+          "factor": 1.0,
+          "window": 1024,
+          "sink": 4,
+          "positions": "absolute",
+          "batch": 1,
+          "blocks": 59,
+          "batches": 59,
+          "tokens": 966656,
+          "val_loss": 1.851194,
+          "perplexity": 6.3674,
+          "quick": null,
+          "wall_s": 1768.8,
+          "peak_vram_gb": 8.165
+        }
+      ]
+    }
+  ]
+}

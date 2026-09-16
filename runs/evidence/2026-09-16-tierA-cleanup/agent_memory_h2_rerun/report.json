@@ -1,0 +1,444 @@
+{
+  "track": "H",
+  "date": "2026-09-09T07:05:33.371720+00:00",
+  "model": "E:\\python projects\\nano_SLMs\\runs\\h2_copy_lora\\final",
+  "config": "E:\\python projects\\nano_SLMs\\configs\\sft_v2_e1.yaml",
+  "no_model": false,
+  "device": "cuda",
+  "ctx": 1024,
+  "budgets": {
+    "raw": 400,
+    "summary": 220,
+    "top_k": 3
+  },
+  "token_overhead": {
+    "summary_tokens": 0,
+    "facts_stored_tokens": 86,
+    "avg_injected_tokens_per_question": 13.3,
+    "avg_preamble_tokens_per_question": 46.2,
+    "budget_share_of_ctx_pct": 1.3
+  },
+  "session1": {
+    "turns": 12,
+    "fold_events": [],
+    "summarizer_modes": [],
+    "extractor": {
+      "prompted": 4,
+      "deterministic": 3,
+      "scripted_facts_covered": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "scripted_coverage": "6/6"
+    },
+    "raw_tokens_at_swap": 348,
+    "seconds": 8.9
+  },
+  "store_path": "data/agent_memory/store.json",
+  "facts_stored": [
+    {
+      "id": "m1",
+      "text": "My favorite programming language is Rust.",
+      "turn": 2,
+      "via": "deterministic",
+      "scripted": "f1"
+    },
+    {
+      "id": "m2",
+      "text": "The number is prime.",
+      "turn": 3,
+      "via": "prompted",
+      "scripted": "f4"
+    },
+    {
+      "id": "m3",
+      "text": "Our deploy server is called falcon and it runs on port 8081.",
+      "turn": 4,
+      "via": "deterministic",
+      "scripted": "f2"
+    },
+    {
+      "id": "m4",
+      "text": "My sister's name is Layla and she lives in Oslo.",
+      "turn": 5,
+      "via": "deterministic",
+      "scripted": "f3"
+    },
+    {
+      "id": "m5",
+      "text": "The project deadline is ISO 15.",
+      "turn": 7,
+      "via": "prompted",
+      "scripted": "f4"
+    },
+    {
+      "id": "m6",
+      "text": "The editor Neovim with the Dracana theme.",
+      "turn": 8,
+      "via": "prompted",
+      "scripted": "f5"
+    },
+    {
+      "id": "m7",
+      "text": "The wifi password is the wifi password.",
+      "turn": 10,
+      "via": "prompted",
+      "scripted": "f6"
+    }
+  ],
+  "recall": {
+    "f1": {
+      "question": "What is my favorite programming language?",
+      "expected": [
+        "rust"
+      ],
+      "fact_text": "My favorite programming language is Rust.",
+      "arms": {
+        "qa_control": {
+          "answer": "The user didn't have a user.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 34,
+          "injected_tokens": 0
+        },
+        "qa_store": {
+          "answer": "The user wants.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m1"
+          ],
+          "preamble_tokens": 53,
+          "injected_tokens": 9
+        },
+        "probe_control": {
+          "answer": "The user is a valid email.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 33,
+          "injected_tokens": 0
+        },
+        "probe_store": {
+          "answer": "The user is Rust.",
+          "matched": [
+            "rust"
+          ],
+          "pass": true,
+          "retrieved": [
+            "m1"
+          ],
+          "preamble_tokens": 52,
+          "injected_tokens": 9
+        }
+      }
+    },
+    "f2": {
+      "question": "What is our deploy server called and which port does it run on?",
+      "expected": [
+        "falcon",
+        "8081"
+      ],
+      "fact_text": "Our deploy server is called falcon and it runs on port 8081.",
+      "arms": {
+        "qa_control": {
+          "answer": "The user didn't run on.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 41,
+          "injected_tokens": 0
+        },
+        "qa_store": {
+          "answer": "The user is listening.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m3"
+          ],
+          "preamble_tokens": 70,
+          "injected_tokens": 19
+        },
+        "probe_control": {
+          "answer": "The user is not authorized.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 33,
+          "injected_tokens": 0
+        },
+        "probe_store": {
+          "answer": "The user is not authorized.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m3"
+          ],
+          "preamble_tokens": 62,
+          "injected_tokens": 19
+        }
+      }
+    },
+    "f3": {
+      "question": "What is my sister's name?",
+      "expected": [
+        "layla"
+      ],
+      "fact_text": "My sister's name is Layla and she lives in Oslo.",
+      "arms": {
+        "qa_control": {
+          "answer": "The user didn't have a user.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 35,
+          "injected_tokens": 0
+        },
+        "qa_store": {
+          "answer": "The user is Layla.",
+          "matched": [
+            "layla"
+          ],
+          "pass": true,
+          "retrieved": [
+            "m4"
+          ],
+          "preamble_tokens": 62,
+          "injected_tokens": 17
+        },
+        "probe_control": {
+          "answer": "The user is a valid user.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 34,
+          "injected_tokens": 0
+        },
+        "probe_store": {
+          "answer": "The user is Layla and sheUtil in Oslo.",
+          "matched": [
+            "layla"
+          ],
+          "pass": true,
+          "retrieved": [
+            "m4"
+          ],
+          "preamble_tokens": 61,
+          "injected_tokens": 17
+        }
+      }
+    },
+    "f4": {
+      "question": "When is the project deadline?",
+      "expected": [
+        "march 15",
+        "15 march"
+      ],
+      "fact_text": "The project deadline is March 15.",
+      "arms": {
+        "qa_control": {
+          "answer": "The project deadline is the user.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 34,
+          "injected_tokens": 0
+        },
+        "qa_store": {
+          "answer": "The project deadline is ISO 15.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m5"
+          ],
+          "preamble_tokens": 55,
+          "injected_tokens": 11
+        },
+        "probe_control": {
+          "answer": "The project deadline is the user.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 33,
+          "injected_tokens": 0
+        },
+        "probe_store": {
+          "answer": "The project deadline is ISO 15.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m5"
+          ],
+          "preamble_tokens": 54,
+          "injected_tokens": 11
+        }
+      }
+    },
+    "f5": {
+      "question": "Which code editor do I use?",
+      "expected": [
+        "neovim"
+      ],
+      "fact_text": "I use the editor Neovim with the Dracula theme.",
+      "arms": {
+        "qa_control": {
+          "answer": "The user wants I use?",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 34,
+          "injected_tokens": 0
+        },
+        "qa_store": {
+          "answer": "The editorneovim with the Dracana theme.",
+          "matched": [
+            "neovim"
+          ],
+          "pass": true,
+          "retrieved": [
+            "m6"
+          ],
+          "preamble_tokens": 57,
+          "injected_tokens": 13
+        },
+        "probe_control": {
+          "answer": "The user is not authorized.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 32,
+          "injected_tokens": 0
+        },
+        "probe_store": {
+          "answer": "The editorneovim with the Dracana theme.",
+          "matched": [
+            "neovim"
+          ],
+          "pass": true,
+          "retrieved": [
+            "m6"
+          ],
+          "preamble_tokens": 55,
+          "injected_tokens": 13
+        }
+      }
+    },
+    "f6": {
+      "question": "What is the wifi password for the office network?",
+      "expected": [
+        "pineapple42"
+      ],
+      "fact_text": "The wifi password for the office network is Pineapple42.",
+      "arms": {
+        "qa_control": {
+          "answer": "The wifi password for the house network is the wifi.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 38,
+          "injected_tokens": 0
+        },
+        "qa_store": {
+          "answer": "The wifi password is the wifi password.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m7"
+          ],
+          "preamble_tokens": 59,
+          "injected_tokens": 11
+        },
+        "probe_control": {
+          "answer": "The wifi password is not in the wifi.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [],
+          "preamble_tokens": 33,
+          "injected_tokens": 0
+        },
+        "probe_store": {
+          "answer": "The wifi password is the wifi password.",
+          "matched": [],
+          "pass": false,
+          "retrieved": [
+            "m7"
+          ],
+          "preamble_tokens": 54,
+          "injected_tokens": 11
+        }
+      }
+    }
+  },
+  "gate_recall": {
+    "required": 2,
+    "qa_store": 2,
+    "qa_control": 0,
+    "probe_store": 3,
+    "probe_control": 0,
+    "style_used": "probe",
+    "store_arm_passes": 3,
+    "control_arm_passes": 0,
+    "result": "PASS"
+  },
+  "regression": [
+    {
+      "prompt": "Write a Python function that returns the nth Fibonacci number.",
+      "plain": {
+        "ast": false,
+        "chars": 53
+      },
+      "preamble": {
+        "ast": false,
+        "chars": 30
+      }
+    },
+    {
+      "prompt": "Write a Python function that counts the vowels in a string.",
+      "plain": {
+        "ast": false,
+        "chars": 26
+      },
+      "preamble": {
+        "ast": false,
+        "chars": 30
+      }
+    },
+    {
+      "prompt": "Write a Python function that checks whether a string is a palindrome.",
+      "plain": {
+        "ast": false,
+        "chars": 31
+      },
+      "preamble": {
+        "ast": false,
+        "chars": 30
+      }
+    },
+    {
+      "prompt": "Write a Python function that merges two sorted lists into one sorted list.",
+      "plain": {
+        "ast": false,
+        "chars": 50
+      },
+      "preamble": {
+        "ast": false,
+        "chars": 30
+      }
+    }
+  ],
+  "gate_regression": {
+    "plain_ast": "0/4",
+    "preamble_ast": "0/4",
+    "result": "PASS"
+  },
+  "timings": {
+    "session1_s": 8.9,
+    "session2_s": 7.8,
+    "regression_s": 2.7
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "train_files": [
+    "train-00000-of-00003.parquet",
+    "train-00001-of-00003.parquet",
+    "train-00002-of-00003.parquet"
+  ],
+  "test_files": [
+    "test-00000-of-00001.parquet"
+  ],
+  "corpus_chars": 279415623,
+  "corpus_rows": 1045081,
+  "gate_rows": 1200,
+  "gate_exact_hits": 562,
+  "gate_mean_shingle_overlap": 0.4534,
+  "verdict": "OVERLAP-FLAGGED"
+}

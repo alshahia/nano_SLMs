@@ -1,0 +1,46 @@
+{
+  "mode": "legacy",
+  "generated_at": "2026-09-09T18:30:16+00:00",
+  "config": "data/legacy_check/legacy_fallback_test.yaml",
+  "data_mode": "stream",
+  "min_chars": 60,
+  "dedupe": true,
+  "val_fraction": 0.02,
+  "sources": [
+    {
+      "name": "definitely-not-a-real-dataset-xyz/nonexistent",
+      "config": null,
+      "target_rows": null,
+      "requested": 5,
+      "rows_seen": 0,
+      "rows_kept": 0,
+      "dups_dropped": 0,
+      "too_short": 0,
+      "train_rows": 0,
+      "val_rows": 0,
+      "error": "DatasetNotFoundError: Dataset 'definitely-not-a-real-dataset-xyz/nonexistent' doesn't exist on the Hub or cannot be accessed."
+    },
+    {
+      "name": "TheGamingMahi/TinyCode",
+      "config": null,
+      "target_rows": null,
+      "requested": 5,
+      "rows_seen": 5,
+      "rows_kept": 5,
+      "dups_dropped": 0,
+      "too_short": 0,
+      "train_rows": 4,
+      "val_rows": 1,
+      "error": null
+    }
+  ],
+  "totals": {
+    "rows_seen": 5,
+    "rows_kept": 5,
+    "dups_dropped": 0,
+    "too_short": 0,
+    "train_rows": 4,
+    "val_rows": 1,
+    "dedupe_rate": 0.0
+  }
+}

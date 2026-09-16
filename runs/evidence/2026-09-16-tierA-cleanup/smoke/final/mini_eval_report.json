@@ -1,0 +1,206 @@
+{
+  "ckpt": "runs/smoke/final",
+  "model_mode": "llm",
+  "device": "cpu",
+  "max_new_tokens": 24,
+  "timeout_s": 10.0,
+  "n_tasks": 16,
+  "n_tests": 32,
+  "pass_at_1": 0.0,
+  "test_credit": 0.0,
+  "runtime_s": 24.2,
+  "per_task": [
+    {
+      "id": "add",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert add(2, 3) == 5",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_huljocul\\candidate.py\", line 9, in <module>\n    assert add(2, 3) == 5\n           ^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_huljocul\\candidate.py\", line 2, in add\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "is_even",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert is_even(4) is True",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_88t2g74x\\candidate.py\", line 9, in <module>\n    assert is_even(4) is True\n           ^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_88t2g74x\\candidate.py\", line 2, in is_even\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "max_of_two",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert max_of_two(3, 9) == 9",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_c_2cldn2\\candidate.py\", line 9, in <module>\n    assert max_of_two(3, 9) == 9\n           ^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_c_2cldn2\\candidate.py\", line 2, in max_of_two\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "reverse_string",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert reverse_string('abc') == 'cba'",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_0ywe1syi\\candidate.py\", line 9, in <module>\n    assert reverse_string('abc') == 'cba'\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_0ywe1syi\\candidate.py\", line 2, in reverse_string\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "count_vowels",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert count_vowels('hello') == 2",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_ribiqai5\\candidate.py\", line 9, in <module>\n    assert count_vowels('hello') == 2\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_ribiqai5\\candidate.py\", line 2, in count_vowels\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "sum_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert sum_list([1, 2, 3]) == 6",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_55m021vp\\candidate.py\", line 12, in <module>\n    assert sum_list([1, 2, 3]) == 6\n           ^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_55m021vp\\candidate.py\", line 5, in sum_list\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "abs_diff",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert abs_diff(3, 10) == 7",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_cd9pk4lh\\candidate.py\", line 9, in <module>\n    assert abs_diff(3, 10) == 7\n           ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_cd9pk4lh\\candidate.py\", line 2, in abs_diff\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "last_char",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert last_char('py') == 'y'",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_0z3snmg0\\candidate.py\", line 9, in <module>\n    assert last_char('py') == 'y'\n           ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_0z3snmg0\\candidate.py\", line 2, in last_char\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "repeat",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert repeat('ab', 3) == 'ababab'",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_kdmpbtl3\\candidate.py\", line 9, in <module>\n    assert repeat('ab', 3) == 'ababab'\n           ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_kdmpbtl3\\candidate.py\", line 2, in repeat\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "celsius_to_fahrenheit",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert abs(celsius_to_fahrenheit(100) - 212) < 1e-9",
+          "error": " \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_cr1xc7li\\candidate.py\", line 4, in <module>\n    assert abs(celsius_to_fahrenheit(100) - 212) < 1e-9\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_cr1xc7li\\candidate.py\", line 2, in celsius_to_fahrenheit\n    return________________________\nNameError: name 'return________________________' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "string_length",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert string_length('code') == 4",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_r9bo6hbz\\candidate.py\", line 9, in <module>\n    assert string_length('code') == 4\n           ^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_r9bo6hbz\\candidate.py\", line 2, in string_length\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "min_in_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert min_in_list([4, 2, 9]) == 2",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_cii2vwoz\\candidate.py\", line 9, in <module>\n    assert min_in_list([4, 2, 9]) == 2\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_cii2vwoz\\candidate.py\", line 2, in min_in_list\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "double_list",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert double_list([1, 2]) == [2, 4]",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_v02gzsuk\\candidate.py\", line 9, in <module>\n    assert double_list([1, 2]) == [2, 4]\n           ^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_v02gzsuk\\candidate.py\", line 2, in double_list\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "greeting",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert greeting('Ada') == 'Hello, Ada'",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_s8pcodjl\\candidate.py\", line 9, in <module>\n    assert greeting('Ada') == 'Hello, Ada'\n           ^^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_s8pcodjl\\candidate.py\", line 2, in greeting\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "is_positive",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert is_positive(5) is True",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_vxv6t_5w\\candidate.py\", line 9, in <module>\n    assert is_positive(5) is True\n           ^^^^^^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_vxv6t_5w\\candidate.py\", line 2, in is_positive\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    },
+    {
+      "id": "square",
+      "passed": false,
+      "tests_passed": 0,
+      "tests_total": 2,
+      "errors": [
+        {
+          "test": "assert square(7) == 49",
+          "error": "Traceback (most recent call last):\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_k8dow_do\\candidate.py\", line 9, in <module>\n    assert square(7) == 49\n           ^^^^^^^^^\n  File \"C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\minieval_k8dow_do\\candidate.py\", line 2, in square\n    return1\nNameError: name 'return1' is not defined\n"
+        }
+      ]
+    }
+  ]
+}

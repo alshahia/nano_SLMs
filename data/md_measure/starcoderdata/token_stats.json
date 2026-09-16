@@ -1,0 +1,14 @@
+{
+  "tag": "starcoderdata",
+  "rows": 2000,
+  "total_tokens": 4691480,
+  "tok_per_row_mean": 2345.7,
+  "median": 921,
+  "p90": 5317,
+  "min": 48,
+  "max": 146310,
+  "total_chars": 14391799,
+  "tok_per_char": 0.326,
+  "seconds": 8.2,
+  "tokenizer": "codellama/CodeLlama-7b-hf"
+}

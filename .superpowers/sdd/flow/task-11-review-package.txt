@@ -1,0 +1,546 @@
+=== COMMITS ===
+ec891c7 flow: infer render-only shortcut node
+=== STAT ===
+ flow/src/App.tsx                |   2 +
+ flow/src/InferHandoffDialog.tsx |  56 ++++++++++++++++++
+ flow/src/inferHandoff.test.ts   | 124 ++++++++++++++++++++++++++++++++++++++++
+ flow/src/inferHandoff.ts        |  62 ++++++++++++++++++++
+ flow/src/nodes/PipelineNode.css |  31 ++++++++++
+ flow/src/nodes/PipelineNode.tsx |  31 +++++++++-
+ flow/src/store.test.ts          |  35 ++++++++++++
+ flow/src/store.ts               |   9 +++
+ 8 files changed, 347 insertions(+), 3 deletions(-)
+=== DIFF ===
+diff --git a/flow/src/App.tsx b/flow/src/App.tsx
+index b17258c..4cb356e 100644
+--- a/flow/src/App.tsx
++++ b/flow/src/App.tsx
+@@ -1,16 +1,17 @@
+ import { useEffect, useRef, useState } from "react";
+ import Palette from "./Palette";
+ import FlowCanvas from "./FlowCanvas";
+ import Inspector from "./Inspector";
+ import { useFlowStore, isValidFlowName } from "./store";
+ import { api, errorMessage } from "./api";
++import InferHandoffDialog from "./InferHandoffDialog";
+ import "./App.css";
+ 
+ /* Throttle window: a focus event refetches the registry at most once per
+  * this window (the mount fetch itself counts as an attempt). */
+ const REGISTRY_REFETCH_THROTTLE_MS = 5000;
+ 
+ /** Cache the /api/nodes registry snapshot in the store on mount; on
+  * failure record the error so Palette falls back to its static copy.
+  * A refetch is also attempted whenever the window regains focus (at most
+  * once per throttle window) so a late-starting backend heals without a
+@@ -48,20 +49,21 @@ export default function App() {
+   }, [setRegistry, setRegistryError]);
+ 
+   return (
+     <div className="app-root">
+       <Toolbar />
+       <div className="shell">
+         <Palette />
+         <FlowCanvas />
+         <Inspector />
+       </div>
++      <InferHandoffDialog />
+     </div>
+   );
+ }
+ 
+ /** Header toolbar. Open = GET /api/flows + picker modal -> GET the picked
+  * flow -> store.openFlow (which also resets the xyflow projection via
+  * setGraph; an empty projection just means an unmeasured canvas, visually
+  * benign). Save = modal name prompt with client-side slug validation ->
+  * store.saveFlow (PUT /api/flows/{name}). Errors surface through the
+  * existing store.error toast channel (rendered in FlowCanvas). Both are
+diff --git a/flow/src/InferHandoffDialog.tsx b/flow/src/InferHandoffDialog.tsx
+new file mode 100644
+index 0000000..0aa79cb
+--- /dev/null
++++ b/flow/src/InferHandoffDialog.tsx
+@@ -0,0 +1,56 @@
++import { useEffect } from "react";
++import { useFlowStore } from "./store";
++import { attemptWebuiOpen, inferHandoffDialog, WEBUI_URL } from "./inferHandoff";
++
++/** Task 11 infer-handoff dialog. Rendered by App whenever the store's
++ * inferHandoffNodeId is non-null (set by PipelineNode's "Open in webui
++ * Chat" click). ALWAYS shown - the window.open attempt to WEBUI_URL is
++ * best-effort: a blocked popup or a not-running webui still leaves the
++ * user with the manual launch instructions below (honest MVP; there is
++ * no server handoff endpoint by design). */
++export default function InferHandoffDialog() {
++  const nodeId = useFlowStore((s) => s.inferHandoffNodeId);
++  const dismiss = useFlowStore((s) => s.dismissInferHandoff);
++  /* Attempt the popup only when the dialog actually opens (the node id
++   * going non-null), one attempt per open - the component stays mounted
++   * for the whole app, so an unconditional effect would fire on load. */
++  useEffect(() => {
++    if (nodeId !== null) attemptWebuiOpen();
++  }, [nodeId]);
++  if (nodeId === null) return null;
++  const info = inferHandoffDialog();
++  return (
++    <div className="modal-backdrop" onClick={dismiss}>
++      <div
++        className="modal"
++        role="dialog"
++        aria-label="Open inference in webui Chat"
++        onClick={(e) => e.stopPropagation()}
++      >
++        <p className="modal-title">Open in webui Chat (node {nodeId})</p>
++        <p className="modal-note">
++          The flow editor does not run the webui itself. The checkpoint
++          produced by this pipeline is {info.checkpointNote} - start the
++          webui manually, open its {info.chatTab} tab there and load the
++          checkpoint the connected train node wrote.
++        </p>
++        <p className="modal-note">
++          Manual launch:
++          <code className="infer-handoff-cmd">{info.launchCommand}</code>
++          then open{" "}
++          <a href={info.url} target="_blank" rel="noreferrer">
++            {WEBUI_URL}
++          </a>
++        </p>
++        <p className="honesty-label">
++          A new tab to {WEBUI_URL} was attempted just now - popups may be
++          blocked and the webui may not be running (a browser error page in
++          that tab is the expected, honest MVP behavior).
++        </p>
++        <div className="modal-actions">
++          <button onClick={dismiss}>Close</button>
++        </div>
++      </div>
++    </div>
++  );
++}
+diff --git a/flow/src/inferHandoff.test.ts b/flow/src/inferHandoff.test.ts
+new file mode 100644
+index 0000000..533515b
+--- /dev/null
++++ b/flow/src/inferHandoff.test.ts
+@@ -0,0 +1,124 @@
++import { describe, it, expect, afterEach, beforeEach, vi } from "vitest";
++import {
++  WEBUI_URL,
++  INFER_CHECKPOINT_NOTE,
++  inferHandoffDialog,
++  inferNodeHasChatButton,
++  attemptWebuiOpen,
++} from "./inferHandoff";
++import { useFlowStore, validateConnect, connectReducer, toXYNodes, type RegistrySnapshot } from "./store";
++
++/* Task 11 — infer render-only shortcut node: pure pieces + click path. */
++
++const REGISTRY: RegistrySnapshot = {
++  valid_kinds: ["dataset", "prepare", "tokenize", "train", "eval", "infer"],
++  nodes: {
++    ...Object.fromEntries([]),
++  } as RegistrySnapshot["nodes"],
++  gates: {},
++};
++// Minimal slice for the connect test (train -> infer ckpt-dir edge).
++REGISTRY.nodes = {
++  train: {
++    ports: [
++      { name: "shard-dir", direction: "in", type: "shard-dir" },
++      { name: "ckpt-dir", direction: "out", type: "ckpt-dir" },
++    ],
++    props: [],
++    numeric_props: [],
++    gate: "gpu",
++  },
++  infer: {
++    ports: [{ name: "ckpt-dir", direction: "in", type: "ckpt-dir" }],
++    props: [],
++    numeric_props: [],
++    gate: "gpu/cpu",
++  },
++} as RegistrySnapshot["nodes"];
++REGISTRY.gates = { train: "gpu", infer: "gpu/cpu" };
++
++describe("Task 11 infer shortcut pure pieces", () => {
++  it("WEBUI_URL is the webui/app.py launch default (CHAT_PORT 7860)", () => {
++    expect(WEBUI_URL).toBe("http://127.0.0.1:7860");
++  });
++
++  it("checkpoint note is the honest no-fabricated-path copy", () => {
++    expect(INFER_CHECKPOINT_NOTE).toBe("checkpoint: see connected input node's output");
++    expect(INFER_CHECKPOINT_NOTE).not.toMatch(/runs\//);
++  });
++
++  it("dialog info carries the manual venv launch instructions", () => {
++    const info = inferHandoffDialog();
++    expect(info.launchCommand).toContain("webui/app.py");
++    expect(info.launchCommand).toContain(".venv/Scripts/python.exe");
++    expect(info.checkpointNote).toBe(INFER_CHECKPOINT_NOTE);
++  });
++
++  it("inferNodeHasChatButton is true only for kind=infer (PipelineNode render checker)", () => {
++    for (const k of ["infer", "dataset", "prepare", "tokenize", "train", "eval"]) {
++      expect(inferNodeHasChatButton(k)).toBe(k === "infer");
++    }
++  });
++
++  it("toXYNodes keeps the infer node's single in-port (wire-consistent F5)", () => {
++    const xy = toXYNodes(
++      { nodes: [{ id: "n1", kind: "infer", props: {}, position: { x: 0, y: 0 } }], edges: [] },
++      REGISTRY,
++    );
++    const ports = xy[0].data.ports.filter((p) => p.direction === "in");
++    expect(ports).toHaveLength(1);
++    expect(ports[0].type).toBe("ckpt-dir");
++  });
++
++  it("train -> infer ckpt-dir edge stays valid (connect reducer)", () => {
++    const graph = {
++      nodes: [
++        { id: "n1", kind: "train", props: {}, position: { x: 0, y: 0 } },
++        { id: "n2", kind: "infer", props: {}, position: { x: 1, y: 0 } },
++      ],
++      edges: [],
++    };
++    const res = connectReducer(REGISTRY, graph, {
++      source: "n1", target: "n2", sourceHandle: "ckpt-dir", targetHandle: "ckpt-dir",
++    });
++    expect(res.error).toBeNull();
++    expect(validateConnect(REGISTRY, res.graph, "n1", "n2", "ckpt-dir", "ckpt-dir")).toEqual([]);
++  });
++});
++
++describe("Task 11 handoff click path (store + window.open spy)", () => {
++  /* node environment: no real window -> stub the global the click path
++   * uses; the spy then asserts the attempt exactly as in a browser. */
++  let fakeWindow: { open: ReturnType<typeof vi.fn> };
++  beforeEach(() => {
++    fakeWindow = { open: vi.fn(() => null) };
++    vi.stubGlobal("window", fakeWindow);
++    useFlowStore.setState({ inferHandoffNodeId: null, error: null });
++  });
++
++  afterEach(() => {
++    vi.unstubAllGlobals();
++  });
++
++  it("openInferHandoff sets the dialog node id and the click attempts window.open(WEBUI_URL)", () => {
++    const spy = vi.spyOn(window, "open"); // stub returns null = popup blocked
++    // The click path: openInferHandoff(nodeId) + attemptWebuiOpen() — the
++    // dialog shows MANUAL instructions even though open() returned null.
++    useFlowStore.getState().openInferHandoff("n1");
++    const attempt = attemptWebuiOpen();
++    expect(spy).toHaveBeenCalledOnce();
++    expect(spy).toHaveBeenCalledWith(WEBUI_URL, "_blank");
++    expect(attempt).toBeNull();
++    expect(useFlowStore.getState().inferHandoffNodeId).toBe("n1");
++    useFlowStore.getState().dismissInferHandoff();
++    expect(useFlowStore.getState().inferHandoffNodeId).toBeNull();
++  });
++
++  it("attemptWebuiOpen forwards a successful open in the same shape", () => {
++    const fakeWin = { focus: () => {} } as unknown as Window;
++    fakeWindow.open.mockImplementation(() => fakeWin);
++    const spy = vi.spyOn(window, "open");
++    expect(attemptWebuiOpen()).toBe(fakeWin);
++    expect(spy).toHaveBeenCalledWith(WEBUI_URL, "_blank");
++  });
++});
+diff --git a/flow/src/inferHandoff.ts b/flow/src/inferHandoff.ts
+new file mode 100644
+index 0000000..8db3c71
+--- /dev/null
++++ b/flow/src/inferHandoff.ts
+@@ -0,0 +1,62 @@
++/**
++ * Task 11 — infer node render-only shortcut + handoff dialog.
++ *
++ * Honest MVP: no server endpoint. Clicking "Open in webui Chat" always
++ * (1) opens the store-driven dialog with the manual webui launch
++ * instructions and (2) attempts window.open(WEBUI_URL, "_blank"). If the
++ * popup is blocked or the webui is not running, the dialog is the
++ * fallback the user still sees; the new tab may show a browser error —
++ * that is the documented, acceptable MVP behavior (brief, Orchestrator
++ * addition).
++ */
++
++/** Default webui URL. Read (not invented) from webui/app.py:
++ * CHAT_PORT = 7860 (app.py line 35) and the launch block uses
++ * server_name="127.0.0.1" with --port default CHAT_PORT (lines 1534,
++ * 1551-1552). Kept as ONE clearly-named module constant on purpose. */
++export const WEBUI_URL = "http://127.0.0.1:7860";
++
++/** Instruction shown on the infer node body (honest, no fabricated
++ * path): the webui-recognized checkpoint path is not determinable
++ * client-side — the ckpt-dir value arrives as the connected edge from
++ * the upstream node, not as node props. */
++export const INFER_CHECKPOINT_NOTE =
++  "checkpoint: see connected input node's output";
++
++export interface InferHandoffDialogInfo {
++  url: string;
++  /** venv command line to start webui/app.py by hand (AGENTS.md §3
++   * venv rule; every Python run goes through the project venv). */
++    launchCommand: "& ./.venv/Scripts/python.exe webui/app.py",
++  checkpointNote: string;
++  /** Tab label the user opens after launching the webui. */
++  chatTab: string;
++}
++
++/** Pure builder for the dialog content (exported for direct unit
++ * testing — no component render needed). */
++export function inferHandoffDialog(): InferHandoffDialogInfo {
++  return {
++    url: WEBUI_URL,
++    launchCommand: "& ./.venv/Scripts/python.exe webui/app.py",
++    checkpointNote: INFER_CHECKPOINT_NOTE,
++    chatTab: "Chat",
++  };
++}
++
++/** Pure render checker: does this node kind show the render-only
++ * "Open in webui Chat" shortcut? Exported so PipelineNode's conditional
++ * render is unit-testable without a DOM render (@testing-library is
++ * deliberately not available). */
++export function inferNodeHasChatButton(kind: string): boolean {
++  return kind === "infer";
++}
++
++/** Best-effort open of the default webui location in a new tab via
++ * window.open(WEBUI_URL, "_blank"). The result is window.open's return
++ * (null when the popup is blocked); the dialog is ALWAYS shown
++ * regardless. Exported so the click path is unit-testable via
++ * vi.spyOn(window, "open"). */
++export function attemptWebuiOpen(win: Window = window): Window | null {
++  return win.open(WEBUI_URL, "_blank");
++}
+diff --git a/flow/src/nodes/PipelineNode.css b/flow/src/nodes/PipelineNode.css
+index 6924784..d68651e 100644
+--- a/flow/src/nodes/PipelineNode.css
++++ b/flow/src/nodes/PipelineNode.css
+@@ -63,10 +63,41 @@
+   width: 8px;
+   height: 8px;
+   position: static;
+   transform: none;
+   transform: translate(0, 0);
+ }
+ 
+ .pipeline-port-label {
+   color: #555;
+ }
++
++.pipeline-node-infer {
++  margin-top: 6px;
++  display: flex;
++  flex-direction: column;
++  gap: 4px;
++}
++
++.infer-note {
++  font-size: 10px;
++  color: #666;
++}
++
++.infer-open-webui {
++  font-size: 11px;
++  padding: 2px 6px;
++  cursor: pointer;
++}
++
++/* window.open attempt inside the dialog body */
++.infer-handoff-cmd {
++  display: block;
++  font-family: Consolas, monospace;
++  font-size: 11px;
++  padding: 4px;
++  background: #eee;
++  border: 1px solid #ccc;
++  border-radius: 3px;
++  overflow: auto;
++}
++
+diff --git a/flow/src/nodes/PipelineNode.tsx b/flow/src/nodes/PipelineNode.tsx
+index 303a777..9391437 100644
+--- a/flow/src/nodes/PipelineNode.tsx
++++ b/flow/src/nodes/PipelineNode.tsx
+@@ -1,22 +1,33 @@
+ import { memo } from "react";
+ import { Handle, Position, type NodeProps } from "@xyflow/react";
+-import type { PipelineNodeData, PipelineNode } from "../store";
++import type { PipelineNode } from "../store";
++import { useFlowStore } from "../store";
++import { INFER_CHECKPOINT_NOTE, WEBUI_URL, inferNodeHasChatButton } from "../inferHandoff";
+ 
+ import "./PipelineNode.css";
+ 
+ /** xyflow node renderer: title, prop badges, run-state dot, and one
+  * Handle per registered port (direction -> Handle type). Port metadata
+- * comes from the registry snapshot cached in the store (via /api/nodes). */
+-function PipelineNode({ data, selected }: NodeProps<PipelineNode>) {
++ * comes from the registry snapshot cached in the store (via /api/nodes).
++ *
++ * Task 11 infer node (render-only shortcut): kind=infer nodes get a
++ * visible "Open in webui Chat" button plus the honest "checkpoint:" note
++ * (the webui-recognized checkpoint path is NOT determinable client-side
++ * — the ckpt-dir value arrives only as the connected edge, never as
++ * node props). The click calls store.openInferHandoff, which App's
++ * dialog consumes (manual instructions) and which attempts
++ * window.open(WEBUI_URL) to the default webui location. */
++function PipelineNode({ id, data, selected }: NodeProps<PipelineNode>) {
+   const ports = data.ports ?? [];
+   const propEntries = Object.entries(data.props ?? {});
++  const openInfer = useFlowStore((s) => s.openInferHandoff);
+   /* Task 10 dot wiring: toXYNodes threads the store's runStatus into every
+    * node's data (honest MVP simplification — the backend runs one
+    * whole-graph pipeline, so "running"/"done"/"error" are set-wide, not
+    * per node; the tooltip shows the backend exit_code at terminal states).
+    * Per-node phases are a future engine feature. */
+   const state = data.runState ?? "idle";
+   const terminal = state === "done" || state === "error";
+   const title =
+     "run state: " + state +
+     (terminal && data.exitCode != null ? " (exit code " + String(data.exitCode) + ")" : "");
+@@ -28,20 +39,34 @@ function PipelineNode({ data, selected }: NodeProps<PipelineNode>) {
+       </div>
+       {propEntries.length > 0 && (
+         <div className="pipeline-node-props">
+           {propEntries.map(([k, v]) => (
+             <span key={k} className="prop-badge">
+               {k}={String(v)}
+             </span>
+           ))}
+         </div>
+       )}
++      {/* Task 11: render-only infer shortcut, only for kind=infer. */}
++      {inferNodeHasChatButton(data.kind) && (
++        <div className="pipeline-node-infer">
++          <div className="infer-note">{INFER_CHECKPOINT_NOTE}</div>
++          <button
++            type="button"
++            className="infer-open-webui"
++            title={"attempt window.open(" + WEBUI_URL + ', "_blank") — manual instructions always shown'}
++            onClick={() => openInfer?.(id)}
++          >
++            Open in webui Chat
++          </button>
++        </div>
++      )}
+       <div className="pipeline-node-ports">
+         {ports.map((p) => {
+           const isIn = p.direction === "in";
+           const label = p.name;
+           return (
+             <div key={p.name} className={"pipeline-port pipeline-port-" + p.direction}>
+               {isIn ? <span className="pipeline-port-label">{label}</span> : null}
+               <Handle id={p.name} type={isIn ? "target" : "source"} position={isIn ? Position.Left : Position.Right} isConnectable={true} />
+               {!isIn ? <span className="pipeline-port-label">{label}</span> : null}
+             </div>
+diff --git a/flow/src/store.test.ts b/flow/src/store.test.ts
+index 716e6c8..b04ae35 100644
+--- a/flow/src/store.test.ts
++++ b/flow/src/store.test.ts
+@@ -1186,10 +1186,45 @@ describe("validate success ack (MISSING-1): OK: toast marker", () => {
+ 
+   it("an error toast never carries the OK: marker", async () => {
+     vi.stubGlobal("fetch", vi.fn(async () =>
+       new Response(JSON.stringify({ ok: false, errors: ["bad graph"] }), { status: 200 }),
+     ));
+     const ok = await useFlowStore.getState().validateFlow();
+     expect(ok).toBe(false);
+     expect(useFlowStore.getState().error?.startsWith("OK:")).toBe(false);
+   });
+ });
++
++/* ------------------------------------------------------------------ */
++/* Task 11: infer render-only shortcut node (store routing + pure      */
++/* rendering pieces; window.open via vi.spyOn - no @testing-library).  */
++/* ------------------------------------------------------------------ */
++
++describe("Task 11 infer handoff (store slice)", () => {
++  beforeEach(() => {
++    useFlowStore.setState({
++      graph: { nodes: [], edges: [] },
++      registry: REGISTRY,
++      inferHandoffNodeId: null,
++      error: null,
++    });
++  });
++
++  it("addNode routes kind=infer with its single ckpt-dir in-port", () => {
++    const id = useFlowStore.getState().addNode("infer", { x: 1, y: 2 });
++    expect(id).toBe("n1");
++    const node = useFlowStore.getState().graph.nodes[0];
++    expect(node.kind).toBe("infer");
++    const xy = toXYNodes(useFlowStore.getState().graph, REGISTRY);
++    expect(xy[0].data.ports).toEqual([
++      { name: "ckpt-dir", direction: "in", type: "ckpt-dir" },
++    ]);
++  });
++
++  it("openInferHandoff / dismissInferHandoff route the dialog flag", () => {
++    useFlowStore.getState().openInferHandoff("n9");
++    expect(useFlowStore.getState().inferHandoffNodeId).toBe("n9");
++    useFlowStore.getState().dismissInferHandoff();
++    expect(useFlowStore.getState().inferHandoffNodeId).toBeNull();
++  });
++});
++
+diff --git a/flow/src/store.ts b/flow/src/store.ts
+index b63679e..869069d 100644
+--- a/flow/src/store.ts
++++ b/flow/src/store.ts
+@@ -138,20 +138,24 @@ export interface FlowState {
+   /** Slug of the graph as saved/opened (null while purely unsaved). Run
+    * wiring PUT-saves under this name; Validate uses it for meta.name
+    * (choice: an unsaved graph validates as meta.name "untitled" —
+    * TOCTOU-free, the server validates the document, not the slug). */
+   currentFlowName: string | null;
+   /** Graph document the server last accepted via POST /api/validate —
+    * the raw material for the read-only Preview summary card. */
+   validatedDoc: FlowDocument | null;
+   /** Confirmation line from the last successful Stop (STOP flag path). */
+   stopInfo: string | null;
++  /** Task 11 infer-handoff dialog state. */
++  inferHandoffNodeId: string | null;
++  openInferHandoff: (nodeId: string) => void;
++  dismissInferHandoff: () => void;
+   setGraph: (g: Graph) => void;
+   setSelection: (id: string | null) => void;
+   setInspectorTab: (t: InspectorTab) => void;
+   setRunStatus: (s: RunStatus | null) => void;
+   setPaletteCollapsed: (c: boolean) => void;
+   setInspectorCollapsed: (c: boolean) => void;
+   setRegistry: (r: RegistrySnapshot) => void;
+   setRegistryError: (e: string | null) => void;
+   setError: (e: string | null) => void;
+   /** Task 10 wiring: validate the UNSAVED graph (POST /api/validate),
+@@ -493,22 +497,27 @@ export const useFlowStore = create<FlowState>((set, get) => ({
+   inspectorTab: "properties",
+   runStatus: null,
+   paletteCollapsed: false,
+   inspectorCollapsed: false,
+   registry: null,
+   registryError: null,
+   error: null,
+   currentFlowName: null,
+   validatedDoc: null,
+   stopInfo: null,
++  inferHandoffNodeId: null,
+ 
+   setGraph: (graph) => set({ graph, projection: [], validatedDoc: null }),
++  // Task 11 infer-handoff dialog slice (pure, reducer-safe; see
++  // src/inferHandoff.ts for the rendered content).
++  openInferHandoff: (nodeId) => set({ inferHandoffNodeId: nodeId }),
++  dismissInferHandoff: () => set({ inferHandoffNodeId: null }),
+   updateNodeProps: (id, props) => {
+     const g = get();
+     const next = updateNodePropsReducer(g.graph, id, props);
+     // Unknown id keeps the same graph object -> no state churn.
+     // Any real graph edit invalidates the cached validatedDoc so the
+     // Preview card can never claim freshness over a stale document
+     // (T10 review IMPORTANT-2).
+     if (next !== g.graph) set({ graph: next, validatedDoc: null });
+   },
+   openFlow: async (name) => {
