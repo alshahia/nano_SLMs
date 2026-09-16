@@ -52,8 +52,8 @@ def main():
     if repl:
         print("Type/paste Arabic (one sentence per line). 'q' or Ctrl+Z+Enter quits.", file=sys.stderr)
     for line in iter_lines(args, repl):
-        bare = unicodedata.normalize("NFC", line.strip())
-        if not bare:
+        bare = unicodedata.normalize("NFC", B.strip_marks(line))
+        if not bare.strip():
             continue
         if line.strip().lower() == "q":
             break
