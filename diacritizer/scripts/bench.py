@@ -88,6 +88,18 @@ def load_pairs(src, ctx):
             if ok(bare):
                 yield bare, [ref]
         return
+    if src == "abdou_test":
+        # HELD-OUT control: abdou test-00000 split, NEVER used in any training
+        # (E-17 registered). Columns: non_vocalized (bare) / vocalized (gold).
+        import pandas as pd
+        df = pd.read_parquet(RAW / "abdou_tashkeel" / "data" /
+                             "test-00000-of-00001.parquet")
+        for _, r in df.iterrows():
+            gold = unicodedata.normalize("NFC", str(r["vocalized"]))
+            if not ok(gold):
+                continue
+            yield strip_marks(str(r["non_vocalized"])) or strip_marks(gold), [gold]
+        return
     if src == "sadeed25":
         import pandas as pd
         df = pd.read_parquet(RAW / "sadeed_25" / "sadeed25.parquet")
@@ -126,7 +138,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", required=True, help="checkpoint dir OR final dir")
     ap.add_argument("--src", required=True,
-                    choices=["fadel_test", "sadeed25", "wikinews2024", "wikinews2014"])
+                    choices=["fadel_test", "sadeed25", "wikinews2024",
+                             "wikinews2014", "abdou_test"])
     ap.add_argument("--out", required=True, help="prediction file (1 line/sent)")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--config", default=None,

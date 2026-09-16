@@ -29,6 +29,16 @@ The table says the Fadel-only specialist dominates the classical gates (fadel_te
 
 Arm B beats arm A on ALL four gates at the matched step; val_loss favored A -> the in-run gate probe is the correct model-selection signal. Arm-B@2500 adopted as the final-model recipe (stage-1 LM pretrain -> reset-last-2 warm fine-tune, stop at the gate peak via gate_eval watch).
 
+## E-17 FINAL MODEL (whole-corpus LM init, 2026-09-15, pwsh-2)
+
+| model | fadel_test | sadeed25 | wikinews2024* | wikinews2014 |
+|---|---|---|---|---|
+| stage2final @2500 (v4-LM warm init, reset-last-2, probe PEAK) | 34.9 | 47.8 | 57.5 | 49.6 |
+| stage2b2500 (previous gold, small-LM init) | 33.2 | 45.7 | 57.6 | 49.0 |
+| stage2final @8000 run-end (val-selected — WRONG pick) | 42.5 | 54.3 | 59.8 | 53.5 |
+
+Verdict: the 4x-bigger whole-corpus stage-1 LM pretrain (370 M chars, wn2024 excluded, abdou test split held out) did NOT beat the small-LM gold — clean-gate means 42.7 vs 42.6, a statistical wash (slightly worse). Consistent with E-15/E-16: data breadth/domain routing, not init scale, is the frontier. Val_loss favored the run-end weights (all 4 gates clearly worse there, DER_mean 46.5 vs 44.1) — the in-run gate probe again caught the overfit and `best_gate_weights.pt` (@2500) is the adopted final model, never the run-end snapshot. Held-out abdou test-00000 eval (15,091 sentences / 41,378 lines, never trained by ANY model): **abdou_test DER 49.4 (nocase 33.3) vs gold 41.6 (nocase 30.4)** — the whole-corpus init LOSES the held-out test by 7.8 DER points. The previous gold (stage2b2500) therefore remains the deployed FINAL model; stage2final@2500 is archived as a matched experiment.
+
 ## Provenance
 
 - Numbers for **v2b, v2d28, b65, fadel_spec** are **ledger-recorded** (`research/EXPERIMENTS.md` rows E-12/E-13/E-14/H arm A); no v2d28/v2b/b65/fadel_spec pred datasets exist in SCRATCH to re-verify — scores are documented values from prior scoring runs and left as-is per the reporting policy.

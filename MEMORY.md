@@ -399,6 +399,8 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 
  59. **Param-math anchors belong to TESTS, not comments** (2026-09-14, F2 66eaa28): the dense-formula engine's totals (nano 226,526,208 / SmolLM2 134,515,008) are pinned as exact-integer vitest anchors in BOTH viz (`pnpm test`) and flow (`src/model/paramMath.test.ts`), and the committed decoder graphs re-assert them via the walker (`acceptance.test.ts`). When porting math across projects, port formulas + tests together; the first T3 run caught lmHead pricing the untied head over the OUTPUT vocab-d instead of the HIDDEN input-d precisely because the anchor test disagreed.
 
+ 60. **Pretrain-init scale is NOT the final-model lever — a fresh held-out test sins against portfolio thinking** (2026-09-15/16, E-17): a 4x-bigger whole-corpus stage-1 LM (370 M chars incl abdou/sadeed/qcri FULL, wn2024 excluded, abdou TEST split never touched) warm-started the adopted reset-last-2 recipe and produced a statistical wash on the 4 standing gates (clean mean 42.7 vs gold 42.6) and a decisive LOSS on the never-trained abdou test-00000 split (DER 49.4 vs gold 41.6, 15,091 sentences). The small-LM gold (stage2b2500) REMAINS the deployed final model. Again: val_loss favored run-end weights while gates favored the @2500 probe peak — the gate watchdog, not val, picked correctly in three consecutive runs (stage2b/stage2final). Rule: judge init/model changes ONLY on external gates + a never-trained held-out split; budge nothing on val.
+
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF
