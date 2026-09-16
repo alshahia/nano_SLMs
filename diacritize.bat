@@ -27,4 +27,6 @@ REM Single-GPU guard: warn (not block) if a training job is chewing the GPU.
 tasklist /FI "IMAGENAME eq python.exe" 2>nul | findstr /I "python" >nul && echo [warn] A python process is running - if it is a TRAINING job, wait for it to finish first (single-GPU rule).
 
 ".venv\Scripts\python.exe" -X utf8 diacritizer\scripts\diacritize.py %*
+echo.
+echo [diacritize.bat session ended - exit code %errorlevel%]
 pause

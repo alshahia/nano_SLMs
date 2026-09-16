@@ -45,17 +45,20 @@ def main():
     model.eval()
     print(f"[loaded] {ck.name} step={snap.get('step', '?')} params={sum(p.numel() for p in model.parameters())}", file=sys.stderr)
 
-    repl = not (args.text or args.file) and sys.stdin.isatty()
+    # REPL whenever no explicit input source is given. Do NOT trust
+    # sys.stdin.isatty() - it reports False in some double-click console
+    # sessions (that bug made the bat look like it did nothing).
+    repl = not (args.text or args.file)
     if repl:
-        print("Enter Arabic text (one sentence per line), quit on EOF (Ctrl+Z + Enter) or 'q'.", file=sys.stderr)
+        print("Type/paste Arabic (one sentence per line). 'q' or Ctrl+Z+Enter quits.", file=sys.stderr)
     for line in iter_lines(args, repl):
         bare = unicodedata.normalize("NFC", line.strip())
         if not bare:
             continue
-        if repl and line.strip().lower() == "q":
+        if line.strip().lower() == "q":
             break
         print(B.predict_bare(model, bare, ctx, device))
-        if repl:
+        if repl and sys.stdin.isatty():
             print("", file=sys.stderr)  # fresh line after each answer
 
 
@@ -65,12 +68,12 @@ def iter_lines(args, repl):
     elif args.file:
         yield from Path(args.file).read_text(encoding="utf-8").splitlines()
     elif repl:
+        # input() reads the console prompt AND works piped (piped line first,
+        # then EOFError ends the stream) - so keep one code path for both.
         while True:
             try:
                 line = input("arabic> ")
             except EOFError:
-                break
-            if line.strip().lower() == "q":
                 break
             yield line
     else:
@@ -79,4 +82,10 @@ def iter_lines(args, repl):
 
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
-    main()
+    try:
+        main()
+    except Exception:
+        import traceback
+        traceback.print_exc()
+        print("[diacritize.py crashed - read the traceback above]", file=sys.stderr)
+        input("press Enter to close...")
