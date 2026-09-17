@@ -1164,6 +1164,16 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - NEXT on resume: NOTHING owed by this track - experiment COMPLETE, report written, TASKS row 49 = done. Drill scratch remains deleted; arm tee logs arm_<name>_tee.txt at repo root remain on disk. Weights stay LOCAL per AGENTS s5.
 - NEXT on resume: read .superpowers/sdd/mounting/progress.md FIRST (ledger owns per-arm status), then run the exact zero-flag command of the interrupted arm; after all five arms: Step 6.2 independence evals + research/mounting_ab_report.md + TASKS row 49 / this HANDOFF section update (Step 6.3). Arm tee logs arm_<name>_tee.txt at repo root are progress-bar noise — numeric evidence = final/train_summary.json + tfevents.
 
+### 2026-09-17 — E-23d S4: BiLSTM vs our-arch equal-data A/B -> NOT adopted
+
+- S4 (E-23 plan, user-approved) executed to close: ZM BiLSTM (Embed128 -> BiLSTM 3x256 + Bahdanau attention, 4,498,831 params) reimplemented into OUR I/O contract (diacritizer/scripts/e23_bilstm_model.py; per-char [B,ctx,15] logits) so the exact bench/gate/CSV plumbing of every arm applies.
+- Equal budget = arm C exactly: batch 32, 2500 steps, fp16 autocast, AdamW wd 0.1 on v3q tokens. Gate CSV: runs/diac/e23d_bilstm_lr1e-3/gate_eval.csv.
+- lr scan at constant budget: our micro 4e-4 STALLS the LSTM (loss ~1.0 at 500, word-der ~0.997 all-bare luck); 1e-4 no-learn; ZM-native 1e-3 chosen (native hyperparams from vendored config: BASELINE lr 1e-3, grad clip).
+- Verdict: 45.77/58.09/62.90/56.55, mean 55.83 @2500 vs arm C 48.42 (+7.41 worse), arm A 51.10. Trajectory still improving but gap structural (report research/e19_bakeoff/E23D_BILSTM_AB.md).
+- DECISION: char transformer stays for D-line; no user-gated architecture change needed. MEMORY lessons 70 (arch not portable) + 71 (probe-gate eval bug lesson; first '0.997' rows VOID).
+- Files: diacritizer/scripts/e23_bilstm_model.py + e23_biarm_train.py (env S4_TOTAL/S4_LR knobbed), research/e19_bakeoff/E23D_BILSTM_AB.md.
+- Debug detour worth carrying forward: pwsh *> redirects hide subprocess JSON deaths -> gate() switched to in-process eval_der compare (lesson 71).
+
 ### 2026-09-17 — E-23a result: gold+v3q REGRESSED -> NOT adopted
 
 - Gold 30M on v3q (same recipe as stage2b2500): fadel 33.54 / sadeed 25?45.33 / wn2024 55.71 (+7.06 vs gold) / wn2014 47.78 -> mean 45.59 vs 44.14. wn2024 collapse = QCRI label-distribution shift confuses saturated reader. Decision rule -> NOT ADOPTED for the production gold; QCRI weak data stays in the MICRO line only (arm C). Lesson: weak supplement helps capacity-limited (micro) models, not the 30M one. research/e19_bakeoff/E23A_GOLD_V3Q.md.

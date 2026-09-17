@@ -46,10 +46,14 @@ updates TASKS/HANDOFF/MEMORY/EXPERIMENTS as it lands. Single-GPU rule holds
 - Why fourth: highest information-per-GPU-hour but not directly gate-moving.
   The 4.5M BiLSTM WITH BAHDANAU attention beat a 30M transformer by 5-9 DER
   mean on our gates; equal-data A/B isolates architecture from training pool.
-- Setup: two arms on v3q tokens: (D1) Z-Mahmood's 3x256-BiLSTM + attention
-  reimplemented inside our bench/gate plumbing, (D2) our micro 12-128-512
-  (= arm C rerun, same steps). Compare means; if BiLSTM arms win materially,
-  propose an upgraded D-line with a bidirectional encoder (user gate).
+- Setup: arm D1 = Z-Mahmood's 3x256-BiLSTM + attention reimplemented
+  inside our bench/gate plumbing (e23_bilstm_model.py), arm C's EXACT
+  budget (batch 32, 2500 steps, fp16, AdamW wd 0.1) on v3q tokens. D2 =
+  arm C itself (same steps; numbers already frozen at 48.42).
+- RESULT 2026-09-17: BiLSTM loses at ZM-native lr 1e-3: 45.77/58.09/
+  62.90/56.55, mean **55.83** vs arm C 48.42 (+7.41 worse). Our 4e-4 stalls
+  the LSTM entirely. **NOT adopted; char transformer stays** (no user gate
+  triggered). Report: research/e19_bakeoff/E23D_BILSTM_AB.md. S4 CLOSED.
 
 ## S5 — E-23e: Z-Mahmood + gold cross-agreement validator (qualtiy infrastructure)
 
