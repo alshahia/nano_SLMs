@@ -1164,6 +1164,14 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - NEXT on resume: NOTHING owed by this track - experiment COMPLETE, report written, TASKS row 49 = done. Drill scratch remains deleted; arm tee logs arm_<name>_tee.txt at repo root remain on disk. Weights stay LOCAL per AGENTS s5.
 - NEXT on resume: read .superpowers/sdd/mounting/progress.md FIRST (ledger owns per-arm status), then run the exact zero-flag command of the interrupted arm; after all five arms: Step 6.2 independence evals + research/mounting_ab_report.md + TASKS row 49 / this HANDOFF section update (Step 6.3). Arm tee logs arm_<name>_tee.txt at repo root are progress-bar noise — numeric evidence = final/train_summary.json + tfevents.
 
+### 2026-09-17 — E-21: micro 12-128-512 both arms + train-time cache test (user go)
+
+- Full: research/e19_bakeoff/E21_MICRO.md (ledger E-21; MEMORY lesson 66; TASKS rows 62/63).
+- ARM A from-scratch 2.98M: fadel 38.16 / sadeed 51.40 / wn24 60.96 / wn14 53.87 (3.5x faster than gold's schedule). ARM B warm-start from shape-matched micro LM (had to pretrain micro_a_lm 4k steps because 30M stage1lm shapes cannot transplant into 12L/128h): gates 41.07/54.08/62.76/56.44 -> FROM-SCRATCH WINS; B's SFT val_loss is LOWER (0.2911 vs 0.3228) yet gates worse (causal prior transfer hurt).
+- TRAIN-TIME CACHE (user idea) FALSIFIED: cache-merge from training-corpus = zero gain on both micro arms (gold: -0.3..-0.6). Cache stays a deployment-only trick.
+- QCRI audit: machine-grade labels (45.0 DER vs gold validator on wiki paragraphs; over-vocalized 99.8%) = weak-data-only; wn2014 == our gate -> dedup mandatory.
+- Micro is a legit cheap fallback/ablation baseline, ~7-8 DER behind gold.
+
 ### 2026-09-17 — E-20: user 3 questions (QCRI datasets / word-cache for gold / micro-model)
 
 - Full note: research/e19_bakeoff/E20_CACHE_SMALLMODEL.md (ledger row E-20; MEMORY lesson 65; TASKS row 62).
