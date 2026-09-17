@@ -436,3 +436,5 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
   37500 starcoder / 59000 csn / 16900 evol rows ~= 133.65M kept tokens;
   configs/next_pretrain.yaml; the RUN is user-gated at the next window.
 
+
+  65. **A word-cache only buys what the model does not already know** (2026-09-17, E-20 gpu+cpu bench): a majority-vote word-cache (375,923 forms from 140.6M tokens) over the gold D-line model moved gates by only -0.3..-0.6 DER (fadel 33.23->32.88 etc). The BiLSTM-family posters (Z-Mahmood) show the SAME null effect (E-19b cache-On == cache-Off). N-gram caches shine for exact idiom sentences / fixed phrases (Quran citations), not for MSA word priors that a 30M-param model has already internalized; treat cache as a deployment trick (instant, offline) not a teaching substitute.

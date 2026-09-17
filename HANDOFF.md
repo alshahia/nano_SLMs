@@ -1164,6 +1164,13 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - NEXT on resume: NOTHING owed by this track - experiment COMPLETE, report written, TASKS row 49 = done. Drill scratch remains deleted; arm tee logs arm_<name>_tee.txt at repo root remain on disk. Weights stay LOCAL per AGENTS s5.
 - NEXT on resume: read .superpowers/sdd/mounting/progress.md FIRST (ledger owns per-arm status), then run the exact zero-flag command of the interrupted arm; after all five arms: Step 6.2 independence evals + research/mounting_ab_report.md + TASKS row 49 / this HANDOFF section update (Step 6.3). Arm tee logs arm_<name>_tee.txt at repo root are progress-bar noise — numeric evidence = final/train_summary.json + tfevents.
 
+### 2026-09-17 — E-20: user 3 questions (QCRI datasets / word-cache for gold / micro-model)
+
+- Full note: research/e19_bakeoff/E20_CACHE_SMALLMODEL.md (ledger row E-20; MEMORY lesson 65; TASKS row 62).
+- QCRI github qcri/advancing-arabic-diacritization cloned to models/e19/qcri-src (91.4 MB jsonl = 32,834 articles / 5.07M machine-labeled wiki words + wn2014/wn2024 multi-ref benches) — trainable-but-license-unstated; dedup against wn2014 gate required.
+- OUR word-cache: e19_build_wordcache.py (140.6M tokens -> 375,923 forms); cache-merge bench e20_goldcache_bench.py: gold+cache = fadel 32.88 / sadeed 45.13 / wn 48.65 / abdou 40.90 vs raw 33.23/45.68/48.99/41.46 (-0.3..-0.6 DER). Cache ≠ teaching substitute.
+- Micro model in OUR arch (math verified via build_from_config): 12-128-512-4-2 = 2.98M / 10-144-576-4-2 = 3.14M (gold 28-272-1088-8-2 = 30.11M). E-21 launch NEEDS_USER_DECISION: (a) config, (b) from-scratch vs stage1lm init, (c) data = stage2b pool only vs +QCRI (license + dedup first).
+
 ### 2026-09-16/17 — E-19 external-model bake-off (TASKS row 61; user go)
 
 - **Status: CLOSED 2026-09-17** — results `research/e19_bakeoff/RESULTS.md`; ledger E-19 CLOSED; TASKS 61 done; MEMORY lesson 64.
