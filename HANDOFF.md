@@ -1164,6 +1164,10 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - NEXT on resume: NOTHING owed by this track - experiment COMPLETE, report written, TASKS row 49 = done. Drill scratch remains deleted; arm tee logs arm_<name>_tee.txt at repo root remain on disk. Weights stay LOCAL per AGENTS s5.
 - NEXT on resume: read .superpowers/sdd/mounting/progress.md FIRST (ledger owns per-arm status), then run the exact zero-flag command of the interrupted arm; after all five arms: Step 6.2 independence evals + research/mounting_ab_report.md + TASKS row 49 / this HANDOFF section update (Step 6.3). Arm tee logs arm_<name>_tee.txt at repo root are progress-bar noise — numeric evidence = final/train_summary.json + tfevents.
 
+### 2026-09-17 — E-22: micro arm C + QCRI weak data (improvement CONFIRMED)
+
+- QCRI wiki gate-shingle-deduped (kept 24,882 articles; 362,621 windows) added to v3 pool -> v3q tokens; val unchanged. Arm C (micro_a_qcri) final: fadel 36.44 / sadeed 48.67 / wn24 58.13 / wn14 50.11 vs arm A 38.16/51.40/60.96/53.87: QCRI weak data IMPROVES (-1.7..-3.8 DER), KEPT per user rule. No cache in this line (user dropped). Micro now ~3-4 DER behind gold 30M.
+
 ### 2026-09-17 — E-21: micro 12-128-512 both arms + train-time cache test (user go)
 
 - Full: research/e19_bakeoff/E21_MICRO.md (ledger E-21; MEMORY lesson 66; TASKS rows 62/63).
