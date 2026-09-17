@@ -1173,6 +1173,20 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - S1 RUNNING: configs/diac_e23a_gold_v3q.yaml (phase e23a_gold_v3q, gold 30M arch, stage1lm warm-start, v3q tokens, 2500 steps, gates every 500). Commit 8569362.
 - S5 validator DONE (CPU smoke PASS): diacritizer/scripts/e23_crossagree.py — gold + ZM per line, word-map agreement %, flagged/summary outputs; default data/control threshold flag_below 0.50.
 - S2 interim: HF hunt finds UNACQUIRED candidates for later: arbml/tashkeela (classical, vocalized pairs), community-datasets/tashkeela (classical books incl. Shamila), asas-ai/Tashkeela, Misraj/Sadeed_Tashkeela (already in pool), TTS speech corpora NOT text-grade. Modern-MSA remains the gap -> covered later by S3 ZM distillation.
+### 2026-09-18 — E-23c result: ZM distillation REJECTED (+4.13 worse on micro)
+
+- ZM labels packed (v3qz, 3.12M rows); arm E (arm-C recipe): fadel 39.88/sadeed 52.72/wn24 61.44/wn14 56.15 vs arm C 48.42 mean -> +4.13 worse. Mechanism = label-STYLE conflict (3rd data point for lesson 68 family). BEST MICRO stays arm C (v3q). Runs auto-resumed cleanly mid-crash, shape unchanged.
+
+### 2026-09-17 — E-23c S3: ZM label run + arm E in flight
+
+- ZM full labeling DONE: 142,370 paragraphs / 3.06M words (12,000 qcri-gatesafe articles, 280-char paragraphs, CPU).
+- v3qz tokens packed (diacritizer/scripts/e23_pack_zm.py, disk-light direct-shuffle write; NOTES: E:/ drive free space was only ~4 GB, e23a checkpoints trimmed to fit — metrics+final kept): train 3,119,320 rows = v3q 2,803,948 + ZM 315,372; val byte-identical to v3.
+- Arm E (configs/diac_e23c_zm.yaml, phase e23c_zm): identical arm-C recipe on v3qz; compare @2500 vs arm C mean 48.42.
+### 2026-09-17 — E-23c S3 launched: ZM distillation labeling
+
+- e23_zm_label.py (diacritizer/scripts/): per-paragraph bare stripping of qcri_gatesafe texts -> ZM-BiLSTM vocalization -> rows {serial, para, bare, diac} in data/diac/raw/e23c_zm_labels/zm_labels.jsonl (probe.jsonl smoke PASSED: 31 paras/20 arts/3.1 s, ZM output verified proper diacritics).
+- full run = pwsh-57 (CPU ~10 paras/s; GPU not used for ZM).
+- next: pack ZM rows -> v3q2 tokens (v3 pool + QCRI + ZM-soft-label windows) -> micro arm E (E-23c check arm, like arm C protocol) once enough rows have accumulated; then compare @2500 vs arms A/C on gate CSVs.
 ### 2026-09-17 — E-23 plan: Z-Mahmood leverage (user-approved, most-gain-first)
 
 - Plan: research/E23_ZM_LEVERAGE_PLAN.md (ledger E-23; TASKS rows 65-70).
