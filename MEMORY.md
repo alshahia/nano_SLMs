@@ -410,6 +410,8 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 ## Data-source knowledge (seeded from HANDOFF §6)
 
 - bigcode/the-stack-v2, the-stack-smol, starcoderdata: **gated** (manual HF
+
+  64. **Assume a 0-star release's architecture will fight the bench box** (2026-09-17, E-19 bench): etherll granitemoehybrid's mamba2 chunk-scan allocates prefill-time temporaries that OOM the 5.8 GB WDDM-spilled GPU at batch>=2 (batch=1 forced, ~6.5 s/line); Fine-Tashkeel T5 works at batch<=8 but dies at 16 (SDPA OOM). Bench FIRST with 5-8 lines before any full-gate launch; OOM resilience (retry-with-truncation + empty_cache) belongs in the harness, not in hope. Also: causal-LM diacritizers WITH EOS-ish decoding loop catastrophically on out-of-distribution short texts (wikinews) - label/seq2seq specialists (CRF like mishkala, BiLSTM like Z-Mahmood) preserve base letters for free; a 15-label re-application model can NEVER damage base chars.
   terms acceptance). Fallback actually used: nickrosh/Evol-Instruct-Code-80k-v1
   (instruction→code-answer, ~430 tok/row) — used for smoke AND pilot.
 - bare `code_search_net` no longer resolves on the Hub (repo moved under a

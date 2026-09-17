@@ -1164,6 +1164,16 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - NEXT on resume: NOTHING owed by this track - experiment COMPLETE, report written, TASKS row 49 = done. Drill scratch remains deleted; arm tee logs arm_<name>_tee.txt at repo root remain on disk. Weights stay LOCAL per AGENTS s5.
 - NEXT on resume: read .superpowers/sdd/mounting/progress.md FIRST (ledger owns per-arm status), then run the exact zero-flag command of the interrupted arm; after all five arms: Step 6.2 independence evals + research/mounting_ab_report.md + TASKS row 49 / this HANDOFF section update (Step 6.3). Arm tee logs arm_<name>_tee.txt at repo root are progress-bar noise — numeric evidence = final/train_summary.json + tfevents.
 
+### 2026-09-16/17 — E-19 external-model bake-off (TASKS row 61; user go)
+
+- **Status: CLOSED 2026-09-17** — results `research/e19_bakeoff/RESULTS.md`; ledger E-19 CLOSED; TASKS 61 done; MEMORY lesson 64.
+- "QINA King v21" does not exist anywhere (HF API + GitHub + Exa sweep) — dropped, MEMORY lesson 62.
+- **WINNER: Z-Mahmood BiLSTM+attention (MIT, ~18 MB CPU, sentence cache BYPASSED via no_cache)** — beats our gold on EVERY gate by 19-29 DER absolute: fadel 4.35 vs 33.20, sadeed25 18.85 vs 45.68, wn2014 29.73 vs 48.99. Satisfies the USER decision rule (beat-gold-overall >5). Contamination caveat recorded: its training may overlap the public gate refs — treat numbers as an upper bound until a cache/n-gram contamination check runs.
+- mishkala (Apache-2.0, 12.5M mamba+transformer+CRF, CPU ~6 l/s): rule-(b) sadeed specialist — sadeed 35.79 (wins by 9.9), fadel 39.37 (+6.2 worse), wn2014 50.24 (+1.25 worse).
+- DISQUALIFIED: Etherll/Tashkeel-350M-v2 (repetition loops out-of-domain, wn2014 97.0 DER; mamba2 chunk-scan OOMs at batch>=2 on the 5.8 GB WDDM GPU — batch=1 only, ~6.5 s/line); basharalrfooh/Fine-Tashkeel (T5-large: wn2014 37.62 good BUT sadeed 70.55 / fadel 91.60 preservation 10% — wn2014-only). QCRI repo skipped (datasets-only, no weights); NAMAA excluded per user (audio).
+- Harnesses: diacritizer/scripts/e19_infer_batch.py (causal, OOM-resilient) + e19_infer_t5.py (seq2seq); gate inputs models/e19/inputs/, predictions models/e19/{gate}.{model}.pred.txt.
+- NEXT (user-gated): decide whether Z-Mahmood becomes the data-generator for the LLM-as-generator+validator plan, starting with the contamination check, then a Nawaasikh/Sadeed pilot.
+
 ## 9. Conventions
 
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).
