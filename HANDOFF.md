@@ -1164,6 +1164,19 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - NEXT on resume: NOTHING owed by this track - experiment COMPLETE, report written, TASKS row 49 = done. Drill scratch remains deleted; arm tee logs arm_<name>_tee.txt at repo root remain on disk. Weights stay LOCAL per AGENTS s5.
 - NEXT on resume: read .superpowers/sdd/mounting/progress.md FIRST (ledger owns per-arm status), then run the exact zero-flag command of the interrupted arm; after all five arms: Step 6.2 independence evals + research/mounting_ab_report.md + TASKS row 49 / this HANDOFF section update (Step 6.3). Arm tee logs arm_<name>_tee.txt at repo root are progress-bar noise — numeric evidence = final/train_summary.json + tfevents.
 
+### 2026-09-17 — E-23a result: gold+v3q REGRESSED -> NOT adopted
+
+- Gold 30M on v3q (same recipe as stage2b2500): fadel 33.54 / sadeed 25?45.33 / wn2024 55.71 (+7.06 vs gold) / wn2014 47.78 -> mean 45.59 vs 44.14. wn2024 collapse = QCRI label-distribution shift confuses saturated reader. Decision rule -> NOT ADOPTED for the production gold; QCRI weak data stays in the MICRO line only (arm C). Lesson: weak supplement helps capacity-limited (micro) models, not the 30M one. research/e19_bakeoff/E23A_GOLD_V3Q.md.
+
+### 2026-09-17 — E-23 in flight (S1 GPU + S5/S2 CPU)
+
+- S1 RUNNING: configs/diac_e23a_gold_v3q.yaml (phase e23a_gold_v3q, gold 30M arch, stage1lm warm-start, v3q tokens, 2500 steps, gates every 500). Commit 8569362.
+- S5 validator DONE (CPU smoke PASS): diacritizer/scripts/e23_crossagree.py — gold + ZM per line, word-map agreement %, flagged/summary outputs; default data/control threshold flag_below 0.50.
+- S2 interim: HF hunt finds UNACQUIRED candidates for later: arbml/tashkeela (classical, vocalized pairs), community-datasets/tashkeela (classical books incl. Shamila), asas-ai/Tashkeela, Misraj/Sadeed_Tashkeela (already in pool), TTS speech corpora NOT text-grade. Modern-MSA remains the gap -> covered later by S3 ZM distillation.
+### 2026-09-17 — E-23 plan: Z-Mahmood leverage (user-approved, most-gain-first)
+
+- Plan: research/E23_ZM_LEVERAGE_PLAN.md (ledger E-23; TASKS rows 65-70).
+- S1 gold-30M + QCRI v3q SFT is the biggest expected gate gain -> first launch (needs GPU idle, ~4-5 h). S5 validator + S2 data hunt run beside it on CPU. S3 distillation and S4 BiLSTM A/B follow.
 ### 2026-09-17 — E-22: micro arm C + QCRI weak data (improvement CONFIRMED)
 
 - QCRI wiki gate-shingle-deduped (kept 24,882 articles; 362,621 windows) added to v3 pool -> v3q tokens; val unchanged. Arm C (micro_a_qcri) final: fadel 36.44 / sadeed 48.67 / wn24 58.13 / wn14 50.11 vs arm A 38.16/51.40/60.96/53.87: QCRI weak data IMPROVES (-1.7..-3.8 DER), KEPT per user rule. No cache in this line (user dropped). Micro now ~3-4 DER behind gold 30M.
