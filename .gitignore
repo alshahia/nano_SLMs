@@ -132,3 +132,5 @@ runs/kt_ab_transplant/*.log
 runs/kt2_sft*/checkpoint-*/
 runs/kt2_sft*/final/model.safetensors
 runs/kt2_sft*/*.log
+
+data/mex/
