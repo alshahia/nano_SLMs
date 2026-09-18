@@ -58,3 +58,4 @@ Task 7 (code): complete (commit e2c4b3d, review approved; eval dry-run integrati
 Task 6: complete via controller-run jobs (x1-x3 trained by subagent pre-timeout; x4 resumed from checkpoint-750 pwsh-16; control pwsh-17; eval pwsh-18). Evals: x1 0.0115>0 PASS-thin, x2 0.004>0.002 hacky-pass, x3 0.988==0.988 gate FAIL, x4 0.236<0.316 FAIL; control 0.078/0.002/0.988/0.072. MU0_REPORT.md written; EXPERIMENTS E-24 pre-registered before results; next user decision: steps/richer x3/x4
 Docs: EXPERIMENTS E-24 results cell cleaned (artifact text removed), commit 8b1c321
 E-25/mu0b: 4/4 gates PASS (x1 0.1075, x2 0.898, x3 0.918>0.512, x4 0.846>0.316); control 0.129/0.054/0.922/0.864; docs closed; next: whole-branch review
+Final whole-branch review: verdict ship (no code blockers); hygiene committed e8c3c5c (E-25 registration wording, task-6b report, TASKS-80 mu1 follow-ups); diac v2 npys restored per repo rule; mu0 fully closed
