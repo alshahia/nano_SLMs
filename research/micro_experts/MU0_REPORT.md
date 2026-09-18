@@ -38,7 +38,7 @@ Recommendation before mu1: raise max_steps (e.g. 10K-20K window) and/or retire x
 
 # mu0b — E-25 extended window + hardened X3 (user option B, 2026-09-18)
 
-Pre-registered EXPERIMENTS E-25 BEFORE running. Changes: max_steps 2000->12000 (all five); X3 regenerated with maxlen 24, ok-lines balanced by construction, bad = half subtle one-pair flips / half legacy flips (labels ~50/50; re-measured test trivial 0.512); X1/X2/X4 data unchanged; control re-packed as exact union of expert train+val (verified: control 3,294,269 + 31,506 = sum experts, byte-exact ME-D5). Old 2K-step finals archived at runs/mex/archive_2000/. Sanity gates 5/5 PASS (c2510b0).
+E-25 was registered in EXPERIMENTS.md in the same working session but its ledger row landed in the results commit (f671ae0), not a separate pre-commit — machine-verifiable ordering could not be established after the fact, so treat this registration as retro-documented (unlike E-24, which has a clean pre-results commit cadd5f2). Re-registration discipline for mu1: land the EXPERIMENTS row FIRST, results later. Changes: max_steps 2000->12000 (all five); X3 regenerated with maxlen 24, ok-lines balanced by construction, bad = half subtle one-pair flips / half legacy flips (labels ~50/50; re-measured test trivial 0.512); X1/X2/X4 data unchanged; control re-packed as exact union of expert train+val (verified: control 3,294,269 + 31,506 = sum experts, byte-exact ME-D5). Old 2K-step finals archived at runs/mex/archive_2000/. Sanity gates 5/5 PASS (c2510b0).
 
 ## Results (12K steps, held-out)
 
