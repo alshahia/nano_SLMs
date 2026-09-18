@@ -24,13 +24,20 @@ def _split(rng: random.Random, lines: list[str], n_val: int, n_test: int):
 def arith(seed: int = SEED_DEFAULT, n_val: int = 200, n_test: int = 500,
           n_train: int = 30000, max_op: int = 999) -> dict[str, list[str]]:
     rng = random.Random(f"mex-arith-{seed}")
+    n = max_op + 1
     lines = []
-    for a in range(max_op + 1):
-        for b in range(max_op + 1):
-            if rng.random() > n_train / ((max_op + 1) ** 2):
-                lines.append(f"{a}+{b}=|{a + b}\n")
-            s = max(a, b); d = min(a, b)
-            lines.append(f"{s}-{d}=|{s - d}\n")
+    # Exact sampling over the full operand grid: exactly n_train addition lines
+    # and n_train subtraction lines (the old Bernoulli filter kept ~97% of
+    # additions plus every subtraction line, ~1.97M instead of ~2*n_train).
+    # Index sampling is equivalent to sampling the generated line lists, since
+    # each grid index maps deterministically to one line in the same order.
+    for i in rng.sample(range(n * n), n_train):
+        a, b = divmod(i, n)
+        lines.append(f"{a}+{b}=|{a + b}\n")
+    for i in rng.sample(range(n * n), n_train):
+        a, b = divmod(i, n)
+        s = max(a, b); d = min(a, b)
+        lines.append(f"{s}-{d}=|{s - d}\n")
     return _split(rng, lines, n_val, n_test)
 
 

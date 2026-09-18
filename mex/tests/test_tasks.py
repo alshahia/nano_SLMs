@@ -13,6 +13,11 @@ def test_every_task_has_three_disjoint_splits():
         assert len(st) == sum(len(v) for v in d.values())
         assert len(d["val"]) == 200 and len(d["test"]) == 500
 
+def test_arith_train_bounded_by_n_train():
+    d = tasks.arith(seed=42, n_val=200, n_test=500, n_train=400)
+    assert len(d["train"]) <= 400
+    assert len(d["val"]) == 200 and len(d["test"]) == 500
+
 def test_generators_are_deterministic():
     a = tasks.arith(seed=7, n_val=50, n_test=100)
     b = tasks.arith(seed=7, n_val=50, n_test=100)
