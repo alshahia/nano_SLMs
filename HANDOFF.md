@@ -1164,6 +1164,25 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - NEXT on resume: NOTHING owed by this track - experiment COMPLETE, report written, TASKS row 49 = done. Drill scratch remains deleted; arm tee logs arm_<name>_tee.txt at repo root remain on disk. Weights stay LOCAL per AGENTS s5.
 - NEXT on resume: read .superpowers/sdd/mounting/progress.md FIRST (ledger owns per-arm status), then run the exact zero-flag command of the interrupted arm; after all five arms: Step 6.2 independence evals + research/mounting_ab_report.md + TASKS row 49 / this HANDOFF section update (Step 6.3). Arm tee logs arm_<name>_tee.txt at repo root are progress-bar noise — numeric evidence = final/train_summary.json + tfevents.
 
+### 2026-09-18 — E-23b S2 CLOSED: classical tashkeela expansion check arm -> NOT adopted
+
+- User picked option A for the only remaining E-23 stage. Sources:
+  community-datasets/tashkeela (97 book rows) + asas-ai/Tashkeela (804k lines);
+  10-word shingle barrier vs gates+fadel train kept 1,200,000 NEW windows
+  (3,276,760 dropped - raw Tashkeela overlaps our pool heavily); quar 2,879.
+- Pack v3t = v3q + windows = 4,003,948 train rows, val IDENTICAL (160,630);
+  configs/diac_e23b_t.yaml = arm C recipe exactly (2,976,128 params, batch 32,
+  lr 4e-4, 2500 steps, no cache).
+- Gates @2500: 38.69/50.70/59.93/52.55 mean 48.72 vs arm C 48.42 -> worse on
+  EVERY gate (+0.30 mean) -> **NOT adopted; arm C (v3q, mean 48.42) stays
+  micro champion**. Classical gold expansion ~= zero headroom; modern-MSA
+  label gap confirmed as the only remaining data lever (no open source).
+- Report research/e19_bakeoff/E23B_CLASSICAL_S2.md; EXPERIMENTS row E-23b;
+  TASKS row 68 done (+stale row 70 closed); scripts s2_classical_build.py /
+  s2_pack.py committed.
+- E-23 plan now FULLY closed (S1-S5 all executed; production = gold v3 +
+  micro arm C).
+
 ### 2026-09-17 — E-23d S4: BiLSTM vs our-arch equal-data A/B -> NOT adopted
 
 - S4 (E-23 plan, user-approved) executed to close: ZM BiLSTM (Embed128 -> BiLSTM 3x256 + Bahdanau attention, 4,498,831 params) reimplemented into OUR I/O contract (diacritizer/scripts/e23_bilstm_model.py; per-char [B,ctx,15] logits) so the exact bench/gate/CSV plumbing of every arm applies.

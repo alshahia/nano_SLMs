@@ -21,12 +21,12 @@ updates TASKS/HANDOFF/MEMORY/EXPERIMENTS as it lands. Single-GPU rule holds
 
 ## S2 — E-23b: self-tagged modern-MSA expansion (data hunt behind the same lever)
 
-- Why second: E-22's biggest gains came from modern-MSA material; the sourcing
-  bottleneck, not the trainer, is what limits further gain.
-- Work: hunt additional open tashkeel/modern-MSA corpora (Exa helper + HF
-  check alongside shamela-classical data already staged), 10-word-shingle
-  gate-dedup + doc-dedup, same pack pipeline. Target +0.5-1M windows.
-- Cheap during other GPU runs (CPU only) except tokenization (CPU too).
+- RESULT 2026-09-18: hunt found NO open modern-MSA labeled source; user
+  approved option A (classical tashkeela-family expansion). 1.2M gate-deduped
+  classical windows packed (v3t = 4,003,948 rows); micro check arm at arm C's
+  exact budget -> 38.69/50.70/59.93/52.55 mean 48.72 vs arm C 48.42: worse on
+  EVERY gate -> **NOT adopted**; arm C stays. Report:
+  research/e19_bakeoff/E23B_CLASSICAL_S2.md. S2 CLOSED.
 
 ## S3 — E-23c: distill Z-Mahmood into the micro stack (rule (a)-qualified teacher)
 
