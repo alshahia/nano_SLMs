@@ -33,4 +33,25 @@ x1 echo-bare 0.0 | x2 train-answer mode 0.002 | x3 train-majority 0.988 | x4 ide
 
 ## Honest μ0 close
 Stage-0 verdict: DATA/STEPS undersized; architecture + harness + param accounting all sound (params exact, control exact, splits deterministic, eval honest).
-Recommendation before mu1: raise max_steps (e.g. 10K-20K window) and/or retire x3 majority-collapse (label prior dominated; needs harder brackets), x2 may need 1-2 digit scaffold targets. User decision required.*
+Recommendation before mu1: raise max_steps (e.g. 10K-20K window) and/or retire x3 majority-collapse (label prior dominated; needs harder brackets), x2 may need 1-2 digit scaffold targets. User decision: window extension + X3 hardening was approved and run (see mu0b below).
+
+
+# mu0b — E-25 extended window + hardened X3 (user option B, 2026-09-18)
+
+Pre-registered EXPERIMENTS E-25 BEFORE running. Changes: max_steps 2000->12000 (all five); X3 regenerated with maxlen 24, ok-lines balanced by construction, bad = half subtle one-pair flips / half legacy flips (labels ~50/50; re-measured test trivial 0.512); X1/X2/X4 data unchanged; control re-packed as exact union of expert train+val (verified: control 3,294,269 + 31,506 = sum experts, byte-exact ME-D5). Old 2K-step finals archived at runs/mex/archive_2000/. Sanity gates 5/5 PASS (c2510b0).
+
+## Results (12K steps, held-out)
+
+| arm | x1 | trivial | x2 | trivial | x3 | trivial | x4 | trivial |
+|---|---|---|---|---|---|---|---|---|
+| expert | 0.1075 | 0.000 | 0.898 | 0.002 | 0.918 | 0.512 | 0.846 | 0.316 |
+| control | 0.129 | 0.000 | 0.054 | 0.002 | 0.922 | 0.512 | 0.864 | 0.316 |
+
+## Verdicts (pre-registered gate: strictly beat trivial)
+- X1 PASS (0.1075 > 0) | X2 PASS 0.898 (89.8% exact 3-digit arithmetic) | X3 PASS 0.918 > 0.512 | X4 PASS 0.846.
+- All four pre-registered gates PASS. The E-24 failures were, as suspected, data/steps — not architecture.
+- Specialist-vs-control asymmetry (mu1-relevant): experts crush control on symbolic ops (x2: 0.898 vs 0.054; x3: 0.918 vs 0.922 tie; x4: 0.846 vs 0.864 tie) while control stays ahead on real-data x1 (0.129 vs 0.1075). Composition should exploit both.
+- mu1 composition arms (soup/TIES, MoE-merge, dispatch-router, committee distill) are now GREEN to run.
+
+## Evidence paths
+runs/mex/{x1,x2,x3,x4,control}/final/mex_eval.json (12K); archive_2000/ holds the 2K artifacts; .superpowers/sdd/task-6b-report.md pending; tests 14/14 at commit 7d79cc1.

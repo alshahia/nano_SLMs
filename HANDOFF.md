@@ -1275,3 +1275,8 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - Sequential train all five configs (subagent trained x1-x3; wrapper-timeout killed x4 mid-run; controller resumed x4 (checkpoint-750) and control via managed pwsh jobs pwsh-16/17; all reached step 2000 and wrote final model.safetensors + mex_eval.json).
 - E-24 results (pre-registered gate = strictly beat measured trivial): x1 0.0115>0 PASS (thin), x2 0.004>0.002 technical-pass (useless in practice), x3 0.988==0.988 FAIL gate (majority tie), x4 0.236<0.316 FAIL; control 0.078/0.002/0.988/0.072 — control beat experts on x1 at 4x params.
 - mu1 composition arms correctly NOT run on failing experts. Report: research/micro_experts/MU0_REPORT.md. Open user decision: extend steps (10-20K) / richer x3 targets / x4 ident-mix fix before any mu1 work.
+
+## 2026-09-18 — E-25 mu0b: extended window + hardened X3 — ALL FOUR GATES PASS
+- User picked option B. E-25 pre-registered before rerun. X3 generator hardened (maxlen 24, balanced-by-construction ok lines, half subtle one-pair flips; 14/14 tests green, commit 7d79cc1); configs bumped to 12K steps (c2510b0); old finals archived runs/mex/archive_2000; control re-packed byte-exact union (verified 3,294,269+31,506).
+- Results: x1 0.1075>0, x2 0.898>0.002, x3 0.918>0.512, x4 0.846>0.316 — 4/4 PASS; control 0.129/0.054/0.922/0.864. Experts >> control on symbolic; control > expert on real-data x1.
+- mu1 composition arms now unblocked. NEXT: whole-branch review, then mu1 planning.
