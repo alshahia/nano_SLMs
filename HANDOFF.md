@@ -1264,3 +1264,9 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - Validation labels: PASS / FAIL / SKIPPED / BLOCKED (CLAUDE.md §16).
 - Inspect before changing; never claim success without evidence; kill only
   processes this agent started.
+
+## 2026-09-18 — ME-line μ0 build complete (CPU), GPU window pending (user-gated)
+- Tasks 1,2,3,4,5,7 of docs/plans/2026-09-18-micro-expert-composition-plan.md DONE via subagent-driven dev, each implementer+reviewer approved: shared 97-id char vocab+tokenizer (241117f); seeded X2/X3/X4 generators (6f9feb2 + arith n_train pool-cap fix 80c3b4e — review caught an inverted sampling filter in the PLAN, plan bug not implementer error); X1 extractor over models/e19 cache {bare:vocalized} -> 63,000 mark-bearing lines 60K/1K/2K (382628d; data/mex/ gitignored 2abd626); uint32 packer + parameter-budget test PINNED TO REAL MODEL: expert 200,160 / control 784,320, ratio 0.98x, control = byte-exact union of expert train+val (73a4bbe); 5 configs all sanity-PASS vocab_size 97 (a19674d); eval harness exact-match + measured trivial baselines + dry-run integration check (e2c4b3d).
+- E-24 PRE-REGISTERED in research/EXPERIMENTS.md before any training results exist (honest pre-registration order).
+- NEXT: Task 6 GPU window — sequential train mex_x1..x4 + mex_control via train.py auto-resume, then mex/scripts/eval_mex.py all | user-gated (single-GPU rule); ask_user_question timed out 3x, decision put to user in chat.
+- Minor findings roll-up for final review: BPEDecoder suffix risk; unk-id literal decode; X1 ~5.1% <unk> rate (alphabet gap over x2/x3/x4 chars); arith sampled subtraction symmetric-pair duplicates; split-assert edge when n_train small.
