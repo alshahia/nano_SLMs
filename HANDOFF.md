@@ -1270,3 +1270,8 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-24 PRE-REGISTERED in research/EXPERIMENTS.md before any training results exist (honest pre-registration order).
 - NEXT: Task 6 GPU window — sequential train mex_x1..x4 + mex_control via train.py auto-resume, then mex/scripts/eval_mex.py all | user-gated (single-GPU rule); ask_user_question timed out 3x, decision put to user in chat.
 - Minor findings roll-up for final review: BPEDecoder suffix risk; unk-id literal decode; X1 ~5.1% <unk> rate (alphabet gap over x2/x3/x4 chars); arith sampled subtraction symmetric-pair duplicates; split-assert edge when n_train small.
+
+## 2026-09-18 — Task 6 GPU window ran; E-24 results honest-mixed
+- Sequential train all five configs (subagent trained x1-x3; wrapper-timeout killed x4 mid-run; controller resumed x4 (checkpoint-750) and control via managed pwsh jobs pwsh-16/17; all reached step 2000 and wrote final model.safetensors + mex_eval.json).
+- E-24 results (pre-registered gate = strictly beat measured trivial): x1 0.0115>0 PASS (thin), x2 0.004>0.002 technical-pass (useless in practice), x3 0.988==0.988 FAIL gate (majority tie), x4 0.236<0.316 FAIL; control 0.078/0.002/0.988/0.072 — control beat experts on x1 at 4x params.
+- mu1 composition arms correctly NOT run on failing experts. Report: research/micro_experts/MU0_REPORT.md. Open user decision: extend steps (10-20K) / richer x3 targets / x4 ident-mix fix before any mu1 work.
