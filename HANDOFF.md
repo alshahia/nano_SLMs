@@ -1177,6 +1177,13 @@ decision; the 2048/factor-2 fallback was NOT needed.
   EVERY gate (+0.30 mean) -> **NOT adopted; arm C (v3q, mean 48.42) stays
   micro champion**. Classical gold expansion ~= zero headroom; modern-MSA
   label gap confirmed as the only remaining data lever (no open source).
+- Post-run safe cleanup (user requested 2026-09-18): deleted REJECTED-arm token
+  pools data/diac/v3t/tokens + data/diac/v3qz/tokens (repack scripts committed:
+  s2_pack.py / e23_pack_zm.py; staging classical_rows.jsonl + zm_labels.jsonl
+  kept), the superseded data/diac/v2 pool (regenerable from raw/), and the
+  re-downloadable models/e19/fine-tashkeel (E-19 participant; verdict frozen).
+  E: free 6.1 -> 19.6 GB. Kept: v3/v3q/stage1 tokens, all final/weights/gates,
+  raw corpora, gates.
 - Report research/e19_bakeoff/E23B_CLASSICAL_S2.md; EXPERIMENTS row E-23b;
   TASKS row 68 done (+stale row 70 closed); scripts s2_classical_build.py /
   s2_pack.py committed.
