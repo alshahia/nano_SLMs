@@ -27,7 +27,7 @@ data:
 train:
   output_dir: runs/mex/control
   final_dir: runs/mex/control/final
-  max_steps: 2000
+  max_steps: 12000
   batch: 8
   eval_batch: 16
   accum: 4
