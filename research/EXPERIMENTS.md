@@ -454,3 +454,56 @@ Honest interpretation of the two FAILs:
 1. x2 (digit-constrained): the LM's residual mass over digits alone still splits rank-1 with the true carry digit; a constraint fixes the SUPPORT but not the ranking. The boundary problem from E-46 is arithmetic competence, not vocabulary leakage.
 2. x3 head (clean last-hidden readout): 0.77 binary needs tower-state context - the bridges' lateral state carries the structure signal the clean trunk under-exposes at the final position.
 Trunk/bridges/head all untouched (sha verified). Artifacts: runs/mex/mu3_router/{router.pt, x3_head.pt, gates.json}; scripts mex/scripts/{train_mu3_router.py, eval_mu3_e47_gates.py}.
+
+## E-48a (PRE-REGISTERED, mu3: towers-armed per-family readouts; user-gated 'proceed with all') — 2026-09-19
+
+Motivation: E-47 FAILs hypothesized that x3/x2 signal lives in the BRIDGE (armed) planes, not the clean trunk last hidden.
+Mounts: same router (frozen, reused as-is), but per-family heads now trainable on the TOWERS-ARMED hidden state of the E-45 joint stack (towers live, clean-depth KV per E-43/E-45 discipline) — new heads only, trunk/bridges/head untouched.
+1. x3 head: 640->2 trained on armed hidden (600 steps, lr 1e-3, AdamW).
+2. x2 first-char assist: small head 640->len(digits+=) trained to predict the first answer digit (600 steps), readout = digit vocabulary rescore.
+Pre-registered gates:
+(c') x2 digit-fill first-char >= 0.80 (bar retained).
+(d') x3 binary accuracy >= 0.85 (bar retained).
+(e') diacritic standing intact: mark-pos >= 0.78 / all >= 0.6202 via the E-45 evaluator (no change claim).
+(id') trunk+bridges+E-45-head sha UNCHANGED after training.
+FAIL => honest row; changed recipe = new user-gated rung.
+
+**E-42 M7 P-SCALE A/B (2026-09-19) — WEAK PASS.** 12L d768 ctx512 bs2, 300
+steps, same seed: control 4.995 vs sinkhorn-0.1 4.972 (-0.5%). Effect is real
+but much smaller than at nano scale (-2.6%): directional, not decisive.
+Adoption recommendation: wire as a non-default flag in train.py; only switch
+default-on after a full pipeline val-loss A/B.
+
+**E-48a RESULT (closed) - armed-head hypothesis only PARTIALLY confirmed; both magnitude gates FAIL honestly despite clear direction.**
+
+| gate | value | verdict |
+|---|---|---|
+| (c') x2 first-char head on ARMED hidden | **0.4200** (21/50; clean-trunk head was 0.36; bar 0.80) | **FAIL** |
+| (d') x3 binary head on ARMED hidden | **0.8000** (40/50; clean-trunk head was 0.77; bar 0.85) | **FAIL** |
+| (id') trunk/bridges/head sha | ALL UNCHANGED | PASS |
+
+Reading: the tower planes DO carry some of the missing signal (x2 +6pt, x3 +3pt toward the bars) but the FIRST-CHAR boundary task needs more than a 2-layer probe head on a single position: it is an in-context computation (carry propagation, bracket depth tracking) that a small readout on the last position cannot fully reconstruct. This is the honest capability gap of the current 2-layer 640 trunk at char level: either the trunk grows, or the answer head becomes multi-step (decode loop) rather than single-shot.
+Artifacts: runs/mex/mu3_router/{x3_head_armed.pt, x2_head_armed.pt, gates_e48a.json}; scripts mex/scripts/{train_mu3_e48a.py, eval_mu3_e48a.py}.
+
+## E-48b (PRE-REGISTERED, mu3: per-family expert stacks with router selection = MoE over readout experts; user-gated) — 2026-09-19
+
+Motivation: E-48a showed the missing capability is in MULTI-STEP computation at the '|' boundary, not in a single-shot readout. Per the x4-compositional plan (user: 'we can use lora, transfere, router, MoE ..etc'), mount per-family EXPERTS selected by the E-47 router (hard gate = MoE-of-heads):
+- For each family f in {x2, x4}, mount expert head E_f = 2-layer MLP 640->640->|A_f| reading the ARMED teacher-forced hidden AT EACH POSITION and predicting the corresponding target char (trained on all positions of prompt|target with the target prefix given).
+- Composed decode = router picks expert; expert decodes the answer autoregressively (up to 8 steps) by running the full forward with the prefix extended; exact-match vs the whole gold target.
+Pre-registered gates:
+(g1) x2 EXACT full-answer accuracy >= 0.50 (was 0.36 first-char / 0 exact).
+(g2) x4 EXACT full-answer accuracy >= 0.50 (copy/sort tasks: the expert head gets a multi-step loop, which a one-shot head never had).
+(g3) router selection reused unchanged, accuracy stays 1.00 on the decode set.
+(id') trunk/bridges/head sha UNCHANGED after training; experts-only write.
+FAIL => honest row; changed recipe = new user-gated rung.
+
+**E-48b RESULT (closed) - both exact-match gates FAIL honestly; the boundary is trunk capacity, not readout topology.**
+
+| gate | value | verdict |
+|---|---|---|
+| (g1) x2 EXACT full-answer via multi-step expert | **0.00** (0/50; bar 0.50) | **FAIL** |
+| (g2) x4 EXACT full-answer via multi-step expert | **0.00** (0/50; bar 0.50) | **FAIL** |
+| training health | expert head per-position CE plateaued ~2.0 (chance-level for |A|=12 digit alphabet) | observed |
+
+Honest verdict: with the trunk FROZEN, no readout topology (single-shot head E-48a, multi-step expert loop E-48b, digit-constrained argmax E-47) recovers the boundary computation. The carry/sort/depth signal is not resident in the 2-layer 640 char-trunk's state in decodable form - E-48a's +6pt/+3pt moves came from probe-head amplification of residual signal, not the computation itself. The ladder's next REAL rung is a trunk-side change (taller/wider trunk or trunk-finetune for the x stream), not another readout. That is a new recipe = user-gated rung.
+Artifacts: runs/mex/mu3_router/{expert_x2.pt, expert_x4.pt, gates_e48b.json}; scripts mex/scripts/{train_mu3_e48b.py, eval_mu3_e48b.py}.
