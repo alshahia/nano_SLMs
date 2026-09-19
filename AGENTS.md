@@ -54,6 +54,7 @@ nano_SLMs/
 ├─ webui/              Gradio web UI (spec: WEBUI_PRD.md; milestones U1-U5)
 ├─ viz/                React model-architecture explorer — config-driven, pnpm only (docs: viz/README.md; plan: docs/plans/2026-09-10-model-viz-react-platform.md)
 ├─ flow/               Visual flow editor MVP — drag-and-drop pipeline graph (dataset→prepare→tokenize→train→eval/infer), FastAPI backend (docs: flow/README.md; plan: docs/plans/2026-09-13-flow-editor-mvp-plan.md); `.flow.json` format flow/0.1
+├─ langid/             DA-line: text language ID - Tongue-analogue (DESIGN: research/desert_ant_recreation/DESIGN.md; plan: docs/plans/2026-09-19-desert-ant-recreation-da1-langid-plan.md); CPU-only, gates pre-registered (rows 81-87)
 ├─ checkpoint_backup/  untracked; user-staged machine-move checkpoint zips (HANDOFF §3b) — check for a newer checkpoint-*.zip first
 └─ .venv/              uv-managed CPython 3.12.9 (never pip)
 ```

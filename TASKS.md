@@ -139,3 +139,28 @@ Stage ladder (stepping stones): μ0 sandbox base → μ1 composition bake-off �
 - [x] E-27/28/29 mu1 arms A(soup)/C(router)/D(distill) closed 2026-09-19: A FAIL (basin divergence, honest), C routing 1.00 PASS + team +0.04 marginal, D FAIL to beat control at 12K budget; report research/micro_experts/MU1_REPORT.md. Arm B (MoE merge) USER-GATED: needs new arch block in src/model.py + router training path.
 - [ ] mu1 follow-up candidates (from E-29 verdict): equal-tokens 12K dense control for fair student-vs-dense read; sentence-level diacritization stays mu2/mu3 with more data; arm-B decision pending user gate.
 
+## DA-line - Desert Ant recreation (2026-09-19, user-approved: plan + start the most feasible target)
+
+Recreates Desert Ant Labs models for an Arabic-first on-device product line. Source
+research/desert-ant-labs-models-report.md; design research/desert_ant_recreation/DESIGN.md;
+plan docs/plans/2026-09-19-desert-ant-recreation-da1-langid-plan.md. Ladder (feasibility-ranked):
+DA-1 text lang-ID (Tongue-analogue) -> DA-2 emoji -> DA-3 topics -> audio tier (DA-4 fillers,
+DA-5 Arabic dialect ID, DA-6 ASR) -> text tier (DA-7 PII, DA-8 titles, DA-9 schemas).
+Rules: self-contained langid/ submodule (no edits to M3/D/mu lines); gates + eval harness
+BEFORE training (A0 discipline); CPU-only -> zero single-GPU contention by construction.
+
+| # | Task | Status | Gate / next action | Evidence |
+|---|---|---|---|---|
+| 81 | DA-line design + DA-1 implementation plan (Tongue-analogue: hashed char n-grams FNV-1a 2^16 buckets + script router, 21 langs incl. ar/fa/ur/ps lexical group) | done | DESIGN.md + plan doc written; APPROVED start = DA-1 (user: "start with most feasible/achievable one") | research/desert_ant_recreation/DESIGN.md; docs/plans/2026-09-19-desert-ant-recreation-da1-langid-plan.md |
+| 82 | DA-1 features: char n-grams 1..4 + FNV-1a hashing + script router (ko/ja/he/el/hi; Arabic script NEVER routed) + unit tests | `in_progress` | unittest suite green (features/script-router/model/data/infer) | langid/src/features.py; langid/tests/ |
+| 83 | DA-1 data: Tatoeba download (background) + prepare (dedupe, cap 50k/lang, val 10%/500) | `pending` | train.tsv + val.tsv built; unit test on fixture tar green | langid/scripts/{download_data,prepare_data}.py |
+| 84 | DA-1 eval harness BEFORE training (D-line A0 discipline): full/5/3/1-word acc, tie rate (margin 0.5), abstain, per-lang table + eval set build (FLORES-200 mirror probe, wikipedia fallback, manifest) + G6 leakage check | `pending` | selftest on fixture PASS; eval_manifest.json honest | langid/scripts/eval_langid.py |
+| 85 | DA-1 model + train (EmbeddingBag LR CPU) + G1 smoke gate: 2k/lang x 1 epoch < 10 min, beats majority baseline | `pending` | smoke PASS labeled | langid/scripts/train.py |
+| 86 | DA-1 full train + gate eval: G2 full >=0.97 / 5w >=0.95 / 3w >=0.90 / 1w >=0.70; G3 arabic-script group 3w >=0.85; EXPERIMENTS row registered BEFORE results | `pending` | E-row registered first (row-first) | runs/langid_da1/ |
+| 87 | DA-1 export: per-language int8 + pure numpy inference + <= 1 ms/word bench; artifact <= 2.5 MiB; int8 within 0.5 pp of fp32 (G4/G5) | `pending` | export + bench printed | langid/src/infer.py; langid/scripts/export_int8.py |
+| 88 | DA-1 report + docs (DA1_REPORT.md, HANDOFF/MEMORY/README verifier rows) | `pending` | gates G1-G6 verifiable in report | research/desert_ant_recreation/DA1_REPORT.md (to write) |
+| 89 | DA-1 polish/next: confusion-matrix artifact (arabic-script focus), optional lingua-py baseline comparison (USER-GATED install), on-device recipe note (2 MB int8 head file) | `pending` | after DA-1 gates close | DESIGN.md section 4 |
+| 90 | DA-2 Emo-analogue (812-emoji classifier, 22 langs incl. Arabic) - next rung after DA-1 | `pending` | USER-GATED start; data-source study first (own DESIGN+plan) | DESIGN.md section 3 ladder |
+| 91 | DA-3..DA-9 ladder rungs (topics/fillers/dialect-ID/ASR/PII/titles/schemas) | `pending` | USER-GATED each; audio tier needs scheduled GPU windows (never beside live run) | DESIGN.md section 3 |
+
+

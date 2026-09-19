@@ -7,6 +7,12 @@ __pycache__/
 # Secrets (never commit real keys)
 .env
 
+# DA-line (langid, TASKS rows 81+): code/tests/docs committed; train data and
+# run artifacts stay local (regenerable from the Tatoeba export)
+langid/vendor/
+data/langid/
+runs/langid*/
+
 # Raw JSONL is regenerable via scripts/prepare_data.py (keep packed .bin)
 data/*/raw/
 # nested corpus raw dir (h2_copy) - data/*/raw/ is one segment deep only
