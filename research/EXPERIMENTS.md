@@ -251,3 +251,19 @@ Environment note: mid-flight found a CRLF vs LF mismatch that made two silent re
 | trunk-only marks under the same stack (G5 probe) | - | 0.7846 | - |
 
 The bridge-aware head finetune's composed mark-channel 0.7984 tops even the raw bridge fill probe 0.7846 - the head and bridges are genuinely complementary, and the trunk's non-mark branch was never disturbed (0.5698 -> 0.5703). mu2 G5/G4b combined composition CLOSED as the current best-of model on the ladder.
+
+## E-41 (PRE-REGISTERED, mu3-A: x-task bridge tower on the frozen mu2 trunk) — 2026-09-19
+
+The x5 recipe first step realized: mount the SAME bridge mechanics onto a NEW task family while the diacritic stack stays intact. Frozen trunk runs/mex/mu2_g3/final (hidden 320). A fresh bridge tower (2 x Bridge(320,4) on layers 0/1, zero-init a, warm-in 400/600/1000, lr 8e-5, 1000 steps, teacher-of-self clean KV, strength-clamped clean passes - the disarm-before-clean-pass discipline) is trained on the mu1 MIXED stream (data/mex/mixed/train.jsonl, 8000 items = 2000 per task x1..x4, shared 97-char vocab, pad id 0, CE on real tokens only) with plain next-token CE (prompt+target, teacher-forced). x tower and mu2 towers are separate Bridge instances; only one tower is ever armed.
+
+Pre-registered gates on data/mex/mixed/val.jsonl (200 items, teacher-forced CE): (a) x-tower bridged CE < 0.95 x trunk-off CE on the mixed val (>=5% relative drop); (b) strength-0 identity = 0.00 fp32; (c) stack hygiene: with the x tower DISARMED, the mu2 composed readout (E-37a bridges + E-39a head) on its own val protocol reproduces E-39a exactly (0.6533 all-pos / 0.7984 mark-pos). FAIL => honest row; no retunes.
+
+**E-41 RESULT (closed) - PASS on all pre-registered gates. mu3-A done.**
+
+| gate | value | verdict |
+|---|---|---|
+| (a) x-tower CE on mixed val | 6.1823 (trunk-off) -> **4.2513** = -31.2% rel (target <= -5%) | PASS |
+| (b) strength-0 identity | 0.00e+00 fp32 | PASS |
+| (c) mu2 stack hygiene | fresh-process reproduction: 0.6533 all-pos / 0.7984 mark-pos EXACT | PASS |
+
+The same mount recipe (teacher-of-self clean KV, zero-init gate, warm-in/hold/anneal) transfers across task families: one bridge tower adapts the FROZEN diacritization trunk to the mu1 mixed symbolic stream (x1..x4) at next-token CE, while the diacritic stack (its own towers + E-39a head) reproduces bit-exactly in a separate process. Federated mounts, one trunk: mu3-A's combine law works. Artifacts runs/mex/mu2_e41/{xtower.pt, summary.json, hygiene.json}; scripts mex/scripts/{train_mu2_e41_xtower,hygiene_e41}.py. NOTE: the x tower's 0.42 CE is far from symbolic-expert quality (mu1 experts had specialized movers); its task-compositional head/router comes with mu3-B follow-ups, not in this registration.
