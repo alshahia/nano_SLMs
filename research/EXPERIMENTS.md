@@ -114,3 +114,38 @@ Training curve: head loss 2.1963 -> ~0.20 steady by step 200 (500 steps, lr 1e-3
 Artifacts: runs/mex/mu2_g4/{head.safetensors, train_summary.json, config.json}; script mex/scripts/train_mu2_g4_head.py.
 
 **Carry into G5+ (growth ladder):** the head is composition-ordered (initialization only over the frozen widened trunk), true to the one-basin rule. Ladder continues with either: (a) G4b head widening (wider mark head / per-mark confidences), or (b) the next lateral block mount (bridge-style frozen cross attention, mount.py path, gate_strength warm-in) with the widened trunk as student.';
+
+## E-34 (PRE-REGISTERED, mu2 G4b: corruption-aware mark head + composed decode) — 2026-09-19
+
+Mount correction from E-33: the G4 head reads hidden states of a CLEAN stream, but at decode time the input stream carries the corruption '|' at masked mark positions — a train/serve shift. G4b: head-only retrain on the G2 corruption model (in-batch, hold_every 3, marks->mask id, labels clean) on the FROZEN G3 widened trunk; head Linear 320->128->9 unchanged.
+
+Pre-registered gate (single): COMPOSED end-to-end next-token accuracy on the corrupted-input holdout — per position, choose the head's mark class if != none (token = that mark), else trunk argmax restricted to non-mark ids, teacher-forced walk — must beat the trunk-only baseline 0.6891 (E-32/G3 fill acc on the same holdout bin). Wilson95 CI printed. No plan-B retuning within the experiment; head capacity changes go to a NEW experiment. Retention structural again (frozen trunk, bitwise probe).
+
+**E-34 RESULT (closed) — FAIL on the pre-registered gate, honest row.**
+
+| metric | value |
+|---|---|
+| composed acc (pre-registered rule) | 0.2796 (Wilson95 [0.2765,0.2828], n=299,440) vs gate > 0.6891 · **FAIL** |
+| diagnostic (read-only, same val): mark positions, composed | 0.6896 |
+| diagnostic: mark positions, trunk-only free argmax on corrupted stream | **0.7515** |
+| diagnostic: non-mark positions, composed | 0.5464 (trunk-only 0.5421 — head marginally helps here) |
+
+Root cause: the pre-registered rule's "else trunk argmax restricted to non-mark ids" branch is mark-blind BY CONSTRUCTION — when the head abstains (none) at a true-mark position the trunk cannot emit the mark, so the composed walk counts errors the unrestricted trunk (identical weights: 0.7515 there) would not. The comparison was structurally unfair; head contribution at non-mark positions was small-positive (+0.43pt). The corruption-matched head itself learned well (head loss 0.328) — the composition RULE was the failure.
+
+Artifacts: runs/mex/mu2_g4b (head.safetensors + train_summary.json kept as the corruption-matched head).
+
+## E-35 (PRE-REGISTERED, mu2 G4b2: corrected composition rule) — 2026-09-19
+
+Same frozen G3 trunk; same E-34 head loaded as-is (NO retraining). Only change = decode rule: head emits its mark class if != none, ELSE trunk argmax over the FULL vocab (not mark-restricted). Pre-registered gates: (a) mark-position composed acc must reach >= trunk-only free-argmax on the same bin (that diagnostic measured 0.7515; the gate reference is whatever the same-script trunk-only measures, per-bin); (b) all-positions composed acc must beat E-34's 0.2796. No retraining, no threshold tuning — rule-level fix only.
+
+**E-35 RESULT (closed) — PASS on both pre-registered gates.**
+
+| metric | composed rule (head-first, free trunk) | trunk-only reference |
+|---|---|---|
+| all positions | 0.6196 (n=299,440) | — (E-34 rule: 0.2796) |
+| mark positions | **0.7556** | 0.7515 (+0.41pt from the head, same bin) |
+| non-mark positions | 0.5418 | 0.5421 (cost 0.03pt) |
+
+gates: rule_beats_E34 PASS; markacc_at_or_above_trunk_only PASS (0.7556 >= 0.7515). Rule fix alone turned 0.2796 -> 0.6196 with zero retraining: the composition now composes rather than hinders. Artifact: runs/mex/mu2_g4b2/eval_rule.json; script mex/scripts/eval_mu2_g4b2.py.
+
+**Carry into G5:** the head-first+free-trunk rule is the composition pattern for the ladder's lateral mounts (specialist first, general free-knowledge fallback); E-34's lesson (restriction branches blind the base) goes to MEMORY.

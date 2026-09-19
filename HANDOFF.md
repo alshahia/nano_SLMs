@@ -1297,3 +1297,9 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - Next: G4 (E-33) mark-selection head + DER-lite on top of runs/mex/mu2_g3/final.
 
 - E-33 (G4 mark-selection head, frozen trunk) CLOSED **PASS**: mark acc 0.8518 (Wilson95 [0.8496,0.8539], n=101930) vs 0.4063 either-guess; retention structural (trunk bitwise intact, anchor 0.7395). run runs/mex/mu2_g4, script mex/scripts/train_mu2_g4_head.py.
+
+
+## mu2 2026-09-19 late: G4b composition probe (E-34 FAIL -> E-35 PASS)
+- E-34 (G4b composed decode, pre-registered rule) CLOSED **FAIL** honestly: composed 0.2796 vs its own 0.6891 gate (mark-blind restriction branch was the root cause).
+- E-35 (corrected rule, same frozen trunk + same head, NO retraining) CLOSED **PASS both gates**: all-position 0.6196; mark-position 0.7556 >= trunk-only 0.7515; non-mark cost 0.03pt. The full end-to-end composed diacritization walk now exists, and the head-first free-trunk composition pattern is established for the ladder's next lateral mounts (G5).
+- Canonical: trunk runs/mex/mu2_g3/final; corruption-matched head runs/mex/mu2_g4b/head.safetensors; rule script mex/scripts/eval_mu2_g4b2.py.
