@@ -36,8 +36,8 @@ lora:
     hold_every: 3
 
 train:
-  output_dir: runs/mex/mu2_g2
-  final_dir: runs/mex/mu2_g2/final
+  output_dir: runs/mex/mu2_g2_e
+  final_dir: runs/mex/mu2_g2_e/final
   seed: 42
   batch: 32
   accum: 1

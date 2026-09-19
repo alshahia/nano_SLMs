@@ -52,7 +52,7 @@ class Mu2CorruptDataset(PackedDataset):
     """
 
     def __init__(self, shards, seq_len: int, *, corrupt: bool,
-                 voc: CharVocab, mask_char: str = "|"):
+                 voc: CharVocab, mask_char: str = "|", hold_every: int = 7):
         super().__init__(shards, seq_len)
         import torch
         self._corrupt_enabled = corrupt
@@ -61,6 +61,7 @@ class Mu2CorruptDataset(PackedDataset):
         import numpy as np
         self._mark_arr = np.asarray(self._marks, dtype=np.int64)
         self._np = np
+        self._hold_every = int(hold_every)
 
     def _corrupt_inplace(self, ids):
         np = self._np
@@ -72,7 +73,7 @@ class Mu2CorruptDataset(PackedDataset):
 
     def __getitem__(self, idx: int) -> dict:
         item = super().__getitem__(idx)
-        if self._corrupt_enabled and (idx % 7) == 3:
+        if self._corrupt_enabled and (idx % self._hold_every) == 3 % max(self._hold_every, 1):
             return item                      # clean replay block (unmasked)
         if self._corrupt_enabled:
             item["input_ids"] = self._corrupt_inplace(item["input_ids"])
@@ -115,7 +116,8 @@ def main() -> None:
     train_ds = Mu2CorruptDataset(
         (ROOT / d["tokens_dir"]).glob("train_*.bin"), seq_len,
         corrupt=bool(cr.get("mask_marks")), voc=voc,
-        mask_char=str(cr.get("mask_char", "|")))
+        mask_char=str(cr.get("mask_char", "|")),
+        hold_every=int(cr.get("hold_every", 7)))
     val_ds = Mu2CorruptDataset(
         (ROOT / d["tokens_dir"]).glob("val_*.bin"), seq_len,
         corrupt=False, voc=voc, mask_char=str(cr.get("mask_char", "|")))

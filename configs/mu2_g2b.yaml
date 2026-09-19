@@ -33,22 +33,22 @@ lora:
   corrupt:
     mask_marks: true
     mask_char: '|'
-    hold_every: 3
+    hold_every: 7
 
 train:
-  output_dir: runs/mex/mu2_g2
-  final_dir: runs/mex/mu2_g2/final
+  output_dir: runs/mex/mu2_g2_b
+  final_dir: runs/mex/mu2_g2_b/final
   seed: 42
   batch: 32
   accum: 1
   eval_batch: 32
-  max_steps: 3000
+  max_steps: 12000
   eval_steps: 250
   save_steps: 500
   save_total_limit: 3
   logging_steps: 50
   lr: 0.0001
-  warmup_steps: 100
+  warmup_steps: 200
   scheduler: cosine
   weight_decay: 0.1
   max_grad_norm: 1.0

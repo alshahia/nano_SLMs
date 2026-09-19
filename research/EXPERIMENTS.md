@@ -56,3 +56,25 @@ skeleton for new ones); machine evidence lives in runs/*/final/. Distilled
 | E-32 | 2026-09-19 | mu2 G3: Net2Net function-preserving widening (hidden 80->160, 2L->4L) + word-mask fill-in (user id 5) | G3 = widened G2 | row-first | Net2Net width/depth expansion function-preserving (no re-init of surviving weights); word-mask transformation; <=12K steps; replay 15% G1+G2 data | REGISTERED BEFORE any train | fill acc > G2; G1/G2 retention within gate | runs/mex/mu2_g3/ |
 | E-33 | 2026-09-19 | mu2 G4: mark-selection head per-letter (haraka|sukun|none) from G3 warm-start on the wordlist train slice; DER-lite is the headline, wordlist exact-match secondary | G4 = G3 + mark head | row-first | head = small LoRA/adapter on G3; data = mex x1 wordlist; DER-lite = per-char mark accuracy vs val wordlist slice | REGISTERED BEFORE any train | wordlist exact-match >= 12K x1 expert 0.1075 (Wilson CI); DER-lite >= trivial class prior; user target met = USER lift above mu1's student 0.0465 | runs/mex/mu2_g4/ |
 | E-26 | 2026-09-18 | mu0c long window: does 10x more training (120K steps, same recipe/params) improve all four experts without overfitting (val loss divergence)? | 5 | NONE YET  registering before any training run (row-first discipline). Arms: same 4 experts + control, max_steps 120000 (10x E-25's 12000), batch/lr/optimizer unchanged; x3 keeps hardened generator; runs fresh (12K finals archived runs/mex/archive_12000); tracking: TensorBoard events under runs/mex/<t>/logs + loss-tracker CSV (mex/scripts/watch_losses.py, CPU-only); analysis = train vs val loss curves, overfit = val rising while train falls, plus final eval gates (trivial baselines from E-25 pools unchanged for x1/x2/x4; x3 0.512). | DONE | all four seed gates PASS at 120K (x1 0.105>0.0; x2 0.828>0.002; x3 0.916>0.512; x4 0.862>0.316) BUT no val-loss gain vs 12K: min eval loss reached early (~6-8K steps) then mid-run overfit (x2 eval +0.95 by 100K) and the cosine anneal tail pulled eval back to ~min; downstream exact_match FLAT-or-WORSE vs E-25 12K (x1 0.1075->0.105, x2 0.898->0.828, x3 0.918->0.916, x4 0.846->0.862) => mu0 window saturated at 12K steps; more steps do not generalize, more data / regularization does (mu1 direction). Control 120K best on val (eval 1.0601) and cross-tasks matches or beats experts (x2: control 0.848 vs expert 0.828)  task knowledge not expert-exclusive. Curve evidence: runs/mex/loss_curves.png + loss_track.csv; runs/mex/loss_curves.json |
+
+## E-31 — mu2 G2: mark-drop fill-in via LoRA warm-start (in-batch corruption) — 2026-09-19
+
+**Design fix over E-30's failed first formulation:** corruption in-batch (input marks→'|', labels stay clean; exact 1:1 shift supervision), replay-ratio sweep. Trunk = G1 (runs/mex/mu2_g1/final, 780,160 params hidden160/ffn640). LoRA r8 alpha16 on q/v/gate/up/down. Profile re-opt mid-run: batch 8×4→32×1, grad_ckpt off (GPU 30%→saturated, ~10× it/s; commit e592e83 + 628bb57 profiler).
+
+| run | lr | steps | hold_every | fill acc | fill CE | retent CE | verdict |
+|---|---|---|---|---|---|---|---|
+| baseline either-guess | — | — | — | 0.4063 | 1.5394 | — | — |
+| G1 trunk on bins | — | — | — | 0.3157 | 3.9115 | 0.7003 | — |
+| E-31a (4e-4,12K,h7) | 4e-4 | 12000 | 7 | 0.7817 | 1.1778 | 0.8093 | task PASS retention FAIL |
+| E-31b (1e-4,12K,h7) | 1e-4 | 12000 | 7 | 0.7569 | 1.3102 | 0.7870 | retention FAIL |
+| E-31c (3e-5,12K,h7) | 3e-5 | 12000 | 7 | 0.7010 | 1.5130 | 0.7586 | retention FAIL |
+| E-31d (1e-4,3K,h7) | 1e-4 | 3000 | 7 | 0.6864 | 1.5481 | 0.7576 | retention FAIL |
+| **E-31e (1e-4,3K,h3)** | 1e-4 | 3000 | 3 | **0.6765** | 1.5826 | **0.7407** | **PASS / PASS** |
+| E-31f (3e-4,3K,h3) | 3e-4 | 3000 | 3 | 0.7418 | 1.3729 | 0.7507 | retention FAIL (marginal) |
+| E-31g (2e-4,2.5K,h3) | 2e-4 | 2500 | 3 | 0.7077 | 1.4838 | 0.7429 | PASS (knife-edge) |
+
+**VERDICT E-31e PASS** (canonical: configs/mu2_g2.yaml; weights runs/mex/mu2_g2/final = merged E-31e; failed 4e-4 run preserved at runs/mex/mu2_g2_a_failed4e4). Fill acc 1.67× either-guess; retention within the ≤0.7431 guard (trunk same-bin anchor 0.7003). Trade-off law: at this trunk scale fill gain and retention cost sit on one knob — replay ratio is the retention lever, lr×steps the task lever.
+
+**Deviations disclosed:** E-31a ran under pre-re-opt batch/ckpt config; save_total_limit rotation lost the 0.7547 mid-flight best before load_best_at_end (final merged one = last step). All sweepance configs committed.
+
+**Carry into G3 (E-32):** Net2Net widening re-scoped — trunk already hidden160/ffn640; widen 160→320 (or deepen) function-preserving; teacher = merged E-31e; batch 32 accum 1.

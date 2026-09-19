@@ -33,11 +33,11 @@ lora:
   corrupt:
     mask_marks: true
     mask_char: '|'
-    hold_every: 3
+    hold_every: 7
 
 train:
-  output_dir: runs/mex/mu2_g2
-  final_dir: runs/mex/mu2_g2/final
+  output_dir: runs/mex/mu2_g2_d
+  final_dir: runs/mex/mu2_g2_d/final
   seed: 42
   batch: 32
   accum: 1
