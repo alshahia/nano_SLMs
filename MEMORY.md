@@ -1,3 +1,7 @@
+## 2026-09-19 - DA-2 emo data/recipe facts
+- tweet_eval emoji class->emoji mapping: fetch class_label.names from the HF API (cardiffnlp/tweet_eval), never hand-guess emoji strings.
+- TEAD (arbml/TEAD): all 12,558 rows contain emojis; 469 distinct types; the DeepMoji one-type filter keeps 67 across 7,773 rows - it is the vocab bottleneck.
+- snakers4/emoji-sentiment-dataset (11 langs incl ar) is BOTH dead (hosting 404) and CC-BY-NC - rejected on both counts.
 ## 2026-09-19 — mu1 lesson: micro-scale weight merging fails by basin divergence (E-27)
 - Weight soup/TIES merges of four same-seed 12K experts ALL collapse to 0.0 exact-match; embedding geometries go near-orthogonal per task (corr 0.027). Routing/distillation, not merging, is the correct composition path at this scale; also: tasks with self-distinguishing formats make learned routers trivial (1.00 accuracy).
 # MEMORY.md — durable memory: decisions & lessons

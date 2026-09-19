@@ -374,3 +374,20 @@ FAIL => honest row, no retunes, no threshold moves; changed recipe = new user-ga
 Joint-live co-training repaired cohabitation: mark-pos recovered from 0.6459 to 0.7943 (-0.7pt vs the diacritic-only standing 0.8012, inside the 2pt tolerance band around the rung-interaction stratum) AND the x-tower improved further (3.32 -> 2.28 CE) - both towers converged around SHARED trunk state. markpos 0.7943 vs 0.8012 is the cost of cohabitaiton and is +3.6pt over the trunk-fallback composed floor (0.6202).
 
 Media added: runs/mex/mu3_joint/{mu2_bridges.pt, x_bridges.pt, head.safetensors, gates.json}; scripts mex/scripts/{train_mu3_joint.py, eval_mu3_e45_gates.py}. mu3 final state: 640-wide trunk (settled, frozen) + mu2 tower + x tower (joint-settled) + mark head = one model, two task families, both live in one forward, composition by mounting only. x-CE on the mixed stream is now 2.28 vs 4.25 trunk-off (-46%); diacritic compose-participation mark readout 0.7943 vs E-43's 0.8012 (-0.7pt for the cohab cost).
+
+
+## E-44 (closed) - DA-2 Emo-analogue emoji suggestion, 2026-09-19
+
+Data: TEAD (ar, 12,558 rows -> 7,773 one-emoji-type <=150-class cap, 67 emojis) +
+tweet_eval/emoji (en, 50k, 20 emojis). 46,100/5,729/5,845 splits, 76 classes.
+Model: hashed word-unigram+bigram+char 1..3-gram EmbeddingBag 65536x76 CPU.
+
+| D1 dataset | 46,100 / 5,845 rows; >=40 eval emojis | PASS (67 ar + 20 en) |
+| D2 top-1 >= 2x prior AND >= prior+0.05 | prior 0.1990, bars 0.3980/0.2490; best val 0.2358; TEST ar 0.2255 en 0.2335 | **FAIL** (honest: beats prior +2.7/+3.5 pp, not the bar) |
+| D3 per-language rows | ar 0.2255/0.3866 (t3), en 0.2335/0.4358 | PASS |
+| D4 artifact+latency | 2.896 MiB int8, 1.02-1.08 ms/text naive proxy, int8 agree 98.0-99.2% | PASS |
+| D5 degenerate | ar 45/67 emojis alive, en 21/20 | PASS |
+
+Verdict: 4 PASS + 1 honest FAIL. Beats frequency prior on both languages,
+top-3 ~0.40; does not reach product top-1 bar. Next user-gated rung options
+in research/desert_ant_recreation/DA2_REPORT.md.
