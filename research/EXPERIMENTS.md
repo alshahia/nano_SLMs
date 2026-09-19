@@ -180,3 +180,22 @@ Artifacts: runs/mex/mu2_g5/{bridge.pt, summary.json}; script mex/scripts/train_m
 **Carry into G5 follow-ups (each would be a NEW registered experiment, user-gated per the E-36 fail finding):**
 - E-37a: 2 bridges (layers 0 AND 1) + per-layer teacher KV — same recipe, expected to clear the +1.5pt bar.
 - E-37b: KV source = clean stream + ground-truth mark tokens at fetch positions (fetch-time conditioned bridge).
+
+## E-37a (PRE-REGISTERED, mu2 G5: two-layer lateral bridge) — 2026-09-19
+
+Same discipline as E-36, mechanism-preserving double mount (no rule/threshold changes): bridges on layer 0 AND layer 1 of the FROZEN trunk, each Bridge(320, 4), zero-init a. Per-layer teacher KV from the CLEAN stream at matched depth (bridge_i kv = clean hidden_states[i+1], i.e. layer i's clean output; output_hidden_states=True). Everything else identical to E-36: gate warm-in 400/600/1000, batch 32, lr 8e-5, corruption hold_every 3, steps 1000, trunk frozen.
+
+Pre-registered gates: (a) bridged mark-position fill acc >= 0.7660 on the E-36 val protocol (same bin, same rule: head-free trunk+bridge forward); (c) strength-0 identity = 0.00 fp32; (b) retention structural (frozen trunk), validated again by trunk-off readout reproducing 0.7515 exactly. FAIL => honest row, no retunes.
+
+**E-37a RESULT (closed) — PASS on all pre-registered gates.**
+
+| gate | value | verdict |
+|---|---|---|
+| (a) bridged mark-position fill acc (n=108,956) | **0.7846**, Wilson95 [0.7821, 0.7870] — vs 0.7660 target | **PASS** |
+| lift over trunk-only | **+3.31pt** (0.7515 -> 0.7846) | tripled E-36's +1.17pt single-bridge mount |
+| (c) strength-0 identity | 0.00e+00 fp32 | PASS |
+| (b) retention structural | trunk-off readout reproduced 0.7515 exactly | PASS |
+
+Second bridge at layer 1 with depth-matched clean KV was the mechanism-preserving fix E-36's probe pointed at: same recipe, no threshold arithmetic, trainables ~3.2k params absolute total across 2 bridges, and the combined lateral state access cleared the margin with room. Artifacts runs/mex/mu2_g37a/{bridge.pt, summary.json}; script mex/scripts/train_mu2_g37a_bridge2.py.
+
+**mu2 ladder status after E-37a:** G1 -> G2 fill-in -> G3 widen -> G4 head -> G4b(C) composed rule — ' 0.6196 composed, 0.7556 mark positions — now G5 bridges lift the trunk underneath everything, holding identity by construction at mount-time. The next rung (user-gated): extend gates to the composed/head readout (bridge+head jointly on the composed decode), i.e. E-38a over the E-35 rule end-to-end.

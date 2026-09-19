@@ -1307,3 +1307,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 
 ## mu2 2026-09-19: G5 lateral bridge probe (E-36)
 - E-36 first "combine" rung (bridge over frozen trunk): gate (c) PASS exact-identity; trunk-only 0.7515 -> bridged 0.7632 (+1.17pt) but the pre-registered bar was 0.7660 (+1.5pt) => **honest FAIL row** (no retunes within the registration). Artifacts runs/mex/mu2_g5; scripts mex/scripts/train_mu2_g5_bridge.py; follow-ups E-37a (2 bridges) / E-37b (fetch-conditioned KV) proposed and USER-GATED.
+
+- E-37a (G5 two-layer lateral bridge) CLOSED **PASS all pre-registered gates**: bridged mark acc 0.7846 (Wilson95 [0.7821,0.7870], n=108,956) vs 0.7660 target (+3.31pt over trunk-only 0.7515), identity 0.0, retention structural. runs/mex/mu2_g37a; script mex/scripts/train_mu2_g37a_bridge2.py. Next user-gated: E-38a composed-rule readout with the E-37a bridges live (bridge-aware E-35 decode).
