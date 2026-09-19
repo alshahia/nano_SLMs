@@ -1,23 +1,20 @@
-"""mex/scripts/train_mu2_lora.py — mu2 rung G2+ (E-31..): LoRA warm-start trainer.
+"""mex/scripts/train_mu2_lora.py — mu2 rung LoRA trainer (E-31 onward).
 
 Mechanics identical to mex/scripts/train_distill.py (root_train reuse,
-auto-resume zero flags, cosine, fp16, load_best_at_end, save_final) with the
-mu2 ladder differences ONLY:
-  1. trunk = G1 final weights, loaded from safetensors into build_model(cfg)
-     (config identical to the base run -> keys match exactly).
-  2. peft LoraAdapter from cfg['lora'] (r/alpha/dropout/targets); logits path
-     stays the raw HF forward{loss from "labels" is bypassed; compute_loss
-     forwarded to the HF model's own loss (shifted CE) - identical to
-     train.py because inputs carry only input_ids/labels} by get_peft_model(...)
-     then model.enable_input_require_grads(); base params show requires_grad
-     False so only the LoRA deltas train.
-  3. training streams = cfg['data']['tokens_dir'] train_*.bin, which are the
-     85% masked + 15% clean replay shards (see pack_mu2_g2.py).
-  4. final save = adapter MERGED back (merge_and_unload) -> G3 can warm-start
-     from plain safetensors with zero peft dependency.
+auto-resume zero flags, cosine, fp16, load_best_at_end, save_final) with
+mu2-ladder differences ONLY:
+  1. trunk = cfg['lora']['base_run'] bot final weights loaded from safetensors
+     into build_model(cfg) (same config template -> keys match exactly).
+  2. peft LoRA from cfg['lora'] (r/alpha/dropout/targets); ONLY deltas train.
+  3. E-31 fix: the mark-drop corruption happens IN BATCH (Mu2CorruptDataset):
+     input marks -> '|', labels stay CLEAN (the shifted CE then supervises
+     the fill), every 7th train block stays clean (14% retention replay);
+     eval blocks never corrupt so eval CE IS the clean retention reading.
+  4. final save merges the adapter back (plain safetensors for G3).
 """
 from __future__ import annotations
 
+import argparse
 import importlib.util
 import json
 import os
@@ -41,10 +38,48 @@ clear_stop_flag = root_train.clear_stop_flag
 _env_fingerprint = root_train._env_fingerprint
 
 from src.data import PackedDataset  # noqa: E402
+from mex.src.vocab import CharVocab  # noqa: E402
+
+MARKS = "ًٌٍَُِّّْ"
+
+
+class Mu2CorruptDataset(PackedDataset):
+    """E-31 fix: labels must carry the TRUE mark where the INPUT is masked.
+    Rewriting streams breaks 1:1 alignment under a shifted CE, so corruption
+    is IN BATCH: input marks -> mask_char, labels stay clean. corrupt=True
+    masks train blocks except every 7th (clean replay); eval never corrupts,
+    so eval CE doubles as the clean-stream retention reading.
+    """
+
+    def __init__(self, shards, seq_len: int, *, corrupt: bool,
+                 voc: CharVocab, mask_char: str = "|"):
+        super().__init__(shards, seq_len)
+        import torch
+        self._corrupt_enabled = corrupt
+        self._mask_id = int(voc.vocab[mask_char])
+        self._marks = [int(voc.vocab[c]) for c in MARKS]
+        import numpy as np
+        self._mark_arr = np.asarray(self._marks, dtype=np.int64)
+        self._np = np
+
+    def _corrupt_inplace(self, ids):
+        np = self._np
+        m = np.isin(ids, self._mark_arr)
+        if m.any():
+            ids = ids.copy()
+            ids[m] = self._mask_id
+        return ids
+
+    def __getitem__(self, idx: int) -> dict:
+        item = super().__getitem__(idx)
+        if self._corrupt_enabled and (idx % 7) == 3:
+            return item                      # clean replay block (unmasked)
+        if self._corrupt_enabled:
+            item["input_ids"] = self._corrupt_inplace(item["input_ids"])
+        return item
 
 
 def main() -> None:
-    import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", required=True)
     ap.add_argument("--max-steps", type=int, default=0)
@@ -53,10 +88,9 @@ def main() -> None:
     ap.add_argument("--final-dir", default="")
     args = ap.parse_args()
 
-    import torch
     import yaml
     from safetensors.torch import load_file
-    from peft import (LoraConfig, TaskType, get_peft_model)
+    from peft import LoraConfig, get_peft_model
     from transformers import (AutoTokenizer, Trainer, TrainingArguments,
                               default_data_collator)
 
@@ -64,41 +98,52 @@ def main() -> None:
 
     cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
     tcfg, d, t, l = cfg["tokenizer"], cfg["data"], cfg["train"], cfg["lora"]
-    if args.max_steps > 0: t = dict(t, max_steps=args.max_steps)
-    if args.logging_steps > 0: t = dict(t, logging_steps=args.logging_steps)
-    if args.output_dir: t = dict(t, output_dir=args.output_dir)
-    if args.final_dir: t = dict(t, final_dir=args.final_dir)
+    if args.max_steps > 0:
+        t = dict(t, max_steps=args.max_steps)
+    if args.logging_steps > 0:
+        t = dict(t, logging_steps=args.logging_steps)
+    if args.output_dir:
+        t = dict(t, output_dir=args.output_dir)
+    if args.final_dir:
+        t = dict(t, final_dir=args.final_dir)
     seq_len = int(cfg["model"]["ctx"])
 
+    from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(tcfg["name"])
-    train_ds = PackedDataset((ROOT / d["tokens_dir"]).glob("train_*.bin"), seq_len)
-    val_ds = PackedDataset((ROOT / d["tokens_dir"]).glob("val_*.bin"), seq_len)
+    voc = CharVocab()
+    cr = l.get("corrupt") or {}
+    train_ds = Mu2CorruptDataset(
+        (ROOT / d["tokens_dir"]).glob("train_*.bin"), seq_len,
+        corrupt=bool(cr.get("mask_marks")), voc=voc,
+        mask_char=str(cr.get("mask_char", "|")))
+    val_ds = Mu2CorruptDataset(
+        (ROOT / d["tokens_dir"]).glob("val_*.bin"), seq_len,
+        corrupt=False, voc=voc, mask_char=str(cr.get("mask_char", "|")))
     print(f"[train_mu2_lora] blocks: train={len(train_ds)} val={len(val_ds)} "
-          f"seq_len={seq_len}", flush=True)
+          f"seq_len={seq_len} corrupt={bool(cr.get('mask_marks'))}", flush=True)
 
-    vocab = max(int(tcfg["vocab_size"]), len(tok))
-    model = build_model(cfg, vocab_size=vocab)
+    model = build_model(cfg, vocab_size=tcfg["vocab_size"])
     base_sd = load_file(str(ROOT / l["base_run"] / "model.safetensors"))
     missing, unexpected = model.load_state_dict(base_sd, strict=False)
     if unexpected:
-        raise RuntimeError(f"unexpected keys: {unexpected[:5]}")
-    print(f"[lora] trunk loaded from {l['base_run']} "
-          f"(missing={len(missing)} unexpected=0)", flush=True)
+        raise RuntimeError(f"unexpected keys: {list(unexpected)[:5]}")
+    print(f"[lora] trunk from {l['base_run']} missing={len(missing)}",
+          flush=True)
     model.enable_input_require_grads()
     peft_cfg = LoraConfig(
         task_type="CAUSAL_LM", r=int(l["r"]), lora_alpha=int(l["alpha"]),
-        lora_dropout=float(l["dropout"]), target_modules=list(l["targets"]))
+        lora_dropout=float(l["dropout"]),
+        target_modules=list(l["targets"]))
     model = get_peft_model(model, peft_cfg)
     model.print_trainable_parameters()
-    n_params = sum(p.numel() for p in model.parameters())
 
     output_dir = ROOT / t["output_dir"]
     os.environ.setdefault("TENSORBOARD_LOGGING_DIR", str(output_dir / "logs"))
     resume_from = find_latest_checkpoint(output_dir)
     if resume_from is not None:
-        print(f"[resume] found {resume_from.name} -> auto-resume", flush=True)
+        print(f"[resume] {resume_from.name} -> auto-resume", flush=True)
     if clear_stop_flag(output_dir):
-        print("[stop] cleared stale STOP flag -> continuing", flush=True)
+        print("[stop] cleared stale STOP flag", flush=True)
 
     targs = TrainingArguments(
         output_dir=str(output_dir),
@@ -134,13 +179,14 @@ def main() -> None:
 
     final_dir = ROOT / t["final_dir"]
     final_dir.mkdir(parents=True, exist_ok=True)
-    save_final(trainer, final_dir)        # merge_and_unload handled inside
+    save_final(trainer, final_dir)               # merge_and_unload inside
     tok.save_pretrained(str(final_dir))
 
     summary = {
         "phase": cfg["name"],
-        "lora": {"r": l["r"], "alpha": l["alpha"],
-                 "targets": l["targets"], "base_run": l["base_run"]},
+        "lora": {"r": l["r"], "alpha": l["alpha"], "targets": l["targets"],
+                 "base_run": l["base_run"],
+                 "corrupt": bool(cr.get("mask_marks"))},
         "best_eval_loss": trainer.state.best_metric,
         "best_checkpoint": trainer.state.best_model_checkpoint,
         "resumed_from": resume_from.name if resume_from is not None else None,

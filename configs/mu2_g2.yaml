@@ -21,8 +21,8 @@ data:
   rows: 0
   val_fraction: 0.02
   shard_tokens: 2000000
-  raw_dir: data/mex/mu2/g2
-  tokens_dir: data/mex/mu2/g2/tokens
+  raw_dir: data/mex/mu2/g1
+  tokens_dir: data/mex/mu2/g1/tokens
 
 lora:
   base_run: runs/mex/mu2_g1/final
@@ -30,6 +30,10 @@ lora:
   alpha: 16
   dropout: 0.05
   targets: [q_proj, v_proj, gate_proj, up_proj, down_proj]
+  corrupt:
+    mask_marks: true
+    mask_char: '|'
+    hold_every: 7
 
 train:
   output_dir: runs/mex/mu2_g2
