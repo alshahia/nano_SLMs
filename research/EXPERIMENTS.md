@@ -297,3 +297,15 @@ Pre-registered gates (of a settle, read against G3 anchors):
 - (c) UPLOAD the mounts: after merge, re-mount widened bridges + head is NOT retuned: valid only if bridge KV comes from the settled trunk. Report composed readout + bridge-off trunk-only readout of the settled trunk and pre-register: composed mark-pos >= trunk-only mark-pos (the mounted stack must still add, the E-35 composition rule wins); if the settled trunk alone already exceeds E-39a 0.7984 by >5pts the mount comparison is inert (still recorded).
 
 FAIL row honesty: no retunes within this registration; a changed recipe = new user-gated rung.
+
+**E-43 RESULT (closed) - PASS on all pre-registered gates. mu3 G-settle done; mu3 model is now actually trained.**
+
+| gate | value | verdict |
+|---|---|---|
+| (a) retention CE, settled merged trunk (clean val) | **0.7391** vs guard <= 0.7431 | PASS |
+| (b) fill acc at masked marks, corrupted-input readout | **0.6972** (75966/108956) vs anchor 0.6891 | PASS |
+| (c) mounts still add after settle | composed bridged **0.6564 all / 0.8012 mark** >= trunk-only composed 0.6242 / 0.7620; also beats the E-39a anchor 0.6533/0.7984 | PASS |
+
+Honest notes: the Trainer's flushed best_eval_loss 0.7471 is a mid-run checkpoint eval, NOT the merged-final gate metric; gates are read from the merged final (0.7391). Mount compare needed the E-42 widened mounts copied alongside the settled trunk (they travel by mounting, zero retune); the first probe_e43 comparison stored stale-path verdict (identical anchors) was an instrumentation slip - caught by path audit before close, rerun on the true settled trunk and dropped from evidence.
+
+Artifacts: runs/mex/mu3_g4/final (canonical settled 640-wide μ3 trunk + traveling mounts bridge_w{0,1}.pt head_wide.safetensors), scripts mex/scripts/{train_mu2_lora.py re-used with configs/mu3_g4.yaml, eval_mu2_e43_mounts.py, eval_mu2_g2.py re-used via env}. mu3 = grown, settled, and mount-verified.
