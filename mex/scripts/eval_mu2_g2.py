@@ -25,13 +25,15 @@ from safetensors.torch import load_file
 
 G1_BEST = 0.7077  # E-30 best eval (nats/char); retention gate = within +5%
 
-cfg = yaml.safe_load((ROOT / "configs/mu2_g2.yaml").read_text(encoding="utf-8"))
+import os as _os
+FINAL = _os.environ.get("G2_FINAL", "runs/mex/mu2_g2/final")
+CFG_PATH = _os.environ.get("G2_CFG", "configs/mu2_g2.yaml")
+cfg = yaml.safe_load((ROOT / CFG_PATH).read_text(encoding="utf-8"))
 voc = CharVocab()
 V = len(voc.vocab)
 dev = "cuda" if torch.cuda.is_available() else "cpu"
 model = build_model(cfg, vocab_size=V).to(dev).eval()
 import os as _os
-FINAL = _os.environ.get("G2_FINAL", "runs/mex/mu2_g2/final")
 sd = load_file(str(ROOT / FINAL / "model.safetensors"))
 model.load_state_dict(sd, strict=False)
 

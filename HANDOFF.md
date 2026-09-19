@@ -1287,3 +1287,11 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - User picked option B. E-25 registered with results (retro-documented; E-24 remains the clean pre-registration exemplar). X3 generator hardened (maxlen 24, balanced-by-construction ok lines, half subtle one-pair flips; 14/14 tests green, commit 7d79cc1); configs bumped to 12K steps (c2510b0); old finals archived runs/mex/archive_2000; control re-packed byte-exact union (verified 3,294,269+31,506).
 - Results: x1 0.1075>0, x2 0.898>0.002, x3 0.918>0.512, x4 0.846>0.316 — 4/4 PASS; control 0.129/0.054/0.922/0.864. Experts >> control on symbolic; control > expert on real-data x1.
 - mu1 composition arms now unblocked. NEXT: whole-branch review, then mu1 planning.
+
+
+## mu2 session 2026-09-19 (E-31 close + E-32 G3 close)
+- E-31 (G2 fill-in via LoRA warm-start) CLOSED **PASS both gates** — winner E-31e: lr 1e-4, 3000 steps, in-batch corruption with hold_every 3 (2/3 blocks corrupted, labels stay clean). Canonical configs/mu2_g2.yaml + runs/mex/mu2_g2/final (merged E-31e). Failed 4e-4 run preserved at runs/mex/mu2_g2_a_failed4e4. Full sweep table in research/EXPERIMENTS.md.
+- Resource profiler scripts/profile_resources.py (psutil + nvidia-smi CLI, no pynvml) — CSV + rolling MD verdicts; ran on live G2; finding: sub-1M models are launch-overhead-bound, NOT data-starved. Re-opt: batch 32×accum 1, grad_ckpt off → ~10× it/s (~147 it/s), GPU saturated mid-run; committed 628bb57/e592e83.
+- E-32 (G3 Net2Net widening) CLOSED **PASS both gates**: widened 160→320/heads 8/kv 4/ffn 1280 function-preserving (max|dlogit|<1e-3), then LoRA settle lr 5e-5 ×1000 steps on the widened trunk: fill 0.6891 PASS, retention 0.7395 PASS — better than the E-31e numbers on both axes. runs/mex/mu2_g3/final = canonical widened trunk for G4.
+- Data catalog from prior turn committed 45fa7ba (research/data_catalog/, 37 datasets) — still awaiting user consumption/decision.
+- Next: G4 (E-33) mark-selection head + DER-lite on top of runs/mex/mu2_g3/final.

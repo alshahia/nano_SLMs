@@ -78,3 +78,20 @@ skeleton for new ones); machine evidence lives in runs/*/final/. Distilled
 **Deviations disclosed:** E-31a ran under pre-re-opt batch/ckpt config; save_total_limit rotation lost the 0.7547 mid-flight best before load_best_at_end (final merged one = last step). All sweepance configs committed.
 
 **Carry into G3 (E-32):** Net2Net widening re-scoped — trunk already hidden160/ffn640; widen 160→320 (or deepen) function-preserving; teacher = merged E-31e; batch 32 accum 1.
+
+## E-32 — mu2 G3: Net2Net function-preserving widening (E-32) — 2026-09-19
+
+**Scope correction:** mu2 G1/G2 trunk is LlamaForCausalLM (hidden160/head_dim40/ffn640, per runs/mex/mu2_g1/final/config.json), NOT GDNHybrid — the earlier "80→160 widening" note was inherited from a stale mu0 plan.
+
+**Operator implemented** (mex/scripts/net2net_widen.py): width ×2 everywhere — hidden 160→320, heads 4→8 (head_dim 40 UNCHANGED, RoPE preserved), kv 2→4, ffn 640→1280. Duplication algebra: out-axis cat factor 1, in-axis cat ×0.5; every 2D weight may need BOTH ops. Tie conflict resolved by untying (embed producer form, lm_head = E-dup×0.5 consumer form). **Verified: max |dlogit| < 1e-3 on a real val block, fp32** (assertion in-script). Saved runs/mex/mu2_g3_init.
+
+**G3 settle:** LoRA (r8 a16, same targets) on top of the WIDENED trunk — mechanism A applied to a widened trunk (B+A hybrid), lr 5e-5, 1000 steps, same corruption recipe (in-batch, hold_every 3).
+
+| gates | wide trunk + settle |
+|---|---|
+| fill acc (vs 0.4063 either-guess) | **0.6891 PASS** |
+| retention CE (guard ≤ 0.7431) | **0.7395 PASS** |
+
+**VERDICT PASS.** Both gates green after widening + settle; fill acc actually rose vs E-31e (0.6891 vs 0.6765) and retention improved (0.7395 vs 0.7407) — the widened trunk settled cleanly under LoRA. Canonical weights runs/mex/mu2_g3/final (merged, uncounted params ~1.5M).
+
+**Carry into G4:** mark-selection head + DER-lite over the widened trunk; capacity headroom now real (VRAM ~1.5/6144 MB, GPU saturated at batch 32).

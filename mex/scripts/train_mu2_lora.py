@@ -131,13 +131,20 @@ def main() -> None:
         raise RuntimeError(f"unexpected keys: {list(unexpected)[:5]}")
     print(f"[lora] trunk from {l['base_run']} missing={len(missing)}",
           flush=True)
-    model.enable_input_require_grads()
-    peft_cfg = LoraConfig(
-        task_type="CAUSAL_LM", r=int(l["r"]), lora_alpha=int(l["alpha"]),
-        lora_dropout=float(l["dropout"]),
-        target_modules=list(l["targets"]))
-    model = get_peft_model(model, peft_cfg)
-    model.print_trainable_parameters()
+    if not l.get("enabled", True):
+        pass                                   # G3 settle: full weights train
+    else:
+        model.enable_input_require_grads()
+    if not l.get("enabled", True):
+        print("[settle] full-weights fine-tune (Net2Net widen candidate)",
+              flush=True)
+    else:
+        peft_cfg = LoraConfig(
+            task_type="CAUSAL_LM", r=int(l["r"]), lora_alpha=int(l["alpha"]),
+            lora_dropout=float(l["dropout"]),
+            target_modules=list(l["targets"]))
+        model = get_peft_model(model, peft_cfg)
+        model.print_trainable_parameters()
 
     output_dir = ROOT / t["output_dir"]
     os.environ.setdefault("TENSORBOARD_LOGGING_DIR", str(output_dir / "logs"))
