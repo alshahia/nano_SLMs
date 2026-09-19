@@ -218,3 +218,36 @@ Gates: (a) composed all-pos > 0.6196: **0.6485** (+2.89pt) PASS; (b) mark-pos > 
 Mid-flight note: the first execution showed a spurious (c) FAIL; root cause was an eval-harness branch bug (bridges kept strength 1.0 from the previous run() call), NOT a composition failure. Fixed by resetting strength and KV every call; no thresholds or rules changed, pre-registration intact. The closing numbers are deterministic and reproducible.
 
 This is the x4 composition realized end-to-end: specialist head decides first over its 8 marks, trunk fallback keeps the FULL vocab, and the two lateral bridges lift BOTH branches through frozen-trunk lateral state access. Composition remains mount/initialization-order only: the head was trained WITHOUT the bridges live and still gained +3.06pt at mark positions (0.7556 -> 0.7862), evidence the bridge acts on shared trunk computation rather than overfitting a paired encoder. Artifacts runs/mex/mu2_e38a/summary.json; script mex/scripts/eval_mu2_e38a.py. No new training.
+
+## E-39a (PRE-REGISTERED, mu2: bridge-aware head finetune) — 2026-09-19
+
+Head-only finetune on BRIDGED hidden states (E-37a bridges live at strength 1.0, per-depth clean teacher KV, corruption stream identical to E-34: in-batch marks->'|', labels clean next-token class, hold_every 3, batch 64, 500 steps, lr 1e-3, bridges and trunk FROZEN). Warm-start from the E-34 head (runs/mex/mu2_g4b/head.safetensors) rather than fresh, to keep the compose chain honest and anchored.
+
+Pre-registered gates (val protocol identical to E-38a's, same bins, same composed rule): (a) composed mark-position acc > 0.7862 (E-38a markpos); (b) composed all-position acc > 0.6485 (E-38a allpos); (c) tree honesty: bridges-off composed readout must NOT be reported as the headline; bridges stay live. FAIL => honest row, no retunes, no threshold moves.
+
+| E-40 | 2026-09-19 | V4.1 CED-lite KV-sharing at nano scale (scratch micro-bench) | 5 arms (dense GQA / shared-KV upper half / CED-proj / +SWA128) | val loss neutral ±0.02 at d256-6L; pilot-proxy ctx512: -36% step time (B shared); ctx1024 wash-out; peak VRAM -0.05 GB; inference KV -40% (analytic) | PASS (loss-neutral; adopt for inference KV; training-side win only at filled VRAM) | CED-lite upper halves are loss-safe; attack ACTIVATIONS (70% of train VRAM @ ctx2048), not KV cache | research/csa2_ced_tests/RESULTS.md |
+| E-41 | 2026-09-19 | Muon optimizer vs AdamW at nano scale (scratch) | 3 arms (AdamW 4e-4 / Muon 1e-2 / 3e-2, d192 4L, 300 steps) | Muon 3e-2 train loss 4.49 vs AdamW 4.99 (-10%); lr sensitivity high | PARTIAL PASS (promising; REQUIREs LR sweep at P before adoption) | Muon ≥ AdamW under equal schedules; must LR-sweep | research/csa2_ced_tests/RESULTS.md |
+
+**E-39a RESULT (closed) - PASS on both pre-registered gates.**
+
+| gate | value | verdict |
+|---|---|---|
+| (a) composed mark-pos > 0.7862 | **0.7984** (+1.22pt) | PASS |
+| (b) composed all-pos > 0.6485 | **0.6533** (+0.48pt) | PASS |
+| nonmark (trunk fallback) | 0.5703 (vs 0.5698 bridged-no-finetune) | untouched, structural |
+
+Bridge-aware head finetune (500 steps, head-only ~3.7k params trainables, bridges frozen) buys mark-precision on top of the mount. Head loss trajectory clean: 0.3017 -> 0.2779. Artifacts runs/mex/mu2_e39a/{head.safetensors, train_summary.json}; script mex/scripts/train_mu2_e39a_head.py.
+
+Environment note: mid-flight found a CRLF vs LF mismatch that made two silent replace patches no-ops (the run re-crashed identically with stale-KV discipline again the suspect); root-caused and fixed by normalizing to LF inside the program before rewriting. The disarm-before-clean-pass ordering rule (from the E-36 finding) is now enforced in every mount consumer: mex/scripts/{train_mu2_e39a_head,eval_mu2_e38a}.py. E-38a closing numbers re-verified UNCHANGED after the order fix (0.6485 / 0.7862 / 0.6196 / 0.7556) - the earlier numbers were robust, not accidentally contaminated in closing value.
+
+**mu2 compose stack final standing (all positions / mark positions / non-mark):**
+| stack | all | mark | nonmark |
+|---|---|---|---|
+| either-guess baseline | 0.4063 | - | - |
+| trunk only (G3 filled) | 0.6891 | 0.6891 | - |
+| E-35 composed rule (head+free trunk) | 0.6196 | 0.7556 | 0.5418 |
+| E-38a: + E-37a two-layer bridges live | 0.6485 | 0.7862 | 0.5698 |
+| E-39a: + bridge-aware head finetune | **0.6533** | **0.7984** | 0.5703 |
+| trunk-only marks under the same stack (G5 probe) | - | 0.7846 | - |
+
+The bridge-aware head finetune's composed mark-channel 0.7984 tops even the raw bridge fill probe 0.7846 - the head and bridges are genuinely complementary, and the trunk's non-mark branch was never disturbed (0.5698 -> 0.5703). mu2 G5/G4b combined composition CLOSED as the current best-of model on the ladder.
