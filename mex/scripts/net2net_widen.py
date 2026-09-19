@@ -57,10 +57,16 @@ def main() -> None:
     new_model = LlamaForCausalLM(new_cfg)
     new_sd = dict(new_model.state_dict())
     E = old_sd["model.embed_tokens.weight"]
+    # head weight: duplicate whichever head the OLD trunk actually carries. For a tied
+    # trunk that is the embedding (E-32 G2 case); for an already-untied trunk (G3+) it
+    # is lm_head.weight = embed * 0.5, and duplicating the EMBED would double the logits.
+    W_head = old_sd.get("lm_head.weight", E)
+    if torch.equal(W_head, E):
+        W_head = torch.cat([E] * 2, dim=1) * 0.5   # tied old trunk -> consumer form
     unmatched = []
     for name, w_new in list(new_sd.items()):
         if name == "lm_head.weight":
-            new_sd[name] = torch.cat([E] * 2, dim=1) * 0.5
+            new_sd[name] = torch.cat([W_head] * 2, dim=1) * 0.5
             continue
         if name == "model.embed_tokens.weight":
             new_sd[name] = torch.cat([E] * 2, dim=1)

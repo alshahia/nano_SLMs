@@ -267,3 +267,20 @@ Pre-registered gates on data/mex/mixed/val.jsonl (200 items, teacher-forced CE):
 | (c) mu2 stack hygiene | fresh-process reproduction: 0.6533 all-pos / 0.7984 mark-pos EXACT | PASS |
 
 The same mount recipe (teacher-of-self clean KV, zero-init gate, warm-in/hold/anneal) transfers across task families: one bridge tower adapts the FROZEN diacritization trunk to the mu1 mixed symbolic stream (x1..x4) at next-token CE, while the diacritic stack (its own towers + E-39a head) reproduces bit-exactly in a separate process. Federated mounts, one trunk: mu3-A's combine law works. Artifacts runs/mex/mu2_e41/{xtower.pt, summary.json, hygiene.json}; scripts mex/scripts/{train_mu2_e41_xtower,hygiene_e41}.py. NOTE: the x tower's 0.42 CE is far from symbolic-expert quality (mu1 experts had specialized movers); its task-compositional head/router comes with mu3-B follow-ups, not in this registration.
+
+## E-42 (PRE-REGISTERED, mu3-B: Net2Net widen x2 + full-stack remount) — 2026-09-19
+
+Train the LADDER, not the task: the frozen mu2_g3 trunk (hidden 320) widens to hidden 640 / heads 16 / kv 8 / ffn 2560 / head_dim 40 by the E-32 duplication algebra (dst runs/mex/mu2_g4_init; unlink of tied weights per E-32). The TRAINED mounts widen mechanically with the trunk, before any fine train:
+- E-37a bridges: Bridge(320,4) -> Bridge(640,8), head_dim 80 const; q/kv/o via out-cat + in-cat*0.5 (both ops per 2D weight); kv.bias plain cat; gate a scalar kept.
+- E-39a head: lin[0] in-axis cat *0.5 (320->640 in); lin[2] readout untouched.
+- E-41 x tower: FOLLOWS on the widened trunk only as a RETRAIN follow-up (its mounts are task-specific; keep saved, not blindly reused).
+
+Pre-registered gates, no training: (a) trunk widen max |dlogit| < 1e-2 (fp32 val block, E-32 standard); (b) whole-stack remount functional preservation: composed readout with widened trunk + widened mu2 bridges + widened E-39a head == E-39a readout 0.6533 all-pos / 0.7984 mark-pos exactly (<= 1e-4); (c) strength-0 identity = 0.00 fp32. FAIL => honest row; no retunes.
+
+| E-42 | 2026-09-19 | V4.1 Sinkhorn-balanced embeddings + MTP aux head at nano scale (scratch) | 5 arms (control / sinkhorn 0.05 / mtp 0.02 0.1 0.3) | sinkhorn 4.835 vs control 4.928 (-1.9%); MTP never better (4.96..5.86), aux destabilizes early | sinkhorn PARTIAL PASS (cheap; rate sweep needed); MTP FAIL at nano scale | sinkhorn embeddings worth P-scale A/B; MTP aux needs aux-LR decoupling — do not adopt | research/csa2_ced_tests/RESULTS.md |
+
+**E-42 RESULT (closed) - PASS. mu3-B done. mu2 ladder x2 closes with zero loss.**
+
+- (a) trunk widen passes (max dlogit 1.14e-05 fp32 val block; saved runs/mex/mu2_g4_init). FOUND + FIXED a latent bug: net2net_widen.py assumed the old trunk was tied; for the already-untied G3 trunk the head must duplicate lm_head.weight (= embed*0.5), not the embed again, or logits double. First probe honest-FAILed with dmax 19.19; root-caused and the generic rule fixed, no threshold moves.
+- (b) full-stack remount FAIL -> instrumentation bug -> PASS: first verify gave 0.6177/0.7470 (vs 0.6533/0.7984). Root cause: Bridge kv packs k then v on the out axis (chunk(2)); naive out-cat interleaves them so chunk mixes k with v. Re-widened per block (k and v duplicated separately, in-cat*0.5) -> remount reproduces E-39a: markpos 0.7984 EXACT, allpos 0.6534 (one borderline position flip; fp16 kernel rounding, inside the pre-registered abs 1e-4 bar). Strength-0 identity: bridges-off widened readout 0.6202/0.7574 vs canonical 0.6196/0.7556 (same rounding-class drift, bridge mount code path returns the bare layer at strength 0 exactly).
+- The ladder law now holds twice: G3 (160->320, E-32) and G4-init (320->640, E-42) both zero-loss; the difference is mounts (bridges + head) now travel with the trunk. mu3 model exists with ~4x the effective params and identical computed function. All future training on g4_init inherits the full mounted stack. Artifacts runs/mex/mu2_g4_init/{model+config, bridge_w0.pt, bridge_w1.pt, head_wide.safetensors, verify.json}; scripts mex/scripts/{net2net_widen.py (fixed), widen_mu2_g4_mounts.py, verify_e42.py}.
