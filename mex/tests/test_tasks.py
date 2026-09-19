@@ -81,3 +81,31 @@ def test_structure_subtle_bad_is_not_trivially_detectable():
     late = sum(1 for s in bad if min_prefix_depth(s) == 0 and
                sum(1 for c in s if c not in pairs) - sum(1 for c in s if c in pairs) == -2)
     assert late >= 0.05 * len(bad), late / len(bad)
+
+
+import unittest  # noqa: E402
+
+
+class TestTasks(unittest.TestCase):
+    """unittest harness over the module-level pytest-style functions."""
+
+    def test_every_task_has_three_disjoint_splits(self):
+        test_every_task_has_three_disjoint_splits()
+
+    def test_arith_train_bounded_by_n_train(self):
+        test_arith_train_bounded_by_n_train()
+
+    def test_generators_are_deterministic(self):
+        test_generators_are_deterministic()
+
+    def test_arith_lines_are_exact_answerable(self):
+        test_arith_lines_are_exact_answerable()
+
+    def test_structure_labels_match_balanced_checker(self):
+        test_structure_labels_match_balanced_checker()
+
+    def test_structure_labels_roughly_balanced_and_subtle(self):
+        test_structure_labels_roughly_balanced_and_subtle()
+
+    def test_structure_subtle_bad_is_not_trivially_detectable(self):
+        test_structure_subtle_bad_is_not_trivially_detectable()

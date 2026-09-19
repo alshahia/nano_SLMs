@@ -59,3 +59,19 @@ def test_formula_matches_real_model():
         model = build_model(cfg(spec["hidden"], spec["ffn"]), vocab_size=VOCAB)
         real = sum(p.numel() for p in model.parameters())
         assert real == llama_params(spec, VOCAB), (spec, real)
+
+
+import unittest  # noqa: E402
+
+
+class TestParams(unittest.TestCase):
+    """unittest harness over the module-level pytest-style functions."""
+
+    def test_expert_in_band(self):
+        test_expert_in_band()
+
+    def test_control_within_5pct_of_4x_expert(self):
+        test_control_within_5pct_of_4x_expert()
+
+    def test_formula_matches_real_model(self):
+        test_formula_matches_real_model()

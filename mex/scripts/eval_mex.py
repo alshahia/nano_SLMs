@@ -1,17 +1,31 @@
-# mex/scripts/eval_mex.py — Task 7: exact-match eval vs measured trivial baselines.
-"""μ0 eval: per-task exact-match on held-out prompts (no training-data reuse).
+# mex/scripts/eval_mex.py — μ0 exact-match eval + μ1 mixed/binned CI scoring.
+r"""μ0 eval: per-task exact-match on held-out prompts (no training-data reuse).
 
 Loads runs/mex/<task>/final (config.yaml if present, else the committed
 configs/mex_<task>.yaml; model.safetensors or any *.safetensors shard),
 greedy-decodes after the task prompt prefix, and compares the continuation
 up to the first newline with the held-out target. Decoding uses the
 mex.src.vocab.CharVocab id mapping (our own per-char encoding) — no
-AutoTokenizer needed. Reports exact_match plus the task's trivial baseline,
-measured (not assumed) over the same held-out mix.
+AutoTokenizer needed. Every exact_match in a result payload carries its
+Wilson 95% CI (mex.src.metrics.wilson_ci) under key "ci95" — the mu1 plan's
+binomial-CI gate on every rate claim (TASKS row 80 follow-up).
+
+Mode mixed (mu1 plan "Mixed eval set"): scores data/mex/mixed/val.jsonl
+(200 held-out items = 50/task; the true task id never enters the text).
+Without --route, the dense control (runs/mex/control/final) decodes every
+prompt. With --route PATH, the arm-C router (mex/src/router.py) picks ONE
+expert per prompt under argmax routing; that expert greedy-decodes it.
+Experts load ONE AT A TIME on CPU from runs/mex/archive_12000/<task>/final
+(the mu1 expert material). Mixed payloads report:
+    routed_accuracy + ci95     decode quality end-to-end (headline)
+    routing_accuracy + ci95    routing-only accuracy vs true labels
+                               (0.25 random floor over 4 tasks)
+    expert_<t> payloads        per-expert n/exact_match/ci95
 
 Usage:
-    & .\.venv\Scripts\python.exe mex\scripts\eval_mex.py x1|x2|x3|x4|control|all
-    [--limit N]   # debug subset (default: full 500/2000-item test sets)
+    & .\.venv\Scripts\python.exe mex\scripts\eval_mex.py x1|x2|x3|x4|control|all|mixed
+    [--limit N]      debug subset (default: full 500/2000 per task / 200 mixed)
+    [--route PATH]   mixed mode only: router.pt path for arm-C dispatch
 """
 from __future__ import annotations
 
@@ -26,29 +40,33 @@ import torch
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
+from mex.src.metrics import wilson_ci  # plan-mandated binomial 95% CI
 from mex.src.tasks import arith, structure, strops  # same seeds/formats as packing
 from mex.src.vocab import CharVocab
 
 RUNS = {"x1": "x1", "x2": "x2", "x3": "x3", "x4": "x4", "control": "control"}
 CONFIGS = {"x1": "mex_x1", "x2": "mex_x2", "x3": "mex_x3",
            "x4": "mex_x4", "control": "mex_control"}
+MIXED_DIR = ROOT / "data" / "mex" / "mixed"
 
 
-def load(task: str):
+def load(task: str, run_dir: Path | None = None):
     """Build the model for runs/mex/<task>/final and load its weights.
 
-    Config resolution: run/config.yaml first (train.py saves it via
-    save_pretrained), else the committed configs/mex_<task>.yaml. Weights:
-    model.safetensors, else any *.safetensors in the dir; a missing set is a
-    hard error — the eval runs after Task 6 training, never before.
+    run_dir overrides the run location (mixed mode points it at
+    runs/mex/archive_12000/<task>/final). Config resolution: run/config.yaml
+    first (train.py saves it via save_pretrained), else the committed
+    configs/mex_<task>.yaml. Weights: model.safetensors, else any
+    *.safetensors in the dir; a missing set is a hard error — the eval runs
+    after Task 6 training, never before.
     """
     import yaml
-    import torch
     from safetensors.torch import load_file
 
     from src.model import build_model
 
-    run = ROOT / "runs" / "mex" / task / "final"
+    run = (Path(run_dir) if run_dir is not None
+           else ROOT / "runs" / "mex" / task / "final")
     cfg_path = run / "config.yaml"
     if not cfg_path.exists():
         cfg_path = ROOT / "configs" / f"{CONFIGS[task]}.yaml"
@@ -100,6 +118,16 @@ def exact_match(model, prompts: list[str], targets: list[str]) -> float:
         pred = voc.decode(out[0][len(ids):]).split("\n", 1)[0]
         hits += int(pred.strip() == t.strip())
     return hits / len(prompts)
+
+
+def _payload(exact_match: float, n: int,
+             trivial: float | None = None) -> dict:
+    """Exact-match payload plus the Wilson 95% CI on the rate (key ci95)."""
+    k = round(exact_match * n)
+    out = {"exact_match": exact_match, "ci95": wilson_ci(k, n)}
+    if trivial is not None:
+        out["trivial_baseline"] = trivial
+    return out
 
 
 def _mode_frac(targets: list[str], pool: list[str]) -> float:
@@ -154,7 +182,7 @@ def samples(t: str, limit: int | None = None) -> tuple[list[str], list[str], flo
         test = d["test"][:limit] if limit else d["test"]
         prompts = [ln.split("|", 1)[0] + "|" for ln in test]
         targets = [ln.split("|", 1)[1] for ln in test]
-        # Trivial = identity: echo the source back (prompt form 'mode:src|').
+        # Trivial = identity: echo the source back (prompt form `mode:src|`).
         # Measured over the ACTUAL test mix: it matches exactly the lines
         # whose target equals the echoed source (copy always, rev/sort only
         # when the transform is a fixed point). Targets keep the line's
@@ -165,12 +193,75 @@ def samples(t: str, limit: int | None = None) -> tuple[list[str], list[str], flo
     raise ValueError(f"unknown task {t!r}")
 
 
+def mixed_eval(route_path: str | None, limit: int | None) -> dict:
+    """μ1 mixed-mode eval on data/mex/mixed/val.jsonl (200 held-out).
+
+    route_path None: dense control decodes every mixed prompt. Otherwise the
+    arm-C router picks ONE expert per prompt; experts load one at a time on
+    CPU from runs/mex/archive_12000/<task>/final.
+    """
+    from mex.src.router import load_router, route_tasks  # torch-weight import
+
+    path = MIXED_DIR / "val.jsonl"
+    items = [json.loads(line) for line
+             in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if limit:
+        items = items[:limit]
+    prompts = [i["prompt"] for i in items]
+    targets = [i["target"] for i in items]
+    true = [i["task"] for i in items]
+    n = len(items)
+    report: dict = {"mode": "mixed", "n": n,
+                    "source": str(path.relative_to(ROOT))}
+
+    if route_path is None:
+        _, model = load("control")
+        acc = exact_match(model, prompts, targets)
+        report.update(routed=False, model="runs/mex/control/final",
+                      **_payload(acc, n))
+        return report
+
+    router_model, rmeta = load_router(route_path)
+    preds = route_tasks(router_model, prompts, CharVocab())
+    routing_acc = sum(1 for p, t in zip(preds, true) if p == t) / n
+    report.update(routed=True, model=str(route_path),
+                  routing_accuracy=routing_acc,
+                  routing_ci95=wilson_ci(round(routing_acc * n), n),
+                  router_meta=rmeta)
+    hits = 0
+    for t in ("x1", "x2", "x3", "x4"):
+        idxs = [k for k, p in enumerate(preds) if p == t]
+        if not idxs:
+            report[f"expert_{t}"] = {"n": 0}
+            continue
+        _, model = load(t, ROOT / "runs" / "mex" / "archive_12000" / t / "final")
+        acc = exact_match(model, [prompts[k] for k in idxs],
+                          [targets[k] for k in idxs])
+        report[f"expert_{t}"] = {"n": len(idxs), **_payload(acc, len(idxs))}
+        hits += round(acc * len(idxs))
+    report["routed_accuracy"] = hits / n
+    report["routed_ci95"] = wilson_ci(hits, n)
+    return report
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="mex exact-match eval")
-    ap.add_argument("task", choices=[*RUNS, "all"], default="all", nargs="?")
+    ap.add_argument("task", choices=[*RUNS, "all", "mixed"], default="all",
+                    nargs="?")
     ap.add_argument("--limit", type=int, default=None,
                     help="debug: evaluate only the first N prompts")
+    ap.add_argument("--route", default=None,
+                    help="mixed mode: router.pt path (arm-C dispatch)")
     args = ap.parse_args()
+    if args.task == "mixed":
+        report = mixed_eval(args.route, args.limit)
+        out = ROOT / "runs" / "mex" / "mex_eval_mixed.json"
+        out.write_text(json.dumps(report, indent=1, ensure_ascii=False),
+                       encoding="utf-8")
+        printed = dict(report)
+        printed.pop("router_meta", None)  # keep the console line short
+        print("mixed", json.dumps(printed, ensure_ascii=False))
+        return
     todo = list(RUNS) if args.task == "all" else [args.task]
     for t in todo:
         run = ROOT / "runs" / "mex" / RUNS[t] / "final"
@@ -179,13 +270,13 @@ def main() -> None:
             report = {}
             for sub in ("x1", "x2", "x3", "x4"):
                 prompts, targets, triv = samples(sub, args.limit)
-                report[sub] = {"exact_match": exact_match(model, prompts, targets),
-                               "trivial_baseline": triv}
+                em = exact_match(model, prompts, targets)
+                report[sub] = _payload(em, len(prompts), triv)
         else:
             _, model = load(t)
             prompts, targets, triv = samples(t, args.limit)
-            report = {"exact_match": exact_match(model, prompts, targets),
-                      "trivial_baseline": triv}
+            em = exact_match(model, prompts, targets)
+            report = _payload(em, len(prompts), triv)
         run.mkdir(parents=True, exist_ok=True)
         (run / "mex_eval.json").write_text(
             json.dumps(report, indent=1, ensure_ascii=False), encoding="utf-8")

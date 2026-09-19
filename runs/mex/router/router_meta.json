@@ -1,0 +1,42 @@
+{
+ "model": "PromptRouter(emb32 meanpool MLP32-32-4)",
+ "seed": 42,
+ "lr": 0.001,
+ "epochs": 3,
+ "batch": 256,
+ "train_items": 8000,
+ "val_items": 200,
+ "val_routing_accuracy": 1.0,
+ "ci95": [
+  0.9811546736227333,
+  1.0
+ ],
+ "random_floor": 0.25,
+ "floor_margin": 0.75,
+ "confusion": {
+  "x1": {
+   "x1": 50,
+   "x2": 0,
+   "x3": 0,
+   "x4": 0
+  },
+  "x2": {
+   "x1": 0,
+   "x2": 50,
+   "x3": 0,
+   "x4": 0
+  },
+  "x3": {
+   "x1": 0,
+   "x2": 0,
+   "x3": 50,
+   "x4": 0
+  },
+  "x4": {
+   "x1": 0,
+   "x2": 0,
+   "x3": 0,
+   "x4": 50
+  }
+ }
+}
