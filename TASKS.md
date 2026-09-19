@@ -135,4 +135,6 @@ Stage ladder (stepping stones): μ0 sandbox base → μ1 composition bake-off �
 
 - [x] E-26 mu0c 120K window (done 2026-09-19): all five arms trained 10x, loss-tracked live (`runs/mex/loss_track.csv`, `runs/mex/loss_curves.png`), gates 4/4 PASS, verdict: step-saturated at 12K — 10x steps no gain (x2 0.898->0.828), min val loss at ~6-8K steps + fixed-lr overfit mid-run, cosine tail recovers eval but not accuracy. mu1 next: data diversity / regularization / composition, not step count. [DONE]
 
-- [i] E-27/28/29 mu1 arms A(soup)/C(router)/D(distill) — plan docs/plans/2026-09-19-mu1-composition-plan.md; USER-APPROVED student steps = 12K; arm B (MoE merge) is USER-GATED arch change, presented at A/C/D readout. [in_progress]
+- [x] E-27/28/29 mu1 arms A(soup)/C(router)/D(distill) closed 2026-09-19: A FAIL (basin divergence, honest), C routing 1.00 PASS + team +0.04 marginal, D FAIL to beat control at 12K budget; report research/micro_experts/MU1_REPORT.md. Arm B (MoE merge) USER-GATED: needs new arch block in src/model.py + router training path.
+- [ ] mu1 follow-up candidates (from E-29 verdict): equal-tokens 12K dense control for fair student-vs-dense read; sentence-level diacritization stays mu2/mu3 with more data; arm-B decision pending user gate.
+

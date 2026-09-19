@@ -1,0 +1,103 @@
+{
+  "phase": "mex_distill",
+  "params_m": 0.78,
+  "best_eval_loss": 2.0304534435272217,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\mex\\distill_student\\checkpoint-4500",
+  "final_eval": {
+    "eval_loss": 2.0304534435272217,
+    "eval_runtime": 0.2177,
+    "eval_samples_per_second": 1506.415,
+    "eval_steps_per_second": 96.447,
+    "epoch": 11.183682983682983
+  },
+  "resumed_from": null,
+  "kd": {
+    "alpha": 0.5,
+    "temperature": 1.0,
+    "teacher_cache": "runs/mex/distill_cache.npy",
+    "cache_rows": 34315
+  },
+  "env": {
+    "timestamp_utc": "2026-09-19T08:45:54+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "a77f1c3",
+    "gpu": "Quadro RTX 3000, 6144 MiB",
+    "resolved_config": {
+      "name": "mex_distill",
+      "tokenizer": {
+        "name": "data/mex/tokenizer",
+        "vocab_size": 97
+      },
+      "model": {
+        "layers": 2,
+        "hidden": 160,
+        "heads": 4,
+        "kv_heads": 2,
+        "ffn": 640,
+        "ctx": 96,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "dataset_candidates": [
+          {
+            "name": "local-mex-control"
+          }
+        ],
+        "rows": 0,
+        "val_fraction": 0.02,
+        "shard_tokens": 2000000,
+        "raw_dir": "data/mex/control",
+        "tokens_dir": "data/mex/control/tokens"
+      },
+      "train": {
+        "output_dir": "runs/mex/distill_student",
+        "final_dir": "runs/mex/distill_student/final",
+        "max_steps": 12000,
+        "batch": 8,
+        "eval_batch": 16,
+        "accum": 4,
+        "lr": 0.001,
+        "scheduler": "cosine",
+        "warmup_steps": 20,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 50,
+        "eval_steps": 500,
+        "save_steps": 500,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": false,
+        "optim": "adamw_bnb_8bit",
+        "dataloader_num_workers": 0,
+        "seed": 42
+      },
+      "kd": {
+        "teacher_cache": "runs/mex/distill_cache.npy",
+        "teacher_root": "runs/mex/archive_12000",
+        "teacher_experts": [
+          "x1",
+          "x2",
+          "x3",
+          "x4"
+        ],
+        "teacher_configs": [
+          "configs/mex_x1.yaml",
+          "configs/mex_x2.yaml",
+          "configs/mex_x3.yaml",
+          "configs/mex_x4.yaml"
+        ],
+        "alpha": 0.5,
+        "temperature": 1.0
+      }
+    }
+  }
+}

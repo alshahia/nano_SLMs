@@ -1,3 +1,4 @@
+# μ1 (E-27..E-29) composition bake-off CLOSED 2026-09-19 — A soup/TIES FAIL (basin divergence, honest); C router PASS routing 1.00, team +0.04 vs control (marginal); D 12K-step distill FAIL to beat control (mixed 0.50 vs 0.64); arm B (MoE-merge) remains USER-GATED. Row-first discipline held (82aab6f pre-reg before results). Head: see research/micro_experts/MU1_REPORT.md.
 # HANDOFF — nano_SLMs agent-to-agent continuation guide
 
 > Written for an agent resuming with fresh context on this machine

@@ -1,3 +1,5 @@
+## 2026-09-19 — mu1 lesson: micro-scale weight merging fails by basin divergence (E-27)
+- Weight soup/TIES merges of four same-seed 12K experts ALL collapse to 0.0 exact-match; embedding geometries go near-orthogonal per task (corr 0.027). Routing/distillation, not merging, is the correct composition path at this scale; also: tasks with self-distinguishing formats make learned routers trivial (1.00 accuracy).
 # MEMORY.md — durable memory: decisions & lessons
 
 What the next agent must not rediscover. Two ledgers: **Decisions** (user

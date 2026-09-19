@@ -68,12 +68,29 @@ def load(task: str, run_dir: Path | None = None):
     run = (Path(run_dir) if run_dir is not None
            else ROOT / "runs" / "mex" / task / "final")
     cfg_path = run / "config.yaml"
-    if not cfg_path.exists():
+    cfg_json = run / "config.json"
+    if not cfg_path.exists() and not cfg_json.is_file():
         cfg_path = ROOT / "configs" / f"{CONFIGS[task]}.yaml"
-    if not cfg_path.exists():
+    if cfg_path and cfg_path.exists():
+        cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8"))
+    elif cfg_json.is_file():
+        # Arbitrary run dirs (mu1 --eval-run, e.g. the distill student) save
+        # HF-style config.json instead — map it back to our yaml shape.
+        cj = json.loads(cfg_json.read_text(encoding="utf-8"))
+        cfg = {"model": {
+            "layers": cj["num_hidden_layers"],
+            "hidden": cj["hidden_size"],
+            "heads": cj["num_attention_heads"],
+            "kv_heads": cj["num_key_value_heads"],
+            "ffn": cj["intermediate_size"],
+            "ctx": cj["max_position_embeddings"],
+            "dropout": cj.get("attention_dropout", 0.0),
+            "tie_embeddings": cj.get("tie_word_embeddings", True),
+        }, "tokenizer": {"vocab_size": cj["vocab_size"]}}
+    else:
         raise FileNotFoundError(f"no config for task {task!r}: tried "
-                                f"{run / 'config.yaml'} and {cfg_path}")
-    cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8"))
+                                f"{run / 'config.yaml'}, run/config.json, "
+                                f"and {ROOT / 'configs'}")
 
     weights = run / "model.safetensors"
     if not weights.exists():
@@ -271,7 +288,7 @@ def main() -> None:
                          "In mixed mode: DIR's model replaces the dense "
                          "control when --route is not given")
     args = ap.parse_args()
-    if args.eval_run:
+    if args.eval_run and args.task != "mixed":
         run = Path(args.eval_run)
         if not run.is_absolute():
             run = ROOT / run
