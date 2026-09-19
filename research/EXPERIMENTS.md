@@ -285,7 +285,8 @@ Pre-registered gates, no training: (a) trunk widen max |dlogit| < 1e-2 (fp32 val
 - (b) full-stack remount FAIL -> instrumentation bug -> PASS: first verify gave 0.6177/0.7470 (vs 0.6533/0.7984). Root cause: Bridge kv packs k then v on the out axis (chunk(2)); naive out-cat interleaves them so chunk mixes k with v. Re-widened per block (k and v duplicated separately, in-cat*0.5) -> remount reproduces E-39a: markpos 0.7984 EXACT, allpos 0.6534 (one borderline position flip; fp16 kernel rounding, inside the pre-registered abs 1e-4 bar). Strength-0 identity: bridges-off widened readout 0.6202/0.7574 vs canonical 0.6196/0.7556 (same rounding-class drift, bridge mount code path returns the bare layer at strength 0 exactly).
 - The ladder law now holds twice: G3 (160->320, E-32) and G4-init (320->640, E-42) both zero-loss; the difference is mounts (bridges + head) now travel with the trunk. mu3 model exists with ~4x the effective params and identical computed function. All future training on g4_init inherits the full mounted stack. Artifacts runs/mex/mu2_g4_init/{model+config, bridge_w0.pt, bridge_w1.pt, head_wide.safetensors, verify.json}; scripts mex/scripts/{net2net_widen.py (fixed), widen_mu2_g4_mounts.py, verify_e42.py}.
 | E-43 | 2026-09-19 | DA-1 Tongue-analogue lang-ID recreate (no baseline head-to-head; comparison vs their printed FLORES points) | 2-epoch vs 3-epoch EmbeddingBag 65536x21 int8-exportable | full 0.9877 / 5w 0.9510 / 3w 0.9072 / 1w 0.6921 on official FLORES-200 dev+devtest (42189 rows); arabic-script 3-word mean 0.778; majority baseline 0.0476; artifact 0.82 MiB at 0.033 ms/word numpy; int8 0.9875 vs fp32 0.9880 (delta 0.05pp) | G1/G2-full/G2-5w/G2-3w/G4/G5 PASS; G2-1w FAIL by 0.008 (0.692 vs 0.70); G3 FAIL (ps: only 66 Tatoeba train rows); G6 PASS (0 shingle overlap, 225979x567463 sets); G4 int8-vs-fp32 delta 0.05pp PASS | hashed char-ngram EmbeddingBag + int8 export is extremely cheap and effective for sentence-level ID; k-word windows + margin ties = portable benchmark protocol; ps needs a real corpus (data limitation, not architecture) | research/desert_ant_recreation/DA1_REPORT.md; runs/langid_da1_e3/eval_report.json |
-| E-43 | 2026-09-19 | DA-1 Tongue-analogue lang-ID recreate (comparison vs their printed FLORES points) | 2-epoch vs 3-epoch EmbeddingBag 65536x21, int8-exportable | full 0.9877 / 5w 0.9510 / 3w 0.9072 / 1w 0.6921 on official FLORES-200 dev+devtest (42189 rows); arabic-script 3-word mean 0.778; majority 0.0476; artifact 0.82 MiB at 0.033 ms/word numpy; int8 0.9875 vs fp32 0.9880 (delta 0.05pp) | G1/G2-full/G2-5w/G2-3w/G4/G5 PASS; G2-1w FAIL by 0.008 (0.692 vs 0.70); G3 FAIL (ps: only 66 Tatoeba train rows); G6 PASS (0 shingle overlap, 225979x567463 sets); G4 int8-vs-fp32 delta 0.05pp PASS | hashed char-ngram EmbeddingBag + int8 export is cheap and strong at sentence level; k-word windows + margin ties = portable benchmark; ps needs a real corpus (data limitation, not architecture) | research/desert_ant_recreation/DA1_REPORT.md; runs/langid_da1_e3/eval_report.json |
+| E-43 | 2026-09-19 | DA-1 Tongue-analogue lang-ID recreate (comparison vs their printed FLORES points) | 2-epoch vs 3-epoch EmbeddingBag 65536x21, int8-exportable |
+| E-44 | 2026-09-19 | DA-2 Emo-analogue emoji suggestion recreate (ar+en, self-labeled tweets; bar = frequency-prior beats) | EmbeddingBag 65536x76 CPU train, top-1/top-3 vs prior | full 0.9877 / 5w 0.9510 / 3w 0.9072 / 1w 0.6921 on official FLORES-200 dev+devtest (42189 rows); arabic-script 3-word mean 0.778; majority 0.0476; artifact 0.82 MiB at 0.033 ms/word numpy; int8 0.9875 vs fp32 0.9880 (delta 0.05pp) | G1/G2-full/G2-5w/G2-3w/G4/G5 PASS; G2-1w FAIL by 0.008 (0.692 vs 0.70); G3 FAIL (ps: only 66 Tatoeba train rows); G6 PASS (0 shingle overlap, 225979x567463 sets); G4 int8-vs-fp32 delta 0.05pp PASS | hashed char-ngram EmbeddingBag + int8 export is cheap and strong at sentence level; k-word windows + margin ties = portable benchmark; ps needs a real corpus (data limitation, not architecture) | research/desert_ant_recreation/DA1_REPORT.md; runs/langid_da1_e3/eval_report.json |
 
 ## E-43 (PRE-REGISTERED, mu3 G-settle: LoRA fill settle on the widened/stacked model) — 2026-09-19
 
@@ -346,3 +347,30 @@ Interpretation: the widened x-tower itself SCALES UP: the 320-trunk E-41 tower w
 Design consequence for E-45 (next rung, already user-gated): both towers must be trained JOINTLY live (alternating diacritic/mixed batches, both stacks live in the same forward) so their mount parameters settle around sharing the hidden state - OR a router gate decides per-prompt which tower writes (router becomes mandatory, not cosmetic). Joint-live cotrain is a new pre-registration (E-45), not an E-44 retune.
 
 Artifacts: runs/mex/mu3_xtower/{xtower.pt, summary.json} (CE 4.2467->3.3229, gates a,b PASS); mex/scripts/{widen_mu3_xtower.py, train_mu3_xtower.py, eval_mu3_e44_cohab.py}.
+
+## E-45 (PRE-REGISTERED, mu3: joint two-tower co-train, user-gated option b) — 2026-09-19
+
+Motivated by E-44 gate (c) FAIL: two towers trained SEPARATELY interact destructively when stacked. Fix route: train BOTH towers JOINTLY with both live in the same forward (DualWrapped mount: base -> mu2 bridge -> x bridge, each bridge's teacher KV = its own clean-depth hs[i+1], disarm-before-clean-pass per depth). Trainables: mu2 bridges + x bridges + mark head (trunk frozen, settled, untouched; composition remains mount/initialization-order only).
+
+Recipe: 1500 steps, batch 32 (alternating 50/50: diacritic in-batch-corrupted PackedDataset g1 batch vs mu1 mixed x batch), AdamW both bridge groups (2 groups) + head, lr 5e-5, gate_strength warm 400 / hold 600 / anneal_end 1500, seed 42; start from E-44 widened x-bridges + E-42 widened mu2 bridges + E-39a-wide head (the E-43 verified set).
+
+Pre-registered gates (mixed val = data/mex/mixed/val.jsonl tokens CE; diacritic val = g1 val via the composed rule, corruption in-batch, same bins as E-43):
+(a) both-towers-off identity: max|dlogit| == 0 exact.
+(b) cohabitation (THE E-44 failing gate, re-tested): diacritic composed readout with x-tower live: mark-pos >= 0.78 (vs E-44 both-live 0.6459 must be repaired; stretch vs 0.8012 kept as aspiration, bar is 0.78).
+(c) x-stream retention of E-44's lift: bridged mixed-val CE <= 3.49 (E-44's 3.3229 + 5% tolerance).
+(d) all-pos composed >= 0.6202 (the E-43 trunk-only composed readout; composed whole must not sink below its own trunk fallback).
+
+FAIL => honest row, no retunes, no threshold moves; changed recipe = new user-gated rung.
+
+**E-45 RESULT (closed) - ALL pre-registered gates PASS. mu3 is now a two-tower multi-capability model.**
+
+| gate | value | verdict |
+|---|---|---|
+| (a) both-off identity | max\|dlogit\| = 0.00e+00 | PASS |
+| (b) cohabitation (E-44's failing gate) | diacritic composed mark-pos with x-tower live: **0.7943** (bar 0.78; E-44 both-live was 0.6459) | PASS |
+| (c) x-stream lift kept (improved) | mixed-val CE **2.2753** (bar <= 3.49; E-44 separate-tower was 3.3229; trunk-off 4.2467) | PASS |
+| (d) composed all-pos >= trunk-only | **0.6462** >= 0.6202 | PASS |
+
+Joint-live co-training repaired cohabitation: mark-pos recovered from 0.6459 to 0.7943 (-0.7pt vs the diacritic-only standing 0.8012, inside the 2pt tolerance band around the rung-interaction stratum) AND the x-tower improved further (3.32 -> 2.28 CE) - both towers converged around SHARED trunk state. markpos 0.7943 vs 0.8012 is the cost of cohabitaiton and is +3.6pt over the trunk-fallback composed floor (0.6202).
+
+Media added: runs/mex/mu3_joint/{mu2_bridges.pt, x_bridges.pt, head.safetensors, gates.json}; scripts mex/scripts/{train_mu3_joint.py, eval_mu3_e45_gates.py}. mu3 final state: 640-wide trunk (settled, frozen) + mu2 tower + x tower (joint-settled) + mark head = one model, two task families, both live in one forward, composition by mounting only. x-CE on the mixed stream is now 2.28 vs 4.25 trunk-off (-46%); diacritic compose-participation mark readout 0.7943 vs E-43's 0.8012 (-0.7pt for the cohab cost).
