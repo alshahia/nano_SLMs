@@ -193,12 +193,17 @@ def samples(t: str, limit: int | None = None) -> tuple[list[str], list[str], flo
     raise ValueError(f"unknown task {t!r}")
 
 
-def mixed_eval(route_path: str | None, limit: int | None) -> dict:
+def mixed_eval(route_path: str | None, limit: int | None,
+               model_dir: str | None = None) -> dict:
     """μ1 mixed-mode eval on data/mex/mixed/val.jsonl (200 held-out).
 
     route_path None: dense control decodes every mixed prompt. Otherwise the
     arm-C router picks ONE expert per prompt; experts load one at a time on
     CPU from runs/mex/archive_12000/<task>/final.
+
+    model_dir (mu1 arm A --eval-run): replaces the dense control with an
+    arbitrary run dir's model when --route is not given (read-only ref for
+    the report; argmax-router mode is untouched).
     """
     from mex.src.router import load_router, route_tasks  # torch-weight import
 
@@ -215,9 +220,16 @@ def mixed_eval(route_path: str | None, limit: int | None) -> dict:
                     "source": str(path.relative_to(ROOT))}
 
     if route_path is None:
-        _, model = load("control")
+        if model_dir:
+            d = (Path(model_dir) if Path(model_dir).is_absolute()
+                 else ROOT / model_dir)
+            _, model = load("x1", d)
+            model_name = str(d)
+        else:
+            _, model = load("control")
+            model_name = "runs/mex/control/final"
         acc = exact_match(model, prompts, targets)
-        report.update(routed=False, model="runs/mex/control/final",
+        report.update(routed=False, model=model_name,
                       **_payload(acc, n))
         return report
 
@@ -252,9 +264,34 @@ def main() -> None:
                     help="debug: evaluate only the first N prompts")
     ap.add_argument("--route", default=None,
                     help="mixed mode: router.pt path (arm-C dispatch)")
+    ap.add_argument("--eval-run", default=None, metavar="DIR",
+                    help="(mu1 arm A) evaluate an arbitrary run dir (e.g. "
+                         "runs/mex/soup/uniform) across x1..x4 like the "
+                         "control branch; mex_eval.json is written into DIR. "
+                         "In mixed mode: DIR's model replaces the dense "
+                         "control when --route is not given")
     args = ap.parse_args()
+    if args.eval_run:
+        run = Path(args.eval_run)
+        if not run.is_absolute():
+            run = ROOT / run
+        _, model = load("x1", run)  # config.yaml must sit in the run dir
+        report = {}
+        for sub in ("x1", "x2", "x3", "x4"):
+            prompts, targets, triv = samples(sub, args.limit)
+            em = exact_match(model, prompts, targets)
+            report[sub] = _payload(em, len(prompts), triv)
+        (run / "mex_eval.json").write_text(
+            json.dumps(report, indent=1, ensure_ascii=False),
+            encoding="utf-8")
+        print(str(run.relative_to(ROOT)) if run.is_relative_to(ROOT) else run,
+              json.dumps(report, ensure_ascii=False))
+        return
     if args.task == "mixed":
-        report = mixed_eval(args.route, args.limit)
+        if args.route and args.eval_run:
+            raise SystemExit("--eval-run on mixed mode is for unrouted soup "
+                             "decoding; drop --route or --eval-run")
+        report = mixed_eval(args.route, args.limit, args.eval_run)
         out = ROOT / "runs" / "mex" / "mex_eval_mixed.json"
         out.write_text(json.dumps(report, indent=1, ensure_ascii=False),
                        encoding="utf-8")
