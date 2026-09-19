@@ -44,16 +44,20 @@ class TestKdLoss(unittest.TestCase):
         self.assertAlmostEqual(val.item(), 0.5 * LOG4, places=6)
 
     def test_hand_computed_temperature_scale(self):
-        # teacher = student -> KL term is 0 at ANY temperature; CE label 3
-        # at position with logit 4*ln(4) equals ln(4) - 4*ln(4) = -3 ln(4)
-        # (negative CE is fine: unnormalised logits).
+        # teacher = student -> the KL term is exactly 0 at ANY temperature,
+        # so the loss must equal 0.5*CE(shifted labels). Hand-computed CE:
+        # 3 positions with all-zero logits -> ln(4) each; the shifted
+        # position whose logit row holds k=4*ln(4) at the label column has
+        # CE = log(sum_i exp(x_i)) - x_label = ln(3+e^k) - k.
         k = 4.0 * LOG4
         student = self._l([0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,
                            0, 0, 0, k,  0, 0, 0, 0])
         labels = torch.tensor([[0, 1, 2, 3, 3]])
         val = kd_loss(student, student.clone(), labels, alpha=0.5,
                       temperature=2.0)
-        self.assertAlmostEqual(val.item(), 0.5 * (-3.0 * LOG4), places=5)
+        ce_pos = float(np.log(3.0 + np.exp(k))) - k   # k-row position
+        expected = 0.5 * (3.0 * LOG4 + ce_pos) / 4.0   # shifted -> 4 valid
+        self.assertAlmostEqual(val.item(), expected, places=5)
 
 
 class TestTeacherLogitCache(unittest.TestCase):
