@@ -1340,3 +1340,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-48a CLOSED: armed heads improve over clean-trunk heads (x2 0.36->0.42, x3 0.77->0.80) but both stay below pre-registered bars (0.80/0.85) - honest FAIL rows; weights sha-verified untouched. Interpretation: first-char boundary answers need multi-step decode or a taller trunk, not a bigger single-shot head.
 
 - E-48b CLOSED: multi-step expert decode exact 0.00 both families (per-position CE ~2.0 = near chance) - honest FAIL; boundary computation absent from frozen-trunk state; next user-gated rung should be trunk-side (taller trunk / x-stream trunk finetune), not another readout.
+
+- E-49 CLOSED (read-only demo): runs/mex/mu3_router/demo.md - live composite decode per family; x3 live-correct; ladder pointer = next rung is trunk-side growth.

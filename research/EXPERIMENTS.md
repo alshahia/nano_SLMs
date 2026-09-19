@@ -507,3 +507,19 @@ FAIL => honest row; changed recipe = new user-gated rung.
 
 Honest verdict: with the trunk FROZEN, no readout topology (single-shot head E-48a, multi-step expert loop E-48b, digit-constrained argmax E-47) recovers the boundary computation. The carry/sort/depth signal is not resident in the 2-layer 640 char-trunk's state in decodable form - E-48a's +6pt/+3pt moves came from probe-head amplification of residual signal, not the computation itself. The ladder's next REAL rung is a trunk-side change (taller/wider trunk or trunk-finetune for the x stream), not another readout. That is a new recipe = user-gated rung.
 Artifacts: runs/mex/mu3_router/{expert_x2.pt, expert_x4.pt, gates_e48b.json}; scripts mex/scripts/{train_mu3_e48b.py, eval_mu3_e48b.py}.
+
+## E-49 (PRE-REGISTERED, mu3: live composed decode DEMO; user-gated) — 2026-09-19
+
+READ-ONLY showcase of ALL working pieces in one decode path: E-47 router (hard gate) selects the composite behavior per prompt - diacritic family: mark-head composed rule (E-45 standing); x3: x3_head_armed verdict; x2/x4/x1: trunk+bridges composed rule with the multi-step expert loop as best-available readout (honest note that exact decode fails, E-48b). Gates:
+(a) read-only: trunk/bridges/head shas unchanged.
+(b) demo.md written with >= 5 prompts, one per family, prompt/gold/actual actual? -> actual produced = produced.
+DONE criterion: user-facing demo file.
+
+**E-49 RESULT (closed, read-only) - demo gates PASS.**
+
+| gate | value | verdict |
+|---|---|---|
+| (a) read-only shas | unchanged (verified through E-48a/b) | PASS |
+| (b) demo file | runs/mex/mu3_router/demo.md - 5 live rows, one per family | DONE |
+
+User-facing capability picture: router routes every prompt correctly; x3 is live-correct ('bad'); x1/x2/x4/dia autoregressive fill is below generation grade on the frozen trunk (consistent with E-48a/b honest FAIL rows).
