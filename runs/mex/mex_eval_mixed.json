@@ -1,0 +1,12 @@
+{
+ "mode": "mixed",
+ "n": 200,
+ "source": "data\\mex\\mixed\\val.jsonl",
+ "routed": false,
+ "model": "runs/mex/control/final",
+ "exact_match": 0.64,
+ "ci95": [
+  0.5714152816600307,
+  0.7033080269543346
+ ]
+}
