@@ -17,6 +17,18 @@ LANGS = [
 ]
 LANG_TO_ID = {lang: i for i, lang in enumerate(LANGS)}
 
+# The Tatoeba exports switched to ISO 639-3 codes (and keep a couple of
+# legacy ones: Arabic='ara', Mandarin='cmn'). Map our ISO-639-1 training
+# tags to the codes actually present in sentences.csv (verified 2026-09-19
+# by tallying the real export: e.g. 'arb'=0, 'ara'=68516).
+TATOEBA_CODE = {
+    "ar": "ara", "fa": "pes", "ur": "urd", "ps": "pus",
+    "en": "eng", "de": "deu", "fr": "fra", "es": "spa", "it": "ita",
+    "pt": "por", "nl": "nld", "tr": "tur", "ru": "rus", "uk": "ukr",
+    "pl": "pol", "el": "ell", "he": "heb", "hi": "hin",
+    "ko": "kor", "ja": "jpn", "zh": "cmn",
+}
+
 ARABIC_SCRIPT_GROUP = ("ar", "fa", "ur", "ps")
 
 
@@ -36,7 +48,7 @@ def load_tatoeba(tbz_path, langs=None, cap=50000, val_per_lang=500, seed=42):
     the shuffle, val taken from the shuffled tail (never overlaps train).
     """
     langs = list(langs or LANGS)
-    want = set(langs)
+    want = {TATOEBA_CODE[l]: l for l in langs}
     by_lang = defaultdict(dict)
     with tarfile.open(tbz_path, "r:bz2") as tar:
         member = None
@@ -52,8 +64,9 @@ def load_tatoeba(tbz_path, langs=None, cap=50000, val_per_lang=500, seed=42):
         for row in csv.reader(f, delimiter="\t"):
             if len(row) < 3:
                 continue
-            lang, text = row[1], row[2]
-            if lang not in want or not _has_language_signal(text):
+            code, text = row[1], row[2]
+            lang = want.get(code)
+            if lang is None or not _has_language_signal(text):
                 continue
             key = _dedupe_key(text)
             if key and key not in by_lang[lang]:

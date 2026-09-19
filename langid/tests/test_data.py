@@ -10,14 +10,16 @@ from langid.src.data import load_tatoeba
 def make_fixture_tar(path):
     lines = []
     n = 0
-    for lang in ("en", "fr", "ar"):
+    # use the real Tatoeba ISO-639-3 export codes (data.TATOEBA_CODE)
+    codes = {"en": "eng", "fr": "fra", "ar": "ara"}
+    for lang, code in codes.items():
         for i in range(12):
             n += 1
-            lines.append(f"{n}\t{lang}\t{lang} sentence number {i} unique")
+            lines.append(f"{n}\t{code}\t{lang} sentence number {i} unique")
     n += 1
-    lines.append(f"{n}\ten\tEN SENTENCE, number 0 unique!")  # dedupe hit
+    lines.append(f"{n}\teng\tEN SENTENCE, number 0 unique!")  # dedupe hit
     n += 1
-    lines.append(f"{n}\ten\t123 456")                        # no letters
+    lines.append(f"{n}\teng\t123 456")                        # no letters
     data = ("\n".join(lines) + "\n").encode("utf-8")
     with tarfile.open(path, "w:bz2") as tar:
         info = tarfile.TarInfo("sentences.csv")

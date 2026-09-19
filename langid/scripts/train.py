@@ -71,7 +71,7 @@ def main() -> int:
             opt.zero_grad()
             loss.backward()
             opt.step()
-            total_loss += float(loss)
+            total_loss += float(loss.detach())
             steps += 1
         acc = evaluate(model, val)
         print(f"[train] epoch {epoch + 1}/{args.epochs} "
