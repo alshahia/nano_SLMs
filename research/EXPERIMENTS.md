@@ -309,3 +309,40 @@ FAIL row honesty: no retunes within this registration; a changed recipe = new us
 Honest notes: the Trainer's flushed best_eval_loss 0.7471 is a mid-run checkpoint eval, NOT the merged-final gate metric; gates are read from the merged final (0.7391). Mount compare needed the E-42 widened mounts copied alongside the settled trunk (they travel by mounting, zero retune); the first probe_e43 comparison stored stale-path verdict (identical anchors) was an instrumentation slip - caught by path audit before close, rerun on the true settled trunk and dropped from evidence.
 
 Artifacts: runs/mex/mu3_g4/final (canonical settled 640-wide μ3 trunk + traveling mounts bridge_w{0,1}.pt head_wide.safetensors), scripts mex/scripts/{train_mu2_lora.py re-used with configs/mu3_g4.yaml, eval_mu2_e43_mounts.py, eval_mu2_g2.py re-used via env}. mu3 = grown, settled, and mount-verified.
+
+## E-44 (PRE-REGISTERED, mu3: x-tower remount at 640) — 2026-09-19
+
+User-gated: 'Do (a) first, then (b) right behind it.' Scope: transplant the E-41 x-task bridge tower (Bridge(320,4) pair, runs/mex/mu2_e41/xtower.pt, trained on the mu1 mixed x1..x4 stream) onto the SETTLED mu3 trunk (runs/mex/mu3_g4/final, frozen, ~13.2M params). Widen via the corrected E-42 two-op algebra (out-cat by block, in-cat *0.5, k/v blocks SPLIT then widened per block then re-concat, 1-D cat, gate a scalar kept): Bridge(320,4) -> Bridge(640,8), head_dim 80 const. Train ONLY the widened x-bridge params on the mu1 mixed stream (data/mex/mixed train.jsonl, next-token CE, disarm-before-clean-pass discipline, teacher KV = settled trunk clean hs[i+1]): 1000 steps, warm-in 400 / anneal-end 1000 (gate_strength), batch 32, lr 8e-5, seed 42. mu2 diacritic stack and trunk: FROZEN, untouched.
+
+Pre-registered gates (mixed val, protocol identical to E-41's):
+(a) identity at x-strength 0: max|dlogit| == 0 (exact).
+(b) armed x-tower mixed-val CE <= 0.95 * trunk-off mixed-val CE (E-41 relative bar).
+(c) two-stack cohabitation (NEW, first time both towers share the trunk): with the x-tower live at strength 1.0, the mu2 composed readout on the diacritic val must hold mark-pos >= 0.78 (E-43 two-stack measured 0.8012 with x absent; tolerance 2pt for kv cross-talk).
+(d) mu2 stack untouched structurally (weights not loaded by the trainer), recorded as report-only.
+
+Considered-and-deferred (agent-added E-40, research/csa2_ced_tests/RESULTS.md): shared-KV across bridge layers is loss-neutral and saves inference KV (-40%) but only pays at filled-VRAM or long-ctx; our mount stacks fit at ctx 96, so mount KV semantics (per-depth teacher KV = clean hs[i+1]) stay UNCHANGED this rung. Muon (E-41-csa2) noted as optimizer candidate for a FUTURE rung only.
+FAIL => honest row, no retunes, no threshold moves; a changed recipe = new user-gated rung.
+
+**E-42 SWEEP UPDATE (2026-09-19, partial)** — Sinkhorn rate sweep completed
+arms 0.02 (4.841), 0.05 (4.835), 0.1 (**4.798, best**); rate shows a monotone
+improvement through 0.1 — no thin-optimum fragility. Arm 0.2 deferred: the
+GPU is currently held by another workload (~3.85 GiB free persistently);
+a managed background runner (research/csa2_ced_tests/sinkhorn_sweep_rest.py)
+waits for free VRAM per the never-contend rule and will append the final arm
+to sinkhorn_sweep.json. Current recommendation unchanged: P-scale A/B at
+rate 0.1 after the sweep closes.
+
+**E-44 RESULT (closed) - gates (a),(b) PASS; gate (c) FAIL (honest row). x-tower transplants; cohabitation does not.**
+
+| gate | value | verdict |
+|---|---|---|
+| (a) identity at strength 0 | max\|dlogit\| = 0.00e+00 (exact) | PASS |
+| (b) armed x-tower mixed-val CE | **3.3229** vs trunk-off 4.2467 (rel drop **-21.8%**, bar was 5%) | PASS |
+| (c) two-stack cohabitation (mu2 composed with x-tower live) | **0.6459 mark** as both-live vs 0.8012 mu2-only (bar >= 0.78) | FAIL |
+| (d) mu2 stack untouched | structural (weights never loaded by trainer) | report-only PASS |
+
+Interpretation: the widened x-tower itself SCALES UP: the 320-trunk E-41 tower went 6.18 -> 4.25 CE (+31%); at the 640 settled trunk the trunk alone already reads 4.2467 and the x-bridges push it to **3.3229** (-22% below an already ~x-model-level readout). But stacking TWO independently-trained towers in the same forward (mu2 bridge then x bridge, both KV teachers = clean hs) interacts destructively: the x bridge's lateral state access perturbs the diacritic head's hidden distribution (-15.5 pt mark-pos). No retune inside E-44; bar recorded as pre-registered.
+
+Design consequence for E-45 (next rung, already user-gated): both towers must be trained JOINTLY live (alternating diacritic/mixed batches, both stacks live in the same forward) so their mount parameters settle around sharing the hidden state - OR a router gate decides per-prompt which tower writes (router becomes mandatory, not cosmetic). Joint-live cotrain is a new pre-registration (E-45), not an E-44 retune.
+
+Artifacts: runs/mex/mu3_xtower/{xtower.pt, summary.json} (CE 4.2467->3.3229, gates a,b PASS); mex/scripts/{widen_mu3_xtower.py, train_mu3_xtower.py, eval_mu3_e44_cohab.py}.
