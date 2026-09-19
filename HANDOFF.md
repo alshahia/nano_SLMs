@@ -1303,3 +1303,7 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-34 (G4b composed decode, pre-registered rule) CLOSED **FAIL** honestly: composed 0.2796 vs its own 0.6891 gate (mark-blind restriction branch was the root cause).
 - E-35 (corrected rule, same frozen trunk + same head, NO retraining) CLOSED **PASS both gates**: all-position 0.6196; mark-position 0.7556 >= trunk-only 0.7515; non-mark cost 0.03pt. The full end-to-end composed diacritization walk now exists, and the head-first free-trunk composition pattern is established for the ladder's next lateral mounts (G5).
 - Canonical: trunk runs/mex/mu2_g3/final; corruption-matched head runs/mex/mu2_g4b/head.safetensors; rule script mex/scripts/eval_mu2_g4b2.py.
+
+
+## mu2 2026-09-19: G5 lateral bridge probe (E-36)
+- E-36 first "combine" rung (bridge over frozen trunk): gate (c) PASS exact-identity; trunk-only 0.7515 -> bridged 0.7632 (+1.17pt) but the pre-registered bar was 0.7660 (+1.5pt) => **honest FAIL row** (no retunes within the registration). Artifacts runs/mex/mu2_g5; scripts mex/scripts/train_mu2_g5_bridge.py; follow-ups E-37a (2 bridges) / E-37b (fetch-conditioned KV) proposed and USER-GATED.

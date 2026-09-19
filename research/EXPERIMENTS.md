@@ -149,3 +149,34 @@ Same frozen G3 trunk; same E-34 head loaded as-is (NO retraining). Only change =
 gates: rule_beats_E34 PASS; markacc_at_or_above_trunk_only PASS (0.7556 >= 0.7515). Rule fix alone turned 0.2796 -> 0.6196 with zero retraining: the composition now composes rather than hinders. Artifact: runs/mex/mu2_g4b2/eval_rule.json; script mex/scripts/eval_mu2_g4b2.py.
 
 **Carry into G5:** the head-first+free-trunk rule is the composition pattern for the ladder's lateral mounts (specialist first, general free-knowledge fallback); E-34's lesson (restriction branches blind the base) goes to MEMORY.
+
+## E-36 (PRE-REGISTERED, mu2 G5: lateral bridge mount) — 2026-09-19
+
+Mount (the first true "combine" rung, x4-style in the user's ladder vision): ONE bridge (src/mount.py MountBridge, hidden 320, 4 heads, zero-init a => exact identity at step 0, Flamingo gate) wrapped onto layer 0 of the FROZEN G3 trunk; KV source = the trunk's own clean-stream hidden states (teacher-of-self; synthetic teacher KV passed via attribute injection, NO bridge state through kwargs). Trained: head-weight + bridge params only; warm-in gate_strength(warmup=400, hold=600, anneal_end=1000); batch 32, lr 8e-5, steps 1000, the G2 corruption hold_every 3 recipe.
+
+Task (domain: crossing fill-in with the bigger mouthpiece): input corrupted stream, target CE on clean labels as G2. The bridge sees clean KV of the same token stream — the trainer measures whether module-wise lateral state access improves fill-in beyond what in-stream corruption learning gained (E-32's 0.7515 markpos observed similarly).
+
+Pre-registered gates (bridged readout rules compose head-free: plain trunk forward with bridge strength 1 after warmup):
+(a) bridged mark-position fill acc >= 0.7660 (baseline trunk-only 0.7515 + 1.5pt absolute, since bridge is new trainable mass outside the frozen trunk's one-basin composition);
+(b) retention: trunk alone (bridge unlinked) CE must stay at the anchored 0.7395 within the 0.7431 guard — structural (frozen trunk), integrity probe only;
+(c) honest write-down of the mid-flight composition-identity check: bridge with gate 0.0 == trunk-only logits (max diff < 1e-5 fp32) before any training step.
+Fail => FAIL row honestly (no in-register plan-B retunes; a new bridged variant is a NEW experiment).
+
+**E-36 RESULT (closed) — FAIL on gate (a), PASS on gates (b) and (c); honest marginal row.**
+
+| gate | value | verdict |
+|---|---|---|
+| (c) composition identity @ strength 0 | max dlogit = **0.00e+00** (fp32) | PASS exact |
+| (a) bridged mark-position fill acc | **0.7632** (83,154/108,956) vs 0.7660 target | **FAIL** by 0.28pt |
+| (a) lift over trunk-only | **+1.17pt** (0.7515 -> 0.7632) | real but under the pre-registered margin |
+| (b) retention structural | trunk frozen whole run; strength-0 readout reproduced exactly 0.7515 | PASS |
+
+Mount held its semantics: zero-init a made step-0 an exact identity, gate warm-in worked, KV clean-pass stayed out of the bridge graph (source of the mid-flight backward bug, fixed), and stale-KV leaks were caught by shape assertions before they could contaminate the metric (eval B=8 against training B=32 KV — the exact failure mode the attribute-injection shortcut warns about kept working).
+
+Interpretation: a 15-head-to-4-head single-layer bridge over self-teacher KV buys +1.17pt mark accuracy for ~1,600 trainable params — direction correct (module-wise lateral state access helps fill-in), magnitude under the per-registration bar. NOT promoted into the ladder's composition yet; bridged readout stays a probe.
+
+Artifacts: runs/mex/mu2_g5/{bridge.pt, summary.json}; script mex/scripts/train_mu2_g5_bridge.py.
+
+**Carry into G5 follow-ups (each would be a NEW registered experiment, user-gated per the E-36 fail finding):**
+- E-37a: 2 bridges (layers 0 AND 1) + per-layer teacher KV — same recipe, expected to clear the +1.5pt bar.
+- E-37b: KV source = clean stream + ground-truth mark tokens at fetch positions (fetch-time conditioned bridge).
