@@ -1,18 +1,22 @@
 """DA-2 emo: hashed bag-of-n-grams emoji suggestion (Emo-analogue).
 
-Reuses the DA-1 hashed-feature machinery unchanged (features.text_features)
-and the same EmbeddingBag multinomial-LR shape; the head size is the emoji
-vocabulary K instead of 21 languages. Feature space is intentionally the
-same because their Emo model is also a "small text classifier" over hashed
-lexical features. Trains on CPU.
+Two heads:
+- HashedEmo: EmbeddingBag(65536 -> K, sum) + bias matrix factorization on
+  hashed word/bigram/char features (E-44 arm; also the (c) arm carrier).
+- TinyTransformerEmo: option (b), a 1-layer d=32 self-attention encoder
+  over the concatenation of hashed word buckets + char-n-gram buckets
+  (sequence truncated), mean-pooled to the K-way head.
+
+Features (emo_features): word unigrams (W: prefix), adjacent-word bigrams
+(B:), char 1..3 n-grams (C:) - all FNV-1a into 2^16 buckets with distinct
+prefixes so no cross-family collision.
 """
 import torch
 
 from langid.src import features
 
-# Emoji choice is TOPICAL: word unigrams + bigrams carry the intent signal
-# that char n-grams alone miss (char n-grams kept as morphology). Bucketed
-# with a distinct prefix so no collision with char-gram features.
+MAX_LEN = 48
+
 
 def emo_features(text: str):
     words = features._WORD_RE.findall(features.normalize(text))
@@ -36,6 +40,44 @@ class HashedEmo(torch.nn.Module):
 
     def forward(self, ids: torch.Tensor, offsets: torch.Tensor) -> torch.Tensor:
         return self.emb(ids, offsets) + self.bias
+
+
+class TinyTransformerEmo(torch.nn.Module):
+    """Option (b): tiny self-attention head over the token-bucket sequence."""
+
+    def __init__(self, num_emo: int, num_buckets: int = 1 << 16, d: int = 32):
+        super().__init__()
+        self.num_emo = num_emo
+        self.emb = torch.nn.Embedding(num_buckets, d)
+        self.pos = torch.nn.Embedding(MAX_LEN, d)
+        layer = torch.nn.TransformerEncoderLayer(
+            d_model=d, nhead=4, dim_feedforward=64, batch_first=True)
+        self.enc = torch.nn.TransformerEncoder(layer, num_layers=1)
+        self.head = torch.nn.Linear(d, num_emo)
+        torch.nn.init.zeros_(self.emb.weight)
+
+    def forward(self, ids: torch.Tensor, offsets: torch.Tensor) -> torch.Tensor:
+        n = len(offsets)
+        seqs = []
+        for i in range(n):
+            a = int(offsets[i])
+            b = int(offsets[i + 1]) if i + 1 < n else int(ids.numel())
+            cut = ids[a:b][:MAX_LEN]
+            if cut.numel() == 0:
+                cut = torch.zeros(1, dtype=torch.long)
+            seqs.append(cut)
+        L = max(s.numel() for s in seqs)
+        x = torch.stack([
+            torch.cat([s, torch.zeros(L - s.numel(), dtype=torch.long)])
+            for s in seqs
+        ])
+        pos = torch.arange(L).unsqueeze(0).expand(x.shape[0], -1)
+        h = self.emb(x) + self.pos(pos)
+        pad = (x == 0)  # 0 is the dummy bucket (empty-bag marker)
+        y = self.enc(h, src_key_padding_mask=pad)
+        m = (~pad).float().unsqueeze(-1)
+        pooled = (y * m).sum(dim=1) / m.sum(dim=1).clamp(min=1.0)
+        return self.head(pooled)
 
 
 def encode_batch(texts):

@@ -393,6 +393,16 @@ Verdict: 4 PASS + 1 honest FAIL. Beats frequency prior on both languages,
 top-3 ~0.40; does not reach product top-1 bar. Next user-gated rung options
 in research/desert_ant_recreation/DA2_REPORT.md.
 
+## E-47 (closed) - DA-2b arms a/b/c: bigger Arabic emoji corpus + tiny transformer + weighted CE - 2026-09-19
+Arms (fixed pre-registered bars from E-44; new prior 0.2467 -> bars 0.4934 / 0.2967):
+- (a) data: + amgadhasan/arabic_tweets_dialects (34,514 one-type rows / 435 emojis mined from 147,725 tweets); splits 73,164/9,076/9,304, 160 classes.
+- (b) tiny transformer head (1 layer, d=32, ff=64, 4 heads, mean-pool) over the same hashed token buckets.
+- (c) class-balanced weighted CE + label smoothing 0.1.
+Results (test top-1): bag 0.3207 ar / 0.2013 en; transformer 0.4063 ar / 0.2267 en; transformer+c 0.4061 ar / 0.2267 en (no-op); bag+c DIVERGED/STUCK (val 0.12, loss plateau 7.6) - FAIL recipe.
+Gates: D2 2x-prior bar (0.4934) FAIL in all arms (best 0.4063 = 82 pct of bar); prior+0.05 (0.2967) ar PASS (A2/A3), en FAIL (below prior - honest regression vs E-44); D4 int8 1.686 MiB, 1.75 ms/text numpy forward, agreement ar 1000/1000 en 998/1000 - PASS.
+Verdict: (a) data lever +5-18pp ar; (b) transformer is the skill lever; (c) honest FAIL (rare-class flooding with ~100 singleton classes). Report: research/desert_ant_recreation/DA2B_REPORT.md.
+
+
 ## E-46 (PRE-REGISTERED, mu3: live decode capability showcase; user-gated 'go') — 2026-09-19
 
 READ-ONLY rung: no weight writes, no training. Load the E-45 joint stack (trunk runs/mex/mu3_g4/final + mu3_joint mu2/x bridges + head), both towers live at strength 1.0, and GREEDY-DECODE prompts from each task family (diacritic bare-Arabic fill; x1 wordlist; x2 arithmetic; x3 structure classify; x4 strops from data/mex/mixed val) with a per-step composed rule: mark-head class wins if != NONE over FULL-vocab trunk argmax, else trunk argmax. Compare each family's output under towers-LIVE vs towers-OFF on the same prompts.

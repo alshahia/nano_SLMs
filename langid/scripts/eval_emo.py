@@ -42,8 +42,11 @@ def main():
     labels = ck["labels"]
     K = len(labels)
     import torch
-    W = ck["emb"].float().numpy()          # (buckets, K)
-    B = ck["bias"].float().numpy()
+    if ck.get("arch", "bag") == "bag":
+        W = ck["emb"].float().numpy()
+        B = ck["bias"].float().numpy()
+    else:
+        raise SystemExit("eval_emo.py: use eval_emo_tf.py for transformer ckpts")
 
     test = read_tsv(os.path.join(DATA, "test.tsv"))
     train = read_tsv(os.path.join(DATA, "train.tsv"))
