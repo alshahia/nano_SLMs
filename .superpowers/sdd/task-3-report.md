@@ -1,94 +1,134 @@
-# Task 3 Report — U12 SVG architecture renderer
+# Task 3 report — X1 diacritics wordlist from the committed E-20 cache
 
-**Status:** DONE
-**Branch:** `main`
-**Base commit (Task 2):** `96c943f`
-**Task 3 commit:** `b6a4bc0`
-**Diff:** 2 files changed, 48 insertions(+)
-- `webui/explorer.py` — +39 lines (append `render_svg`)
-- `tests/test_explorer.py` — +9 lines (append `t_render_svg` before `__main__`)
+**Status:** DONE_WITH_CONCERNS (concerns are informational; all validations PASS)
+**Branch:** `main` (base `80c3b4e` "mex: cap arith pool at n_train (sampling fix)")
+**Commit:** `382628d780251990052d0562a8c8847e7f7998f6` — `mex: X1 wordlist extractor over the committed E-20 vocab cache`
+**Files committed (only this one):** `mex/scripts/build_x1_words.py` (+59 lines)
+**Outputs written (untracked, per task rule "output only under data/mex/x1/"):**
+`data/mex/x1/train.txt` (60,000), `data/mex/x1/val.txt` (1,000), `data/mex/x1/test.txt` (2,000)
 
-## What I did
+## Step 1 — Discovery probe (read-only)
 
-TDD sequence executed verbatim from `.superpowers/sdd/task-3-brief.md`:
+Ran the brief's verbatim probe plus a deeper ascii-safe probe (value-type
+distribution over the full dict, nested-key census, filter-pool count) via
+`& .\.venv\Scripts\python.exe` from repo root. Cache file: 15,838,059 bytes.
 
-1. **Failing test first** — appended `t_render_svg` to `tests/test_explorer.py`
-   immediately before the `__main__` block (unchanged location, untouched
-   `__main__` runner).
-2. **Confirmed FAIL** — `& .\.venv\Scripts\python.exe tests\test_explorer.py`
-   exited 1 with `FAIL render_svg: AttributeError: module 'explorer' has no
-   attribute 'render_svg'` (5/6 passed, the new one was the expected miss).
-3. **Implemented `render_svg`** — appended to `webui/explorer.py` exactly as
-   the brief specifies (no restructuring; PEP 701 f-strings left intact,
-   including the embedded backslashes in the onclick attribute, since the
-   venv is CPython 3.12.9).
-4. **Re-ran tests** — exited 0, 6/6 passed.
-5. **Committed** — `git add webui/explorer.py tests/test_explorer.py` (only
-   those two paths) and `git commit -m
-   "feat(webui): U12 SVG architecture renderer (self-contained, clickable ids)"`
-   — exact brief message.
+**Verbatim brief probe output:**
 
-## Hard-rule compliance
-
-- ✅ No new dependencies (stdlib + already-imported `artifacts` only).
-- ✅ No external assets in SVG (`assert "http" not in svg` passes; SVG is
-  self-contained inline, calls `window.__dshtModelSelect` shim, no URLs).
-- ✅ Read-only + CPU-only (no file writes outside the test/edit targets).
-- ✅ Untouched protected surfaces: `app.py`, `artifacts.py`, `runs/`,
-  `configs/`, and all pre-existing dirty files (GDN/Track work: src/gdn.py,
-  configs/gdn_smoke*.yaml, scripts/_tmp_*, scripts/ctx_probe.py, etc.) are
-  still in the working tree unmodified by me. Pre-commit `git status`
-  shows my `M` flags only on the two target files; the rest of the dirty
-  state was already there before I started (GDN/track work in flight).
-- ✅ Branch `main` (repo convention).
-
-## Test output
-
-**After test added, before implementation (expected FAIL):**
 ```
-PASS build_graph_projected_flagged
-PASS build_graph_smoke_real
-PASS kv_cache_token_target_16kib
-PASS projected_formula_matches_all_three
-FAIL render_svg: AttributeError: module 'explorer' has no attribute 'render_svg'
-PASS shape_trace
-
-5/6 checks passed
+<class 'dict'> 2
+'meta' ['total_tokens', 'unique_keys', 'cached']
+'words' ['⦗٧٢⦘،', '«اقتلوه»', '٣٦٣٨']
 ```
-exit 1 (failure correctly attributable to missing `render_svg`).
 
-**After `render_svg` implemented (expected 6/6, exit 0):**
+**Actual JSON shape (differers from the brief's flat `{bare: vocalized-str}`
+assumption):**
+
+- Top level: `{meta: {...}, words: {bare: vocalized-str}}`
+- `meta` = `{total_tokens: 140590614, unique_keys: 2059820, cached: 375923, threshold: 0.995, min_count: 2}`
+  (`cached` = 375,923 matches the brief's stated entry count)
+- `words` = 375,923 entries; value-type census: **375,923 str, 0 dict/list** —
+  i.e. after unwrapping `words`, values ARE plain vocalized strings (no nested
+  score dicts; no key selection was needed).
+
+**Filter-pool counts over `d["words"]` (brief filter + probed shape):**
+
+- `pool_2_30` (2 ≤ len(bare) ≤ 30): 375,794
+- **mark-bearing pairs** (2–30 chars, len(voc) > len(bare), voc contains a
+  harakat 064B–0652): **334,636** → ≥ 63,000 ⇒ caps kept at 60k/1k/2k, no
+  lowering required.
+- Format hazard found: **53 pairs contain `|` in bare or voc** (wiki-table
+  junk, e.g. bare `|تاريخ`, `|رقم`; also `!WIDTH="10%"|...` artifacts);
+  0 pairs contain \n/\r.
+
+## Step 2 — Extractor (work done)
+
+Wrote `mex/scripts/build_x1_words.py` with the brief's code verbatim except
+the sanctioned `_pairs()` adaptation (see Deviations). MARKS kept as the
+brief's literal `set("ًٌٍَُِّّْ")` (harakat family 064B–0652, shadda duplicated
+harmlessly). Docstring line-format spec (`bare|vocalized\n`) is authority;
+`f"{bare}|{voc}\n"` + `newline="\n"` implement it.
+
+## Step 3 — Run
+
+`& .\.venv\Scripts\python.exe mex\scripts\build_x1_words.py` (repo root, exit 0):
+
 ```
-PASS build_graph_projected_flagged
-PASS build_graph_smoke_real
-PASS kv_cache_token_target_16kib
-PASS projected_formula_matches_all_three
-PASS render_svg
-PASS shape_trace
-
-6/6 checks passed
+X1 words written: 63000 (head idx=63000)
 ```
-exit 0.
 
-**Post-commit final verification run:** identical 6/6 PASS, exit 0, clean
-(no SyntaxWarnings on this run — the brief did not require touching
-`tokenize_trace`'s pre-existing f-string with `\`` escapes on line 213,
-which Task 1-2 introduced; out of scope).
+Caps filled exactly (test 2,000 → val 1,000 → train 60,000 from one seeded
+shuffle, `random.Random("mex-x1")`); no exhaustion, no cap lowering.
 
-## Commit hash
+## Validation (all PASS)
 
-- Task 3: `b6a4bc0` — feat(webui): U12 SVG architecture renderer (self-contained, clickable ids)
+Python format check over the three files (venv, read-only):
 
-## Concerns
+| file | lines | bad lines | bare len | voc len |
+|---|---|---|---|---|
+| train.txt | 60,000 | 0 | 2–27 | 3–34 |
+| val.txt | 1,000 | 0 | 2–15 | 4–20 |
+| test.txt | 2,000 | 0 | 3–15 | 4–25 |
 
-None. Brief was unambiguous, code transcribed verbatim (PEP 701 f-strings
-preserved — CPython 3.12.9 accepts backslashes inside f-string expressions
-without `re.compile`-style escapes), TDD green.
+- Every line ends \n and contains **exactly one `|`**; both fields non-empty;
+  bare 2–30 chars; voc longer than bare; voc mark-bearing; no `|`/\n inside
+  fields.
+- Splits disjoint (no shared bare|voc line across train/val/test).
+- Real head spot-checks (read tool, UTF-8):
+  - train: `يسمى٣|يُسَمَّى٣` · `تخزين،|تَخْزِينٍ،` · `«والبلد|«وَالْبَلَدُ`
+  - val: `بالعقيق:|بِالْعَقِيقِ:` · `بهزي|بَهْزِيُّ`
+  - test: `التوابين,|التَّوَّابِينَ,` · `(فوضعت)|(فَوَضَعَتْ)`
 
-One note worth recording for future agents (not a blocker): pre-existing
-dirty files in the working tree include `MEMORY.md` (modified between my
-read and my status check — appears someone else touched it, not me) plus
-the GDN/Track work surface (`src/gdn.py`, configs/gdn_*, scripts/_tmp_*,
-`scripts/ctx_probe.py`, `scripts/test_gdn_math.py`, several data/ and
-research/ additions). All are out of scope per the brief's hard rule and
-remain in the working tree for whoever owns that work.
+## Step 4 — Commit / self-review
+
+- Staging area verified empty before `git add`; committed with the brief's
+  exact message; **first attempt of the batched git command failed** (my
+  pwsh backtick-newline join was not interpreted — git saw a mangled
+  `git add` line, "unknown switch `m`", exit 1; nothing staged, no repo
+  impact) — retried with newline separators, clean.
+- `git show --stat HEAD`: `1 file changed, 59 insertions(+)` — only
+  `mex/scripts/build_x1_words.py`. Other agents' modified/untracked files
+  (progress.md, task-1/2 briefs+reports, data/diac/v3q|v3t/, models/e19
+  qcri*, scratch/, diacritizer/scripts/e23_dbg.py, …) untouched.
+- `data/` outputs not committed (see finding below); models/ and data/diac/
+  never written to; zero deletions.
+
+## Deviations / adaptations (documented per task instructions)
+
+1. **`_pairs()` shape adaptation (brief-sanctioned field of judgment):** the
+   probe showed the cache is `{meta: …, words: {bare: voc}}`, not a flat
+   top-level dict. Added one unwrap: if top level has a dict `words`, iterate
+   it. Values needed **no** further adaptation (all plain str — the
+   `v.get("vocalized")` fallback for nested dicts was kept from the brief but
+   never fires on this cache).
+2. **Format-integrity guard (small extension beyond the shape fix, flagged):**
+   excluded pairs where `|` or \n/\r appears in bare or voc (53 of 334,636
+   pairs; ~10 would have landed in the sample). Rationale: the brief itself
+   declares the exact `bare|vocalized\n` line format load-bearing for the
+   Task-4 packer and Task-7 reparser; a bare like `|تاريخ` would emit a
+   two-`|` / empty-field line. Everything else of the filter is unchanged.
+3. **`data/mex/` is NOT gitignored** — brief premise "data/ is gitignored"
+   does not hold: `.gitignore` covers `data/*/raw/`, `data/diac/{raw,prepared,smoke}/`,
+   `data/teacher/`, `data/kt/`, `data/agent_memory/` — no `data/mex/` rule.
+   `git check-ignore data/mex/x1/train.txt` → not ignored. Outputs simply
+   remain untracked (`?? data/mex/`); I committed only the script per the
+   binding rule. **Hand-off note:** Task 4 (packer) likely shares this wrong
+   premise — either add `data/mex/` to `.gitignore` or the packer task will
+   see untracked outputs too.
+4. **Pre-existing stale `task-3-report.md`** (previous U12/SVG cycle, commit
+   `b6a4bc0`-era content) — overwritten with this report per instruction; old
+   content remains in git history (file shows as ` M` uncommitted).
+5. The brief's `main()` prints only `X1 words written: N (head idx=…)` — kept
+   verbatim; per-file counts were verified externally (Validation table).
+
+## Known limitations / notes for downstream tasks
+
+- Pool filter keeps some noisy-but-harmless entries (tatweel-suffixed
+  vocalizations like ـه + U+0640, punctuation-attached bare words); 2–30-char
+  cap bounds line width; the μ0 feasibility question is unaffected.
+- Determinism: fixed seed `mex-x1`, dict-order iteration over the cache —
+  re-running the script reproduces byte-identical outputs (verified
+  deterministic construction; outputs not committed, regenerate via the
+  committed script).
+- Python executed only via `& .\.venv\Scripts\python.exe`; CPU-only; no GPU
+  job launched or touched; no network access.

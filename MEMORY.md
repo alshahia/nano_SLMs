@@ -9,6 +9,8 @@ Provenance: seeded from HANDOFF §5–§6 (2026-09-06 snapshot). HANDOFF stays
 the state-of-the-run narrative; this file owns durable knowledge from now on.
 
 - 2026-09-08 (U11): subprocess stdout redirected to a file is BLOCK-buffered on Windows - `chain_out.log` loss lines lag the real step count by several log cycles. Mid-run triggers (tests, future monitoring) must anchor on flush=True markers (`[sft] PILOT:`, `[resume]`) or wall-clock timing, NOT on `{'loss': ...}` lines. Also: transformers 5.16.1 dispatches TrainerCallback.on_save only around _save_checkpoint (line ~2130) - the checkpoint-aligned stop flag MUST be checked there, and interval saves do honor it (verified live: stop after checkpoint-250 mid-run).
+## Cosine-tail masks fixed-lr overfit (E-26, 2026-09-18)
+- At constant high lr (mid-cosine) tiny models massively overfit: val loss can climb +90% while train falls; but the final lr anneal pulls val back to ~its own minimum. Judging an run by its FINAL eval loss underestimates overfit damage — downstream exact_match landed flat-worse than the 12K run despite "recovered" val. Track min-eval step and the curve, not the last value (tools: mex/scripts/plot_losses.py). Judge saturation by comparing held-out eyeball metrics at 1x vs 10x steps.
 ## Decisions ledger
 
 | Date | Decision | Why | Reference |

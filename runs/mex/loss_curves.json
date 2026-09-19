@@ -1,0 +1,52 @@
+{
+  "control": {
+    "min_eval_loss": 1.060052514076233,
+    "min_at_step": 87750,
+    "max_eval_loss": 1.8108747005462646,
+    "max_at_step": 250,
+    "final_eval_loss": 1.060052514076233,
+    "final_step": 120000,
+    "overfit_gap_final": 0.0,
+    "final_train_loss": 0.9861350059509277
+  },
+  "x1": {
+    "min_eval_loss": 1.1292885541915894,
+    "min_at_step": 8000,
+    "max_eval_loss": 1.785080909729004,
+    "max_at_step": 250,
+    "final_eval_loss": 1.1292885541915894,
+    "final_step": 120000,
+    "overfit_gap_final": 0.0,
+    "final_train_loss": 0.8601229190826416
+  },
+  "x2": {
+    "min_eval_loss": 1.1878019571304321,
+    "min_at_step": 7500,
+    "max_eval_loss": 2.1160740852355957,
+    "max_at_step": 119500,
+    "final_eval_loss": 1.1878019571304321,
+    "final_step": 120000,
+    "overfit_gap_final": 0.0,
+    "final_train_loss": 0.8593092560768127
+  },
+  "x3": {
+    "min_eval_loss": 1.159008502960205,
+    "min_at_step": 6000,
+    "max_eval_loss": 2.674165725708008,
+    "max_at_step": 118250,
+    "final_eval_loss": 1.159008502960205,
+    "final_step": 120000,
+    "overfit_gap_final": 0.0,
+    "final_train_loss": 0.7125377655029297
+  },
+  "x4": {
+    "min_eval_loss": 1.5509806871414185,
+    "min_at_step": 6500,
+    "max_eval_loss": 2.426551580429077,
+    "max_at_step": 250,
+    "final_eval_loss": 1.5509806871414185,
+    "final_step": 120000,
+    "overfit_gap_final": 0.0,
+    "final_train_loss": 1.1760231256484985
+  }
+}

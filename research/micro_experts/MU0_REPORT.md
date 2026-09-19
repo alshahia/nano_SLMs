@@ -55,3 +55,34 @@ E-25 was registered in EXPERIMENTS.md in the same working session but its ledger
 
 ## Evidence paths
 runs/mex/{x1,x2,x3,x4,control}/final/mex_eval.json (12K); archive_2000/ holds the 2K artifacts; .superpowers/sdd/task-6b-report.md pending; tests 14/14 at commit 7d79cc1.
+
+
+# mu0c (E-26): 120K-step window — does 10x more training help? NO.
+
+## Setup
+Same five arms, same recipe (batch 8 / accum 4 / lr 1e-3 cosine / fp16), max_steps 120000 (10x E-25). Runs fresh; the 12K finals archived at runs/mex/archive_12000/. Configs bumped + re-gated 5/5 PASS (5d7d570); watcher + plotter added: mex/scripts/watch_losses.py (CPU-only during training), mex/scripts/plot_losses.py (curves + overfit-onset summary json). Pre-registered before training (03f9917). Two concurrent trainings throughout (user-authorized; peak 576 MiB, GPU 84-88%).
+
+## Loss-curve findings (overfit / underfit)
+- min eval loss arrives EARLY for every arm (x1 ~8K, x2 ~7.5K, x3 ~6K, x4 ~6.5K, control ~88K — control keeps improving longest).
+- Mid-run overfit is massive at fixed high lr: x2 eval climbs 1.19 -> 2.11 by step 118K while train falls to 0.86; x3 eval 2.67 peak. The eval curve is high-lr memorization, not capacity failure.
+- The cosine anneal tail pulls eval back DOWN to ~min-value by 120K (x2 2.11 -> 1.188 at step 120K; x3 2.67 -> 1.159). So mid-run divergence must be read from the DATASET-FIXED val bridge, not just the final snapshot.
+- Control is the healthiest curve: eval 1.227 -> 1.060 monotone-ish, only 0.074 train/val gap at 120K (train 0.986).
+
+## Results (120K, held-out) vs E-25 (12K)
+
+| arm | 12K exact | 120K exact | delta | 12K eval loss | 120K eval loss |
+|---|---|---|---|---|---|
+| x1 | 0.1075 | 0.105 | -0.0025 | 1.1196 | 1.1293 |
+| x2 | 0.898 | 0.828 | -0.070 | 1.1910 | 1.1878 |
+| x3 | 0.918 | 0.916 | -0.002 | 1.1580 | 1.1590 |
+| x4 | 0.846 | 0.862 | +0.016 | 1.5411 | 1.5510 |
+| control (cross-task) | x1 0.129 / x2 0.054 / x3 0.922 / x4 0.864 | x1 0.1085 / x2 0.848 / x3 0.918 / x4 0.802 | — | 1.1652 | 1.0601 |
+
+## Gates (identical to E-25): 4/4 PASS
+x1 0.105 > 0.0 | x2 0.828 > 0.002 | x3 0.916 > 0.512 | x4 0.862 > 0.316. Gates pass — but note they are running at the SAME performance plateau found in E-25.
+
+## Verdict and mu1 implication
+The mu0 window is STEP-SATURATED at 12K: 10x compute bought nothing on held-out loss and slightly hurt x2 (more memorization of the same pool). Scaling this recipe past 12K steps is dead; the next gains must come from DATA (bigger pools, more diversity) or REGULARIZATION (bigger val sets, dropout, data mixing), not steps. This is the strongest argument to move to mu1 composition now rather than grow mu0 further. Also the control model at 120K now matches or beats every expert on cross-task eval (x2: 0.848 vs 0.828; x3: 0.918 vs 0.916; x1: 0.1085 vs 0.105) while x4 specialist keeps its edge (0.862 vs 0.802) — dispatch should send x4 to its specialist, share the rest.
+
+## Evidence
+runs/mex/loss_track.csv (14400 rows), runs/mex/loss_curves.png + .json (per-arm curve plots, min-eval step, overfit onset info), runs/mex/{x1-x4,control}/final/mex_eval.json + logs (tfevents are stage-truth), archive_12000/ for 12K comparisons. Training jobs x1+x2 then x3+x4 then control: 3 phases, ~2.5h each pair, ~1h solo control; total ~7h wall.

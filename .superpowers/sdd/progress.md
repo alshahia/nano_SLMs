@@ -59,3 +59,5 @@ Task 6: complete via controller-run jobs (x1-x3 trained by subagent pre-timeout;
 Docs: EXPERIMENTS E-24 results cell cleaned (artifact text removed), commit 8b1c321
 E-25/mu0b: 4/4 gates PASS (x1 0.1075, x2 0.898, x3 0.918>0.512, x4 0.846>0.316); control 0.129/0.054/0.922/0.864; docs closed; next: whole-branch review
 Final whole-branch review: verdict ship (no code blockers); hygiene committed e8c3c5c (E-25 registration wording, task-6b report, TASKS-80 mu1 follow-ups); diac v2 npys restored per repo rule; mu0 fully closed
+
+- mu0c/E-26 execution: archive 12K runs -> 120K configs+tracker commit 5d7d570 -> x1/x2 (done) -> x3/x4 (done) -> control (done) -> evals (4/4 PASS) -> docs; verdict step-saturated; plotter tooling b9d0426.

@@ -1,0 +1,18 @@
+{
+ "x1": {
+  "exact_match": 0.1085,
+  "trivial_baseline": 0.0
+ },
+ "x2": {
+  "exact_match": 0.848,
+  "trivial_baseline": 0.002
+ },
+ "x3": {
+  "exact_match": 0.918,
+  "trivial_baseline": 0.512
+ },
+ "x4": {
+  "exact_match": 0.802,
+  "trivial_baseline": 0.316
+ }
+}

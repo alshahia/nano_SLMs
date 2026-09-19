@@ -1,80 +1,99 @@
-### Task 3: `webui/explorer.py` — SVG renderer (TDD)
+# Task 3 brief — X1 diacritics wordlist from the committed E-20 cache
+
+**Context (one line):** Third block: extracts the one REAL-data task (X1) used by the micro-experts; its output .txt files are later packed by the packer (Task 4) and reparsed by the eval harness (Task 7) — the exact "bare|vocalized\n" line format is load-bearing. NOTE: markdown may render backslash-n inside code strings as real newlines; the docstring line-format spec is authority.
+### Task 3: X1 diacritics wordlist from the committed E-20 cache
 
 **Files:**
-- Modify: `webui/explorer.py` (append)
-- Modify: `tests/test_explorer.py` (append one test before the `__main__` block)
+- Create: `mex/scripts/build_x1_words.py`
 
-- [ ] **Step 1: Add the failing test**
+**Inputs (already on disk, zero network):** `models/e19/our_word_cache.json`
+(375,923 bare→vocalized forms, built by `diacritizer/scripts/e19_build_wordcache.py`,
+E-20/E-22 lineage). Do NOT touch `data/diac/* pools; do not delete anything.
+
+- [ ] **Step 1: Discovery (read-only probe)**
+
+Run (pwsh, venv):
+```powershell
+& .\.venv\Scripts\python.exe -c "import json;d=json.load(open('models/e19/our_word_cache.json',encoding='utf-8'));print(type(d), len(d)); [print(repr(k), repr(list(d[k])[:3]) if isinstance(d[k],dict) else repr(d[k])[:40]) for i,k in enumerate(list(d)[:3])]"
+```
+Expected: a dict over bare words; note the value form (str or nested dict /
+scores). **The Step-3 adapter below assumes {bare: vocalized-str}; if the probe
+shows a different shape, adapt `_pairs()` to it — that is the ONLY field of
+judgment, everything else in this task stays fixed.**
+
+- [ ] **Step 2: Write the extractor (complete, final code)**
 
 ```python
-def t_render_svg():
-    dims, header = _smoke_dims_header()
-    blocks = E.build_graph(dims, header, label="smoke/final", lora=None)
-    svg = E.render_svg(blocks, selected_id="L1.attn")
-    assert "L1.attn" in svg and "data-bid" in svg, "no clickable ids"
-    assert "http" not in svg, "external asset leaked into SVG"
-    assert svg.count("<svg") == 1
+# mex/scripts/build_x1_words.py — CPU-only, deterministic; NO deletions.
+"""Sample X1 bare|vocalized word lines from the committed E-20 word cache.
+
+Writes data/mex/x1/{train,val,test}.txt — one 'bare|vocalized\n' per line.
+Capped sample (train 60k / val 1k / test 2k) keeps X1 small: the μ0 question
+is feasibility at ~203K, not D-line SOTA.
+"""
+from __future__ import annotations
+
+import json
+import random
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+CACHE = ROOT / "models" / "e19" / "our_word_cache.json"
+OUT = ROOT / "data" / "mex" / "x1"
+CAPS = {"train": 60_000, "val": 1_000, "test": 2_000}
+MARKS = set("ًٌٍَُِّّْ")
+
+
+def _pairs() -> list[tuple[str, str]]:
+    raw = json.loads(CACHE.read_text(encoding="utf-8"))
+    out = []
+    for k, v in raw.items():                      # dict-shape per Step-1 probe
+        voc = v if isinstance(v, str) else (v.get("vocalized") if isinstance(v, dict) else None)
+        if (isinstance(voc, str) and 2 <= len(k) <= 30 and len(voc) > len(k)
+                and any(c in MARKS for c in voc)):
+            out.append((k, voc))
+    return out
+
+
+def main() -> None:
+    OUT.mkdir(parents=True, exist_ok=True)
+    lines = _pairs()
+    rng = random.Random("mex-x1")
+    rng.shuffle(lines)
+    n_used = 0
+    with (OUT / "test.txt").open("w", encoding="utf-8", newline="\n") as f_test, \
+         (OUT / "val.txt").open("w", encoding="utf-8", newline="\n") as f_val, \
+         (OUT / "train.txt").open("w", encoding="utf-8", newline="\n") as f_train:
+        handles = [("test", f_test, CAPS["test"]), ("val", f_val, CAPS["val"]),
+                   ("train", f_train, CAPS["train"])]
+        idx = 0
+        for kind, fh, cap in handles:
+            wrote = 0
+            while wrote < cap and idx < len(lines):
+                bare, voc = lines[idx]; idx += 1
+                fh.write(f"{bare}|{voc}\n")
+                wrote += 1
+                n_used += 1
+    print(f"X1 words written: {n_used} (head idx={idx})")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
-- [ ] **Step 2: Run to verify it fails**
+- [ ] **Step 3: Run it**
 
-Run: `& .\.venv\Scripts\python.exe tests\test_explorer.py`
-Expected: FAIL — `AttributeError: ... no attribute 'render_svg'`.
+Run: `& .\.venv\Scripts\python.exe mex\scripts\build_x1_words.py`
+Expected: `X1 words written: ... (train to fills caps or reports exhaustion if the
+2–30-char + mark-bearing filter leaves <63k pairs — in that case lower the caps
+to 80/60% of pool and note it in the μ0 report).
 
-- [ ] **Step 3: Implement `render_svg` (append to `webui/explorer.py`)**
-
-```python
-def render_svg(blocks, selected_id: str = "") -> str:
-    """Self-contained inline SVG stack (no external assets; clicking is
-    wired by model_tab.py's shim — data-bid carries the block id). The
-    layer owning the selected block is expanded; others collapse."""
-    sel_layer = next((b["layer"] for b in blocks if b["id"] == selected_id), None)
-    expand = sel_layer if sel_layer is not None else 0
-    rows: list[tuple[str, str, str, bool]] = []  # (bid, label, color, is_sel)
-    for b in blocks:
-        if b["layer"] is None:
-            rows.append((b["id"], b["title"], KIND_COLOR[b["kind"]],
-                         b["id"] == selected_id))
-        elif b["id"].endswith("pre_attn_norm"):
-            rows.append((f"L{b['layer']}",
-                         f"Layer {b['layer']}: norm - attn - norm - ffn (click to expand)",
-                         "#475569", False))
-        if b["layer"] == expand:
-            rows.append((b["id"], b["title"].split(" - ", 1)[1],
-                         KIND_COLOR[b["kind"]], b["id"] == selected_id))
-    W, RH, GAP = 330, 30, 6
-    H = len(rows) * (RH + GAP) + 8
-    parts = ['<svg viewBox="0 0 %d %d" style="width:100%%;max-width:350px;'
-             'font-family:ui-sans-serif,system-ui,sans-serif">' % (W, H)]
-    y = 4
-    for bid, label, color, sel in rows:
-        disp = label if len(label) <= 44 else label[:43] + "..."
-        parts.append(
-            f'<g class="blk" data-bid="{bid}" style="cursor:pointer" '
-            f'onclick="window.__dshtModelSelect && '
-            f"window.__dshtModelSelect('{bid}')\">"
-            f'<rect x="4" y="{y}" width="{W - 8}" height="{RH}" rx="6" '
-            f'fill="{color}" fill-opacity="{"1" if sel else "0.85"}" '
-            f'stroke="#0f172a" stroke-width="{"2" if sel else "1"}"/>'
-            f'<text x="14" y="{y + 20}" font-size="12.5" fill="white">{disp}</text>'
-            f"</g>")
-        y += RH + GAP
-    parts.append("</svg>")
-    return "".join(parts)
-```
-
-- [ ] **Step 4: Run tests to green**
-
-Run: `& .\.venv\Scripts\python.exe tests\test_explorer.py`
-Expected: `6/6 checks passed`.
-
-- [ ] **Step 5: Commit**
+- [ ] **Step 4: Commit (script only; data/ is gitignored)**
 
 ```powershell
-git add webui/explorer.py tests/test_explorer.py
-git commit -m "feat(webui): U12 SVG architecture renderer (self-contained, clickable ids)"
+git add mex/scripts/build_x1_words.py
+git commit -m "mex: X1 wordlist extractor over the committed E-20 vocab cache"
 ```
 
 ---
-
 

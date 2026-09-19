@@ -1,0 +1,79 @@
+{
+  "phase": "mex_x4",
+  "params_m": 0.2,
+  "best_eval_loss": 1.816988229751587,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\mex\\x4\\checkpoint-2000",
+  "final_eval": {
+    "eval_loss": 1.816988229751587,
+    "eval_runtime": 0.0335,
+    "eval_samples_per_second": 1522.618,
+    "eval_steps_per_second": 119.421,
+    "epoch": 8.265010351966874
+  },
+  "resumed_from": "checkpoint-750",
+  "env": {
+    "timestamp_utc": "2026-09-18T14:47:28+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "cadd5f2",
+    "gpu": "Quadro RTX 3000, 6144 MiB",
+    "resolved_config": {
+      "name": "mex_x4",
+      "tokenizer": {
+        "name": "data/mex/tokenizer",
+        "vocab_size": 97
+      },
+      "model": {
+        "layers": 2,
+        "hidden": 80,
+        "heads": 4,
+        "kv_heads": 2,
+        "ffn": 320,
+        "ctx": 96,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "dataset_candidates": [
+          {
+            "name": "local-mex-x4"
+          }
+        ],
+        "rows": 0,
+        "val_fraction": 0.02,
+        "shard_tokens": 2000000,
+        "raw_dir": "data/mex/x4",
+        "tokens_dir": "data/mex/x4/tokens"
+      },
+      "train": {
+        "output_dir": "runs/mex/x4",
+        "final_dir": "runs/mex/x4/final",
+        "max_steps": 2000,
+        "batch": 8,
+        "eval_batch": 16,
+        "accum": 4,
+        "lr": 0.001,
+        "scheduler": "cosine",
+        "warmup_steps": 20,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 50,
+        "eval_steps": 250,
+        "save_steps": 250,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": false,
+        "optim": "adamw_bnb_8bit",
+        "dataloader_num_workers": 0,
+        "seed": 42
+      }
+    }
+  }
+}

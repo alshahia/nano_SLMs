@@ -1,260 +1,139 @@
-### Task 4: `webui/model_tab.py` — Explorer wiring + `app.py` integration
+# Task 4 brief — packer (+ control union) and the param-budget acceptance test
+
+**Context (one line):** Fourth block: packs the raw .txt produced by Tasks 2/3 into uint32 shards that scripts/train.py (existing pipeline) consumes; also the param test that pins the expert/control budgets. NOTE: markdown may render backslash-n inside code strings as real newlines — the contracts that matter are the src/data.py PackedDataset contract (train_*.bin / val_*.bin, uint32) and the config keys used by Task 5 (data/mex/<task>/tokens).
+### Task 4: packer (+ union) and the param-budget acceptance test
 
 **Files:**
-- Create: `webui/model_tab.py` (Explorer part; Simulator lands in Task 6)
-- Modify: `webui/app.py` (two exact edits below)
+- Create: `mex/scripts/pack.py`
+- Test: `mex/tests/test_params.py`
 
-NOTE: `model_tab.py` must NOT import `simulator` yet (created in Task 5) —
-it uses `artifacts.run_config` instead.
-
-- [ ] **Step 1: Create `webui/model_tab.py` with the Explorer view**
+- [ ] **Step 1: Write the failing param test**
 
 ```python
-r"""Model tab (WEBUI_PRD.md §5 U12/U13): nested Architecture Explorer +
-Training Simulator. THIN Gradio wiring — logic lives in explorer.py /
-simulator.py / artifacts.py. Read-only + CPU-only: no torch model loads,
-no VRAM. app.py injects its existing _ckpts / _full_curve helpers (no
-duplication, no circular import). Single-user app (PRD §2), so the
-simulator keeps one module-global replay state — same pattern as _MODEL.
+# mex/tests/test_params.py
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from mex.src.vocab import char_ids
+
+EXPERT = {"layers": 2, "hidden": 80, "heads": 4, "kv_heads": 2, "ffn": 320}
+CONTROL = {"layers": 2, "hidden": 160, "heads": 4, "kv_heads": 2, "ffn": 640}
+
+def llama_params(cfg, vocab):
+    d, f, L = cfg["hidden"], cfg["ffn"], cfg["layers"]
+    kv = 2 * cfg["kv_heads"] * (d // cfg["heads"])
+    per_layer = (2 * d * d + 2 * d * kv + d * kv) + (2 * d * f + f * d)
+    tied = vocab * d
+    return L * per_layer + tied + 2 * L * d + d   # + per-layer norms(2x2xd) + final norm
+
+def test_expert_in_band():
+    p = llama_params(EXPERT, len(char_ids()))
+    assert 100_000 <= p <= 300_000, p
+
+def test_control_within_5pct_of_4x_expert():
+    pe = llama_params(EXPERT, len(char_ids()))
+    pc = llama_params(CONTROL, len(char_ids()))
+    assert abs(pc - 4 * pe) <= 0.05 * 4 * pe, (pe, pc)
+```
+
+- [ ] **Step 2: Run to verify it fails**
+
+`& .\.venv\Scripts\python.exe -m pytest mex/tests/test_params.py -v` → FAIL (no
+module). Then implement nothing — the test is against pure math here; it
+passes once `mex/src/vocab.py` (Task 1) exists. **Also pin against the REAL
+model:** `build_model(...).numel()` is asserted in Task 4 Step 5 by train.py's
+own printed param line; if the two disagree >1%, STOP and report (lesson 59:
+param anchors belong to tests, not comments).
+
+- [ ] **Step 3: Write the packer**
+
+```python
+# mex/scripts/pack.py
+"""Pack each μ0 task's raw .txt into uint32 PackedDataset shards.
+
+src/data.py contract: shards are uint32 id streams; train.py loads
+'train_*.bin' + 'val_*.bin' from data.tokens_dir and slices blocks of
+seq_len = model.ctx. Lines are concatenated; newline chars are IN-vocab.
+Block boundary = mid-task is fine: the causal LM learns the format either way.
 """
 from __future__ import annotations
 
-import threading
-import time as _time
+import sys
+from pathlib import Path
 
-import gradio as gr
+import numpy as np
 
-from artifacts import (ROOT, hf_config_dims, lora_note, phase_config,
-                       run_config, safetensors_header, yaml_config_dims)
-import explorer
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
 
-_BANNER = (
-    "### SIMULATION - real data, compressed time\n"
-    "Curves, params and eval numbers are replayed from this repo's **real** "
-    "runs (tfevents + train_summary.json + eval_report.json). Only the clock "
-    "is fake. Reads runs/ only, writes nothing, zero GPU/VRAM - safe beside "
-    "a live run.")
+from mex.src.vocab import CharVocab
 
-_SIM: dict = {"rd": None, "base": None, "cur": 0, "stop": threading.Event(),
-              "fig": None}
+TASKS = ["x1", "x2", "x3", "x4"]
 
 
-def _dims_for(source, cfg_name, run_name, ckpts_fn):
-    """(dims, header, lora, cfg, run_path) for the current selection."""
-    if source == "From trained run":
-        path = (ckpts_fn() or {}).get(run_name or "")
-        if path is None:
-            return None, None, None, None, None
-        dims = hf_config_dims(path)
-        header = safetensors_header(path)
-        note = lora_note(path)
-        cfg = run_config((run_name or "").split("/")[0])
-        return dims, header, note, cfg, path
-    cfg = phase_config(cfg_name or "") if cfg_name else None
-    if not cfg:
-        return None, None, None, None, None
-    peft = cfg.get("peft") or {}
-    note = ({"r": peft.get("r"), "alpha": peft.get("lora_alpha"),
-             "targets": peft.get("target_modules", [])} if peft else None)
-    return yaml_config_dims(cfg), None, note, cfg, None
+def pack(split_files: list[Path], out_prefix: Path, ctx: int) -> None:
+    voc = CharVocab()
+    ids: list[int] = []
+    for f in split_files:
+        ids.extend(voc.encode(f.read_text(encoding="utf-8")))
+    arr = np.asarray(ids, dtype=np.uint32)
+    shard = out_prefix  # single venue, tiny data
+    arr.tofile(shard.with_suffix(".bin"))
+    print(f"packed {shard.with_suffix('.bin')} : {arr.size} ids = {arr.size // ctx} blocks")
 
 
-def _detail_md(blocks, bid, tech):
-    b = next((x for x in blocks if x["id"] == bid), None)
-    if b is None:
-        return "*Pick a block.*"
-    lines = [f"### {b['title']}", "", b["tech"] if tech else b["plain"], ""]
-    if tech:
-        if b["config_pairs"]:
-            lines.append("**Config feeding this block:** " + ", ".join(
-                f"{k} `{v}`" for k, v in b["config_pairs"]))
-        lines.append(f"**Params:** {b['params']:,}"
-                     + ("" if b["real"] else " *(projected - no checkpoint)*"))
-        lines.append(f"**I/O:** `{b['io'][0]}` -> `{b['io'][1]}`")
-        if b["tensors"]:
-            lines += ["", "**Real tensors (from the safetensors header):**"]
-            lines += [f"- `{n}` `{'x'.join(map(str, t['shape']))}` "
-                      f"{t['dtype']}"
-                      for n, t in sorted(b["tensors"].items())]
-    else:
-        lines.append(f"*Params: {b['params']:,}*"
-                     + ("" if b["real"] else " *(projected)*"))
-    return "\n".join(lines)
+def main() -> None:
+    for t in TASKS:
+        src = ROOT / "data" / "mex" / t
+        dst = ROOT / "data" / "mex" / t  # same tree: tokens live beside raw in tokens_dir name convention
+        tdir = ROOT / "data" / "mex" / t / "tokens"
+        tdir.mkdir(parents=True, exist_ok=True)
+        pack([src / "train.txt"], tdir / "train_0000", ctx=96)
+        pack([src / "val.txt"] if (src / "val.txt").exists() else [src / "test.txt"],
+             tdir / "val_0000", ctx=96)
+    # control = union of every task's train + val text
+    ctrl = ROOT / "data" / "mex" / "control"
+    ctrl.mkdir(parents=True, exist_ok=True)
+    ctdir = ROOT / "data" / "mex" / "control" / "tokens"
+    ctdir.mkdir(parents=True, exist_ok=True)
+    concat = []
+    for t in TASKS:
+        for k in ("train", "val"):
+            p = ROOT / "data" / "mex" / t / f"{k}.txt"
+            if p.exists():
+                concat.append(p)
+    pack(concat, ctdir / "train_0000", ctx=96)
+    pack([ROOT / "data" / "mex" / t / "val.txt" for t in TASKS
+          if (ROOT / "data" / "mex" / t / "val.txt").exists()],
+         ctdir / "val_0000", ctx=96)
 
 
-def _select_block(blocks, tech, evt):
-    idx = evt.index if not isinstance(evt.index, (list, tuple)) else evt.index[0]
-    bid = blocks[min(int(idx), len(blocks) - 1)]["id"]
-    return _detail_md(blocks, bid, bool(tech))
-
-
-def _explorer_ui(ckpts_fn):
-    cfgs = sorted(p.stem for p in (ROOT / "configs").glob("*.yaml"))
-    runs = sorted((ckpts_fn() or {}).keys())
-    srcs = ["From config"] + (["From trained run"] if runs else [])
-
-    # build the default view FIRST so components get real initial values
-    dims0, header0, note0, cfg0, path0 = _dims_for(
-        srcs[0], cfgs[0] if cfgs else "", None, ckpts_fn)
-    blocks0 = (explorer.build_graph(dims0, header0, label=cfgs[0], lora=note0)
-               if dims0 and dims0.get("layers") else [])
-    first0 = blocks0[0]["id"] if blocks0 else ""
-
-    gr.Markdown("# Architecture Explorer (read-only)\n"
-                "Built live from configs/*.yaml and the safetensors **headers** "
-                "of your checkpoints — tensor data is never read, weights never "
-                "loaded. Click any block in the diagram or the list.")
-
-    src = gr.Radio(srcs, value=srcs[0], label="Source")
-    cfg_dd = gr.Dropdown(choices=cfgs, value=(cfgs[0] if cfgs else None),
-                         label="configs/*.yaml", interactive=True)
-    run_dd = gr.Dropdown(choices=runs, value=(runs[0] if runs else None),
-                         label="trained run (final)", interactive=True,
-                         visible=False)
-
-    state_blocks = gr.State(blocks0)
-    state_path = gr.State(path0)
-    state_sel = gr.State(first0)
-    tech = gr.Checkbox(False,
-                       label="Technical detail (shapes, tensor names, math)")
-
-    with gr.Row():
-        with gr.Column(scale=5):
-            diagram = gr.HTML(
-                value=explorer.render_svg(blocks0, first0) if blocks0
-                else "*No readable model config.*")
-            pick_list = gr.Dataset(
-                components=[gr.Textbox(visible=False)],
-                samples=[[b["title"]] for b in blocks0],
-                label="Blocks (click)")
-        with gr.Column(scale=4):
-            detail_md = gr.Markdown(
-                value=_detail_md(blocks0, first0, False) if blocks0
-                else "*No readable model config.*")
-
-    gr.Markdown("### Trace a prompt (real tokenizer, real token IDs)")
-    with gr.Row():
-        trace_in = gr.Textbox("def fibonacci(n):\n    return", label="Prompt",
-                              lines=2)
-        trace_btn = gr.Button("Trace", variant="primary")
-    trace_md = gr.Markdown()
-
-    # SVG click shim handles (the shim script lands in Task 7; harmless now)
-    shim_ta = gr.Textbox(visible=False, elem_id="model_tab_sel")
-    shim_btn = gr.Button(visible=False, elem_id="model_tab_sel_btn")
-
-    def rebuild(source, cfg_name, run_name):
-        dims, header, note, cfg, path = _dims_for(
-            source, cfg_name, run_name, ckpts_fn)
-        if not dims or not dims.get("layers"):
-            msg = "*No readable model config for this selection.*"
-            return msg, gr.update(samples=[]), msg, [], None, ""
-        blocks = explorer.build_graph(dims, header,
-                                      label=run_name or cfg_name, lora=note)
-        first = blocks[0]["id"]
-        return (explorer.render_svg(blocks, first),
-                gr.update(samples=[[b["title"]] for b in blocks]),
-                _detail_md(blocks, first, False),
-                blocks, path, first)
-
-    outputs = [diagram, pick_list, detail_md, state_blocks, state_path,
-               state_sel]
-    src.change(rebuild, [src, cfg_dd, run_dd], outputs)
-    cfg_dd.change(rebuild, [src, cfg_dd, run_dd], outputs)
-    run_dd.change(rebuild, [src, cfg_dd, run_dd], outputs)
-    src.change(lambda s: (gr.update(visible=s == "From config"),
-                          gr.update(visible=s == "From trained run")),
-               [src], [cfg_dd, run_dd])
-
-    pick_list.select(_select_block, [state_blocks, tech], detail_md)
-    tech.change(lambda t, blocks, sel: _detail_md(blocks, sel, bool(t)),
-                [tech, state_blocks, state_sel], detail_md)
-    trace_btn.click(explorer.tokenize_trace, [state_path, trace_in], trace_md)
-    trace_in.submit(explorer.tokenize_trace, [state_path, trace_in], trace_md)
-
-    def _shim_pick(bid, blocks, tech_val):
-        if not bid and blocks:
-            bid = blocks[0]["id"]
-        return _detail_md(blocks, bid, bool(tech_val)), bid or ""
-    shim_ta.change(_shim_pick, [shim_ta, state_blocks, tech],
-                   [detail_md, state_sel])
-    shim_btn.click(lambda: None, None, None)
-
-
-def render_model_tab(ckpts_fn, curve_fn):
-    """Called by app.py INSIDE the Blocks context (after the Settings tab)."""
-    with gr.Tab("Model"):
-        with gr.Tabs():
-            with gr.Tab("Architecture Explorer"):
-                _explorer_ui(ckpts_fn)
-            with gr.Tab("Training Simulator"):
-                gr.Markdown(_BANNER)
-                gr.Markdown("*Replay engine lands in the next milestone "
-                            "step — see WEBUI_PRD.md §5 U13.*")
+if __name__ == "__main__":
+    main()
 ```
 
-- [ ] **Step 2: Integrate into `app.py` (two exact edits)**
+NOTE (equal tokens, ME-D5): the control's train tokens must equal the SUM of the
+experts' train tokens + val tokens consumed by each expert. gen_data.py caps are
+fixed (Task 2/3), so control tokens ≈ sum by construction; the μ0 report lists
+actual token counts of the five runs side by side.
 
-Edit 1 — imports. Find (near the top, after the other imports):
-```python
-import run_custom
-import status
-```
-replace with:
-```python
-import run_custom
-import status
-import model_tab
-```
+- [ ] **Step 4: Run the packer**
 
-Edit 2 — tab render. Find (line ~1501):
-```python
-    demo.load(fn=None, inputs=None, outputs=None, js=_POLL_JS)
-```
-replace with:
-```python
-    demo.load(fn=None, inputs=None, outputs=None, js=_POLL_JS)
+`& .\.venv\Scripts\python.exe mex\scripts\pack.py` → 5 bin outputs, prints
+blocks per shard. Keep val .bin separate per task (val = held-out REAL blocks;
+test stays unseen by packing).
 
-    model_tab.render_model_tab(_ckpts, _full_curve)
-```
-(The call MUST stay inside the `with gr.Blocks` context — after this line
-the context has closed and tabs can no longer be added.)
+- [ ] **Step 5: Run the full unit suite + param echo via dry sanity**
 
-- [ ] **Step 3: Syntax check + headless boot check (NO browser needed)**
+`& .\.venv\Scripts\python.exe -m pytest mex/tests -v` → all PASS.
+
+- [ ] **Step 6: Commit**
 
 ```powershell
-& .\.venv\Scripts\python.exe -c "import ast; ast.parse(open('webui/model_tab.py', encoding='utf-8').read()); ast.parse(open('webui/app.py', encoding='utf-8').read()); print('syntax OK')"
-```
-Expected: `syntax OK`.
-
-Headless boot on a PROBE port (never touch a user-launched 7860 instance):
-```powershell
-& .\.venv\Scripts\python.exe webui\app.py --no-browser --port 7877   # run as a background job
-```
-Wait ~20 s, then:
-```powershell
-(Invoke-WebRequest -UseBasicParsing http://127.0.0.1:7877).StatusCode
-(Invoke-WebRequest -UseBasicParsing http://127.0.0.1:7877/config).Content -match 'Architecture Explorer'
-```
-Expected: `200` and `True`. Then stop the background job YOU started
-(never a process you did not start).
-
-- [ ] **Step 4: Manual interaction check (if a browser is available)**
-
-Open http://127.0.0.1:7877 -> Model tab -> verify: smoke diagram renders;
-clicking "Layer 0 - GQA attention" in the block list updates the detail
-panel; the Technical toggle adds tensor names; "From trained run" +
-`target/final` shows 16 layers. If no browser is available, record
-`SKIPPED: manual UI interaction - headless config check only` (honest
-reporting).
-
-- [ ] **Step 5: Commit**
-
-```powershell
-git add webui/model_tab.py webui/app.py
-git commit -m "feat(webui): U12 Model tab - Architecture Explorer (read-only SVG + two-level details + real tokenizer trace)"
+git add mex/scripts/pack.py mex/tests/test_params.py
+git commit -m "mex: uint32 packer (src/data.py contract) + param budget acceptance test"
 ```
 
 ---
-
 

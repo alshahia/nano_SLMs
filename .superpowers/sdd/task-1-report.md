@@ -1,74 +1,75 @@
-# Task 1 Report - U12/U13 Model tab (webui/artifacts.py + tests/)
+# Task 1 report — shared char vocabulary + tokenizer save (mex/)
 
-## Status
-**DONE** - 6/6 PASS, commit fc229a2 on main.
+**Status:** DONE_WITH_CONCERNS (one implementation deviation from the brief's code, tests unchanged)
+**Commit:** `241117f` — `mex: shared char vocab (<=128 ids) + AutoTokenizer-compatible save; plan for MU0`
+**Branch:** main (working on main pre-approved)
 
-## What I did
+> Note: this file previously held a stale report from an earlier task cycle
+> (U12/U13 webui artifacts, commit fc229a2 — durable in git history). It was
+> replaced with this report per the task-1 brief's instruction.
 
-### Inspect (prior state)
-- Previous colleague had partial work in the worktree (uncommitted): tests/_common.py,
-  tests/test_artifacts.py, webui/artifacts.py. Branch was already main.
-- A prior BLOCKED report existed (from the first attempt that hit the two plan bugs).
-- Diffed the colleague's code against the **amended** brief and found the same two
-  bugs the planner corrected against real data:
-  - (a) safetensors dtype strings: colleague's test checked
-    ("float16", "float32", "bfloat16"). Real safetensors data emits F16/F32/BF16
-    (verified via safe_open(...).get_slice(name).get_dtype() across all three
-    ladder checkpoints - every tensor in smoke/pilot/target reported 'F32').
-  - (b) module_param_totals norm key: colleague used key = ".".join(parts[1:3]),
-    which emits "norm.weight" for model.norm.weight. Amended brief specifies
-    key = name.removesuffix("." + parts[-1]) -> "model.norm" (verified
-    model.norm.weight exists in all three finals).
+## What was done
 
-### Edit (apply amendments verbatim)
-Three edit calls; no other files touched:
+1. **Step 1 — test present/verified:** Found `mex/` already in the working tree
+   (untracked; evidently a prior interrupted attempt of this same task). Verified
+   all three files matched the brief verbatim before proceeding:
+   - `mex/src/__init__.py` — empty, as specified.
+   - `mex/src/vocab.py` — matched the brief's code (plain `from tokenizers import`
+     per the brief's editor note).
+   - `mex/tests/test_vocab.py` — matched the brief's test code verbatim.
+2. **Step 2 — verify failure:** Ran the suite; `test_saved_tokenizer_loads`
+   FAILED (1 failed / 3 passed). Not ModuleNotFoundError — the implementation was
+   already present — but the brief-anticipated API-drift failure inside `save()`
+   (details under Deviations).
+3. **Step 3 — implement:** One fix in `save()` (see Deviations). Nothing else
+   changed vs. the brief's draft code.
+4. **Step 4 — tests pass:** 4/4 PASSED.
+5. **Step 5 — commit:** Staged ONLY `mex/` + the plan doc per the brief's Step-5
+   command. Other agents' untracked files left untouched.
 
-| file | change |
+## Test commands and results
+
+| Command | Result |
 |---|---|
-| tests/test_artifacts.py | dtype set -> ("F16", "F32", "BF16"); assert msg wording -> (key must be model.norm) |
-| webui/artifacts.py | module_param_totals branch: ".".join(parts[1:3]) -> name.removesuffix("." + parts[-1]) |
-| tests/_common.py | already correct, no change |
+| `& .\.venv\Scripts\python.exe -m pytest mex/tests/test_vocab.py -v` (pre-fix) | 1 failed (`test_saved_tokenizer_loads`), 3 passed |
+| `& .\.venv\Scripts\python.exe -m pytest mex/tests/test_vocab.py -v` (post-fix) | **4 passed** in 7.81s |
 
-No other source file under webui/ (including app.py) was modified.
+## Deviations from the brief
 
-### Stage + commit
-Only the three brief-named files were staged and committed. Other pre-existing
-dirty files (GDN / Track work - src/gdn.py, scripts/eval.py, configs/pilot.yaml,
-runs/ctx_probes/, etc.) left untouched.
+One implementation fix, made under task rule 4 (API drift; tests must pass as written):
 
-  git add tests/_common.py tests/test_artifacts.py webui/artifacts.py
-  git commit -m "feat(webui): U12 artifacts - read-only safetensors-header/config readers + dependency-free test runner"
+- **Problem:** the brief's `save()` produced a `tokenizer.json` with no decoder.
+  `tokenizers`' default `decode()` joins tokens with spaces, so
+  `tok.decode(tok.encode(s))` returned `"م ك ت ب | م َ ك ْ ت َ ب"`
+  (space between every char) and the byte-exact assertion failed.
+- **Fix (implementation only; test file NOT modified):** added
+  `tok.decoder = decoders.BPEDecoder()` in `save()` and added `decoders` to the
+  tokenizers import line. `BPEDecoder` concatenates tokens verbatim with no
+  separator — exactly right for a per-character vocabulary.
+- **Verified:** direct `Tokenizer` roundtrip AND `AutoTokenizer.from_pretrained()`
+  roundtrip both byte-exact for `"مكتب|مَكْتَب"`, `"line1\nline2"`, `"a b c"`;
+  per-char ids (n_ids == len(s)); `vocab_size == 97` (<= 128).
+- All 4 tests pass as written in the brief; no assertion weakened or skipped.
 
-### Hard-rule compliance
-- Read-only + CPU-only: only safetensors.safe_open headers (~KBs JSON per file);
-  no torch import, no GPU, no writes, no runs/ or configs/ writes.
-- webui/app.py not modified.
-- scripts/status.py not modified (consumer phase_config uses its existing
-  load_phase_cfg).
-- Did not load weights - headers only.
+## Public API (unchanged from brief, confirmed in commit)
 
-## Test output
+- `mex/src/vocab.py`: `char_ids() -> dict[str, int]`, `class CharVocab`
+  (`encode`, `decode`, `save`), `MAX_IDS = 128`, `SPECIALS = ["<pad>", "<unk>"]`,
+  `ALPHABETS` (arabic / separators / digits+ops / brackets / latin).
+- Dense 0..N-1 ids, cap 128 enforced with ValueError, specials first.
 
-Command: & .\\.venv\\Scripts\\python.exe tests\\test_artifacts.py (cwd = repo root)
+## Self-review findings
 
-  PASS header_smoke
-  PASS hf_dims_and_yaml_dims_agree
-  PASS lora_note
-  PASS missing_dir_is_none
-  PASS module_aggregation
-  PASS totals_match_ladder
-
-  6/6 checks passed
-
-Exit code: 0.
-
-## Commit hashes
-
-- New commit: **fc229a2** -
-  feat(webui): U12 artifacts - read-only safetensors-header/config readers + dependency-free test runner
-  (3 files changed, 242 insertions)
-- Parent commit (unchanged): cf141ae - Task 1 preflight from real data (dtype
-  strings F16/F32/BF16; module key model.norm).
-
-## Concerns
-none
+- `git show --stat HEAD`: commit contains exactly 3 files
+  (`mex/src/__init__.py`, `mex/src/vocab.py`, `mex/tests/test_vocab.py`), nothing else.
+  The brief's Step-5 command also lists
+  `docs/plans/2026-09-18-micro-expert-composition-plan.md`, but that file was
+  already tracked and unmodified (committed earlier in `ad787b4`), so it adds
+  nothing to this diff — expected, not a miss.
+- No GPU/training/runs paths touched; CPU-only task.
+- `mex/**/__pycache__/` confirmed gitignored (repo `.gitignore` line 3) — no cache
+  files leaked into the commit.
+- Git printed LF→CRLF warnings on the two text files; cosmetic, no action.
+- Other agents' untracked files were untouched by the commit.
+- A temporary probe script (`scratch/probe_decoder.py`) used during diagnosis was
+  deleted before commit.

@@ -46,6 +46,12 @@
 
 > 2026-09-13c: **Stage 1/Stage 2 transfer plan SPECIFIED (user-gated, NOT started)** - docs/plans/2026-09-13_diac_stage1_stage2_transfer_plan.md: Stage 1 = char-LM Arabic pretraining on the on-disk sources (v2d28 arch, ctx 512, train_lm.py with the zero-flag resume contract), Stage 2 = warm-start bidirectional fine-tune (pretrained_init hook) on the v3 corpus (+Sadeed_Tashkeela) with the Sadeed-dedup gate check FIRST; falsifiable >=2 pp / >=3-gate rule; totals ~12 h GPU + 1.5 h CPU. Tasks rows 54 (menu) and 57 (the two-stage plan).
 
+## E-26 mu0c window closed (120K steps) — verdict: step-saturated (2026-09-19)
+- All five arms trained to 120K (x1+x2 parallel, x3+x4 parallel, control solo; 576 MiB peak total, never OOM).
+- Loss tracking per user request: mex/scripts/watch_losses.py (CPU-only summary + CSV runs/mex/loss_track.csv) ran live during the whole window; mex/scripts/plot_losses.py produced runs/mex/loss_curves.png/.json after close.
+- Finding: min val loss for all experts arrives at 6-8K steps; massive fixed-lr overfit mid-run (x2 eval 1.19->2.11); cosine anneal tail recovers eval to ~min; downstream exact_match flat-or-worse vs E-25 (x2 0.898->0.828). 10x steps = no benefit. mu0 recipe saturated at 12K steps — push mu1 (data diversity / regularization / composition), not step count.
+- E-26 gates 4/4 PASS at 120K (x1 0.105, x2 0.828, x3 0.916, x4 0.862 vs mains 0.0/0.002/0.512/0.316).
+- Control (dense, param-matched) at 120K beats or matches every expert cross-task except x4 — see MU0_REPORT mu0c section.
 ## 2026-09-13c - v2d28 VERDICT: param-matched depth x2 = -2.0..-3.9 pp DER - depth BEATS params per byte on WN gates  <- scoped: ARABIC-DIACRITIZATION agent only
 
 - v2d28 FULL 30000/30000, best val_loss 0.1801 (v2b 0.1802 - VAL-TERM DEAD CALL; depth did not lift the val objective at fixed params). Gate pack (DER, preservation 1.0): Fadel 45.0 (v2b 47.1, -2.1) / Sadeed 56.2 (59.9, -3.7) / WN2024 59.1 (61.1, -2.0) / WN2014 52.5 (56.4, -3.9).
