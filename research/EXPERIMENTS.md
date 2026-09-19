@@ -199,3 +199,22 @@ Pre-registered gates: (a) bridged mark-position fill acc >= 0.7660 on the E-36 v
 Second bridge at layer 1 with depth-matched clean KV was the mechanism-preserving fix E-36's probe pointed at: same recipe, no threshold arithmetic, trainables ~3.2k params absolute total across 2 bridges, and the combined lateral state access cleared the margin with room. Artifacts runs/mex/mu2_g37a/{bridge.pt, summary.json}; script mex/scripts/train_mu2_g37a_bridge2.py.
 
 **mu2 ladder status after E-37a:** G1 -> G2 fill-in -> G3 widen -> G4 head -> G4b(C) composed rule — ' 0.6196 composed, 0.7556 mark positions — now G5 bridges lift the trunk underneath everything, holding identity by construction at mount-time. The next rung (user-gated): extend gates to the composed/head readout (bridge+head jointly on the composed decode), i.e. E-38a over the E-35 rule end-to-end.
+
+## E-38a (PRE-REGISTERED, mu2: full-stack composed readout) — 2026-09-19
+
+No new training at all: E-35 composition rule (head emits its mark class if != none; else trunk's free argmax) evaluated while the E-37a two-layer bridges are LIVE (bridged hidden states fed into the frozen trunk's decode; teacher-of-self clean KV per layer, strength 1.0). The corruption-matched E-34 head (runs/mex/mu2_g4b/head.safetensors) reads the bridged hidden states (they were not trained together — honest constraint declared up front).
+
+Pre-registered gates: (a) composed ALL-position acc must beat E-35's 0.6196; (b) composed mark-position acc must beat E-35's 0.7556; (c) structural identity re-check: bridges OFF reproduces E-35 numbers within 1e-4 (0.6196 / 0.7556). FAIL => honest row; no threshold shifts in-register.
+
+**E-38a RESULT (closed) - PASS on all pre-registered gates.**
+
+| readout | all-position | mark-position | non-mark |
+|---|---|---|---|
+| bridges OFF (identity re-check) | **0.6196** | **0.7556** | 0.5418 (exact E-35 reproduction) |
+| bridges ON + head (E-37a + E-35 rule) | **0.6485** | **0.7862** | **0.5698** |
+
+Gates: (a) composed all-pos > 0.6196: **0.6485** (+2.89pt) PASS; (b) mark-pos > 0.7556: **0.7862** (+3.06pt) PASS; (c) bridges-off == E-35 within 1e-4: exact PASS.
+
+Mid-flight note: the first execution showed a spurious (c) FAIL; root cause was an eval-harness branch bug (bridges kept strength 1.0 from the previous run() call), NOT a composition failure. Fixed by resetting strength and KV every call; no thresholds or rules changed, pre-registration intact. The closing numbers are deterministic and reproducible.
+
+This is the x4 composition realized end-to-end: specialist head decides first over its 8 marks, trunk fallback keeps the FULL vocab, and the two lateral bridges lift BOTH branches through frozen-trunk lateral state access. Composition remains mount/initialization-order only: the head was trained WITHOUT the bridges live and still gained +3.06pt at mark positions (0.7556 -> 0.7862), evidence the bridge acts on shared trunk computation rather than overfitting a paired encoder. Artifacts runs/mex/mu2_e38a/summary.json; script mex/scripts/eval_mu2_e38a.py. No new training.
