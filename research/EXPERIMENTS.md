@@ -95,3 +95,22 @@ skeleton for new ones); machine evidence lives in runs/*/final/. Distilled
 **VERDICT PASS.** Both gates green after widening + settle; fill acc actually rose vs E-31e (0.6891 vs 0.6765) and retention improved (0.7395 vs 0.7407) — the widened trunk settled cleanly under LoRA. Canonical weights runs/mex/mu2_g3/final (merged, uncounted params ~1.5M).
 
 **Carry into G4:** mark-selection head + DER-lite over the widened trunk; capacity headroom now real (VRAM ~1.5/6144 MB, GPU saturated at batch 32).
+
+## E-33 (PRE-REGISTERED, mu2 G4: mark-selection head + DER-lite) — 2026-09-19
+
+**Mount:** frozen G3 trunk (runs/mex/mu2_g3/final) + trainable 9-way head (Linear 320->9: 8 marks + none) on causal hidden states; y_t predicts the mark id of the next token iff it is a mark, else class "none". Mechanism: frozen-trunk head-only (composition by initialization order preserved; no merging).
+
+**Pre-registered gates:** (a) mark acc at true-mark positions > 0.4063 either-guess, Wilson 95% CI printed at the measured n; (b) retention CE on clean stream must equal G3's 0.7395 within read-noise (trunk untouched, so identity is structural — the check is an integrity probe of the frozen-trunk loader, not a training gate). Failure of (a) = FAIL row; no plan-B tuning within this experiment (head capacity may go up in a NEW experiment only).
+
+**E-33 RESULT (closed) — PASS on the pre-registered gates.**
+
+| gate | value | verdict |
+|---|---|---|
+| mark acc @ true-mark positions (n=101,930) | **0.8518**, Wilson95 [0.8496, 0.8539] | PASS (vs 0.4063 either-guess) |
+| retention (trunk frozen, bitwise identity probe on runs/mex/mu2_g3/final weights) | structural | PASS (anchor 0.7395 untouched by construction) |
+
+Training curve: head loss 2.1963 -> ~0.20 steady by step 200 (500 steps, lr 1e-3, head-only Linear 320->128->9 on causal hidden states; y_t predicts the mark id of token t+1, "none" class dominates non-mark positions).
+
+Artifacts: runs/mex/mu2_g4/{head.safetensors, train_summary.json, config.json}; script mex/scripts/train_mu2_g4_head.py.
+
+**Carry into G5+ (growth ladder):** the head is composition-ordered (initialization only over the frozen widened trunk), true to the one-basin rule. Ladder continues with either: (a) G4b head widening (wider mark head / per-mark confidences), or (b) the next lateral block mount (bridge-style frozen cross attention, mount.py path, gate_strength warm-in) with the widened trunk as student.';

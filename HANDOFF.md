@@ -1295,3 +1295,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-32 (G3 Net2Net widening) CLOSED **PASS both gates**: widened 160→320/heads 8/kv 4/ffn 1280 function-preserving (max|dlogit|<1e-3), then LoRA settle lr 5e-5 ×1000 steps on the widened trunk: fill 0.6891 PASS, retention 0.7395 PASS — better than the E-31e numbers on both axes. runs/mex/mu2_g3/final = canonical widened trunk for G4.
 - Data catalog from prior turn committed 45fa7ba (research/data_catalog/, 37 datasets) — still awaiting user consumption/decision.
 - Next: G4 (E-33) mark-selection head + DER-lite on top of runs/mex/mu2_g3/final.
+
+- E-33 (G4 mark-selection head, frozen trunk) CLOSED **PASS**: mark acc 0.8518 (Wilson95 [0.8496,0.8539], n=101930) vs 0.4063 either-guess; retention structural (trunk bitwise intact, anchor 0.7395). run runs/mex/mu2_g4, script mex/scripts/train_mu2_g4_head.py.
