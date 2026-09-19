@@ -1,0 +1,17 @@
+{
+  "urls": [
+    "https://huggingface.co/datasets/effective-policy/vocalized-eval",
+    "https://huggingface.co/datasets/hplkrd/Sadeed_Diac",
+    "https://huggingface.co/datasets/Ahmed-SS/m3-ar-speech-diacr-lm"
+  ],
+  "kind": "contents",
+  "num_results": 0,
+  "results": [],
+  "search_time": 10011.662848999957,
+  "cost_dollars": {
+    "total": 0,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-19T11:41:26.378510+00:00"
+}

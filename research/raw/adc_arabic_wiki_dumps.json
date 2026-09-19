@@ -1,0 +1,97 @@
+{
+  "query": "arabic wikipedia dump Hugging Face wiki40a OSCAR race Alpaca arabic AraTweets dataset",
+  "kind": "search",
+  "num_results": 10,
+  "results": [
+    {
+      "id": "https://huggingface.co/datasets/raj2708/wikipedia-ar",
+      "title": "raj2708/wikipedia-ar · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/raj2708/wikipedia-ar",
+      "highlights": [
+        "raj2708/wikipedia-ar · Datasets at Hugging Face\n...\n# Wikipedia Arabic — Preprocessed\n...\nA clean, preprocessed version of the Arabic Wikipedia dump, ready for LLM pretraining.\n...\n| Field | Value |\n| --- | --- |\n| Language | Arabic (ar) |\n| Total size | 4.1 GB |\n| License | CC-BY-SA 4.0 |\n| Source | ar.wikipedia.org |\n| Dump date | May 2026 |\n...\n1. Downloaded full Arabic Wikipedia XML BZ2 dump\n2. Parsed articles using`mwparserfromhell`— wikitext → plain text\n3. Filtered redirects and short articles\n4. Cleaned — removed templates, file/image links, excessive whitespace\n5. Quality scored based on punctuation ratio\n...\n```\n{\n  \"id\": \"uuid-v4\",\n  \"source\": \"wikipedia_ar\",\n  \"type\": \"text\",\n  \"language\": \"ar\",\n  \"text\": \"Article text...\",\n  \"metadata\": {\n    \"url\": \"https://ar.wikipedia.org/wiki/Title\",\n    \"title\": \"Article Title\",\n    \"license\": \"CC-BY-SA-4.0\",\n    \"scraped_at\": \"2026-05-29T00:00:00+00:00\",\n    \"quality_score\": 0.95,\n    \"token_count\": 512,\n    \"word_count\": 384\n  }\n}\n...\n```\nfrom datasets import load_dataset\n...\nds = load_dataset(\"raj2708/wikipedia-ar\", split=\"train\", streaming=True)\n...\nfor row in ds:\n    print(row[\"metadata\"][\"title\"])\n    print(row[\"text\"][:300])\n    break"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/google/wiki40b/viewer/ar/train",
+      "title": "google/wiki40b · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/google/wiki40b/viewer/ar/train",
+      "highlights": [
+        "google/wiki40b · Datasets at Hugging Face\n...\n245k rows\n...\nar (245k rows)bg (145k rows)ca (308k rows)cs (262k rows)da (122k rows)de (1.73M rows)el (104k rows)en (3.25M rows)es (970k rows)et (127k rows)fa (226k rows)fi (284k rows)fr (1.36M rows)he (184k rows)hi (51k rows)hr (115k rows)hu (304k rows)id (174k rows)it (814k rows)ja (828k rows)ko (217k rows)lt (94.3k rows)lv (36.9k rows)ms (108k rows)nl (498k rows)no (212k rows)pl (561k rows)pt (452k rows)ro (155k rows)ru (1.03M rows)sk (114k rows)sl (67.6k rows)sr (363k rows)sv (445k rows)th (63k rows)tl (28.9k rows)tr (158k rows)uk (531k rows)vi (162k rows)zh-cn (610k rows)zh-tw (613k rows)"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/pain/Arabic-Tweets/blame/main/README.md",
+      "title": "README.md · pain/Arabic-Tweets at main",
+      "url": "https://huggingface.co/datasets/pain/Arabic-Tweets/blame/main/README.md",
+      "highlights": [
+        "# Dataset Card for Dataset Arabic-Tweets\n...\n## Dataset Description\n...\n- **Homepage:** https://ieee-dataport.org/open-access/masc-massive-arabic-speech-corpus\n- **Paper:** https://ieeexplore.ieee.org/document/10022652\n...\n### Dataset Summary\n...\nThis dataset has been collected from twitter which is more than 41 GB of clean data of Arabic Tweets with nearly 4-billion Arabic words (12-million unique Arabic words).\n...\n### Source Data\n...\n### Example on data loading using streaming:\n...\n```py\nfrom datasets import load_dataset\n...\ndataset = load_dataset(\"pain/Arabic-Tweets\",split='train', streaming=True)\nprint(next(iter(dataset)))\n...\n### Example on data loading without streaming \"It will be downloaded locally\":\n...\n```py\nfrom datasets import load_dataset\n...\ndataset = load_dataset(\"pain/Arabic-Tweets\",split='train')\nprint(dataset[\"train\"][0])\n...\n#### Initial Data Collection and Normalization\n...\nThe collected data comprises 100 GB of Twitter raw data. Only tweets with Arabic characters were crawled. It was observed that the new data contained a large number of Persian tweets as well as many Arabic words with repeated characters. Because of this and in order to improve the data efficiency the raw data was processed as follows: hashtags, mentions, and links were removed; tweets that contain Persian characters, 3 consecutive characters, or a singlecharacter word were dropped out; normalization of Arabic letters was considered. \n\nThis has resulted in more than 41 GB of clean data with nearly 4-billion Arabic words (12-million unique Arabic words). \n\n## Considerations for Using the"
+      ]
+    },
+    {
+      "id": "https://www.tensorflow.org/datasets/catalog/wiki40b",
+      "title": "wiki40b  |  TensorFlow Datasets",
+      "url": "https://www.tensorflow.org/datasets/catalog/wiki40b",
+      "highlights": [
+        "Clean-up text for 40+ Wikipedia languages editions of pages correspond to entities. The datasets have train/dev/test splits per language. The dataset is cleaned up by page filtering to remove disambiguation pages, redirect pages, deleted pages, and non-entity pages. Each example contains the wikidata id of the entity, and the full Wikipedia article after page processing that removes non-content sections and structured objects. The language models trained on this corpus - including 41 monolingual models, and 2 multilingual models - can be found at https://tfhub.dev/google/collections/wiki40b-lm/1\n...\n## wiki40b/ar\n...\n- Config description: Wiki40B dataset for ar.\n- Dataset size: `833.20 MiB`\n- Auto-cached (documentation): No\n- Splits:\n\n| Split | Examples |\n| --- | --- |\n| `'test'` | 12,271 |\n| `'train'` | 220,885 |\n| `'validation'` | 12,198 |\n...\n- Examples (tfds.as_dataframe):"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/tarekeldeeb/ArabicCorpus2B",
+      "title": "tarekeldeeb/ArabicCorpus2B · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/tarekeldeeb/ArabicCorpus2B",
+      "highlights": [
+        "tarekeldeeb/ArabicCorpus2B · Datasets at Hugging Face\n...\n# Build the Arabic Corpus\n...\nThe arabic corpus {1.9B word} consists of the following resources:\n...\n- watan-2004.7z link{0.01B}\n- Arabic Tweets link{0.03B}\n- Tashkeela-arabic-diacritized-text-utf8-0.3.zip link{0.07B}\n- Arabic Wikipedia Latest Articles Dump link{0.11B}\n- AraCorpus.tar.gz link{0.14B}\n- UN arabic corpus mirror1 mirror2{0.37B}\n- ShamelaLibrary348.7z link{1.15B}\n...\nMirror : https://archive.org/details/arabic_corpus"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/ArabicNLPWorld/arabic-wikipedia-wikibooks-corpus",
+      "title": "ArabicNLPWorld/arabic-wikipedia-wikibooks-corpus · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/ArabicNLPWorld/arabic-wikipedia-wikibooks-corpus",
+      "highlights": [
+        "ArabicNLPWorld/arabic-wikipedia-wikibooks-corpus · Datasets at Hugging Face\n...\n# Arabic Wiki Corpus - Parquet Format\n...\nThis dataset contains CLEANED Arabic text from Wikipedia and Wikibooks in Parquet format (efficient, fast, columnar storage).\n...\n- ✅ Parquet format - faster loading, smaller size, columnar storage\n- ✅ Fully cleaned - no markup, no HTML, no references\n- ✅ Arabic normalized - alef, ya, ta marbuta normalized\n- ✅ Ready for ML/NLP/LLM - use directly without preprocessing\n...\n| Metric | Value |\n| --- | --- |\n| Total Articles | 1,210,037 |\n| Wikipedia Articles | 1,208,932 |\n| Wikibooks Articles | 1,105 |\n| Unique Categories | 642,128 |\n| Average Original Length | 2,004 chars |\n| Average Cleaned Length | 1,836 chars |\n| Average Compression | 7.7% |\n| Total Size (Original) | 2.26 GB |\n| Total Size (Cleaned) | 2.07 GB |\n| Format | Parquet (columnar) |\n| Chunks | 25 files |\n...\n### Loading the Dataset\n...\n#### Using Hugging Face datasets (Recommended)\n...\n```\nfrom datasets import load_dataset\n...\n# Load directly from Parquet files\ndataset = load_dataset(\"ArabicNLPWorld/arabic-wikipedia-wikibooks-corpus\", split=\"train\")\n...\n# Access cleaned text directly\nfor record in dataset:\n    clean_text = record[\"text\"]  # Already cleaned!\n    print(record[\"title\"])\n    print(clean_text[:500])\n...\n#### Using PyArrow (Direct Parquet)\n...\nparquet as pq\n...\n_hub import\n...\n# Download and read Parquet file\nparquet_path = hf_hub_download(\n    repo_id=\"ArabicNLPWorld/arabic-wikipedia-wikibooks-corpus\",\n    filename=\"data/chunk_0000.parquet\",\n    repo_type=\"dataset\"\n)\n...\ntable = pq\n...\n_table(parquet\n...\ndf = table.to_pandas()\n...\n### Data Fields\n...\n| Field | Type | Description |\n| --- | --- | --- |\n| `id` | string | Unique MD5 hash |\n| `title` | string | Article title |\n| `text` | string | CLEANED text (ready for ML) |\n| `source` | string | wikipedia / wikibooks |\n| `url` | string | Original URL |\n| `categories` | list | Category tags |\n| `meta_original_length` | int | Length before cleaning |\n| `meta_cleaned_length` | int | Length after cleaning |\n| `meta_compression_ratio` | float | % of text removed |\n...\n### Example Record\n...\n```\n{\n  \"id\": \"f2e322039571bb760fb615daa77f6adb\",\n  \"title\": \"ماء\",\n  \"text\": \"الماء مادهٌ شفافهٌ عديمه اللون والرائحه، وهو المكوّن الاساسي للجداول والبحيرات والبحار والمحيطات وكذلك للسوائل في جميع الكائنات الحيّه، وهو اكثر المركّبات الكيميائيّه انتشاراً علي سطح الارض. يتالّف جزيء الماء من ذرّه اكسجين مركزيه ترتبط بها ذرّتا هيدروجين علي طرفيها برابطه تساهميّه بحيث تكون صيغته الكيميائيه H2O. عند الظروف القياسيه من الضغط ودرجه الحراره يكون الماء سائلاً؛ امّا الحاله الصلبه فتتشكّل عند نقطه التجمّد، وتدعي بالجليد؛ امّا الحاله الغازيه فتتشكّل عند نقطه الغليان، وتسمّي بخار الماء\",\n  \"source\": \"wikipedia\",\n  \"url\": \"https://arwiki.org/wiki/ماء\",\n  \"categories\": [\n    \"مشروبات\",\n    \"ماء\",\n    \"مركبات الهيدروجين\",\n    \"مركبات الأكسجين\",\n    \"مذيبات لاعضوية\"\n  ],\n  \"meta_original_length\": 61222,\n  \"meta_cleaned_length\": 52814,\n  \"meta_compression_ratio\": 13.73\n}\n\n```"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/faresrafat/arastudy-arabic-wikipedia-cleaned",
+      "title": "faresrafat/arastudy-arabic-wikipedia-cleaned · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/faresrafat/arastudy-arabic-wikipedia-cleaned",
+      "highlights": [
+        "faresrafat/arastudy-arabic-wikipedia-cleaned · Datasets at Hugging Face\n...\n# AraStudy Arabic Wikipedia (Cleaned)\n...\nCleaned Arabic Wikipedia corpus used in AraStudy.\n...\n- Removed HTML, URLs, Tatweel\n- Arabic normalization (أ/إ/آ→ا, ى→ي, ة→ه)\n- Diacritics removed\n- Hash-based deduplication\n- Min 10 words per line\n- 60% Arabic ratio filter\n...\nArabic Wikipedia (wikimedia/wikipedia, 20231101.ar) First 300,000 articles, filtered to 1.39M clean lines.\n...\n## Part of AraStudy"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/SaiedAlshahrani/Arabic_Wikipedia_20230101_nobots",
+      "title": "SaiedAlshahrani/Arabic_Wikipedia_20230101_nobots · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/SaiedAlshahrani/Arabic_Wikipedia_20230101_nobots",
+      "published_date": "2023-01-01T00:00:00.000Z",
+      "highlights": [
+        "SaiedAlshahrani/Arabic_Wikipedia_20230101_nobots · Datasets at Hugging Face\n...\n# Dataset Card for \"Arabic_Wikipedia_20230101_nobots\"\n...\nThis dataset is created using the Arabic Wikipedia articles (after removing bot-generated articles), downloaded on the 1st of January 2023, processed using`Gensim` Python library, and preprocessed using`tr` Linux/Unix utility and`CAMeLTools` Python toolkit for Arabic NLP. This dataset was used to train this Arabic Wikipedia Masked Language Model: SaiedAlshahrani/arwiki_20230101_roberta_mlm_nobots.\n...\nSaiedAl\n...\nahrani/Arabic_Wikipedia_202\n...\n0101_nobots"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/oscar-corpus/mOSCAR",
+      "title": "oscar-corpus/mOSCAR · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/oscar-corpus/mOSCAR",
+      "highlights": [
+        "oscar-corpus/mOSCAR · Datasets at Hugging Face\n...\nMore info can be found here: https://oscar-project.github.io/documentation/versions/mOSCAR/\n...\n- Additional filtering steps were applied to remove toxic content (more details in the next version of the paper, coming soon).\n- Spanish split is now complete.\n- Face detection in images to blur them once downloaded (coordinates are reported on images of size 256 respecting aspect ratio).\n- Additional language identification of the documents to improve document-language matching.\n- Replace most of Personal Identifiable Information by generic strings.\n...\nPrevious version remains available, to continue using it:\n...\n```\ndataset = load_dataset(\"oscar-corpus/mOSCAR\", revision=\"v1\")\n\n```\n...\n@article{futeral2024moscar,\n  title={mOSCAR: A Large-\n...\nMultilingual and Multimodal\n...\nCorpus},\n  author={Fut\n...\n, Matthieu and\n...\nel and Suarez,\n...\n={arXiv preprint arXiv"
+      ]
+    },
+    {
+      "id": "https://huggingface.co/datasets/CALM/arwiki",
+      "title": "CALM/arwiki · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/CALM/arwiki",
+      "highlights": [
+        "CALM/arwiki · Datasets at Hugging Face\n...\n# Arabic Wiki Dataset\n...\nThis dataset is extracted using wikiextractor tool, from Wikipedia Arabic pages.\n...\nIntended to train Arabic language models on MSA (Modern Standard Arabic).\n...\n- `arwiki_20211213_txt`: dataset is divided into subfolders each of which contains no more than 100 documents.\n- `arwiki_20211213_txt_single`: all documents merged together in a single txt file.\n...\nLoad all dataset from the single txt file:\n...\n```\nload_dataset('CALM/arwiki', \n              data_files='arwiki_2021_txt_single/arwiki_20211213.txt')\n...\n# OR with stream\n\nload_dataset('CALM/arwiki', \n              data_files='arwiki_2021_txt_single/arwiki_20211213.txt', \n              streaming=True)\n...\nLoad a smaller subset from the individual txt files:\n...\n```\nload_dataset('CALM/arwiki', \n              data_files='arwiki_2021_txt/AA/arwiki_20211213_1208.txt')\n\n# OR with stream\n\nload_dataset('CALM/arwiki', \n              data_files='arwiki_2021_txt/AA/arwiki_20211213_1208.txt', \n              streaming=True)"
+      ]
+    }
+  ],
+  "search_time": 775.6,
+  "cost_dollars": {
+    "total": 0.007,
+    "search": {
+      "neural": 0.007
+    },
+    "contents": null
+  },
+  "retrieved_at": "2026-09-19T11:41:13.529615+00:00"
+}

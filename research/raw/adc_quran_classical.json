@@ -1,0 +1,101 @@
+{
+  "query": "Tanzil Quranic Arabic Corpus KACST Arabic Language Database classical Arabic corpus license",
+  "kind": "search",
+  "num_results": 10,
+  "results": [
+    {
+      "id": "https://corpus.quran.com/download/",
+      "title": "Quranic Arabic Corpus - Data Download",
+      "url": "https://corpus.quran.com/download/",
+      "highlights": [
+        "```\n#  Quranic Arabic Corpus (Version 0.4)\n#  Copyright (C) 2011 Kais Dukes\n#  License: GNU General Public License\n#\n#  The Quranic Arabic Corpus includes syntactic and morphological\n#  annotation of the Quran, and builds on the verified Arabic text\n#  distributed by the Tanzil project.\n#"
+      ]
+    },
+    {
+      "id": "https://tanzil.net/docs/text_license",
+      "title": "Text License - Tanzil Documents",
+      "url": "https://tanzil.net/docs/text_license",
+      "highlights": [
+        "Text License - Tanzil Documents\n...\n# Text License\n\n The following copyright notice is applied to, and is included in all copies of Tanzil Quran text:"
+      ]
+    },
+    {
+      "id": "https://tanzil.net/download/",
+      "title": "Download Quran Text - Tanzil",
+      "url": "https://tanzil.net/download/",
+      "highlights": [
+        "## Introduction\n\n Tanzil Quran text is available to download in various formats from this page. The latest release of the text (Version 1.1) is published in February 2021. See changes log here.\n...\n## Terms of Use\n\n Permission is granted to copy and distribute verbatim copies of the Quran text provided here, but changing the text is not allowed. The text can be used in any website or application, provided that its source (Tanzil Project) is clearly indicated, and a link is made to tanzil.net to enable users to keep track of changes."
+      ]
+    },
+    {
+      "id": "https://corpus.quran.com/faq.jsp",
+      "title": "The Quranic Arabic Corpus - Frequently Asked Questions\n\t(FAQ)",
+      "url": "https://corpus.quran.com/faq.jsp",
+      "highlights": [
+        "The data is still undergoing correction, but morphological annotation has been made publically available for download. We are happy to share the data\n...\nresearch purposes as\n...\n1. You do not use the data for commercial purposes. The data should be used purely for research and is made available under the GNU public license.\n2. You give a citation in your research publication.\n...\nAll data in the Quranic Arabic Corpus is freely available for online viewing through this website. The data is also available on the download page. The final aim of the project will be to produce a highly accurate annotated Quran available freely for non-commercial use under the GNU public license. Although the information is quite accurate already, currently annotators are reviewing the morphological and syntactic annotation, as well as the word by word translation. This website includes a message board where contributors can click on a word and then suggest corrections to the annotation."
+      ]
+    },
+    {
+      "id": "https://exa.ai/library/publication/6fhdnbfk145",
+      "title": "KSUCCA: a key to exploring Arabic historical linguistics",
+      "url": "https://eprints.whiterose.ac.uk/81836",
+      "published_date": "2014-06-01T00:00:00.000Z",
+      "author": "Maha Alrabiah, AbdulMalik S. Al‐Salman, Eric Atwell, N Alhelewh",
+      "highlights": [
+        "Classical Arabic forms the basis of Arabic linguistic theory and it is well understood by the educated Arabic reader. It is different in many ways from Modern Standard Arabic which is more simplified in its lexical, syntactic, morphological, phraseological and semantic structure. King Saud University Corpus of Classical Arabic is a pioneering corpus of around 50 million words of Classical Arabic. It is initially constructed for the purpose of studying distributional lexical semantics of the Quran and Classical Arabic, however, it is designed in a general way making it also appropriate for other researches in Linguistics and Computational Linguistics. In this paper, we will briefly describe the structure of our corpus, and then we will demonstrate how it can be used to depict some aspect of Arabic language change between the classical and the modern periods.\n...\nOn the other hand, and to the best of the authors knowledge, there exist only two corpora of Classical Arabic; one is part of the King Abdulaziz City for Science and Technology Arabic Corpus (KACST Arabic Corpus) 3 and the other is the Classical Arabic Corpus (CAC) [11]. However, neither of the two corpora is adequate for research in distributional semantics; the former has a limited number of genres and it only contains 17+ million words, which is not very sufficient. While the latter is even smaller with only 5 million words. Therefore, it was essential to design and compose a new corpus of Classical Arabic bearing in mind that it should be large enough, balanced, and representative so that any result obtained from it can be generalized for Classical Arabic. In this paper, we will give a brief description of the design and construction of King Saud University Corpus of Classical Arabic (KSUCCA), which is a very large corpus of Classical Arabic that can be used in various corpus linguistic studies. In addition, we will demonstrate how KSUCCA corpus can be used in historical linguistics.\n...\n## 2. King Saud University Corpus of Classical Arabic (KSUCCA\n...\nKSUCCA is designed as a general corpus analogous to the Brown [14], LOB [15], BNC [16], Corpus of Contemporary Arabic (CCA) [6] and other general corpora that can be used for a variety of Linguistics and Computational Linguistics research. In the next section, we will demonstrate how KSUCCA can be used to detect various aspects of language change between Classical Arabic and MSA.\n...\nIn this paper, we present KSUCCA a pioneering 50 million words corpus of Classical Arabic\n...\nvarious genres and sub genres that can be used in various types of Linguistic and Computational Linguistic research. We also showed how can KSUCCA be used to detect some interesting lexical, Phraseological, vocabulary and semantic changes in Arabic language. We believe that the construction of KSUCCA and the work presented in this paper will encourage Arab linguists to take steps forward in exploring corpus-based historical linguistics and discovering other interesting aspects of language change."
+      ]
+    },
+    {
+      "id": "https://eprints.whiterose.ac.uk/id/eprint/81860/1/TheDesignConstruction50MillionWordKSUCCA.pdf",
+      "title": "The design and construction of the 50 million words KSUCCA",
+      "url": "https://eprints.whiterose.ac.uk/id/eprint/81860/1/TheDesignConstruction50MillionWordKSUCCA.pdf",
+      "author": "Alrabiah, M, Al-Salman, A and Atwell, ES",
+      "highlights": [
+        "In this paper, we report the design and construction of King Saud University Corpus of Classical Arabic (KSUCCA) 1 , which is part of ongoing research that attempts to study the meanings of words used in the holy Quran, through analysis of their distributional semantics in contemporaneous texts. The holy Quranic text was revealed in pure Classical Arabic, which forms the basis of Arabic linguistic theory and which is well understood by the educated Arabic reader. Therefore, it is necessary to investigate the distributional lexical semantics of the Quran's words in the light of similar texts (corpus) that are written in pure Classical Arabic. To the best of our knowledge, there exist only two corpora of Classical Arabic; one is part of the King Abdulaziz City for Science and Technology Arabic Corpus (KACST Arabic Corpus)\n...\nand the other is the Classical Arabic Corpus (CAC) (Elewa, 2009). However, neither of the two corpora is adequate for our research; the former does not cover many genres such as: Linguistics, Literature, Science, Sociology and Biography; and it only contains 17+ million words, so it is not very large. While the latter is even smaller with only 5 million words. Therefore, we made an effort to carefully design and compose our own corpus bearing in mind that it should be large enough, balanced, and representative so that any result obtained from it can be generalized for Classical Arabic. In addition, we tried to make the design general enough in order to make the corpus also appropriate for other research.\n...\n1 The corpus site is available online in English (http://ksucorpus.ksu.edu.sa), and in Arabic (http://ksucorpus.ksu.edu.sa/ar) 2 http://www.kacstac.org.sa/Pages/Default.aspx\n...\n### 5 Copyright permission\n...\nThe materials included in this corpus date back to more than ten centuries ago, so they do not require any copyright permissions."
+      ]
+    },
+    {
+      "id": "https://tanzil.net/docs/tanzil_project",
+      "title": "Tanzil Project - Tanzil Documents",
+      "url": "https://tanzil.net/docs/tanzil_project",
+      "highlights": [
+        "# Tanzil Project\n\n Tanzil is a Quranic project launched in 2007 to produce a highly verified Unicode Quran text to be used in Quranic websites and applications. Our mission in the Tanzil project is to produce a standard Unicode Quran text and serve as a reliable source for this standard text on the web.\n...\nIn the Tanzil project, we have integrated several previous works done in a number of Quranic projects to obtain a unified Quran text, and brought the text to a high level of accuracy by passing it through several manual and automatic verification phases. The lengthy work that lead to the final Tanzil Quran text is summarized in the following three steps:\n...\n- Automatic Text Extraction At this\n...\n, a collection of Quran texts from several authentic resources was collected, and a program was developed to convert each text to a canonical format. The canonical texts were then analyzed and carefully compared to extract a core Quran text.\n...\n- Rule-Based Verification In this step, a program was developed to verify the core Quran text against a set of grammatical and recitation rules. The program was also able to produce Quran texts in Imlaei and Uthmani formats, all derived automatically from the core text.\n...\n- Manual Verification In\n...\n, the Quran text produced was examined thoroughly against\n...\naf, and a checksum for each letter and diacritic was calculated to\n...\naccuracy of the\n...\nWe extensively used the help of a group of experts including Quran specialists and Hafizes in order to assure the correctness and preciseness of the obtained Quran text. Our Quran text is now used in major Quranic websites and projects, with several millions active users per month. Despite this high volume of users, we have received no typo report since the release of the first version of the text in 2008. The accuracy of the text has been also reconfirmed by several projects that are actively using Tanzil Quran text."
+      ]
+    },
+    {
+      "id": "https://exa.ai/library/publication/wkpdgxw7byh",
+      "title": "The design and construction of the 50 million words KSUCCA",
+      "url": "https://eprints.whiterose.ac.uk/81860/1/TheDesignConstruction50MillionWordKSUCCA.pdf",
+      "published_date": "2013-01-01T00:00:00.000Z",
+      "author": "Maha Alrabiah, AbdulMalik S. Al‐Salman, Eric Atwell",
+      "highlights": [
+        "Leeds University msrabiah@ gmail.com salman@ ksu.edu.sa e.s.atwell@ leeds.ac.uk 1 Introduction In this paper, we report the design and construction of King Saud University Corpus of Classical Arabic (KSUCCA) 1 , which is part of ongoing research that attempts to study the meanings of words used in the holy Quran, through analysis of their distributional semantics in contemporaneous texts. The holy Quranic text was revealed in pure Classical Arabic, which forms the basis of Arabic linguistic theory and which is well understood by the educated Arabic reader. Therefore, it is necessary to investigate the distributional lexical semantics of the Quran's words in the light of similar texts (corpus) that are written in pure Classical Arabic. To the best of our knowledge, there exist only two corpora of Classical Arabic; one is part of the King Abdulaziz City for Science and Technology Arabic Corpus (KACST Arabic Corpus) 2 and the other is the Classical Arabic Corpus (CAC) (Elewa, 2009). However, neither of the two corpora is adequate for our research; the former does not cover many genres such as: Linguistics, Literature, Science, Sociology and Biography; and it only contains 17+ million words, so it is not very large. While the latter is even smaller with only 5 million words. Therefore, we made an effort to carefully design and compose our own corpus bearing in mind that it should be large enough, balanced, and representative so that any result obtained from it can be generalized for Classical Arabic. In addition, we tried to make the design general enough in order to make the corpus also appropriate for other research. 2 Purpose of KSUCCA The main purpose of KSUCCA was to be used for studying the distributional lexical semantics of words in the holy Quran. However, it was designed as a general corpus analogous to the Brown, LOB,\n...\n1 The corpus site is available online in English (http://ksucorpus.ksu.edu.sa), and in Arabic (http://ksucorpus.ksu.edu.sa/ar) 2 http://www.kacstac.org.sa/Pages/Default.aspx\n...\nBNC, Corpus of Contemporary Arabic (CCA) and other general corpora that can be used for a variety of Linguistics and Computational Linguistics research, such as (Atkins et al. 1992), (Dash 2008) and (Waly 2012). This corpus could be utilized for:  Building lexicons.  Building semantic lexicons.  Looking for linguistic treasures including forgotten vocabulary, synonyms and syntactic structures, and help in spreading them back in current education and literature.  Studying language (vocabulary and syntactic structures) change through history.  Studying terminologies and idioms.  Studying collocations.  Studying difference between synonyms.  Studying how certain words relate to specific syntactic structures.  Studying the relation between words and text type.  Studying the relation between syntactic structure and text type.  Building parallel corpora that can be used for automatic translation.  Studying the distribution of roots and morphological patterns in different types of texts and how this is related to their meaning.  Studying semantic relations to build a WordNet for the Holy Quran.  Building an ontology for the Holy Quran and Classical Arabic.  Studying the linguistic styles of authors, which can be used in identifying unknown authors.  Studying the linguistic style of a specific book or poem.  Studying language difference between texts from different genres.  Language learning for Arabs and non Arabs, and building special lexicons for language teaching.  Building question answering systems.  Building specialized information retrieval systems. 3 KSUCCA Representativeness and Balance The main criterion for selecting the population of data of interest was to include only pure Classical Arabic texts, which are Arabic texts dating back to the period of the pre-Islamic era until the end of the fourth Hijri 3 century (equivalent to the period from 3 The Hijri calendar is the official calendar for Muslims. Its first year was the year when the Hijra, migration, of Prophet the seventh until early eleventh century CE) (Eid, 1980). Due to the limited number of such available texts, we did not use random sampling to select the sources from the population; instead, we tried to gather as many authenticated Classical Arabic texts as we could. One of the major resources we have relied on was the Ccomprehensive library \"Almaktabah Alshamilah\" website 1, which is a voluntary project accomplished by the cooperation between the site's owners and Alrawdhah Cooperative Office for Call and Guidance 2. The goal of that project was to collect and digitize a wide range of Islamic and Arabic classical and modern books. Table 1: The classification of population into genres and subgenres Genre Subgenre\n...\nNumber of words Percentage Religion 150 23645087 46.73 % Linguistics 56 7093966 14.02 % Literature 104 7224504 14.28 % Science 42 6429133 12.71 % Sociology 32 2709774 5.36 % Biography 26 3499948 6.92 % Total 410 50602412 100 % 4 Sampling size Since KSUCCA was designed to study distributional lexical semantics of words in the holy Quran, and Classical Arabic in general, it was sampled as \"full text\", where the whole book or poem text was considered as a sample. This is more suitable for detecting the linguistic features and meanings that may be distributed evenly throughout the text as suggested by Sinclair (2005). KSUCCA was initially designed as a raw corpus containing only plain text with no tagging or lemmatization. The appendix shows a sample of the corpus text. 5 Copyright permission The materials included in this corpus date back to more than ten centuries ago, so they do not require any copyright permissions. 6 Character Encoding We chose to use UTF-8 for character encoding for all the corpus files since it is backward compatible with ASCII and can be work with available software (McEnery and Xiao, 2005)."
+      ]
+    },
+    {
+      "id": "https://www.sketchengine.eu/",
+      "title": "Corpus of Classical Arabic (KSUCCA)",
+      "url": "https://www.sketchengine.eu/",
+      "highlights": [
+        "Language corpora, multi-billion word collections of texts, provide source data for all features of Sketch Engine. Our corpora are tagged and annotated to be ready for complex searches of phrases and language structures. Parallel and multilingual corpora are also available.\n...\nSketch Engine currently works with more than 100 languages and over 30 writing systems (Latin, Cyrillic, Chinese, Greek, Bengali, Thai…) including RTL scripts such as Arabic."
+      ]
+    },
+    {
+      "id": "http://variatim.altervista.org/VARCAR/quranic-corpus-morphology-0.4.txt",
+      "title": "",
+      "url": "http://variatim.altervista.org/VARCAR/quranic-corpus-morphology-0.4.txt",
+      "highlights": [
+        "# Quranic Arabic Corpus (morphology, version 0.4)\n# Copyright (C) 2011 Kais Dukes\n# License: GNU General Public License\n#\n...\n# The Quranic Arabic Corpus includes syntactic and morphological\n# annotation of the Quran, and builds on the verified Arabic text\n# distributed by the Tanzil project.\n...\n#\n# Tanzil Quran Text (Uthmani, version 1.0.2)\n# Copyright (C) 2008-2009 Tanzil.info\n# License: Creative Commons BY-ND 3.0 Unported\n#\n...\n# This copy of quran text is carefully produced, highly\n# verified and continuously monitored by a group of specialists\n# at Tanzil project.\n...\n# - This quran\n...\nbe used in any website or application,\n#\n...\nits source (\n...\n.info)\n...\nclearly indicated, and\n# a link\n...\nmade to http://\n...\ninfo to enable users to keep\n# track of changes."
+      ]
+    }
+  ],
+  "search_time": 1101,
+  "cost_dollars": {
+    "total": 0.007,
+    "search": {
+      "neural": 0.007
+    },
+    "contents": null
+  },
+  "retrieved_at": "2026-09-19T11:41:09.543499+00:00"
+}

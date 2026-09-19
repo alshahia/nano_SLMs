@@ -1,0 +1,48 @@
+{
+  "kind": "answer",
+  "question": "What are the largest publicly available fully vocalized Classical Arabic corpora suitable for training a character-level language model? Which Arabic diacritization datasets already stage corpora on Hugging Face, what corpora exist beyond 100MB vocalized, and how are Arabic diacritization corpora like Tashkeela or Wikinews derived? Answer briefly.",
+  "model": "exa",
+  "answer": "The largest publicly available fully vocalized Classical Arabic corpora include the original Tashkeela dataset [1][2] and the comprehensive Athar-Shamela4 collection [3]. Tashkeela contains approximately 75 million words [2][4], while Athar-Shamela4 provides a 19 GB extraction of over 8,500 classical books [3]. Other significant datasets exceeding 100MB include the Abdou Arabic-tashkeel-dataset (aggregating multiple sources like Tashkeela and Shamela) [5] and the yuujiElfahkrany/tashkeel dataset (~1.29 GB) [6].\n\nThese corpora are typically derived by crawling freely available, manually vocalized classical texts from digital libraries like Al-Maktaba Al-Shamela [6][2][3]. Datasets like Tashkeela Wikinews are often curated by filtering these sources for high diacritic density, cleaning non-Arabic content, and segmenting text into training-ready tokens or sentences [1][7][5].",
+  "citations": [
+    {
+      "title": "EmanKhater/Tashkeela · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/EmanKhater/Tashkeela"
+    },
+    {
+      "title": "Tashkeela: Novel corpus of Arabic vocalized texts, data for auto-diacritization systems - PMC",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5310197/"
+    },
+    {
+      "title": "Kandil7/Athar-Shamela4 · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/Kandil7/Athar-Shamela4"
+    },
+    {
+      "title": "Tashkeela: Novel corpus of Arabic vocalized texts, data for auto-diacritization systems",
+      "url": "https://doi.org/10.1016/j.dib.2017.01.011",
+      "published_date": "2017-02-04T00:00:00.000Z",
+      "author": "Taha Zerrouki, Amar Balla"
+    },
+    {
+      "title": "Abdou/arabic-tashkeel-dataset · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/Abdou/arabic-tashkeel-dataset"
+    },
+    {
+      "title": "yuujiElfahkrany/tashkeel · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/yuujiElfahkrany/tashkeel"
+    },
+    {
+      "title": "Misraj/Sadeed_Tashkeela · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/Misraj/Sadeed_Tashkeela"
+    },
+    {
+      "title": "Misraj/SadeedDiac-25 · Datasets at Hugging Face",
+      "url": "https://huggingface.co/datasets/Misraj/SadeedDiac-25"
+    }
+  ],
+  "cost_dollars": {
+    "total": 0.005,
+    "search": null,
+    "contents": null
+  },
+  "retrieved_at": "2026-09-19T11:41:15.689683+00:00"
+}
