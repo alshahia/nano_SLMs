@@ -35,6 +35,10 @@ Canonical composite (frozen, sha-verified): trunk \`runs/mex/mu3_g4/final\` (~12
 | x4 | \`copy:ttexbpsghir\|\` | \`ttexbpsghir\` | \`behhhehhh\` |
 | dia | \`اثنى،\|\` (teacher step) | \`أَثْنَى،\` | composed rule wins in-process (mark-pos 0.79 on val, not free decode) |
 
+## dia2 update (E-54a/b + c/d, closed 2026-09-20)
+
+The zero-loss Net2Net widen to 1280/32/16/5120 + full function-preserving mount remount holds the standing within fp noise, then (E-54d) a 4000-step scale settle lifts dia composition to a NEW standing: **mark-pos 0.8134 / all 0.6672** (canonical runs/mex/dia2d_scale/final + dia2_wide mounts, ctx 96). Rung verdicts: E-54a PASS; E-54b Muon arm FAILs the composed tie-break (rejected); E-54c honest negative — ctx 192 adds window-use capability (0.7920 vs unadapted 0.6000) but no composed gain, and shared teacher-KV destroys tower readout (0.5419, rejected).
+
 ## Reading (one sentence)
 The composite passes everything that is **readout-shaped** at char scale (routing, mark-selection, per-class heads); it does NOT produce multi-step computation at the boundary token — that capability is a pretraining-scale question (a fully pretrained added layer, ~90k-step budget), not an architecture or training-loop question at this depth.
 
