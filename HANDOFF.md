@@ -1388,3 +1388,12 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-55b CLOSED: per-prompt mark metrics (mark_accuracy / precision / F1, hit-wrong-missed-extra, der_collapse) in mex/scripts/mark_metrics.py; per-prompt CSVs under runs/mex/e55_bench/. Profiles: dia2d ~0.47 mark-acc; gold e23a 0.78-0.87; zm 0.74-0.84. der_collapse shows the mini's errors are symbol confusion, not just ceiling.
 
 - E-55c CLOSED: full-profile benching is the standing policy (user-approved). All three lines run through mark_metrics.py: dia2d 0.47 mark-acc/0.04 word_ax/0.47 word_p50/0.035 lift; gold 0.83/0.49/0.96/0.44; zm 0.79/0.41/0.93/0.37. dia2d mid/last-rooted vowel confusion is the specific externality gap.
+
+
+## E-56 (2026-09-19): DA-8 Title (CPU-feasible ranker swap, GPU under user policy) - PASS
+- Their model: Granite-350M SFT (article -> headline generator). Ours: shared dual-encoder ranker -   one hashed bag 65536->d48 mean-pooled (single EmbeddingBag kernel), side biases, InfoNCE tau 0.07 over in-batch
+  negatives, Muon 3e-2. Chance = 1/64; bar 4x chance.
+- Data: ar asas-ai/Arabic-article-summarization 6,623 pairs (text->summary as title-analogue; SANAD has no titles);   en huff 71,732 pairs (short_description->headline).
+- TEST: ar R@1 0.5826 / R@10 0.8929; en R@1 0.2160 / R@10 0.5742 (5 epochs, still climbing). Both PASS the bar.
+- GPU notes (user policy now active): use GPU when free; one process at a time; VRAM peak 112 MB; v1 kept the   whole corpus as feature tensors in RAM (plus 2 concurrent procs) and made total RAM/VRAM exhausted and even read docs of shared-memory spill -  v2 encodes per batch and saves fp16-CPU checkpoints.
+- Files: langid/scripts/{build_title,train_rank,eval_rank}.py (v2); data/langid/title/*; runs/langid_da8/*.

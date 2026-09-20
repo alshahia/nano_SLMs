@@ -769,3 +769,11 @@ Failure-profile read (what each metric shows):
 - contrastive_lift: dia2d barely beats emitting bare text (lift 0.03 while gold lifts 0.44) — the fill of Arabic case marking does NOT transfer from the mu in-domain corpus to classical proses.
 - mark_acc buckets: errors concentrate in mid-word and final marks (case endings) for all models, but gold's mid 0.73-0.87 stays usable while dia2d sits ~0.39-0.42 — the E-54 pattern of vowel-confusion.
 - Strict DER remains the gate; the other layers diagnose WHERE it fails. dia2d is externally behind everywhere; nothing reopens the earlier verdict, and no retunes were made inside this rung.
+
+**E-56 (pre-registered, user-sanctioned): DATA-PARITY step - train the dia2d mini composite on the SAME corpus gold trained on (v3q = v3 pool + gate-deduped QCRI), holding compute constant. Motivation: the E-55c profile showed dia2d failures are knowledge-shaped (mid/last mark confusion, +0.035 external lift) not capacity-shaped; question = does gold-domain data close the gap at equal compute?**
+
+Protocol (fixed before training):
+- Data: v3q token pack decoded to vocalized text (TK decode + marks_for_label; MAX_TRAIN_ROWS=800k of gold corpus = ~32M CharVocab tokens incl. inserted marks), re-encoded with the SAME 97-id CharVocab, packed uint32 ctx-96 shards under data/mex/mu2/v3q/tokens (builder mex/scripts/build_mu2_v3q.py; val = v3q val split identical to gold's).
+- Train: same LoRA settle recipe as dia2d_scale (r8 a16, lr 5e-5, batch 32, 4000 steps, fp16, hold_every 3, mask '|'), base = dia2d_scale/final. No other recipe change (single-factor comparison). Output: runs/mex/dia2e_v3q.
+- Pre-registered gates (full E-55c profile, identical regenerated refs): (g1) mean mark_accuracy over 4 external gates >= 0.65 (dia2d 0.472, gold 0.826); (g2) mean contrastive_lift >= 0.20 (dia2d 0.035); (g3) in-domain composed mark-pos accuracy stays >= 0.78 (was 0.8134). DER recorded but not gated (label-space ceiling unchanged this rung).
+- FAIL = honest row, no retunes inside this rung; changes = new rung.
