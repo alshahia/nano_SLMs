@@ -1370,3 +1370,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - Files: langid/scripts/train_topic.py got --opt muon; runs/langid_da3/topic_bag_muon*.pt; research/EXPERIMENTS.md E-53 row closed; TASKS.md row 94.
 
 - E-54c CLOSED (honest negative): ctx 192 LoRA-adapted model taught window use (0.7920 long vs 0.6000 unadapted control) but dia composed does NOT gain over the 96-ctx standing (0.7987); shared teacher-KV variant destroys tower readout (0.5419) - per-depth teacher KV kept. Canonical stays dia2b_adamw/final ctx 96. E-54d (replay-scale) remains.
+
+- E-54d CLOSED PASS: replay-scale 4000-step settle on dia2b trunk lifts dia composed mark-pos 0.7987 -> 0.8134 (all 0.6672) - NEW canonical dia2 = runs/mex/dia2d_scale/final + dia2_wide mounts, ctx 96. dia2 program complete (a PASS, b Muon-rejected/AdamW-best-then-d-superseded, c negative, d PASS); further budget escalation user-gated.

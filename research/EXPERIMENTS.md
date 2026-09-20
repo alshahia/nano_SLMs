@@ -690,3 +690,21 @@ Pre-registered gates (long-window val = 192-blocks of the g1 val shards, compose
 | control: standing dia2b_adamw model read at 192 without adaptation | 0.6000 / 0.4751 | confirms the ctx-192 LoRA DID teach window use (0.7920 vs 0.6000) — capability transferred, composition just does not gain from it |
 
 Verdict: canonical dua2 composite stays **runs/mex/dia2b_adamw/final + runs/mex/dia2_wide mounts at ctx 96** (markpos 0.7987). ctx-192 model archived under runs/mex/dia2c_ctx192. E-54d (replay-scale steps) is the remaining registered dia2 rung.
+
+## E-54d (PRE-REGISTERED, dia2-D: replay-scale settle on the dia2b standing) — 2026-09-20
+
+Question: does the wider dia2 trunk amortize more steps = does a LONGER settle (4x E-54b budget) push composition beyond 0.7987, or has the settle saturated?
+
+- Trunk runs/mex/dia2b_adamw/final; remount widened mounts; same corruption/hold_every/LoRA(r8 a16) recipe; AdamW lr 5e-5 cosine; 4000 steps batch 32 seed 42; ctx 96.
+- Gates: | (d1) composed mark-pos >= 0.7987 (must BEAT the E-54b anchor, not tie) | (d2) short-ctx retention: mixed CE <= 3.49 class gate as in E-45 | (d3) eval-loss curve must still be descending at step 4000 or the settle is called saturated in the row.
+- FAIL => resolve with an honest saturation row; no budget escalation without user sanction.
+
+**E-54d RESULT (closed) - PASS: the wider trunk had not saturated; scale replay buys a large composed gain.**
+
+| gate | value | verdict |
+|---|---|---|
+| (d1) composed beat E-54b anchor | markpos **0.8134** (> 0.7987, +1.5pt), all **0.6672** (> 0.6504) | **PASS — new dia standing** |
+| (d2) retention class gate | mixed CE 2.3829 (bar <= 3.49) | PASS |
+| (d3) saturation call, best_eval  0.7471514940261841, vs dial class anchor (E-54b 0.74688) | settle still productive, kept 4000-step budget as registered | recorded |
+
+Canonical dia2 composite is now: trunk runs/mex/dia2d_scale/final (~50M params) + runs/mex/dia2_wide mounts at ctx 96: composed markpos 0.8134 / all 0.6672 / mixed CE 2.3829. dia2 ladder = widen (zero-loss) + longer AdamW settle (hard win) + ctx extension (negative) + shared-KV (rejected) = the dia2 recipe card.
