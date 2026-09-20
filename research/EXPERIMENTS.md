@@ -728,3 +728,24 @@ Verdict bar: mean 4-gate DER of the mini composite vs the rows below (gold 30M @
 | mean DER | 0.858 | 0.525 | **0.456** | 0.525 | 0.558 |
 
 Verdict: **the mu composite does NOT beat the gold or ZM models externally** — mean 4-gate DER 0.858 vs gold 0.456 / ZM BiLSTM 0.558. text_preservation 1.0 everywhere (byte-exact passthrough intact) and predictions are fluent (scratch/e55_smoke_pred.txt), but per-word mark-exact matching collapses under three structural hubs, all declared pre-run: (i) the mu CharVocab mark set is exactly 0x064B..0x0652 — shadda+vowel compounds, dagger alif 0x0670 and small-Quran marks are UNPRODUCIBLE (hard DER ceiling); (ii) the trunk argline column imports fill-style mark bias on ungated external bare text; (iii) 96-char ctx vs the diacritizer line's SFT scale and longer windows. In-domain composed mark-pos 0.8134 is not externally transferable; no retunes within this rung.
+
+**E-55b (closed, user-requested metric extension): per-prompt mark-level metrics added to the bench and all three model lines re-scored.**
+
+New scorer mex/scripts/mark_metrics.py (CPU-only, any pred/ref pair; per-line CSV `<pred>_perline.csv` + JSON report):
+- position-level (LCS-aligned per word), lower-is-gone except accuracy/precision/f1:
+  - mark_hit / mark_wrong / mark_missed / mark_extra AND mark_accuracy (= recall over ref marks), mark_precision (spurious insertions counted), mark_f1,
+  - der_collapse (1-minus): word DER after stripping shadda-before-vowel compounds and dropping marks outside 0x064B..0x0652 — reveals what is only a mark-set ceiling vs genuine symbol confusion.
+
+Re-benched gold + e23c_zm finals on identical refs and scored all three lines with the same scorer (regenerated DER for gold/zm matches the ledger rows: 0.3355 vs 0.3354 fadel etc., confirming the round trip).
+
+| gate | metric | dia2d mini | e23a_gold_v3q | e23c_zm |
+|---|---|---|---|---|
+| fadel_test | mark accuracy | 0.4721 | **0.8704** | 0.8355 |
+| sadeed25 | mark accuracy | 0.4723 | **0.8384** | 0.8017 |
+| wikinews2024 | mark accuracy | 0.4634 | **0.7778** | 0.7386 |
+| wikinews2014 | mark accuracy | 0.4802 | **0.8168** | 0.7706 |
+| fadel_test | der_collapse (lenient) | 0.8192 | **0.3355** | 0.3989 |
+
+Key reads: (1) the new soft metrics do NOT rescue the mini composite (gold stays far ahead at every leniency level); (2) quality profile differs in kind: gold has mark_missed ~0.4-1.5k of 435-372k (near-complete coverage), the mini composite loses 32-80% of hits to mark_wrong = symbol confusion, not insertion dominance; (3) der_collapse barely moves dia2d (0.8192-> same-ish) proving the ceiling is symbol substitution, not just the missing compound/extra mark classes.
+
+Per-prompt right/wrong counts (the user's ask) live in runs/mex/e55_bench/*_perline.csv (1 row/prompt: words, ref_marks, hit/wrong/missed/extra, der_collapse_ok/total).
