@@ -293,7 +293,7 @@ Pre-registered gates, no training: (a) trunk widen max |dlogit| < 1e-2 (fp32 val
 | E-53 | 2026-09-19 | E-41 Muon lever applied to DA-3 bag topic model: Adam lr 0.25 (E-52 control) vs Muon 1e-2 / 3e-2 on emb+bias, identical data/batches/seed | 2-3 arms CPU |
 | E-54 | 2026-09-19 | DA-7 Redact-analogue: Arabic NER token tagger (hashed char n-grams, CPU) + deterministic regex rules (Arabic-digit phones, IDs, dates, URLs/emails) mirroring their hybrid design; + en tokens as second row (MultiNERD en). bar: span/token F1 beats all-O baseline +0.05 |G3-settle mechanism A carried to mu3: r8 alpha16 dropout .05, targets [q,v,gate,up,down], 1000 steps, lr 5e-5, batch 32 (same corruption in-batch recipe hold_every 3), src = the E-42 remount stack: WIDENED trunk runs/mex/mu2_g4_init (640/16/2560), warm start from g4_init weights. Only LoRA deltas train; the settled trunk merge becomes canonical mu3-g-rung trunk runs/mex/mu3_g4/final.
 | E-55 | 2026-09-19 | DA-7b deterministic regex redaction layer (their hybrid-design second half): Arabic/Latin-digit runs, dates, phones, URLs/emails, IDs as token rules; measured against gold TIMEX/ANG/DUC test tokens; hybrid = regex override on matched tags. bar: numeric/temporal class token-P >= 0.5 and beats pure-model on that class subset |
-Pre-registered gates (of a settle, read against G3 anchors):
+| E-56 | 2026-09-19 | DA-8 Title recreate (CPU-feasible) : dual-encoder shared hashed-bag (65536->d48, same FNV family) with in-batch InfoNCE (tau 0.07, Muon 3e-2) over ar asas-ai/Arabic-article-summarization (text->summary, 6,702 pairs) and en huff (short_description->headline). Their Granite-350m generator is replaced by a ranker: bar = R@1 over 1+63 in-batch distractors >= 4x chance |Pre-registered gates (of a settle, read against G3 anchors):
 - (a) retention CE (clean val stream) <= 0.7431 (G3 settle guard; a 640-wide trunk settling should clear it easily if the room is real).
 - (b) fill acc at masked mark positions >= 0.6891 (G3 fill anchor).
 - (c) UPLOAD the mounts: after merge, re-mount widened bridges + head is NOT retuned: valid only if bridge KV comes from the settled trunk. Report composed readout + bridge-off trunk-only readout of the settled trunk and pre-register: composed mark-pos >= trunk-only mark-pos (the mounted stack must still add, the E-35 composition rule wins); if the settled trunk alone already exceeds E-39a 0.7984 by >5pts the mount comparison is inert (still recorded).
@@ -716,3 +716,15 @@ User request: bench the new dia2d composite vs the diacritizer-line references (
 Engine: mex composite (dia2d trunk + per-depth tower mounts + MarkHead composed rule) run raw on bare gate text at ctx 96 chunks; mark insertion only after Arabic base chars; limitations declared up front: the mu CharVocab mark set is exactly 0x064B..0x0652 (8 marks), so refs carrying any other combining mark (dagger alif 0x0670, small-quran marks 0x06D6.., superscript alef variants) can never be produced, and multi-mark sequences (shadda+voiced) are impossible with a single-token head. Non-base bytes passthrough copied; Latin/digits map to <unk> in the trunk but output text is rebuild from the original chars, so only the mark choice is affected.
 
 Verdict bar: mean 4-gate DER of the mini composite vs the rows below (gold 30M @2500: .3354/.4533/.5571/.4778 mean .4559; stage2final @8000: .4255/.5430/.5978/.5348; e23c_zm @2500: .3988/.5272/.6144/.5615; ZM BiLSTM @2500: .4577/.5809/.6290/.5655 mean .5583).
+
+**E-55 RESULT (closed) — honest cross-ladder loss: the dia2 mini composite is far behind the diacritizer-line models on the external gates.**
+
+| gate | dia2d mini DER (nocase) | gold stage2final @8000 | E-23a gold_v3q @2500 | e23c_zm (gold arch, ZM-distilled) @2500 | ZM BiLSTM @2500 |
+|---|---|---|---|---|---|
+| fadel_test | 0.8191 (0.7461) | 0.4255 | **0.3354** | 0.3988 | 0.4577 |
+| sadeed25 | 0.9373 (0.8639) | 0.5430 | **0.4533** | 0.5272 | 0.5809 |
+| wikinews2024 | 0.8251 (0.7677) | 0.5978 | **0.5571** | 0.6144 | 0.6290 |
+| wikinews2014 | 0.8500 (0.7821) | 0.5348 | **0.4778** | 0.5615 | 0.5655 |
+| mean DER | 0.858 | 0.525 | **0.456** | 0.525 | 0.558 |
+
+Verdict: **the mu composite does NOT beat the gold or ZM models externally** — mean 4-gate DER 0.858 vs gold 0.456 / ZM BiLSTM 0.558. text_preservation 1.0 everywhere (byte-exact passthrough intact) and predictions are fluent (scratch/e55_smoke_pred.txt), but per-word mark-exact matching collapses under three structural hubs, all declared pre-run: (i) the mu CharVocab mark set is exactly 0x064B..0x0652 — shadda+vowel compounds, dagger alif 0x0670 and small-Quran marks are UNPRODUCIBLE (hard DER ceiling); (ii) the trunk argline column imports fill-style mark bias on ungated external bare text; (iii) 96-char ctx vs the diacritizer line's SFT scale and longer windows. In-domain composed mark-pos 0.8134 is not externally transferable; no retunes within this rung.

@@ -1382,3 +1382,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
   all-O acc 0.8186 (honest FAIL on accuracy surface).
 - Files: langid/scripts/{build_ner,train_ner,eval_ner}.py; data/langid/ner/*; runs/langid_da7/*.
 - Pending: deterministic Arabic regex redaction layer (phones/IDs/IBAN/dates) + span BIO decoding = row 96.
+
+- E-55 CLOSED (read-only cross-ladder bench, adapter mex/scripts/bench_dia2.py): dia2 composite mean 4-gate DER 0.858 vs diacritizer gold 0.456 (E-23a) / stage2final 0.525 / e23c_zm 0.527 / ZM BiLSTM 0.558 - external benchmarks belong to the diacritizer line; 0.8134 mark-pos is in-domain-only. Hubs: 8-mark-set ceiling, ctx 96, fill-head bias on unseen bare text.
