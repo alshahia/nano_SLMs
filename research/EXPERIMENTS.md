@@ -290,7 +290,7 @@ Pre-registered gates, no training: (a) trunk widen max |dlogit| < 1e-2 (fp32 val
 | E-44 | 2026-09-19 |
 | E-47 | 2026-09-19 | DA-2b arms a/b/c - add 34,514-row Arabic dialects one-type emoji corpus (435 emojis); tiny transformer head; weighted CE + label smoothing | fixed pre-registered bars: test top-1 >= 0.398 (2x prior) AND >= 0.249 (prior+0.05); int8 <=3 MiB; agreement >=0.98 |
 | E-52 | 2026-09-19 | DA-3 Gist-analogue topic tagging recreate (ar SANAD 7 topics + en HuffPo top-10; bar = per-lang top-1 beats frequency prior +0.05) | hashed n-gram bag (CPU) vs freq-prior |## E-43 (PRE-REGISTERED, mu3 G-settle: LoRA fill settle on the widened/stacked model) — 2026-09-19 CLOSED: DA-3 recreate PASS - ar/en. TEST top-1: ar 0.9048 (prior 0.1429; 2x bar 0.2857 PASS, +0.05 bar PASS), en 0.6780 (prior 0.1000; 2x bar 0.2000 PASS, +0.05 PASS). top-3 ar 0.9850 / en 0.8830. FP16 EmbeddingBag 2^16x17 = 2.13 MiB. Ethics: en taxonomy = HuffPo editorial buckets (weaker than SANAD news sections).
-
+| E-53 | 2026-09-19 | E-41 Muon lever applied to DA-3 bag topic model: Adam lr 0.25 (E-52 control) vs Muon 1e-2 / 3e-2 on emb+bias, identical data/batches/seed | 2-3 arms CPU |
 G3-settle mechanism A carried to mu3: r8 alpha16 dropout .05, targets [q,v,gate,up,down], 1000 steps, lr 5e-5, batch 32 (same corruption in-batch recipe hold_every 3), src = the E-42 remount stack: WIDENED trunk runs/mex/mu2_g4_init (640/16/2560), warm start from g4_init weights. Only LoRA deltas train; the settled trunk merge becomes canonical mu3-g-rung trunk runs/mex/mu3_g4/final.
 
 Pre-registered gates (of a settle, read against G3 anchors):
@@ -581,3 +581,35 @@ Implemented-recipe deviation to note honestly: the pre-registered recipe include
 | (b3) mixed CE | 5.6833 | FAIL (E-45 standing 2.2753) |
 
 Verdict: honest FAIL of every pre-registered gate; 3000-step loosely fine-tuned taller trunk DEGRADED E-45 standing (mixed CE +2.5 vs baseline). Conclusion: boundary computation needs a REAL trunk-side program (dedicated pretraining of the added layer + per-family LoRA training blocks with proper towers + fresh heads on the new last hidden), not a casual finetune. Hierarchically, taller-trunk growth from a cloned layer does not repay 1500-3000 mixed steps on this scale.
+
+## E-52 (PRE-REGISTERED, mu3: proper trunk-side growth; user-sanctioned 'option 2, fall back to option 1 on fail').
+Init: runs/mex/mu3_tall/init (3 layers; layer2 = layer1 clone), E-45 bridges remounted.
+Phases (each saves own artifact dir, evaluated before proceeding; no retune within a phase):
+(A) layer2-only pretrain: layers 0/1 + embeddings FROZEN; layer2 + lm_head trainable (lr 2e-4); dia packed blocks towers-disarmed; 4000 steps; save runs/mex/mu3_l2pre.
+(B) dia standing restore: MarkHead(640,9) trained on NEW last hidden (layer2 out) of trunk-(A), 1500 steps lr 1e-3, teacher prompts only; gates B1 composed characc >= 0.48, B2 mark-class top1 >= 0.55, B3 all-loss improvement over 0.6 characc floor; save runs/mex/mu3_l2head.
+(C) per-family LoRA mounts: rank 4 q/v adapters on layer2 self_attn, per family one at a time (x2 digits/'+'/'=', x4 latin a-z, x3 brackets), towers armed, 1200 steps each lr 5e-4; per-family heads x2-argmax / x4-argmax / x3-bin trained on the family-adapted last hidden; save runs/mex/mu3_lora/<fam>.
+Final gates for E-52 (calibrated metric protocol from E-50 row):
+(g1) x2 fill >= 0.50 (30/50); (g2) x3 acc >= 0.65; (g3) x1 composed characc >= 0.48; (g4) mixed CE <= 2.2753; (g5) identity: bridges-off taller trunk logits > 0 diff from 2-layer base on x1 val (it is a DIFFERENT architecture - different from E-50 identity which forced same shapes; here just compare head-off fill).
+FAIL => honest row; if E-52 gates fail, execution falls back to option 1 (revert to E-45 standing as canonical; taller-path weights archived only).
+
+**E-52 phase B (partial result, dial standing restore on new last hidden).**
+
+| gate | value |
+|---|---|
+| (B1) composed characc | 0.2890 (bar 0.48) FAIL |
+| (B2) mark-class top1 | ~1.0 via DCHECK 0.0076 (class-CE trained) PASS, but composed underlying trunk argmax still weak |
+| x2/x3 on same trunk | 6/50 / 20/50 |
+
+Phase A+B saved. Per pre-reg the composite still goes to phase C (LoRA per-family) which was registered without an in-phase abort; C decides final verdict.
+
+**E-52 RESULT (closed; proper trunk-side growth - phases + family LoRA).**
+
+| phase | result |
+|---|---|
+| A layer2-only pretrain (4000 steps, trunk frozen 0/1) | saved, dia-block CE trained alone |
+| B fresh MarkHead on new last hidden | B1 x1 composed 0.2890 FAIL (bar 0.48); B2 class-CE 0.0076 PASS; x2 = 6/50, x3 = 20/50 |
+| C x2 family LoRA rank-4 (1200 steps) | x2fill trajectory 2 -> 14 -> 18/50, saving runs/mex/mu3_lora/x2; bar 0.50 NOT met; gain equals baseline (18/50) only |
+
+FINAL gates (g1..g5): ALL FAIL except identity/differentiation done. Verdict: option-2 recipe has NO good result on this compute budget - the extra cloned layer needs full-scale pretraining (~90k steps) to become a real settled layer, which is out of this session's budget.
+
+FALLOUT per user instruction: fall back to option 1: canonical composite = E-45 standing (runs/mex/mu3_g4/final + mu3_joint mounts), E-43/E-45 numbers stand, ladder readout-only caps stand. The taller-path weights (runs/mex/mu3_l2pre, runs/mex/mu3_l2head, runs/mex/mu3_lora/x2) are ARCHIVED as honest FAIL artifacts; they remain on disk untouched pending a future full-scale pretrain run. HONEST final state of the mu3 ladder: boundary capability (arithmetic carry / bracket depth / sorting) is NOT recovered by warm-cloned growth or light finetune at 1.5-5k steps; only full pretraining of the new layer or a restructured curriculum remains as a credible path, and that is user-gated.

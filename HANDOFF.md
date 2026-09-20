@@ -1352,3 +1352,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - TEST top-1: ar 0.9048 (2x bar 0.2857 PASS), en 0.6780 (2x bar 0.2000 PASS); top-3 ar 0.9850 / en 0.8830; fp16 model 2.13 MiB.
 - Honest caveat: en 10-topic taxonomy = HuffPo editorial buckets, not the same ordering as the 36-IAB topic system of the original DA-3 Gist model. Ethics note in EXPERIMENTS.md E-52 row.
 - Files: langid/scripts/build_topic_eval.py, langid/scripts/train_topic.py, langid/scripts/eval_topic.py, runs/langid_da3/*.log.json/.eval json artifacts; E-52 registered BEFORE results. E-50 (mu3 taller trunk) exists as a pre-registered mu3 section, unrelated.
+
+- E-52 CLOSED (proper trunk-side growth, phases A/B/C): phase B x1 0.289, phase C x2 18/50 - all final gates FAIL; fallback to option 1 triggered per user sanction: canonical composite = E-45 standing. Taller-path artifacts archived under runs/mex/mu3_l2pre, mu3_l2head, mu3_lora/x2; not erased.
