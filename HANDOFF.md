@@ -1356,3 +1356,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-52 CLOSED (proper trunk-side growth, phases A/B/C): phase B x1 0.289, phase C x2 18/50 - all final gates FAIL; fallback to option 1 triggered per user sanction: canonical composite = E-45 standing. Taller-path artifacts archived under runs/mex/mu3_l2pre, mu3_l2head, mu3_lora/x2; not erased.
 
 - E-53 DONE (option-1 consolidation, read-only): capability card written to runs/mex/mu3_joint/capability_card.md — canonical E-45/E-46/E-47 standing summarized with measured capability/cap tables and ladder provenance; no weights touched. mu3 standing is now the documented milestone snapshot; next growth (full pretrain of an added layer, ~90k steps) explicitly left user-gated.
+
+- dia2 E-54a CLOSED PASS (zero-loss widen 640->1280 + full mount remount; pedantic identity within fp noise). E-54b CLOSED: Muon arm FAIL m1 (0.7941 < AdamW 0.7987), AdamW arm is the NEW dia composed standing (markpos 0.7987 / all 0.6504 / CE 2.2798). Canonical dia2 = runs/mex/dia2b_adamw/final + runs/mex/dia2_wide mounts. Muon rejected for this configuration. E-54c (shared-KV long-ctx) and E-54d (replay-scale) DEFERRED user-gated.

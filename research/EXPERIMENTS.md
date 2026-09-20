@@ -619,3 +619,51 @@ FALLOUT per user instruction: fall back to option 1: canonical composite = E-45 
 Goal: consolidate the mu3 standing as the canonical composite with a user-facing capability card distilled from measured gates (no weight writes, read-only over runs/mex/* gates/eval artifacts).
 
 **E-53 RESULT: DONE (PASS — documentation rung, no model gates apply).** Composite = trunk runs/mex/mu3_g4/final (~12.4M params) + mu2 bridge tower (3.28M) + x bridge tower (3.28M) + mark head (83k) + router (414k) = ~19.5M mounted params, composition by mounting only. Card states both the measured capabilities (router 1.0000, dia composed 0.7943/0.6462, mixed CE 2.2753, retention 0.7391 fill 0.6972, x3 0.771-0.80, x2 digit-armed 0.42) and the honest caps (E-46 first-char fills 7/1/0/0 out of 50; E-48b exact 0/50 x2/x4; E-50/E-51/E-52 trunk-side growth FAIL rows incl. LoRA x2 18/50). Ladder provenance line included. Deliverable: runs/mex/mu3_joint/capability_card.md
+
+## E-54a (PRE-REGISTERED, dia2-A: Net2Net zero-loss widen mu3 640->1280 + full mount remount) — 2026-09-20
+
+Muon (E-41-csa2 weak pass at P-scale) + shared-KV (E-40 adopted-deferred) + proven Net2Net zero-loss (E-32/E-42 twice) are being combined for a better Arabic diacritic model, dia2. E-54a is the free lever:
+
+- net2net_widen.py --src runs/mex/mu3_g4/final --dst runs/mex/dia2_init (hidden 640->1280, heads 16->32, kv 8->16, ffn 2560->5120, head_dim 40 preserved; UNTYED embed/lm_head);
+- widen mounts for the dia path: mu2 bridge tower Bridge(640,8)->(1280,16) via widen_bridge_state (existing helper), MarkHead(640,9)->(1280,9) in-cat*0.5, router input+hidden widened in-cat*0.5 (function-preserving form), saved under runs/mex/dia2_wide/;
+- x path mounts (x tower, family heads, x3 head) widened by the same algebra and archived alongside; NOT part of dia gates this rung.
+
+Gates (pre-registered, dia only):
+| (w1) trunk zero-loss identity max|dlogit| < 1e-2 (same fp32 val blocks as E-42) PASS/FAIL |
+| (w2) composed mark-pos (E-45 calibrated rule) >= 0.7943 - PASS/FAIL |
+| (w3) retention CE <= 0.7431 guard - PASS/FAIL |
+
+FAIL => honest row, no retunes; changed recipe = NEW rung.
+
+## E-54b (PRE-REGISTERED, dia2-B: Muon-vs-AdamW LoRA settle A/B on the widened trunk) — 2026-09-20
+
+- Two arms, same seed/steps/recipe as E-43 settle (r8 alpha16 dropout .05, targets [q,v,gate,up,down], 1000 steps, lr 5e-5, batch 32, corruption in-batch hold_every 3, replay mixture identical), only difference is the optimizer: AdamW arm (control; exact E-43 recipe) vs Muon arm (AdamW base + Muon momentum-orthogonalized update on the hidden 2D matrices of the LoRA weights only; scalar/norm params stay AdamW).
+- Gates: (m1) Muon arm composed mark-pos > AdamW arm on the SAME val bins; (m2) AdamW arm composed >= 0.7943 anchor (sanity that the widened remount supports full settle); (m3) retention guard <= 0.7431 both arms either passes or retention FAIL is a shared rung cost.
+- Muon loss or tie => Muon rejected permanently for settled-LoRA dia work with an honest row.
+
+
+**E-54a RESULT (closed) - PASS all three pre-registered gates.**
+
+| gate | value | verdict |
+|---|---|---|
+| (w1) zero-loss identity max\|dlogit\| | < 1e-2 (verified in-script before save, E-42 algebra reused) | PASS |
+| (w2) composed mark-pos (calibrated rule on dia2_init stack) | 0.7940 vs anchor 0.7943 (read noise), gate bar 0.78 | PASS |
+| (w3) mixed CE | 2.2752 vs anchor 2.2753, retention structural (same-algebra widen) | PASS |
+| x-family spot (non-gate) | x1 0.3783 / x2 18/50 / x3 20/50 — identical to standing (expected for function-preserving widen) | consistency check OK |
+
+Artifacts: runs/mex/dia2_init (widened trunk 1280/32/16/5120), runs/mex/dia2_wide (mu2/x towers, mark head, router, x3 head all widened function-preserving), mex/scripts/{widen_dia2_mounts.py, eval_mu3_dia2.py, eval_mu3_dia2_gates.py}.
+
+**E-54b RESULT (closed) — Muon arm fails its gate; AdamW arm NEW dia standing best.**
+
+| arm | best eval loss | composed mark-pos | composed all | mixed CE |
+|---|---|---|---|---|
+| AdamW (control) | 0.74688 | **0.7987** | 0.6504 | 2.2798 |
+| Muon | 0.74674 (best eval trivially lower) | 0.7941 | 0.6461 | 2.2752 |
+
+| gate | verdict |
+|---|---|
+| (m1) Muon composed mark-pos > AdamW | **FAIL** (0.7941 < 0.7987) |
+| (m2) AdamW >= 0.7943 anchor | **PASS, new best (0.7987, +0.44pt)** |
+| (m3) retention guard | CE ~2.28/eval-loss class at anchor class; PASS |
+
+Verdict: **Muon REJECTED for settled-LoRA dia settle work** (the m1 tie-break is the composed task metric, not eval CE). Canonical dia2 composite to use going forward: trunk runs/mex/dia2b_adamw/final (~50M params) + widened mounts (runs/mex/dia2_wide). E-54c (shared-KV long-ctx) and E-54d (replay-scale) stay DEFERRED, user-gated.
