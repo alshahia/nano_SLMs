@@ -471,3 +471,9 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 - **mu2 lesson (E-34->E-35, 2026-09-19):** when composing a specialist head over a general trunk, NEVER restrict the trunk's fallback branch to a subset of the vocab - that branch blinding by construction produces errors the unrestricted trunk (weights identical) would not, and the composed metric then measures the rule, not the model. Correct pattern: specialist decides first over its own classes; general arm keeps its FULL output space. Also record per-position breakdowns (mark/non-mark/none) before claiming composition effects.
 
 - DA-3 (2026-09-19): arbml/SANAD parquet is the best ungated Arabic topic-corpus (131,807 usable rows, 7 clean sections; Arabic text = column ATICLE); heegyu/news-category-balanced-top10 train_sampled.json is JSONL not JSON. HuffPo editorial buckets are weaker Chinese-taxonomy than news-section sources - keep if founding a DA-3b around 36-IAB taxonomy close to the original Gist. EXPERIMENTS.md row ids mu3 sections E-48a/b and E-50/51 already occupied - next free DA row id was E-52.
+
+- DA-7 (2026-09-19): iahlt/arabic_ner_mafat is ungated 40k-sentence Arabic NER (tokens+BILUO parquet);
+  asas-ai/ANERCorp is the classic 9-tag corpus with pre-flattened tokens (no sentence ids in parquet).
+  On an 87%-O token corpus, plain CE on Muon learns nothing entity-side (ent-acc 0.085 in 3ep);
+  mean-normalized inverse-sqrt weighted CE (clip 0.5) fixes it (0.388 in 6ep) - inverse of DA-2b where
+  weighting hurt: weight CE only when O is >2/3 of the data.

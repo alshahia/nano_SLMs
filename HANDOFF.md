@@ -1372,3 +1372,13 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-54c CLOSED (honest negative): ctx 192 LoRA-adapted model taught window use (0.7920 long vs 0.6000 unadapted control) but dia composed does NOT gain over the 96-ctx standing (0.7987); shared teacher-KV variant destroys tower readout (0.5419) - per-depth teacher KV kept. Canonical stays dia2b_adamw/final ctx 96. E-54d (replay-scale) remains.
 
 - E-54d CLOSED PASS: replay-scale 4000-step settle on dia2b trunk lifts dia composed mark-pos 0.7987 -> 0.8134 (all 0.6672) - NEW canonical dia2 = runs/mex/dia2d_scale/final + dia2_wide mounts, ctx 96. dia2 program complete (a PASS, b Muon-rejected/AdamW-best-then-d-superseded, c negative, d PASS); further budget escalation user-gated.
+
+
+## E-54 (2026-09-19): DA-7 Redact-analogue Arabic NER tagger - PASS on extraction bar, honest caveats
+- Data: iahlt/arabic_ner_mafat (40k sentences -> 39,356 kept, BILUO->BIO, 27 tags incl. TTL/ANG/DUC/WOA;
+  splits 35,420/1,968/1,968); ANERCorp (asas-ai) also downloaded as alt candidate.
+- Model: per-token hashed (prev cur next) EmbeddingBag 2^16, Muon 3e-2 (E-53 default), weighted invSqrt CE + clip 0.5, 6 CPU epochs.
+- TEST: entity-token acc 0.3983, macro-F1 0.3297 (extraction bar vs all-O F1=0: PASS), token acc 0.8081 vs
+  all-O acc 0.8186 (honest FAIL on accuracy surface).
+- Files: langid/scripts/{build_ner,train_ner,eval_ner}.py; data/langid/ner/*; runs/langid_da7/*.
+- Pending: deterministic Arabic regex redaction layer (phones/IDs/IBAN/dates) + span BIO decoding = row 96.
