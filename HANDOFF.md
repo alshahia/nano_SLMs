@@ -1354,3 +1354,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - Files: langid/scripts/build_topic_eval.py, langid/scripts/train_topic.py, langid/scripts/eval_topic.py, runs/langid_da3/*.log.json/.eval json artifacts; E-52 registered BEFORE results. E-50 (mu3 taller trunk) exists as a pre-registered mu3 section, unrelated.
 
 - E-52 CLOSED (proper trunk-side growth, phases A/B/C): phase B x1 0.289, phase C x2 18/50 - all final gates FAIL; fallback to option 1 triggered per user sanction: canonical composite = E-45 standing. Taller-path artifacts archived under runs/mex/mu3_l2pre, mu3_l2head, mu3_lora/x2; not erased.
+
+- E-53 DONE (option-1 consolidation, read-only): capability card written to runs/mex/mu3_joint/capability_card.md — canonical E-45/E-46/E-47 standing summarized with measured capability/cap tables and ladder provenance; no weights touched. mu3 standing is now the documented milestone snapshot; next growth (full pretrain of an added layer, ~90k steps) explicitly left user-gated.
