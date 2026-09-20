@@ -83,6 +83,7 @@ def main():
     ap.add_argument("--lr_muon", type=float, default=3e-2)
     ap.add_argument("--lr", type=float, default=1e-3)
     ap.add_argument("--out", default="")
+    ap.add_argument('--patience', type=int, default=4, help='stop after N val drops below best')
     args = ap.parse_args()
     torch.manual_seed(0)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -98,6 +99,7 @@ def main():
     if torch.cuda.is_available():
         torch.cuda.reset_peak_memory_stats()
     best = -1.0
+    drops = 0
     t0 = time.time()
     log = []
     for ep in range(args.epochs):
@@ -124,6 +126,14 @@ def main():
         peak = torch.cuda.max_memory_allocated() // (1 << 20) if torch.cuda.is_available() else 0
         print("ep", ep, "loss", round(tot / max(nb, 1), 4), "val_r1", round(r1, 4),
               "peakMB", peak, flush=True)
+        if r1 > best:
+            drops = 0
+        else:
+            drops += 1
+            if drops >= args.patience:
+                print("EARLY_STOP after", ep, "epochs (val_r1 flat/declining)", flush=True)
+                log[-1]["early_stop"] = True
+                break
         if r1 > best:
             best = r1
             sd = {k: v.detach().half().cpu() for k, v in model.state_dict().items()}

@@ -1,3 +1,4 @@
+# 2026-09-20 (agent-OS session, DOCS ONLY — NO CODE, NO GPU): CLAUDE.md gained §19 Tool-use economy (batch-all-calls-per-turn; background jobs fire-and-notify, never polled; ≤5-turn default) and §20 Hardware utilisation protocol (user-approved: scavenge leftover GPU compute from FOREIGN non-training incumbents only — 60%-of-free-VRAM cap shrinking to 40% after OOM, hard allocator ceiling / no shared-memory spill per the 2026-09-14 WDDM incident, re-check before launch; repo train.py/sft.py runs keep the single-GPU rule; CPU fallback only if a probe shows ~a couple dozen minutes, let it finish, GPU free goes to the NEXT task). §10 carries the matching carve-out; AGENTS §4 remains in force. First sanctioned co-run = TASKS row 98 (pending); MEMORY lesson 74 records it as UNPROVEN until evidenced. No configs/scripts touched.
 # μ1 (E-27..E-29) composition bake-off CLOSED 2026-09-19 — A soup/TIES FAIL (basin divergence, honest); C router PASS routing 1.00, team +0.04 vs control (marginal); D 12K-step distill FAIL to beat control (mixed 0.50 vs 0.64); arm B (MoE-merge) remains USER-GATED. Row-first discipline held (82aab6f pre-reg before results). Head: see research/micro_experts/MU1_REPORT.md.
 # HANDOFF — nano_SLMs agent-to-agent continuation guide
 
@@ -1399,3 +1400,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - Files: langid/scripts/{build_title,train_rank,eval_rank}.py (v2); data/langid/title/*; runs/langid_da8/*.
 
 - E-56 CLOSED as FAIL (honest): dia2e_v3q = dia2d trunk + gold v3q corpus, same 4000-step settle. Means: mark-acc 0.496 (up from .472, gate .65), lift .040 (gate .20), in-domain markpos REGRESSED to .5779 (CE 5.77). Conclusion: gold's edge is data+interface+ctx jointly; data swap alone insufficient at mini scale. Artifacts runs/mex/dia2e_v3q + e55_bench/dia2e_*.
+
+- EN EXT (2026-09-20): 12 epochs, patience-4 early stop (unused - val kept improving); test R@1 0.3211 / R@10 0.6786; peak VRAM 112 MB flat; no overfit (val/tracked in .log.json).

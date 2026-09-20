@@ -793,3 +793,7 @@ dia2e_v3q (dia2d trunk + gold v3q corpus, same 4000-step LoRA settle; merged and
 | in-domain mixed CE | 2.3829 | 5.7742 | - | |
 
 Verdict: +8% relative mark accuracy from the corpus swap, lift still ~0.04, and the mu-domain retention collapsed (mixed CE 2.38 -> 5.77) because this rung trained only on classical prose with no g1 replay. Conclusion (honest): gold's advantage is the JOINT product of data + 15-label interface + larger ctx/compute + dedicated diacritizer protocol, not data alone; at mini scale with a fill interface and no replay, data parity is insufficient. No retunes inside the rung. Candidate future rungs (each user-gated, one factor each): (a) g1+v3q mixed replay settle (fix g3 while keeping the transfer gain); (b) 15-label head remount (clears the compound ceiling); (c) ctx-192/384 trunk - matches gold's context rather than improving this head.
+
+**E-57 (pre-registered, user-approved: all family options worth trying, start with most expected gain): REPLAY settle - same single-factor test as E-56 but train data = 50/50 mix of g1 (mu home corpus) and v3q (gold classical) shards via hardlinks in data/mex/mu2/v3qx (g_* and v_* prefixes; PackedDataset sorts and concatenates, Trainer shuffles). Base dia2d_scale/final, identical 4000-step recipe = only the data mix changed. Output runs/mex/dia2f_replay.**
+
+Gates: (g1) mean external mark_accuracy >= 0.65; (g2) contrastive_lift >= 0.20; (g3) in-domain mark-pos >= 0.78 AND mixed CE <= 2.5 (retention must not regress). Full E-55c profile recorded. FAIL = honest row.
