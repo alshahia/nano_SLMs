@@ -1358,3 +1358,13 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-53 DONE (option-1 consolidation, read-only): capability card written to runs/mex/mu3_joint/capability_card.md — canonical E-45/E-46/E-47 standing summarized with measured capability/cap tables and ladder provenance; no weights touched. mu3 standing is now the documented milestone snapshot; next growth (full pretrain of an added layer, ~90k steps) explicitly left user-gated.
 
 - dia2 E-54a CLOSED PASS (zero-loss widen 640->1280 + full mount remount; pedantic identity within fp noise). E-54b CLOSED: Muon arm FAIL m1 (0.7941 < AdamW 0.7987), AdamW arm is the NEW dia composed standing (markpos 0.7987 / all 0.6504 / CE 2.2798). Canonical dia2 = runs/mex/dia2b_adamw/final + runs/mex/dia2_wide mounts. Muon rejected for this configuration. E-54c (shared-KV long-ctx) and E-54d (replay-scale) DEFERRED user-gated.
+
+
+## E-53 (2026-09-19): Muon-on-DA-3 optimizer A/B - PASS
+- Question: does the E-41 Muon recipe (NS5 orthogonalized momentum) transfer from trunk pretraining
+  to the DA-3 sparse-lookup bag classifier? Arms: Adam lr 0.25 (E-52 control), Muon 1e-2, Muon 3e-2,
+  identical data/batches/seed, 10 CPU epochs; 1-D params (bias) get plain SGDM inside the Muon optimizer.
+- Result (test top-1): Muon 3e-2 ar 0.9268 / en 0.7300 (best); Muon 1e-2 ar 0.9338 / en 0.6965;
+  Adam control ar 0.9048 / en 0.6780. Both Muon arms clear every pre-registered bar; 3e-2 wins en by +5.2pp.
+- Verdict: Muon is the new default optimizer for DA-line hashed-bag/classifier heads (E-41 scale-out confirmed).
+- Files: langid/scripts/train_topic.py got --opt muon; runs/langid_da3/topic_bag_muon*.pt; research/EXPERIMENTS.md E-53 row closed; TASKS.md row 94.

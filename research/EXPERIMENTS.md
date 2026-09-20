@@ -667,3 +667,15 @@ Artifacts: runs/mex/dia2_init (widened trunk 1280/32/16/5120), runs/mex/dia2_wid
 | (m3) retention guard | CE ~2.28/eval-loss class at anchor class; PASS |
 
 Verdict: **Muon REJECTED for settled-LoRA dia settle work** (the m1 tie-break is the composed task metric, not eval CE). Canonical dia2 composite to use going forward: trunk runs/mex/dia2b_adamw/final (~50M params) + widened mounts (runs/mex/dia2_wide). E-54c (shared-KV long-ctx) and E-54d (replay-scale) stay DEFERRED, user-gated.
+
+## E-54c (PRE-REGISTERED, dia2-C: context extension 96->192 with LoRA adaptation; shared-KV teacher variant as sub-probe) — 2026-09-20
+
+Motivation: KV at 2 layers is small, so (honest correction to the earlier framing) shared-KV is not needed for VRAM at this depth; the dose of E-40s finding is taken as the bridge-teacher-KV sharing variant, and the rung's real question is whether longer windows improve dia composition.
+
+- Trunk: runs/mex/dia2b_adamw/final (dia standing 1280-wide). Dataset: same shards packed at seq_len 192 (flat shard format verified: len 198086 blocks). corruption in-batch identical; hold_every 3; LoRA r8 alpha16 dropout .05 targets [q,v,gate,up,down]; AdamW (Muon rejected); lr 5e-5; 1500 steps batch 32; seed 42.
+- Shared-KV sub-probe (same trainer variant): the towers-armed read at eval uses ONE shared teacher KV (hs[-1]) for both bridge depths instead of per-depth hs[i+1]; compare composed mark-pos on the same long-window val.
+
+Pre-registered gates (long-window val = 192-blocks of the g1 val shards, composed mark rule):
+| (c1) long-ctx composed mark-pos >= 0.7987 (the E-54b short-ctx standing) - if FAIL, ctx extension has no dia benefit at this scale = honest negative row |
+| (c2) short-ctx composed on the SAME settled model >= 0.78 guard (long adaptation must not sink the narrow-window standing) |
+| (c3) shared-KV bridge readout composed mark-pos within -2pt of per-depth on the same long val | PASS => adopt shared teacher KV as the default eval/decode mount mode |
