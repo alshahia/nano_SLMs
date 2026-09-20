@@ -1397,3 +1397,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - TEST: ar R@1 0.5826 / R@10 0.8929; en R@1 0.2160 / R@10 0.5742 (5 epochs, still climbing). Both PASS the bar.
 - GPU notes (user policy now active): use GPU when free; one process at a time; VRAM peak 112 MB; v1 kept the   whole corpus as feature tensors in RAM (plus 2 concurrent procs) and made total RAM/VRAM exhausted and even read docs of shared-memory spill -  v2 encodes per batch and saves fp16-CPU checkpoints.
 - Files: langid/scripts/{build_title,train_rank,eval_rank}.py (v2); data/langid/title/*; runs/langid_da8/*.
+
+- E-56 CLOSED as FAIL (honest): dia2e_v3q = dia2d trunk + gold v3q corpus, same 4000-step settle. Means: mark-acc 0.496 (up from .472, gate .65), lift .040 (gate .20), in-domain markpos REGRESSED to .5779 (CE 5.77). Conclusion: gold's edge is data+interface+ctx jointly; data swap alone insufficient at mini scale. Artifacts runs/mex/dia2e_v3q + e55_bench/dia2e_*.

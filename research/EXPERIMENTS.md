@@ -777,3 +777,19 @@ Protocol (fixed before training):
 - Train: same LoRA settle recipe as dia2d_scale (r8 a16, lr 5e-5, batch 32, 4000 steps, fp16, hold_every 3, mask '|'), base = dia2d_scale/final. No other recipe change (single-factor comparison). Output: runs/mex/dia2e_v3q.
 - Pre-registered gates (full E-55c profile, identical regenerated refs): (g1) mean mark_accuracy over 4 external gates >= 0.65 (dia2d 0.472, gold 0.826); (g2) mean contrastive_lift >= 0.20 (dia2d 0.035); (g3) in-domain composed mark-pos accuracy stays >= 0.78 (was 0.8134). DER recorded but not gated (label-space ceiling unchanged this rung).
 - FAIL = honest row, no retunes inside this rung; changes = new rung.
+
+**E-56 RESULT: FAIL (honest) - data swap alone does not close the external gap, and it regresses in-domain.**
+
+dia2e_v3q (dia2d trunk + gold v3q corpus, same 4000-step LoRA settle; merged and re-benched on identical refs with the full E-55c profile; first bench run accidentally used the old trunk, caught by byte-identical counts, re-run with DIA2_TRUNK=dia2e/final):
+
+| metric (mean over 4 gates) | dia2d | dia2e (v3q data) | gold | gate |
+|---|---|---|---|---|
+| mark accuracy | 0.472 | 0.496 | 0.826 | g1 >= 0.65 FAIL |
+| mark F1 | 0.487 | 0.511 | 0.822 | |
+| word_partial50 | 0.470 | 0.544 | 0.958 | |
+| contrastive_lift | 0.035 | 0.040 | 0.437 | g2 >= 0.20 FAIL |
+| der_collapse (1-) | 0.858 | 0.853 | 0.456 | |
+| in-domain mark-pos | 0.8134 | 0.5779 | - | g3 >= 0.78 FAIL (regression) |
+| in-domain mixed CE | 2.3829 | 5.7742 | - | |
+
+Verdict: +8% relative mark accuracy from the corpus swap, lift still ~0.04, and the mu-domain retention collapsed (mixed CE 2.38 -> 5.77) because this rung trained only on classical prose with no g1 replay. Conclusion (honest): gold's advantage is the JOINT product of data + 15-label interface + larger ctx/compute + dedicated diacritizer protocol, not data alone; at mini scale with a fill interface and no replay, data parity is insufficient. No retunes inside the rung. Candidate future rungs (each user-gated, one factor each): (a) g1+v3q mixed replay settle (fix g3 while keeping the transfer gain); (b) 15-label head remount (clears the compound ceiling); (c) ctx-192/384 trunk - matches gold's context rather than improving this head.
