@@ -291,7 +291,7 @@ Pre-registered gates, no training: (a) trunk widen max |dlogit| < 1e-2 (fp32 val
 | E-47 | 2026-09-19 | DA-2b arms a/b/c - add 34,514-row Arabic dialects one-type emoji corpus (435 emojis); tiny transformer head; weighted CE + label smoothing | fixed pre-registered bars: test top-1 >= 0.398 (2x prior) AND >= 0.249 (prior+0.05); int8 <=3 MiB; agreement >=0.98 |
 | E-52 | 2026-09-19 | DA-3 Gist-analogue topic tagging recreate (ar SANAD 7 topics + en HuffPo top-10; bar = per-lang top-1 beats frequency prior +0.05) | hashed n-gram bag (CPU) vs freq-prior |## E-43 (PRE-REGISTERED, mu3 G-settle: LoRA fill settle on the widened/stacked model) — 2026-09-19 CLOSED: DA-3 recreate PASS - ar/en. TEST top-1: ar 0.9048 (prior 0.1429; 2x bar 0.2857 PASS, +0.05 bar PASS), en 0.6780 (prior 0.1000; 2x bar 0.2000 PASS, +0.05 PASS). top-3 ar 0.9850 / en 0.8830. FP16 EmbeddingBag 2^16x17 = 2.13 MiB. Ethics: en taxonomy = HuffPo editorial buckets (weaker than SANAD news sections).
 | E-53 | 2026-09-19 | E-41 Muon lever applied to DA-3 bag topic model: Adam lr 0.25 (E-52 control) vs Muon 1e-2 / 3e-2 on emb+bias, identical data/batches/seed | 2-3 arms CPU |
-G3-settle mechanism A carried to mu3: r8 alpha16 dropout .05, targets [q,v,gate,up,down], 1000 steps, lr 5e-5, batch 32 (same corruption in-batch recipe hold_every 3), src = the E-42 remount stack: WIDENED trunk runs/mex/mu2_g4_init (640/16/2560), warm start from g4_init weights. Only LoRA deltas train; the settled trunk merge becomes canonical mu3-g-rung trunk runs/mex/mu3_g4/final.
+| E-54 | 2026-09-19 | DA-7 Redact-analogue: Arabic NER token tagger (hashed char n-grams, CPU) + deterministic regex rules (Arabic-digit phones, IDs, dates, URLs/emails) mirroring their hybrid design; + en tokens as second row (MultiNERD en). bar: span/token F1 beats all-O baseline +0.05 |G3-settle mechanism A carried to mu3: r8 alpha16 dropout .05, targets [q,v,gate,up,down], 1000 steps, lr 5e-5, batch 32 (same corruption in-batch recipe hold_every 3), src = the E-42 remount stack: WIDENED trunk runs/mex/mu2_g4_init (640/16/2560), warm start from g4_init weights. Only LoRA deltas train; the settled trunk merge becomes canonical mu3-g-rung trunk runs/mex/mu3_g4/final.
 
 Pre-registered gates (of a settle, read against G3 anchors):
 - (a) retention CE (clean val stream) <= 0.7431 (G3 settle guard; a 640-wide trunk settling should clear it easily if the room is real).
@@ -679,3 +679,14 @@ Pre-registered gates (long-window val = 192-blocks of the g1 val shards, compose
 | (c1) long-ctx composed mark-pos >= 0.7987 (the E-54b short-ctx standing) - if FAIL, ctx extension has no dia benefit at this scale = honest negative row |
 | (c2) short-ctx composed on the SAME settled model >= 0.78 guard (long adaptation must not sink the narrow-window standing) |
 | (c3) shared-KV bridge readout composed mark-pos within -2pt of per-depth on the same long val | PASS => adopt shared teacher KV as the default eval/decode mount mode |
+
+**E-54c RESULT (closed) — honest negative: context extension is NOT a dia lever at this scale; shared teacher-KV rejected for tower readout.**
+
+| probe | value | verdict |
+|---|---|---|
+| (c1) long-ctx composed mark-pos (192 windows, ctx-192-adapted model) | 0.7920 vs standing 0.7987; mixed CE 2.5265 | **FAIL** — longer windows do not improve the composed fill at 2 layers/1280 |
+| (c2) same model re-read at 96 windows | 0.7947 / 0.6460 (guard 0.78) | PASS (guard holds, -0.4pt vs anchor) |
+| (c3) shared teacher-KV (hs[-1] for all towers) at 192 | composed 0.5419 (per-depth 0.7920 on same val) | **FAIL — rejected**: per-depth teacher KV is consequence-critical for tower arming; E-40's loss-neutral language applies to the trunk LM, not the mount readout |
+| control: standing dia2b_adamw model read at 192 without adaptation | 0.6000 / 0.4751 | confirms the ctx-192 LoRA DID teach window use (0.7920 vs 0.6000) — capability transferred, composition just does not gain from it |
+
+Verdict: canonical dua2 composite stays **runs/mex/dia2b_adamw/final + runs/mex/dia2_wide mounts at ctx 96** (markpos 0.7987). ctx-192 model archived under runs/mex/dia2c_ctx192. E-54d (replay-scale steps) is the remaining registered dia2 rung.

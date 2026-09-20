@@ -1368,3 +1368,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
   Adam control ar 0.9048 / en 0.6780. Both Muon arms clear every pre-registered bar; 3e-2 wins en by +5.2pp.
 - Verdict: Muon is the new default optimizer for DA-line hashed-bag/classifier heads (E-41 scale-out confirmed).
 - Files: langid/scripts/train_topic.py got --opt muon; runs/langid_da3/topic_bag_muon*.pt; research/EXPERIMENTS.md E-53 row closed; TASKS.md row 94.
+
+- E-54c CLOSED (honest negative): ctx 192 LoRA-adapted model taught window use (0.7920 long vs 0.6000 unadapted control) but dia composed does NOT gain over the 96-ctx standing (0.7987); shared teacher-KV variant destroys tower readout (0.5419) - per-depth teacher KV kept. Canonical stays dia2b_adamw/final ctx 96. E-54d (replay-scale) remains.
