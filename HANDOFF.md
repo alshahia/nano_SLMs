@@ -1342,3 +1342,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-48b CLOSED: multi-step expert decode exact 0.00 both families (per-position CE ~2.0 = near chance) - honest FAIL; boundary computation absent from frozen-trunk state; next user-gated rung should be trunk-side (taller trunk / x-stream trunk finetune), not another readout.
 
 - E-49 CLOSED (read-only demo): runs/mex/mu3_router/demo.md - live composite decode per family; x3 live-correct; ladder pointer = next rung is trunk-side growth.
+
+- E-50/E-51 CLOSED (trunk-side: taller trunk + x-stream finetune): both honest FAILs on boundary gates; mixed CE 1.8757 (E-50) / 5.6833 (E-51); boundary fill did NOT move beyond readout-only caps; standing pointer: next rung to be user-gated (dialogue recorded in research/EXPERIMENTS.md).

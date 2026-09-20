@@ -289,7 +289,7 @@ Pre-registered gates, no training: (a) trunk widen max |dlogit| < 1e-2 (fp32 val
 | E-44 | 2026-09-19 | DA-2 Emo-analogue emoji suggestion recreate (ar+en, self-labeled tweets; bar = frequency-prior beats) | EmbeddingBag 65536x76 CPU train, top-1/top-3 vs prior | full 0.9877 / 5w 0.9510 / 3w 0.9072 / 1w 0.6921 on official FLORES-200 dev+devtest (42189 rows); arabic-script 3-word mean 0.778; majority 0.0476; artifact 0.82 MiB at 0.033 ms/word numpy; int8 0.9875 vs fp32 0.9880 (delta 0.05pp) | G1/G2-full/G2-5w/G2-3w/G4/G5 PASS; G2-1w FAIL by 0.008 (0.692 vs 0.70); G3 FAIL (ps: only 66 Tatoeba train rows); G6 PASS (0 shingle overlap, 225979x567463 sets); G4 int8-vs-fp32 delta 0.05pp PASS | hashed char-ngram EmbeddingBag + int8 export is cheap and strong at sentence level; k-word windows + margin ties = portable benchmark; ps needs a real corpus (data limitation, not architecture) | research/desert_ant_recreation/DA1_REPORT.md; runs/langid_da1_e3/eval_report.json |
 | E-44 | 2026-09-19 |
 | E-47 | 2026-09-19 | DA-2b arms a/b/c - add 34,514-row Arabic dialects one-type emoji corpus (435 emojis); tiny transformer head; weighted CE + label smoothing | fixed pre-registered bars: test top-1 >= 0.398 (2x prior) AND >= 0.249 (prior+0.05); int8 <=3 MiB; agreement >=0.98 |
-## E-43 (PRE-REGISTERED, mu3 G-settle: LoRA fill settle on the widened/stacked model) — 2026-09-19
+| E-48 | 2026-09-19 | DA-3 Gist-analogue topic tagging recreate (ar SANAD 7 topics + en HuffPo top-10; bar = per-lang top-1 beats frequency prior +0.05) | hashed n-gram bag (CPU) vs freq-prior |## E-43 (PRE-REGISTERED, mu3 G-settle: LoRA fill settle on the widened/stacked model) — 2026-09-19
 
 G3-settle mechanism A carried to mu3: r8 alpha16 dropout .05, targets [q,v,gate,up,down], 1000 steps, lr 5e-5, batch 32 (same corruption in-batch recipe hold_every 3), src = the E-42 remount stack: WIDENED trunk runs/mex/mu2_g4_init (640/16/2560), warm start from g4_init weights. Only LoRA deltas train; the settled trunk merge becomes canonical mu3-g-rung trunk runs/mex/mu3_g4/final.
 
@@ -533,3 +533,51 @@ DONE criterion: user-facing demo file.
 | (b) demo file | runs/mex/mu3_router/demo.md - 5 live rows, one per family | DONE |
 
 User-facing capability picture: router routes every prompt correctly; x3 is live-correct ('bad'); x1/x2/x4/dia autoregressive fill is below generation grade on the frozen trunk (consistent with E-48a/b honest FAIL rows).
+
+## E-50 (PRE-REGISTERED, mu3: taller trunk — 3 layers, warm-init by layer duplication, bridged co-train; user-gated 'option a then b') — 2026-09-19
+
+Motivation: E-48a/b PROVED the boundary computation is absent from the frozen 2-layer trunk's state. The honest repair is trunk-side: grow to 3 layers (640/16/8/ffn2560/head_dim 40 identical), warm-init layer2 = clone of layer1 (both same dims), then co-train trunk (small LR) + REMOUNTED E-45 bridges (positions unchanged: bridge_i rides after layer i) + mark head.
+Recipe: init runs/mex/mu3_tall/init; train 1500 steps, batch = 50/50 dia(g1 packed, corruption in-batch) / mixed-x, trunk lr 3e-5, bridges 1e-4, head 5e-4, wd 0.1, AdamW; warm 400 hold 600 end 1500 (mount-strength ramp on bridges).
+Pre-registered gates:
+(t1) diacritic standing on taller trunk: composed mark-pos >= 0.78 AND all >= 0.62 (E-45 bars retained).
+(t2) the boundary finally moves: x2 first-char fill >= 0.60 target-first (honest mid-bar: 0.42 was already reachable by readout-only; the taller trunk must EXCEED the E-48a probe ceiling 0.42
+).
+(t3) mixed CE <= 2.2753 (E-45 standing; must not regress).
+(id) identity check: all-mounts-off logits == base init logits exactly (0.0).
+FAIL => honest row; changed recipe = new user-gated rung. Option b (x-stream trunk finetune at scale) follows as E-51 (already sanctioned).
+
+**E-50 RESULT (closed, taller trunk co-train; metric calibration note).**
+
+New unified metric (this rung's calibration, same script on E-45 standing): x1 composed characc 0.3783, x2 fill 18/50, x3 20/50.
+
+| gate | value | verdict |
+|---|---|---|
+| (id) bridges-off identity | 0.0 | PASS |
+| (t3) mixed CE <= 2.2753 | 1.8757 | PASS |
+| x1 composed characc vs calibrated 0.3783 | 0.1121 (last-hidden heads) | FAIL (heads did not retrain onto new last hidden) |
+| x2 fill vs calibrated 18/50 | 0/50 | FAIL |
+| x3 acc vs calibrated 20/50 | 25/50 | direction PASS, below any pre-reg bar |
+
+Verdict: honest FAIL of pre-registered gates t1/t2. Mixed CE improved (-17%), P2 composition holds; but boundary fill did NOT come back (x2 0/50 vs 18/50 E-45). 1500 steps at 3e-5 is not enough trunk-side signal. Ladder proceeds to pre-registered E-51 below; no retune of E-50.
+## E-51 (PRE-REGISTERED, mu3: x-stream trunk finetune on the taller trunk; user-sanctioned 'option b').
+Init: runs/mex/mu3_tall/init (3 layers, layer2 = layer1 clone). Recipe: 3000 steps; mixture 60% dia block (towers-armed, mount-strength 1.0 both) / 40% x item (towers-armed); trunk lr 5e-5 (all layers), bridges 2e-4, head 1e-3; losses: dia token CE (+ MarkHead 9-class CE on fill positions each dia step), x token CE.
+Gates (calibrated metric baseline from E-50 row):
+(b1) x2 fill >= 0.50 n[30/50] target-first (baseline 18/50 = 0.36).
+(b2) x1 composed characc >= 0.48 (baseline 0.378).
+(b3) mixed CE <= 2.2753.
+(b4) x3 acc >= 0.65 (baseline 0.40).
+(id) identity: bridges-off logits identical at init save, strength hold 1.0 at save (inspect _strength live).
+FAIL => honest row; changed recipe = new user-gated rung.
+
+**E-51 RESULT (closed; x-stream trunk finetune on taller trunk).**
+
+Implemented-recipe deviation to note honestly: the pre-registered recipe included MarkHead 9-class CE on dia fill positions; the implemented loop trained only trunk token CE on the dia block (head received grad via token CE only indirectly - in practice effectively idle). Salvage metric baseline (E-50 calibration) 0.378/18/50.
+
+| gate | value | verdict |
+|---|---|---|
+| (b2) x1 composed characc | 0.1191 | FAIL (baseline 0.3783) |
+| (b1) x2 fill | 0/50 | FAIL (baseline 18/50) |
+| (b4) x3 acc | 29/50 | FAIL (bar 0.65) |
+| (b3) mixed CE | 5.6833 | FAIL (E-45 standing 2.2753) |
+
+Verdict: honest FAIL of every pre-registered gate; 3000-step loosely fine-tuned taller trunk DEGRADED E-45 standing (mixed CE +2.5 vs baseline). Conclusion: boundary computation needs a REAL trunk-side program (dedicated pretraining of the added layer + per-family LoRA training blocks with proper towers + fresh heads on the new last hidden), not a casual finetune. Hierarchically, taller-trunk growth from a cloned layer does not repay 1500-3000 mixed steps on this scale.
