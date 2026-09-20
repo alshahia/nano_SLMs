@@ -481,3 +481,4 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
   digit/date regex rules score P 0.008-0.37 against MAFAT gold - deterministic number rules must be evaluated on the
   corpus they will run on, never on gold in which bare digit runs are unannotated. Model beats regex on both numeric and
   temporal subsets there; keep regex only for unambiguous PII (URL, email, phone-length digit runs, long IDs).
+- USER POLICY (2026-09-19): GPU may be used when free; if another process/agent holds it, wait or keep working on CPU until it finishes, unless the CPU path is trivial-by-design. Overrides the audio-tier-only GPU restriction of DESIGN.md section 2; record any GPU use in the run row.
