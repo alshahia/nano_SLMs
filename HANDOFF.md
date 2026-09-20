@@ -1386,3 +1386,5 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - E-55 CLOSED (read-only cross-ladder bench, adapter mex/scripts/bench_dia2.py): dia2 composite mean 4-gate DER 0.858 vs diacritizer gold 0.456 (E-23a) / stage2final 0.525 / e23c_zm 0.527 / ZM BiLSTM 0.558 - external benchmarks belong to the diacritizer line; 0.8134 mark-pos is in-domain-only. Hubs: 8-mark-set ceiling, ctx 96, fill-head bias on unseen bare text.
 
 - E-55b CLOSED: per-prompt mark metrics (mark_accuracy / precision / F1, hit-wrong-missed-extra, der_collapse) in mex/scripts/mark_metrics.py; per-prompt CSVs under runs/mex/e55_bench/. Profiles: dia2d ~0.47 mark-acc; gold e23a 0.78-0.87; zm 0.74-0.84. der_collapse shows the mini's errors are symbol confusion, not just ceiling.
+
+- E-55c CLOSED: full-profile benching is the standing policy (user-approved). All three lines run through mark_metrics.py: dia2d 0.47 mark-acc/0.04 word_ax/0.47 word_p50/0.035 lift; gold 0.83/0.49/0.96/0.44; zm 0.79/0.41/0.93/0.37. dia2d mid/last-rooted vowel confusion is the specific externality gap.

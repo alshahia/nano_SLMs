@@ -749,3 +749,23 @@ Re-benched gold + e23c_zm finals on identical refs and scored all three lines wi
 Key reads: (1) the new soft metrics do NOT rescue the mini composite (gold stays far ahead at every leniency level); (2) quality profile differs in kind: gold has mark_missed ~0.4-1.5k of 435-372k (near-complete coverage), the mini composite loses 32-80% of hits to mark_wrong = symbol confusion, not insertion dominance; (3) der_collapse barely moves dia2d (0.8192-> same-ish) proving the ceiling is symbol substitution, not just the missing compound/extra mark classes.
 
 Per-prompt right/wrong counts (the user's ask) live in runs/mex/e55_bench/*_perline.csv (1 row/prompt: words, ref_marks, hit/wrong/missed/extra, der_collapse_ok/total).
+
+**E-55c (closed, user-approved): full metric profile is now the standard output of every future gate eval — strict DER/WER PLUS the per-prompt position/word/bucket metrics. Rationale per user: each metric exposes a different failure mode; the profile is more solid than any single number.**
+
+Full profile (mean over 4 gates, computed on identical regenerated preds under runs/mex/e55_bench/):
+
+| metric | dia2d mini | e23a_gold_v3q | e23c_zm |
+|---|---|---|---|
+| strict DER mean | 0.858 | **0.456** | 0.527 |
+| mark accuracy (position) | 0.472 | **0.826** | 0.787 |
+| mark F1 | 0.487 | **0.822** | 0.789 |
+| word_ax (marked-words exact) | 0.040 | **0.489** | 0.411 |
+| word_partial50 | 0.470 | **0.958** | 0.931 |
+| der_collapse (lenient) | 0.858 | **0.456** | 0.525 |
+| contrastive_lift vs zero-mark baseline | 0.035 | **0.437** | 0.368 |
+
+Failure-profile read (what each metric shows):
+- word_partial50: dia2d gets ~47% of words at least half right vs gold ~96% — the mini produces a plausible skeleton but wrong case/tanween choices mid-word.
+- contrastive_lift: dia2d barely beats emitting bare text (lift 0.03 while gold lifts 0.44) — the fill of Arabic case marking does NOT transfer from the mu in-domain corpus to classical proses.
+- mark_acc buckets: errors concentrate in mid-word and final marks (case endings) for all models, but gold's mid 0.73-0.87 stays usable while dia2d sits ~0.39-0.42 — the E-54 pattern of vowel-confusion.
+- Strict DER remains the gate; the other layers diagnose WHERE it fails. dia2d is externally behind everywhere; nothing reopens the earlier verdict, and no retunes were made inside this rung.
