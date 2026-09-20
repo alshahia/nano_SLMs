@@ -477,3 +477,7 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
   On an 87%-O token corpus, plain CE on Muon learns nothing entity-side (ent-acc 0.085 in 3ep);
   mean-normalized inverse-sqrt weighted CE (clip 0.5) fixes it (0.388 in 6ep) - inverse of DA-2b where
   weighting hurt: weight CE only when O is >2/3 of the data.
+- DA-7b (2026-09-19): iahlt/arabic_ner_mafat leaves most bare Arabic/Latin digit runs O-tagged; token-level
+  digit/date regex rules score P 0.008-0.37 against MAFAT gold - deterministic number rules must be evaluated on the
+  corpus they will run on, never on gold in which bare digit runs are unannotated. Model beats regex on both numeric and
+  temporal subsets there; keep regex only for unambiguous PII (URL, email, phone-length digit runs, long IDs).

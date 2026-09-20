@@ -292,7 +292,7 @@ Pre-registered gates, no training: (a) trunk widen max |dlogit| < 1e-2 (fp32 val
 | E-52 | 2026-09-19 | DA-3 Gist-analogue topic tagging recreate (ar SANAD 7 topics + en HuffPo top-10; bar = per-lang top-1 beats frequency prior +0.05) | hashed n-gram bag (CPU) vs freq-prior |## E-43 (PRE-REGISTERED, mu3 G-settle: LoRA fill settle on the widened/stacked model) — 2026-09-19 CLOSED: DA-3 recreate PASS - ar/en. TEST top-1: ar 0.9048 (prior 0.1429; 2x bar 0.2857 PASS, +0.05 bar PASS), en 0.6780 (prior 0.1000; 2x bar 0.2000 PASS, +0.05 PASS). top-3 ar 0.9850 / en 0.8830. FP16 EmbeddingBag 2^16x17 = 2.13 MiB. Ethics: en taxonomy = HuffPo editorial buckets (weaker than SANAD news sections).
 | E-53 | 2026-09-19 | E-41 Muon lever applied to DA-3 bag topic model: Adam lr 0.25 (E-52 control) vs Muon 1e-2 / 3e-2 on emb+bias, identical data/batches/seed | 2-3 arms CPU |
 | E-54 | 2026-09-19 | DA-7 Redact-analogue: Arabic NER token tagger (hashed char n-grams, CPU) + deterministic regex rules (Arabic-digit phones, IDs, dates, URLs/emails) mirroring their hybrid design; + en tokens as second row (MultiNERD en). bar: span/token F1 beats all-O baseline +0.05 |G3-settle mechanism A carried to mu3: r8 alpha16 dropout .05, targets [q,v,gate,up,down], 1000 steps, lr 5e-5, batch 32 (same corruption in-batch recipe hold_every 3), src = the E-42 remount stack: WIDENED trunk runs/mex/mu2_g4_init (640/16/2560), warm start from g4_init weights. Only LoRA deltas train; the settled trunk merge becomes canonical mu3-g-rung trunk runs/mex/mu3_g4/final.
-
+| E-55 | 2026-09-19 | DA-7b deterministic regex redaction layer (their hybrid-design second half): Arabic/Latin-digit runs, dates, phones, URLs/emails, IDs as token rules; measured against gold TIMEX/ANG/DUC test tokens; hybrid = regex override on matched tags. bar: numeric/temporal class token-P >= 0.5 and beats pure-model on that class subset |
 Pre-registered gates (of a settle, read against G3 anchors):
 - (a) retention CE (clean val stream) <= 0.7431 (G3 settle guard; a 640-wide trunk settling should clear it easily if the room is real).
 - (b) fill acc at masked mark positions >= 0.6891 (G3 fill anchor).
@@ -708,3 +708,11 @@ Question: does the wider dia2 trunk amortize more steps = does a LONGER settle (
 | (d3) saturation call, best_eval  0.7471514940261841, vs dial class anchor (E-54b 0.74688) | settle still productive, kept 4000-step budget as registered | recorded |
 
 Canonical dia2 composite is now: trunk runs/mex/dia2d_scale/final (~50M params) + runs/mex/dia2_wide mounts at ctx 96: composed markpos 0.8134 / all 0.6672 / mixed CE 2.3829. dia2 ladder = widen (zero-loss) + longer AdamW settle (hard win) + ctx extension (negative) + shared-KV (rejected) = the dia2 recipe card.
+
+## E-55 (PRE-REGISTERED, read-only rung: cross-bench the dia2d composite on the diacritizer project's four external gates) — 2026-09-20
+
+User request: bench the new dia2d composite vs the diacritizer-line references (E-23a gold_v3q 30M, stage2final, E-23c ZM-distilled, E-23d ZM BiLSTM) on the four gates (fadel_test/sadeed25/wikinews2024/wikinews2014), DER lower=better, identical refs and eval_der compare path.
+
+Engine: mex composite (dia2d trunk + per-depth tower mounts + MarkHead composed rule) run raw on bare gate text at ctx 96 chunks; mark insertion only after Arabic base chars; limitations declared up front: the mu CharVocab mark set is exactly 0x064B..0x0652 (8 marks), so refs carrying any other combining mark (dagger alif 0x0670, small-quran marks 0x06D6.., superscript alef variants) can never be produced, and multi-mark sequences (shadda+voiced) are impossible with a single-token head. Non-base bytes passthrough copied; Latin/digits map to <unk> in the trunk but output text is rebuild from the original chars, so only the mark choice is affected.
+
+Verdict bar: mean 4-gate DER of the mini composite vs the rows below (gold 30M @2500: .3354/.4533/.5571/.4778 mean .4559; stage2final @8000: .4255/.5430/.5978/.5348; e23c_zm @2500: .3988/.5272/.6144/.5615; ZM BiLSTM @2500: .4577/.5809/.6290/.5655 mean .5583).
