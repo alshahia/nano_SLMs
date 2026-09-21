@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\dia2d_wikinews2014_pred.txt",
+  "gate": "wikinews2014",
+  "words": 18286,
+  "ref_marks": 65228,
+  "marked_words": 16202,
+  "mark_hit": 27619,
+  "mark_wrong": 26489,
+  "mark_missed": 3406,
+  "mark_extra": 450,
+  "mark_accuracy": 0.4802,
+  "mark_precision": 0.5062,
+  "mark_f1": 0.4929,
+  "word_ax": 0.0409,
+  "word_partial50": 0.4827,
+  "mark_acc_first": 0.8077,
+  "mark_acc_mid": 0.4233,
+  "mark_acc_last": 0.3043,
+  "der_collapse_1minus": 0.85,
+  "zero_mark_baseline_der": 0.886,
+  "contrastive_lift": 0.036
+}

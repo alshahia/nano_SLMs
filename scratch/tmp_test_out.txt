@@ -1,0 +1,85 @@
+EEEE..........................
+======================================================================
+ERROR: test_alpha_zero_is_pure_ce (mex.tests.test_kd.TestKdLoss.test_alpha_zero_is_pure_ce)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\python_projects\nano_SLMs\mex\tests\test_kd.py", line 32, in test_alpha_zero_is_pure_ce
+    val = kd_loss(logits, torch.zeros_like(logits), labels, alpha=0.0)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\mex\src\kd.py", line 92, in kd_loss
+    ce = F.cross_entropy(s_logits, shift_labels[valid], reduction="batchmean")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\.venv\Lib\site-packages\torch\nn\functional.py", line 3566, in cross_entropy
+    _Reduction.get_enum(reduction),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\.venv\Lib\site-packages\torch\nn\_reduction.py", line 23, in get_enum
+    raise ValueError(f"{reduction} is not a valid value for reduction")
+ValueError: batchmean is not a valid value for reduction
+
+======================================================================
+ERROR: test_hand_computed_temperature_scale (mex.tests.test_kd.TestKdLoss.test_hand_computed_temperature_scale)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\python_projects\nano_SLMs\mex\tests\test_kd.py", line 54, in test_hand_computed_temperature_scale
+    val = kd_loss(student, student.clone(), labels, alpha=0.5,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\mex\src\kd.py", line 92, in kd_loss
+    ce = F.cross_entropy(s_logits, shift_labels[valid], reduction="batchmean")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\.venv\Lib\site-packages\torch\nn\functional.py", line 3566, in cross_entropy
+    _Reduction.get_enum(reduction),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\.venv\Lib\site-packages\torch\nn\_reduction.py", line 23, in get_enum
+    raise ValueError(f"{reduction} is not a valid value for reduction")
+ValueError: batchmean is not a valid value for reduction
+
+======================================================================
+ERROR: test_hand_computed_uniform_teacher (mex.tests.test_kd.TestKdLoss.test_hand_computed_uniform_teacher)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\python_projects\nano_SLMs\mex\tests\test_kd.py", line 43, in test_hand_computed_uniform_teacher
+    val = kd_loss(logits, torch.zeros_like(logits), labels, alpha=0.5)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\mex\src\kd.py", line 92, in kd_loss
+    ce = F.cross_entropy(s_logits, shift_labels[valid], reduction="batchmean")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\.venv\Lib\site-packages\torch\nn\functional.py", line 3566, in cross_entropy
+    _Reduction.get_enum(reduction),
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\.venv\Lib\site-packages\torch\nn\_reduction.py", line 23, in get_enum
+    raise ValueError(f"{reduction} is not a valid value for reduction")
+ValueError: batchmean is not a valid value for reduction
+
+======================================================================
+ERROR: test_lookup_roundtrip_and_miss (mex.tests.test_kd.TestTeacherLogitCache.test_lookup_roundtrip_and_miss)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\AhmadMhmoud\AppData\Roaming\uv\python\cpython-3.12.9-windows-x86_64-none\Lib\shutil.py", line 633, in _rmtree_unsafe
+    os.unlink(fullname)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\tmp7615c01f\\cache.npy'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "E:\python_projects\nano_SLMs\mex\tests\test_kd.py", line 65, in test_lookup_roundtrip_and_miss
+    with tempfile.TemporaryDirectory() as td:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AhmadMhmoud\AppData\Roaming\uv\python\cpython-3.12.9-windows-x86_64-none\Lib\tempfile.py", line 946, in __exit__
+    self.cleanup()
+  File "C:\Users\AhmadMhmoud\AppData\Roaming\uv\python\cpython-3.12.9-windows-x86_64-none\Lib\tempfile.py", line 950, in cleanup
+    self._rmtree(self.name, ignore_errors=self._ignore_cleanup_errors)
+  File "C:\Users\AhmadMhmoud\AppData\Roaming\uv\python\cpython-3.12.9-windows-x86_64-none\Lib\tempfile.py", line 930, in _rmtree
+    _shutil.rmtree(name, onexc=onexc)
+  File "C:\Users\AhmadMhmoud\AppData\Roaming\uv\python\cpython-3.12.9-windows-x86_64-none\Lib\shutil.py", line 781, in rmtree
+    return _rmtree_unsafe(path, onexc)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\AhmadMhmoud\AppData\Roaming\uv\python\cpython-3.12.9-windows-x86_64-none\Lib\shutil.py", line 635, in _rmtree_unsafe
+    onexc(os.unlink, fullname, err)
+  File "C:\Users\AhmadMhmoud\AppData\Roaming\uv\python\cpython-3.12.9-windows-x86_64-none\Lib\tempfile.py", line 905, in onexc
+    _os.unlink(path)
+PermissionError: [WinError 32] The process cannot access the file because it is being used by another process: 'C:\\Users\\AHMADM~1\\AppData\\Local\\Temp\\tmp7615c01f\\cache.npy'
+
+----------------------------------------------------------------------
+Ran 30 tests in 12.437s
+
+FAILED (errors=4)

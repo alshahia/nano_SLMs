@@ -121,3 +121,29 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
 - Kill/resume drill (exact zero-flag) passed before any full-arm launch.
 - Independence/gate-difference evals with named sources (eval_report.json as
   the authoritative number).
+
+## V4.1 transfer candidates (2026-09-19 micro-bench, E-40/E-41)
+
+- **CED-lite (cross-layer KV sharing, upper half)** - loss-neutral at nano
+  scale (val ±0.02); ~35% step-time saving at ctx512 pilot-proxy; -40% inference
+  KV analytically. Conditions: adopt for INFERENCE KV memory (and possibly
+  long-ctx training where activations fill VRAM); re-check per batch/ctx at P.
+  [E-40]
+- **Muon optimizer (orthogonalized momentum on 2D params)** - beats AdamW at
+  every tried lr at nano scale, -10% train loss at 3e-2, but high LR
+  sensitivity: NEEDS a proper LR sweep (e.g. 3 scales) before adopting in
+  train.py. Do not swap optimizers blindly. [E-41]
+- **Where our VRAM actually goes at long ctx**: activations 70% at ctx2048
+  (pilot proxy, bs2); params+optimizer fixed 1.5 GB. Gradient checkpointing /
+  CED-lite are the right levers for long-ctx training on 6 GB. [E-40 M1]
+
+- **Sinkhorn-style embedding row-norm rebalance** - tiny geomean push on tied
+  embedding rows gives ~2.6% train-loss improvement at nano scale with zero
+  cost. Rate sweep done: flat-topped plateau 0.05-0.2; best 0.1 (4.798 vs
+  control 4.928). P-scale A/B run: weak pass (-0.5% at d768 vs -2.6% at nano) — wire into
+  train.py as a non-default flag first; default-on only after a real
+  pipeline val-loss A/B. [E-42]
+- **MTP-style aux next-token-2 head** - NEGATIVE at nano scale: aux-head
+  gradient hurts main loss at every weight tried (0.02..0.3), even aux-exclusive
+  metrics. Retry only with a decoupled aux LR + head warmup at a longer budget.
+  [E-42]

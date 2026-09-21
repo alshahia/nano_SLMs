@@ -1,0 +1,12 @@
+{
+  "gates": {
+    "gate_b": true,
+    "gate_c": true,
+    "gate_d": true
+  },
+  "composed": {
+    "all": 0.6461,
+    "markpos": 0.7941
+  },
+  "mixed_ce": 2.2752
+}

@@ -263,7 +263,7 @@ In this repo, the validation commands are the [AGENTS.md](./AGENTS.md) §3 table
 
 - TensorBoard events (not console lines) are the source of truth for training losses — see [MEMORY.md](./MEMORY.md).
 - Report metrics (tfevents, final-dir files) rather than re-deriving them.
-- Do not run GPU jobs while a train run is active (single GPU — see [AGENTS.md](./AGENTS.md) §4).
+- Do not run GPU jobs while a train run is active (single GPU — see [AGENTS.md](./AGENTS.md) §4), with the single exception the §20 leftover-compute protocol allows: never while the incumbent is this repo's own `train.py`/`sft.py` run; only for foreign non-training workloads with measured headroom.
 
 Do not run commands that do not exist merely because they are common.
 
@@ -448,4 +448,93 @@ When implementation details are unspecified, preserve the user's intended outcom
 Do not expand a feature into unrelated improvements. If you identify useful out-of-scope work, record it as a pending item in [TASKS.md](./TASKS.md) and continue with the requested scope.
 
 Inspect before changing. Plan before implementing. Preserve user data. Use the existing environment. Prefer simple and reversible solutions. Validate before claiming success. Never invent facts, APIs, credentials, tools, or test results. Ask the user when ambiguity, risk, cost, security, or irreversibility makes a safe decision impossible.
+
+## 19. Tool-use economy
+
+The pricing model of this environment:
+
+- A **turn** (one assistant generation) is expensive. Its cost grows with accumulated context.
+- A **tool call within a turn** is nearly free. A turn with 1 call and a turn with 10 independent calls cost almost the same.
+- Therefore: **minimize turns, maximize useful calls per turn.** Never spread purely-parallel work across multiple turns.
+
+### Batching
+
+1. Any turn that would contain exactly one tool call must either (a) batch more calls into it, or (b) state in one line why the call must be serial (a dependency or a verification gate).
+2. Front-load: turn 1 should carry every independent discovery call you can foresee — all globs, greps, reads of candidate files, status checks. Do not trickle reads one file per turn.
+3. Read once, act many: [discover + read everything] → [apply all edits/writes/commands] → [verify]. Three batched turns beat ten mixed ones.
+4. When calls are independent, issue them in one message. When dependent, chain them inside a single call where possible (e.g., one script that performs A→B→C instead of three tool turns).
+5. When you need a file's tail/anchor (last row, numbering, insertion point), read the tail range in ONE generous offset window inside the discovery batch — never as a corrective second turn; overshoot is cheap, another turn is not. If an edit anchor is rejected, re-read the corrected range and retry the edit in the SAME next program, not as a standalone probe turn.
+6. Big-and-long state files get slice reads, but "read in slices" never means "read twice to compensate for a narrow slice": one wide slice covers what two narrow ones would, at less than a turn's cost.
+
+### Output hygiene (protects context)
+
+7. Read only what you need (offset/limit, targeted grep instead of full-file dumps). Tool output stays in context for the rest of the session — oversized results cost more later than the turn saved.
+8. Never echo large tool output back in prose. Summarize only conclusions, errors, and deltas.
+9. Don't re-read a file you already read unless someone (tool or user) modified it since.
+10. Don't re-derive facts already persisted in state files (see [ENVIRONMENT.md](./ENVIRONMENT.md) and [MEMORY.md](./MEMORY.md)). Read them, don't rediscover them.
+
+### Background & long-running work
+
+11. Launch anything expected to take minutes (builds, training, data prep) as a background job immediately; start it, take the job id, and move on.
+12. Never poll in a loop. Never sleep-wait. Collect a background job's output only when notified of completion, or when the next action is genuinely blocked on its result (then one wait call, not a spin loop).
+13. While a background job runs: work on other tasks, or end the turn and wait for notification — a silent wait is cheaper than idle polls.
+14. Poll (rarely, with a long interval) only when correctness requires monitoring intermediate progress, never just for pacing.
+
+### Delegation
+
+15. Any subtree of work that is self-contained and would take several turns goes to a subagent in the background. The parent pays one result turn; the child's internal turns don't grow the parent's context.
+16. Multiple independent subtrees: spawn all subagents in ONE message, not staggered.
+
+### Budgets & self-check
+
+17. Default target for a normal task: ≤5 turns (discover → act → verify, plus one fix turn if needed). Planning-heavy or multi-phase tasks exempt.
+18. Before ending a turn, quick self-audit: "Did this batch contain everything I could foresee needing? Am I serializing anything independent?" If yes, batch it; if not, don't.
+
+### Anti-patterns (each wastes a turn)
+
+- One read per turn for files you know you'll need.
+- "Let me check..." probing calls with no concrete information need attached (speculative calls).
+- Echoing tool results into narration before the next call.
+- Polling a background job manually when notifications exist.
+- Sequential calls that no result influences (independent but stacked).
+- Re-grepping for something already found earlier in the session.
+- Corrective re-reads (anchor misses, too-narrow slices, re-deriving an index
+  you could have computed from a range you already read) — front-load generous
+  ranges and compute anchors instead.
+- Probe-then-act splits where the "probe" reads a range that a generously-sized
+  read in the same discovery batch would have already answered.
+
+## 20. Hardware utilisation protocol
+
+Goal: extract the most usable compute from the GPU and CPU without touching shared (pinned-out) GPU memory, and never disturb processes that are not yours.
+
+### Safety rails (hard rules)
+
+1. **Never kill a foreign process.** The same damage in reverse applies: never cause one to OOM or fail. Every launch decision must preserve a safety margin.
+2. **Free-VRAM headroom cap: 60%.** Before launching any GPU work while others are active, claim at most 60% of *currently free* VRAM. On any OOM event (own job), shrink the next attempt (lower batch size / shorter chunks) and shrink the cap to 40%.
+3. **No shared-memory fallback.** Monitoring must confirm the job never spills to shared GPU memory; if it starts to, treat that as an OOM-equivalent event and rescale. Enforce with a hard allocator ceiling (torch.cuda.set_per_process_memory_fraction / a vram_cap_gib config key — the proven pattern from the 2026-09-14 WDDM incident, see [HANDOFF.md](./HANDOFF.md) 2026-09-14 VRAM incident, where bs32 spilled ~2.7 GiB into Intel-iGPU shared memory at ~10x slowdown).
+4. **TOCTOU gremlin:** re-check free VRAM immediately before launching, and start at reduced load for the first few minutes before scaling to the capped slice.
+5. Own-job OOM: shrink and reuse the checkpoint — this repo's train scripts auto-resume (zero flags re-run; [AGENTS.md](./AGENTS.md) §3). Never kill a run for pace alone (thermal swings are normal).
+
+### Measurement (before any claim)
+
+6. Utilisation is a **windowed average** (10–30 s), not an instantaneous reading. Re-measure before every launch; other processes start and stop.
+7. Measure first with the existing probe scripts — probe runs (not "smoke", a phase name) via `scripts/vram_probe.py` and vram-smoke configs. Never re-run a probe whose verdict is already recorded in [MEMORY.md](./MEMORY.md): log the verdict once, reuse it.
+8. Bottleneck-first: the probe should say whether the run is compute-, data-, or memory-bound. Escalate fixes in that order (batch/accum for compute; workers/pin_memory/prefetch for data; chunking for memory).
+
+### Leftover-compute scavenging
+
+9. If another GPU process is active but the GPU (or free VRAM) is under-used beyond the safety margin, size your job to the leftover slice: train batch size to fill it + grad accumulation to keep the *effective* batch unchanged. **Exception — this never applies when the incumbent is one of this repo's own active `train.py`/`sft.py` runs:** the AGENTS.md §4.6 single-GPU rule stands for repo train jobs. Scavenging applies only to foreign, non-training workloads (desktop apps, WebView, webui leftovers — see [MEMORY.md](./MEMORY.md) lessons 9 and 16: filter `--query-compute-apps` to `python` and be aware a webui can hold a stale CUDA context after model unload).
+10. If the GPU is fully used: do not compete. End the turn and wait for notification, or schedule a background watcher to report when it frees. Never busy-poll.
+
+### CPU fallback
+
+11. CPU work is acceptable when a probe shows it would complete in ~a couple dozen minutes, max. The estimate must be measured (CPU probe × scaling factor), not guessed.
+12. If the GPU frees while a CPU job runs mid-way: let the CPU job finish. Use the GPU for the **next** task. Never migrate a running job between devices.
+13. "Most of the hardware" applies to the CPU side too: prefer proper dataloader settings (num_workers, pin_memory, persistent_workers) and parallel data preparation — cheap wins independent of GPU contention.
+
+### Thermal & sustained reality
+
+14. "Fullest" means sustained-throughput-optimal, not instantaneous 100%: on this single Turing GPU sustained max load brings thermal throttling ([AGENTS.md](./AGENTS.md) §4). Pace with accumulation and incremental validation; expect pace swings.
+
 

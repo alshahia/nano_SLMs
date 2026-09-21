@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\e23c_zm_wikinews2014_pred.txt",
+  "gate": "wikinews2014",
+  "words": 18286,
+  "ref_marks": 65228,
+  "marked_words": 16202,
+  "mark_hit": 49435,
+  "mark_wrong": 14191,
+  "mark_missed": 522,
+  "mark_extra": 232,
+  "mark_accuracy": 0.7706,
+  "mark_precision": 0.7741,
+  "mark_f1": 0.7724,
+  "word_ax": 0.3666,
+  "word_partial50": 0.9269,
+  "mark_acc_first": 0.8077,
+  "mark_acc_mid": 0.7581,
+  "mark_acc_last": 0.087,
+  "der_collapse_1minus": 0.5596,
+  "zero_mark_baseline_der": 0.886,
+  "contrastive_lift": 0.3265
+}

@@ -55,6 +55,10 @@ nano_SLMs/
 ├─ viz/                React model-architecture explorer — config-driven, pnpm only (docs: viz/README.md; plan: docs/plans/2026-09-10-model-viz-react-platform.md)
 ├─ flow/               Visual flow editor MVP — drag-and-drop pipeline graph (dataset→prepare→tokenize→train→eval/infer), FastAPI backend (docs: flow/README.md; plan: docs/plans/2026-09-13-flow-editor-mvp-plan.md); `.flow.json` format flow/0.1
 ├─ langid/             DA-line: text language ID - Tongue-analogue (DESIGN: research/desert_ant_recreation/DESIGN.md; plan: docs/plans/2026-09-19-desert-ant-recreation-da1-langid-plan.md); CPU-only, gates pre-registered (rows 81-87)
+├─ diacritizer/        D-line: Arabic-diacritization submodule (own README.md; live GPU train runs under diacritizer/scripts/)
+├─ mex/                μ-line micro-expert sandbox (μ0/μ1/μ2; train_mu2_lora.py --config configs/dia2f_replay.yaml live as of 2026-09-20)
+├─ scratch/            throwaway experiment scripts (NON-durable: never map knowledge here)
+├─ models/ + tests/    shared model weights/tests (referenced from flow/ and line submodules)
 ├─ checkpoint_backup/  untracked; user-staged machine-move checkpoint zips (HANDOFF §3b) — check for a newer checkpoint-*.zip first
 └─ .venv/              uv-managed CPython 3.12.9 (never pip)
 ```
@@ -106,7 +110,9 @@ cd flow; pnpm test                                      # vitest (148 tests)
 6. The GPU is a single shared resource: never launch another GPU job
    (`eval.py`, `infer`, `vram_probe.py`, `sft.py`) while a `train.py` run is
    active — it can OOM and kill the training run. CPU-only scripts
-   (`sft_data.py`) are exempt.
+   (`sft_data.py`) are exempt. Leftover-compute co-runs against FOREIGN
+   non-training incumbents are governed only by CLAUDE.md §20 (first
+   evidence row = TASKS 98, still pending).
 
 ## 5) Git / LFS rules (summary — details in HANDOFF §7)
 

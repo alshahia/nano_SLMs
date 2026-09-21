@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\dia2i_wikinews2024.txt",
+  "gate": "wikinews2024",
+  "words": 10616,
+  "ref_marks": 43538,
+  "marked_words": 9082,
+  "mark_hit": 18055,
+  "mark_wrong": 14652,
+  "mark_missed": 4910,
+  "mark_extra": 180,
+  "mark_accuracy": 0.48,
+  "mark_precision": 0.549,
+  "mark_f1": 0.5122,
+  "word_ax": 0.0423,
+  "word_partial50": 0.4599,
+  "mark_acc_first": 1.0,
+  "mark_acc_mid": 0.4143,
+  "mark_acc_last": 0.7273,
+  "der_collapse_1minus": 0.8197,
+  "zero_mark_baseline_der": 0.8555,
+  "contrastive_lift": 0.0358
+}

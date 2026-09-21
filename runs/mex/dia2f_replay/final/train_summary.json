@@ -1,0 +1,105 @@
+{
+  "phase": "dia2f_replay",
+  "lora": {
+    "r": 8,
+    "alpha": 16,
+    "targets": [
+      "q_proj",
+      "v_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "base_run": "runs/mex/dia2d_scale/final",
+    "corrupt": true
+  },
+  "best_eval_loss": 1.326524019241333,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\mex\\dia2f_replay\\checkpoint-4000",
+  "resumed_from": "checkpoint-1000",
+  "env": {
+    "timestamp_utc": "2026-09-21T05:18:51+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "47642c7",
+    "gpu": "Quadro RTX 3000, 6144 MiB",
+    "resolved_config": {
+      "name": "dia2f_replay",
+      "tokenizer": {
+        "name": "data/mex/tokenizer",
+        "vocab_size": 97
+      },
+      "model": {
+        "layers": 2,
+        "hidden": 1280,
+        "heads": 32,
+        "kv_heads": 16,
+        "ffn": 5120,
+        "ctx": 96,
+        "dropout": 0.0,
+        "tie_embeddings": false
+      },
+      "data": {
+        "dataset_candidates": [
+          {
+            "name": "local-mu2-g2"
+          }
+        ],
+        "rows": 0,
+        "val_fraction": 0.02,
+        "shard_tokens": 2000000,
+        "raw_dir": "data/mex/mu2/g1",
+        "tokens_dir": "data/mex/mu2/v3qx"
+      },
+      "lora": {
+        "base_run": "runs/mex/dia2d_scale/final",
+        "r": 8,
+        "alpha": 16,
+        "dropout": 0.05,
+        "targets": [
+          "q_proj",
+          "v_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ],
+        "corrupt": {
+          "mask_marks": true,
+          "mask_char": "|",
+          "hold_every": 3
+        }
+      },
+      "train": {
+        "output_dir": "runs/mex/dia2f_replay",
+        "final_dir": "runs/mex/dia2f_replay/final",
+        "seed": 42,
+        "batch": 128,
+        "accum": 2,
+        "eval_batch": 256,
+        "max_steps": 4000,
+        "eval_steps": 1000,
+        "save_steps": 1000,
+        "save_total_limit": 3,
+        "logging_steps": 50,
+        "lr": 5e-05,
+        "warmup_steps": 50,
+        "scheduler": "cosine",
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "fp16": true,
+        "grad_ckpt": false
+      },
+      "standalone_eval": {
+        "bleu-n": 4,
+        "max-samples": 10,
+        "ckpt": "last"
+      }
+    }
+  }
+}

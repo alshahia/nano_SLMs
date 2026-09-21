@@ -1,0 +1,10 @@
+{
+ "router_acc": 1.0,
+ "x2_digit_acc": 0.36,
+ "x3_acc": 0.7708333333333334,
+ "gates": {
+  "gate_b": true,
+  "gate_c": false,
+  "gate_d": false
+ }
+}

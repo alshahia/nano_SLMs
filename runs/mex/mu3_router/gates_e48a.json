@@ -1,0 +1,8 @@
+{
+ "x2_acc": 0.42,
+ "x3_acc": 0.8,
+ "gates": {
+  "gate_c_armed": false,
+  "gate_d_armed": false
+ }
+}

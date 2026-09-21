@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\e23a_gold_v3q_wikinews2024_pred.txt",
+  "gate": "wikinews2024",
+  "words": 10616,
+  "ref_marks": 43538,
+  "marked_words": 9082,
+  "mark_hit": 31971,
+  "mark_wrong": 7883,
+  "mark_missed": 1253,
+  "mark_extra": 40,
+  "mark_accuracy": 0.7778,
+  "mark_precision": 0.8014,
+  "mark_f1": 0.7894,
+  "word_ax": 0.3492,
+  "word_partial50": 0.9378,
+  "mark_acc_first": 0.85,
+  "mark_acc_mid": 0.7344,
+  "mark_acc_last": 0.1818,
+  "der_collapse_1minus": 0.5569,
+  "zero_mark_baseline_der": 0.8555,
+  "contrastive_lift": 0.2986
+}

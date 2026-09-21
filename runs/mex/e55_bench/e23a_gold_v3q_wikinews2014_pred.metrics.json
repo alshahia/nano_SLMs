@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\e23a_gold_v3q_wikinews2014_pred.txt",
+  "gate": "wikinews2014",
+  "words": 18286,
+  "ref_marks": 65228,
+  "marked_words": 16202,
+  "mark_hit": 52628,
+  "mark_wrong": 11224,
+  "mark_missed": 576,
+  "mark_extra": 101,
+  "mark_accuracy": 0.8168,
+  "mark_precision": 0.8229,
+  "mark_f1": 0.8199,
+  "word_ax": 0.4611,
+  "word_partial50": 0.9567,
+  "mark_acc_first": 0.7308,
+  "mark_acc_mid": 0.8071,
+  "mark_acc_last": 0.2609,
+  "der_collapse_1minus": 0.4773,
+  "zero_mark_baseline_der": 0.886,
+  "contrastive_lift": 0.4087
+}

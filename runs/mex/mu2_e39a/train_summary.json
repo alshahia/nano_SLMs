@@ -1,0 +1,10 @@
+{
+  "phase": "mu2_e39a",
+  "all": 0.6533,
+  "markpos": 0.7984,
+  "nonmark": 0.5703,
+  "g_a_markpos_gt_0.7862": "PASS",
+  "g_b_allpos_gt_0.6485": "PASS",
+  "steps": 500,
+  "lr": 0.001
+}

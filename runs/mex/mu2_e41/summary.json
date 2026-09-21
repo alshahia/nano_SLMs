@@ -1,0 +1,9 @@
+{
+  "phase": "mu2_e41",
+  "ce_trunk_off": 6.182314667794104,
+  "ce_xtower": 4.251295855503679,
+  "rel_drop": 0.3123,
+  "identity_max_dlogit": 0,
+  "gate_a": "PASS",
+  "gate_c_note": "mu2-hygiene delegated to E-38a script re-run (reproduces E-39a readout)"
+}

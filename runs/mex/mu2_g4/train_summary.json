@@ -1,0 +1,15 @@
+{
+  "phase": "mu2_g4",
+  "trunk": "runs/mex/mu2_g3/final",
+  "frozen_trunk": true,
+  "mark_acc": 0.8517708231139017,
+  "mark_n": 101930,
+  "wilson95": [
+    0.849576217386412,
+    0.8539389153080391
+  ],
+  "gate_either_guess": 0.4063,
+  "gate_retention_anchor": 0.7395,
+  "steps": 500,
+  "lr": 0.001
+}

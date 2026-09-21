@@ -1,0 +1,10 @@
+{
+  "phase": "mu2_g5",
+  "bridged_mark_acc": 0.7631888101619002,
+  "trunk_only_mark_acc": 0.7514776607070744,
+  "gate_a_target": 0.766,
+  "gate_a": "FAIL",
+  "identity_max_dlogit": 0.0,
+  "steps": 1000,
+  "lr": 8e-05
+}

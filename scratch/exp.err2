@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "E:\python_projects\nano_SLMs\scratch\expdbg3.py", line 9, in <module>
+    m.main()
+  File "E:\python_projects\nano_SLMs\langid/scripts/export_emo_tf.py", line 153, in main
+    npd = numpy_emodecode(nck, text)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\python_projects\nano_SLMs\langid/scripts/export_emo_tf.py", line 83, in numpy_emodecode
+    logits = pooled @ P["headw"] + P["headb"]
+             ~~~~~~~^~~~~~~~~~~~
+ValueError: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 160 is different from 32)

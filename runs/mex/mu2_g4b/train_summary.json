@@ -1,0 +1,15 @@
+{
+  "phase": "mu2_g4b",
+  "trunk": "runs/mex/mu2_g3/final",
+  "frozen_trunk": true,
+  "corruption_head_train": true,
+  "hold_every": 3,
+  "composed_acc": 0.27963865882981565,
+  "wilson95": [
+    0.27649074282656494,
+    0.2827922287081101
+  ],
+  "gate_trunk_only": 0.6891,
+  "steps": 500,
+  "lr": 0.001
+}

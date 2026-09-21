@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\dia2e_fadel_test_pred.txt",
+  "gate": "fadel_test",
+  "words": 125098,
+  "ref_marks": 371726,
+  "marked_words": 106768,
+  "mark_hit": 177675,
+  "mark_wrong": 138060,
+  "mark_missed": 32040,
+  "mark_extra": 2320,
+  "mark_accuracy": 0.5109,
+  "mark_precision": 0.5586,
+  "mark_f1": 0.5337,
+  "word_ax": 0.0677,
+  "word_partial50": 0.583,
+  "mark_acc_first": 0.9474,
+  "mark_acc_mid": 0.4784,
+  "mark_acc_last": 0.0884,
+  "der_collapse_1minus": 0.7992,
+  "zero_mark_baseline_der": 0.8535,
+  "contrastive_lift": 0.0543
+}

@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\dia2i_sadeed25.txt",
+  "gate": "sadeed25",
+  "words": 52906,
+  "ref_marks": 191643,
+  "marked_words": 51603,
+  "mark_hit": 85273,
+  "mark_wrong": 68852,
+  "mark_missed": 17601,
+  "mark_extra": 882,
+  "mark_accuracy": 0.4966,
+  "mark_precision": 0.5501,
+  "mark_f1": 0.522,
+  "word_ax": 0.0581,
+  "word_partial50": 0.5341,
+  "mark_acc_first": 0.8286,
+  "mark_acc_mid": 0.4449,
+  "mark_acc_last": 0.2,
+  "der_collapse_1minus": 0.9204,
+  "zero_mark_baseline_der": 0.9754,
+  "contrastive_lift": 0.055
+}

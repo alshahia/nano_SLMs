@@ -1,0 +1,18 @@
+{
+ "x2_exact": 0.0,
+ "x4_exact": 0.0,
+ "counts": {
+  "x2": [
+   0,
+   50
+  ],
+  "x4": [
+   0,
+   50
+  ]
+ },
+ "gates": {
+  "gate_g1_x2_exact": false,
+  "gate_g2_x4_exact": false
+ }
+}

@@ -1,0 +1,58 @@
+[
+ {
+  "task": "x1",
+  "prompt": "اثنى،|",
+  "gold": "أَثْنَى،",
+  "live": "اثن<unk><unk>|<unk><unk><unk><unk><unk><unk><unk><unk><unk><unk><unk><unk>",
+  "off": "اثن<unk><unk>| اَلْ<unk>َرْبَع"
+ },
+ {
+  "task": "x2",
+  "prompt": "998+274=|",
+  "gold": "1272",
+  "live": "998+274=|ذَكَرٍ]اتٍ ا",
+  "off": "998+274=|يْ 19 نَسَمَ"
+ },
+ {
+  "task": "x3",
+  "prompt": "[()[}{][}{)]{(([{}{}]}\n",
+  "gold": "bad",
+  "live": "[()[}{][}{)]{(([{}{}]}\n\n[[[[[[[[[[[",
+  "off": "[()[}{][}{)]{(([{}{}]}\n\nوَالْمَعْرُ"
+ },
+ {
+  "task": "x4",
+  "prompt": "copy:ttexbpsghir|",
+  "gold": "ttexbpsghir",
+  "live": "copy:ttexbpsghir| <unk>orgrand <unk>o",
+  "off": "copy:ttexbpsghir| <unk>arting <unk>ar"
+ },
+ {
+  "task": "x1",
+  "prompt": "عصى,|",
+  "gold": "عَصَى,",
+  "live": "عص<unk>,|<unk><unk><unk><unk><unk><unk><unk><unk><unk><unk><unk><unk>",
+  "off": "عص<unk>,| وَالْمَوَار"
+ },
+ {
+  "task": "x2",
+  "prompt": "291+354=|",
+  "gold": "645",
+  "live": "291+354=|ذَكَرٍ]اتٍ ع",
+  "off": "291+354=|ي اَلْمَوْسِ"
+ },
+ {
+  "task": "x3",
+  "prompt": "({}[](\n",
+  "gold": "bad",
+  "live": "({}[](\n)[[[[[[[[[[[",
+  "off": "({}[](\n\nوَالْمُنْتَ"
+ },
+ {
+  "task": "x4",
+  "prompt": "copy:brh|",
+  "gold": "brh",
+  "live": "copy:brh|ظُ الِاسْتِج",
+  "off": "copy:brh|ا <unk>arting <unk>a"
+ }
+]

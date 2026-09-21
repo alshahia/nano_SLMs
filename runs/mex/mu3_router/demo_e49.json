@@ -1,0 +1,32 @@
+[
+ {
+  "task": "x1",
+  "prompt": "اثنى،|",
+  "gold": "أَثْنَى،",
+  "model": "baaalalar"
+ },
+ {
+  "task": "x2",
+  "prompt": "998+274=|",
+  "gold": "1272",
+  "model": "11111"
+ },
+ {
+  "task": "x3",
+  "prompt": "[()[}{][}{)]{(([{}{}]}\n",
+  "gold": "bad",
+  "model": "bad"
+ },
+ {
+  "task": "x4",
+  "prompt": "copy:ttexbpsghir|",
+  "gold": "ttexbpsghir",
+  "model": "behhhehhh"
+ },
+ {
+  "task": "dia(forced)",
+  "prompt": "glyph sample",
+  "gold": "glyph sample",
+  "model": "ccacacac"
+ }
+]

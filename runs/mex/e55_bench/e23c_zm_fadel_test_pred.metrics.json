@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\e23c_zm_fadel_test_pred.txt",
+  "gate": "fadel_test",
+  "words": 125098,
+  "ref_marks": 371726,
+  "marked_words": 106768,
+  "mark_hit": 307764,
+  "mark_wrong": 58950,
+  "mark_missed": 1636,
+  "mark_extra": 3332,
+  "mark_accuracy": 0.8355,
+  "mark_precision": 0.8317,
+  "mark_f1": 0.8336,
+  "word_ax": 0.5362,
+  "word_partial50": 0.9544,
+  "mark_acc_first": 0.9737,
+  "mark_acc_mid": 0.828,
+  "mark_acc_last": 0.7419,
+  "der_collapse_1minus": 0.3989,
+  "zero_mark_baseline_der": 0.8535,
+  "contrastive_lift": 0.4546
+}

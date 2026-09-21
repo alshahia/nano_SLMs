@@ -1,0 +1,22 @@
+{
+  "pred": "runs\\mex\\e55_bench\\e23c_zm_sadeed25_pred.txt",
+  "gate": "sadeed25",
+  "words": 52906,
+  "ref_marks": 191643,
+  "marked_words": 51603,
+  "mark_hit": 151562,
+  "mark_wrong": 36349,
+  "mark_missed": 1135,
+  "mark_extra": 421,
+  "mark_accuracy": 0.8017,
+  "mark_precision": 0.8048,
+  "mark_f1": 0.8032,
+  "word_ax": 0.4609,
+  "word_partial50": 0.9422,
+  "mark_acc_first": 0.8,
+  "mark_acc_mid": 0.7909,
+  "mark_acc_last": 0.2,
+  "der_collapse_1minus": 0.527,
+  "zero_mark_baseline_der": 0.9754,
+  "contrastive_lift": 0.4484
+}

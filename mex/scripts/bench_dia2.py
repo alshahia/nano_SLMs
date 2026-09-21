@@ -23,7 +23,8 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 voc = CharVocab()
 marks = [c for c in voc.vocab if len(c) == 1 and 0x064B <= ord(c) <= 0x0652]
 mark_ids = [int(voc.vocab[c]) for c in marks]
-NONE, mid, pad, seq = 8, int(voc.vocab["|"]), int(voc.vocab["<pad>"]), 96
+NONE, mid, pad = 8, int(voc.vocab["|"]), int(voc.vocab["<pad>"])
+seq = int(os.environ.get('DIA2_SEQ', '96'))
 mark_ids_t = torch.tensor(mark_ids, device=device)
 MARK_SET = set(mark_ids)
 REV = {v: k for k, v in voc.vocab.items()}

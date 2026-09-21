@@ -1,0 +1,12 @@
+{
+  "res": {
+    "all": 0.6196,
+    "markpos_head": 0.7556,
+    "markpos_trunk_only": 0.7515,
+    "nonmark": 0.5418
+  },
+  "gates": {
+    "rule_beats_E34": "PASS",
+    "markacc_at_or_above_trunk_only": "PASS"
+  }
+}

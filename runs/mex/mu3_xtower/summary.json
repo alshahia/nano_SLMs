@@ -1,0 +1,9 @@
+{
+  "phase": "mu3_xtower_e44",
+  "ce_trunk_off": 4.2467,
+  "ce_xtower": 3.3229,
+  "rel_drop": 0.2175,
+  "identity_max_dlogit": 0.0,
+  "gate_a": "PASS",
+  "gate_b": "PASS"
+}

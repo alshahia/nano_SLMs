@@ -9,6 +9,26 @@
     "overfit_gap_final": 0.0,
     "final_train_loss": 0.9861350059509277
   },
+  "distill_student": {
+    "min_eval_loss": 2.0304534435272217,
+    "min_at_step": 4500,
+    "max_eval_loss": 2.0813722610473633,
+    "max_at_step": 500,
+    "final_eval_loss": 2.0304534435272217,
+    "final_step": 12000,
+    "overfit_gap_final": 0.0,
+    "final_train_loss": 3.662886619567871
+  },
+  "mu2_g1": {
+    "min_eval_loss": 0.7076988220214844,
+    "min_at_step": 114250,
+    "max_eval_loss": 1.6018413305282593,
+    "max_at_step": 250,
+    "final_eval_loss": 0.7076988220214844,
+    "final_step": 120000,
+    "overfit_gap_final": 0.0,
+    "final_train_loss": 0.8822748064994812
+  },
   "x1": {
     "min_eval_loss": 1.1292885541915894,
     "min_at_step": 8000,

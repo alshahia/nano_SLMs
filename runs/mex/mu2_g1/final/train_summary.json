@@ -1,0 +1,79 @@
+{
+  "phase": "mu2_g1",
+  "params_m": 0.78,
+  "best_eval_loss": 0.7076988220214844,
+  "best_checkpoint": "E:\\python_projects\\nano_SLMs\\runs\\mex\\mu2_g1\\checkpoint-114250",
+  "final_eval": {
+    "eval_loss": 0.7076988220214844,
+    "eval_runtime": 1.5748,
+    "eval_samples_per_second": 2001.576,
+    "eval_steps_per_second": 125.099,
+    "epoch": 9.69227041434456
+  },
+  "resumed_from": null,
+  "env": {
+    "timestamp_utc": "2026-09-19T12:06:42+00:00",
+    "python": "3.12.9",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.14.0+cu126",
+    "transformers": "5.16.1",
+    "tokenizers": "0.23.2",
+    "datasets": "5.0.1",
+    "accelerate": "1.14.0",
+    "peft": "0.20.0",
+    "bitsandbytes": "0.50.2",
+    "git_commit": "45fa7ba",
+    "gpu": "Quadro RTX 3000, 6144 MiB",
+    "resolved_config": {
+      "name": "mu2_g1",
+      "tokenizer": {
+        "name": "data/mex/tokenizer",
+        "vocab_size": 97
+      },
+      "model": {
+        "layers": 2,
+        "hidden": 160,
+        "heads": 4,
+        "kv_heads": 2,
+        "ffn": 640,
+        "ctx": 96,
+        "dropout": 0.0,
+        "tie_embeddings": true
+      },
+      "data": {
+        "dataset_candidates": [
+          {
+            "name": "local-mu2-g1"
+          }
+        ],
+        "rows": 0,
+        "val_fraction": 0.02,
+        "shard_tokens": 2000000,
+        "raw_dir": "data/mex/mu2/g1",
+        "tokens_dir": "data/mex/mu2/g1/tokens"
+      },
+      "train": {
+        "output_dir": "runs/mex/mu2_g1",
+        "final_dir": "runs/mex/mu2_g1/final",
+        "max_steps": 120000,
+        "batch": 8,
+        "eval_batch": 16,
+        "accum": 4,
+        "lr": 0.001,
+        "scheduler": "cosine",
+        "warmup_steps": 20,
+        "weight_decay": 0.1,
+        "max_grad_norm": 1.0,
+        "logging_steps": 50,
+        "eval_steps": 250,
+        "save_steps": 250,
+        "save_total_limit": 3,
+        "fp16": true,
+        "grad_ckpt": false,
+        "optim": "adamw_bnb_8bit",
+        "dataloader_num_workers": 0,
+        "seed": 42
+      }
+    }
+  }
+}
