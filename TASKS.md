@@ -172,3 +172,5 @@ BEFORE training (A0 discipline); CPU-only -> zero single-GPU contention by const
 
 | 100 | E-58 Schemer v2 (DA-9) - MLP head + char-class sentinels | DONE | PASS: micro 0.8753 / rules 0.287 |
 | 101 | DA-4/5 audio tier (FLEURS + whisper-tiny) | BLOCKED | needs HF auth for fleurs audio tarballs |
+
+| 35b | dia-line ladder + expert-composition plan (E-60a/b/c) — fixes M1-M7 of the E-56..E-59 chain | `in_progress` (plan written; launch user-gated) | Plan doc committed; Rung A (E-60a 4L×320h joint trunk ~5.2M) awaits user go, then probe → launch per rules R1-R7 | docs/plans/2026-09-21-dia-ladder-experts-plan.md; research/EXPERIMENTS.md E-60 row |
