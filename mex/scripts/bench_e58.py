@@ -1,7 +1,7 @@
 """mex/scripts/bench_e58.py - E-58 external gates with the 15-label head.
 Run: python mex/scripts/bench_e58.py <gate> <out_pred.txt>
 """
-import json, sys
+import json, sys, os
 from pathlib import Path
 import torch
 REPO = Path("E:/python_projects/nano_SLMs")
@@ -17,12 +17,13 @@ from labels import marks_for_label
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 voc = CharVocab()
-SEQ = 96
-TRUNK_DIR = REPO / "runs/mex/dia2g_15head"
+SEQ = int(os.environ.get("DIA2_SEQ", "96"))
+TRUNK_DIR = Path(os.environ.get("DIA2_TRUNK", str(REPO / "runs/mex/dia2g_15head")))
 trunk = LlamaForCausalLM.from_pretrained(str(TRUNK_DIR)).to(device).eval()
 trunk.load_state_dict(load_file(str(TRUNK_DIR / "model.safetensors")), strict=True)
-head = torch.nn.Linear(1280, 15).to(device)
-head.load_state_dict(load_file(str(TRUNK_DIR / "head15.safetensors")))
+_hd = load_file(str(TRUNK_DIR / "head15.safetensors"))
+head = torch.nn.Linear(_hd["weight"].shape[1], _hd["weight"].shape[0]).to(device)
+head.load_state_dict(_hd)
 for m in (trunk, head):
     m.eval()
     for p in m.parameters():
