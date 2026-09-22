@@ -69,7 +69,7 @@ def probe_head_bench(model, typed_train, typed_test, tok, pad_id, device, cfg,
         saved_head = {k: v.detach().clone() for k, v in dm.head.state_dict().items()}
         restore = True
     else:
-        dm = LayaDecisionModel(model.bert)   # shares encoder weights, no copy
+        dm = LayaDecisionModel(model.bert).to(device)   # shares encoder weights, no copy
         restore = False
     enc = [p for n, p in dm.named_parameters() if n.startswith("encoder.")]
     was_req = [p.requires_grad for p in enc]
