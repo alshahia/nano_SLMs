@@ -27,7 +27,7 @@ import eval_public_choice as epc
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config", default="configs/laya_l3.yaml")
+    ap.add_argument("--config", default="configs/laya_l3_ladder.yaml")
     ap.add_argument("--model", default=None)
     args = ap.parse_args()
     import yaml

@@ -163,7 +163,7 @@ def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--config", default="configs/laya_l3.yaml")
+    ap.add_argument("--config", default="configs/laya_l3_ladder.yaml")
     args = ap.parse_args()
     import yaml
     with open(args.config, "r", encoding="utf-8") as f:

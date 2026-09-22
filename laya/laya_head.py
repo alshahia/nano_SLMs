@@ -43,8 +43,11 @@ class LayaDecisionModel(nn.Module):
 
     def __init__(self, encoder_name, head_layers=2, dropout=0.1):
         super().__init__()
-        from transformers import AutoModel
-        self.encoder = AutoModel.from_pretrained(encoder_name)
+        if isinstance(encoder_name, nn.Module):   # share an already-built encoder
+            self.encoder = encoder_name
+        else:
+            from transformers import AutoModel
+            self.encoder = AutoModel.from_pretrained(encoder_name)
         d = self.encoder.config.hidden_size
         self.d = d
         self.type_emb = nn.Embedding(3, d)

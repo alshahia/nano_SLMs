@@ -19,7 +19,7 @@ import numpy as np
 import torch
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from laya_head import collate, soft_ce_loss
+from laya_head import LayaDecisionModel, collate, soft_ce_loss
 import train_l1 as t1
 import eval_phish as ep
 import eval_l2 as el2
@@ -58,25 +58,35 @@ def decision_bench(model, tok, pad_id, device, typed_test, do_phish=True):
 
 def probe_head_bench(model, typed_train, typed_test, tok, pad_id, device, cfg,
                      tag="pretrain", step_no=0, log_path=None, writer=None):
-    """Freeze encoder -> briefly train the head on typed TRAIN -> bench ->
-    restore head -> unfreeze. Pure monitoring; nothing persists."""
-    head = model.head
-    saved = {k: v.detach().clone() for k, v in head.state_dict().items()}
-    enc = [p for n, p in model.named_parameters() if n.startswith("bert.")]
+    """Freeze encoder -> briefly train a decision head on typed TRAIN ->
+    bench -> restore/discard. Pure monitoring; nothing persists.
+
+    model may be a LayaDecisionModel (ladder: live head snapshotted and
+    restored) or a BertForMaskedLM (pretrain: a throwaway decision model is
+    wrapped around the SHARED encoder and discarded afterwards)."""
+    if hasattr(model, "head"):
+        dm = model
+        saved_head = {k: v.detach().clone() for k, v in dm.head.state_dict().items()}
+        restore = True
+    else:
+        dm = LayaDecisionModel(model.bert)   # shares encoder weights, no copy
+        restore = False
+    enc = [p for n, p in dm.named_parameters() if n.startswith("encoder.")]
+    was_req = [p.requires_grad for p in enc]
     for p in enc:
         p.requires_grad_(False)
-    head_params = [p for n, p in model.named_parameters() if not n.startswith("bert.")]
+    head_params = [p for n, p in dm.named_parameters() if not n.startswith("encoder.")]
     opt = torch.optim.AdamW(head_params, lr=1e-4)
     scaler = torch.amp.GradScaler("cuda")
     rng = np.random.default_rng(0)
     micro = int(cfg.get("probe_micro", 8))
     idx = rng.permutation(len(typed_train))[:int(cfg.get("probe_train_items", 2000))]
     subset = [typed_train[int(i)] for i in idx]
-    model.train()
+    dm.train()
     for _ in range(int(cfg.get("probe_epochs", 2))):
         for i in range(0, len(subset), micro):
             chunk = subset[i:i + micro]
-            batch, logp, _ = t1.forward_batch(model, collate(chunk, pad_id), device)
+            batch, logp, _ = t1.forward_batch(dm, collate(chunk, pad_id), device)
             loss = soft_ce_loss(logp, None, batch["targets"], batch["n_options"])
             opt.zero_grad(set_to_none=True)
             scaler.scale(loss).backward()
@@ -84,13 +94,16 @@ def probe_head_bench(model, typed_train, typed_test, tok, pad_id, device, cfg,
             torch.nn.utils.clip_grad_norm_(head_params, 1.0)
             scaler.step(opt)
             scaler.update()
-    model.eval()
-    m = decision_bench(model, tok, pad_id, device, typed_test)
-    head.load_state_dict(saved)
-    for p in enc:
-        p.requires_grad_(True)
-    model.train()
+    dm.eval()
+    m = decision_bench(dm, tok, pad_id, device, typed_test)
+    if restore:
+        dm.head.load_state_dict(saved_head)
+    for p, r in zip(enc, was_req):
+        p.requires_grad_(r)
+    dm.train()
     del opt, scaler
+    if not restore:
+        del dm
     torch.cuda.empty_cache()
     rec = {"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "source": tag,
            "step": step_no, **{k: round(float(v), 4) for k, v in m.items()}}
