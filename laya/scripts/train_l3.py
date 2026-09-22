@@ -55,7 +55,8 @@ def aug_item(it, tok, cfg, rng):
     tgt = list(it["target"])
     n = len(texts)
     if rng.random() < float(cfg["order_aug_prob"]) and n > 1:
-        perm = rng.permutation(n)
+        perm = list(range(n))
+        rng.shuffle(perm)
         texts = [texts[p] for p in perm]
         tgt = [tgt[p] for p in perm]
     if rng.random() < float(cfg["rename_aug_prob"]):
