@@ -158,6 +158,9 @@ def main():
                     "gold_idx": max(range(len(tgt)), key=lambda i: tgt[i]),
                     "workflow": workflow, "case_id": case_id,
                     "qname": qname, "qtype_name": t,
+                    "instructions": instructions,
+                    "option_texts": [str(o) for o in option_texts],
+                    "state_text": state_text,
                 })
         if items and skipped > 0.2 * max(1, len(items)):
             row0 = rows[0]
