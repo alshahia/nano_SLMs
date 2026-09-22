@@ -42,7 +42,7 @@
   "render": "field",
   "fields": [
    "cleaned_text"
-  ],
+  ]
  },
  {
   "name": "support_tickets",
