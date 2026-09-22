@@ -1,0 +1,119 @@
+"""Behavioural probes for the failures found by hand.
+
+Accuracy on a held-out split will not catch these. Each probe checks a property
+the model should hold regardless of task:
+
+  contradiction - a question and its logical inverse must not both be answered
+                  'no' with high confidence
+  stability     - renaming the options must not flip the verdict
+  grounding     - facts stated plainly in the state must be read correctly
+  overconfidence- being wrong is survivable; being wrong at confidence 1.0 is not
+"""
+import argparse, json
+import numpy as np
+import laya
+
+TICKET = ("I've been trying to export my data for three days and the button just spins "
+          "forever. I'm on the Pro plan and I have a compliance audit on Monday. "
+          "This is the second time I've written in.")
+
+PHISH = {"from": "security@arnazon-support.com",
+         "subject": "URGENT: your account has been locked",
+         "body": "We detected unusual activity. Verify your password at "
+                 "http://bit.ly/x9f2 within 24 hours or your account will be closed."}
+
+# (state, question A, question B) where P(A) and P(B) must roughly sum to 1
+CONTRADICTIONS = [
+    (TICKET, "Does this require a human reply rather than an automated one?",
+             "Can an automated bot fully resolve this ticket without any human involvement?"),
+    (TICKET, "Is the customer reporting a software bug or defect?",
+             "Is the product working exactly as intended for this customer?"),
+    (PHISH,  "Is this email a phishing or scam attempt?",
+             "Is this email a legitimate message from the real company it claims to be?"),
+]
+
+# same decision, different option names - the verdict should not move
+STABILITY = [
+    (TICKET, "a broken product feature", [
+        ("Which team should own this ticket?",
+         {"engineering": "a product defect", "support": "user needs guidance",
+          "account": "billing or plan changes"}, "engineering"),
+        ("Which department should handle this ticket?",
+         {"technical": "bugs, outages, broken features", "support": "how-to questions",
+          "billing": "invoices, payments, plan changes"}, "technical"),
+        ("Route this ticket.",
+         {"dev_team": "fixes defects in the software", "helpdesk": "answers user questions",
+          "finance": "handles invoices"}, "dev_team"),
+    ]),
+]
+
+# facts stated verbatim in the state
+GROUNDING = [
+    (TICKET, "Has this customer contacted support about this before?", True),
+    (TICKET, "Is the customer on a paid plan?", True),
+    (TICKET, "Is the customer asking about a refund?", False),
+    (PHISH,  "Does this message contain a shortened or obfuscated link?", True),
+    (PHISH,  "Does this message pressure the reader to act within a deadline?", True),
+]
+
+
+def run(model, device="cuda"):
+    a = laya.load(model) if "/" in model and not model.startswith("/") else laya.Agent(model, device=device)
+    noul = lambda s, i: a.predict(s, {"q": {"type": "noul", "instructions": i}})["answers"]["q"]
+
+    print(f"\n{'='*66}\n{model}\n{'='*66}")
+    fails = 0
+
+    print("\nCONTRADICTION  (P(A) + P(B) should be near 1.0)")
+    for state, qa, qb in CONTRADICTIONS:
+        ra, rb = noul(state, qa), noul(state, qb)
+        tot = ra["noul"] + rb["noul"]
+        bad = abs(tot - 1.0) > 0.35
+        fails += bad
+        print(f"  {'FAIL' if bad else 'ok  '} sum={tot:.2f}  "
+              f"A={ra['noul']:.2f}(c{ra['confidence']:.2f})  B={rb['noul']:.2f}(c{rb['confidence']:.2f})")
+        print(f"        A: {qa}")
+
+    print("\nSTABILITY  (renaming options must not flip the verdict)")
+    for state, _, variants in STABILITY:
+        got = []
+        for ins, crit, expect in variants:
+            r = a.predict(state, {"q": {"type": "choice", "instructions": ins, "criteria": crit}})["answers"]["q"]
+            got.append((r["choice"], expect, r["confidence"]))
+        n_right = sum(g == e for g, e, _ in got)
+        fails += (n_right < len(got))
+        print(f"  {'FAIL' if n_right < len(got) else 'ok  '} {n_right}/{len(got)} correct: " +
+              ", ".join(f"{g}{'' if g==e else f'(want {e})'}@{c:.2f}" for g, e, c in got))
+
+    print("\nGROUNDING  (facts stated verbatim in the state)")
+    right = 0
+    for state, q, expect in GROUNDING:
+        r = noul(state, q)
+        ok = (r["noul"] >= 0.5) == expect
+        right += ok
+        print(f"  {'ok  ' if ok else 'FAIL'} {r['noul']:.2f} (want {'>0.5' if expect else '<0.5'})  "
+              f"c{r['confidence']:.2f}  {q}")
+    fails += (len(GROUNDING) - right)
+
+    print("\nOVERCONFIDENCE  (confidently wrong is the worst outcome)")
+    confwrong = []
+    for state, q, expect in GROUNDING:
+        r = noul(state, q)
+        if (r["noul"] >= 0.5) != expect and r["confidence"] >= 0.8:
+            confwrong.append((q, r["noul"], r["confidence"]))
+    for q, p, c in confwrong:
+        print(f"  FAIL p={p:.2f} at confidence {c:.2f}: {q}")
+    if not confwrong:
+        print("  ok   no wrong answer given at confidence >= 0.8")
+    fails += len(confwrong)
+
+    print(f"\n  TOTAL FAILURES: {fails}")
+    return fails
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("models", nargs="+")
+    args = ap.parse_args()
+    for m in args.models:
+        run(m)

@@ -1,0 +1,82 @@
+# Credits
+
+This Repo contains no original Model. It is a Benchmark and a Set of Fine-Tunes
+built on other People's Work.
+
+## The Model under Test
+
+**Laya**, `convaiinnovations/laya`, Apache 2.0, by
+[Convai Innovations](https://huggingface.co/convaiinnovations), Author Nandakishor M.
+Source at [github.com/NandhaKishorM/laya](https://github.com/NandhaKishorM/laya).
+421M Parameters: `answerdotai/ModernBERT-large` plus a Decision Head trained with
+RLCD. All Fine-Tunes here start from that Checkpoint, and the Inference Runtime in
+`bench/` is that Project's Code with small Changes.
+
+The Backbone is **ModernBERT-large** by Answer.AI and LightOn, Apache 2.0.
+
+## The Model it is compared against
+
+**Jev** by [TypeSafe AI](https://typesafe.ai), released 15 September 2026, closed
+Weights. Every Jev Number in this Repo is quoted from a published Source, not
+measured by me. I have no Access to it. Named after the Economist William Stanley
+Jevons.
+
+**Claude Haiku 4.5** Numbers are quoted from jev-phishing-bench, also not measured
+here.
+
+## Benchmarks
+
+- **PhishNChips v5.2**, `AreLit/PhishNChips` on the Hub, Source at
+  [github.com/R-Lit/PhishNChips](https://github.com/R-Lit/PhishNChips), MIT.
+  2000 Emails built around real Phishing URLs.
+- **jev-phishing-bench** by
+  [anisselbd](https://github.com/anisselbd/jev-phishing-bench). The Jev and Haiku
+  Reference Numbers on the Phishing Task come from there.
+- **LocalLLaMA/typed-decisions**, Apache 2.0. A community Rebuild of Jev's four
+  Benchmark Workflows, with soft Probability Targets. The Jev 1.13.0 Row and the
+  0.735 Teacher Ceiling come from its Documentation.
+
+## Training Data
+
+Permissive:
+
+- `google/civil_comments` (CC0), `google/boolq` (CC-BY-SA-3.0),
+  `rajpurkar/squad_v2` (CC-BY-SA-4.0), `stanfordnlp/snli` (CC-BY-SA-4.0),
+  `nyu-mll/multi_nli`, `allenai/scitail`, `Zhengping/UNLI` (MIT),
+  `metaeval/chaos-mnli-ambiguity`, `mteb/banking77` (MIT), `clinc/clinc_oos`
+  (CC-BY-3.0), `bitext/Bitext-customer-support-llm-chatbot-training-dataset`
+  (CDLA-Sharing-1.0), `SetFit/enron_spam`, `zefang-liu/phishing-email-dataset`
+  (LGPL-3.0), `puyang2025/seven-phishing-email-datasets`,
+  `walledai/JailbreakHub` (MIT), `Yelp/yelp_review_full`, `SetFit/sst5`,
+  `pngwn/typed-decisions-v2-system-one`.
+
+Non-commercial, and the Reason the Checkpoints cannot be Apache 2.0:
+
+- `facebook/anli` (CC-BY-NC-4.0)
+- `Tobi-Bueck/customer-support-tickets` (CC-BY-NC-4.0)
+
+## Research the Method comes from
+
+- Xu et al. 2018, *A Semantic Loss Function for Deep Learning with Symbolic
+  Knowledge*. The Weighted-Model-Counting Form of the Consistency Penalty.
+- Asai and Hajishirzi 2020, *Logic-Guided Data Augmentation and Regularization*.
+  The Claim that inverted-Pair Augmentation alone is not enough, which did not
+  replicate here.
+- Kumar et al. 2022, *Fine-Tuning can Distort Pretrained Features and Underperform
+  Out-of-Distribution*. LP-FT.
+- Wortsman et al. 2022, *Robust fine-tuning of zero-shot models*. WiSE-FT, tested
+  here and it did not help.
+- Charoenphakdee et al. 2021, on Focal Loss and proper Scoring Rules. The Reason
+  Focal Loss was rejected.
+- Guo et al. 2017, *On Calibration of Modern Neural Networks*. Temperature
+  Scaling and ECE.
+- Platt 1999, for the Scaling used in `bench/platt.py`.
+
+## Backbone tried and rejected
+
+- `EuroBERT/EuroBERT-610m`, Apache 2.0. Loads and trains, but needs far more
+  Compute than this Experiment gave it.
+- `chandar-lab/NeoBERT`, MIT. Not benchmarked. It requires `xformers`, and every
+  published Wheel is built for Python 3.9/3.10 against Torch 2.10+cu128. On Torch
+  2.14+cu132 with Python 3.13 the Kernels are inert and the Model silently returns
+  NaN rather than failing loudly.

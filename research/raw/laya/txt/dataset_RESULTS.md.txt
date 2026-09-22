@@ -1,0 +1,107 @@
+# All measured Numbers
+
+Every Row marked "published" is quoted, not measured here. Everything else was
+produced by the Scripts in `bench/` on one RTX 5090 on 19 September 2026.
+
+## PhishNChips, Core Split, 2000 Emails (1000 Phishing / 1000 legitimate)
+
+| Model | Accuracy | ECE | AUROC | Recall | Precision | p50 ms |
+|---|---|---|---|---|---|---|
+| Laya base | 0.505 | 0.441 | 0.678 | 0.012 | 0.857 | 9.0 |
+| Arm A | 0.502 | 0.498 | 0.562 | 0.005 | 0.833 | 8.9 |
+| Arm B | 0.505 | 0.494 | 0.584 | 0.014 | 0.824 | 9.0 |
+| Jev (published) | 0.626 | 0.154 | 0.689 | 0.432 | | 239 |
+| Claude Haiku 4.5 (published) | 0.813 | 0.097 | 0.837 | 0.764 | | 687 |
+
+Split-half Platt Scaling, fitted on 1000 Emails and scored on the other 1000:
+
+| Model | raw Accuracy | fitted Accuracy | AUROC | best raw Threshold |
+|---|---|---|---|---|
+| Laya base | 0.506 | **0.611** | 0.679 | 0.0263 |
+| Arm B | 0.510 | 0.512 | 0.569 | 0.0002 |
+
+## typed-decisions, Test Split, 400 Cases / 2000 Decisions
+
+| Model | Accuracy | soft Accuracy | ECE | Brier | ms per Case |
+|---|---|---|---|---|---|
+| Laya base | 0.360 | 0.366 | 0.175 | 0.329 | 15.9 |
+| fine-tuned on this Task | 0.767 | 0.511 | 0.212 | 0.063 | 16.4 |
+| Arm A | 0.636 | 0.469 | 0.146 | 0.130 | 15.8 |
+| Arm B | 0.676 | 0.479 | 0.157 | 0.106 | 15.8 |
+| Arm C (EuroBERT-610m) | 0.296 | 0.384 | 0.215 | 0.322 | 17.6 |
+| Jev 1.13.0 (published) | 0.727 | 0.580 | 0.144 | 0.148 | 710 |
+| Teacher Self-Agreement (Ceiling) | 0.735 | | | | |
+| published 2xT4 Notebook Run | 0.766 | | | | |
+
+Per Workflow for the Task-specific Fine-Tune: invoice_processing 0.794,
+customer_service 0.764, security_incidents 0.756, agent_trace_observability 0.754.
+
+## Probe Suite, 11 Assertions
+
+| Model | Contradiction (3) | Stability (3) | Grounding (5) | Overconfidence | Total Failures |
+|---|---|---|---|---|---|
+| Laya base | 3 fail | 2/3 ok | 2/5 ok | clean | **7** |
+| fine-tuned on typed-decisions | 1 fail | 2/3 ok | 3/5 ok | clean | 4 |
+| Arm A | 0 fail | 0/3 ok | 5/5 ok | clean | **1** |
+| Arm B | 1 fail | 1/3 ok | 5/5 ok | clean | 2 |
+| Arm C | 3 fail | 1/3 ok | 1/5 ok | 4 Failures | 12 |
+
+## Held-out Mixture, per Source, 10365 Items
+
+| Source | A Accuracy | A ECE | B Accuracy | B ECE |
+|---|---|---|---|---|
+| anli | 0.953 | 0.043 | 0.960 | 0.042 |
+| bitext_support | 1.000 | 0.001 | 1.000 | 0.000 |
+| boolq | 0.975 | 0.067 | 0.963 | 0.050 |
+| chaos_mnli | 0.576 | 0.355 | 0.593 | 0.368 |
+| civil_comments | 0.953 | 0.255 | 0.962 | 0.268 |
+| clinc_oos | 0.878 | 0.073 | 0.908 | 0.072 |
+| enron_spam | 0.998 | 0.055 | 0.993 | 0.061 |
+| jailbreak_hub | 0.942 | 0.047 | 0.956 | 0.063 |
+| multi_nli | 0.973 | 0.033 | 0.956 | 0.031 |
+| phishing_email | 0.987 | 0.074 | 0.985 | 0.079 |
+| scitail | 0.937 | 0.049 | 0.947 | 0.058 |
+| snli | 0.956 | 0.033 | 0.945 | 0.045 |
+| support_tickets_nc | 0.340 | 0.186 | 0.353 | 0.148 |
+| typed_decisions | 0.689 | 0.617 | 0.672 | 0.594 |
+| unli | 0.769 | 0.715 | 0.768 | 0.714 |
+| yelp_stars | 0.683 | 0.185 | 0.653 | 0.114 |
+| **Macro** | **0.838** | **0.166** | **0.840** | **0.156** |
+
+`bitext_support` at 1.000 is suspicious rather than good. That Dataset is
+templated and probably trivially separable. The high ECE on `unli`,
+`chaos_mnli` and `typed_decisions` is largely a Measurement Artefact, see the README.
+
+## WiSE-FT Sweep
+
+Relative L2 Distance between base and fine-tuned Weights: 0.0054.
+
+| alpha | typed-decisions Accuracy | ECE | Probe Failures |
+|---|---|---|---|
+| 0.0 (base) | 0.360 | 0.175 | 7 |
+| 0.2 | 0.529 | 0.037 | 6 |
+| 0.4 | 0.666 | 0.136 | 6 |
+| 0.6 | 0.730 | 0.175 | 5 |
+| 0.8 | 0.758 | 0.202 | 4 |
+| 1.0 (fine-tuned) | 0.767 | 0.212 | 4 |
+
+## Latency, RTX 5090, fp16, after Warmup
+
+| Questions in one Pass | p50 | p95 | per Question |
+|---|---|---|---|
+| 1 | 10.7 ms | 12.6 ms | 10.7 ms |
+| 10 | 42.6 ms | 43.7 ms | 4.3 ms |
+| 50 | 246 ms | 257 ms | 4.9 ms |
+| 100 | 496 ms | 509 ms | 5.0 ms |
+
+Cold Load: 14.9 s. Checkpoint Size: 843 MB.
+
+## Training Throughput
+
+| Setting | Steps per Second | Minutes per Epoch |
+|---|---|---|
+| random Order, Micro-Batch 8 | 7.4 | 97 |
+| length-bucketed, Micro-Batch 8 | 18.5 | 20 |
+
+Padding Waste measured over 345635 Items: 2.66x fewer Token Slots at Micro-Batch
+8, 3.34x at 16.
