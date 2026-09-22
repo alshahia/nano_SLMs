@@ -114,6 +114,9 @@ def main():
     epochs = math.ceil(steps * cfg["micro_batch"] / max(1, len(train)))
     it = iter(dl)
     model.train()
+    bench_log = cfg.get("bench_log", os.path.join(out, "bench_log.jsonl"))
+    probe_data = [None, None]   # lazy (typed_train, typed_test) for bench probes
+    pad_id = tok.pad_token_id
     t0 = time.time()
     mask_id = tok.mask_token_id
     vocab = int(cfg["vocab_size"])
@@ -153,13 +156,30 @@ def main():
                     tot += ho.loss.item(); n += 1
             if writer:
                 writer.add_scalar("mlm/heldout_loss", tot / max(1, n), step + 1)
-            print("[l3pre] heldout loss %.4f" % (tot / max(1, n)), flush=True)
+                writer.add_scalar("mlm/heldout_ppl", float(np.exp(min(20.0, tot / max(1, n)))), step + 1)
+            rec = {"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "source": "mlm_heldout",
+                   "step": step + 1, "heldout_loss": round(tot / max(1, n), 4),
+                   "heldout_ppl": round(float(np.exp(min(20.0, tot / max(1, n)))), 2)}
+            with open(bench_log, "a", encoding="utf-8") as f:
+                f.write(json.dumps(rec) + "\n")
+            print("[l3pre] heldout loss %.4f ppl %.2f" %
+                  (tot / max(1, n), rec["heldout_ppl"]), flush=True)
             model.train()
         if (step + 1) % int(cfg["save_every_steps"]) == 0 or step + 1 == steps:
             torch.save({"model": model.state_dict(), "opt": opt.state_dict(),
                         "scaler": scaler.state_dict(), "step": step + 1,
                         "rng": torch.get_rng_state()}, last_path + ".tmp")
             os.replace(last_path + ".tmp", last_path)
+        if ((step + 1) % int(cfg.get("probe_every_steps", 4000)) == 0 or step + 1 == steps) \
+                and os.path.exists(cfg.get("typed_test", "data/laya/typed_decisions/test.pt")):
+            from bench_probe import probe_head_bench
+            if probe_data[0] is None:
+                probe_data[0] = torch.load(cfg.get("typed_train", "data/laya/typed_decisions/train.pt"),
+                                           weights_only=False)
+                probe_data[1] = torch.load(cfg.get("typed_test", "data/laya/typed_decisions/test.pt"),
+                                           weights_only=False)
+            probe_head_bench(model, probe_data[0], probe_data[1], tok, pad_id, device, cfg,
+                             tag="pretrain", step_no=step + 1, log_path=bench_log, writer=writer)
 
     final = os.path.join(out, "pretrain_final")
     os.makedirs(final, exist_ok=True)

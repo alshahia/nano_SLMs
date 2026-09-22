@@ -19,6 +19,7 @@ from torch.utils.tensorboard import SummaryWriter
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from laya_head import LayaDecisionModel, pack_sequence, collate, soft_ce_loss, qtype_id
 import train_l1 as t1
+from bench_probe import decision_bench
 
 
 def eval_A(model, items, pad_id, device, micro=32):
@@ -186,14 +187,40 @@ def main():
     print("[l3] mixture %d/%d, typed %d/%d" % (len(mixture_train), len(mixture_held),
                                                len(typed_train), len(typed_test)), flush=True)
 
+    bench_log = os.path.join(out_dir, "bench_log.jsonl")
+
+    def log_bench(rec):
+        os.makedirs(os.path.dirname(bench_log), exist_ok=True)
+        with open(bench_log, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec) + "\n")
+
+    def eval_A_full(model, items, pad_id, device):
+        m = eval_A(model, items, pad_id, device)
+        try:
+            te = torch.load(cfg["typed_test"], weights_only=False)
+            m.update(decision_bench(model, tok, pad_id, device, te, do_phish=False))
+        except Exception as e:
+            m["bench_err"] = str(e)[:150]
+        log_bench({"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "source": "stageA", **m})
+        return m
+
+    def eval_B_full(model, items, pad_id, device):
+        m = t1.evaluate(model, items, pad_id, device)
+        try:
+            m.update(decision_bench(model, tok, pad_id, device, items, do_phish=True))
+        except Exception as e:
+            m["bench_err"] = str(e)[:150]
+        log_bench({"ts": time.strftime("%Y-%m-%dT%H:%M:%S"), "source": "stageB", **m})
+        return m
+
     print("[l3] STAGE A: mixture pretrain (max %d epochs, adaptive)" %
           int(cfg["epochs_stageA_max"]), flush=True)
     sa = run_stage(model, cfg, mixture_train, mixture_held, pad_id, device, "A",
-                   int(cfg["epochs_stageA_max"]), writer, eval_A, tok)
+                   int(cfg["epochs_stageA_max"]), writer, eval_A_full, tok)
     print("[l3] STAGE B: typed fine-tune + replay %.2f + aug" %
           float(cfg["replay_frac"]), flush=True)
     sb = run_stage(model, cfg, typed_train, typed_test, pad_id, device, "B",
-                   int(cfg["epochs_stageB"]), writer, t1.evaluate, tok,
+                   int(cfg["epochs_stageB"]), writer, eval_B_full, tok,
                    aug=True, replay=mixture_train)
 
     final_dir = os.path.join(out_dir, "final"); os.makedirs(final_dir, exist_ok=True)

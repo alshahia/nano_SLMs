@@ -45,3 +45,10 @@ weight_decay: 0.01
 clip: 1.0
 seed: 42
 save_every_steps: 200
+# --- scheduled bench monitoring (unseen data, several metrics) ---
+eval_every_steps: 1000
+probe_every_steps: 4000
+probe_train_items: 2000
+probe_epochs: 2
+probe_micro: 8
+bench_log: runs/laya/l3/bench_log.jsonl
