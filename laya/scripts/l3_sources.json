@@ -43,9 +43,6 @@
   "fields": [
    "cleaned_text"
   ],
-  "drop_prefixes": [
-   ""
-  ]
  },
  {
   "name": "support_tickets",
