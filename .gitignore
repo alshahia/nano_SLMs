@@ -140,3 +140,21 @@ runs/kt2_sft*/final/model.safetensors
 runs/kt2_sft*/*.log
 
 data/mex/
+
+# === 2026-09-22 push-quota incident: big artifacts stay local (HANDOFF/MEMORY 2026-09-22) ===
+# D-line (diacritizer): data artifacts local; regenerable from data/diac/raw
+data/diac/
+# mu-line weights and caches
+runs/mex/**/*.safetensors
+runs/mex/**/*.pt
+runs/mex/**/*.npy
+# E19 model weights + eval cache (model cards/code/evidence .txt stay tracked)
+models/e19/mishkala/mishkala.pt
+models/e19/tashkeel-350m-v2/model.safetensors
+models/e19/our_word_cache.json
+# GDN smoke/selftest weights
+runs/gdn_smoke/final/model.safetensors
+runs/gdn_smoke_ab/final/model.safetensors
+data/gdn_selftest/
+# regenerable raw downloads
+data/md_measure/*/raw/
