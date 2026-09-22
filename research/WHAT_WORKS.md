@@ -152,3 +152,6 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
 - Soft-CE training on gold PROBABILITY DISTRIBUTIONS (not argmax labels) yields well-calibrated models for free (raw ECE 0.0673). Do NOT add per-group post-hoc temperature on <1000-item calibration slices - it overfit (0.0673 -> 0.0948). One global T on >= 2000 items, or nothing.
 - Weak primitives at 37M: score questions (0.583) and agent-trace observability workflow (0.528) - same shape as the Laya 421M profile; watch these in L2+.
 
+
+- Laya-line L2 ladder (mixture pretrain -> typed fine-tune, 37.16M): +3.8 typed acc over direct fine-tune (0.6205 -> 0.6585) at identical params, ~36 min total on 8 GB. Adopt for any future decision-head line.
+- Probe suite (11 assertions, ~1 min on GPU) as cheap regression check: catches behavioral failures accuracy hides; L1 tied the best published grounded arm (1 failure vs Laya base 7).

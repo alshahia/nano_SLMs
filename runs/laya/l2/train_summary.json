@@ -1,0 +1,92 @@
+{
+ "params_m": 37.16,
+ "stageA": {
+  "updates": 3140,
+  "wall_s": 1930.1,
+  "peak_vram_mib": 1651.3,
+  "eval_curve": [
+   {
+    "epoch": 1,
+    "macro": 0.6851,
+    "per_source": {
+     "anli": 0.677,
+     "boolq": 0.6253,
+     "mnli": 0.7095,
+     "scitail": 1.0,
+     "snli": 0.782,
+     "squad_v2": 0.718,
+     "yelp5": 0.284
+    }
+   },
+   {
+    "epoch": 2,
+    "macro": 0.734,
+    "per_source": {
+     "anli": 0.726,
+     "boolq": 0.6274,
+     "mnli": 0.7585,
+     "scitail": 1.0,
+     "snli": 0.8093,
+     "squad_v2": 0.755,
+     "yelp5": 0.462
+    }
+   },
+   {
+    "epoch": 3,
+    "macro": 0.7478,
+    "per_source": {
+     "anli": 0.744,
+     "boolq": 0.6401,
+     "mnli": 0.7635,
+     "scitail": 1.0,
+     "snli": 0.8127,
+     "squad_v2": 0.762,
+     "yelp5": 0.512
+    }
+   }
+  ]
+ },
+ "stageB": {
+  "updates": 375,
+  "wall_s": 259.3,
+  "peak_vram_mib": 1669.6,
+  "eval_curve": [
+   {
+    "epoch": 1,
+    "acc": 0.5555,
+    "soft_acc": 0.4319666235554032,
+    "brier": 0.16453696783413763,
+    "n": 2000
+   },
+   {
+    "epoch": 2,
+    "acc": 0.6,
+    "soft_acc": 0.4820861280360259,
+    "brier": 0.15047107923344447,
+    "n": 2000
+   },
+   {
+    "epoch": 3,
+    "acc": 0.645,
+    "soft_acc": 0.49543204995593987,
+    "brier": 0.14369439690324726,
+    "n": 2000
+   },
+   {
+    "epoch": 4,
+    "acc": 0.6585,
+    "soft_acc": 0.508671200760873,
+    "brier": 0.13938259322191335,
+    "n": 2000
+   }
+  ]
+ },
+ "config": {
+  "encoder": "microsoft/MiniLM-L12-H384-uncased",
+  "epochs_stageA": 3,
+  "epochs_stageB": 4,
+  "micro_batch": 8,
+  "grad_accum": 8,
+  "seed": 42
+ }
+}

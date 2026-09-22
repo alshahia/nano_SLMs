@@ -1,0 +1,54 @@
+{
+ "experiment": "E-63 (laya-line L2)",
+ "checkpoint": "runs/laya/l2\\final\\model.pt",
+ "mixture_heldout": {
+  "per_source": {
+   "anli": 0.674,
+   "boolq": 0.6253,
+   "mnli": 0.7315,
+   "scitail": 1.0,
+   "snli": 0.7953,
+   "squad_v2": 0.753,
+   "yelp5": 0.22
+  },
+  "macro": 0.6856,
+  "n": 7442
+ },
+ "typed_test": {
+  "acc": 0.6585,
+  "soft_acc": 0.5087,
+  "brier": 0.1394,
+  "n": 2000
+ },
+ "calibration": {
+  "ece_raw": 0.0888,
+  "ece_global_T": 0.1282,
+  "T": 1.0797,
+  "note": "one global T on 2000 typed train items (E-62 lesson)"
+ },
+ "probe_permutation": {
+  "n": 200,
+  "agreement_l2": 0.385,
+  "agreement_l1": 0.325,
+  "note": "option-block reshuffle, exact repack; higher = rename-stable"
+ },
+ "gates": {
+  "G1_mixture_macro": {
+   "actual": 0.6856,
+   "required": ">= 0.74",
+   "verdict": "FAIL"
+  },
+  "G2_typed_acc": {
+   "actual": 0.6585,
+   "required": ">= 0.60",
+   "verdict": "PASS"
+  },
+  "G3_perm_invariance": {
+   "actual_l2": 0.385,
+   "actual_l1": 0.325,
+   "required": ">= 0.95",
+   "verdict": "FAIL"
+  }
+ },
+ "verdict": "FAIL"
+}

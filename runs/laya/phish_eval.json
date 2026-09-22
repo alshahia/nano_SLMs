@@ -1,0 +1,44 @@
+{
+  "dataset": "AreLit/PhishNChips core",
+  "n": 2000,
+  "protocol": "Luni bench_platt.py replication, zero-shot",
+  "models": {
+    "l1_final": {
+      "raw_acc_test_half": 0.498,
+      "platt_acc_test_half": 0.442,
+      "auroc_test_half": 0.4459511352181635,
+      "ece15_test_half": 0.1680621255636215,
+      "raw_acc_full": 0.5,
+      "platt_a": 1.0915766721648175,
+      "platt_b": -0.5394660647387901,
+      "mean_p": 0.6245871782302856
+    },
+    "l2_stageA": {
+      "raw_acc_test_half": 0.502,
+      "platt_acc_test_half": 0.559,
+      "auroc_test_half": 0.5756052096833549,
+      "ece15_test_half": 0.41198573216050866,
+      "raw_acc_full": 0.5,
+      "platt_a": 0.14436544123474462,
+      "platt_b": 0.3713023517008811,
+      "mean_p": 0.0856325626373291
+    },
+    "l2_final": {
+      "raw_acc_test_half": 0.428,
+      "platt_acc_test_half": 0.585,
+      "auroc_test_half": 0.3595697531160499,
+      "ece15_test_half": 0.11407980439066889,
+      "raw_acc_full": 0.4245,
+      "platt_a": -0.41351264107260216,
+      "platt_b": -0.029613887056118882,
+      "mean_p": 0.4720037281513214
+    }
+  },
+  "published": {
+    "laya_raw": 0.505,
+    "laya_platt": 0.611,
+    "laya_auroc": 0.678,
+    "jev_raw": 0.626,
+    "jev_auroc": 0.689
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "note": "probe suite is Laya-only published (7 base / 4 FT); no Jev numbers",
+  "models": {
+    "l1_final": {
+      "contradictions": [
+        {
+          "sum": 1.091323345899582,
+          "fail": false
+        },
+        {
+          "sum": 1.2931156158447266,
+          "fail": false
+        },
+        {
+          "sum": 1.0984335541725159,
+          "fail": false
+        }
+      ],
+      "stability": [
+        {
+          "got": "engineering",
+          "expect": "engineering",
+          "conf": 0.4644450545310974
+        },
+        {
+          "got": "technical",
+          "expect": "technical",
+          "conf": 0.41377031803131104
+        },
+        {
+          "got": "dev_team",
+          "expect": "dev_team",
+          "conf": 0.5305140614509583
+        }
+      ],
+      "grounding": [
+        {
+          "p_yes": 0.630770206451416,
+          "expect": true,
+          "ok": true,
+          "conf": 0.630770206451416
+        },
+        {
+          "p_yes": 0.5890664458274841,
+          "expect": true,
+          "ok": true,
+          "conf": 0.5890664458274841
+        },
+        {
+          "p_yes": 0.6410573720932007,
+          "expect": false,
+          "ok": false,
+          "conf": 0.6410573720932007
+        },
+        {
+          "p_yes": 0.5554351806640625,
+          "expect": true,
+          "ok": true,
+          "conf": 0.5554351806640625
+        },
+        {
+          "p_yes": 0.5665581822395325,
+          "expect": true,
+          "ok": true,
+          "conf": 0.5665581822395325
+        }
+      ],
+      "total_failures": 1
+    },
+    "l2_stageA": {
+      "contradictions": [
+        {
+          "sum": 0.13046079641208053,
+          "fail": true
+        },
+        {
+          "sum": 0.7972855865955353,
+          "fail": false
+        },
+        {
+          "sum": 0.3686602711677551,
+          "fail": true
+        }
+      ],
+      "stability": [
+        {
+          "got": "account",
+          "expect": "engineering",
+          "conf": 0.6124420166015625
+        },
+        {
+          "got": "billing",
+          "expect": "technical",
+          "conf": 0.5536825060844421
+        },
+        {
+          "got": "finance",
+          "expect": "dev_team",
+          "conf": 0.39326807856559753
+        }
+      ],
+      "grounding": [
+        {
+          "p_yes": 0.23739908635616302,
+          "expect": true,
+          "ok": false,
+          "conf": 0.762600913643837
+        },
+        {
+          "p_yes": 0.33106568455696106,
+          "expect": true,
+          "ok": false,
+          "conf": 0.6689343154430389
+        },
+        {
+          "p_yes": 0.33079537749290466,
+          "expect": false,
+          "ok": true,
+          "conf": 0.6692046225070953
+        },
+        {
+          "p_yes": 0.12822464108467102,
+          "expect": true,
+          "ok": false,
+          "conf": 0.871775358915329
+        },
+        {
+          "p_yes": 0.22511833906173706,
+          "expect": true,
+          "ok": false,
+          "conf": 0.7748816609382629
+        }
+      ],
+      "total_failures": 8
+    },
+    "l2_final": {
+      "contradictions": [
+        {
+          "sum": 1.0278457403182983,
+          "fail": false
+        },
+        {
+          "sum": 1.180797517299652,
+          "fail": false
+        },
+        {
+          "sum": 1.00462207198143,
+          "fail": false
+        }
+      ],
+      "stability": [
+        {
+          "got": "account",
+          "expect": "engineering",
+          "conf": 0.40966808795928955
+        },
+        {
+          "got": "technical",
+          "expect": "technical",
+          "conf": 0.38526707887649536
+        },
+        {
+          "got": "dev_team",
+          "expect": "dev_team",
+          "conf": 0.38988471031188965
+        }
+      ],
+      "grounding": [
+        {
+          "p_yes": 0.438785195350647,
+          "expect": true,
+          "ok": false,
+          "conf": 0.561214804649353
+        },
+        {
+          "p_yes": 0.5323035717010498,
+          "expect": true,
+          "ok": true,
+          "conf": 0.5323035717010498
+        },
+        {
+          "p_yes": 0.43818408250808716,
+          "expect": false,
+          "ok": true,
+          "conf": 0.5618159174919128
+        },
+        {
+          "p_yes": 0.4976806640625,
+          "expect": true,
+          "ok": false,
+          "conf": 0.5023193359375
+        },
+        {
+          "p_yes": 0.6482993364334106,
+          "expect": true,
+          "ok": true,
+          "conf": 0.6482993364334106
+        }
+      ],
+      "total_failures": 3
+    }
+  }
+}

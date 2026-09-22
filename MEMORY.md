@@ -506,3 +506,8 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 - Windows Python: docstrings containing .venv paths must be raw strings or every run prints SyntaxWarning: invalid escape sequence.
 - Stream-job rule: job_output returns only NEW output since the last read; a failed parent program loses the earlier read. Prefer reading artifacts from disk (build_stats.json) over re-reading job streams.
 
+
+- Stage B fine-tune forgets the stage A mixture (macro 0.7478 -> 0.6856, yelp5 0.512 -> 0.22): if retention matters, replay 10-20% of the mixture inside stage B (Laya-line L3 lever).
+- Option-rename invariance of the current decision head is weak (perm agreement 0.325-0.385): add synthetic option renaming as training augmentation, do not just probe it.
+- Zero-shot transfer of a 37M decision head to unseen task families is near chance without task-relevant mixture coverage (phishing AUROC 0.45-0.58); Laya transfer numbers rest on 421M pretraining.
+- Global-T on typed train WORSENED ECE a second time (0.0888 -> 0.1282): the typed head is already calibrated; stop reaching for temperature scaling here.
