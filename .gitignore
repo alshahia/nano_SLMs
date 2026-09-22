@@ -158,3 +158,6 @@ runs/gdn_smoke_ab/final/model.safetensors
 data/gdn_selftest/
 # regenerable raw downloads
 data/md_measure/*/raw/
+# Laya-line: weights/checkpoints stay local (regenerable; ~400 MB fp32)
+runs/laya/**/*.pt
+data/laya/

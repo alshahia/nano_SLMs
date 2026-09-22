@@ -7,6 +7,8 @@ back to TU09FBO; verify at every session start, the box pair-flips).
 
 ## Machine
 
+> **2026-09-22 (laya-line E-62):** live machine verified as DESKTOP-MUO4QK5 — Quadro RTX 4000 8 GB (driver 616.92, 8192 MiB), E: free 18.7 GB. Pair-flip confirmed by nvidia-smi + COMPUTERNAME at session start. The TU09FBO numbers below apply when the pair flips back; re-verify before any launch.
+
 - **Current session (verified 2026-09-09, Track A start): DESKTOP-TU09FBO —
   RTX 3000, 6144 MiB, driver 580.92** (nvidia-smi + $env:COMPUTERNAME);
   project root `E:\python_projects\nano_SLMs` (no space); drive E: **36.30 GB
