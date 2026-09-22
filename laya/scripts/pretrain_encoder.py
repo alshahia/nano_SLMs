@@ -45,7 +45,8 @@ def mask_tokens(batch, mask_prob, mask_id, vocab, special):
     r = torch.rand(batch.shape, device=batch.device)
     batch[masked & (r < 0.8)] = mask_id
     rand = masked & (r >= 0.8) & (r < 0.9)
-    batch[rand] = torch.randint(999, vocab, rand.shape, device=batch.device)
+    ri = torch.randint(999, vocab, batch.shape, device=batch.device)
+    batch[rand] = ri[rand]
     return batch, labels
 
 
