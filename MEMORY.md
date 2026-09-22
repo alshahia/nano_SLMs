@@ -500,3 +500,9 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 - Lesson: before ANY history rewrite, every tracked-on-disk artifact is expendable ONLY if LFS-backed (verify OID present in .git/lfs/objects) or regenerable from sources that live outside git.
 - Related discovery: MEMORY.md (0 bytes) and HANDOFF.md (~1 KB) were committed clobbered by 9897100 / e9c79d9 / 99b8f3b on 2026-09-21/22 — BEFORE this rewrite (concurrent-session mid-write commits suspected). Restored here from last-full versions 0f83061 (MEMORY, 70,755 chars) and 9dbb5c2 (HANDOFF, 146,449 chars). Anything recorded only in these two files between those commits survives only in git log messages.
 - Push policy from now on: git lfs status MUST show 0 pending objects, and the unpushed payload must be spot-checked (git rev-list --objects origin/main..HEAD + cat-file sizes) before every push.
+## 2026-09-22 - Laya-line gotchas (E-62)
+- HF dataset ids: allenai/scitail config is `tsv_format`/`snli_format` (plain `tsv` errors: BuilderConfig not found); yelp_review_full lives at `Yelp/yelp_review_full` (no fancyzhx namespace for review_full); canonical SQuAD v2 id is `squad_v2` (rajpur/ namespace retired).
+- Per-(question-type, option-count) temperature calibration OVERFITS on small calibration slices: 8 groups x 400 items made ECE WORSE (0.0673 -> 0.0948). Fit ONE global T on >= 2000 items or skip - soft-CE training already yields good raw ECE (~0.07).
+- Windows Python: docstrings containing .venv paths must be raw strings or every run prints SyntaxWarning: invalid escape sequence.
+- Stream-job rule: job_output returns only NEW output since the last read; a failed parent program loses the earlier read. Prefer reading artifacts from disk (build_stats.json) over re-reading job streams.
+

@@ -147,3 +147,8 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
   gradient hurts main loss at every weight tried (0.02..0.3), even aux-exclusive
   metrics. Retry only with a decoupled aux LR + head warmup at a longer budget.
   [E-42]
+## 2026-09-22 - Laya-line E-62: decision heads transfer down; calibration is nearly free
+- The convaiinnovations/laya decision head (type embedding + option-marker scorer + masked per-question softmax) transfers UNCHANGED onto MiniLM-L12-H384: 0.6205 typed-decisions test acc at 37.2M params (vs MiniLM-L6 22M 0.587, ModernBERT-base 149M 0.646) with the published notebook recipe (4 epochs, eff 64, lr 2.5e-5/1e-4, cosine, fp16, soft-CE on gold distributions). 286 s on Quadro RTX 4000, peak 1660 MiB. Adopt for typed-decision/soft-label classification heads at 30-50M scale.
+- Soft-CE training on gold PROBABILITY DISTRIBUTIONS (not argmax labels) yields well-calibrated models for free (raw ECE 0.0673). Do NOT add per-group post-hoc temperature on <1000-item calibration slices - it overfit (0.0673 -> 0.0948). One global T on >= 2000 items, or nothing.
+- Weak primitives at 37M: score questions (0.583) and agent-trace observability workflow (0.528) - same shape as the Laya 421M profile; watch these in L2+.
+

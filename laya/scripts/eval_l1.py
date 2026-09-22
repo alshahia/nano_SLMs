@@ -1,4 +1,4 @@
-"""Laya-line L1 evaluation: official test-split metrics + pre-registered gates.
+r"""Laya-line L1 evaluation: official test-split metrics + pre-registered gates.
 
 Gates (research/EXPERIMENTS.md E-62, judged on the FINAL checkpoint):
   G1 feasibility: peak allocated VRAM <= 4096 MiB during training

@@ -1,4 +1,4 @@
-"""Laya-line L1: MiniLM-L12-H384 + Laya decision head, soft-CE only.
+r"""Laya-line L1: MiniLM-L12-H384 + Laya decision head, soft-CE only.
 
 Pre-registered: research/EXPERIMENTS.md E-62. Notebook-parity recipe:
 4 epochs, micro 8 x accum 8 (eff 64), lr 2.5e-5 enc / 1e-4 head, wd 0.01,

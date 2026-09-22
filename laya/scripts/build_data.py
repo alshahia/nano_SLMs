@@ -1,4 +1,4 @@
-"""Build Laya-line packed datasets from LocalLLaMA/typed-decisions.
+r"""Build Laya-line packed datasets from LocalLLaMA/typed-decisions.
 
 Downloads the official benchmark (config "all": 1,200 train / 400 test
 cases), packs one sequence per (case, question) with [MASK] option markers,
