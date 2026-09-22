@@ -99,7 +99,7 @@
   ]
  },
  {
-  "name": "spamassassin",
+  "name": "spamassassin_REMOVED_script_dataset_unsupported",
   "id": "talby/spamassassin",
   "config": "text",
   "split": "train",

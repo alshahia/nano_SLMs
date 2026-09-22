@@ -18,8 +18,8 @@ from transformers import AutoTokenizer
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 EVAL_SOURCES = [
-    {"name": "typed_decisions_test", "id": "LocalLLaMA/typed-decisions", "split": "test",
-     "render": "typed_state"},
+    {"name": "typed_decisions_test", "id": "LocalLLaMA/typed-decisions", "config": "all",
+     "split": "test", "render": "typed_state"},
     {"name": "phishnchips_eval", "id": "AreLit/PhishNChips", "config": "emails",
      "split": "core", "render": "email_content"},
     {"name": "ag_news_test", "id": "fancyzhx/ag_news", "split": "test", "render": "field",
@@ -96,7 +96,7 @@ def main():
         try:
             kw = {"split": spec["split"]}
             if spec.get("config"):
-                kw["config_name"] = spec["config"]
+                kw["name"] = spec["config"]
             ds = load_dataset(spec["id"], **kw)
             n0 = len(ban)
             for r in ds:
@@ -121,7 +121,7 @@ def main():
         try:
             kw = {"split": spec.get("split", "train")}
             if spec.get("config"):
-                kw["config_name"] = spec["config"]
+                kw["name"] = spec["config"]
             ds = load_dataset(spec["id"], **kw)
             n_rows = len(ds)
             stride = max(1, n_rows // max(1, int(spec["n_items"])))
