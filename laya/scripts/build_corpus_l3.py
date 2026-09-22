@@ -72,6 +72,8 @@ def doc_from_row(r, spec):
             if isinstance(v, list) and v:
                 return " ".join(str(x) for x in v if x)
         return ""
+    if mode == "json_row":
+        return json.dumps(dict(r), ensure_ascii=False, default=str)
     return render_field(r, spec.get("fields", ["text"]))
 
 

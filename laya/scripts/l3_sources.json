@@ -200,11 +200,7 @@
   "id": "nvidia/Nemotron-RL-Agentic-Function-Calling-Pivot-v1",
   "split": "train",
   "n_items": 3000,
-  "render": "field",
-  "fields": [
-   "system",
-   "chat"
-  ]
+  "render": "json_row"
  },
  {
   "name": "fatura_invoices",
