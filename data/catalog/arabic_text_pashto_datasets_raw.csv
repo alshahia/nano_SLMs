@@ -1,0 +1,52 @@
+name,source_url,size,license,access,route
+Pashto Wikipedia dumps,https://dumps.wikimedia.org/pswiki/,"~25k articles","CC BY-SA 3.0 / GFDL",open,wget dump
+wikimedia/wikipedia 20231101.ps,https://huggingface.co/datasets/wikimedia/wikipedia,"full ps wiki clean text","CC BY-SA 3.0",open,HF load_dataset
+ihanif/pashto-wikipedia-corpus,https://huggingface.co/datasets/ihanif/pashto-wikipedia-corpus,"10K<n<100K rows","CC BY-SA 4.0",open,HF datasets load
+arsalagrey/pashto-books,https://huggingface.co/datasets/arsalagrey/pashto-books,"10K<n<100K rows",unknown,open,HF datasets load
+OPUS-NLLB v1 en-ps,https://object.pouta.csc.fi/OPUS-NLLB/v1/moses/en-ps.txt.zip,"11.3M pairs","CC BY-NC 4.0",open,direct zip
+OPUS-CCAligned v1 en-ps,https://object.pouta.csc.fi/OPUS-CCAligned/v1/moses/en-ps.txt.zip,"~300k pairs",per-doc mostly open,open,direct zip
+OPUS-XLEnt v1.2 en-ps,https://object.pouta.csc.fi/OPUS-XLEnt/v1.2/moses/en-ps.txt.zip,"1M+ pairs",unclear,open,direct zip
+OPUS-wikimedia v20260327 en-ps,https://object.pouta.csc.fi/OPUS-wikimedia/v20260327/moses/en-ps.txt.zip,"9.1k pairs","CC BY-SA 3.0",open,direct zip
+OPUS-ParaCrawl v9 en-ps,https://object.pouta.csc.fi/OPUS-ParaCrawl/v9/moses/en-ps.txt.zip,"26.3k pairs",CC0,open,direct zip
+OPUS-tico-19 en-ps,https://object.pouta.csc.fi/OPUS-tico-19/v2020-10-28/moses/en-ps.txt.zip,"3.1k pairs","CC BY-SA 3.0 IGO",open,direct zip
+OPUS-Tatoeba v2026-07-08 en-ps,https://object.pouta.csc.fi/OPUS-Tatoeba/v2026-07-08/moses/en-ps.txt.zip,"only 32 pairs","CC BY 2.0 FR",open,direct zip
+OPUS-KDE4 v2 en-ps,https://object.pouta.csc.fi/OPUS-KDE4/v2/moses/en-ps.txt.zip,"~10k UI strings","GPL / OCL",open,direct zip
+OPUS-Ubuntu v14.10 en-ps,https://object.pouta.csc.fi/OPUS-Ubuntu/v14.10/moses/en-ps.txt.zip,"~10k UI strings",GPL,open,direct zip
+nassimjp/opus-100-ps-en,https://huggingface.co/datasets/nassimjp/opus-100-ps-en,"~1M pairs",unclear,open,HF datasets load
+saillab/alpaca-pashto-cleaned,https://huggingface.co/datasets/saillab/alpaca-pashto-cleaned,"~9k-50k instruction rows",unknown,open,HF datasets load
+khalidalt/SANAD,https://huggingface.co/datasets/khalidalt/SANAD,"175k docs / 7 topics","CC BY 4.0",open,HF datasets load
+arbml/SANAD,https://huggingface.co/datasets/arbml/SANAD,"100K<n<1M",unclear,open,HF datasets load
+arbml/Sanadset,https://huggingface.co/datasets/arbml/Sanadset,"SANAD + difficulty labels",unclear,open,HF datasets load
+khalidalt/ultimate_arabic_news,https://huggingface.co/datasets/khalidalt/ultimate_arabic_news,"100K<n<1M",unclear,open,HF datasets load
+arbml/khaleej_2004,https://huggingface.co/datasets/arbml/khaleej_2004,"5690 train / 4 topics",unclear,open,HF datasets load
+unohamza/Arabic-news-daily,https://huggingface.co/datasets/unohamza/Arabic-news-daily,"100K<n<1M","CC BY 4.0",open,HF datasets load
+oddadmix/arabic-news-summarization,https://huggingface.co/datasets/oddadmix/arabic-news-summarization,"10K<n<100K",unknown,open,HF datasets load
+Abdelkareem/arabic-bbc-news,https://huggingface.co/datasets/Abdelkareem/arabic-bbc-news,"~3k docs x10 topics",unknown,open,HF datasets load
+arbml/Arabic_News_Tweets,https://huggingface.co/datasets/arbml/Arabic_News_Tweets,"1M<n<10M",unclear,open,HF datasets load
+ahmed-altaweel/arabic-news,https://huggingface.co/datasets/ahmed-altaweel/arabic-news,"100K<n<1M",unknown,open,HF datasets load
+unimelb-nlp/wikiann (ar),https://huggingface.co/datasets/unimelb-nlp/wikiann,"ar ~60/10/10k splits",unknown,open,HF load_config ar
+iwan-rg/CLEANANERCorp,https://github.com/iwan-rg/CLEANANERCorp,"~316k tokens",unknown,open,git clone
+CSabty/ANERcorp-Correction,https://github.com/CSabty/ANERcorp-Correction,"train+test corrected",unclear,open,git clone
+EmnamoR/Arabic-named-entity-recognition,https://github.com/EmnamoR/Arabic-named-entity-recognition,"ANERCorp.rar",unknown,open,git clone + extract
+AhmedNabil1/wojood-arabic-ner,https://huggingface.co/datasets/AhmedNabil1/wojood-arabic-ner,"10K<n<100K",unclear,open,HF datasets load
+iahlt/arabic_ner_mafat,https://huggingface.co/datasets/iahlt/arabic_ner_mafat,"10K<n<100K",unknown,open,HF datasets load
+mabahboh/sitr-arabic-pii,https://huggingface.co/datasets/mabahboh/sitr-arabic-pii,"10K<n<100K","Apache-2.0",open,HF datasets load
+Bisher/synthetic-arabic-pii,https://huggingface.co/datasets/Bisher/synthetic-arabic-pii,"10K<n<100K",unknown,open,HF datasets load
+dataflare/arabic-dialect-corpus,https://huggingface.co/datasets/dataflare/arabic-dialect-corpus,"100K<n<1M",MIT,open,HF datasets load
+drelhaj/Arabic-Dialects,https://huggingface.co/datasets/drelhaj/Arabic-Dialects,"unknown rows","CC BY 4.0",open,HF datasets load
+arbml/Arabic_Dialects_Dataset,https://huggingface.co/datasets/arbml/Arabic_Dialects_Dataset,"9992 ex / 5 classes",unknown,open,HF datasets load
+AhmedSSabir/Gulf-Arabic-Tweets-2018-2020,https://huggingface.co/datasets/AhmedSSabir/Gulf-Arabic-Tweets-2018-2020,"10K<n<100K",unknown,open,HF datasets load
+aminedjebbie/Multi-Arabic-dialects,https://huggingface.co/datasets/aminedjebbie/Multi-Arabic-dialects,"10K<n<100K",unknown,open,HF datasets load
+Falah/classification_arabic_dialects,https://huggingface.co/datasets/Falah/classification_arabic_dialects,unknown,unknown,open,HF datasets load
+arbml/ArSAS,https://huggingface.co/datasets/arbml/ArSAS,"58k tweets",unclear,open,HF datasets load
+Osaleh/ArSAS,https://huggingface.co/datasets/Osaleh/ArSAS,"58k tweets",unclear,open,HF datasets load
+arbml/ASTD,https://huggingface.co/datasets/arbml/ASTD,"~63k tweets",unclear,open,HF datasets load
+Qanadil/ASTD_Arabic_Sentiment_Tweets_Dataset,https://huggingface.co/datasets/Qanadil/ASTD_Arabic_Sentiment_Tweets_Dataset,"1K<n<10K",unknown,open,HF datasets load
+MADAR (CAMEL),https://madar.corpus.technion.ac.il/,"MADAR-6 + Corpus-26",unclear,request,manual site application
+CAMeL ara-east,https://github.com/CAMeL-Lab/ara-east,unclear,unclear,request,manual git/camel form
+Abdelrahman-Rezk/Arabic_Dialect_Identification,https://huggingface.co/datasets/Abdelrahman-Rezk/Arabic_Dialect_Identification,"100K<n<1M",unknown,open,HF datasets load
+SaiedAlshahrani/Egyptian_Arabic_Wikipedia_20230101,https://huggingface.co/datasets/SaiedAlshahrani/Egyptian_Arabic_Wikipedia_20230101,"10K<n<100K","CC BY-SA 3.0",open,HF datasets load
+arbml/Arabic_Smile_Corpus,https://huggingface.co/datasets/arbml/Arabic_Smile_Corpus,"not located (401/0 results)",unknown,request,manual (unverified)
+arbml/emoji_sentiment_lexicon,https://huggingface.co/datasets/arbml/emoji_sentiment_lexicon,"1K<n<10K entries",unknown,open,HF datasets load
+Qanadil/ArSAS_An_Arabic_Speech-Act_and_Sentiment_Corpus_of_Tweets,https://huggingface.co/datasets/Qanadil/ArSAS_An_Arabic_Speech-Act_and_Sentiment_Corpus_of_Tweets,"10K<n<100K",unclear,open,HF datasets load
+KejueAI/alpaca-numbers-tts-dataset,https://huggingface.co/datasets/KejueAI/alpaca-numbers-tts-dataset,unspecified,unknown,open,HF datasets load
