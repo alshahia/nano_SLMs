@@ -48,6 +48,9 @@ def build_source(tok, cfg, stats):
     items = []
 
     def emit(qtype, instructions, option_texts, target, state_text, source):
+        if option_texts and isinstance(option_texts[0], (tuple, list)):
+            option_texts = ["%s: %s" % (l, d) if d else str(l)
+                            for l, d in option_texts]
         ids, markers = pack_sequence(tok, qtype_id(qtype), instructions,
                                      option_texts, state_text,
                                      max_len=int(cfg["max_len"]),
@@ -76,7 +79,7 @@ def build_source(tok, cfg, stats):
 
     try:
         sq = None
-        for _id in ("squad_v2", "rajpur/squad_v2"):
+        for _id in ("rajpurkar/squad_v2", "rajpur/squad_v2"):
             try:
                 sq = load_dataset(_id, split="train")
                 break
@@ -139,14 +142,10 @@ def build_source(tok, cfg, stats):
         cols = sc.column_names
         prem = "premise" if "premise" in cols else "sentence1"
         hyp = "hypothesis" if "hypothesis" in cols else "sentence2"
-        names = None
-        if "label" in sc.features and hasattr(sc.features["label"], "names"):
-            names = sc.features["label"].names
-        stats["scitail_label_names"] = str(names)
         stats["scitail_columns"] = str(cols)
         for r in sample(sc, 5000):
-            lab = r["label"]
-            lstr = names[lab].lower() if (isinstance(lab, int) and names) else str(lab).lower()
+            lab = r.get("gold_label", r.get("label", ""))
+            lstr = str(lab).lower()
             pos = 1 if lstr.startswith(("entails", "supports")) else 0
             emit("noul", "Does the first statement support the second: %s" % r[hyp],
                  NOUL, onehot(pos, 2), r[prem], "scitail")

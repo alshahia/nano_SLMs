@@ -118,6 +118,8 @@ def pack_sequence(tok, qtype, instructions, option_texts, state_text,
     cls, sep, mask = tok.cls_token_id, tok.sep_token_id, tok.mask_token_id
     opt_ids = []
     for text in option_texts:
+        if not isinstance(text, str):
+            raise ValueError("option text must be str, got %r" % (text,))
         ids = tok.encode(text, add_special_tokens=False)[:opt_max]
         opt_ids.append([mask] + ids)
     opt_len = sum(len(o) for o in opt_ids)
