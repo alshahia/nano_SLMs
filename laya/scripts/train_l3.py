@@ -165,13 +165,18 @@ def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/laya_l3_ladder.yaml")
+    ap.add_argument("--smoke", action="store_true",
+                    help="1-batch validation run: tiny slices, 1 epoch/stage, benches off, out_dir+_smoke")
     args = ap.parse_args()
     import yaml
     with open(args.config, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
     torch.manual_seed(int(cfg["seed"])); random.seed(int(cfg["seed"]))
     device = "cuda"
-    out_dir = cfg["out_dir"]; os.makedirs(out_dir, exist_ok=True)
+    out_dir = cfg["out_dir"] + ("_smoke" if args.smoke else "")
+    os.makedirs(out_dir, exist_ok=True)
+    if args.smoke:
+        cfg["out_dir"] = out_dir  # run_stage reads cfg["out_dir"] - keep smoke off the real checkpoints
     writer = SummaryWriter(os.path.join(out_dir, "logs"))
 
     from transformers import AutoTokenizer
@@ -187,6 +192,11 @@ def main():
     typed_test = torch.load(cfg["typed_test"], weights_only=False)
     print("[l3] mixture %d/%d, typed %d/%d" % (len(mixture_train), len(mixture_held),
                                                len(typed_train), len(typed_test)), flush=True)
+
+    if args.smoke:
+        mixture_train, mixture_held = mixture_train[:64], mixture_held[:32]
+        typed_train, typed_test = typed_train[:64], typed_test[:32]
+        print("[l3] SMOKE: tiny slices, 1 epoch/stage, benches off", flush=True)
 
     bench_log = os.path.join(out_dir, "bench_log.jsonl")
 
@@ -217,11 +227,13 @@ def main():
     print("[l3] STAGE A: mixture pretrain (max %d epochs, adaptive)" %
           int(cfg["epochs_stageA_max"]), flush=True)
     sa = run_stage(model, cfg, mixture_train, mixture_held, pad_id, device, "A",
-                   int(cfg["epochs_stageA_max"]), writer, eval_A_full, tok)
+                   1 if args.smoke else int(cfg["epochs_stageA_max"]), writer,
+                   eval_A_full if not args.smoke else (lambda m, i, p, d: eval_A(m, i, p, d)), tok)
     print("[l3] STAGE B: typed fine-tune + replay %.2f + aug" %
           float(cfg["replay_frac"]), flush=True)
     sb = run_stage(model, cfg, typed_train, typed_test, pad_id, device, "B",
-                   int(cfg["epochs_stageB"]), writer, eval_B_full, tok,
+                   1 if args.smoke else int(cfg["epochs_stageB"]), writer,
+                   eval_B_full if not args.smoke else (lambda m, i, p, d: t1.evaluate(m, i, p, d)), tok,
                    aug=True, replay=mixture_train)
 
     final_dir = os.path.join(out_dir, "final"); os.makedirs(final_dir, exist_ok=True)

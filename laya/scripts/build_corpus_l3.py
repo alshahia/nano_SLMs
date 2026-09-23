@@ -150,6 +150,10 @@ def main():
             stats["sources"][spec["name"]] = {"id": spec["id"], "docs": got,
                                               "dropped_dup": dup,
                                               "dropped_eval_overlap": overlap}
+            if overlap:
+                raise SystemExit("[l3corpus] FATAL: %d eval-overlap docs in source %s "
+                                 "- refusing to build (eval data must never enter training)"
+                                 % (overlap, spec["name"]))
             print("[l3corpus] %s: %d docs (dup %d, eval-overlap %d)"
                   % (spec["name"], got, dup, overlap), flush=True)
         except Exception as e:

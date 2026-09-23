@@ -522,3 +522,8 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 - MLM vocab-logits blow the VRAM budget at backward (batch x seq x 30522 fp32 ~1.5 GB at 12k tokens/batch): micro 32 + PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True held peak 4,610 MiB on the 8 GB card (over the 4,096 gate - recorded).
 - WDDM OOM messages can show absurd memory values (17 TB "GiB") - bogus display values, do not debug against them.
 
+## 2026-09-23 - agent-process lessons (E-65 self-reflection)
+- Ledger discipline: metrics enter EXPERIMENTS/TASKS parsed from the source JSON in the SAME program that writes the ledger - writing from memory shipped a wrong stage-A macro (0.6329 vs actual 0.6625) once.
+- Preflight gate: no unattended long launch without laya/scripts/preflight_check.py (dup-key yaml check, pyflakes, --help, data loads, --smoke 1-batch GPU run); a smoke must show updates>0 in a fresh _smoke dir or it validated nothing (run_stage reads cfg[out_dir] - override it, not just a local variable).
+- HF datasets >=3.0 removed script datasets (spamassassin/sroie died): probe one item per manifest source before big builds; migrate to parquet.
+- run_code: a parse error means NOTHING ran (whole program skipped); JS strings need escaped backslashes for Windows paths and cannot carry Python raw-string syntax; no-op edits (old==new) reject the whole batch.

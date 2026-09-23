@@ -1426,3 +1426,4 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - Answer to the user's original question: ~50M-class from-scratch + Laya strategy does NOT reach Laya/Jev on decision benchmarks (gap = upstream token scale); it DOES transfer to phishing within 0.03-0.04 of them.
 - Session reliability note: 6 crashes fixed+resumed zero-flag (masking shape, OOM micro-48, probe model-type/device, argparse import, permutation API); scheduled bench-probe monitoring infra (bench_probe.py) retained for future runs.
 
+## 2026-09-23 — self-reflection closure (user-requested): failure catalogue + fixes in research/2026-09-23_agent_self_reflection.md; preflight gate (preflight_check.py + train_l3 --smoke) tested PASS 4/1SKIP/0FAIL; corpus build now hard-fails on eval overlap; rules R1-R6 adopted.
