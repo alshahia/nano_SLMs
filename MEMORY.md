@@ -547,3 +547,9 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 ## 2026-09-23 - E-69 lesson: what distillation does NOT carry
 - KD from our own L2 (w=0.5, T=2) LOWERED typed acc 0.5630 -> 0.5490 on the identical E-66 recipe and re-introduced the 4-failure probe regression. Gold targets are ALREADY soft probability distributions - a teacher's T=2-sharpened beliefs contain no information gold lacks; the incumbent's edge is its pretrained encoder, transferable only by weight transfer, not by target mimicry.
 - Distill claims must be tested at the winner's recipe length: every 4-epoch run in this line is under-trained (E-68 proved length alone is +9); a KD-vs-E-68 comparison would confound two levers.
+## 2026-09-23 - External review adoption (three standing rule changes)
+An external review of E-62..E-69 flagged real portfolio-level gaps; verdict on the review: largely accurate, some stale facts. Adopted as standing rules:
+- RULE-G1-DELTA: G1 is a retention DELTA from stage-A exit (post-B minus stage-A-exit >= -0.01) in every future ladder pre-register - never an absolute macro bar; forgetting and ceiling are separate questions (the 0.74 absolute bar conflated them for E-63/E-65/E-68).
+- RULE-PROBE-GATE: probe-suite failure count is a no-regression gate (<= line-best baseline = 2) in every future ladder verdict - a run that tanks the confidence profile on accuracy alone is NOT a win (E-66/E-69 both regressed 2->4 ungated).
+- RULE-CALIB-QUARANTINE: never adopt a fitted temperature/prior/position-correction unless accuracy AND ECE both improve on held-out; otherwise discard. Reaffirms the E-62/E-63/E-67 record (three attempts of the same root pattern).
+Deferred from the same review: per-source balanced reservoir replay (the one untried typed<->phish trade-off knob) as its own single-lever pre-register (candidate E-71) after E-70.
