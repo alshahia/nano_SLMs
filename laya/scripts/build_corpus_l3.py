@@ -77,10 +77,52 @@ def doc_from_row(r, spec):
     return render_field(r, spec.get("fields", ["text"]))
 
 
+def probe_sources(manifest_path):
+    """Pre-build gate (E-65 reflection N5): 1-row load probe of every manifest source.
+
+    Catches script-dataset removal (datasets>=3) and bad configs BEFORE a long build.
+    Falls back to the refs/convert/parquet mirror once per source. Exits 1 if any
+    source fails - fix or remove the manifest entry first (never silently skip)."""
+    import json as _json
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        specs = _json.load(f)
+    fails = []
+    for spec in specs:
+        name = spec.get("name", spec.get("id", "?"))
+        base = {"split": spec.get("split", "train")}
+        if spec.get("config"):
+            base["name"] = spec["config"]
+        ok = False
+        err = ""
+        for rev in (spec.get("revision"), "refs/convert/parquet"):
+            try:
+                kw = dict(base)
+                if rev:
+                    kw["revision"] = rev
+                if rev == "refs/convert/parquet":
+                    kw.pop("name", None)  # parquet mirrors flatten named configs
+                ds = load_dataset(spec["id"], **kw)
+                print("[probe] PASS %-46s %d rows%s" % (name, len(ds), (" rev=" + rev) if rev else ""), flush=True)
+                ok = True
+                break
+            except Exception as e:
+                err = str(e)[:110]
+        if not ok:
+            print("[probe] FAIL %-46s %s" % (name, err), flush=True)
+            fails.append(name)
+    print("[probe] %d/%d sources load -> exit %d" % (len(specs) - len(fails), len(specs), 1 if fails else 0), flush=True)
+    raise SystemExit(1 if fails else 0)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/laya_l3.yaml")
+    ap.add_argument("--probe_sources", default="",
+                    help="path to manifest json: 1-item load probe per source, then exit (pre-build gate)")
     args = ap.parse_args()
+    if args.probe_sources:
+        probe_sources(args.probe_sources)
+        return
     import yaml
     with open(args.config, "r", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
@@ -97,6 +139,8 @@ def main():
             kw = {"split": spec["split"]}
             if spec.get("config"):
                 kw["name"] = spec["config"]
+            if spec.get("revision"):
+                kw["revision"] = spec["revision"]
             ds = load_dataset(spec["id"], **kw)
             n0 = len(ban)
             for r in ds:
@@ -122,6 +166,8 @@ def main():
             kw = {"split": spec.get("split", "train")}
             if spec.get("config"):
                 kw["name"] = spec["config"]
+            if spec.get("revision"):
+                kw["revision"] = spec["revision"]
             ds = load_dataset(spec["id"], **kw)
             n_rows = len(ds)
             stride = max(1, n_rows // max(1, int(spec["n_items"])))

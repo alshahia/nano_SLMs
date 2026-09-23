@@ -527,3 +527,9 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 - Preflight gate: no unattended long launch without laya/scripts/preflight_check.py (dup-key yaml check, pyflakes, --help, data loads, --smoke 1-batch GPU run); a smoke must show updates>0 in a fresh _smoke dir or it validated nothing (run_stage reads cfg[out_dir] - override it, not just a local variable).
 - HF datasets >=3.0 removed script datasets (spamassassin/sroie died): probe one item per manifest source before big builds; migrate to parquet.
 - run_code: a parse error means NOTHING ran (whole program skipped); JS strings need escaped backslashes for Windows paths and cannot carry Python raw-string syntax; no-op edits (old==new) reject the whole batch.
+## 2026-09-23 - E-66 levers + remaining process lessons (self-reflection follow-through)
+- Option-order aug lesson (E-65): repack-shuffle aug did NOT produce block-surgery invariance (0.185 vs 0.385 unaugmented) - invariance needs the SAME item in multiple orders (perm-duplicate, train_l3.py perm_dup knob, E-66) or PMI debiasing; validate any debias on held-out (arXiv 2305.14596).
+- Replay: the ratio is not the only knob - per-source balanced/reservoir sampling is the E-67 lever (arXiv 2203.10317, 2505.12512); single-lever discipline: one change per experiment.
+- The edit tool requires a prior read-tool read of the exact file (pwsh Get-Content does not satisfy it) - batch reads BEFORE batch edits.
+- Param count is computed at pre-registration via laya/scripts/param_count.py --target_m (E-65 registered 35.1M against a ~50M ask - the delta belonged in the pre-register, not the post-mortem).
+- datasets >=3.0 removed script datasets: build_corpus_l3.py --probe_sources <manifest.json> probes one item per source (with refs/convert/parquet fallback) BEFORE a build; manifest entries may carry revision.

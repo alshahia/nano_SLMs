@@ -119,6 +119,8 @@ def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/laya_l2.yaml")
+    ap.add_argument("--smoke", action="store_true",
+                    help="1-batch validation run: tiny slices, 1 epoch/stage, out_dir+_smoke")
     args = ap.parse_args()
     import yaml
     from torch.utils.tensorboard import SummaryWriter
@@ -128,8 +130,10 @@ def main():
     torch.manual_seed(int(cfg["seed"]))
     random.seed(int(cfg["seed"]))
     device = "cuda"
-    out_dir = cfg["out_dir"]
+    out_dir = cfg["out_dir"] + ("_smoke" if args.smoke else "")
     os.makedirs(out_dir, exist_ok=True)
+    if args.smoke:
+        cfg["out_dir"] = out_dir  # run_stage reads cfg["out_dir"] - keep smoke off real checkpoints
     writer = SummaryWriter(os.path.join(out_dir, "logs"))
 
     from transformers import AutoTokenizer
@@ -150,6 +154,10 @@ def main():
     print("[l2] mixture %d/%d, typed %d/%d" %
           (len(mixture_train), len(mixture_held), len(typed_train), len(typed_test)),
           flush=True)
+    if args.smoke:
+        mixture_train, mixture_held = mixture_train[:64], mixture_held[:32]
+        typed_train, typed_test = typed_train[:64], typed_test[:32]
+        print("[l2] SMOKE: tiny slices, 1 epoch/stage", flush=True)
 
     model = LayaDecisionModel(cfg["encoder"], head_layers=int(cfg["head_layers"]),
                               dropout=float(cfg["dropout"])).to(device)
@@ -157,12 +165,12 @@ def main():
 
     print("[l2] STAGE A: mixture pretrain (%d epochs)" % int(cfg["epochs_stageA"]), flush=True)
     sa = run_stage(model, cfg, mixture_train, mixture_held, pad_id, device, "A",
-                   int(cfg["epochs_stageA"]), writer, eval_A)
+                   1 if args.smoke else int(cfg["epochs_stageA"]), writer, eval_A)
 
     print("[l2] STAGE B: typed-decisions fine-tune (%d epochs)" % int(cfg["epochs_stageB"]),
           flush=True)
     sb = run_stage(model, cfg, typed_train, typed_test, pad_id, device, "B",
-                   int(cfg["epochs_stageB"]), writer, eval_B)
+                   1 if args.smoke else int(cfg["epochs_stageB"]), writer, eval_B)
 
     final_dir = os.path.join(out_dir, "final")
     os.makedirs(final_dir, exist_ok=True)

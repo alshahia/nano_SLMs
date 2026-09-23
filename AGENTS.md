@@ -76,6 +76,8 @@ All Python runs through the venv — never bare `python`, never `pip`:
 & .\.venv\Scripts\python.exe scripts\vram_probe.py    --config configs\target.yaml
 & .\.venv\Scripts\python.exe scripts\sft_data.py      --config configs\sft_t1.yaml
 & .\.venv\Scripts\python.exe scripts\sft.py           --config configs\sft_t1.yaml --pilot
+& .\.venv\Scripts\python.exe laya/scripts/preflight_check.py --script <trainer>.py --config <cfg>.yaml   # REQUIRED gate before ANY unattended long launch (dup-keys, pyflakes, --help, data, GPU smoke)
+& .\.venv\Scripts\python.exe laya/scripts/param_count.py --layers 6 --hidden 512 --ffn 2048 --heads 8 --vocab 30522 --target_m 50   # pre-registration param check (rule R5)
 # flow/ visual flow editor (development build + server; port 3010 via FLOW_PORT)
 cd flow; pnpm build                                     # frontend -> flow/dist
 & .\.venv\Scripts\python.exe -m flow.server.app                # port 3010 (or --port)

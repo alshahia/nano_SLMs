@@ -867,3 +867,9 @@ Fallbacks (pre-approved): corpus < 100M tokens after sweep -> extend with genera
 
 **104.** E-65 L3 from-scratch 35.1M domain-pretrained encoder + replay/augmented ladder (user-approved with subagent data sweep) - done: G4 PASS (0.649 phishing AUROC, first over the bar), G1/G2/G3 FAIL (0.6622 / 0.5185 / 0.1850); honest overall FAIL on decision benchmarks with validated phishing transfer; replay-protected retention held (no net stage-B forgetting); scheduled bench-probe monitoring infra retained.
 
+**E-66 PRE-REGISTER (2026-09-23, from E-65 reflection; LAUNCH USER-GATED - awaiting user go).** Goal: fix the G3 permutation failure (0.185, aug-refractory) without regressing G2/G4/G1, on the existing L3 base. SINGLE-LEVER: perm-duplicate augmentation ONLY (balanced per-source replay deferred to E-67).
+Lever implemented (train_l3.py, default off): cfg perm_dup: true + perm_dup_copies: 2 - each typed item is packed k=2 times with distinct deterministic option orders up front; per-batch repack shuffle is disabled for typed items while on; mixture replay unchanged (0.15 uniform).
+Config: configs/laya_l3_e66.yaml = ladder config + the two keys + out_dir runs/laya/l3_e66; preflight gate C1-C5 PASS required before launch (R1).
+Gates: G3 perm agreement >= 0.90 (PRIMARY); G2 typed >= 0.55 (improve on 0.5185; stretch 0.60); G4 phishing AUROC >= 0.60 (hold); G1 mixture >= 0.6625 (hold; replay must not regress retention).
+Budget: stage B 4 epochs over ~2x typed items, ~25-35 min on the 8 GB card; stage A resumes from A_last.pt (zero-flag).
+Deliverables: runs/laya/l3_e66/{train_summary.json,bench_log.jsonl} + verdict appended here. SKIPPED if user declines.

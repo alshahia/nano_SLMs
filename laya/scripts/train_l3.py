@@ -74,6 +74,41 @@ def aug_item(it, tok, cfg, rng):
             "workflow": it.get("workflow", "?")}
 
 
+def perm_duplicate(items, tok, cfg):
+    """Same item, k distinct deterministic option orders (E-65 reflection N4 fix).
+
+    Invariance by construction instead of random repack shuffling (which E-65
+    showed does NOT produce block-surgery agreement). Default off; E-66 lever."""
+    k = max(1, int(cfg.get("perm_dup_copies", 2)))
+    if k <= 1:
+        return items
+    out = []
+    for idx, it in enumerate(items):
+        out.append(it)
+        if "option_texts" not in it or len(it["option_texts"]) < 2:
+            continue
+        texts = list(it["option_texts"])
+        tgt = list(it["target"])
+        n = len(texts)
+        for j in range(1, k):
+            r = random.Random(((int(cfg["seed"]) * 1000003 + idx) * 131 + j) % 2147483647)
+            perm = list(range(n))
+            r.shuffle(perm)
+            ptexts = [texts[p] for p in perm]
+            ptgt = [tgt[p] for p in perm]
+            ids, markers = pack_sequence(tok, it["qtype"], it["instructions"], ptexts,
+                                         it["state_text"], max_len=int(cfg["max_len"]),
+                                         head_max_len=int(cfg["head_max_len"]),
+                                         opt_max=int(cfg["option_token_max"]))
+            if len(markers) != n:
+                continue
+            out.append({"input_ids": ids, "marker_pos": markers, "n_options": n,
+                        "qtype": it["qtype"], "target": ptgt,
+                        "gold_idx": max(range(n), key=lambda kk: ptgt[kk]),
+                        "workflow": it.get("workflow", "?")})
+    return out
+
+
 def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer,
               eval_fn, tok, aug=False, replay=None):
     out_dir = cfg["out_dir"]
@@ -108,20 +143,24 @@ def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer
         curve = ck.get("eval_curve", [])
         print("[l3:%s] resumed epoch %d update %d" % (tag, start_epoch, update), flush=True)
 
+    if aug and cfg.get("perm_dup"):
+        items = perm_duplicate(items, tok, cfg)
+        print("[l3:%s] perm-duplicate expansion -> %d items" % (tag, len(items)), flush=True)
+
     model.train()
     t0, peak_mib, loss_acc, loss_n = time.time(), 0.0, 0.0, 0
     stop = False
     for epoch in range(start_epoch, epochs):
         for chunk in make_batches():
-            if aug:
+            if aug and not cfg.get("perm_dup"):
                 chunk_items = [aug_item(items[i], tok, cfg, rng) for i in chunk]
-                if replay:
-                    rf = float(cfg["replay_frac"])
-                    chunk_items = [replay[rng.randrange(len(replay))]
-                                   if rng.random() < rf else c
-                                   for c in chunk_items]
             else:
                 chunk_items = [items[i] for i in chunk]
+            if aug and replay:
+                rf = float(cfg["replay_frac"])
+                chunk_items = [replay[rng.randrange(len(replay))]
+                               if rng.random() < rf else c
+                               for c in chunk_items]
             batch, logp, _ = t1.forward_batch(model, collate(chunk_items, pad_id), device)
             loss = soft_ce_loss(logp, None, batch["targets"], batch["n_options"])
             scaler.scale(loss / accum).backward()

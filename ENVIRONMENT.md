@@ -59,6 +59,8 @@ See HANDOFF.md §4 — do not improvise. After any rebuild validate with
 
 ## Capabilities & limits
 
+- pyflakes 4.0.0 installed into .venv via `uv pip install pyflakes` (2026-09-23, venv-level dev tool, not in pyproject) — powers preflight_check.py C2 undefined-name scan.
+
 | Capability | State |
 |---|---|
 | CUDA training | working — M0/M1/M2 PASSED; M3 resumed at step 2000/5000 on TU09FBO (best eval_loss 1.9972) |

@@ -163,3 +163,5 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
 - Scheduled bench probes (frozen-encoder throwaway head every 4k steps -> bench_log.jsonl + TB) worked for monitoring; their absolute numbers are NOT benchmark numbers (probe head undertrained by design) - use for trends only.
 - Unattended-safe discipline held across 6 crashes/resumes (masking shape, OOM, probe device/type, argparse, permutation API): every resume was zero-flag from a checkpoint saved BEFORE the failure point.
 
+## 2026-09-23 - E-65 avoid-lesson
+- AVOID repack-shuffle-only option-order augmentation: E-65 stage B got WORSE permutation agreement with it (0.185 vs 0.385 unaugmented). Invariance-by-construction (same item, multiple orders in-batch - E-66 lever) or PMI/surface-form debiasing are the literature-supported routes; validate on held-out either way.
