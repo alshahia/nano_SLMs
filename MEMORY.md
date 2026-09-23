@@ -562,3 +562,9 @@ Deferred from the same review: per-source balanced reservoir replay (the one unt
 - Two traps stacked: (1) every *_smoke run dir is a SIBLING of out_dir (out_dir + "_smoke") holding ~950MB throwaway checkpoints each - they are NOT in the experiment dirs and had silently accumulated across e68/e69/e70/e72 (~2.9GB); (2) a pwsh timeout KILL kills the smoke subprocess MID-SAVE, leaving a partial A_last that every later smoke then RESUMES from (os.path.exists resume) - deterministic poison. Session go-forward always: purge *_smoke dirs before relying on C5; the C5 timeout kill itself corrupts state.
 - Housekeeping executed (reported per ENVIRONMENT rule): 4 smoke dirs deleted + completed-run intermediate states (e68 A/B_last, e70 B_last, l3 B_last; every final/model.pt and the ladder-critical l3/e70/e72 A_last kept). 0 GB -> 5.25 GB free.
 - E-72 launched AFTER the gate passed 5/5 on the clean disk. External review's point stands in hard form: disk budget must be checked pre-flight like VRAM.
+
+## 2026-09-23 - E-72 lesson: the typed/transfer trade-off is real and scaled
+- Stage-B length on the same 520M encoder: typed +5.45 (0.6420 -> 0.6965, past the L2 incumbent and every prior rung) but phishing AUROC -0.087 (0.6966 -> 0.6092). Length and token scale pull the SAME transfer dial in opposite directions - not additive.
+- Two production candidates in the lineage: E-72 typed specialist / E-70 transfer specialist (only model beating BOTH published benchmarks on a metric). Report both in user-facing scoreboards; silent merging is forbidden without a pre-register (E-71 balanced replay is the coupling breaker).
+- G1 delta rule is the decision standard; the eval_report absolute-bar schema stays as the published framing.
+- Also: failed disk-write tests can leave partial scratch files (writetest.bin) when the WriteAllBytes exception hits mid-write - always Remove-Item in the catch path.
