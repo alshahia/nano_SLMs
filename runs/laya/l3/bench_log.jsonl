@@ -1,0 +1,47 @@
+{"ts": "2026-09-22T13:41:38", "source": "mlm_heldout", "step": 1000, "heldout_loss": 6.1447, "heldout_ppl": 466.22}
+{"ts": "2026-09-22T13:44:38", "source": "mlm_heldout", "step": 2000, "heldout_loss": 5.706, "heldout_ppl": 300.68}
+{"ts": "2026-09-22T13:47:42", "source": "mlm_heldout", "step": 3000, "heldout_loss": 4.6411, "heldout_ppl": 103.66}
+{"ts": "2026-09-22T13:50:48", "source": "mlm_heldout", "step": 4000, "heldout_loss": 3.8509, "heldout_ppl": 47.04}
+{"ts": "2026-09-22T13:58:15", "source": "mlm_heldout", "step": 5000, "heldout_loss": 3.5021, "heldout_ppl": 33.18}
+{"ts": "2026-09-22T14:01:17", "source": "mlm_heldout", "step": 6000, "heldout_loss": 3.2942, "heldout_ppl": 26.96}
+{"ts": "2026-09-22T14:04:24", "source": "mlm_heldout", "step": 7000, "heldout_loss": 3.1404, "heldout_ppl": 23.11}
+{"ts": "2026-09-22T14:07:30", "source": "mlm_heldout", "step": 8000, "heldout_loss": 3.0502, "heldout_ppl": 21.12}
+{"ts": "2026-09-22T14:11:38", "source": "mlm_heldout", "step": 9000, "heldout_loss": 2.9716, "heldout_ppl": 19.52}
+{"ts": "2026-09-22T14:14:42", "source": "mlm_heldout", "step": 10000, "heldout_loss": 2.8861, "heldout_ppl": 17.92}
+{"ts": "2026-09-22T14:17:48", "source": "mlm_heldout", "step": 11000, "heldout_loss": 2.8354, "heldout_ppl": 17.04}
+{"ts": "2026-09-22T14:20:54", "source": "mlm_heldout", "step": 12000, "heldout_loss": 2.7798, "heldout_ppl": 16.12}
+{"ts": "2026-09-22T14:21:27", "source": "pretrain", "step": 12000, "typed_acc": 0.4575, "perm_agreement": 0.34, "phish_auroc": 0.3218, "phish_raw_acc": 0.498}
+{"ts": "2026-09-22T14:24:32", "source": "mlm_heldout", "step": 13000, "heldout_loss": 2.7343, "heldout_ppl": 15.4}
+{"ts": "2026-09-22T14:27:42", "source": "mlm_heldout", "step": 14000, "heldout_loss": 2.6847, "heldout_ppl": 14.65}
+{"ts": "2026-09-22T14:30:51", "source": "mlm_heldout", "step": 15000, "heldout_loss": 2.6425, "heldout_ppl": 14.05}
+{"ts": "2026-09-22T14:33:58", "source": "mlm_heldout", "step": 16000, "heldout_loss": 2.5973, "heldout_ppl": 13.43}
+{"ts": "2026-09-22T14:34:27", "source": "pretrain", "step": 16000, "typed_acc": 0.462, "perm_agreement": 0.355, "phish_auroc": 0.1799, "phish_raw_acc": 0.498}
+{"ts": "2026-09-22T14:37:35", "source": "mlm_heldout", "step": 17000, "heldout_loss": 2.5534, "heldout_ppl": 12.85}
+{"ts": "2026-09-22T14:40:43", "source": "mlm_heldout", "step": 18000, "heldout_loss": 2.5183, "heldout_ppl": 12.41}
+{"ts": "2026-09-22T14:43:53", "source": "mlm_heldout", "step": 19000, "heldout_loss": 2.4825, "heldout_ppl": 11.97}
+{"ts": "2026-09-22T14:47:04", "source": "mlm_heldout", "step": 20000, "heldout_loss": 2.4525, "heldout_ppl": 11.62}
+{"ts": "2026-09-22T14:47:33", "source": "pretrain", "step": 20000, "typed_acc": 0.4685, "perm_agreement": 0.3, "phish_auroc": 0.584, "phish_raw_acc": 0.498}
+{"ts": "2026-09-22T14:50:44", "source": "mlm_heldout", "step": 21000, "heldout_loss": 2.4213, "heldout_ppl": 11.26}
+{"ts": "2026-09-22T14:53:53", "source": "mlm_heldout", "step": 22000, "heldout_loss": 2.3953, "heldout_ppl": 10.97}
+{"ts": "2026-09-22T14:57:06", "source": "mlm_heldout", "step": 23000, "heldout_loss": 2.3742, "heldout_ppl": 10.74}
+{"ts": "2026-09-22T15:00:17", "source": "mlm_heldout", "step": 24000, "heldout_loss": 2.3544, "heldout_ppl": 10.53}
+{"ts": "2026-09-22T15:00:46", "source": "pretrain", "step": 24000, "typed_acc": 0.4695, "perm_agreement": 0.325, "phish_auroc": 0.4706, "phish_raw_acc": 0.498}
+{"ts": "2026-09-22T15:05:37", "source": "mlm_heldout", "step": 25000, "heldout_loss": 2.3325, "heldout_ppl": 10.3}
+{"ts": "2026-09-22T15:08:35", "source": "mlm_heldout", "step": 26000, "heldout_loss": 2.3079, "heldout_ppl": 10.05}
+{"ts": "2026-09-22T15:11:46", "source": "mlm_heldout", "step": 27000, "heldout_loss": 2.3052, "heldout_ppl": 10.03}
+{"ts": "2026-09-22T15:14:59", "source": "mlm_heldout", "step": 28000, "heldout_loss": 2.3011, "heldout_ppl": 9.99}
+{"ts": "2026-09-22T15:15:26", "source": "pretrain", "step": 28000, "typed_acc": 0.448, "perm_agreement": 0.315, "phish_auroc": 0.357, "phish_raw_acc": 0.498}
+{"ts": "2026-09-22T15:18:38", "source": "mlm_heldout", "step": 29000, "heldout_loss": 2.2788, "heldout_ppl": 9.76}
+{"ts": "2026-09-22T15:21:49", "source": "mlm_heldout", "step": 30000, "heldout_loss": 2.2732, "heldout_ppl": 9.71}
+{"ts": "2026-09-22T15:25:00", "source": "mlm_heldout", "step": 31000, "heldout_loss": 2.2834, "heldout_ppl": 9.81}
+{"ts": "2026-09-22T15:27:34", "source": "pretrain", "step": 31821, "typed_acc": 0.4475, "perm_agreement": 0.405, "phish_auroc": 0.5141, "phish_raw_acc": 0.498}
+{"ts": "2026-09-22T15:37:07", "source": "stageA", "macro": 0.5985, "per_source": {"anli": 0.536, "boolq": 0.6253, "mnli": 0.5585, "scitail": 1.0, "snli": 0.6, "squad_v2": 0.644, "yelp5": 0.226}, "typed_acc": 0.3265, "perm_agreement": 0.415}
+{"ts": "2026-09-22T15:43:54", "source": "stageA", "macro": 0.6231, "per_source": {"anli": 0.567, "boolq": 0.6253, "mnli": 0.5935, "scitail": 1.0, "snli": 0.6547, "squad_v2": 0.645, "yelp5": 0.276}, "typed_acc": 0.3285, "perm_agreement": 0.53}
+{"ts": "2026-09-22T15:50:33", "source": "stageA", "macro": 0.6436, "per_source": {"anli": 0.569, "boolq": 0.6253, "mnli": 0.611, "scitail": 1.0, "snli": 0.6627, "squad_v2": 0.651, "yelp5": 0.386}, "typed_acc": 0.3105, "perm_agreement": 0.435}
+{"ts": "2026-09-22T15:57:14", "source": "stageA", "macro": 0.6599, "per_source": {"anli": 0.578, "boolq": 0.6253, "mnli": 0.6135, "scitail": 1.0, "snli": 0.6767, "squad_v2": 0.664, "yelp5": 0.462}, "typed_acc": 0.313, "perm_agreement": 0.38}
+{"ts": "2026-09-22T16:04:01", "source": "stageA", "macro": 0.6625, "per_source": {"anli": 0.58, "boolq": 0.6348, "mnli": 0.6195, "scitail": 1.0, "snli": 0.6773, "squad_v2": 0.666, "yelp5": 0.46}, "typed_acc": 0.31, "perm_agreement": 0.375}
+{"ts": "2026-09-22T16:09:19", "source": "stageB", "acc": 0.4855, "soft_acc": 0.37310422946792093, "brier": 0.184179179308936, "n": 2000, "typed_acc": 0.4855, "perm_agreement": 0.25, "phish_auroc": 0.5905134482151715, "phish_raw_acc": 0.498}
+{"ts": "2026-09-23T08:03:01", "source": "stageB", "acc": 0.485, "soft_acc": 0.3730705588450655, "brier": 0.18420464592799543, "n": 2000, "typed_acc": 0.485, "perm_agreement": 0.25, "phish_auroc": 0.588765420246724, "phish_raw_acc": 0.498}
+{"ts": "2026-09-23T08:03:52", "source": "stageB", "acc": 0.4925, "soft_acc": 0.3877949516186491, "brier": 0.17785226585622876, "n": 2000, "typed_acc": 0.4925, "perm_agreement": 0.245, "phish_auroc": 0.6138618217891486, "phish_raw_acc": 0.5}
+{"ts": "2026-09-23T08:04:52", "source": "stageB", "acc": 0.5125, "soft_acc": 0.3968445491511375, "brier": 0.17398253605188801, "n": 2000, "typed_acc": 0.5125, "perm_agreement": 0.19, "phish_auroc": 0.6509424150786413, "phish_raw_acc": 0.525}
+{"ts": "2026-09-23T08:06:00", "source": "stageB", "acc": 0.5185, "soft_acc": 0.4039773653205484, "brier": 0.17282659711223095, "n": 2000, "typed_acc": 0.5185, "perm_agreement": 0.185, "phish_auroc": 0.6489703835261365, "phish_raw_acc": 0.52}

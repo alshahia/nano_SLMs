@@ -511,3 +511,14 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 - Option-rename invariance of the current decision head is weak (perm agreement 0.325-0.385): add synthetic option renaming as training augmentation, do not just probe it.
 - Zero-shot transfer of a 37M decision head to unseen task families is near chance without task-relevant mixture coverage (phishing AUROC 0.45-0.58); Laya transfer numbers rest on 421M pretraining.
 - Global-T on typed train WORSENED ECE a second time (0.0888 -> 0.1282): the typed head is already calibrated; stop reaching for temperature scaling here.
+
+## 2026-09-23 - E-65 (L3) hard-won gotchas
+- PyYAML silently keeps the LAST duplicate key - one flat yaml holding two stages' configs ran pretrain at micro_batch 8 instead of 48; split configs/laya_l3.yaml vs laya_l3_ladder.yaml.
+- Boolean-mask assignment shape rule: batch[bool_mask] = full-shape tensor FAILS (the selection is 1-D); draw values with the same shape as the batch then index with the same mask.
+- datasets>=3: pass the config via name= (config_name= collides as a kwarg); script-based datasets (spamassassin.py, sroie.py) are no longer supported; typed-decisions needs config "all".
+- BertForMaskedLM has .bert + MLM head; LayaDecisionModel has .encoder (NOT .bert) + .head - probe/eval code must branch on hasattr(model, "head") and .to(device) any freshly wrapped model (shared-encoder wrapping does NOT put new modules on GPU).
+- random.Random has no .permutation (numpy API) - use rng.shuffle(list(range(n))).
+- py_compile does NOT catch NameError/AttributeError - smoke-launch any new trainer before walking away.
+- MLM vocab-logits blow the VRAM budget at backward (batch x seq x 30522 fp32 ~1.5 GB at 12k tokens/batch): micro 32 + PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True held peak 4,610 MiB on the 8 GB card (over the 4,096 gate - recorded).
+- WDDM OOM messages can show absurd memory values (17 TB "GiB") - bogus display values, do not debug against them.
+

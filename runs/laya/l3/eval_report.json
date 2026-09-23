@@ -1,0 +1,154 @@
+{
+  "model": "runs/laya/l3\\final\\model.pt",
+  "encoder": "runs/laya/l3/pretrain_final/encoder",
+  "gates": {
+    "G1": {
+      "metric": "mixture_macro",
+      "value": 0.6622,
+      "bar": 0.74,
+      "pass": false,
+      "incumbent": {
+        "l2_postB": 0.6856,
+        "l2_exitA": 0.7478
+      },
+      "per_source": {
+        "anli": 0.575,
+        "boolq": 0.6369,
+        "mnli": 0.6165,
+        "scitail": 1.0,
+        "snli": 0.678,
+        "squad_v2": 0.669,
+        "yelp5": 0.46
+      }
+    },
+    "G2": {
+      "metric": "typed_acc",
+      "value": 0.5185,
+      "bar": 0.6,
+      "pass": false,
+      "incumbent": {
+        "l2": 0.6585,
+        "l1": 0.6205
+      },
+      "raw": {
+        "acc": 0.5185,
+        "soft_acc": 0.4039773653205484,
+        "brier": 0.17282659711223095,
+        "n": 2000
+      }
+    },
+    "G3": {
+      "metric": "perm_agreement",
+      "value": 0.185,
+      "bar": 0.9,
+      "pass": false,
+      "incumbent": {
+        "l2": 0.385,
+        "l1": 0.325
+      }
+    },
+    "G4": {
+      "metric": "phish_auroc",
+      "value": 0.6489703835261365,
+      "bar": 0.6,
+      "pass": true,
+      "published": {
+        "laya": 0.678,
+        "jev": 0.689
+      },
+      "ours_l1": 0.576,
+      "raw": {
+        "raw_acc_test_half": 0.52,
+        "auroc_test_half": 0.6489703835261365,
+        "ece15_test_half": 0.07416782811284062
+      },
+      "platt": [
+        1.657223399544139,
+        -0.31542664530620546
+      ]
+    }
+  },
+  "probes": {
+    "contradictions": [
+      {
+        "sum": 1.1031182408332825,
+        "fail": false
+      },
+      {
+        "sum": 1.155754566192627,
+        "fail": false
+      },
+      {
+        "sum": 1.1220824122428894,
+        "fail": false
+      }
+    ],
+    "stability": [
+      {
+        "got": "account",
+        "expect": "engineering",
+        "conf": 0.48895710706710815
+      },
+      {
+        "got": "billing",
+        "expect": "technical",
+        "conf": 0.43633416295051575
+      },
+      {
+        "got": "helpdesk",
+        "expect": "dev_team",
+        "conf": 0.43493327498435974
+      }
+    ],
+    "grounding": [
+      {
+        "p_yes": 0.6406359076499939,
+        "expect": true,
+        "ok": true,
+        "conf": 0.6406359076499939
+      },
+      {
+        "p_yes": 0.543347954750061,
+        "expect": true,
+        "ok": true,
+        "conf": 0.543347954750061
+      },
+      {
+        "p_yes": 0.6325027346611023,
+        "expect": false,
+        "ok": false,
+        "conf": 0.6325027346611023
+      },
+      {
+        "p_yes": 0.6397360563278198,
+        "expect": true,
+        "ok": true,
+        "conf": 0.6397360563278198
+      },
+      {
+        "p_yes": 0.7318258285522461,
+        "expect": true,
+        "ok": true,
+        "conf": 0.7318258285522461
+      }
+    ],
+    "total_failures": 2
+  },
+  "public_choice": {
+    "ag_news": {
+      "acc": 0.245,
+      "ece15": 0.11085080671310425,
+      "n": 2000
+    },
+    "emotion": {
+      "acc": 0.315,
+      "ece15": 0.11999108463525773,
+      "n": 2000
+    }
+  },
+  "summary": {
+    "gates_passed": 1,
+    "gates_total": 4,
+    "verdict": "FAIL"
+  }
+}

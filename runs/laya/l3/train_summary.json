@@ -1,0 +1,143 @@
+{
+  "params_m": 41.77,
+  "stageA": {
+    "updates": 5233,
+    "wall_s": 0.0,
+    "peak_vram_mib": 0.0,
+    "eval_curve": [
+      {
+        "epoch": 1,
+        "macro": 0.5985,
+        "per_source": {
+          "anli": 0.536,
+          "boolq": 0.6253,
+          "mnli": 0.5585,
+          "scitail": 1.0,
+          "snli": 0.6,
+          "squad_v2": 0.644,
+          "yelp5": 0.226
+        },
+        "typed_acc": 0.3265,
+        "perm_agreement": 0.415
+      },
+      {
+        "epoch": 2,
+        "macro": 0.6231,
+        "per_source": {
+          "anli": 0.567,
+          "boolq": 0.6253,
+          "mnli": 0.5935,
+          "scitail": 1.0,
+          "snli": 0.6547,
+          "squad_v2": 0.645,
+          "yelp5": 0.276
+        },
+        "typed_acc": 0.3285,
+        "perm_agreement": 0.53
+      },
+      {
+        "epoch": 3,
+        "macro": 0.6436,
+        "per_source": {
+          "anli": 0.569,
+          "boolq": 0.6253,
+          "mnli": 0.611,
+          "scitail": 1.0,
+          "snli": 0.6627,
+          "squad_v2": 0.651,
+          "yelp5": 0.386
+        },
+        "typed_acc": 0.3105,
+        "perm_agreement": 0.435
+      },
+      {
+        "epoch": 4,
+        "macro": 0.6599,
+        "per_source": {
+          "anli": 0.578,
+          "boolq": 0.6253,
+          "mnli": 0.6135,
+          "scitail": 1.0,
+          "snli": 0.6767,
+          "squad_v2": 0.664,
+          "yelp5": 0.462
+        },
+        "typed_acc": 0.313,
+        "perm_agreement": 0.38
+      },
+      {
+        "epoch": 5,
+        "macro": 0.6625,
+        "per_source": {
+          "anli": 0.58,
+          "boolq": 0.6348,
+          "mnli": 0.6195,
+          "scitail": 1.0,
+          "snli": 0.6773,
+          "squad_v2": 0.666,
+          "yelp5": 0.46
+        },
+        "typed_acc": 0.31,
+        "perm_agreement": 0.375
+      }
+    ]
+  },
+  "stageB": {
+    "updates": 375,
+    "wall_s": 236.5,
+    "peak_vram_mib": 1456.9,
+    "eval_curve": [
+      {
+        "epoch": 1,
+        "acc": 0.485,
+        "soft_acc": 0.3730705588450655,
+        "brier": 0.18420464592799543,
+        "n": 2000,
+        "typed_acc": 0.485,
+        "perm_agreement": 0.25,
+        "phish_auroc": 0.588765420246724,
+        "phish_raw_acc": 0.498
+      },
+      {
+        "epoch": 2,
+        "acc": 0.4925,
+        "soft_acc": 0.3877949516186491,
+        "brier": 0.17785226585622876,
+        "n": 2000,
+        "typed_acc": 0.4925,
+        "perm_agreement": 0.245,
+        "phish_auroc": 0.6138618217891486,
+        "phish_raw_acc": 0.5
+      },
+      {
+        "epoch": 3,
+        "acc": 0.5125,
+        "soft_acc": 0.3968445491511375,
+        "brier": 0.17398253605188801,
+        "n": 2000,
+        "typed_acc": 0.5125,
+        "perm_agreement": 0.19,
+        "phish_auroc": 0.6509424150786413,
+        "phish_raw_acc": 0.525
+      },
+      {
+        "epoch": 4,
+        "acc": 0.5185,
+        "soft_acc": 0.4039773653205484,
+        "brier": 0.17282659711223095,
+        "n": 2000,
+        "typed_acc": 0.5185,
+        "perm_agreement": 0.185,
+        "phish_auroc": 0.6489703835261365,
+        "phish_raw_acc": 0.52
+      }
+    ]
+  },
+  "config": {
+    "encoder": "runs/laya/l3/pretrain_final/encoder",
+    "replay_frac": 0.15,
+    "order_aug_prob": 0.5,
+    "rename_aug_prob": 0.25,
+    "epochs_stageB": 4
+  }
+}

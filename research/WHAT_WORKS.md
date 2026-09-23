@@ -155,3 +155,11 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
 
 - Laya-line L2 ladder (mixture pretrain -> typed fine-tune, 37.16M): +3.8 typed acc over direct fine-tune (0.6205 -> 0.6585) at identical params, ~36 min total on 8 GB. Adopt for any future decision-head line.
 - Probe suite (11 assertions, ~1 min on GPU) as cheap regression check: catches behavioral failures accuracy hides; L1 tied the best published grounded arm (1 failure vs Laya base 7).
+
+## 2026-09-23 - Laya-line E-65: what domain pretraining at 35M buys (and does not)
+- PASSES the transfer gate, fails the capability gates: 260M tokens of email/security/support/reddit domain text took zero-shot phishing AUROC from 0.576 to 0.649 (Laya 0.678, Jev 0.689) but typed acc DROPPED vs the MiniLM incumbent (0.5185 vs 0.6585). Upstream general-token scale dominates decision-generalization; domain match dominates domain-adjacent transfer.
+- 15% replay FULLY held the mixture through stage B this time (0.6625 -> 0.6622, -0.0003; L2 forgot -0.062 at the same replay): when retention fails, first ask whether stage A ever cleared the bar - a low ceiling masquerades as forgetting.
+- Order-shuffle + rename augmentation (p=0.5/0.25) did NOT fix permutation invariance (0.185 vs 0.385 unaugmented): repack-based aug is not equivalent to the block-surgery test; next lever is training on surgically-permuted duplicates of the SAME item.
+- Scheduled bench probes (frozen-encoder throwaway head every 4k steps -> bench_log.jsonl + TB) worked for monitoring; their absolute numbers are NOT benchmark numbers (probe head undertrained by design) - use for trends only.
+- Unattended-safe discipline held across 6 crashes/resumes (masking shape, OOM, probe device/type, argparse, permutation API): every resume was zero-flag from a checkpoint saved BEFORE the failure point.
+

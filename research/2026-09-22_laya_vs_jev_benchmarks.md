@@ -84,3 +84,21 @@ general model. The evidence-backed levers, in expected-value order:
 Artifacts: runs/laya/phish_eval.json · runs/laya/public_choice_eval.json ·
 runs/laya/probe_eval.json · runs/laya/l2/eval_report.json · runs/laya/l2/train_summary.json.
 Pre-registration: research/EXPERIMENTS.md E-64 (commit 4769e0f), scripts committed same.
+
+## E-65 addendum: L3 row (from-scratch 35.1M domain-pretrained, 2026-09-23)
+| Benchmark (protocol identical) | Laya | Jev | L1 | L2 | **L3** |
+|---|---|---|---|---|---|
+| typed-decisions test acc | 0.766 (FT) / 0.360 (base) | 0.727 | 0.6205 | 0.6585 | **0.5185** |
+| PhishNChips AUROC (Luni protocol) | 0.678 | 0.689 | 0.576 | - | **0.6490** |
+| PhishNChips raw acc (test half) | 0.505 | 0.626 | ~0.50 | - | **0.520** |
+| AG News (approx comparison) | 0.950/0.930/0.953 | 0.910 | 0.23-0.42 | - | **0.245 (4-way chance)** |
+| emotion (approx comparison) | 0.595/0.530/0.600 | 0.480 | 0.29-0.37 | - | **0.315** |
+| probe failures (11 assertions) | 7 / 4 (base/FT) | n/a | **1** | 3 | 2 |
+
+Reading: domain pretraining moved the PHISHING transfer gate over the bar for the first
+time (0.576 -> 0.649, within 0.03-0.04 of Laya/Jev) but widened the decision-benchmark
+gap - 260M domain tokens cannot substitute for ~1B general pretraining tokens at this
+scale. Replay held retention perfectly this time (stage-A exit 0.6625 -> post-B 0.6622,
+-0.0003): the G1 failure is a low ceiling, not forgetting. Order-shuffle + rename
+augmentation did NOT fix permutation invariance (0.185, worse than unaugmented 0.385).
+
