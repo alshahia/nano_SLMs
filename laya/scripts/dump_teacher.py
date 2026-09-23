@@ -60,7 +60,8 @@ def main():
         if len(markers) != it["n_options"]:
             continue
         views.append((it, {"input_ids": ids, "marker_pos": markers,
-                           "n_options": it["n_options"], "qtype": it["qtype"]}))
+                           "n_options": it["n_options"], "qtype": it["qtype"],
+                           "target": it["target"]}))
     print("[kd] teacher views: %d" % len(views), flush=True)
 
     kd, n_cov = {}, 0
