@@ -136,3 +136,14 @@ Conclusion: teacher soft targets do not transfer the teacher's advantage - its v
 | emotion / AG News | 0.306 / 0.272 | 0.144 / 0.240 | transfer moved between suites - trade-off now measurable |
 | perm agreement | 0.2050 | 0.2000 | record-only |
 The reviewer-predicted typed<->phish trade-off is empirical: token scale buys transfer (0.69 phishing, now above both published systems) while the 8-ep recipe sits at 0.642 typed with curves still rising on BOTH runs - stage-B length on the new encoder is the next length-only lever (E-72); per-source balanced replay queued (E-71).
+
+## E-72 addendum row (2026-09-23): stage-B 12 epochs on the 520M encoder (length-only lever)
+| Metric | L3-e70 | L3-e72 | note |
+|---|---|---|---|
+| typed test acc | 0.6420 | 0.6965 | PRIMARY PASS +5.45; first clean beat of the L2 incumbent; published-typed gap 13.5 -> 7.0 |
+| PhishNChips AUROC | 0.6966 | 0.6092 | length decay -0.087; still above the 0.60 bar |
+| Brier | 0.1415 | 0.1312 | line-best |
+| G1 delta (adopted rule) | +0.0032 | +0.0034 PASS | retention |
+| probe failures | 4 | 4 | regression gate FAIL (line-best 2) |
+
+Length and token scale are complementary divergent levers (length -> typed, scale -> transfer). Lineage ships two artifacts: E-72 typed specialist / E-70 transfer specialist - the only model beating BOTH published benchmarks on a metric.
