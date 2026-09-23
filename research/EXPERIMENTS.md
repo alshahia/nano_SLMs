@@ -888,3 +888,14 @@ Parsed from runs/laya/l3_e66/eval_report.json per R2. Config configs/laya_l3_e66
 ## E-67 PRE-REGISTER (2026-09-23, from E-66; EVAL-SIDE ONLY, no training - LAUNCH USER-GATED)
 
 Goal: fix G3 where both training-side levers failed - at scoring time. Mechanisms (fitted on typed TRAIN only; test never touched): (a) permutation-averaged scoring - score each item under k=4 sampled option orders and average (multi-eval); (b) per-position prior correction estimated on train. Gates: G3 agreement >= 0.90 (PRIMARY); G2 typed >= 0.5630 non-regression; G4 >= 0.60 hold; full panel re-run (probes, AG News, emotion). Cost: eval-only, ~10 min GPU. Deliverable: runs/laya/l3_e66/eval_calibrated.json + verdict in this ledger. SKIPPED if user declines.
+## E-68 PRE-REGISTER (2026-09-23, lever P4 from the levers doc; LAUNCH after E-67 verdict)
+
+Goal: test the stage-B under-training hypothesis - E-65/E-66 typed curves were still rising at the last epoch. Recipe = E-66 verbatim (perm-dup on) with epochs_stageB 4 -> 8 (fresh 8-epoch cosine from the carried stage-A base; out_dir runs/laya/l3_e68; config configs/laya_l3_e68.yaml). Single lever: training length only.
+Gates: G2 typed >= 0.5630 (E-66) with 0.60 stretch; G4 >= 0.60 hold; G1 >= 0.6596 hold; probes full panel (guard against the E-66 probe regression pattern); G3 recorded not gated (E-67 owns that front).
+Cost: ~35 min GPU (1504 updates + per-epoch benches). Deliverable: runs/laya/l3_e68/{train_summary.json,eval_report.json,bench_log.jsonl} + verdict here.
+
+## E-69 PRE-REGISTER (2026-09-23, lever P1 from the levers doc; after E-68)
+
+Goal: distill our incumbent L2 (typed 0.6585) into the L3 line. Teacher soft distributions over typed TRAIN only (test never touched), blended into stage-B soft-CE: loss = 0.5*gold + 0.5*teacher_KD (T=2). Requires teacher-tokenized forward pass over the raw typed texts - implement only if raw texts are recoverable (typed items store packed ids for the student tokenizer; check data/laya/typed_decisions raw jsonl).
+Gates: G2 >= max(E-66, E-68 result); G4 >= 0.60 hold; G1 >= 0.6596 hold; full panel.
+Cost: teacher pass ~10 min + stage B ~20 min. Deliverable: runs/laya/l3_e69/* + verdict here. SKIPPED if raw texts are not recoverable without touching eval sets.
