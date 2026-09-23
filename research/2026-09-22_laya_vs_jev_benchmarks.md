@@ -124,3 +124,15 @@ Conclusion: accuracy and calibration moved, order-invariance did not - two train
 | PhishNChips AUROC | 0.5878 | **0.6098** | over the 0.60 bar (epoch-noisy) |
 | AG News / emotion | 0.272 / 0.306 | **0.245 / 0.215** | transfer loss |
 Conclusion: teacher soft targets do not transfer the teacher's advantage - its value is the pretrainedencoder weights, not the decision function. Distillation closed as a negative at this config; the from-scratch 35M encoder line reached 0.6530 by recipe (length) alone.
+
+## E-70 addendum row (2026-09-23): L3 + 520M-token encoder (double-pass pretrain) + 8-ep stage B
+| Metric | L3-e68 (prev best) | **L3-e70** | note |
+|---|---|---|---|
+| typed test acc | **0.6530** | 0.6420 | -1.1 (gate 0.6530 FAIL by 0.011) |
+| PhishNChips AUROC | 0.5878 | **0.6966** | **beats published Laya 0.678 AND Jev 0.689 - first program win over both** |
+| Brier | **0.1382** | 0.1415 | near-par |
+| G1 retention (delta rule) | hold | **+0.0032 PASS** | stage-A exit 0.6668 (E-65: 0.6625) - 520M raised the stage-A exit too |
+| probe failures | **2** | 4 | regression gate FAIL |
+| emotion / AG News | 0.306 / 0.272 | 0.144 / 0.240 | transfer moved between suites - trade-off now measurable |
+| perm agreement | 0.2050 | 0.2000 | record-only |
+The reviewer-predicted typed<->phish trade-off is empirical: token scale buys transfer (0.69 phishing, now above both published systems) while the 8-ep recipe sits at 0.642 typed with curves still rising on BOTH runs - stage-B length on the new encoder is the next length-only lever (E-72); per-source balanced replay queued (E-71).
