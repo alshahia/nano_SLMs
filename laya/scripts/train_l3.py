@@ -112,6 +112,9 @@ def perm_duplicate(items, tok, cfg):
 def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer,
               eval_fn, tok, aug=False, replay=None):
     out_dir = cfg["out_dir"]
+    if aug and cfg.get("perm_dup"):
+        items = perm_duplicate(items, tok, cfg)
+        print("[l3:%s] perm-duplicate expansion -> %d items" % (tag, len(items)), flush=True)
     micro = int(cfg["micro_batch"])
     accum = int(cfg["grad_accum"])
     enc_params = list(model.encoder.parameters())
@@ -142,10 +145,6 @@ def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer
         start_epoch, step, update = int(ck["epoch"]), int(ck["step"]), int(ck["update"])
         curve = ck.get("eval_curve", [])
         print("[l3:%s] resumed epoch %d update %d" % (tag, start_epoch, update), flush=True)
-
-    if aug and cfg.get("perm_dup"):
-        items = perm_duplicate(items, tok, cfg)
-        print("[l3:%s] perm-duplicate expansion -> %d items" % (tag, len(items)), flush=True)
 
     model.train()
     t0, peak_mib, loss_acc, loss_n = time.time(), 0.0, 0.0, 0
