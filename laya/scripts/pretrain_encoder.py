@@ -78,8 +78,11 @@ def main():
     train = PackedBin(cfg["corpus_bin"], int(cfg["seq"]))
     held = PackedBin(cfg["heldout_bin"], int(cfg["seq"])) if os.path.exists(cfg["heldout_bin"]) else None
     tokens_total = len(train.data)
+    # max_epochs caps passes over the corpus (default 1 = pre-E-70 behavior);
+    # continuation runs (carried pretrain_last.pt) need >= 2 plus the doubled
+    # total_tokens so start < steps actually holds.
     steps = int(min(float(cfg["total_tokens"]) / (cfg["seq"] * cfg["micro_batch"]),
-                    (len(train) // cfg["micro_batch"]) * 1))
+                    (len(train) // cfg["micro_batch"]) * int(cfg.get("max_epochs", 1))))
     steps = max(steps, 100)
     print("[l3pre] corpus %.1fM tokens -> %d steps" % (tokens_total / 1e6, steps), flush=True)
 

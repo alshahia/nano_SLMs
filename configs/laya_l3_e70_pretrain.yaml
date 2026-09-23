@@ -10,6 +10,7 @@ layers: 6
 log_every_steps: 200
 lr: 0.0006
 mask_prob: 0.15
+max_epochs: 2
 max_pos: 512
 micro_batch: 32
 out_dir: runs/laya/l3_e70_pretrain
