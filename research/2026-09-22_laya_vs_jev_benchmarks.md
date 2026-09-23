@@ -147,3 +147,13 @@ The reviewer-predicted typed<->phish trade-off is empirical: token scale buys tr
 | probe failures | 4 | 4 | regression gate FAIL (line-best 2) |
 
 Length and token scale are complementary divergent levers (length -> typed, scale -> transfer). Lineage ships two artifacts: E-72 typed specialist / E-70 transfer specialist - the only model beating BOTH published benchmarks on a metric.
+
+## E-71 addendum row (2026-09-23): per-source balanced replay on the 520M encoder, 12-ep stage B
+| Metric | L3-e70 | L3-e71 | L3-e72 | note |
+|---|---|---|---|---|
+| typed test acc | 0.6420 | 0.6705 | 0.6965 | frontier point between the specialists |
+| PhishNChips AUROC | 0.6966 | 0.6690 | 0.6092 | +5.98 transfer vs E-72 at -2.6 typed |
+| Brier | 0.1415 | 0.1325 | 0.1312 | par |
+| probe failures | 4 | 4 | 4 | held (line-best 2) |
+
+Measured 3-point frontier on one encoder: the coupling softens under balanced replay (typed now costs only ~0.9 pt typed per 0.01 transfer lost, vs ~8.5 before).

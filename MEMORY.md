@@ -568,3 +568,7 @@ Deferred from the same review: per-source balanced reservoir replay (the one unt
 - Two production candidates in the lineage: E-72 typed specialist / E-70 transfer specialist (only model beating BOTH published benchmarks on a metric). Report both in user-facing scoreboards; silent merging is forbidden without a pre-register (E-71 balanced replay is the coupling breaker).
 - G1 delta rule is the decision standard; the eval_report absolute-bar schema stays as the published framing.
 - Also: failed disk-write tests can leave partial scratch files (writetest.bin) when the WriteAllBytes exception hits mid-write - always Remove-Item in the catch path.
+
+## 2026-09-23 - E-71 lesson: balanced replay buys back transfer at capped typed cost
+- Uniform replay over a 4x-skewed mixture starved under-represented sources and amplified the length-induced transfer decay. Equal-pressure stratified sampling (source=workflow, flag replay_balanced, default-off = bit-identical old behavior) recovered 6.0 of the 8.7 pts of phishing lost to stage-B length, while typed stayed +2.85 over the unbalanced arm.
+- Decoder dim: every recipe change on this line trades typed against transfer somewhere in the 0.61-0.70 band on both axes - treat the pair of numbers as the unit of progress, not accuracy alone.

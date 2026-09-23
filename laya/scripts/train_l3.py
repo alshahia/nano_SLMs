@@ -147,6 +147,24 @@ def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer
     scaler = torch.amp.GradScaler("cuda")
     rng = random.Random(int(cfg["seed"]) + (1 if tag == "A" else 2))
 
+    # E-71 lever: per-source balanced replay. Default (flag unset) keeps the
+    # E-65 uniform pick, so every prior rung's behavior is bit-identical.
+    rep_src = None
+    if replay and cfg.get("replay_balanced"):
+        groups = {}
+        for ri, ritem in enumerate(replay):
+            groups.setdefault(ritem.get("workflow", "?"), []).append(ri)
+        rep_src = [v for v in groups.values() if v]
+        print("[l3:%s] balanced replay: %d sources x ~%d each" %
+              (tag, len(rep_src), sum(len(v) for v in rep_src) // len(rep_src)),
+              flush=True)
+
+    def pick_replay():
+        if rep_src is None:
+            return replay[rng.randrange(len(replay))]
+        g = rep_src[rng.randrange(len(rep_src))]
+        return replay[g[rng.randrange(len(g))]]
+
     def make_batches():
         order = sorted(range(len(items)), key=lambda i: len(items[i]["input_ids"]))
         chunks = [order[i:i + micro] for i in range(0, len(order), micro)]
@@ -178,7 +196,7 @@ def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer
                 chunk_items = [items[i] for i in chunk]
             if aug and replay:
                 rf = float(cfg["replay_frac"])
-                chunk_items = [replay[rng.randrange(len(replay))]
+                chunk_items = [pick_replay()
                                if rng.random() < rf else c
                                for c in chunk_items]
             batch, logp, _ = t1.forward_batch(model, collate(chunk_items, pad_id), device)
