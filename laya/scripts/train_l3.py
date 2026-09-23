@@ -228,6 +228,17 @@ def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer
                     "scaler": scaler.state_dict(), "sched": sched.state_dict(),
                     "step": step, "update": update, "epoch": epoch + 1,
                     "eval_curve": curve}, last_path)
+        # E-73 lever: two-phase mixer - in stage B, stop when the transfer
+        # metric has decayed below its run peak by the configured drop, so the
+        # recipe holds like E-70's transfer while taking E-71/72 style typed
+        # gains only while transfer also holds. Default off = prior behavior.
+        if tag == "B" and cfg.get("stageB_auroc_stop") and len(curve) >= 3:
+            peak = max(c.get("phish_auroc", 0.0) for c in curve)
+            drop = float(cfg.get("stageB_auroc_drop", 0.02))
+            if curve[-1].get("phish_auroc", 0.0) < peak - drop:
+                print("[l3:B] auroc early-stop (peak %.4f, last %.4f) - stopping" %
+                      (peak, curve[-1].get("phish_auroc", 0.0)), flush=True)
+                stop = True
         if tag == "A" and epoch + 1 >= 3 and len(curve) >= 2:
             gain = curve[-1]["macro"] - curve[-2]["macro"]
             if gain < float(cfg["plateau_min_gain"]):
