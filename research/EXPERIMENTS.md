@@ -899,3 +899,13 @@ Cost: ~35 min GPU (1504 updates + per-epoch benches). Deliverable: runs/laya/l3_
 Goal: distill our incumbent L2 (typed 0.6585) into the L3 line. Teacher soft distributions over typed TRAIN only (test never touched), blended into stage-B soft-CE: loss = 0.5*gold + 0.5*teacher_KD (T=2). Requires teacher-tokenized forward pass over the raw typed texts - implement only if raw texts are recoverable (typed items store packed ids for the student tokenizer; check data/laya/typed_decisions raw jsonl).
 Gates: G2 >= max(E-66, E-68 result); G4 >= 0.60 hold; G1 >= 0.6596 hold; full panel.
 Cost: teacher pass ~10 min + stage B ~20 min. Deliverable: runs/laya/l3_e69/* + verdict here. SKIPPED if raw texts are not recoverable without touching eval sets.
+## E-67 VERDICT (2026-09-23): FAIL on both gates - and the negative is the finding. Parsed from runs/laya/l3_e66/eval_calibrated.json per R2.
+- Identity anchor reproduced E-66 G2 exactly (0.5630 / soft 0.4334 / brier 0.1637) - pipeline validated before treatment.
+- perm_avg (k=5 views): acc 0.5615 (-0.0015), soft_acc 0.4693 (+0.036, best), brier 0.1734; G3 0.2250.
+- perm_avg + per-position prior (fitted on TRAIN only): acc 0.5345 (-0.0285, REGRESSION), G3 0.2350 (best but far from 0.90).
+- Measured position prior is strong (pos2 -1.216 vs pos3 -1.963 mean logp on train) but correcting it HURTS accuracy: the head's position preference is entangled with task signal, not a removable nuisance artifact.
+- Cross-experiment G3 record: E-65 repack-shuffle 0.185 -> E-66 perm-duplicate 0.215 -> E-67 eval-side averaging+prior 0.235. All three attack surfaces (data path, training invariance, scoring) exhausted; even the L2 incumbent scores only 0.385 on the same el2 protocol. STANDING DECISION: the G3 >= 0.90 bar is not reachable by any tested lever at this scale - future experiments record G3 but do NOT gate on 0.90 until a mechanism-based re-justification exists (record-only, trend-tracked).
+- Sources: runs/laya/l3_e66/{eval_calibrated.json,bench_log.jsonl,e67_console.log}; one same-day bug fix (view/index misalignment zipped per-option entries against per-view scores - caught on first run, AST+pyflakes clean rerun).
+
+## E-67 closure note for future G3 work
+The only untouched attack surface is architectural: the head scores each option's [MASK] marker positionally; a position-symmetric scorer (e.g., shared state summary + option embedding compared OUTSIDE the sequence position) is the mechanism-level route. Pre-register only with an explicit architecture change, not another scoring/augmentation lever.
