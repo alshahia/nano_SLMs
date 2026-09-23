@@ -533,3 +533,7 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 - The edit tool requires a prior read-tool read of the exact file (pwsh Get-Content does not satisfy it) - batch reads BEFORE batch edits.
 - Param count is computed at pre-registration via laya/scripts/param_count.py --target_m (E-65 registered 35.1M against a ~50M ask - the delta belonged in the pre-register, not the post-mortem).
 - datasets >=3.0 removed script datasets: build_corpus_l3.py --probe_sources <manifest.json> probes one item per source (with refs/convert/parquet fallback) BEFORE a build; manifest entries may carry revision.
+## 2026-09-23 - E-66 lesson: where order-invariance does NOT come from
+- Perm-duplicate training (same item, 2 deterministic orders, 2x stage-B density) improved typed acc +4.45 and calibration but moved perm agreement only 0.185 -> 0.215. With E-65 (repack-shuffle: 0.185), training-side augmentation is EXHAUSTED as a G3 route at this scale - the bias lives in scoring/eval. Next: permutation-averaged scoring + per-position prior correction on TRAIN only (E-67, pre-registered).
+- Monitoring the update counter against the schedule total caught a real scheduler-overrun bug mid-run (450/376) - cheap counters are the best tripwires; fix was same-run via zero-flag relaunch (5 min cost).
+- Accuracy levers can cost behavior: perm-dup gained acc but regressed the confidence-probe profile 2 -> 4 failures. The probe suite is what makes that visible - never judge a lever on accuracy alone.

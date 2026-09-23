@@ -873,3 +873,18 @@ Config: configs/laya_l3_e66.yaml = ladder config + the two keys + out_dir runs/l
 Gates: G3 perm agreement >= 0.90 (PRIMARY); G2 typed >= 0.55 (improve on 0.5185; stretch 0.60); G4 phishing AUROC >= 0.60 (hold); G1 mixture >= 0.6625 (hold; replay must not regress retention).
 Budget: stage B 4 epochs over ~2x typed items, ~25-35 min on the 8 GB card; stage A resumes from A_last.pt (zero-flag).
 Deliverables: runs/laya/l3_e66/{train_summary.json,bench_log.jsonl} + verdict appended here. SKIPPED if user declines.
+## E-66 (2026-09-23) - perm-duplicate option aug on the L3 base [PARTIAL]
+
+Parsed from runs/laya/l3_e66/eval_report.json per R2. Config configs/laya_l3_e66.yaml (ladder + perm_dup true, copies 2, out_dir runs/laya/l3_e66); stage A resumed from carried A_last.pt; stage B expanded 6,000 -> 12,000 items (2 deterministic orders/item), 752 updates, peak 1,457 MiB, wall ~14 min.
+
+- G2 typed 0.5630 vs E-65 0.5185 (+4.45) - improvement bar (>= 0.55) PASS; registered 0.60 stretch not reached; curve still rising at epoch 4 (combines with lever P4: longer stage B).
+- G3 perm agreement 0.2150 vs 0.1850 (>= 0.90) FAIL - headline negative: permutation non-invariance survived BOTH training-side attacks (repack-shuffle E-65: 0.185; invariance-by-construction E-66: 0.215). The failure is in scoring/eval, not the data path.
+- G4 phishing AUROC 0.6086 (>= 0.60) PASS (epoch-noisy 0.58-0.66). G1 mixture 0.6596 vs hold 0.6625 - held within noise (-0.003), strictly a hair under; replay still protected retention through a 2x-densified stage B.
+- Brier 0.1637 (vs 0.1728) - calibration improved alongside acc. AG News 0.2435 / emotion 0.245 - unchanged (chance).
+- Probe suite regressed 2 -> 4 failures: confidence-style grounding assertions broke - max-option probability is NOT invariant under perm-dup training. Recorded as the behavioral cost of the lever.
+- Incident: monitoring caught a scheduler overrun mid-run (update 450/376 - perm-dup expansion sat after total_updates, cosine T_max overrun 2x). Killed own job, fixed placement (f92965f), purged stale B_last, zero-flag relaunch. ~5 min cost; monitoring discipline validated.
+- Sources: runs/laya/l3_e66/{train_summary.json,eval_report.json,bench_log.jsonl}, runs/laya/l3_e66_console.log; levers doc research/2026-09-23_laya_improvement_levers.md (P1-P6).
+
+## E-67 PRE-REGISTER (2026-09-23, from E-66; EVAL-SIDE ONLY, no training - LAUNCH USER-GATED)
+
+Goal: fix G3 where both training-side levers failed - at scoring time. Mechanisms (fitted on typed TRAIN only; test never touched): (a) permutation-averaged scoring - score each item under k=4 sampled option orders and average (multi-eval); (b) per-position prior correction estimated on train. Gates: G3 agreement >= 0.90 (PRIMARY); G2 typed >= 0.5630 non-regression; G4 >= 0.60 hold; full panel re-run (probes, AG News, emotion). Cost: eval-only, ~10 min GPU. Deliverable: runs/laya/l3_e66/eval_calibrated.json + verdict in this ledger. SKIPPED if user declines.

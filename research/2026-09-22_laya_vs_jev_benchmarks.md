@@ -102,3 +102,15 @@ scale. Replay held retention perfectly this time (stage-A exit 0.6625 -> post-B 
 -0.0003): the G1 failure is a low ceiling, not forgetting. Order-shuffle + rename
 augmentation did NOT fix permutation invariance (0.185, worse than unaugmented 0.385).
 
+
+## E-66 addendum row (2026-09-23): L3 + perm-duplicate (E-66)
+| Benchmark | L3 (E-65) | **L3-e66 (E-66)** | note |
+|---|---|---|---|
+| typed-decisions test acc | 0.5185 | **0.5630** | +4.45 - best single-lever gain so far |
+| perm agreement | 0.1850 | **0.2150** | training-side invariance FAILED to fix G3 (2nd attack) |
+| PhishNChips AUROC | 0.6490 | **0.6086** | held over the 0.60 bar (epoch-noisy) |
+| Brier | 0.1728 | **0.1637** | calibration improved |
+| probe failures | 2 | **4** | regression - confidence assertions broke |
+| AG News / emotion | 0.245 / 0.315 | **0.2435 / 0.245** | unchanged (chance) |
+
+Conclusion: accuracy and calibration moved, order-invariance did not - two training-side attacks exhausted; E-67 (eval-side calibration, pre-registered) is the remaining G3 route.
