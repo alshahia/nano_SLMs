@@ -112,6 +112,27 @@ def perm_duplicate(items, tok, cfg):
 def run_stage(model, cfg, items, eval_items, pad_id, device, tag, epochs, writer,
               eval_fn, tok, aug=False, replay=None):
     out_dir = cfg["out_dir"]
+    if tag == "B" and cfg.get("kd_teacher"):
+        # E-69 lever P1: blend the L2 teacher's soft distribution (T=2, dumped
+        # on TRAIN only) into the gold target - convex combo of two soft-CE
+        # losses == soft-CE on the blended target, so no loss change needed.
+        kd_w = float(cfg.get("kd_weight", 0.5))
+        kd = torch.load(cfg["kd_teacher"], weights_only=False)
+        n_kd = 0
+        for it in items:
+            if it.get("kd_blended") or "qname" not in it:
+                continue
+            tp = kd.get("%s|%s|%s" % (it.get("workflow", "?"),
+                                      it.get("case_id", "?"), it["qname"]))
+            if tp is not None and len(tp) == it["n_options"]:
+                it["target"] = [(1.0 - kd_w) * g + kd_w * float(t)
+                                for g, t in zip(it["target"], tp)]
+                it["gold_idx"] = max(range(len(it["target"])),
+                                     key=lambda kk: it["target"][kk])
+                it["kd_blended"] = True
+                n_kd += 1
+        print("[l3:%s] KD blend w=%.2f -> %d/%d items" % (tag, kd_w, n_kd, len(items)),
+              flush=True)
     if aug and cfg.get("perm_dup"):
         items = perm_duplicate(items, tok, cfg)
         print("[l3:%s] perm-duplicate expansion -> %d items" % (tag, len(items)), flush=True)
