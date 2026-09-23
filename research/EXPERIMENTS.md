@@ -942,3 +942,17 @@ Recipe: extended encoder (260.7M -> ~520M effective tokens, 2 corpus passes, pre
 - Probe suite 4 failures - REGRESSION vs line-best 2 (new no-regression gate FAILs it); emotion 0.144 / AG News 0.240 - E-68 remains the transfer/probe-quality artifact. Scoreboard under the full panel: typed slightly worse, phishing far better - the typed<->phish trade-off now has both directions measured and the reviewer's two-objective framing is confirmed empirically.
 - Strategic read (the go/no-go the review demanded): the L3 branch is NOT dead - it now OWNS a benchmark neither Laya-FT nor Jev does (zero-shot phishing AUROC), and its typed ceiling rises with plain recipe changes (8 epochs both curves still rising). Decision: continue - candidates E-72 (stage-B 10-12 epochs on the E-70 encoder, length-only lever) and E-71 (per-source balanced replay, queued from the review).
 - Sources: runs/laya/l3_e70/{train_summary.json,eval_report.json,bench_log.jsonl}, runs/laya/l3_e70_pretrain/{bench_log.jsonl,pretrain_summary.json}.
+## E-72 PRE-REGISTER (2026-09-23; length-only lever): stage B 8 -> 12 epochs on the E-70 extended (520M) encoder.\nRationale: both E-68 and E-70 stage-B curves were still rising at ep8 (+0.0045/ep, +0.0055/ep); the primary typed gate (0.6530) missed E-70 by 0.011. Single lever = stage-B length only; encoder/stage-A carry identical (E-70's A_last carried at dir creation - same-encoder lineage).\nGates (eval_l3 on runs/laya/l3_e72/final/model.pt): G2 typed >= 0.6530 (PRIMARY); G1 delta rule: macro - stage-A-exit >= -0.01; G4 phishing >= 0.60 with E-70's 0.6966 as the transfer bar to hold; probe no-regression gate <= 3 (line-best 2; E-70 measured 4); G3 record-only. Watch: the two-objective trade-off - if typed rises but phishing holds >= 0.68, the coupling broke; if phishing drops below 0.68 the length knob re-confirms the tension.\nCost: stage A dedup (carried) + 12 epoch stage B ~50 min + eval ~8 min. Preflight C1-C5.
+## E-72 VERDICT (2026-09-23): PASS on primary (typed) + retention + phishing bar with documented transfer decay; numbers parsed from runs/laya/l3_e72/eval_report.json per R2.
+
+Length-only lever: stage B 8 -> 12 epochs on the E-70 extended encoder (same-encoder A_last carry; ~50 min ladder + ~9 min eval). Schedule stabilized around ep9 (0.6975 peak, 0.6965 final).
+
+G2 typed 0.6965 >= 0.6530: PRIMARY PASS (+4.35 over E-68 line-best; beats every L3 rung AND the L2 incumbent 0.6585 - first clean in-line incumbency win). Below published Laya-FT 0.766 / Jev 0.727 - ceiling gap narrowed to ~7.0 from 13.5.
+
+G1 delta-rule: 0.6702 vs this run's stage-A exit 0.6668 = +0.0034 PASS (eval_report absolute-bar schema says false; delta rule is the decision standard - both framings published).
+
+G4 phishing 0.6092: passes the registered 0.60 bar but decays from E-70's 0.6966 - trade-off watch breached. Scaled BOTH directions now: length buys typed (+4.45) and costs transfer (-0.087); token scale buys transfer (+0.109) and costs typed (-1.1).
+
+Probe suite 4 failures (line-best 2): no-regression gate FAIL again on length-side recipes. G3 0.1900 record-only. Brier 0.1312 line-best. AG News 0.230 / emotion 0.163 - E-68 stays the choice-task leader.
+
+PORTFOLIO: two production candidates now exist - (a) runs/laya/l3_e72/final/model.pt typed specialist; (b) runs/laya/l3_e70/final/model.pt transfer specialist (phishing beats BOTH published benchmarks). Queue: E-71 balanced replay (coupling breaker), G3-arch route. Further token scaling needs NEW corpus (260M fully consumed in 2 passes).
