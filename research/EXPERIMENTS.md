@@ -909,3 +909,21 @@ Cost: teacher pass ~10 min + stage B ~20 min. Deliverable: runs/laya/l3_e69/* + 
 
 ## E-67 closure note for future G3 work
 The only untouched attack surface is architectural: the head scores each option's [MASK] marker positionally; a position-symmetric scorer (e.g., shared state summary + option embedding compared OUTSIDE the sequence position) is the mechanism-level route. Pre-register only with an explicit architecture change, not another scoring/augmentation lever.
+## E-69 VERDICT (2026-09-23): FAIL on the primary gate and on non-regression - distillation at w=0.5/T=2 subtracts value on this line. Parsed from runs/laya/l3_e69/eval_report.json per R2.
+Recipe: E-66 verbatim + L2-teacher KD blend (w=0.5, T=2, TRAIN-only teacher dump 6000/6000). Single lever: KD (P1). Stage A resumed from the carried checkpoint (restart incident recorded in MEMORY).
+- G2 typed 0.5490 vs bar max(E-66, E-68) = 0.6530 FAIL; vs same-recipe E-66 (0.5630) also FAIL (-1.4). Epoch-by-epoch: 0.5100/0.5230/0.5435/0.5490 vs E-66 0.5025/0.5295/0.5595/0.5630 - KD is BELOW gold-only at epochs 2-4.
+- Interpretation: the teacher's advantage is its PRETRAINED ENCODER, not a more informative decision function - the gold targets in typed-decisions are already soft distributions, and T=2 softening adds little beyond them while halving their weight. The L2->L3 performance gap = encoder priors, not target information.
+- G4 phishing 0.6098 PASS; G1 retention 0.6593 held (queue: replay protects through KD blend too); G3 0.2000 record-only.
+- Probe suite REGRESSED to 4 failures again (E-66 pattern returns at 4 epochs) + emotion 0.215 (vs E-68 0.306) - a 4-epoch KD run costs behavior; consistent with E-68's under-training lesson compounding with target noise.
+- Standing verdict for lever P1: is not worth revisiting without an architecture change or as E-70 = E-68 (8 epochs) + KD at low w (0.2) - pre-register separately if pursued; base recipe constraint: any new lever must run ON TOP of the 8-epoch recipe that won.
+- Compute: stage B 752 updates ~15 min; one checkpoint-carry restart (~45 min lost, lessons in MEMORY); preflight 5/5 incl. KD smoke.
+
+## Applied-research round scoreboard (user request 2026-09-23: 'apply Research findings and see their result')
+| Lever | Experiment | Verdict | Result |
+|---|---|---|---|
+| P3 eval-side calibration (perm-avg + position prior) | E-67 | FAIL | G3 0.215 -> 0.235 max; prior correction regressed acc -2.85; position prior is SIGNAL not noise |
+| P4 stage-B length 4 -> 8 epochs | E-68 | **WIN** | typed 0.5630 -> 0.6530 (+9), Brier 0.1382, probes recovered 4 -> 2; matches MiniLM-based incumbent within noise |
+| P1 L2->L3 distillation (w=0.5, T=2) | E-69 | FAIL | typed 0.5490 (-1.4 vs same-recipe E-66); teacher gap = encoder priors, not target info |
+| P6 ranking loss / P2 token scale | - | not run | queued; P2 is the last untested big ceiling lever (~3-5 h GPU) |
+
+E-68 (runs/laya/l3_e68/final/model.pt) is the new line-best decision model: 0.6530 typed / 0.1382 Brier / 2 probe failures / retention held.Recommended next: P2 (pretraining token scale 600M-1B, gate = typed >= 0.6530 with the 8-epoch recipe on top), user-gated.

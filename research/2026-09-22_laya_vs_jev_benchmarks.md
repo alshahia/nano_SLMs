@@ -114,3 +114,13 @@ augmentation did NOT fix permutation invariance (0.185, worse than unaugmented 0
 | AG News / emotion | 0.245 / 0.315 | **0.2435 / 0.245** | unchanged (chance) |
 
 Conclusion: accuracy and calibration moved, order-invariance did not - two training-side attacks exhausted; E-67 (eval-side calibration, pre-registered) is the remaining G3 route.
+
+## E-69 addendum row (2026-09-23): L3 + KD distillation (E-69)
+| Metric | L3-e68 (best) | **L3-e69** | note |
+|---|---|---|---|
+| typed test acc | 0.6530 | **0.5490** | KD at w=0.5 HURTS (-1.4 vs same-recipe E-66) |
+| Brier | 0.1382 | **0.1680** | worse |
+| probe failures | 2 | **4** | regression returned at 4-epoch length |
+| PhishNChips AUROC | 0.5878 | **0.6098** | over the 0.60 bar (epoch-noisy) |
+| AG News / emotion | 0.272 / 0.306 | **0.245 / 0.215** | transfer loss |
+Conclusion: teacher soft targets do not transfer the teacher's advantage - its value is the pretrainedencoder weights, not the decision function. Distillation closed as a negative at this config; the from-scratch 35M encoder line reached 0.6530 by recipe (length) alone.
