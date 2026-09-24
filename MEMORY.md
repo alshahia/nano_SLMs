@@ -576,3 +576,8 @@ Deferred from the same review: per-source balanced reservoir replay (the one unt
 ## 2026-09-23 - E-73 lesson: the mixer works - guard the objective with a stop rule keyed to its metric
 - An early stop on the metric you must protect (phish drop 0.02 from run peak) converted the last 5 'losing' epochs of a 12-ep schedule into saved compute and kept the artifact in the published-class on transfer (0.6932) while typed held the registered line. When a run visibly trades one metric against another along epochs, a metric-pegged stop beats a fixed length.
 - The stage-B bench already computed phish per epoch - the stop logic consumed the existing signal (no new eval cost).
+
+## 2026-09-23 - E-74 in flight: symmetric trainer (option-isolated packing)
+- laya/scripts/train_l3_sym.py committed and gating 5/5: fresh item construction (n_options=1, binary target, BCEWithLogits on the raw marker score), grouped decision metrics by qid, smoke-passing two-stage (5-ep sym stage A on mixture_raw packs, 8-ep sym stage B) with the SAME 520M encoder init - clean single recipe-flip vs the E-72 positional arm.
+- Honest scope note: v1 covers stage-A/B + grouped typed/macro/Brier; decision_bench/perm-bench phase-2 adaptation pending (phish needs sym re-pack hooking); perm_dup/order-aug inapplicable under sym (documented in pre-register).
+- Early pace: ~130 updates/s (236k-ish sub-items) - stage A may cost only ~15 min.
