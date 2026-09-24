@@ -1427,3 +1427,6 @@ decision; the 2048/factor-2 fallback was NOT needed.
 - Session reliability note: 6 crashes fixed+resumed zero-flag (masking shape, OOM micro-48, probe model-type/device, argparse import, permutation API); scheduled bench-probe monitoring infra (bench_probe.py) retained for future runs.
 
 ## 2026-09-23 — self-reflection closure (user-requested): failure catalogue + fixes in research/2026-09-23_agent_self_reflection.md; preflight gate (preflight_check.py + train_l3 --smoke) tested PASS 4/1SKIP/0FAIL; corpus build now hard-fails on eval overlap; rules R1-R6 adopted.
+
+## 2026-09-23 - Laya-line arc E-65..E-73 snapshot (see research/2026-09-23_laya_l3_frontier.md)
+The L3 branch produced a measured frontier on one 520M-token encoder: E-72 typed specialist 0.6965 (line-best typed, beats L2 incumbent), E-70 transfer specialist 0.6966 phishing (beats BOTH published Laya 0.678 / Jev 0.689 - the program's first published-benchmark wins), E-73 general-purpose mixer (typed 0.656 + phish 0.6932, both pre-registered gates PASS). External-review rules adopted and enforced (G1 delta, probe no-regression, calibration quarantine). Disk-full incident + smoke-dir trap learned and documented. Consoles/logs/bench JSONL/TB preserved per run.

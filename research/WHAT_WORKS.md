@@ -165,3 +165,11 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
 
 ## 2026-09-23 - E-65 avoid-lesson
 - AVOID repack-shuffle-only option-order augmentation: E-65 stage B got WORSE permutation agreement with it (0.185 vs 0.385 unaugmented). Invariance-by-construction (same item, multiple orders in-batch - E-66 lever) or PMI/surface-form debiasing are the literature-supported routes; validate on held-out either way.
+
+## 2026-09-23 - Laya-line proven levers (E-70..E-73)
+- Token scale (2-pass 520M on the same corpus): +0.109 zero-shot phishing AUROC (0.5878 -> 0.6966, past published Laya 0.678 / Jev 0.689), typed -1.1
+- Stage-B length 8->12 ep: +5.45 typed (0.6420 -> 0.6965, past the L2 incumbent), transfer -0.087
+- Per-source balanced replay (replay_balanced flag): +6.0 transfer back at -2.6 typed vs pure length; strictly dominates the low-typed arm
+- Metric-pegged early stop (stageB_auroc_stop): keeps the protected metric at its peak-class while taking the typed gains transfer permits (E-73 double-gate WIN)
+- KD from a different-encoder teacher: NEGATIVE (do not redo without encoder-family match)
+- Fitted calibration (any flavor): negative 3/3 - quarantined by rule
