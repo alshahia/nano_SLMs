@@ -161,3 +161,13 @@ data/md_measure/*/raw/
 # Laya-line: weights/checkpoints stay local (regenerable; ~400 MB fp32)
 runs/laya/**/*.pt
 data/laya/
+
+# U-line U-1 (runs/u1_full): weights stay local per the LFS decision (60 MB fp16 final + optimizer.pt);
+# train_summary, tokenizer files and tfevents stay tracked like the other run arms.
+runs/u1_full/checkpoint-*/
+runs/u1_full/final/model.safetensors
+runs/u1_full/*.log
+runs/u1_smoke/checkpoint-*/
+runs/u1_smoke/final/model.safetensors
+# scratch benches and LLM-authoring scripts are NOT durable (AGENTS.md scratch/ rule)
+scratch/
