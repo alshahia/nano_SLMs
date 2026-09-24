@@ -992,3 +992,39 @@ Build fresh domain tokens beyond the 2-passed corpus (build_corpus_l3.py with ne
 Gates: typed ≥ 0.6965 (E-72 line-best) OR phish ≥ 0.70 + typed ≥ 0.6560 (E-73's point extended); G1 delta; probes ≤ 4; Brier ≤ 0.14; probes both specialized metrics at least non-regressing. Evidence at pretrain end: heldout ppl < 8.12.
 Cost: build ≈ 1-2h CPU + 80-100 min pretrain extend + ~60 min ladder. GPU serialized; build is CPU and can overlap with E-74's GPU runs only if VRAM idle (serialized by default per AGENTS §4).
 Decision rule: E-74's symmetric encoder replaces the base if its stage-B evaluator clears at least G2/G4/G1 AND beats perm-agreement line-best by ≥ 0.05; otherwise E-75 extends the positional encoder (which already owns the frontier).
+
+## U-0 VERDICT (2026-09-24; U-line tooling close-out): PASS - the chain codec and 3-layer validator are built and proven; parsed from ui/tests + the demo corpus run.
+- Frozen catalog UI1-2026-09-24-41c (41 components; frozen in ui/src/catalog.py).
+- Chain <-> spec roundtrip asserted EQUAL on all archetypes x seed grid (test_roundtrip_all PASS, 10/10 tests).
+- Demo corpus build: 400 rows x 8 archetypes, 0 generation failures, splits 320/64/16 by pre-registered block rule.
+- Scope exclusions locked for v1: $cond/$computed, multi-slot, element-level watch (WACH op = future rung).
+- Research basis: research/ui_json_render_tiny_codegen_report.md; subagent payload for spec grammar in session.
+
+## U-1 PRE-REGISTER (2026-09-24; first TRAINING rung on the U-line - user-approved research phase; GPU still user-gated):
+arm: format-then-SFT two-stage on the chain surface.
+- stage A (format-grammar LM): causal LM on chain lines drawn from the U-1 corpus with the TASK field MASKED OUT (learn structure/types/props/bindings without prompt coupling); ~60 pct of tokens.
+- stage B (task SFT): TASK
+prompt -> chain generative training; per-archetype BALANCED replay (E-71 leverized; archetype = source key); metric-pegged early stop (E-73 recipe, delta 0.02 on composite).
+- corpus: 50k-200k rows target, --per-arch scaling with the corpus script; module venv recipe in ui/README.md.
+- gates: (1) valid@4 >= 0.90 (3-layer validator on greedy + 4 samples), (2) treeEditSim composite drop <= 0.02 from peak (early-stop rule), (3) no degenerate repetition (self-chain-dup scan), (4) probe pass: chain round-trip on val/test split must be LOSSLESS for every generation.
+- pre-registers a SECONDARY recipe diagnostic: embedding transplant warm-start (E-05) vs fresh, decided by a 0.5-val-loss-scale quick check.
+- costs: stage B only when GPU is idle (single GPU rule); targets a pico-scale sweep (5-50M) before any bigger P/Pilot-scale run; dense v GGDN-Hybrid comparison is a separate rung (G1 rule: only after U-1 baseline).
+- explicitly NOT in scope: JSONL patch surface streaming, full-app (Next.js) targets, screenshot-conditioned generation.
+Decision: this pre-register is entered now so that the GPU window (when the user opens it) can launch straight into it.
+
+## U-1 CORPUS BUILD (2026-09-24; CPU-only, completed same session as U-0): PASS
+- Built data/u1/raw/u1_main_50k.jsonl = 50,000 rows (8 archetypes x 6,250 seeds; 0 generation failures; every row passed the 3-layer gate by construction).
+- Splits (block-disjoint by seed per archetype): train 40,000 / val 7,504 / test 2,496.
+- Chain surface compactness: median 867 chars, p95 1,551, max 1,590 — fits the ctx 1024 pico plan with headroom.
+- Size on disk: 99.64 MB (gitignored data/u1/raw/ per repo policy; tokens are generated at train time or by a future tokenize step — no raw committed).
+- HONEST dedupe finding: only 114 unique task PROMPT templates (max 569 dup tasks) — expected, since the corpus is code-side-diverse but prompt-side fixed. The prompt kit (ui/prompts/DATA_GEN_PROMPTS.md, built this session) is exactly the side-data lever to fix that; side-data LLM authors must route through spec_to_chain + validate_chain before add. Re-run build with the prompt-kit "domain" axes only after at least 200 new LLM-authored tasks exist, or pre-register a paraphrase-augmentation rung (nearest Laya E-65 avoid-lesson: in-batch order/paraphrase duplicates beat repack shuffles).
+- Next (USER-GATED GPU): tokenize chain corpus (needs a chain-tokenizer decision: repo BPE vocab 30522) + pre-register U-2 stage-A QC before any train launch — see U-1 section above for the arm/gates.
+## E-74 PHASE-1 VERDICT (2026-09-23): BREAKTHROUGH - the position-symmetric scorer holds AND breaks the published typed ceiling; numbers from the teed console curve + verify re-run (grouping audit: 7,100 sym sub-items -> exactly 2,000 qids, max group 5).
+Recipe: the SAME 520M encoder; stage A 5 ep + stage B 8 ep on option-isolated packs (one [CLS] type instr SEP m option state SEP window per option; binary BCE on the raw marker score; grouped argmax-by-qid for decisions). ~2h GPU.
+TYPED 0.7712 (grouped decision acc on the standing unseen test n=2000) - ABOVE the published Laya-FT 0.766 and Jev 0.727 for the first time in the program, and +7.5 over the positional line-best (E-72 0.6965). The positional-option marker architecture was the ceiling.
+Brier 0.1009 (best ever; positional line-best 0.1312) - symmetric scoring also dropped calibration error.
+G3 perm-agreement: BY CONSTRUCTION (an option window is identical under any permutation) - the demoted gate is satisfied at the architecture level, as the E-67 closure note predicted.
+Stage-B curve STILL RISING at ep8 (+0.025 ep7->8) - length and the E-73 mixer knobs apply here too.
+KNOWN CAVEATS: (1) stage-A eval line 0.0 acc = qid-collapse in the stage-A mixture eval path (mixture qname = source name); verified NOT affecting training or the typed metric; G1 delta needs a phase-2 fix. (2) The phish/perm/AG/emotion/probe panel is NOT measurable yet - positional bench adapters must be sym-adapted (phase-2); a full win is NOT claimed.
+Queued: phase-2 sym bench plumbing, then stage-B length/mixer rungs on the symmetric arm (curve still climbing).
+Sources: runs/laya/l3_e74_console.log; runs/laya/l3_e74/{A_last,B_last}.pt + final/model.pt; data/laya/sym/typed_test.pt audit.

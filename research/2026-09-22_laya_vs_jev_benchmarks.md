@@ -158,3 +158,12 @@ Length and token scale are complementary divergent levers (length -> typed, scal
 
 Measured 3-point frontier on one encoder: the coupling softens under balanced replay (typed now costs only ~0.9 pt typed per 0.01 transfer lost, vs ~8.5 before).
 \n## E-73 addendum row (2026-09-23): two-phase mixer (balanced replay + phish early-stop 0.02)\n| Metric | L3-e70 | L3-e71 | L3-e72 | **L3-e73** | note |\n|---|---|---|---|---|---|\n| typed | 0.6420 | 0.6705 | 0.6965 | 0.6560 | holds the 0.6530 line |\n| phishing | 0.6966 | 0.6690 | 0.6092 | 0.6932 | published-beating class kept |\n| probe fails | 4 | 4 | 4 | 4 | gate held |\nThe mixing objective passed BOTH gates: an artifact combining E-70-class transfer with typed above every pre-E-71 rung.
+
+## 2026-09-23 - E-74 phase-1 addendum: the symmetric scorer breaks the published typed ceiling
+| Metric | L3-e72 (positional) | L3-e74 (symmetric) | note |
+|---|---|---|---|
+| typed test acc | 0.6965 | 0.7712 | past published Laya-FT 0.766 on the SAME unseen test |
+| Brier | 0.1312 | 0.1009 | much sharper calibration |
+| Perm. agreement | 0.19-0.24 | ~1.0 by construction | option serialization is permutation-equal |
+| phish / G1 / probes | measured | PENDING phase-2 sym bench | not measurable yet - do not claim |
+Positional-option markers were the ceiling architecture: fixing them moved typed +7.5 in one rung. Pending the phase-2 panel; stage-B length applies (curve still rising at ep8).
