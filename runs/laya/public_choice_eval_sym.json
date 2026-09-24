@@ -1,0 +1,30 @@
+{
+  "suites": {
+    "ag_news": {
+      "l3_e72": {
+        "acc": 0.2945,
+        "ece15": 0.08026594785228372,
+        "n": 2000
+      },
+      "l3_e74_sym": {
+        "acc": 0.2525,
+        "ece15": 0.09220354635099647,
+        "n": 2000
+      }
+    },
+    "emotion": {
+      "l3_e72": {
+        "acc": 0.259,
+        "ece15": 0.11654512121280039,
+        "n": 2000
+      },
+      "l3_e74_sym": {
+        "acc": 0.2245,
+        "ece15": 0.12284241324789279,
+        "n": 2000
+      }
+    }
+  },
+  "caveat": "vendor prompts unpublished; approximate comparison",
+  "packing": "symmetric-isolated"
+}
