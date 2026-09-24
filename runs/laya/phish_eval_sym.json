@@ -1,0 +1,32 @@
+{
+  "dataset": "AreLit/PhishNChips core",
+  "packing": "symmetric-isolated",
+  "n": 2000,
+  "protocol": "Luni bench_platt.py replication, zero-shot",
+  "models": {
+    "l3_e72": {
+      "raw_acc_test_half": 0.568,
+      "platt_acc_test_half": 0.57,
+      "auroc_test_half": 0.6024616393862302,
+      "ece15_test_half": 0.029916014909744278,
+      "raw_acc_full": 0.5645,
+      "platt_a": 1.0495923081147225,
+      "platt_b": -0.10758069105715343,
+      "mean_p": 0.5271501541137695
+    },
+    "l3_e74_sym": {
+      "raw_acc_test_half": 0.438,
+      "platt_acc_test_half": 0.549,
+      "auroc_test_half": 0.4138626218019488,
+      "ece15_test_half": 0.5129291370473803,
+      "raw_acc_full": 0.4435,
+      "platt_a": -0.11800445710304824,
+      "platt_b": -0.2602860112430371,
+      "mean_p": 0.19423812627792358
+    }
+  },
+  "published": {
+    "laya_auroc": 0.678,
+    "jev_auroc": 0.689
+  }
+}
