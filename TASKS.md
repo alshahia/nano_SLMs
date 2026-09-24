@@ -180,3 +180,8 @@ BEFORE training (A0 discipline); CPU-only -> zero single-GPU contention by const
 **105.** Agent self-reflection (user request) - done: 6 runtime failures + 6 silent near-misses + 5 process failures catalogued with root causes in research/2026-09-23_agent_self_reflection.md; fixes IMPLEMENTED and tested: laya/scripts/preflight_check.py (5-check gate, C5 smoke really trains), train_l3.py --smoke mode, build_corpus_l3.py hard-fail on eval overlap, ledger-number rule R2; standing rules R1-R6.
 **106.** E-66 (from E-65 reflection): perm-duplicate option aug on the L3 base - done (PARTIAL): G2 typed 0.5630 (+4.45, best single-lever gain of the line), G4 phishing 0.6086 PASS, G1 held within noise (-0.003), G3 perm 0.2150 FAIL (2nd training-side attack exhausted), probe regressions 2->4; scheduler-overrun bug caught by monitoring and fixed same-run (f92965f); full verdict in EXPERIMENTS.md.
 **107.** Improvement-levers roadmap (user request, net-researched during E-66) - done: research/2026-09-23_laya_improvement_levers.md (P1 distill from L2, P2 token scale 600M-1B, P3 eval-side debias, P4 stage-B recipe, P5 continuous training, P6 ranking loss; priority P3 > P4 > P1 > P2 > P6; E-67 = P3, pre-registered, LAUNCH USER-GATED).
+
+## 2026-09-23 - Laya-line next steps (both pre-registered, data-build in background)
+- E-74 architecture rung (position-symmetric scorer - option-isolated packing): queued on the raw-mixture rebuild (data/laya/mixture_raw building now, CPU-only).
+- E-75 new-corpus token scaling: queued; fresh sources through build_corpus_l3 then pretrain_encoder continuation from the 520M weights.
+- Docs consolidated (frontier report, HANDOFF, WHAT_WORKS, MEMORY) per user request.

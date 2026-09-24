@@ -63,7 +63,10 @@ def build_source(tok, cfg, stats):
                       "target": target,
                       "gold_idx": max(range(len(target)), key=lambda i: target[i]),
                       "workflow": source, "case_id": source,
-                      "qname": source, "qtype_name": qtype})
+                      "qname": source, "qtype_name": qtype,
+                      "instructions": instructions,
+                      "option_texts": option_texts,
+                      "state_text": state_text})
 
     try:
         boolq = load_dataset("google/boolq", split="train")
@@ -179,6 +182,8 @@ def build_source(tok, cfg, stats):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--config", default="configs/laya_l1.yaml")
+    ap.add_argument("--out", default="data/laya/mixture",
+                    help="output dir (use data/laya/mixture_raw to keep the E-63 baseline intact)")
     args = ap.parse_args()
     import yaml
     with open(args.config, "r", encoding="utf-8") as f:
@@ -197,7 +202,7 @@ def main():
         counters[it["workflow"]] = c + 1
         (held if c % 10 == 9 else train).append(it)
 
-    out_dir = os.path.join("data", "laya", "mixture")
+    out_dir = args.out
     os.makedirs(out_dir, exist_ok=True)
     torch.save(train, os.path.join(out_dir, "train.pt"))
     torch.save(held, os.path.join(out_dir, "heldout.pt"))
