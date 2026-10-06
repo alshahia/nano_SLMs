@@ -5,11 +5,55 @@
 > [RETROSPECTIVE.md](RETROSPECTIVE.md). **Current state: BLOCKED at TASKS 131**
 > (user-gated). Stage 1 PASSED; Stage 2 PASSED (hybrid detector, 0.925 line
 > recall@IoU0.5); Stage 3 from-scratch FAILED (E-87, 0.9100 CER); Stage 0.5b
-> warm-start FAILED (E-88, 71.74 vs the 57.80 control). The best honest number
-> on `data/hflines/val` is the **57.80%** zero-shot control; the <5% target is
-> NOT met for handwriting. Sections below are newest-first. Section (d) was a
+> warm-start FAILED (E-88, 71.74 vs the 57.80 control). Stage 0.5c / route (D)
+> PASSED its gate (E-89: **46.93%** zero-shot, +10.87 pp) but is a WEAK teacher,
+> so the best honest number on `data/hflines/val` is now **46.93%** (FixFips
+> CRNN, zero-shot, greedy CTC). The <5% target is NOT met for handwriting. Sections below are newest-first. Section (d) was a
 > duplicate of (c) and was merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
+
+## 2026-10-06 (n) - OCR Stage 0.5c / E-89: the in-domain teacher TRANSFERS zero-shot (+10.87 pp) - route (D) supported, but it is a weak teacher
+
+`FixFips/arabicocr-khatt` (CRNN = CNN+BiLSTM+CTC, 15.06M params, KHATT 11,375
+lines, MIT) was evaluated ZERO-SHOT - no fine-tuning at all, greedy CTC, no
+language model - on all 1,654 lines of `data/hflines/val`, using the author's own
+preprocessing (grayscale -> binarize -> h=96 -> pad W=1536) and the author's
+reversed-label protocol.
+
+| metric | FixFips | control (v6-small) |
+|---|---|---|
+| CER (raw, summed) | **46.93** | 57.80 |
+| CER (author-normalised) | 42.53 | - |
+| WER | 81.89 (norm 80.56) | - |
+| exact line | 4.66% | - |
+| median line CER | **51.02%** | - |
+| cer_lt10 / lt20 / lt50 | 11.2 / 14.9 / 48.1% | - |
+| speed / params | 51.1 img/s (32.4 s) | 15.06M vs 3.10M |
+
+**GATE PASS: +10.87 pp better than the 57.80 control.** Side-checks: KHATT 200 =
+**12.03** vs control 44.41 (+32.38, but KHATT is this model's own training corpus
+- NOT independent transfer evidence); printed ISIPPT 500 = **46.92** vs 13.75
+(-33.17, expected out-of-domain). Greedy/no-LM 12.03 on KHATT against the card's
+6.09 (beam + bigram LM) is the right order of magnitude, which validates the
+architecture reconstruction, the checkpoint load and the preprocessing. The
+reversed-label protocol was confirmed empirically (flip 46.93 vs no-flip 81.99).
+
+**Honest reading: a real but WEAK win.** Only ~15% of lines decode under 20%
+CER and half are worse than 50%. This is the best zero-shot base found so far,
+not a usable recognizer. Fine-tuning/distilling from here must still budget far
+more than the 2k lines E-77 showed to be harmful, and per E-88 use a much lower
+lr with the backbone frozen. **Nothing was trained: TASKS 133 is inference-only,
+and the next training step remains USER-GATED at TASKS 131.**
+
+Environment note: the author's `preprocess.py` needs cv2, which `.venv` does not
+have; the harness borrows the extension from the sibling `.venv-paddle`
+site-packages via `sys.path` instead of installing anything. A real fix is a
+user-gated `pip install opencv-python`. The harness and the author's unmodified
+code live under the gitignored `arabic_ocr/models/fixfips_khatt/`
+(`author_code/` = the author's own `model.py` / `preprocess.py` / `metrics.py` /
+`eval_val.py`, re-fetchable from github.com/FixFips/ArabicOCR_KHATT; that GitHub
+repo ships no LICENSE file, so it is cached locally rather than vendored into
+git).
 
 ## 2026-10-04 (m) - OCR Stage 2: stride 1 FAILED at 59.86%; CenterNet-style running
 

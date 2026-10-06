@@ -145,8 +145,12 @@ times before the team built controls that catch it.
 - Route (D) found two candidates: `FixFips/arabicocr-khatt` (CRNN+CTC, KHATT
   11,375 lines, claimed 6.09% CER) and `sdkv2/muharaf-arabic-ocr` (CER 13.31%).
   **The zero-shot eval on `data/hflines/val` vs the 57.80 control (E-89) was
-  the agreed next action and had never been run.** It was launched 2026-10-06
-  as part of this remediation.
+  the agreed next action and had never been run.** It RAN on 2026-10-06 as part
+  of this remediation: **PASS - 46.93% vs 57.80%, +10.87 pp**, so route (D)
+  transfers zero-shot; but it is a weak teacher (median line CER 51.02%, only
+  14.9% of lines under 20%). The best honest number on `data/hflines/val` is
+  therefore **46.93%**, still far from the <5% target. The step that follows is
+  training, and it remains user-gated at TASKS 131.
 - No python/GPU OCR process is running.
 
 ## 7) Remediation log (2026-10-06)
@@ -160,7 +164,8 @@ times before the team built controls that catch it.
 | R5 | `AGENTS.md` §1/§2 register the OCR line | done |
 | R6 | OCR ignore rules added (weights, renders, raw pool) | done |
 | R7 | TASKS/HANDOFF/MEMORY updated; E-89 pre-registered | done |
-| R8 | E-89 zero-shot eval of `FixFips/arabicocr-khatt` on `data/hflines/val` | in progress |
+| R8 | E-89 zero-shot eval of `FixFips/arabicocr-khatt` on `data/hflines/val` | **done - PASS: 46.93 vs 57.80 (+10.87 pp); weak teacher (median line CER 51%)** |
+| R9 | E-89 harness + results committed; STATUS/HANDOFF/TASKS/MEMORY/EXPERIMENTS/WHAT_WORKS/plan updated with the result | done |
 
 ## 8) Guardrails for the next agent
 

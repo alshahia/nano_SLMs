@@ -1,4 +1,4 @@
-# 2026-10-06 (v) (Arabic OCR audit: the WHOLE line was untracked in git - evidence committed, legacy claim docs neutralised, in-domain teacher eval launched):
+# 2026-10-06 (v) (Arabic OCR audit: the WHOLE line was untracked in git - line committed, legacy claim docs neutralised, and the in-domain teacher eval PASSES: route D transfers +10.87 pp):
 
 > Follows (u). The user asked to save the report, commit, fix what was done
 > wrong and the other risks, update the docs, and proceed with the rest of the
@@ -29,14 +29,30 @@ KHATT 16.56) carried no warning despite being teacher-forced artifacts; both now
 open with a "NOT A MEASUREMENT" banner. `STATUS.md`'s duplicate (c)/(d) Stage 0
 sections were merged and a current-state header added.
 
-**4. E-89 launched (route D validation, TASKS 133).** Zero-shot eval of the
+**4. E-89 run (route D validation, TASKS 133).** Zero-shot eval of the
 in-domain teacher `FixFips/arabicocr-khatt` on `data/hflines/val` (1,654) vs the
 **57.80** control, no fine-tuning - the cheap decider for TASKS 131
 recommendation (D) that had never been run. Harness
 `arabic_ocr/scripts/eval_fixfips_khatt.py`, result
-`runs/stage05c/eval_fixfips_hflines_val.json`. **Result: pending** (launched
-14:32, inference only). Fallback if it fails: (B1′) freeze the PPLCNetV4
-backbone and train only the lightsvtr neck + heads.
+`runs/stage05c/eval_fixfips_hflines_val.json`. **Result: PASS - see §5.**
+
+**5. E-89 RESULT - route (D) TRANSFERS, but the teacher is weak (PASS).**
+`FixFips/arabicocr-khatt` (CRNN+CTC, 15.06M, KHATT-trained, MIT) read
+`data/hflines/val` (1,654) at **46.93%** free-running CER against the **57.80**
+control - **+10.87 pp with NO training**, in 32.4 s (51.1 img/s), greedy CTC and
+no language model. Norm CER 42.53, WER 81.89, exact 4.66%, **median line CER
+51.02%**, cer_lt10/20/50 = 11.2 / 14.9 / 48.1. Side-checks: KHATT 200 = **12.03**
+vs 44.41 (its own training corpus - NOT transfer evidence); printed ISIPPT 500 =
+**46.92** vs 13.75 (-33.17, expected). Greedy/no-LM 12.03 on KHATT against the
+card's 6.09 (beam + bigram LM) is the right order of magnitude, which validates
+the architecture reconstruction, the checkpoint load and the preprocessing; the
+author's reversed-label protocol was confirmed empirically (flip 46.93 vs
+no-flip **81.99**). **The win is real, but half the lines are worse than 50% CER,
+so this licenses a gentle in-domain fine-tune (B1'), not a distillation sprint.
+Nothing was trained - the next step is still user-gated at TASKS 131.**
+Environment note: the author's `preprocess.py` needs cv2, which `.venv` lacks;
+the harness borrows the extension from `.venv-paddle` via `sys.path` (nothing
+installed) - a real fix is a user-gated `pip install opencv-python`.
 
 # 2026-10-06 (u) (Arabic OCR Stage 0.5b FAIL: 13x the data makes the fine-tune WORSE - the damage tracks lr x steps, not corpus size):
 

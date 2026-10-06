@@ -347,3 +347,11 @@ exists because skipping it already cost a run or a GPU-day.
    map's own rule the honest status file did not exist for the next agent, which
    is how two teacher-forced claim documents survived un-bannered for a week.
    Commit the durable docs + textual evidence, and register the line in the map.
+
+## 2026-10-06 (b) - Arabic OCR E-89: an in-domain teacher transfers zero-shot (+10.87 pp for 33 s of inference)
+
+- **Zero-shot the best IN-DOMAIN checkpoint on the target set BEFORE planning any fine-tune.** `FixFips/arabicocr-khatt` (CRNN+CTC, 15.06M, KHATT-trained, MIT) scored **46.93%** free-running CER on `data/hflines/val` (1,654 lines, greedy CTC, no LM, author preprocessing) against the **57.80%** out-of-domain v6-small control: **+10.87 pp with zero training**, in 33 s. E-88 had just spent 27,440 steps to make the out-of-domain model 13.94 pp worse. The cheap eval dominates the expensive one.
+- **Match the domain, not the parameter count.** The winning teacher is 5x LARGER (15.06M vs 3.10M) and slower than the control and still wins - the domain gap, not capacity, was binding (extends E-76's 'pretrained > from-scratch' to 'in-domain pretrained > out-of-domain pretrained').
+- **Measure flip vs no-flip once, before believing any CER.** This CRNN trains on reversed labels; un-flipped it scores **81.99** on our set instead of **46.93**. A README-inherited direction would have turned a PASS into a false FAIL.
+- **A mean CER is not a teacher-quality verdict: report the median and the `cer_lt20` fraction.** E-89's 46.93% headline carries a **51.02%** median line CER and only **11.2% / 14.9%** of lines under 10% / 20%. Route (D) transfers, but any distillation is capped by that distribution, not by the mean.
+- **A side-check on the teacher's own corpus is not transfer evidence.** KHATT gave 12.03% (32.38 pp better than the control) - but KHATT IS this model's training corpus. The author's own README says historical manuscripts are out of domain, and `data/hflines` is exactly that. **Always ask whether an 'in-domain' benchmark is really held out.**

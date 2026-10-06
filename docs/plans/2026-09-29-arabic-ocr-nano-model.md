@@ -16,6 +16,8 @@
 > TASKS 131** and the in-domain-teacher eval is E-89. Live status:
 > [../../arabic_ocr/STATUS.md](../../arabic_ocr/STATUS.md); full audit:
 > [../../arabic_ocr/RETROSPECTIVE.md](../../arabic_ocr/RETROSPECTIVE.md).
+>
+> **2026-10-06 (b) E-89 RESULT.** The in-domain-teacher eval RAN: `FixFips/arabicocr-khatt` zero-shot = **46.93%** vs the 57.80% control on `data/hflines/val` (**+10.87 pp**, free-running, no LM), so route (D) transfers - but it is a weak teacher (median line CER 51.02%, only 14.9% of lines under 20%). The next step is training and remains user-gated (TASKS 131).
 
 # V2 - two-stage detection + recognition (approved 2026-10-04)
 
