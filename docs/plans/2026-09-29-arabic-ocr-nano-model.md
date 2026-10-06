@@ -382,3 +382,15 @@ arabic_ocr/
 └── runs/
     └── arabic_ocr/             # Training runs
 ```
+
+### Addendum 2026-10-06 -- route (D) teacher-selection finding (TASKS 134 / E-90 / E-91)
+
+The route (D) step of this plan evaluated in-domain teachers zero-shot on
+`data/hflines/val`. Both candidates were subsequently found to share training data with
+that corpus: 9.6% of the val lines are in the KHATT training set of
+`FixFips/arabicocr-khatt` and 79.9% are in the Muharaf training manifests of
+`sdkv2/muharaf-arabic-ocr`. On the 174 val lines held out from both, FixFips scores
+61.88% CER and Muharaf 54.06% against the 57.80% control, so route (D) transfers
+inside a teacher own domain but only ~parity outside it. The gate text above is
+unchanged; the expectation attached to it is corrected by TASKS 137. Details:
+`arabic_ocr/STATUS.md` section (o).

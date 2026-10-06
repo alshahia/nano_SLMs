@@ -2,15 +2,61 @@
 
 > **READ THIS FIRST (added 2026-10-06).** This file is the honest *live*
 > status home for the OCR line; the durable audit of the whole line is
-> [RETROSPECTIVE.md](RETROSPECTIVE.md). **Current state: BLOCKED at TASKS 131**
-> (user-gated). Stage 1 PASSED; Stage 2 PASSED (hybrid detector, 0.925 line
+> [RETROSPECTIVE.md](RETROSPECTIVE.md). **Current state: TASKS 134 done (E-90/E-91);
+> the next step (training) remains USER-GATED at TASKS 131, superseded by
+> TASKS 137.** Stage 1 PASSED; Stage 2 PASSED (hybrid detector, 0.925 line
 > recall@IoU0.5); Stage 3 from-scratch FAILED (E-87, 0.9100 CER); Stage 0.5b
-> warm-start FAILED (E-88, 71.74 vs the 57.80 control). Stage 0.5c / route (D)
-> PASSED its gate (E-89: **46.93%** zero-shot, +10.87 pp) but is a WEAK teacher,
-> so the best honest number on `data/hflines/val` is now **46.93%** (FixFips
-> CRNN, zero-shot, greedy CTC). The <5% target is NOT met for handwriting. Sections below are newest-first. Section (d) was a
-> duplicate of (c) and was merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
+> warm-start FAILED (E-88, 71.74 vs the 57.80 control). Stage 0.5c / route (D):
+> the two in-domain teachers score 46.93 (FixFips) and 23.64 (Muharaf) on
+> `data/hflines/val`, but those headlines are CONTAMINATED -- 9.6% and 79.9% of
+> the val lines are in the respective teacher's OWN training data. On the 174
+> lines held out from both, FixFips is 61.88 (4.08 pp WORSE than the control)
+> and Muharaf 54.06. **The best honest number on the corpus is 46.93%; the
+> honest transfer number is ~54-62%.** The <5% target is NOT met for handwriting.
+> Sections below are newest-first. Section (d) was a duplicate of (c) and was
+> merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
+
+## (o) 2026-10-06 -- Stage 0.5c (b): the SECOND in-domain teacher eval, and the contamination audit that revises E-89
+
+**TASKS 134 / E-90 -- `sdkv2/muharaf-arabic-ocr` zero-shot (inference only).**
+New harness `arabic_ocr/scripts/eval_muharaf_hflines.py` mirrors E-89 exactly
+(greedy CTC over the model's own logits, NO language model, no reranker,
+free-running, dynamic width) and scores the author's `ctc_backbone/model.pt`
+(4,245,671 params, sha256 head `bba3b6f5301822fc`) on all 1,654 lines of
+`data/hflines/val`: **CER 23.64% vs the 57.80% control (+34.16 pp)**, median line
+CER 13.16%, cer_lt10/20/50 = 38.4 / 66.5 / 91.2%, 11.55% exact lines, 17.3 s /
+95.3 img/s. It looked like a rout.
+
+**E-91 -- it is NOT a transfer number, and measuring that is the result.**
+`data/hflines` was built from `Teklia/KHATT_v1.0` + `aamijar/muharaf-public` +
+`data/reallines` (`build_hf_lines.py`), and this teacher was trained on Muharaf.
+Matching normalized transcripts against the author's OWN published training
+manifests (22,091 lines) shows **79.9% of the val lines are in its training set**,
+where it decodes at 15.69% CER; the 3.4% also in its val/test splits decode at
+20.24%, so only **16.7-20.1% is genuinely held out**.
+
+**The same audit re-opens E-89.** FixFips trained on KHATT, and 9.6% of the val
+lines are KHATT lines it trained on (CER **1.82%** there). On the **174 val lines
+held out from BOTH candidate teachers** -- the only directly comparable number --
+it scores **61.88%, i.e. 4.08 pp WORSE than the control**; Muharaf scores
+**54.06% (+3.74 pp)**. The sample is small (n=174) but the medians agree
+(66.67 vs 50.45) and the ranking is stable on the strict 100-line variant that
+also excludes both teachers' val splits (75.26 vs 68.80).
+
+| teacher | headline | in own train | own held-out | shared clean (174) |
+|---|---|---|---|---|
+| `FixFips/arabicocr-khatt` | 46.93 | 9.6% / CER 1.82 | 52.79 | **61.88** |
+| `sdkv2/muharaf-arabic-ocr` | 23.64 | 79.9% / CER 15.69 | 46.30 | **54.06** |
+| control (un-mirrored zero-shot) | 57.80 | -- | -- | 57.80 |
+
+**Consequence.** E-89's gate literally passed and its measurement stands, but its
+interpretation (route (D) transfers) was **overstated**: route (D) transfers
+*inside a teacher's own training domain*, not to unseen handwriting. Muharaf is
+still the better base (54.06 vs 61.88, 4.25M vs 15.06M params, 95 vs 51 img/s),
+but the honest headroom over the incumbent control is ~3.7 pp, so the <5% target
+is NOT reachable by distilling either teacher. TASKS 137 supersedes the TASKS 131
+decision and is USER-GATED. Evidence: `runs/stage05c/{teacher_overlap_stratification,teacher_clean_comparison,overlap_muharaf_hflines}.json`.
 
 ## 2026-10-06 (n) - OCR Stage 0.5c / E-89: the in-domain teacher TRANSFERS zero-shot (+10.87 pp) - route (D) supported, but it is a weak teacher
 

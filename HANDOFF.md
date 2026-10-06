@@ -1,3 +1,45 @@
+# 2026-10-06 (w) (Arabic OCR: the SECOND in-domain teacher eval, and the teacher-contamination audit that REVISES E-89 - route (D) transfers only inside a teacher's own training domain):
+
+> Follows (v). The user chose the recommended option and authorized executing
+> it: TASKS 134, the zero-shot eval of the second in-domain teacher, plus the
+> reproducibility work. Inference only; nothing was trained; no GPU job ran
+> beside anything else.
+
+**1. TASKS 134 - `sdkv2/muharaf-arabic-ocr` zero-shot (E-90).** New harness
+`arabic_ocr/scripts/eval_muharaf_hflines.py` mirrors E-89 exactly (greedy CTC, no LM,
+no reranker, free-running, dynamic width) and scores the author
+`ctc_backbone/model.pt` (4,245,671 params, sha256 head `bba3b6f5301822fc`) on all
+1,654 lines of `data/hflines/val`: **CER 23.64% vs the 57.80% control (+34.16 pp)**,
+median line CER 13.16%, cer_lt10/20/50 = 38.4 / 66.5 / 91.2%, 11.55% exact, 17.3 s /
+95.3 img/s. Looked like a rout.
+
+**2. It is not a transfer number - and measuring that IS the result (E-91).**
+`data/hflines` was built from `Teklia/KHATT_v1.0` + `aamijar/muharaf-public` +
+`data/reallines` (`build_hf_lines.py`), and this teacher was trained on Muharaf.
+Normalized-transcript matching against the author OWN published training manifests
+(22,091 lines) shows **79.9% of the val lines are in its training set** (15.69% CER
+there); only 16.7-20.1% is genuinely held out.
+
+**3. The same audit re-opens E-89.** FixFips trained on KHATT, and 9.6% of the val
+lines are KHATT lines it trained on (CER **1.82%** there). Its own held-out stratum is
+52.79%, and on the **174 val lines held out from BOTH teachers** it scores **61.88% -
+4.08 pp WORSE than the 57.80% control**. Muharaf on the same 174 lines is **54.06%
+(+3.74 pp)**; strict 100-line variant 75.26 / 68.80.
+
+**4. Decision.** Muharaf is still the better base - 54.06 vs 61.88 on the shared
+held-out set, 4.25M vs 15.06M params, 95 vs 51 img/s - but the honest headroom over
+the incumbent control is ~3.7 pp, not the 10-34 pp the headlines implied. The <5%
+target is not reachable by distilling either teacher. **TASKS 137 supersedes the
+TASKS 131 decision and is USER-GATED.**
+
+**5. Files.** New: `arabic_ocr/scripts/{eval_muharaf_hflines,overlap_muharaf_hflines,stratify_teacher_overlap,compare_teachers_clean}.py`;
+`eval_fixfips_khatt.py` now also writes per-line JSONL so any stratum can be re-scored
+without re-running the model. Evidence under `runs/stage05c/`:
+`eval_muharaf_muharaf_hflines_val.json`, `perline_*.jsonl`, `overlap_muharaf_hflines.json`,
+`teacher_overlap_stratification.json`, `teacher_clean_comparison.json`, `examples_*.txt`.
+STATUS (o), RETROSPECTIVE R10 + guardrail 9, EXPERIMENTS E-90/E-91, TASKS 134/137,
+MEMORY, WHAT_WORKS all updated. No push.
+
 # 2026-10-06 (v) (Arabic OCR audit: the WHOLE line was untracked in git - line committed, legacy claim docs neutralised, and the in-domain teacher eval PASSES: route D transfers +10.87 pp):
 
 > Follows (u). The user asked to save the report, commit, fix what was done

@@ -150,7 +150,15 @@ times before the team built controls that catch it.
   transfers zero-shot; but it is a weak teacher (median line CER 51.02%, only
   14.9% of lines under 20%). The best honest number on `data/hflines/val` is
   therefore **46.93%**, still far from the <5% target. The step that follows is
-  training, and it remains user-gated at TASKS 131.
+  training, and it remains user-gated at TASKS 131 (now superseded by TASKS 137).
+
+  **CORRECTION (E-90/E-91, 2026-10-06, added after the audit below):** that
+  46.93 compared the teacher against a corpus that contains its OWN training
+  lines - 9.6% of the val lines are KHATT lines it trained on, where it scores
+  CER 1.82%. On the 174 val lines held out from both candidate teachers it
+  scores **61.88%, worse than the 57.80 control**; the Muharaf teacher scores
+  54.06%. Route (D) transfers *inside* a teacher own training domain, not to
+  unseen handwriting. See STATUS (o) and TASKS 137.
 - No python/GPU OCR process is running.
 
 ## 7) Remediation log (2026-10-06)
@@ -166,6 +174,7 @@ times before the team built controls that catch it.
 | R7 | TASKS/HANDOFF/MEMORY updated; E-89 pre-registered | done |
 | R8 | E-89 zero-shot eval of `FixFips/arabicocr-khatt` on `data/hflines/val` | **done - PASS: 46.93 vs 57.80 (+10.87 pp); weak teacher (median line CER 51%)** |
 | R9 | E-89 harness + results committed; STATUS/HANDOFF/TASKS/MEMORY/EXPERIMENTS/WHAT_WORKS/plan updated with the result | done |
+| R10 | Teacher-contamination audit (TASKS 134 / E-90 / E-91): both in-domain teacher numbers stratified against the teachers OWN training corpora, per-line JSONL added to both harnesses, E-89 interpretation corrected | **done - 79.9% of the Muharaf score and 9.6% of the FixFips score were in-train; on the 174 lines held out from BOTH, FixFips 61.88 (worse than the 57.80 control) vs Muharaf 54.06** |
 
 ## 8) Guardrails for the next agent
 
@@ -183,3 +192,9 @@ times before the team built controls that catch it.
 7. **Search for an in-domain teacher before adapting an out-of-domain one** - the
    domain gap decides whether fine-tuning helps or destroys.
 8. **Commit code + textual evidence as you go**; never leave a line untracked.
+9. **A teacher score on a corpus that shares its training data is NOT transfer
+   evidence.** Before trusting any teacher number, match the eval transcripts
+   against the teacher OWN published training manifests and report the held-out
+   stratum (`arabic_ocr/scripts/stratify_teacher_overlap.py` is the worked
+   example). Compare candidates on the SAME held-out lines - two numbers both
+   labelled "held-out" can be different lines and reverse the ranking.

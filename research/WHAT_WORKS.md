@@ -355,3 +355,21 @@ exists because skipping it already cost a run or a GPU-day.
 - **Measure flip vs no-flip once, before believing any CER.** This CRNN trains on reversed labels; un-flipped it scores **81.99** on our set instead of **46.93**. A README-inherited direction would have turned a PASS into a false FAIL.
 - **A mean CER is not a teacher-quality verdict: report the median and the `cer_lt20` fraction.** E-89's 46.93% headline carries a **51.02%** median line CER and only **11.2% / 14.9%** of lines under 10% / 20%. Route (D) transfers, but any distillation is capped by that distribution, not by the mean.
 - **A side-check on the teacher's own corpus is not transfer evidence.** KHATT gave 12.03% (32.38 pp better than the control) - but KHATT IS this model's training corpus. The author's own README says historical manuscripts are out of domain, and `data/hflines` is exactly that. **Always ask whether an 'in-domain' benchmark is really held out.**
+
+## 2026-10-06 - Teacher selection: measure training-corpus overlap before trusting any teacher score
+
+- `sdkv2/muharaf-arabic-ocr` looked like a rout (23.64% vs the 57.80% control on
+  `data/hflines/val`) but **79.9% of those val lines are in its own training manifests**
+  (they decode at 15.69%); `FixFips/arabicocr-khatt` looked weaker (46.93%) but 9.6% of the
+  same val lines are KHATT lines it trained on (1.82% CER).
+- On the 174 val lines held out from BOTH teachers: FixFips **61.88%** (worse than the
+  57.80% control), Muharaf **54.06%**. The honest transfer number for the whole
+  teacher route is ~54-62%, not 23-47%.
+- **Adopt:** score teacher candidates only on the shared held-out set, and stratify every
+  teacher number by transcript overlap with that teacher OWN training corpus
+  (`arabic_ocr/scripts/stratify_teacher_overlap.py`, `compare_teachers_clean.py`). Keep
+  per-line JSONL so any stratum can be re-scored without re-running the model.
+- **Avoid:** reading a strong zero-shot number as transfer evidence when the eval corpus
+  overlaps the teacher training data. E-89 KHATT side-check (12.03%) was flagged as
+  probably in-train at the time and then not measured - measuring it was two minutes of
+  CPU work and it reversed the conclusion.

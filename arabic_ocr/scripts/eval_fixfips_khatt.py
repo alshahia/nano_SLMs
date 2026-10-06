@@ -197,6 +197,9 @@ def evaluate(name: str, model, id2char, prep, device, batch_size: int,
 
     elapsed = time.perf_counter() - t0
 
+    perline = [{"image": paths[i], "ref": refs[i], "hyp": preds_flip[i],
+                "cer": round(cers[i], 2)} for i in range(len(refs))]
+
     def agg(hyp_list):
         ed = sum(edit_distance(h, r) for h, r in zip(hyp_list, refs))
         rc = sum(len(r) for r in refs)
@@ -257,6 +260,7 @@ def evaluate(name: str, model, id2char, prep, device, batch_size: int,
         "control_cer": CONTROL_CER_HFLINES if name == "hflines"
                        else (CONTROL_CER_KHATT if name == "khatt" else CONTROL_CER_ISIPPT),
         "control_model": "medyas/arabic_PP-OCRv6_small_rec (zero-shot, un-mirrored, dynamic width)",
+        "_perline": perline,
     }
     result["delta_vs_control_pp"] = round(result["control_cer"] - result["cer"], 2)
 
@@ -354,8 +358,14 @@ def main():
                      limit=args.limit, want_examples=args.examples if name == "hflines" else 0)
         r["params"] = n_params
         results.append(r)
+        perline = r.pop("_perline", [])
         print(json.dumps({k: v for k, v in r.items() if k != "examples"},
                          ensure_ascii=True, indent=2))
+        pl = OUT_DIR / ("perline_%s.jsonl" % r["tag"])
+        with pl.open("w", encoding="utf-8") as fh:
+            for row in perline:
+                fh.write(json.dumps(row, ensure_ascii=False) + "\n")
+        print("wrote %s (%d lines)" % (pl.relative_to(ROOT), len(perline)))
 
     suffix = "_limit%d" % args.limit if args.limit else ""
     for r in results:

@@ -789,3 +789,23 @@ Deferred from the same review: per-source balanced reservoir replay (the one unt
 - laya/scripts/train_l3_sym.py committed and gating 5/5: fresh item construction (n_options=1, binary target, BCEWithLogits on the raw marker score), grouped decision metrics by qid, smoke-passing two-stage (5-ep sym stage A on mixture_raw packs, 8-ep sym stage B) with the SAME 520M encoder init - clean single recipe-flip vs the E-72 positional arm.
 - Honest scope note: v1 covers stage-A/B + grouped typed/macro/Brier; decision_bench/perm-bench phase-2 adaptation pending (phish needs sym re-pack hooking); perm_dup/order-aug inapplicable under sym (documented in pre-register).
 - Early pace: ~130 updates/s (236k-ish sub-items) - stage A may cost only ~15 min.
+
+## 2026-10-06 - OCR teacher-contamination lesson (E-90/E-91): a zero-shot score on in-train data is not a transfer number
+
+- TASKS 134's second in-domain teacher scored **23.64% vs the 57.80% control** on
+  `data/hflines/val` - and 79.9% of those val lines are in the author OWN published
+  training manifests (15.69% CER there). The honest held-out stratum is 46.30%; on the
+  174 lines outside BOTH candidate teachers corpora it is 54.06%.
+- Re-auditing E-89 the same way: 9.6% of its 46.93 came from KHATT lines it trained on
+  (CER 1.82% there); on the shared clean set it is **61.88% - worse than the control**.
+- Method that worked: match normalized transcripts (`norm_ar`-style) against the teacher
+  OWN manifests/splits (local `data/hf/*` corpora + the HF manifest CSVs), then re-score the
+  SAME eval per stratum. Scripts: `arabic_ocr/scripts/stratify_teacher_overlap.py`,
+  `compare_teachers_clean.py`. Both harnesses now write per-line JSONL, so any stratum is
+  recomputable without re-running the model.
+- Corpus-provenance trap: `data/hflines` publishes source names but no per-line provenance,
+  so its "all text unique + md5 guard" claim is a guard against the BENCHMARKS only - it
+  says nothing about overlap with a TEACHER training data. Those are two different guards;
+  the second one cost 34 phantom CER points.
+- Small-sample caveat for the corrected number: the shared clean set is n=174 (strict n=100).
+  Medians (66.67 vs 50.45) and the strict variant agree with the means, but the interval is wide.
