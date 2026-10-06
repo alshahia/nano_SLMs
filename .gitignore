@@ -171,3 +171,23 @@ runs/u1_smoke/checkpoint-*/
 runs/u1_smoke/final/model.safetensors
 # scratch benches and LLM-authoring scripts are NOT durable (AGENTS.md scratch/ rule)
 scratch/
+
+# OCR line (arabic_ocr/): the Stage 0 recognizers are downloaded weights that stay
+# local per the same LFS decision (49 MB of Paddle inference pairs, regenerable via
+# arabic_ocr/scripts/dl_stage0_models.py). Code, results and reports stay tracked.
+arabic_ocr/models/
+
+# OCR run artifacts: weights, optimizer states and rendered pages/crops stay LOCAL
+# (AGENTS.md §5 local-weights policy). Textual evidence (json/jsonl/log/md/yaml)
+# stays tracked. Never `git add runs/stage*` wholesale - it holds ~9 GB.
+runs/stage*/**/*.pt
+runs/stage*/**/*.pdparams
+runs/stage*/**/*.pdopt
+runs/stage*/**/*.states
+runs/stage*/**/*.png
+runs/stage*/**/*.jpg
+runs/ocr_bakeoff/**/*.png
+runs/trocr_*/**/*.safetensors
+# the verbatim per-file label copies behind data/ocr_textpool/texts.jsonl (the
+# distilled texts.jsonl IS committed; this raw/ dir is a 47 MB duplicate)
+data/ocr_textpool/raw/

@@ -31,6 +31,7 @@ and fixes the repo-specific conventions CLAUDE.md points here for.
 | Proven levers | [research/WHAT_WORKS.md](research/WHAT_WORKS.md) | before planning/launching any new training run | whenever a verdict changes what future training should adopt/avoid |
 | **Web UI spec** | [WEBUI_PRD.md](./WEBUI_PRD.md) | before any `webui/` work | when a UI decision or milestone scope changes (user-gated) |
 | Implementation plans | [docs/plans/](docs/plans) | before executing a planned feature | when a plan is created or completed (kept as historical record) |
+| **Arabic OCR line** (status + audit) | [arabic_ocr/STATUS.md](arabic_ocr/STATUS.md) · [arabic_ocr/RETROSPECTIVE.md](arabic_ocr/RETROSPECTIVE.md) | before any OCR-stage work | as each OCR stage/gate lands |
 
 The plan / state / task / memory / environment docs are the five an agent
 needs before doing anything; the table is how they chain together. Mnemonic:
@@ -57,6 +58,7 @@ nano_SLMs/
 ├─ langid/             DA-line: text language ID - Tongue-analogue (DESIGN: research/desert_ant_recreation/DESIGN.md; plan: docs/plans/2026-09-19-desert-ant-recreation-da1-langid-plan.md); CPU-only, gates pre-registered (rows 81-87)
 ├─ diacritizer/        D-line: Arabic-diacritization submodule (own README.md; live GPU train runs under diacritizer/scripts/)
 ├─ mex/                μ-line micro-expert sandbox (μ0/μ1/μ2; train_mu2_lora.py --config configs/dia2f_replay.yaml live as of 2026-09-20)
+├─ arabic_ocr/         Arabic OCR two-stage nano model (line status: STATUS.md; audit: RETROSPECTIVE.md; plan: docs/plans/2026-09-29-arabic-ocr-nano-model.md); own models/ (gitignored) + .venv-paddle-gpu
 ├─ scratch/            throwaway experiment scripts (NON-durable: never map knowledge here)
 ├─ models/ + tests/    shared model weights/tests (referenced from flow/ and line submodules)
 ├─ checkpoint_backup/  untracked; user-staged machine-move checkpoint zips (HANDOFF §3b) — check for a newer checkpoint-*.zip first

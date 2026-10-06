@@ -1,0 +1,570 @@
+# Arabic OCR — honest status (2026-10-01)
+
+> **READ THIS FIRST (added 2026-10-06).** This file is the honest *live*
+> status home for the OCR line; the durable audit of the whole line is
+> [RETROSPECTIVE.md](RETROSPECTIVE.md). **Current state: BLOCKED at TASKS 131**
+> (user-gated). Stage 1 PASSED; Stage 2 PASSED (hybrid detector, 0.925 line
+> recall@IoU0.5); Stage 3 from-scratch FAILED (E-87, 0.9100 CER); Stage 0.5b
+> warm-start FAILED (E-88, 71.74 vs the 57.80 control). The best honest number
+> on `data/hflines/val` is the **57.80%** zero-shot control; the <5% target is
+> NOT met for handwriting. Sections below are newest-first. Section (d) was a
+> duplicate of (c) and was merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
+> and [COMPARISON.md](COMPARISON.md) are superseded.
+
+## 2026-10-04 (m) - OCR Stage 2: stride 1 FAILED at 59.86%; CenterNet-style running
+
+Run A (stride-1 CRAFT, `pwsh-6`) **FAILED the gate at 59.86%** (epoch 29, P 67.62 /
+R 53.70) - +2.52 over craft3's stride-2 57.34%, still far under 90%, and still
+climbing at the last epoch. Three levers (capacity, dead head, resolution) have
+now each bought 2-3 points; the residual is the optimization, not the architecture.
+
+Run B (CenterNet-style, `pwsh-7`, `runs/stage2_paw_cn/`) is training. Its
+perfect-target ceiling is **98.96%** and its decode has neither a level set nor a
+component, so neither measured CRAFT failure mode can occur.
+
+| run | design | best H | ceiling | verdict |
+|---|---|---|---|---|
+| `runs/stage2_paw_craft2` | CRAFT stride 2, 2.56M | 54.89% | 92.27% | FAIL |
+| `runs/stage2_paw_craft3` | CRAFT stride 2, 4.94M | 57.34% | 92.27% | FAIL |
+| `runs/stage2_paw_s1` | CRAFT **stride 1**, 5.01M | 59.86% | 96.91% | FAIL |
+| `runs/stage2_paw_cn` | CenterNet stride 2, 4.94M | 46.97% | **98.96%** | FAIL |
+
+## 2026-10-04 (l) - OCR Stage 2: both representation levers built and running
+
+Stage 2's gate (PAW Hmean >= 90% on held-out synthetic) has failed three times on
+the CRAFT stride-2 representation (54.89% -> 57.34%). The cause is structural,
+not capacity: the perfect-map ceiling at stride 2 is 92.27%, and at the decode
+thresholds where merging is controllable it is below the gate.
+
+Two replacements are implemented and running sequentially (single GPU):
+
+| run | design | perfect-map ceiling | job |
+|---|---|---|---|
+| `runs/stage2_paw_s1` | CRAFT region score at **stride 1** (sigma 1.7 -> 3.4 px) | 96.91% (k=0.15) | `pwsh-4` |
+| `runs/stage2_paw_cn` | **CenterNet-style** centre heatmap + w/h regression | **98.96%** | next |
+
+Both ceilings clear the 90% gate, so the open question is how much of the
+57 -> 90 gap each recovers, not whether the gate is reachable.
+
+## TL;DR
+
+Every CER this project reported before 2026-10-01 was **teacher-forced** and does
+not measure OCR. Under honest free-running evaluation the best checkpoint emits
+the **same string for every image** and gets **0% of words right**.
+
+Targets were: CER < 5%, model < 100 MB, inference > 50 img/s.
+
+| Target | Result | Verdict |
+|---|---|---|
+| CER < 5% | ISIPPT 144.8%, KHATT 97.8% (free-running) | **FAIL** |
+| Model < 100 MB | 15.7 MB fp16 | **PASS** |
+| > 50 img/s | 33.7 / 38.0 img/s (48x256, batch 32) | **FAIL (close)** |
+
+## The measurement bug
+
+`arabic_ocr/scripts/benchmark.py:46` does:
+
+```python
+output = model(images, text=texts)   # ground-truth text passed in
+predictions = decode_greedy(logits, idx_to_char)
+```
+
+`CompactViTDecoder.forward` with `text` sets `input_tokens = text[:, :-1]`, so at
+every decoding step the decoder is handed the ground-truth prefix. A character
+language model conditioned on the correct prefix scores well while never reading
+the image. The reported numbers were therefore a **language-model score, not OCR**.
+
+`Trainer.evaluate()` had the same flaw, so the `best_cer` (0.19-0.93) stored in
+every checkpoint in `runs/` is teacher-forced too.
+
+## Evidence (same checkpoint, `runs/vit_real/best.pt`, 7.85M params)
+
+| Evaluation | ISIPPT CER | KHATT CER | KHATT WER |
+|---|---|---|---|
+| Teacher-forced (`benchmark.py`) | 34.4% | 16.6% | 24.0% |
+| **Free-running (`eval_benchmark.py`)** | **144.8%** | **97.8%** | **100.0%** |
+
+Free-running output for *every* image in both benchmarks:
+
+```
+متبلصامتبلكوةبلكوةبلكوةبلكوةبلكوةبلكوةبلصر؟بلصر؟بلكوةبلكوةبلكوة
+```
+
+Identical output for different images, and WER 100.00%, means the decoder ignores
+the encoder entirely. The historical (teacher-forced) numbers are preserved in
+`runs/benchmark_results_TF_historical_backup.json`.
+
+## Why the models do not read
+
+1. **The seq2seq decoder takes a character-LM shortcut.** Given the true prefix,
+   cross-attention is unnecessary, so gradient descent never makes it useful.
+   Teacher forcing hid this completely.
+2. **CTC was tried as the fix** (`arabic_ocr/src/models/crnn.py`, rewritten as a
+   line-level CRNN+CTC). It has no prefix to condition on, so it cannot cheat --
+   but it collapsed to the all-blank solution (99.7% blank frames) and could not
+   overfit even 64 lines in 250 epochs.
+3. **The loss and gradients are not the bug.** `F.ctc_loss` was verified
+   separately on synthetic linearly-separable features (loss 12.8 -> 0.80, 100%
+   frame accuracy in 300 steps), and gradients reach every module
+   (conv0 0.199, conv10 1.36, lstm 2.97, head 6.72). The encoder simply does not
+   produce input-dependent features.
+4. **Every prior number is suspect**, including model-selection decisions.
+   `runs/vit_real/best.pt` looked like the best model (best_cer 0.1887) and is in
+   fact one of the worst -- it ignores the image completely.
+
+## What was added/fixed on 2026-10-01
+
+- `arabic_ocr/scripts/eval_benchmark.py` (new) -- free-running benchmark eval;
+  reports CER/WER/params/size/img-per-s and writes `runs/benchmark_results.json`.
+- `arabic_ocr/src/models/vit_decoder.py` -- added the missing causal mask, PAD
+  loss weighting, and a correct `generate()`.
+- `arabic_ocr/src/models/crnn.py` -- rewritten as a line-level CRNN+CTC
+  (height collapsed to 1 row, width /8 => T=128 frames).
+- `arabic_ocr/scripts/fetch_hf_lines.py`, `build_hf_lines.py` (new) -- built
+  `data/hflines/{train,val}`: 25,921 / 1,654 real line images from
+  `Teklia/KHATT_v1.0` + `aamijar/muharaf-public` + `data/reallines`, all text
+  unique, with an md5 guard proving **zero benchmark overlap**.
+- `arabic_ocr/configs/{hflines,hflines_v3,crnn_ctc}.yaml` (new).
+
+## Path forward (honest, 2026-10-01 -- SUPERSEDED 2026-10-04, see the last section)
+
+From-scratch training on 26k lines with a <25M model on one 8 GB Turing GPU will
+not reach CER < 5%. Realistic options, in order of expected value:
+
+1. **Fine-tune a pretrained Arabic OCR model** (TrOCR-style or an Arabic VLM).
+   This is the only path with a credible shot at < 5%.
+2. If training from scratch is required, fix the encoder first: the current
+   encoder yields near input-independent features. Diagnose with the
+   synthetic-separability probe before spending GPU hours.
+3. **Never report a teacher-forced CER again.** Use
+   `eval_benchmark.py` (free-running) for every claim.
+
+Reproduce the honest numbers:
+
+```powershell
+& .\.venv\Scripts\python.exe arabic_ocr\scripts\eval_benchmark.py \
+    --config arabic_ocr\configs\vit_real.yaml \
+    --checkpoint runs/vit_real/best.pt --device cuda
+```
+
+## 2026-10-03 -- Path 1 tried: fine-tuning a pretrained Arabic OCR model -> FAIL
+
+The one path this document called "the only path with a credible shot" was run.
+Verdict: **it does not work, and the published base model is itself broken.**
+
+### 1. The pretrained base cannot read Arabic (zero-shot, clean input)
+
+`RayR1/trocr-base-arabic-handwritten` (537,475,072 params) on **rendered, clean,
+Arial** Arabic lines -- no scan noise, no handwriting:
+
+| True text | Base output |
+|---|---|
+| `في الحج` | `''` |
+| `انني سقيم` | `'.'` |
+| `في الحج` | `'فيهاه'` |
+| `ذهب مظفر ضرغام ...` | `'ذهب مظ ضر بصح رؤ بنؤ'` |
+
+This is a defect of the checkpoint, not of our data. The model card shows
+lr 5.6e-06 over 15 epochs, and the author's own `training_log.txt` is dominated
+by `Empty label for index N` lines. **This base is not usable and should not be
+fine-tuned further.**
+
+### 2. Fine-tuning it on 500 real lines did not rescue it
+
+`arabic_ocr/scripts/finetune_trocr_v2.py`, 500 train / 100 val real lines from
+`data/hflines`, 3 epochs, 189 steps, 73 min, fp16, bs 2 x accum 4, lr 5e-5,
+images padded to square, targets UTF-8.
+
+| Metric | Value |
+|---|---|
+| eval_loss (epoch 1/2/3) | 6.875 / 6.450 / 6.374 |
+| **free-running CER** | **98.0%** |
+| **free-running WER** | **107.1%** |
+| empty predictions | **50 / 100** |
+| distinct predictions | **17 / 100** |
+| mean prediction length | 4.3 chars (target 53.9) |
+| speed | 1.8 img/s |
+
+Most frequent outputs: `''` x50, `في` x25, `١٥` x6, `جورج` x4. The model
+learned a handful of high-frequency training tokens and still ignores the image
+(WER > 100% = it deletes most of the target and inserts wrong words).
+Full per-sample evidence: `runs/trocr_finetune_v2/free_running_eval.json`.
+
+### 3. Two pipeline bugs found while doing this
+
+- **Encoding**: `data/hflines/*/labels.json` is **UTF-8**, but the OCR scripts
+  open it as **cp1256**. Every Arabic target becomes mojibake (`في الحج` ->
+  `ظپظٹ ط§ظ„ط¬ط¬`), ~2x the characters, discarding the pretrained decoder's
+  Arabic prior. Verified at byte level: `في` = `d9 81 d9 8a`.
+  `finetune_trocr_v2.py` now reads `utf-8`; the other scripts still need fixing.
+- **Aspect ratio**: `TrOCRProcessor` resizes to a fixed 384x384 square, so the
+  raw line images (e.g. 1959x128) were squashed into an unreadable strip. Fixed
+  with `pad_to_square()` -- necessary, and (see above) not sufficient.
+
+### 4. What this means for the path forward
+
+Fine-tuning is only as good as its base. Before spending GPU hours on any
+pretrained Arabic OCR/VLM base, **validate the base zero-shot on clean rendered
+Arabic** -- a 5-minute test that would have saved this whole run. The remaining
+credible options are a genuinely validated Arabic OCR checkpoint, or a
+vision-language model (Qwen2-VL / GOT-OCR class) rather than a TrOCR derivative.
+
+## 2026-10-04 -- User-approved direction: two-stage detection + recognition (docs only; NOT started)
+
+Path 1 (fine-tune a pretrained recognizer) was tried and failed on 2026-10-03.
+The user proposed a different decomposition and approved it: *detect the
+smallest region that contains characters, recognize that region, and combine
+the pieces later into a bigger model if needed - target 20-50M params.*
+
+**Accepted, with one correction: the unit is the PAW (Part of Arabic Word) /
+connected component, not the character.** In cursive Arabic 2-6 letters share
+one baseline stroke, and dots plus diacritics are detached components, so a
+"one character" crop is not well defined without already knowing the word
+(PAW word-spotting and VML-HD's sub-word annotations exist for this reason).
+Recognizers should read a **sequence** over the detected region (CTC/NRTR),
+never classify an isolated crop.
+
+**Why this is the right structural fix:** a detector loss is per-pixel and
+spatial. Unlike the seq2seq decoder it cannot condition on the ground-truth
+prefix, so it cannot take the character-LM shortcut that produced 144.8% CER
+and the identical string for every image (see "Why the models do not read").
+
+**The 20-50M target is empirically right:** PP-OCRv6 (arXiv 2606.13108) is
+"From 1.5M to 34.5M Parameters, Surpassing Billion-Scale VLMs on OCR Tasks".
+Reference points: `PaddlePaddle/arabic_PP-OCRv5_mobile_rec` (Apache-2.0)
+= 81.27% strict Arabic line accuracy; `medyas/arabic_PP-OCRv6_small_rec`
+= CER 10.2% real printed / 13.5% ISIPPT held-out, WER 47.3%, from 800k
+synthetic lines over 26 base + 12 display fonts.
+
+The staged ladder, gates, disk budget and risks are in
+`docs/plans/2026-09-29-arabic-ocr-nano-model.md` (V2 section); the live
+task rows are TASKS.md 119-125; the Stage 0 bars are pre-registered as E-76 in
+`research/EXPERIMENTS.md`.
+
+**Status: nothing started.** The user asked for documentation only and gives the
+go per stage. Stage 0 is a ~1 h zero-shot bake-off of the two PaddleOCR Arabic
+recognizers on `data/hflines/val` with the free-running harness - it
+needs the 2.15 GB duplicate checkpoint reclaimed first (E: has 8.0 GB free).
+
+### Corrections to the sections above
+
+- The 2026-10-01 "Path forward" list is superseded by this section: option 1
+  (fine-tune a pretrained Arabic OCR model) was tried and failed on 2026-10-03.
+- The two pipeline bugs found on 2026-10-03 (`labels.json` is UTF-8, not
+  CP1256; `TrOCRProcessor` squashes to a 384x384 square) were fixed in 7
+  scripts; the `diag_encoding.py` / `test_encoding_fix.py` hits are
+  intentional (they test both encodings).
+
+## 2026-10-04 (b) -- Disk cleanup: what this plan needs, and the harvested text pool
+
+Another agent audited the disk (TIER 0-5, ~21 GB) and the user asked which of it
+this plan still needs **before** anything is deleted. Review, per tier:
+
+- **TIER 0** (`runs/trocr_finetune_v2/checkpoint-189/`, 2051 MB): the audit called
+  it "provably lossless" because `model.safetensors` is SHA256-identical to the
+  top-level file. That was incomplete -- the checkpoint also held this run's
+  **only** `trainer_state.json`. Copied out first to
+  `runs/trocr_finetune_v2/trainer_state.json` (4,574 bytes, SHA256 verified),
+  so the directory is now safe to delete (TASKS row 124).
+- **TIER 1** (`runs/trocr_finetune/`, 3138 MB): delete `checkpoint-189/`
+  (2050 MB model + the 1086.71 MB `optimizer.pt` left by the crashed v1 write),
+  not the parent -- the parent's small logs are the machine evidence for the
+  cp1256 and padding findings.
+- **TIER 2** (6.4 GB): not needed. Stage 0's control arm is the recorded number,
+  and its evidence (`runs/vit_real/best.pt`, `runs/benchmark_results.json`,
+  `runs/benchmark_results_TF_historical_backup.json`) is present and outside every
+  listed directory.
+- **TIER 3** (2.2 GB): not this line; all the `final/` directories exist. Guard
+  `runs/pilot/final` (frozen KD teacher) and `runs/u1_fused/final` explicitly.
+- **TIER 4** (5.2 GB): the images are worthless, the labels are not -- harvested
+  first, see below. `data/hflines` and `data/reallines` stay untouched.
+- **TIER 5** (1.9 GB, laya `B_last`): not this line; its owner must confirm.
+
+**Harvested (CPU only, nothing trained, nothing deleted).** New
+`arabic_ocr/scripts/harvest_text_pool.py` copied every label file out of the
+TIER 4 mixes into `data/ocr_textpool/`: 21 files, **101,954 rows, 10,466
+distinct texts**, 10,400 kept (66 boilerplate prompts dropped), 8,528,526 chars,
+**78.6% in Arabic Unicode ranges** (no cp1256 mojibake). `texts.jsonl` is 29.65
+MB, verbatim copies live in `raw/`, and the pool totals 76.81 MB. This is the
+bare-text pool Stage 1 needs.
+
+Two caveats: the texts are **article-length** (median 705 chars), so a line
+renderer must segment them first; and `extra/labels_qari_v03.json` is
+diacritized with `h1`/`u`/`i` markup, so use the `plain` field.
+**`data/ocr_textpool/` is now the only surviving copy of those labels -- never
+delete it.**
+
+Status unchanged: nothing OCR has started; Stage 0 is still user-gated.
+
+## 2026-10-04 (c) -- Stage 0 bake-off RAN (E-76 closed): printed is solved by tiny models, handwriting is not
+
+The user approved Stage 0 and it is complete. Report: `runs/ocr_bakeoff/REPORT.md`.
+
+**Free-running, un-mirrored CER** (greedy CTC over the model's own logits; the image is the
+only input, so no teacher forcing is possible):
+
+| eval set | what it is | v5 mobile (1.98M) | v6 small (3.10M) | our from-scratch (recorded) |
+|---|---|---|---|---|
+| `data/benchmark/isippt` (500) | PRINTED | **8.70%** | 13.75% | 144.8% |
+| `data/benchmark/khatt` (200) | HANDWRITTEN | 62.61% | 44.41% | 97.8% |
+| `data/hflines/val` (1,654) | our in-domain | 71.24% | 57.80% | not run |
+
+The harness reproduces the v6 model card on the same ISI-PPT subset (13.75% vs 13.5% CER;
+45.25% vs 47.3% WER), which is what makes the rest of the table credible.
+
+**Verdicts.** E-76 bars 1 and 2 (<=20% / <=10% on `data/hflines/val`) **FAIL**; bar 3
+(>=50% in both arms => the gap is our domain) **PASSES**, so Stage 1 must lead with handwriting.
+**The 20-50M nano thesis is CONFIRMED for printed Arabic** - a 1.98M-param model is 16.6x better
+than our from-scratch control and 87.4% of its lines are under 20% CER.
+
+**Provenance correction.** `data/hflines` is a **handwriting** corpus (KHATT + Muharaf +
+reallines), not the "mixed" set the docs called it: only 1.5% of its val lines are read under
+20% CER by both printed-trained arms, and its pixels are colour manuscript scans. The E-76
+bar was therefore a handwriting bar.
+
+**Traps solved** (recorded in MEMORY.md): both models decode in **visual (mirrored) order** -
+un-mirror before scoring or printed Arabic looks like CER 80%; the CTC alphabet is
+`['blank'] + dict + [' ']` = 749 classes; `paddle.jit.load` reads the PIR `inference.json`
+directly, so `paddleocr`/`paddlex` was never installed.
+
+**Next (user-gated, Stage 1 gate): Stage 0.5** - fine-tune the pretrained recognizer on the
+25,921 real handwriting lines in `data/hflines/train`. It already beats our from-scratch
+model 2.2x on handwriting zero-shot, so adapting it is the cheapest path to a usable model.
+
+## 2026-10-04 (d) -- Stage 0 RESULT (E-76) - MERGED INTO (c) AND REMOVED 2026-10-06
+
+This section duplicated section (c) above (same E-76 result, same report path,
+same table values). It was written before (c) and never deleted, so the file
+reported the same Stage 0 result twice. Content removed; see (c) and
+[RETROSPECTIVE.md](RETROSPECTIVE.md) section 5.
+## 2026-10-04 (e) -- Stage 0.5 pilot (E-77): fine-tuning a printed recognizer on 2k handwriting lines HURTS
+
+PRE-REGISTERED before any number was seen. FREE-RUNNING un-mirrored CER on `hflines_val`: control
+**57.80%** / lr 1e-4 **72.09%** / lr 1e-5 **64.04%** - every fine-tuned arm loses to doing nothing,
+progressively from epoch 1. The framework's own teacher-forced `norm_edit_dis` IMPROVED
+(0.168 -> 0.140) while free-running CER worsened, and `best_accuracy.pdparams` was 14 pp worse
+than the start. **FAIL / NO-GO as configured.** 2k handwriting lines is not enough.
+
+## 2026-10-04 (f) -- Stage 0.5 follow-up (E-78): the width lever is REAL but SMALL
+
+Post-hoc diagnostic (not pre-registered). The train/eval width mismatch was a genuine confound:
+the SAME zero-shot checkpoint scores **57.80%** at dynamic width but **73.24%** at fixed width 320
+- a **15.44 pp** swing with no training at all. Matching the eval width bought 1.28 pp at lr 1e-5
+(62.76% vs 64.04%) and LOST 6.25 pp at lr 1e-4 (78.34% vs 72.09%). **FAIL as a rescue; E-77
+stands.** Carry: always measure at the deployment width, and a sudden 5-10x batch-cost spike is a
+WDDM shared-memory spill, not thermal.
+
+## 2026-10-04 (g) -- Stage 1 GATE PASS (synthetic engine) + Stage 2 detector built and launched
+
+Stage 1 is closed. The renderer `arabic_ocr/src/data/synthetic.py` shapes Arabic with **HarfBuzz**
+(`uharfbuzz`) and rasterizes with **FreeType** - PIL on this machine is built **without Raqm**
+(`ImageFont.core.HAVE_RAQM is False`), so PIL alone renders disconnected left-to-right Arabic and
+cannot be used. PAW boxes are the **connected components of the rendered ink**, merged when two
+components share a HarfBuzz cluster, so a floating haraka or a detached dot stays with its letter.
+That makes the boxes exact rather than threshold-guessed.
+
+**Gate evidence (mechanical, `arabic_ocr/scripts/stage1_verify.py` -> `runs/stage1_gate/verify.json`):**
+200 pages / 1600 lines, 57 Arabic fonts, 28-44 px, with degradations.
+
+| check | result |
+|---|---|
+| coverage_fail_lines | 0 |
+| paw_box_mismatch_lines | 0 |
+| orphan_glyphs | 0 |
+| empty_render_lines | 0 |
+| transcript_mismatch_lines | 0 |
+| ink_uncovered_px | 0 (of 5,227,637 clean ink px) |
+| ink_multi_covered_px | 0 |
+| ink_in_foreign_line_box_px | 0 |
+| **GATE** | **PASS** |
+
+Two real bugs were found by the gate and fixed: `render_page` recorded the **pre-`fit_line`** text,
+so 25 of 1600 lines were mislabelled against their own pixels; and 30 polarity-inverted pages made
+the degraded-ink metric read 0.0065 until the image was flipped when the record carries `invert`.
+A naive bbox-overlap check first reported 6881 cross-line overlaps - a **false alarm**: axis-aligned
+PAW bounding boxes legitimately overlap, and the meaningful invariants are the ink-level ones above.
+`verify_samples.txt` is the UTF-8 artefact for human review (the console cannot show Arabic).
+
+**Stage 2 (PAW detector) started on the user go-ahead.** DBNet-style differentiable binarization,
+`PAWDetector` **2,563,866 params**, output at **stride 2** - not the DBNet stride of 4, because the
+median PAW is 15x24 px native and only 7x12 px at stride 2 (at stride 4 it would be under 6 px,
+below any usable localisation). PAWs whose min side is < 6 px input (~28-30% of them: 3 px harakat
+and dots) are dropped from the target and counted. Targets follow the exact offset
+`d = area * (1 - r^2) / perimeter` with `shrink_ratio = 0.4`. 2000 train / 300 val pages rendered to
+`runs/stage2_synth/`. Unit suite **26/26 PASS**; VRAM probe peak **1.84 GiB at batch 8** against
+6.97 GiB free. Full run launched 2026-10-04 (job `pwsh-25`). **Gate: PAW Hmean >= 90% on held-out
+synthetic.**
+
+Note: STATUS.md had not been updated for (d)-(f); those sections above are reconstructed from
+`HANDOFF.md` 2026-10-04 (d)-(f) and `research/EXPERIMENTS.md` E-76/E-77/E-78.
+
+## 2026-10-04 (h) -- Stage 2: the eval metric was wrong, and DBNet cannot reach the gate at stride 2
+
+The first Stage 2 run (`pwsh-25`, DBNet targets) reported Hmean 35-42%. **Those
+numbers were meaningless** - the evaluator had two independent bugs:
+
+1. it decoded connected components from the **shrunk** probability region and matched
+   them against **full** ground-truth boxes (IoU ~0.33, far under the 0.5 threshold),
+   and applied the `min_side` filter to the shrunk boxes instead of the unclipped ones;
+2. it binarized with the **learned threshold map** rather than a fixed threshold.
+
+Fixed by decoding at `min_side=1`, unclipping exactly (the quadratic inverse of the
+shrink, not DBNet's approximate fixed 1.5), filtering after the unclip, and using
+`bin_thresh=0.3`. Corrected re-score of the old `best.pt` (epoch 3): **H = 0.20-0.24**.
+
+**Why the design had to change.** Decoding *perfect* target maps - the intrinsic
+ceiling of each design, 40 val pages / 2860 PAWs, IoU 0.5, min_side 6:
+
+| target design | stride 1 | stride 2 |
+|---|---|---|
+| DBNet shrunk box + component decode (as built) | 91.2% | **78.6%** |
+| CRAFT-style Gaussian, k=0.15 | **96.9%** | 90.6% |
+| CRAFT-style Gaussian, k=0.20 | 95.4% | **92.5%** |
+
+DBNet's 78.6% is below the 90% gate, so no amount of training reaches it. The cause
+is structural: **50.87% of PAWs share bounding-box area with another PAW** (22.55%
+share *shrunk*-box area), so component labelling merges distinct PAWs - 2746
+components for 2860 PAWs, and 281 components hold two or more PAW centres. PAW
+**centres** are essentially unique (0.03% collide), which is why a centre-based
+Gaussian design works where a component-based one cannot.
+
+**Adopted: CRAFT-style region score, stride 2, k=0.20.** No architecture change - the
+probability head becomes the region score and the threshold head is kept as an
+auxiliary task, so the pre-registered "probability map + threshold map" output
+contract is preserved. A per-PAW Gaussian with `sigma = k * size` decodes back
+through a constant: at threshold 0.5 the blob extent is `2*sqrt(2 ln 2) * sigma`.
+`CRAFTLoss` is a **weighted MSE** (`pos_weight=10` on `t>0.5`) - a focal loss would
+drive every core pixel to exactly 1.0, flatten the peak and inflate every decoded
+box. Verified by `scratch/stage2_craft_check.py`: analytic round-trip PASS, ceiling
+on 40 val pages **P 98.72 / R 86.61 / H 92.27**, loss backprop PASS.
+
+Relaunched 2026-10-04 (job `pwsh-28`, `runs/stage2_paw_craft/`). The DBNet baseline
+artifacts in `runs/stage2_paw/` are kept intact for comparison. **Gate: PAW Hmean
+>= 90% on held-out synthetic - PENDING `pwsh-28`.**
+
+## 2026-10-04 (i) -- Stage 2: a THIRD eval bug (the CRAFT decode threshold), and the run it killed was at 46%
+
+Continues (h). (h) replaced the DBNet target with a CRAFT region score and launched
+`pwsh-28`. Its metric was still wrong -- a third bug -- and the run was killed on the
+strength of it. This section corrects the record.
+
+**1. The CRAFT blob constant was applied at the wrong threshold.** `CRAFT_BLOB_SCALE`
+= `2*sqrt(2 ln 2)` is the extent of a Gaussian's level set at **0.5**, but
+`evaluate_detector` binarized at `bin_thresh=0.3` and divided by the 0.5 constant.
+Measured on *perfect* target maps (40 val pages, k=0.20, stride 2, min_side 6):
+
+| threshold | decode constant | H | P | R |
+|---|---|---|---|---|
+| 0.3 | naive 2.3548 | 74.45 | 80.66 | 69.13 |
+| 0.3 | correct 3.1035 | 90.27 | 97.80 | 83.81 |
+| 0.5 | 2.3548 (= correct) | **92.27** | 98.72 | 86.61 |
+
+Fixed: `craft_blob_scale(thresh)` + a `thresh=` argument on `decode_craft_boxes`, and
+the craft branch of `evaluate_detector` now binarizes at `CRAFT_DECODE_THRESH = 0.5`
+instead of `bin_thresh`.
+
+**2. The threshold, not the constant, is what hid the model.** Re-scoring the killed
+run's `best.pt` (epoch 5) with the fixed decode, 30 pages each:
+
+| split | H | P | R | tp | fp | fn | fg>0.5 | w50 |
+|---|---|---|---|---|---|---|---|---|
+| TRAIN | 46.36 | 56.63 | 39.24 | 700 | 536 | 1084 | 0.01249 | 29.7 |
+| VAL | **45.90** | 57.81 | 38.06 | 873 | 637 | 1421 | 0.01731 | 34.0 |
+
+against the **3.14%** the run printed. At tau=0.3 the model's soft halo bridges
+neighbouring PAWs, so whole words fuse into one component (decoded w50 59.5 px at the
+old setting vs GT 16 px).
+
+**3. Train H == val H => the model was UNDERfitting.** 46.36 vs 45.90. The lever is
+epochs/capacity, not regularisation.
+
+**4. The architecture is not the wall, and AMP is innocent.** Overfitting 2 pages for
+500 steps reaches **H 89-91%** (fg>0.5 0.0058 vs target 0.0106). `pos_weight` sweep on
+that task: 10 -> 91.0%, 100 -> 83.6%, 1000 -> 74.2% (keep 10). fp32 91.0% vs
+`autocast` 89.8% -- AMP does not cause the diffuseness.
+
+**5. Relaunched.** `pwsh-28` was killed at epoch 7 on a metric that understated it
+~15x; its artifacts are kept in `runs/stage2_paw_craft/` as evidence. Relaunched as
+**`pwsh-29`** into `runs/stage2_paw_craft2/` with **30 epochs** (was 20), since the run
+was still underfitting.
+
+**Gate: PAW Hmean >= 90% on held-out synthetic - PENDING `pwsh-29`.**
+
+## 2026-10-04 (j) -- Stage 2 GATE FAIL (54.89% vs 90%): the model cannot fit even TRAIN, and 98% of the loss was an unused head
+
+Continues (i). `pwsh-29` ran all 30 epochs and **FAILED the pre-registered gate**:
+best Hmean **54.89%** (epoch 25), final 54.43 (P 64.86 / R 46.88).
+
+**The logged loss is prob-only.** `stage2_train.py` line 138 logs `running["prob"]`;
+the thresh term is never printed. Measured: TRAIN `{prob: 0.00103, thresh:
+0.06306}`, VAL `{prob: 0.00559, thresh: 0.11499}` -- the thresh term is **21-61x**
+the prob term, and in craft mode the thresh head is never read at eval.
+
+**The decode is not the problem.** Threshold sweep, model vs PERFECT target map,
+identical code path, 30 val pages / 2294 PAWs:
+
+| tau | model H | ceiling H |
+|---|---|---|
+| 0.5 | 55.50 | **91.97** |
+| 0.6 | 60.36 | 89.66 |
+| 0.7 | **64.71** | 86.28 |
+
+**Not a size bias -- merging.** Decode-scale sweep `k_eff` 0.2 -> 1.0: 0.2 best
+everywhere, 0.3 only +2.4 at tau 0.5, >= 0.4 collapses. Components span several
+PAWs (0.72 components per PAW) and w50 is 29.7 px vs GT 16.0; no global constant
+undoes that. Best possible with this checkpoint: **64.98%**.
+
+**Underfitting, not a generalization gap.** 30 pages each, identical decode:
+TRAIN H 58.44 / 64.23 / **68.34** vs VAL H 55.50 / 60.36 / **64.71** at tau
+0.5 / 0.6 / 0.7. The training fit is the wall.
+
+**Cause and next.** A 2.56M backbone shared with a thresh head that is unused at
+eval and carries 21-61x the loss. Next (inside the pre-registered envelope):
+zero `thresh_weight` in craft mode, and spend the freed capacity toward the
+plan's 5M ceiling. **NEEDS_USER_DECISION - not started.**
+
+**Gate: PAW Hmean >= 90% on held-out synthetic - FAILED at 54.89% (`pwsh-29`).**
+
+## 2026-10-04 (k) -- Stage 2 GATE FAIL again (57.34%): capacity was not the bottleneck, the blob is the wrong SHAPE, and the 90% gate sits ON the representation's ceiling
+
+Continues (j). `pwsh-52` ran all 30 epochs with `thresh_weight: 0.0` and 4.94M
+params: **GATE FAIL, best Hmean 57.34%** (epoch 27), final 57.02 (P 65.42 / R
+50.53). craft2 was 54.89%, so option A bought **+2.45 points** -- **capacity and
+the unused head were NOT the bottleneck.** The objective fix is proven working
+(`loss` == `loss_total` every step).
+
+**Still underfitting.** TRAIN H 71.69 vs VAL H 67.45 at tau 0.7 (24 pages each).
+
+**Detection is good; the gap is EXTENT.** Centre-in-component coverage on val is
+**91.20%** (craft2: 87.94%) while H is 57.52% -- and H is almost exactly the
+singleton coverage (985/1807 = 54.5%). PAWs covered by one component match; PAWs
+in a merged component do not.
+
+**The blob is the wrong SHAPE.** Singletons decode to **25.5 x 25.5 (square)**
+against GT PAWs of 20.4 x 22.1 (tall): w 1.249x, h 1.154x. Merged components are
+2.644x wide. One isotropic `k` cannot fix a shape error -- hence the k-sweep
+collapse.
+
+**FREE WIN: anisotropic decode, +12 points, no retraining.** Separate kx/ky:
+tau 0.5 kx0.30/ky0.25 -> 67.38; **tau 0.7 kx0.25/ky0.20 -> 69.55** (isotropic 57.52).
+
+**Merging vs threshold:** PAWs inside merged components 36.8% / 25.3% / **10.1%**
+at tau 0.5 / 0.6 / 0.7. The merge is in the MASK, before the decode.
+
+**STRUCTURAL: the gate sits on the ceiling.** Perfect-map ceiling at stride 2:
+tau 0.5 **91.97-92.27**, 0.6 89.66, 0.7 **86.28**. The gate is 90%, so the only
+threshold whose ceiling clears it leaves **2.3 points** -- and that is where 36.8%
+of PAWs merge. At tau 0.7 the ceiling (86.28) is **below the gate**. **A perfect
+model cannot pass at any threshold with manageable merging.**
+
+Also: `CRAFTLoss.forward` never reads `target["ignore"]` (lines 88-106) -- inert
+today (craft zeroes it) but a trap.
+
+**Next - NEEDS_USER_DECISION:** adopt the anisotropic decode regardless, then
+(a) stride-1 output (CRAFT k=0.15 ceiling 96.91%), (b) CenterNet-style centre
+heatmap + w/h regression (centres are 99.97% unique, 91% detectable), or
+(c) re-scope the gate.
+
+**Gate: PAW Hmean >= 90% on held-out synthetic - FAILED at 57.34% (`pwsh-52`).**
+
+
