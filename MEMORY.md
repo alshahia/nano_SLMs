@@ -822,3 +822,18 @@ on every row checked). FixFips shows the same pattern (card 6.09 vs our 10.99 ra
 
 Rule: when citing any third-party OCR headline, name the convention, and never put
 a card value and a raw-string value in one table without labelling them.
+
+## 2026-10-06 - Arabic OCR: the Muharaf 165-char charset has NO diacritics
+
+`sdkv2/muharaf-arabic-ocr`'s CTC charset is 165 characters and contains none of
+U+064B-U+065F / U+0670, so `normalize_arabic_text` alone is not enough: a
+diacritized label is charset-OOV. On `data/hf/muharaf/train` that is **7,472 of
+22,091 lines (34%)** - the default "drop the line" handling silently throws away a
+third of the corpus (it also looks like a data problem when it is an encoding
+problem). Repair the label (strip the marks, keep the line): it recovered all
+7,472 lines with zero remaining OOV.
+
+Evaluation references stay RAW (the E-89 protocol), so the model's raw CER
+includes diacritics it cannot emit - which is exactly why the teacher's raw 22.11
+normalises to 16.83. Always print a per-set encode audit (kept / oov / repaired)
+at the start of a training run.

@@ -59,8 +59,15 @@ reported, not a gate on this rung.
 `bba3b6f5301822fc`, 4,245,671 params), 3 epochs, AdamW lr 3e-5 cosine, wd 1e-4,
 clip 5.0, batch 8 width-bucketed (size-1 tail batches dropped for BatchNorm),
 fp32, no augmentation, image height 96 (identical to the inference path), CTC
-blank 0, no LM/reranker. `data/reallines` is EXCLUDED: its text is fully
-diacritized and the 166-char Muharaf charset contains no diacritics (charset OOV).
+blank 0, no LM/reranker. **Label repair (found at launch, before any gate was
+read):** the checkpoint charset is 165 characters and contains NO diacritics
+(verified), so a diacritized label is charset-OOV -- and dropping such lines
+discarded 7,472 of the 22,091 Muharaf train lines (34%). The trainer now strips
+U+064B-U+065F/U+0670 and keeps the line, recovering 21,819 Muharaf (oov=0,
+too_short=272) + 14,013 KHATT = 35,832 items, 4,479 steps/epoch. The first
+launch (`pwsh-10`) used the dropping version and was killed at step 600
+(6.4 steps/s, loss 1.02); no gate was read from it. `data/reallines` stays
+EXCLUDED on this rung -- it is outside the Muharaf/KHATT pair under test.
 Trainer `arabic_ocr/scripts/finetune_muharaf.py`; artifacts under
 `arabic_ocr/runs/stage05d/` (weights local-only via the new .gitignore rule,
 JSON/logs tracked). Step 2 afterwards = the Stage 4 decoder (TASKS 123).
