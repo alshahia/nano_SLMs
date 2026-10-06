@@ -204,3 +204,6 @@ data/benchmark/**/*.tif
 data/reallines/**/*.png
 data/reallines/**/*.jpg
 data/reallines/**/*.tif
+
+# OCR line: training checkpoints stay local (weights are never committed)
+arabic_ocr/runs/stage*/*.pt

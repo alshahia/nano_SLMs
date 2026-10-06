@@ -57,18 +57,37 @@ SETS = {
         "dir": ROOT / "data" / "hflines" / "val",
         "tag": "hflines_val",
         "weight": 1.0,
+        "control": CONTROL_CER_HFLINES,
     },
     "khatt": {
         "dir": ROOT / "data" / "benchmark" / "khatt",
         "tag": "khatt_bench",
         "weight": 1.0,
+        "control": CONTROL_CER_KHATT,
     },
     "isippt": {
         "dir": ROOT / "data" / "benchmark" / "isippt",
         "tag": "isippt_bench",
         "weight": 1.0,
+        "control": CONTROL_CER_ISIPPT,
+    },
+    # Stage 0.5d: the REAL held-out splits (never in any teacher's training
+    # data). control=None until the Stage 0 control itself is measured here.
+    "muharaf_test": {
+        "dir": ROOT / "data" / "hf" / "muharaf" / "test",
+        "tag": "muharaf_test",
+        "weight": 1.0,
+        "control": None,
+    },
+    "khatt_test": {
+        "dir": ROOT / "data" / "hf" / "khatt_teklia" / "test",
+        "tag": "khatt_teklia_test",
+        "weight": 1.0,
+        "control": None,
     },
 }
+
+ALL_SETS = ["hflines", "khatt", "isippt"]
 
 
 def _ensure_cv2():
@@ -257,12 +276,12 @@ def evaluate(name: str, model, id2char, prep, device, batch_size: int,
         "cer_lt50_pct": round(100.0 * sum(1 for c in cers if c < 50) / n, 1),
         "seconds": round(elapsed, 1),
         "img_per_s": round(len(items) / max(elapsed, 1e-9), 2),
-        "control_cer": CONTROL_CER_HFLINES if name == "hflines"
-                       else (CONTROL_CER_KHATT if name == "khatt" else CONTROL_CER_ISIPPT),
+        "control_cer": spec.get("control"),
         "control_model": "medyas/arabic_PP-OCRv6_small_rec (zero-shot, un-mirrored, dynamic width)",
         "_perline": perline,
     }
-    result["delta_vs_control_pp"] = round(result["control_cer"] - result["cer"], 2)
+    if result["control_cer"] is not None:
+        result["delta_vs_control_pp"] = round(result["control_cer"] - result["cer"], 2)
 
     if want_examples:
         idx = list(range(min(want_examples, len(items))))
@@ -303,8 +322,9 @@ def write_examples_file(results, path: Path):
         if not r.get("examples"):
             continue
         lines.append("=" * 100)
-        lines.append("DATASET: %s  (n=%d, CER=%.2f%%, control=%.2f%%)" %
-                     (r["dataset"], r["n"], r["cer"], r["control_cer"]))
+        ctl = "n/a" if r["control_cer"] is None else "%.2f%%" % r["control_cer"]
+        lines.append("DATASET: %s  (n=%d, CER=%.2f%%, control=%s)" %
+                     (r["dataset"], r["n"], r["cer"], ctl))
         lines.append("=" * 100)
         for ex in r["examples"]:
             lines.append("")
@@ -317,7 +337,7 @@ def write_examples_file(results, path: Path):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--set", default="hflines",
-                    choices=["hflines", "khatt", "isippt", "all"])
+                    help="comma-separated set names, or 'all' (= %s)" % ",".join(ALL_SETS))
     ap.add_argument("--batch", type=int, default=8)
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--device", default="auto")
@@ -350,12 +370,18 @@ def main():
     n_params = sum(p.numel() for p in model.parameters())
     print("params: %d" % n_params)
 
-    names = list(SETS) if args.set == "all" else [args.set]
+    if args.set == "all":
+        names = list(ALL_SETS)
+    else:
+        names = [s.strip() for s in args.set.split(",") if s.strip()]
+    unknown = [s for s in names if s not in SETS]
+    if unknown:
+        ap.error("unknown set(s) %s; known: %s" % (", ".join(unknown), ", ".join(SETS)))
     results = []
     for name in names:
         print("== evaluating %s (%s)" % (name, SETS[name]["dir"]))
         r = evaluate(name, model, id2char, prep, device, args.batch,
-                     limit=args.limit, want_examples=args.examples if name == "hflines" else 0)
+                     limit=args.limit, want_examples=args.examples)
         r["params"] = n_params
         results.append(r)
         perline = r.pop("_perline", [])
@@ -379,7 +405,12 @@ def main():
             json.dumps(summary, ensure_ascii=False, indent=2), encoding="utf-8")
         print("wrote %s" % (OUT_DIR / "eval_fixfips_summary.json").relative_to(ROOT))
 
-    ex_path = OUT_DIR / ("examples_fixfips_hflines_val%s.txt" % suffix)
+    tags = [r["tag"] for r in results]
+    if tags == ["hflines_val"]:
+        ex_name = "examples_fixfips_hflines_val%s.txt" % suffix
+    else:
+        ex_name = "examples_fixfips_%s%s.txt" % ("_".join(tags), suffix)
+    ex_path = OUT_DIR / ex_name
     write_examples_file(results, ex_path)
     print("wrote %s" % ex_path.relative_to(ROOT))
 

@@ -4,7 +4,10 @@
 > status home for the OCR line; the durable audit of the whole line is
 > [RETROSPECTIVE.md](RETROSPECTIVE.md). **Current state: TASKS 134 done (E-90/E-91);
 > the next step (training) remains USER-GATED at TASKS 131, superseded by
-> TASKS 137.** Stage 1 PASSED; Stage 2 PASSED (hybrid detector, 0.925 line
+> TASKS 137.** **2026-10-06 UPDATE: the user chose option A (the Muharaf-centric
+> ladder). Step 0 is now measured on the REAL held-out splits (E-92: Muharaf
+> test 22.11 raw, KHATT test 10.99 for FixFips) and the (B1') training run is
+> pre-registered and running as TASKS 138.** Stage 1 PASSED; Stage 2 PASSED (hybrid detector, 0.925 line
 > recall@IoU0.5); Stage 3 from-scratch FAILED (E-87, 0.9100 CER); Stage 0.5b
 > warm-start FAILED (E-88, 71.74 vs the 57.80 control). Stage 0.5c / route (D):
 > the two in-domain teachers score 46.93 (FixFips) and 23.64 (Muharaf) on
@@ -16,6 +19,51 @@
 > Sections below are newest-first. Section (d) was a duplicate of (c) and was
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
+
+## (p) 2026-10-06 -- Stage 0.5d (B1') pre-registration + Step 0 on the REAL held-out splits
+
+**Step 0 (E-92) is measured** -- both teachers, zero-shot, on genuinely held-out
+splits, our E-89 raw protocol (greedy CTC, no LM, `sum(edit_distance)/sum(len(ref))`):
+
+| model | params | Muharaf test (1,334) raw / norm | KHATT teklia test (1,038) raw / norm |
+|---|---|---|---|
+| `sdkv2/muharaf-arabic-ocr` CNN-Transformer-CTC | 4,245,671 | **22.11** / 16.83 | 40.79 / 39.35 |
+| `FixFips/arabicocr-khatt` CRNN | 15,060,427 | 53.09 / 48.99 | **10.99** / 9.77 |
+| published card | -- | 16.95 (normalized) | 6.09 (normalized, KHATT *val*) |
+
+Muharaf detail: median 16.67, `cer_lt10` 24.6%, exact 5.4%. FixFips on KHATT:
+median 3.33, `cer_lt10` 82.2%, exact 16.09%. Both directions of cross-domain
+transfer are weak (Muharaf->KHATT 40.79 vs FixFips->Muharaf 53.09), so the two
+specialists are real and correctly specialised.
+
+**The card numbers are NORMALIZED CER; ours is RAW -- that is the entire ~5 pp
+gap.** Muharaf's card `metrics_test_greedy.cer = 0.16954` against our 16.83
+normalized (matches to 0.12 pp) and our 22.11 raw. Their `text_raw`/`text_norm`
+and our `labels.json` transcripts are byte-identical on every row checked, so
+this is a metric convention, not a data or checkpoint difference. Quote any
+third-party card as "normalized; ~5 pp lower than our raw measurement".
+
+**Step 1 as originally worded was unreachable and is corrected here.** The
+backbone's own `training_metrics.json` (20 epochs, lr 5e-5, effective batch 8,
+train 22,091) shows it was fine-tuned on exactly `muharaf_train.csv`, so
+fine-tuning it *on Muharaf train again* cannot beat its own 22.11. The measurable
+gap is cross-domain, so (B1') trains on Muharaf train + KHATT teklia train and is
+scored on both real test splits. FAIL remains a reportable outcome.
+
+**Pre-registered gates (decided before the run):** G1 KHATT teklia test raw CER
+<= 20.00 (from 40.79, the point of the run); G2 Muharaf test raw CER <= 23.11
+(from 22.11, no more than 1 pp of forgetting); G3 printed ISIPPT/KHATT benches
+reported, not a gate on this rung.
+
+**Recipe:** warm-start `models/ctc_backbone/model.pt` (sha256 head
+`bba3b6f5301822fc`, 4,245,671 params), 3 epochs, AdamW lr 3e-5 cosine, wd 1e-4,
+clip 5.0, batch 8 width-bucketed (size-1 tail batches dropped for BatchNorm),
+fp32, no augmentation, image height 96 (identical to the inference path), CTC
+blank 0, no LM/reranker. `data/reallines` is EXCLUDED: its text is fully
+diacritized and the 166-char Muharaf charset contains no diacritics (charset OOV).
+Trainer `arabic_ocr/scripts/finetune_muharaf.py`; artifacts under
+`arabic_ocr/runs/stage05d/` (weights local-only via the new .gitignore rule,
+JSON/logs tracked). Step 2 afterwards = the Stage 4 decoder (TASKS 123).
 
 ## (o) 2026-10-06 -- Stage 0.5c (b): the SECOND in-domain teacher eval, and the contamination audit that revises E-89
 

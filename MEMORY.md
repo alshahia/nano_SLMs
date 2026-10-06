@@ -809,3 +809,16 @@ Deferred from the same review: per-source balanced reservoir replay (the one unt
   the second one cost 34 phantom CER points.
 - Small-sample caveat for the corrected number: the shared clean set is n=174 (strict n=100).
   Medians (66.67 vs 50.45) and the strict variant agree with the means, but the interval is wide.
+
+## 2026-10-06 - Arabic OCR: a published CER card is normalized, ours is raw
+
+`sdkv2/muharaf-arabic-ocr` publishes `metrics_test_greedy.cer = 0.16954`. On the
+same 1,334 held-out lines our raw-string protocol gives **22.11%** while our
+`norm_ar` secondary metric gives **16.83%** -- i.e. the card is a *normalized*
+CER and the ~5 pp difference is metric convention, not data or checkpoint quality
+(their `text_raw`/`text_norm` and our `labels.json` transcripts are byte-identical
+on every row checked). FixFips shows the same pattern (card 6.09 vs our 10.99 raw /
+9.77 normalized on a different split).
+
+Rule: when citing any third-party OCR headline, name the convention, and never put
+a card value and a raw-string value in one table without labelling them.
