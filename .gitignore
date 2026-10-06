@@ -191,3 +191,16 @@ runs/trocr_*/**/*.safetensors
 # the verbatim per-file label copies behind data/ocr_textpool/texts.jsonl (the
 # distilled texts.jsonl IS committed; this raw/ dir is a 47 MB duplicate)
 data/ocr_textpool/raw/
+
+# OCR line-image corpora: label manifests are tracked, images are NOT
+# (TASKS 136 option (a) - images come from KHATT/Muharaf/reallines sources;
+#  the transcripts below make every OCR eval re-scorable from a fresh clone)
+data/hflines/**/*.png
+data/hflines/**/*.jpg
+data/hflines/**/*.tif
+data/benchmark/**/*.png
+data/benchmark/**/*.jpg
+data/benchmark/**/*.tif
+data/reallines/**/*.png
+data/reallines/**/*.jpg
+data/reallines/**/*.tif
