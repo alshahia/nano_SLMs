@@ -7,7 +7,12 @@ Two modes:
             the fusion weights tuned on the DEV split only, then frozen for test
 
 Metric is imported from the verified TASKS 134 harness (no duplicated metric);
-every number is free-running greedy/beam CER, no teacher forcing.
+every number is free-running greedy/beam CER, no teacher forcing. Both raw and
+norm_ar (E-89) CER are reported for every set: raw is the stricter number, and
+published OCR cards report the normalized one (E-99).
+
+--blank-penalty subtracts a constant from the blank logit before decoding (E-98).
+It is a decoder knob only: tune it on --dev and apply it unchanged to test.
 
 PRE-REGISTERED GATES (TASKS 139, recorded before any decode):
   G1  muharaf_test raw CER <= 20.61 (>= 1.5 pp better than the 22.11 greedy teacher)
@@ -234,6 +239,9 @@ def run(args, charset):
         blob = np.load(args.cache_dir / args.tag / (tag + ".npz"), allow_pickle=False)
         data, offs = blob["data"], blob["offsets"]
         refs = [str(r) for r in blob["refs"]]
+        if args.blank_penalty:
+            data = data.astype(np.float32)
+            data[:, charset.blank_id] -= args.blank_penalty
         hyps = greedy_from_cache(data, offs, charset.blank_id)
         greedy_pairs = [(charset.decode(h), r) for h, r in zip(hyps, refs)]
         greedy_res[tag] = score_rows(greedy_pairs) | {"n": len(refs)}
@@ -333,7 +341,8 @@ def run(args, charset):
         gates["G2_no_set_worse_than_greedy_by_%.2f" % G2_SLACK] = bool(
             all(r["delta_vs_greedy"] <= G2_SLACK + 1e-9 for r in results))
     scorecard = {"tag": args.tag, "decoder": {"beam": args.beam, "topk": args.topk,
-                 "nbest": args.nbest, "lm": str(args.lm) if lm is not None else None},
+                 "nbest": args.nbest, "blank_penalty": args.blank_penalty,
+                 "lm": str(args.lm) if lm is not None else None},
                  "chosen": {"beta": best[0], "gamma": best[1], "dev": dev, "dev_cer": best[2]},
                  "sweep": sweep, "results": results, "GATES": gates}
     args.out.mkdir(parents=True, exist_ok=True)
@@ -382,6 +391,8 @@ def main():
     ap.add_argument("--save-nbest", action="store_true")
     ap.add_argument("--viterbi", action="store_true",
                     help="rank prefixes by best alignment (max), not the sum")
+    ap.add_argument("--blank-penalty", type=float, default=0.0,
+                    help="subtract this from the blank logit before decoding (E-98); tune on --dev only")
     ap.add_argument("--height", type=int, default=96)
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--cache", action="store_true")

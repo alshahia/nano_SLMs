@@ -20,6 +20,81 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (y) 2026-10-07 -- Steps 2 and 4 report: the resolution knob is dead at inference, the bottleneck is capacity
+
+**Step 2 FAIL (E-102).** The backbone *looks* height-agnostic (height is attention-pooled,
+`output_lengths` depends only on width) but it is not. Re-decoding the SAME teacher weights
+at a taller input destroys it:
+
+| input height | muharaf_test raw | emission | khatt_test raw | isippt |
+|---|---|---|---|---|
+| 96 (trained) | **22.11** | 86.7% | **40.79** | **62.05** |
+| 128 | 34.91 | 73.6% | 55.14 | 86.95 |
+| 160 | 60.54 | 45.9% | 74.13 | 93.70 |
+| 192 | 85.27 | 17.1% | 87.27 | 93.76 |
+
+All three pre-registered predictions failed, and P2 failed *backwards* - I predicted KHATT
+would gain 1.55x of recovered resolution, and it lost 14.35 pp. BatchNorm running stats, the
+learned attention distribution over H and the width-only positional encoding are all bound to
+the H=96 training geometry. **The resolution information is real (E-100) but harvesting it
+requires TRAINING at the higher height - it is a step-3 variant, not a free inference knob.**
+
+**Step 4 RESOLVES to underfit, not bad labels (E-103).** `trainline_emission_probe.py` (new,
+and it carries a self-check that must reproduce the cached-logit path - it does, 22.06 vs
+22.11) measures emission on the model's own training split:
+
+| model | split | emit (raw ref) | CER vs the label it was trained on |
+|---|---|---|---|
+| teacher | muharaf_train | 91.5% | 12.02 |
+| teacher | muharaf_test | 86.7% | 16.95 |
+| stage05f (ours) | muharaf_train | 91.3% | 13.37 |
+| stage05f (ours) | muharaf_test | 86.7% | 18.56 |
+
+The model under-emits on data it was trained on, and the train/test gap is only ~5 pp. That is
+the signature of an **underfit, capacity-limited** model - not of label noise (which would also
+show low train emission) and not of overfitting (which would show high train fit). The 4.2M
+model cannot fit its own training labels.
+
+**Consequence for step 3.** Steps 1, 2 and 4 are now closed: the decoder knob is spent (142),
+the resolution knob is dead at inference (143), and the data is not the culprit (144). The one
+lever still standing is capacity - exactly the user-deferred step 3.
+
+Probes: `arabic_ocr/scripts/trainline_emission_probe.py`, `image_size_probe.py`.
+
+## (x) 2026-10-07 -- Step 1 shipped + the resolution question is domain-split (E-100/E-101)
+
+**Blank penalty shipped (TASKS 142).** `--blank-penalty` is now wired into
+`decode_ctc_lm.py` (applied to the cached logits before greedy/beam, recorded in the
+scorecard) and `blank_penalty_tune.py` is generalised (`--logits-dir/--tags/--deltas`,
+reports raw + norm_ar + emission%). Re-scored B2 (stage05f), delta* = 1.00 tuned on
+`muharaf_val` only:
+
+| model (raw CER) | muharaf_test | khatt_test | isippt | khatt_bench |
+|---|---|---|---|---|
+| teacher, delta 0 | 22.11 | 40.79 | 62.05 | 41.75 |
+| teacher, delta* 1.00 | **21.47** | 41.07 | 59.06 | 41.85 |
+| ckpt-11700, delta* 0.75 | 23.20 | **21.82** | 55.67 | 28.47 |
+| **stage05f (B2), delta* 1.00** | **22.57** | **22.88** | **53.63** | **29.11** |
+
+B2+penalty passes G2 (22.57 <= 23.11) and G3 (29.11 <= 29.54, 53.63 <= 58.34) and
+**fails only G1** (khatt_test <= 21.00). Best available for G1 is ckpt-11700+penalty
+at 21.82 - a 0.82 pp miss. Emission rises everywhere with the penalty (muharaf_test
+87.0 -> 90.8%, isippt 60.0 -> 70.5%), which is the mechanism E-97 predicted.
+
+**Resolution is domain-split (E-100, `image_size_probe.py`).** The Muharaf source line
+images are **60 px tall for 100% of sampled lines** (width 600), so decoding at height
+96 already UPSCALES 1.6x - there is no resolution to recover at home. ISIPPT is 27 px.
+But `khatt_teklia_test` is 149 px and `khatt_bench` 146 px, so **98%/93% of KHATT lines
+are DOWNSCALED 1.55x** at height 96. The acuity limit is therefore a source-data limit
+for Muharaf and a genuine preprocessing loss for KHATT.
+
+That is why step 2 targets G1: the only failing gate is a KHATT gate, and KHATT is the
+only domain with real resolution to win back. Predictions for the height sweep are
+pre-registered in TASKS 143 (P1 muharaf flat +/-0.30 pp, P2 KHATT >= 1.00 pp better,
+P3 isippt flat +/-0.50 pp) - recorded BEFORE the run.
+
+Probes: `arabic_ocr/scripts/image_size_probe.py`, `blank_penalty_tune.py`.
+
 ## (w) 2026-10-07 -- Error attribution: 29% of our headline CER is evaluation convention (E-99)
 
 Before choosing data / model / strategy, measured how much of raw CER 22.11 is even

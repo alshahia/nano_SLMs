@@ -947,3 +947,19 @@ it is. The dot-loss hypothesis is REFUTED: dot-bearing vs dotless letters are dr
 9.4% vs 8.5%. The real acuity signature is glyph HEIGHT/PROFILE - tooth rows and small
 loops drop far more than tall/distinctive strokes - which points at input resolution,
 not at dot rendering.
+
+## 2026-10-07 - Arabic OCR: height attention pooling does NOT make the model height-agnostic
+
+The CTC backbone pools the height axis with attention and its `output_lengths` depends
+only on width, which looks like height invariance. It is not. Re-decoding the SAME
+teacher weights at target_height 128 / 160 / 192 destroys it: muharaf_test raw CER
+22.11 -> 34.91 -> 60.54 -> 85.27, emission 86.7% -> 73.6% -> 45.9% -> 17.1%. The
+BatchNorm running stats, the learned attention distribution over H and the width-only
+positional encoding are all bound to the H=96 training geometry. NEVER infer height
+invariance from the architecture - measure it. A resolution change is a TRAINING
+change, not an inference knob. (This cost one wrong pre-registered prediction: E-102.)
+
+Related probe gotcha: `CNNTransformerCTC.forward` returns **(T, B, C)** (it ends in
+`permute(1, 0, 2)`), so a batched probe must index `logits[:n, i, :]`, not
+`logits[i, :n, :]`. The batch-major version silently produced CER 98% / 3% emission on
+the TRAIN split. Any new batched probe must carry a self-check against a known number.
