@@ -1,3 +1,57 @@
+# 2026-10-07 (z) (Arabic OCR steps 1/2/4 CLOSED: the decoder knob is spent, the resolution knob is dead at inference, and the bottleneck is measured capacity):
+
+> Follows (y), same session. The user order was "1 then 2 then 4, after their result we
+> can decide step 3" - all three are now closed. Committed `49f4a22`.
+
+**1. Step 1 - the decoder knob, shipped (E-101).** `--blank-penalty` is now wired into
+`decode_ctc_lm.py` (applied to the cached logits before greedy/beam, recorded in the
+scorecard) and `blank_penalty_tune.py` is generalised (`--logits-dir/--tags/--deltas`, and
+it reports raw + `norm_ar` + emission%). delta is tuned on `muharaf_val` only. B2
+(stage05f) + delta 1.00: muharaf_test 23.01 -> **22.57** (norm 17.81 -> 17.34),
+khatt_teklia_test 22.91 -> **22.88**, isippt 56.02 -> **53.63**, khatt_bench 29.74 ->
+**29.11**. B2+penalty now **passes G2 and G3 and fails only G1** (khatt_test <= 21.00);
+the best number available for G1 is ckpt-11700+penalty at 21.82, a 0.82 pp miss.
+Emission rises everywhere (muharaf_test 87.0 -> 90.8%, isippt 60.0 -> 70.5%), which is
+exactly the mechanism (y) predicted.
+
+**2. Step 2 - the resolution knob is DEAD at inference (E-102, FAIL).** The backbone
+*looks* height-agnostic: height is attention-pooled and `output_lengths` depends only on
+width. It is not. Re-decoding the SAME teacher weights at a taller input destroys it -
+muharaf_test raw CER 22.11 (h96) -> 34.91 (h128) -> 60.54 (h160) -> 85.27 (h192), with
+emission 86.7% -> 73.6% -> 45.9% -> 17.1%. KHATT got *worse* (40.79 -> 55.14), the
+opposite of the pre-registered prediction P2. BatchNorm running stats, the learned
+attention distribution over H and the width-only positional encoding are all bound to
+H=96. **The resolution information is real (E-100: 98%/93% of KHATT lines are downscaled
+1.55x at height 96, while Muharaf's packaged source is 60 px for 100% of sampled lines
+and is already upscaled 1.6x) but it can only be harvested by TRAINING at the higher
+height.**
+
+**3. Step 4 - the data is not the culprit; the model is UNDERFIT (E-103).** New
+`trainline_emission_probe.py` measures emission on the model's own training split. It
+carries a self-check that must reproduce the cached-logit path (22.06 vs 22.11) - which
+mattered, because the first version silently reported 98% CER from indexing a (T,B,C)
+tensor as (B,T,C).
+
+| model | split | emit (raw ref) | CER vs the label it was trained on |
+|---|---|---|---|
+| teacher | muharaf_train | 91.5% | 12.02 |
+| teacher | muharaf_test | 86.7% | 16.95 |
+| stage05f (ours) | muharaf_train | 91.3% | 13.37 |
+| stage05f (ours) | muharaf_test | 86.7% | 18.56 |
+
+Under-emission is present on data the model was trained on, and the train/test gap is only
+~5 pp. That is underfitting - not label noise (which would also show low train emission)
+and not overfitting (which would show a high train fit). The 4.2M model cannot fit its own
+labels. Separately, `norm_ar` is now reported for every set, so the 29%
+evaluation-convention gap from (w) is measured rather than hidden.
+
+**4. The step-3 fork, now evidence-informed.** Options A (warm-start the 15M FixFips CRNN
+on the Muharaf union), B (fresh 15M KHATT specialist) and C (ship 4.25M with a measured
+ceiling) all remain, but the evidence adds one that dominates: **(D) scale our own
+CNN-Transformer-CTC to ~15M and train it at target_height 128 on the Muharaf union.** It
+addresses capacity (E-103) and KHATT resolution (E-100) together, targets G1 - the only
+gate still failing - and needs no new architecture or dependency. Rough cost: ~2 h on the
+free GPU versus 23 min for B2. **Awaiting the user's decision.**
 # 2026-10-07 (y) (Arabic OCR: (x) is PARTIALLY REVISED - the error mode is character UNDER-EMISSION and a CTC blank penalty is a free gain):
 
 > Follows (x), same session, CPU only. This entry corrects the verdict in (x): the
