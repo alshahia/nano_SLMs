@@ -48,9 +48,11 @@ teacher, so every number below has a measured baseline:
 | isippt_bench | 62.05 | 57.84 | -4.21 |
 | khatt_bench | 41.75 | 29.04 | -12.71 |
 
-The printed-text sets move the other way -- ISIPPT -4.21 pp and KHATT bench -12.71 pp -- so the
-handwriting-only adaptation did cost printed-text accuracy. FixFips remains far
-better on both (46.92 ISIPPT, 12.03 KHATT bench). Full data:
+The other three sets all IMPROVE -- ISIPPT -4.21 pp, KHATT bench -12.71 pp -- so the
+union recipe helped printed text as well as KHATT; only Muharaf test regressed.
+FixFips is still the better printed-text model (46.92 ISIPPT, 12.03 KHATT bench), so the
+honest reading is: our single 4.25M model now beats its teacher on **3 of the 4 sets**
+and loses 1.60 pp only on the teacher home set. Full data:
 `runs/stage05c/eval_muharaf_teacher_all4.json` vs
 `arabic_ocr/runs/stage05d/scorecard_eval.json`.
 
@@ -58,9 +60,10 @@ The KHATT trajectory was still creeping down (22.20 -> 22.05 over the last
 1,800 steps) while the cosine lr approached zero, so finishing the remaining 9%
 would not have closed a 2 pp gap; the run was not resumed.
 
-**Verdict (E-93): a single 4.25M model adapted to the union lands BETWEEN the
-two specialists** -- Muharaf 23.71 (vs the 22.11 teacher) and KHATT 22.05
-(vs 10.99 for the 15M in-domain FixFips) -- so it matches neither. The
+**Verdict (E-93): the union recipe beats the teacher on 3 of the 4 sets, but buys that
+with 1.60 pp on the teacher home set** -- Muharaf 23.71 (vs the 22.11 teacher), KHATT
+22.05 (vs 40.79), ISIPPT 57.84 (vs 62.05), KHATT bench 29.04 (vs 41.75) -- and it is
+still far from the in-domain specialists (FixFips 10.99 KHATT, 46.92 ISIPPT). The
 cross-domain gain is real and costs ~35 min of GPU, but the teacher stays the
 best Muharaf model and FixFips the best KHATT model. The artifact is
 `arabic_ocr/runs/stage05d/ckpt_last.pt` (weights local-only). Next: the Stage 4
