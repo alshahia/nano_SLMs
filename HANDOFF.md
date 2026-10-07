@@ -1,3 +1,50 @@
+# 2026-10-07 (ab) (Arabic OCR Plan A in flight: the verdict path is validated and the stop rule was recalibrated twice)
+
+> Follows (aa), same session. The user ordered "A then B": (A) fine-tune the 4.25M Muharaf teacher
+> with the authors' own recipe, then (B) grow the trained model and continue. Plan A is training as
+> this entry is written - **nothing here is a verdict yet**.
+
+**Plan A, as launched** (pre-registered in TASKS 147 before launch; commit `d8f9a84`). Init = the
+published teacher `model.pt` (4,245,671 params - **not** `adapt11700`), `--augment light`,
+`--train-blank-penalty 0.2`, `--scheduler onecycle --lr 5e-5 --epochs 20`, batch 8 x accum 1,
+`--khatt-repeat 1 --reallines-repeat 0 --target-height 96 --eval-every 1000 --eval-limit 400
+--keep-eval-ckpts`, out `arabic_ocr/runs/stage06b/`. 26,490 train items, 3,312 steps/epoch,
+66,240 steps total; OneCycleLR peak at step 19,872.
+
+**Trajectory at 25%** (card raw; the teacher's card on the identical code path is 26.40 muharaf /
+40.87 khatt). `khatt_teklia_test` - the gate that actually fails - improves strongly:
+44.27 (step 1000) -> 28.40 (13000) -> **26.75** (16000), i.e. **-14.12 pp** against the teacher.
+`muharaf_test` drifts mildly the wrong way, 26.82 (1000) -> 27.45 (16000), +1.05 pp over the
+teacher, noisy within 27.26-27.84. G1 (<= 21.00) is **5.75 pp away with the whole LR anneal still
+ahead**; G2 (<= 23.11) is at risk because the teacher passes it and Plan A is trading in-domain
+accuracy for out-of-domain KHATT.
+
+**The stop rule was wrong twice; both are recorded rather than quietly dropped.** Amendment 1
+aborted if the card `muharaf_test` raw exceeded 26.00 after the LR peak. Measuring the teacher on
+the same 400-line card gave **26.40** - the rule would have aborted the teacher itself. That is a
+calibration error, so amendment 2 replaced it with one measured collapse test: abort if the card
+exceeds **30.00** at any eval. Lesson (MEMORY.md, E-108): calibrate a collapse threshold by
+measuring the starting model on the *exact same eval subset* - this card reads 26.40 for muharaf
+where the full set reads 22.11 (+4.3 pp), while for khatt the card is faithful (40.87 vs 40.79).
+
+**The verdict path is validated end-to-end before it is needed** (all CPU, no GPU contention).
+`blank_penalty_tune.py` over the cached teacher/adapt11700/stage05f logits reproduces E-101 exactly
+(adapt11700 delta=0.75 -> 23.20 / 21.82 / 55.67 / 28.47), so the pipeline is trustworthy; it also
+yields the teacher's own full-set delta-tuned row - `muharaf_test` **21.47** (the teacher alone
+passes G2), khatt_teklia_test 41.07, isippt 59.06, khatt_bench 41.85 (E-109). Plan B's growth
+surgery was rehearsed on a **real Plan A checkpoint**, not just the teacher: depth 4 -> 14 gives
+4,245,671 -> 12,143,271 params with `max abs delta 0.000e+00` (bit-identical function) and
+`check_ckpt_reload.py` **PASS**. TASKS 147 also pre-registers the checkpoint-selection rule so
+"Plan A best" is not chosen post hoc, and records the disk budget (one 358 MB logits cache per
+checkpoint; 10.4 GB free).
+
+**One trap worth the ink.** `decode_ctc_lm.py --run` prints a `GATES {...}` line whose G1/G2/G3
+keys reuse the project gate names but measure different quantities on different sets - reading it
+as the verdict would report the wrong numbers. `finetune_muharaf.py`'s own card `gates` block
+does report the real project gates, but on the 400-line subset and without the blank penalty.
+
+---
+
 # 2026-10-07 (aa) (Arabic OCR option (D) FAILED - and the reason was in the model directory all along: the published Muharaf model was never trained from scratch)
 
 > Follows (z), same session. The user chose "(D)" - scale our CNN-Transformer-CTC to ~15M and train
