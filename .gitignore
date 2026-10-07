@@ -211,3 +211,6 @@ arabic_ocr/runs/stage*/*.pt
 # OCR Stage 4: cached fp16 logits are regenerable (~360 MB per model at h96, ~480 MB at h128) and must never be committed
 arabic_ocr/runs/stage*/logits/
 arabic_ocr/runs/stage05e/nbest/
+
+# probe checkpoints are weights (local-only policy) - the decoded evidence beside them is tracked
+arabic_ocr/runs/stage*/probe/*.pt
