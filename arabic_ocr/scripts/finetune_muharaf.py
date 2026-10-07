@@ -210,6 +210,8 @@ def main():
     ap.add_argument("--seed", type=int, default=1234)
     ap.add_argument("--device", default="auto")
     ap.add_argument("--out", default=str(DEFAULT_OUT))
+    ap.add_argument("--init-ckpt", default="",
+                    help="warm-start from this run checkpoint instead of the teacher")
     ap.add_argument("--smoke", type=int, default=0, help="run N steps then exit 0")
     ap.add_argument("--eval-only", action="store_true",
                     help="score --ckpt on all eval sets and exit (no training)")
@@ -226,7 +228,7 @@ def main():
 
     if not CKPT_PATH.exists():
         raise SystemExit("checkpoint missing: %s" % CKPT_PATH)
-    model, charset, cfg = load_ctc_backbone(str(CKPT_PATH), device=device)
+    model, charset, cfg = load_ctc_backbone(str(args.init_ckpt or CKPT_PATH), device=device)
     model.train()
     n_params = sum(p.numel() for p in model.parameters())
     print("init: %s  params=%d  charset=%d  height_pooling=%s  device=%s" %
