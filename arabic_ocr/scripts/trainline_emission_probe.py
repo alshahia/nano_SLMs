@@ -45,7 +45,7 @@ def stride_sample(labels, n):
     return labels
 
 
-def build(charset, folder: Path, n: int):
+def build(charset, folder: Path, n: int, target_h: int = TARGET_H):
     labels = stride_sample(json.loads((folder / "labels.json").read_text(encoding="utf-8")), n)
     items, skipped = [], 0
     for rec in labels:
@@ -54,12 +54,12 @@ def build(charset, folder: Path, n: int):
             skipped += 1
             continue
         items.append({"path": str(folder / rec["image"]), "ids": ids,
-                      "est_w": estimate_width(rec, folder), "raw": rec.get("text", "")})
+                      "est_w": estimate_width(rec, folder, target_h), "raw": rec.get("text", "")})
     return items, skipped
 
 
 @torch.no_grad()
-def run_split(model, charset, items, device, batch, delta):
+def run_split(model, charset, items, device, batch, delta, target_h: int = TARGET_H):
     refs, hyps, n_edit, n_ref, n_edit_norm, n_ref_norm, n_raw, n_edit_raw = [], [], 0, 0, 0, 0, 0, 0
     t0 = time.time()
     for start in range(0, len(items), batch):
@@ -67,7 +67,7 @@ def run_split(model, charset, items, device, batch, delta):
         tensors = []
         for it in chunk:
             with Image.open(it["path"]) as im:
-                arr = preprocess_image(im, ImageConfig(target_height=TARGET_H,
+                arr = preprocess_image(im, ImageConfig(target_height=target_h,
                                                        grayscale=True, normalize=True))
             tensors.append({"img": torch.from_numpy(arr[None].astype("float32")),
                             "ids": torch.tensor(it["ids"], dtype=torch.long),
@@ -105,9 +105,15 @@ def run_split(model, charset, items, device, batch, delta):
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--ckpt", type=Path, default=CKPT_PATH)
-    ap.add_argument("--n", type=int, default=300)
     ap.add_argument("--batch", type=int, default=8)
-    ap.add_argument("--device", default="cuda")
+    ap.add_argument("--device", default="auto",
+                    help="auto | cpu | cuda. An explicit cpu is HONOURED - the old "
+                         "code silently used CUDA whenever it existed, so a CPU-only "
+                         "run would have competed with a live training run for the GPU")
+    ap.add_argument("--target-height", type=int, default=0,
+                    help="0 = the 96 default. MUST match the height the checkpoint "
+                         "was trained at, or the probe measures the wrong geometry")
+    ap.add_argument("--n", type=int, default=300)
     ap.add_argument("--deltas", default="0,1.0")
     ap.add_argument("--splits", default="muharaf_train,muharaf_val,muharaf_test")
     ap.add_argument("--self-check", action="store_true",
@@ -116,15 +122,22 @@ def main() -> None:
     ap.add_argument("--out", type=Path, default=None)
     args = ap.parse_args()
 
-    device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    if args.device == "auto":
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    else:
+        device = torch.device(args.device)
+    target_h = args.target_height or TARGET_H
     model, charset, _cfg = load_ctc_backbone(str(args.ckpt), device=device)
     model.eval()
-    print("ckpt %s  device %s  height %d  n/split %d" % (args.ckpt, device, TARGET_H, args.n),
+    print("ckpt %s  device %s  height %d  n/split %d" % (args.ckpt, device, target_h, args.n),
           flush=True)
 
     if args.self_check:
-        items, _ = build(charset, SPLITS["muharaf_test"], 0)
-        res = run_split(model, charset, items, device, args.batch, 0.0)
+        if target_h != 96:
+            raise SystemExit("--self-check calibrates against height-96 numbers; "
+                             "do not combine it with --target-height")
+        items, _ = build(charset, SPLITS["muharaf_test"], 0, target_h)
+        res = run_split(model, charset, items, device, args.batch, 0.0, target_h)
         ok = abs(res["cer_raw"] - 22.11) <= 0.30 and abs(res["emit_vs_raw_ref"] - 86.7) <= 1.5
         print("SELF-CHECK muharaf_test full: raw CER %.2f (expect 22.11), emit %.1f%% "
               "(expect 86.7) -> %s" % (res["cer_raw"], res["emit_vs_raw_ref"],
@@ -134,10 +147,10 @@ def main() -> None:
 
     report = {}
     for name in [s for s in args.splits.split(",") if s]:
-        items, skipped = build(charset, SPLITS[name], args.n)
+        items, skipped = build(charset, SPLITS[name], args.n, target_h)
         report[name] = {"skipped_unencodable": skipped}
         for delta in [float(x) for x in args.deltas.split(",") if x != ""]:
-            res = run_split(model, charset, items, device, args.batch, delta)
+            res = run_split(model, charset, items, device, args.batch, delta, target_h)
             report[name]["delta_%.2f" % delta] = res
             print("  %-14s delta %.2f  emit_raw %5.1f%%  emit_vs_trained_ref %5.1f%%  "
                   "CER(raw) %5.2f  CER(trained ref) %5.2f  norm %5.2f  (%.1fs)"

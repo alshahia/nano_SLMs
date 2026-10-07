@@ -50,6 +50,55 @@ and is now threaded through.
 
 Probe: `arabic_ocr/scripts/arch_param_probe.py`.
 
+**Gate results (both PASS).** `check_ckpt_reload.py` on the step-1000 checkpoint: height 128,
+15,336,743 params, d=384/8L/8H/1536, 166 classes, logits [64, 1, 166], optimizer state present.
+The resume self-test (CPU-only, isolated out dir) restored epoch 0 / batch 1000 / step 1000 and
+continued to step 1003, exit 0 - so a late OOM or session death is survivable.
+
+**First eval at step 1000: muharaf_test raw 94.17, khatt_teklia_test raw 93.71.** Loss 4.97
+against ln(166)=5.11, so the model is barely past the predict-the-prior solution: this is the CTC
+blank plateau at 1.9% of training, not a result. The 3h stop rule is the decision point.
+
+**Diagnostic at step 1000 (CPU-only emission probe, `--target-height 128`).** Train and test are
+indistinguishable - muharaf_train emission 5.8% / raw CER 94.53 vs muharaf_test 6.2% / 94.54 at
+delta 0. A **zero train/test gap** means the model has memorised nothing yet, which is the
+signature of the CTC blank plateau rather than a broken run. The blank penalty barely helps
+(train 94.53 -> 91.62 at delta 1.5) because there is almost nothing to recover. Measured, not
+assumed; still not a verdict.
+
+### Closeout plan - exact commands, written BEFORE the run finished
+
+**Resume must repeat the FULL recipe.** `--resume` rebuilds the model from `--arch-*`, so a
+mismatched arch raises on `load_state_dict`, and a mismatched `--batch`/`--accum` would
+silently mis-index the saved `batch_idx` and replay the wrong batches.
+
+```powershell
+# 1. cache logits at the TRAINED height - --height defaults to 96 and MUST be 128 here
+& .\.venv\Scripts\python.exe arabic_ocr/scripts/decode_ctc_lm.py `
+  --ckpt arabic_ocr/runs/stage06a/ckpt_final.pt --height 128 --tag stage06a --cache `
+  --sets muharaf_val,muharaf_test,khatt_teklia_test,isippt_bench,khatt_bench `
+  --out arabic_ocr/runs/stage06a --cache-dir arabic_ocr/runs/stage06a/logits
+
+# 2. tune the blank penalty on muharaf_val ONLY - never on a test set
+& .\.venv\Scripts\python.exe arabic_ocr/scripts/blank_penalty_tune.py `
+  --logits-dir arabic_ocr/runs/stage06a/logits --tags stage06a `
+  --ckpt arabic_ocr/runs/stage06a/ckpt_final.pt `
+  --out arabic_ocr/runs/stage06a/blank_penalty_tune.json
+
+# 3. re-decode with delta* and report raw AND norm_ar per set, then read the gates
+& .\.venv\Scripts\python.exe arabic_ocr/scripts/decode_ctc_lm.py `
+  --ckpt arabic_ocr/runs/stage06a/ckpt_final.pt --height 128 --tag stage06a --run `
+  --blank-penalty <delta*> --out arabic_ocr/runs/stage06a
+```
+
+Gates: **G1** khatt_test raw <= 21.00 · **G2** muharaf_test raw <= 23.11 · **G3** khatt_bench
+<= 29.54 and isippt <= 58.34. Compare against the best adapted numbers so far: B2+delta1.00
+22.57 / 22.88 / 53.63 / 29.11 and ckpt-11700+delta0.75 23.20 / **21.82** / 55.67 / 28.47.
+
+Integrity gates already added this run: `check_ckpt_reload.py` (the checkpoint must reload
+through `load_ctc_backbone` at its stored height) and the `height` stamp in the logits cache
+(a cache whose recorded height differs from `--height` is recomputed, not trusted).
+
 ## (y) 2026-10-07 -- Steps 2 and 4 report: the resolution knob is dead at inference, the bottleneck is capacity
 
 **Step 2 FAIL (E-102).** The backbone *looks* height-agnostic (height is attention-pooled,
