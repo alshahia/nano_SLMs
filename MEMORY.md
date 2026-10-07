@@ -963,3 +963,19 @@ Related probe gotcha: `CNNTransformerCTC.forward` returns **(T, B, C)** (it ends
 `permute(1, 0, 2)`), so a batched probe must index `logits[:n, i, :]`, not
 `logits[i, :n, :]`. The batch-major version silently produced CER 98% / 3% emission on
 the TRAIN split. Any new batched probe must carry a self-check against a known number.
+
+## 2026-10-07 - Arabic OCR: a logits cache keyed only on a tag silently poisons results
+
+`decode_ctc_lm.py --cache` kept a cached `<cache-dir>/<tag>/<set>.npz` purely on filename
+existence (`if path.exists() and not args.overwrite`). Nothing recorded which MODEL or which
+target_height produced it. Reusing a tag - the natural thing to do when re-running a sweep -
+therefore serves logits from a different configuration, and every CER computed from them is
+attributed to the wrong model. It is silent: the numbers look plausible, they are simply not
+about the thing being claimed. This is the same failure class as the height-invariance mistake
+(E-102) and the `recognise_line` default of 96 that would have mis-scored every intermediate
+eval of a height-128 run. Fix: the npz now records `height`, and a cache whose recorded height
+does not match `--height` is recomputed; a cache with NO recorded height is treated as unknown
+provenance and also recomputed, so old caches are re-derived once rather than trusted.
+
+General rule for this line: any artifact that lets you skip work must record the parameters
+that made it valid, and must be re-derived rather than trusted when they are absent or differ.

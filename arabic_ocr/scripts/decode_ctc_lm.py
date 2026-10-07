@@ -147,8 +147,21 @@ def cache_logits(args, model, charset, device):
     for tag in [s for s in args.sets.split(",") if s]:
         path = out_dir / (tag + ".npz")
         if path.exists() and not args.overwrite:
-            print("cache keep %s" % path)
-            continue
+            # The cache is keyed only on the tag filename, so a reused tag would silently
+            # serve logits from a DIFFERENT model or height and every downstream CER would
+            # be attributed to the wrong configuration. Record the height and refuse to
+            # trust a cache that does not match. A cache with no recorded height is of
+            # unknown provenance and is recomputed rather than trusted.
+            try:
+                with np.load(path, allow_pickle=False) as z:
+                    cached_h = int(z["height"]) if "height" in z.files else None
+            except Exception:  # noqa: BLE001 - an unreadable cache is simply not reusable
+                cached_h = None
+            if cached_h == int(args.height):
+                print("cache keep %s (height %d)" % (path, cached_h))
+                continue
+            print("cache STALE %s: cached height %r != --height %d, recomputing"
+                  % (path, cached_h, args.height), flush=True)
         folder = SETS[tag]
         labels = json.loads((folder / "labels.json").read_text(encoding="utf-8"))
         chunks, refs, offs, widths, t0 = [], [], [0], [], time.time()
@@ -165,7 +178,8 @@ def cache_logits(args, model, charset, device):
                 widths.append(int(arr.shape[1]))
         data = np.concatenate(chunks, axis=0)
         np.savez(path, data=data, offsets=np.array(offs, dtype=np.int64),
-                 refs=np.array(refs), widths=np.array(widths, dtype=np.int32))
+                 refs=np.array(refs), widths=np.array(widths, dtype=np.int32),
+                 height=np.array(int(args.height)))
         print("cache %-20s n=%d T=%d %.1fs" % (tag, len(refs), data.shape[0], time.time() - t0), flush=True)
 
 
