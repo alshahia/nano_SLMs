@@ -31,6 +31,7 @@ from __future__ import annotations
 import argparse
 import importlib.util
 import json
+import math
 import random
 import sys
 import time
@@ -38,7 +39,7 @@ from pathlib import Path
 
 import torch
 import torch.nn as nn
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 ROOT = Path(__file__).resolve().parents[2]
 MODEL_DIR = ROOT / "arabic_ocr" / "models" / "muharaf_ocr"
@@ -115,6 +116,39 @@ def strip_diacritics(text: str) -> str:
     return normalize_arabic_text(kept)
 
 
+def light_augment(im, rng):
+    """Light geometric + photometric jitter, TRAINING images only.
+
+    The published record contains only the NAME `augmentation_mode: "light"`; the
+    authors' augmentation code is not in this repo. This is therefore a documented
+    RECONSTRUCTION, not a copy: +-2.5 deg rotation, +-2.0 deg x-shear, 0.94-1.06
+    scale, +-2% translation, and a 50% chance of 0.85-1.15 contrast. The white
+    background is preserved (fillcolor=255), which is what the CTC frontend expects.
+    """
+    w, h = im.size
+    angle = math.radians(rng.uniform(-2.5, 2.5))
+    shear = math.radians(rng.uniform(-2.0, 2.0))
+    scale = rng.uniform(0.94, 1.06)
+    dx = rng.uniform(-0.02, 0.02) * w
+    dy = rng.uniform(-0.02, 0.02) * h
+    cx, cy = w / 2.0, h / 2.0
+    # PIL wants the INVERSE map (output pixel -> input pixel). Forward, about the
+    # centre: translate -> x-shear -> rotate -> scale; then invert.
+    t = math.tan(shear)
+    ca, sa = math.cos(angle) / scale, math.sin(angle) / scale
+    a = ca
+    b = sa - ca * t
+    d = -sa
+    e = ca + sa * t
+    c = cx - a * (cx + dx) - b * (cy + dy)
+    f = cy - d * (cx + dx) - e * (cy + dy)
+    im = im.transform((w, h), Image.AFFINE, (a, b, c, d, e, f),
+                      resample=Image.BILINEAR, fillcolor=255)
+    if rng.random() < 0.5:
+        im = ImageEnhance.Contrast(im).enhance(rng.uniform(0.85, 1.15))
+    return im
+
+
 def build_items(charset, folder: Path, repeat: int, limit: int, target_h: int = TARGET_H):
     labels = json.loads((folder / "labels.json").read_text(encoding="utf-8"))
     if limit:
@@ -138,9 +172,13 @@ def build_items(charset, folder: Path, repeat: int, limit: int, target_h: int = 
 
 
 class LineDataset(torch.utils.data.Dataset):
-    def __init__(self, items, target_h: int = TARGET_H):
+    def __init__(self, items, target_h: int = TARGET_H, augment: str = "none",
+                 seed: int = 1234):
         self.items = items
         self.target_h = target_h
+        self.augment = augment
+        self.seed = seed
+        self.epoch = 0
 
     def __len__(self):
         return len(self.items)
@@ -148,6 +186,12 @@ class LineDataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         item = self.items[index]
         with Image.open(item["path"]) as im:
+            if self.augment == "light":
+                # seeded per (seed, epoch, index) so a resumed run reproduces the
+                # exact same augmentation instead of a fresh random draw
+                im = light_augment(im.convert("L"),
+                                   random.Random("%d-%d-%d" % (self.seed, self.epoch,
+                                                               index)))
             arr = preprocess_image(im, ImageConfig(target_height=self.target_h,
                                                    grayscale=True, normalize=True))
         return {"img": torch.from_numpy(arr[None, :, :].astype("float32")),
@@ -269,6 +313,19 @@ def main():
     ap.add_argument("--resume", action="store_true",
                     help="continue from <out>/ckpt_last.pt (model + optimizer + step)")
     ap.add_argument("--stage", default="0.5d-b1prime")
+    # --- plan (A): the authors' fine-tune recipe; every default preserves the
+    # pre-(A) behaviour, so the B1'/B2 recipes stay reproducible ---
+    ap.add_argument("--augment", choices=("none", "light"), default="none",
+                    help="'light' = light affine+contrast jitter on TRAINING images only")
+    ap.add_argument("--train-blank-penalty", type=float, default=0.0,
+                    help="subtract this from the blank logit BEFORE the training loss "
+                         "(the authors' train_blank_logit_penalty; anti-deletion)")
+    ap.add_argument("--scheduler", choices=("cosine", "onecycle"), default="cosine",
+                    help="'onecycle' = the authors' schedule, peaking at --lr")
+    ap.add_argument("--pct-start", type=float, default=0.3)
+    ap.add_argument("--keep-eval-ckpts", action="store_true",
+                    help="also save ckpt_step<N>.pt at every periodic eval, so the best "
+                         "step stays scorable later (ckpt_last.pt alone loses it)")
     args = ap.parse_args()
 
     random.seed(args.seed)
@@ -373,17 +430,29 @@ def main():
            args.accum), flush=True)
 
     warmup = max(0, min(args.warmup_steps, max(0, total_steps - 1)))
-    cosine = torch.optim.lr_scheduler.CosineAnnealingLR(
-        optimizer, T_max=max(1, total_steps - warmup))
-    if warmup:
-        linear = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1e-3,
-                                                   total_iters=warmup)
-        scheduler = torch.optim.lr_scheduler.SequentialLR(
-            optimizer, schedulers=[linear, cosine], milestones=[warmup])
+    if args.scheduler == "onecycle":
+        if warmup:
+            raise SystemExit("--scheduler onecycle has its own warmup: drop --warmup-steps")
+        scheduler = torch.optim.lr_scheduler.OneCycleLR(
+            optimizer, max_lr=args.lr, total_steps=total_steps,
+            pct_start=args.pct_start, anneal_strategy="cos")
+        sched_label = ("OneCycleLR(max_lr=%g, total_steps=%d, pct_start=%g, "
+                       "div_factor=25, final_div_factor=1e4)" %
+                       (args.lr, total_steps, args.pct_start))
     else:
-        scheduler = cosine
+        cosine = torch.optim.lr_scheduler.CosineAnnealingLR(
+            optimizer, T_max=max(1, total_steps - warmup))
+        if warmup:
+            linear = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1e-3,
+                                                       total_iters=warmup)
+            scheduler = torch.optim.lr_scheduler.SequentialLR(
+                optimizer, schedulers=[linear, cosine], milestones=[warmup])
+            sched_label = "linear-warmup+cosine"
+        else:
+            scheduler = cosine
+            sched_label = "cosine"
 
-    ds = LineDataset(items, target_h)
+    ds = LineDataset(items, target_h, augment=args.augment, seed=args.seed)
     log_path = out_dir / "train_log.jsonl"
     log = log_path.open("a", encoding="utf-8")
 
@@ -411,6 +480,7 @@ def main():
     for epoch in range(start_epoch, args.epochs):
         # deterministic per-epoch order, so a resumed run reproduces the same batches
         random.Random(args.seed + epoch).shuffle(batches)
+        ds.epoch = epoch
         begin = start_batch if epoch == start_epoch else 0
         for batch_idx in range(begin, steps_per_epoch):
             idxs = batches[batch_idx]
@@ -420,6 +490,9 @@ def main():
             targets = pixel_batch["targets"].to(device)
             target_lengths = pixel_batch["target_lengths"].to(device)
             logits = model(images, input_widths=widths)
+            if args.train_blank_penalty:
+                logits = logits.clone()
+                logits[..., charset.blank_id] -= args.train_blank_penalty
             log_probs = logits.log_softmax(dim=-1)
             in_lens = model.output_lengths(widths)
             loss = criterion(log_probs, targets, in_lens, target_lengths) / args.accum
@@ -463,6 +536,12 @@ def main():
                             "batch_idx": batch_idx, "stage": args.stage,
                             "target_height": target_h},
                            out_dir / "ckpt_last.pt")
+                if args.keep_eval_ckpts:
+                    torch.save({"model_state": model.state_dict(),
+                                "charset": getattr(charset, "characters", None),
+                                "model_config": cfg, "step": step, "epoch": epoch,
+                                "stage": args.stage, "target_height": target_h},
+                               out_dir / ("ckpt_step%06d.pt" % step))
             if args.smoke and batch_idx + 1 >= args.smoke:
                 stop = True
                 break
@@ -492,9 +571,10 @@ def main():
         "recipe": {"epochs": args.epochs, "lr": args.lr, "batch": args.batch,
                    "accum": args.accum, "khatt_repeat": args.khatt_repeat,
                    "weight_decay": args.weight_decay, "clip": args.clip,
-                   "scheduler": "cosine" if not warmup else "linear-warmup+cosine",
+                   "scheduler": sched_label,
                    "warmup_steps": warmup, "seed": args.seed,
-                   "target_height": target_h, "augmentation": "none",
+                   "target_height": target_h, "augmentation": args.augment,
+                   "train_blank_logit_penalty": args.train_blank_penalty,
                    "arch": {k: cfg[k] for k in ("d_model", "transformer_layers",
                                                "transformer_heads",
                                                "dim_feedforward")},
