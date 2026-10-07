@@ -1057,3 +1057,18 @@ wrong sets. Compute the project gates from `blank_penalty_tune.py`'s per-set out
 checkpoint in this line shares the teacher's 166-symbol charset, so the default is correct -
 but pass `--ckpt` explicitly if a model ever changes its label space.
 
+**Addendum (same day) - there are THREE things called "gates" in this codebase.** Use the
+right one:
+
+| Source | What it reports | Use it for |
+|---|---|---|
+| `finetune_muharaf.py` scorecard `gates` block | the PROJECT gates, correct names (`G1_khatt_test_raw_le_21.00`, `G2_muharaf_test_raw_le_23.11`, `G3_khatt_bench_raw_le_29.54`, `G3_isippt_raw_le_58.34`, plus a stricter `...le_20.00`) - but on the `--eval-limit` SUBSET and with no blank penalty | indicative progress during training |
+| `blank_penalty_tune.py` per-set output | project gates on the FULL sets, delta tuned on muharaf_val only | **the authoritative verdict** |
+| `decode_ctc_lm.py` `GATES {...}` line | NOT the project gates (different quantities and sets) | nothing - ignore |
+
+Also: the in-training periodic eval uses `PRIMARY` only (muharaf_test + khatt_teklia_test, 2
+sets, so cards during a run show 2 rows), while `--eval-only` and the end-of-run final eval
+use all 4 `EVAL_SETS`. `--eval-only` reads **`--ckpt`** (falling back to
+`<out>/ckpt_last.pt`) - NOT `--init-ckpt`, which it silently ignores; passing the wrong one
+fails with `FileNotFoundError: <out>/ckpt_last.pt`.
+
