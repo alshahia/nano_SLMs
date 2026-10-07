@@ -20,6 +20,40 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (v) 2026-10-07 -- REVISION of (u): the error mode is character UNDER-EMISSION, and a CTC blank penalty is a free gain (E-97, E-98)
+
+`(u)` declared Plan A exhausted. Two CPU probes revise that: the DECODER lever was not
+fully exhausted - one inference knob had never been tested.
+
+**E-97 - what kind of errors are these?** Levenshtein backtrace over the cached teacher
+logits, muharaf_test: 15,420 edits = **10,066 deletions (65%)** + 4,534 substitutions
+(29%) + 820 insertions (5%). The model emits only **86.7%** of reference characters
+(KHATT test 80.8%, ISIPPT 52.7%) and drops **29%** of word spaces (whitespace-free CER
+19.64 vs 22.11 raw). Two obvious causes are REFUTED: only 1.44% of reference characters
+are outside the 165-symbol charset (worth 1.08 pp), and there are 4.3 output frames per
+character (ISIPPT has 9 and is the worst). Under-emission scales with domain distance, so
+it is a representation failure surfacing as CTC blank bias - which is exactly why the
+decoder (E-94), the lexicon (E-96) and adaptation (E-95) all failed downstream of it.
+
+**E-98 - the blank penalty is a real lever (delta tuned on muharaf_val ONLY).**
+
+| model | delta* | muharaf_test | khatt_teklia_test | isippt_bench | khatt_bench |
+|---|---|---|---|---|---|
+| teacher | 1.00 | 22.11 -> **21.47** | 40.79 -> 41.07 | 62.05 -> **59.06** | 41.75 -> 41.85 |
+| ckpt-11700 | 0.75 | 23.71 -> **23.20** | 22.05 -> **21.82** | 57.84 -> **55.67** | 29.04 -> **28.47** |
+| trained B2 (no penalty) | - | 23.01 | 22.91 | 56.03 | 29.74 |
+
+- **ckpt-11700 + blank penalty is the best union model so far and beats the trained B2
+  rung on 3 of 4 sets at ZERO training cost**; it makes G3 pass (55.67 <= 58.34 and
+  28.47 <= 29.54). G2 (Muharaf <= 23.11) is now missed by only 0.09 pp.
+- The teacher val-tuned penalty HURTS KHATT (+0.27): the optimum does not transfer
+  across domains, so tune it per target domain.
+- The acoustic model is still the binding constraint - G1 (KHATT <= 21.00) stays
+  unreachable by any decoder - so the 15M question stands. TASKS 142 must land first:
+  wire `--blank-penalty` into `decode_ctc_lm.py`, cache stage05f logits, re-score B2.
+- Probes: `char_confusion_probe.py`, `charset_coverage_probe.py`, `deletion_probe.py`,
+  `blank_penalty_probe.py`, `blank_penalty_tune.py`.
+
 ## (u) 2026-10-07 -- Stage 4b lexicon probe: the word-lexicon lever is DEAD in its cheap form (TASKS 140)
 
 Measured BEFORE building (E-94's lesson). Lexicon = 54,084 types / 261,471 tokens from

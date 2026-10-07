@@ -281,6 +281,11 @@ killed at step 600 and no gate was read from it. Trainer `arabic_ocr/scripts/fin
     a lexicon-source decision: this needs a much larger, cleaner lexicon plus a real word
     n-gram LM, not a distance-1 rule. Reproduce with `arabic_ocr/scripts/lexicon_probe.py`.
 | 141 | OCR Stage 0.5f "repair rung" (B2) - recover the B1' home-set forgetting at a near-zero LR while holding the KHATT gain | `done` | **PRE-REGISTERED 2026-10-07 before launch.** Why: B1' (E-93) reached KHATT teklia 22.05 (-18.74 pp vs the teacher) but cost +1.60 pp on Muharaf test (23.71 vs 22.11) and so failed G2; the checkpoint is already good on KHATT, so the cheapest fix is a short low-LR union pass warm-started FROM ckpt-11700 rather than another teacher-warm-start run. Recipe: `finetune_muharaf.py --init-ckpt arabic_ocr/runs/stage05d/ckpt_last.pt --lr 3e-6 --epochs 2 --khatt-repeat 1 --eval-every 600 --eval-limit 400 --out arabic_ocr/runs/stage05f` (new `--init-ckpt` loads run weights instead of the teacher; 26,490 items = Muharaf train 21,819 + KHATT teklia train 4,671 x1; 6,622 steps, ~25 min). Gates: G1 KHATT teklia test raw <= 21.00 (hold >= 19.8 pp of the 18.74 pp gain); G2 Muharaf test raw <= 23.11 (pass the original E-93 G2); G3 ISIPPT and KHATT bench not worse than ckpt-11700 by more than +0.50 pp. Final numbers come from `--eval-only` on the FULL sets. | E-95; E-93; E-94 |
+| 142 | Wire `--blank-penalty` into `decode_ctc_lm.py` and re-score B2 (stage05f) with it | pending | E-98 |
+  - E-98 measured the lever on the cached teacher/adapt11700 logits (CPU only). B2 has no
+    logits cache, so this needs one short GPU inference pass to cache stage05f logits for
+    the four sets, then the val-tuned penalty sweep. Expectation: B2 + penalty should pass
+    G2 comfortably and may pass G3; G1 (KHATT <= 21.00) still needs the acoustic model.
   - **RESULT (E-95, 2026-10-07): 2 OF 3 GATES FAIL.** G2 passes (Muharaf test raw
     23.01 <= 23.11) but G1 fails (KHATT teklia 22.91 vs <= 21.00) and G3 fails
     marginally (KHATT bench 29.74 vs <= 29.54). The 0.70 pp home-set recovery cost

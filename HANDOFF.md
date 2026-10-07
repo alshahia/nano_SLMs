@@ -1,3 +1,28 @@
+# 2026-10-07 (y) (Arabic OCR: (x) is PARTIALLY REVISED - the error mode is character UNDER-EMISSION and a CTC blank penalty is a free gain):
+
+> Follows (x), same session, CPU only. This entry corrects the verdict in (x): the
+> decoder lever was NOT fully exhausted - one inference knob had never been tested.
+
+**1. E-97 - what kind of errors are these?** Levenshtein backtrace on the cached
+teacher logits: on muharaf_test 65% of edits are DELETIONS (subs 29%, ins 5%). The
+model emits only 86.7% of reference characters (KHATT test 80.8%, ISIPPT 52.7%) and
+drops 29% of word spaces. Charset coverage and the frame budget are both REFUTED as
+causes (1.44% of ref chars are unemittable, worth 1.08 pp; 4.3 frames per char are
+available, and ISIPPT has 9 and is the worst). Under-emission scales with domain
+distance, so it is a representation failure surfacing as CTC blank bias - which is why
+the decoder, the lexicon and adaptation all failed downstream of it.
+
+**2. E-98 - the blank penalty is a real, free lever.** Subtracting delta from the blank
+logit, tuned on muharaf_val only: ckpt-11700 (delta*=0.75) improves on EVERY set -
+muharaf_test 23.71 -> 23.20, khatt_teklia_test 22.05 -> 21.82, isippt_bench 57.84 ->
+55.67, khatt_bench 29.04 -> 28.47. That is the best union model so far, it beats the
+trained B2 rung on 3 of 4 sets at zero training cost, and G3 now passes. The teacher
+val-tuned penalty hurts KHATT (+0.27), so tune per domain.
+
+**3. Revised fork.** The acoustic model is still the binding constraint (G1 <= 21.00 is
+unreachable by any decoder), so the 15M question stands - but TASKS 142 lands first:
+wire `--blank-penalty` into `decode_ctc_lm.py`, cache stage05f logits, re-score B2.
+
 # 2026-10-07 (x) (Arabic OCR: Plan A EXHAUSTED - the decoder is oracle-bounded, adaptation is capacity-bound, the lexicon rule is net-negative; fork = a 15M specialist):
 
 > Follows (w). CPU measurement plus one short fine-tune; no other GPU job ran

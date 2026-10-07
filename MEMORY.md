@@ -912,3 +912,26 @@ them with it makes CER WORSE (22.11 -> 23.94). OOV is therefore a weak error sig
 most OOV predictions are not one-character corruptions. Any word-level corrector needs a
 real word n-gram LM over a much larger lexicon; the distance-1 rule is dead. Reproduce
 with `arabic_ocr/scripts/lexicon_probe.py`.
+
+## 2026-10-07 - Arabic OCR: the error mode is UNDER-EMISSION, not letter confusion
+
+Diagnosed by Levenshtein backtrace on the cached teacher logits: on muharaf_test 65% of
+all edits are DELETIONS (subs 29%, ins 5%). The model emits only 86.7% of reference
+characters (KHATT test 80.8%, ISIPPT 52.7%) and drops 29% of word spaces (whitespace-free
+CER 19.64 vs 22.11 raw). Two obvious explanations are REFUTED: only 1.44% of reference
+characters are outside the 165-symbol charset (worth 1.08 pp), and there are 4.3 output
+frames per character (ISIPPT has 9 and is the worst). Under-emission scales with domain
+distance, so it is a representation failure showing up as CTC blank bias. Consequence:
+decoders, lexicons and LMs cannot fix it - they can only re-rank characters the acoustic
+model actually emitted.
+
+## 2026-10-07 - CTC blank penalty: a free inference-time gain (tune it on val)
+
+Subtracting delta from the blank logit before the greedy argmax reverses part of the
+under-emission. Tuned on muharaf_val ONLY (teacher delta*=1.00, ckpt-11700 delta*=0.75):
+ckpt-11700 improves on EVERY set - muharaf_test 23.71 -> 23.20, khatt_teklia_test
+22.05 -> 21.82, isippt_bench 57.84 -> 55.67, khatt_bench 29.04 -> 28.47 - which beats the
+trained B2 rung on 3 of 4 sets at zero training cost and makes G3 pass. The teacher
+val-tuned penalty HURTS KHATT (+0.27), so the optimum does not transfer across domains;
+always tune it on the target domain val split. Reproduce with
+`arabic_ocr/scripts/blank_penalty_tune.py`.
