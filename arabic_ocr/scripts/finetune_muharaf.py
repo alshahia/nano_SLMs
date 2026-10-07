@@ -396,7 +396,7 @@ def main():
     (out_dir / "scorecard.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2),
                                             encoding="utf-8")
     print(json.dumps({"final": final, "steps": step, "seconds": round(elapsed, 1)}), flush=True)
-    print("wrote %s" % (out_dir / "scorecard.json").relative_to(ROOT), flush=True)
+    print("wrote %s" % (out_dir / "scorecard.json"), flush=True)
 
 
 if __name__ == "__main__":

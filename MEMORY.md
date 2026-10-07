@@ -890,3 +890,14 @@ prefix beam search with logsumexp scored 24.58 where greedy scored 22.11 on the 
 logits; switching the prefix aggregation to max (Viterbi) restored 22.11 exactly.
 Greedy must always be injected into the N-best, and a length bonus is not a fix for
 the summed form (it inflates hypotheses and doubles the error).
+
+## 2026-10-07 - The 4.25M Muharaf backbone has a Muharaf/KHATT capacity wall
+
+Two independent attempts to make one 4.25M model good on both domains landed on a
+trade-off LINE rather than inside both gates: B1' (lr 3e-5, 3 epochs) = Muharaf
+23.71 / KHATT 22.05, B2 (lr 3e-6 repair from ckpt-11700) = 23.01 / 22.91. The low-LR
+pass bought 0.70 pp at home for 0.86 pp on KHATT. Both gates cannot be satisfied at
+this size, so further LR/epoch tuning is not worth running - the constraint is
+capacity, not optimisation. Also: `finetune_muharaf.py` crashed at the END of every
+run because `Path(out_dir).relative_to(ROOT)` fails when `--out` is a relative path
+(fixed 2026-10-07).

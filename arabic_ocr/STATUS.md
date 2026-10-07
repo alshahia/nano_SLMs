@@ -20,6 +20,30 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (t) 2026-10-07 -- Stage 0.5f "repair rung" (B2) RESULT: G2 recovered, G1/G3 still fail (TASKS 141)
+
+Warm-starting from ckpt-11700 with a near-zero-LR union pass (lr 3e-6, 2 epochs,
+6,624 steps, 1,406 s) moves the model ALONG the Muharaf/KHATT trade-off instead of
+pushing it out. Raw CER on the full sets:
+
+| set | teacher | ckpt-11700 (B1') | B2 | B2 gate |
+|---|---|---|---|---|
+| muharaf_test | 22.11 | 23.71 | **23.01** | G2 <= 23.11 **PASS** |
+| khatt_teklia_test | 40.79 | 22.05 | 22.91 | G1 <= 21.00 **FAIL** |
+| isippt_bench | 62.05 | 57.84 | 56.03 | G3 ok (improved) |
+| khatt_bench | 41.75 | 29.04 | 29.74 | G3 <= 29.54 **FAIL** (+0.70) |
+
+- The 0.70 pp home-set recovery cost 0.86 pp on KHATT and 0.70 pp on KHATT bench: the
+  pass re-balanced the model rather than improving it. B1' sits at (23.71, 22.05) and
+  B2 at (23.01, 22.91); no point on that line passes both gates.
+- **Interpretation**: for this 4.25M backbone the union objective is capacity-bound,
+  not optimisation-bound, so further LR/epoch tuning is not worth running.
+- Both Plan-A levers (decoder, adaptation) are now exhausted with measured
+  negative/partial results. The next real gain needs Plan B (15M KHATT specialist,
+  user-deferred) or a decoder that changes the SEARCH SPACE (TASKS 140).
+- Artifacts: `arabic_ocr/runs/stage05f/{ckpt_last.pt, ckpt_final.pt, scorecard.json,
+  scorecard_eval.json, train_log.jsonl}` (weights local-only).
+
 ## (s) 2026-10-07 -- Stage 4 decoder RESULT: FAIL, and now oracle-bounded (TASKS 139 -> 140)
 
 Beam search + char-LM rescoring does **not** beat greedy on this model, and the
