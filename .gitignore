@@ -207,3 +207,6 @@ data/reallines/**/*.tif
 
 # OCR line: training checkpoints stay local (weights are never committed)
 arabic_ocr/runs/stage*/*.pt
+
+# OCR Stage 4: cached fp16 logits are regenerable (~260 MB per model) and must never be committed
+arabic_ocr/runs/stage05e/logits/
