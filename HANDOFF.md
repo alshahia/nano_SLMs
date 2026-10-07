@@ -1,3 +1,38 @@
+# 2026-10-07 (x) (Arabic OCR: Plan A EXHAUSTED - the decoder is oracle-bounded, adaptation is capacity-bound, the lexicon rule is net-negative; fork = a 15M specialist):
+
+> Follows (w). CPU measurement plus one short fine-tune; no other GPU job ran
+> beside it. The user's standing decision was "option A now, option B later" -
+> option A is now spent.
+
+**1. E-94 - the decoder lever is bounded (FAIL).** On the cached teacher logits
+for muharaf_test: greedy 22.11, summed beam 24.58, +char LM 23.72, Viterbi beam
+32 = 22.11 exactly. The N-best oracle over beam 32/64 is 20.95-21.92, i.e. at
+most 0.53 pp of headroom, so NO reranker can reach the pre-registered G1 <=
+20.61. A length bonus (1.0) made it far worse (47.62).
+
+**2. E-95 - the adaptation lever is capacity-bound (2 of 3 gates FAIL).** A
+near-zero-LR union pass warm-started from ckpt-11700 (lr 3e-6, 2 epochs, 6,624
+steps) moved Muharaf test 23.71 -> 23.01 (G2 <= 23.11 PASSES) but KHATT teklia
+22.05 -> 22.91 (G1 <= 21.00 FAILS) and KHATT bench 29.04 -> 29.74 (G3 FAILS by
+0.20 pp). The points (23.71, 22.05) and (23.01, 22.91) are a Pareto frontier:
+the union objective is capacity-bound, not optimisation-bound, so more LR/epoch
+tuning at 4.25M params is not worth running.
+
+**3. E-96 - the cheap lexicon lever is DEAD (measured before building it).** A
+train-only lexicon (54,084 types / 261,471 tokens from the Muharaf + KHATT train
+labels) misses **20.14%** of REFERENCE words on muharaf_test while 45.07% of
+predicted words are OOV; of the most frequent distinct OOV words 75.3% have a
+distance-1 lexicon neighbour, but replacing them with it makes CER WORSE
+(22.11 -> 23.94). OOV is a weak error signal.
+
+**4. Fork (NEEDS_USER_DECISION).** Plan A has no lever left. Warm-start the 15M
+FixFips CRNN on the Muharaf union (the cheapest direct test of the capacity wall
+- FixFips already reaches 10.99 KHATT test / 12.03 KHATT bench / 46.92 ISIPPT),
+train a fresh 15M KHATT specialist (the original Plan B), or stop and ship the
+4.25M Muharaf model with the measured ceiling. Evidence:
+research/EXPERIMENTS.md E-94/E-95/E-96; arabic_ocr/STATUS.md (s)-(u);
+arabic_ocr/runs/stage05f/; arabic_ocr/scripts/lexicon_probe.py.
+
 # 2026-10-06 (w) (Arabic OCR: the SECOND in-domain teacher eval, and the teacher-contamination audit that REVISES E-89 - route (D) transfers only inside a teacher's own training domain):
 
 > Follows (v). The user chose the recommended option and authorized executing
@@ -1196,7 +1231,6 @@ ink px), ink_multi_covered_px 0, ink_in_foreign_line_box_px 0` -> **GATE PASS**.
 > 2026-09-11: **ARABIC DIACRITIZATION SPECIALIST (D-line) APPROVED — design done, NOT started.** New self-contained project: char-level bidirectional encoder (our GQA blocks, causal mask off) + 15-class per-Arabic-letter diacritic head, ~30M pilot, submodule `diacritizer/`. Decisions D1-D6 (route / size / placement / strip->preserve->dual-mode policy ladder / mixed-general domain / copy-by-construction non-Arabic policy incl. tatweel + Quranic-mark passthrough) in research/arabic_diacritization/DESIGN.md; build plan docs/plans/2026-09-11-arabic-diacritization-specialist.md; TASKS rows 50-55 (A0a-c CPU-only -> A1 smoke -> A2 pilot -> A3/A4). Exit gate for phase A0 = scripts/selftest.py --all 4/4 PASS; eval harness (DER/WER +-case endings + text-preservation) is built BEFORE any training. GPU was BUSY at write time (KT-2 r2 python pid; row 48 active) — GPU rows 53/54 queue behind it. No M3-line file changes planned; any exception gets its own row + diff list first.
 
 > 2026-09-13c: **Stage 1/Stage 2 transfer plan SPECIFIED (user-gated, NOT started)** - docs/plans/2026-09-13_diac_stage1_stage2_transfer_plan.md: Stage 1 = char-LM Arabic pretraining on the on-disk sources (v2d28 arch, ctx 512, train_lm.py with the zero-flag resume contract), Stage 2 = warm-start bidirectional fine-tune (pretrained_init hook) on the v3 corpus (+Sadeed_Tashkeela) with the Sadeed-dedup gate check FIRST; falsifiable >=2 pp / >=3-gate rule; totals ~12 h GPU + 1.5 h CPU. Tasks rows 54 (menu) and 57 (the two-stage plan).
-
 ## E-26 mu0c window closed (120K steps) — verdict: step-saturated (2026-09-19)
 - All five arms trained to 120K (x1+x2 parallel, x3+x4 parallel, control solo; 576 MiB peak total, never OOM).
 - Loss tracking per user request: mex/scripts/watch_losses.py (CPU-only summary + CSV runs/mex/loss_track.csv) ran live during the whole window; mex/scripts/plot_losses.py produced runs/mex/loss_curves.png/.json after close.
