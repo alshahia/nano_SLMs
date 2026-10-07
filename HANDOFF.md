@@ -1,3 +1,71 @@
+# 2026-10-07 (aa) (Arabic OCR option (D) FAILED - and the reason was in the model directory all along: the published Muharaf model was never trained from scratch)
+
+> Follows (z), same session. The user chose "(D)" - scale our CNN-Transformer-CTC to ~15M and train
+> it from scratch at target_height 128 on the Muharaf union. It is now answered: **FAIL**, with the
+> root cause identified. Committed as the (aa) closeout commit.
+
+**What was launched.** 15,336,743 params (d=384 / 8 layers / 8 heads / ffn 1536), height 128,
+`--scratch`, lr 3e-4, warmup 500, batch 8, 16 epochs = 52,992 steps, in `arabic_ocr/runs/stage06a/`.
+
+**How it failed, measured.** At step 4,250 (8.0% of the plan) the loss was 3.78 nats per target
+character, decaying geometrically (0.76 -> 0.36 -> 0.24 -> 0.16 -> 0.14 per 1000 steps) toward an
+asymptote near 3.5 - the training targets' own **unigram entropy, 3.122 nats**. The greedy hypotheses
+tracked sequence LENGTH and nothing else:
+
+| ref | hyp |
+|---|---|
+| `لبنان في ١٧/١٠/١٩٦٠` (19) | `ا` (1) |
+| `حضرة محافظ جبل لبنان الافخم` (27) | `ا` (1) |
+| `فلسطين. رأيتك في ريحانياتك...` (44) | `اة ال` (5) |
+| `لان المرحوم كان بعيد عنا كثير...` (90) | `اة ال ل.` (8) |
+
+Emission rose 5.8% (step 1000) -> 9.4% (step 4000) while CER stayed flat at ~92%, and `CER ~= 100 -
+emission` held at both points. Eval cards were flat (muharaf_test 94.17 / 95.56 / 91.70 / 92.61;
+khatt_teklia_test 93.71 / 93.46 / 96.67 / 93.21 at steps 1000/2000/3000/4000). At step 1000 the
+train/test gap was ZERO (muharaf_train 94.53 vs muharaf_test 94.54) - nothing memorised.
+
+**It was NOT a bug, and that was worth proving.** On the step-4000 checkpoint, feeding the SAME image
+twice gives mean |delta log-prob| = 0.000000 and 100% argmax agreement; feeding TWO DIFFERENT images
+gives 3.303 and 26.6% agreement. The image reaches the model and modulates it strongly. This is an
+optimization failure - a confident, blank-dominated degenerate optimum - not a broken pipeline.
+
+**The root cause was in the model directory.** `models/ctc_backbone/training_metrics.json` records
+`init_checkpoint` -> `..._v6_antideletion_finetune/model.pt` -> `..._v3_h96_finetune/model.pt`, and
+`checkpoint_load_info.missing_keys` = `height_attention.score.*`. The published backbone is a **chain
+of warm-started fine-tunes**, and its attention head was newly initialised on top of a backbone that
+could already read. Its epoch-1 train_loss was already **0.524**, final test_loss **0.768** - our
+from-scratch run sat at 3.78. The 22,091-line train split is enough to fine-tune a reader; it is not
+enough to discover character-level CTC alignment from a random init in 16 epochs. Option (D) as
+specified asked from-scratch training to reproduce a warm-start result.
+
+**Two recipe mechanisms were also missing** (cheap to restore, both used by the authors):
+`augmentation_mode: "light"` (ours is `"augmentation": "none"`) and `train_blank_logit_penalty: 0.2`
+(ours applies the blank penalty only at decode). The authors also used lr 5e-5 with OneCycleLR,
+batch 4 x accum 2; ours was lr 3e-4 with cosine, batch 8.
+
+**Pre-registered predictions, scored honestly.** P1 (beat teacher zero-shot KHATT 40.79) - NOT
+REACHED (93.2% at stop). P2 (beat 21.82, pass G1 <= 21.00) - FAIL. P3 (hold G2 <= 23.11) - FAIL
+(92.6%). P4 (the risk stated up front: "26,490 lines is thin for 15.3M from scratch, so it may land
+worse than the 4.25M teacher") - CONFIRMED, and worse than stated: it never left the plateau at all.
+
+**Gates: G1 FAIL - G2 FAIL - G3 not reached.**
+
+**Stop-rule note (transparency).** The pre-registered rule was "check each 1000-step eval; if KHATT
+raw is still > 35 after ~3 h, stop". I stopped at ~1 h 15 m instead, because a measurement the rule
+did not anticipate - image-independent hypotheses with the loss asymptote pinned to the targets'
+unigram entropy - made the outcome conclusive rather than merely slow. This TIGHTENS the rule (it
+stops earlier only when the evidence is already decisive) and does not bias toward a positive result.
+The run is resumable: `--resume` from `arabic_ocr/runs/stage06a/ckpt_last.pt` with the FULL original
+recipe continues it from step 4,250 if the complete 16 epochs are wanted.
+
+**Next (needs a user decision).** Every path that mirrors how the reference model was actually built
+is a WARM START. Cheapest toward G1 (21.82 -> <= 21.00): fine-tune the existing 4.25M teacher longer
+with the authors' recipe (light augmentation + train blank penalty 0.2 + OneCycleLR at 5e-5), which
+E-103 already showed is underfit. If capacity is truly binding, grow the TRAINED 4.25M and continue
+rather than re-initialising. Either way it gets pre-registered before launch.
+
+---
+
 # 2026-10-07 (z) (Arabic OCR steps 1/2/4 CLOSED: the decoder knob is spent, the resolution knob is dead at inference, and the bottleneck is measured capacity):
 
 > Follows (y), same session. The user order was "1 then 2 then 4, after their result we

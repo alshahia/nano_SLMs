@@ -979,3 +979,31 @@ provenance and also recomputed, so old caches are re-derived once rather than tr
 
 General rule for this line: any artifact that lets you skip work must record the parameters
 that made it valid, and must be re-derived rather than trusted when they are absent or differ.
+
+## 2026-10-07 - Arabic OCR: the published Muharaf model was never trained from scratch
+
+Option (D) trained our CNN-Transformer-CTC from a random init (15.3M params, height 128) on the
+26,490-line Muharaf union and it never learned to read. At step 4,250 of 52,992 the loss was 3.78
+nats per target character, decaying geometrically (0.76 -> 0.36 -> 0.24 -> 0.16 -> 0.14 per 1000
+steps) toward an asymptote near 3.5 - which is the training targets' own UNIGRAM ENTROPY (3.122
+nats). The greedy hypotheses tracked sequence LENGTH and nothing else: a 19-char date line and a
+90-char prose line both decoded to `ا` / `اة ال` variants, while emission rose 5.8% -> 9.4% and CER
+stayed flat at ~92%. It was NOT a bug - on the same checkpoint, two DIFFERENT images shift the
+log-probs by 3.303 and agree on the argmax only 26.6% of the time, while the SAME image twice is
+bit-identical (0.000000, 100% agreement). The image reaches the model; the model never learned to
+use it.
+
+The root cause was sitting in the model directory the whole time.
+`models/ctc_backbone/training_metrics.json` records `init_checkpoint` ->
+`..._v6_antideletion_finetune/model.pt` -> `..._v3_h96_finetune/model.pt`, with
+`checkpoint_load_info.missing_keys` = `height_attention.score.*`. The published backbone is a
+CHAIN OF WARM-STARTED FINE-TUNES, and its attention-pooling head was newly initialised on top of a
+backbone that could already read. Its epoch-1 train_loss was already 0.524 and its final test_loss
+0.768 - our from-scratch run sat at 3.78. The 22,091-line train split is enough to FINE-TUNE a
+reader; it is not enough to discover character-level CTC alignment from a random init in 16 epochs.
+
+Lesson: before trying to reproduce a published model, read its TRAINING PROVENANCE, not just its
+architecture. "Same architecture + same data" is not the same experiment when the published number
+came out of a warm start. Two recipe mechanisms were also missing and are cheap to restore:
+`augmentation_mode: "light"` (ours is `"augmentation": "none"`) and `train_blank_logit_penalty:
+0.2` (ours applies the blank penalty only at decode, never during training).

@@ -1,5 +1,42 @@
 # Arabic OCR — honest status (2026-10-01)
 
+## (aa) Option (D) VERDICT: FAIL - from scratch never escaped the CTC blank plateau
+
+Stopped at step **4,250 of 52,992** (~1 h 15 m). **G1 FAIL, G2 FAIL, G3 not reached.**
+
+Measured evidence, not impressions:
+
+- **Loss 3.78/char** at step 4250, decaying geometrically (0.76 -> 0.36 -> 0.24 -> 0.16 -> 0.14 per
+  1000 steps) toward an asymptote near **3.5 = the training targets' own unigram entropy (3.122
+  nats)**. That is the "predict the character marginal, ignore the image" solution.
+- **Hypotheses track only sequence LENGTH:** ref(19) `لبنان في ١٧/١٠/١٩٦٠` -> `ا`; ref(27) `حضرة
+  محافظ جبل لبنان الافخم` -> `ا`; ref(44) -> `اة ال`; ref(90) -> `اة ال ل.`.
+- **Emission rose 5.8% -> 9.4% while CER stayed flat ~92%**, and `CER ~= 100 - emission` held at both
+  checkpoints. Train/test gap at step 1000 was **ZERO** (94.53 vs 94.54) - nothing memorised.
+- Eval cards flat: muharaf_test 94.17 / 95.56 / 91.70 / 92.61; khatt_teklia_test 93.71 / 93.46 /
+  96.67 / 93.21 (steps 1000/2000/3000/4000).
+
+**Not a bug - proven, not assumed.** On the step-4000 checkpoint: the SAME image twice gives mean
+|delta log-prob| **0.000000** and 100% argmax agreement; TWO DIFFERENT images give **3.303** and 26.6%
+agreement. The image reaches the model; the model never learned to use it. This is a blank-dominated
+degenerate optimum.
+
+**Root cause (found in the model directory).** `models/ctc_backbone/training_metrics.json` shows the
+published Muharaf backbone is a **chain of warm-started fine-tunes** -
+`init_checkpoint` -> `..._v6_antideletion_finetune/model.pt` -> `..._v3_h96_finetune/model.pt` -
+with `checkpoint_load_info.missing_keys` = `height_attention.score.*` (the attention head was newly
+initialised on an already-reading backbone). Its **epoch-1 train_loss was already 0.524**, final
+test_loss **0.768**. Ours was 3.78. The 22,091-line split can fine-tune a reader; it cannot discover
+CTC alignment from a random init in 16 epochs.
+
+Our recipe also omitted two of the authors' mechanisms: `augmentation_mode: "light"` (ours is
+`"augmentation": "none"`) and `train_blank_logit_penalty: 0.2` (ours has no training-time blank
+penalty). Authors: lr 5e-5, OneCycleLR, batch 4 x accum 2, 20 epochs.
+
+The run is **resumable** (`--resume` from `ckpt_last.pt` with the full recipe) if the complete 16
+epochs are wanted. The next move should be a WARM START - see HANDOFF (aa).
+
+
 > **READ THIS FIRST (added 2026-10-06).** This file is the honest *live*
 > status home for the OCR line; the durable audit of the whole line is
 > [RETROSPECTIVE.md](RETROSPECTIVE.md). **Current state: TASKS 134 done (E-90/E-91);
