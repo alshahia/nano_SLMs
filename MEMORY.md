@@ -901,3 +901,14 @@ this size, so further LR/epoch tuning is not worth running - the constraint is
 capacity, not optimisation. Also: `finetune_muharaf.py` crashed at the END of every
 run because `Path(out_dir).relative_to(ROOT)` fails when `--out` is a relative path
 (fixed 2026-10-07).
+
+## 2026-10-07 - A train-only word lexicon is not a usable OOV signal (Arabic OCR)
+
+Before building a word-level corrector, measured its ceiling on muharaf_test: a lexicon
+of 54,084 types / 261,471 tokens built from the Muharaf + KHATT TRAIN labels misses
+20.14% of the REFERENCE words, while 45.07% of predicted words are OOV. Of the most
+frequent distinct OOV words 75.3% have a distance-1 lexicon neighbour - but replacing
+them with it makes CER WORSE (22.11 -> 23.94). OOV is therefore a weak error signal:
+most OOV predictions are not one-character corruptions. Any word-level corrector needs a
+real word n-gram LM over a much larger lexicon; the distance-1 rule is dead. Reproduce
+with `arabic_ocr/scripts/lexicon_probe.py`.

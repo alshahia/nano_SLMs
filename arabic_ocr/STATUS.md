@@ -20,6 +20,29 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (u) 2026-10-07 -- Stage 4b lexicon probe: the word-lexicon lever is DEAD in its cheap form (TASKS 140)
+
+Measured BEFORE building (E-94's lesson). Lexicon = 54,084 types / 261,471 tokens from
+the Muharaf + KHATT TRAIN labels; greedy decode of the cached teacher logits for
+`muharaf_test` reproduced the harness 22.11 exactly (self-check).
+
+| quantity | value |
+|---|---|
+| reference words OOV in the lexicon | **20.14%** (2,443/12,133) |
+| hypothesis words OOV | **45.07%** (5,146/11,417) |
+| of the 4,000 most frequent distinct OOV words, share with a distance-1 lexicon neighbour | 75.3% (82.8% of OOV tokens covered) |
+| CER after replacing each OOV word by that neighbour | **23.94 (+1.83 pp WORSE)** |
+
+- The rule is net-negative: a train-only lexicon misses 20% of the reference
+  vocabulary, so "OOV" is a weak error signal - most OOV predictions are not
+  one-character corruptions, and forcing them to the nearest lexicon word adds errors.
+- A real word-level decoder would need a much larger, cleaner lexicon plus a word
+  n-gram LM. `arabic_ocr/scripts/lexicon_probe.py` reproduces the measurement.
+- **Plan A (the 4.25M Muharaf line) is now exhausted**: decoder (E-94, oracle-bounded
+  at <= 0.53 pp), adaptation (E-95, capacity-bound Pareto frontier) and lexicon
+  post-correction (E-96, net-negative) are all measured. The next real gain needs
+  Plan B (a 15M specialist) or a much larger text corpus for a genuine word LM.
+
 ## (t) 2026-10-07 -- Stage 0.5f "repair rung" (B2) RESULT: G2 recovered, G1/G3 still fail (TASKS 141)
 
 Warm-starting from ckpt-11700 with a near-zero-LR union pass (lr 3e-6, 2 epochs,
