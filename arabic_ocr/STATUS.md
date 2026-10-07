@@ -20,6 +20,53 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (q) 2026-10-06 -- Stage 0.5d (B1') RESULT: both pre-registered gates FAIL
+
+The (p) run trained but was **cut by the session boundary at step 12,250 of
+13,437 (91%)**, before it could write its own final scorecard; the step-11,700
+checkpoint (the last in-loop eval) was scored through the trainer's new
+`--eval-only` path. In-loop free-running greedy raw CER on the two real test
+splits:
+
+| step | 900 | 2700 | 4500 | 7200 | 9900 | 11700 |
+|---|---|---|---|---|---|---|
+| KHATT teklia test | 30.90 | 27.67 | 24.91 | 22.85 | 22.20 | **22.05** |
+| Muharaf test | 23.89 | 23.96 | 23.65 | 24.10 | 23.91 | **23.71** |
+
+**G1 FAIL** -- KHATT teklia test raw **22.05** vs the pre-registered <= 20.00
+(normalized 20.7, median 15.94). Still a large real gain:
+-18.74 pp from the 40.79 zero-shot baseline, a 46% relative reduction.
+**G2 FAIL** -- Muharaf test raw **23.71** vs the pre-registered <= 23.11
+(normalized 18.54), i.e. +1.60 pp of in-domain forgetting, above
+the 1 pp allowance. The same eval-only scorecard was also run against the ZERO-SHOT
+teacher, so every number below has a measured baseline:
+
+| set | zero-shot teacher | adapted ckpt-11700 | delta |
+|---|---|---|---|
+| muharaf_test | 22.11 | 23.71 | +1.60 |
+| khatt_teklia_test | 40.79 | 22.05 | -18.74 |
+| isippt_bench | 62.05 | 57.84 | -4.21 |
+| khatt_bench | 41.75 | 29.04 | -12.71 |
+
+The printed-text sets move the other way -- ISIPPT -4.21 pp and KHATT bench -12.71 pp -- so the
+handwriting-only adaptation did cost printed-text accuracy. FixFips remains far
+better on both (46.92 ISIPPT, 12.03 KHATT bench). Full data:
+`runs/stage05c/eval_muharaf_teacher_all4.json` vs
+`arabic_ocr/runs/stage05d/scorecard_eval.json`.
+
+The KHATT trajectory was still creeping down (22.20 -> 22.05 over the last
+1,800 steps) while the cosine lr approached zero, so finishing the remaining 9%
+would not have closed a 2 pp gap; the run was not resumed.
+
+**Verdict (E-93): a single 4.25M model adapted to the union lands BETWEEN the
+two specialists** -- Muharaf 23.71 (vs the 22.11 teacher) and KHATT 22.05
+(vs 10.99 for the 15M in-domain FixFips) -- so it matches neither. The
+cross-domain gain is real and costs ~35 min of GPU, but the teacher stays the
+best Muharaf model and FixFips the best KHATT model. The artifact is
+`arabic_ocr/runs/stage05d/ckpt_last.pt` (weights local-only). Next: the Stage 4
+decoder (TASKS 123), which is training-free and was worth 16.95 -> 13.31 on the
+teacher's own card.
+
 ## (p) 2026-10-06 -- Stage 0.5d (B1') pre-registration + Step 0 on the REAL held-out splits
 
 **Step 0 (E-92) is measured** -- both teachers, zero-shot, on genuinely held-out

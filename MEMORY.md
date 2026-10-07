@@ -837,3 +837,22 @@ Evaluation references stay RAW (the E-89 protocol), so the model's raw CER
 includes diacritics it cannot emit - which is exactly why the teacher's raw 22.11
 normalises to 16.83. Always print a per-set encode audit (kept / oov / repaired)
 at the start of a training run.
+
+## 2026-10-06 - Background jobs do not survive the session boundary (OCR B1-prime run)
+
+The `pwsh-11` training run (Arabic OCR Stage 0.5d) was gone when the session
+resumed: `job_list` was empty, the GPU was idle and `train.log` stopped at
+step 12,250/13,437 (91%). Recovery worked only because the trainer writes one
+JSON line per in-loop eval (`train_log.jsonl`) **and** `ckpt_last.pt` at every
+eval. A multi-hour run must persist progress incrementally, and a launcher must
+assume it will never see the process again: add `--resume` from `ckpt_last.pt`
+before the next multi-epoch OCR run.
+
+## 2026-10-06 - Arabic OCR: the LM corpus is texts.jsonl, not the label files
+
+`data/ocr_textpool/raw/*__labels.json` are mixed artefacts: most are small or
+duplicated, and several (`training__labels.json` 480 rows / 1 distinct,
+`real__*__labels.json`, `full__*__labels.json` 65 distinct) hold a VLM prompt
+template, not corpus text. The real char-LM corpus is
+`data/ocr_textpool/texts.jsonl` (31 MB). Read `data/ocr_textpool/README.md`
+before using this directory.

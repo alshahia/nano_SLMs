@@ -81,26 +81,52 @@ def estimate_width(rec: dict, folder: Path) -> int:
         return max(1, int(round(im.width * TARGET_H / max(1, im.height))))
 
 
+def encode_label(charset, text: str):
+    """Encode a label, repairing diacritics if the charset cannot represent them.
+
+    The Muharaf CTC charset is 165 characters and contains NO diacritics
+    (U+064B-U+065F, U+0670), so a diacritized label is charset-OOV. Dropping such
+    lines discards 7,472 of the 22,091 Muharaf train lines (34%); instead the
+    marks are stripped and the line is kept.
+    Returns (ids, repaired) or (None, False) when the label cannot be encoded.
+    """
+    base = normalize_arabic_text(text)
+    for index, candidate in enumerate((base, strip_diacritics(base))):
+        if len(candidate) < 2:
+            return None, False
+        try:
+            return charset.encode(candidate), index == 1
+        except ValueError:
+            continue
+    return None, False
+
+
+def strip_diacritics(text: str) -> str:
+    kept = "".join(c for c in text
+                   if not ("\u064b" <= c <= "\u065f" or c == "\u0670"))
+    return normalize_arabic_text(kept)
+
+
 def build_items(charset, folder: Path, repeat: int, limit: int):
     labels = json.loads((folder / "labels.json").read_text(encoding="utf-8"))
     if limit:
         labels = labels[:limit]
-    items, oov, short = [], 0, 0
+    items, oov, short, repaired = [], 0, 0, 0
     for rec in labels:
-        text = normalize_arabic_text(rec.get("text", ""))
-        if len(text) < 2:
-            short += 1
+        ids, was_repaired = encode_label(charset, rec.get("text", ""))
+        if ids is None:
+            if len(normalize_arabic_text(rec.get("text", ""))) < 2:
+                short += 1
+            else:
+                oov += 1
             continue
-        try:
-            ids = charset.encode(text)
-        except ValueError:
-            oov += 1
-            continue
+        repaired += 1 if was_repaired else 0
         item = {"path": str(folder / rec["image"]), "ids": ids,
                 "est_w": estimate_width(rec, folder)}
         for _ in range(max(1, repeat)):
             items.append(item)
-    return items, {"oov": oov, "too_short": short, "kept": len(items)}
+    return items, {"oov": oov, "too_short": short,
+                   "diacritics_repaired": repaired, "kept": len(items)}
 
 
 class LineDataset(torch.utils.data.Dataset):
@@ -185,6 +211,9 @@ def main():
     ap.add_argument("--device", default="auto")
     ap.add_argument("--out", default=str(DEFAULT_OUT))
     ap.add_argument("--smoke", type=int, default=0, help="run N steps then exit 0")
+    ap.add_argument("--eval-only", action="store_true",
+                    help="score --ckpt on all eval sets and exit (no training)")
+    ap.add_argument("--ckpt", default="", help="checkpoint for --eval-only")
     args = ap.parse_args()
 
     random.seed(args.seed)
@@ -204,6 +233,28 @@ def main():
           (CKPT_PATH.name, n_params, charset.vocab_size,
            cfg.get("height_pooling"), device), flush=True)
 
+    if args.eval_only:
+        ckpt_path = Path(args.ckpt) if args.ckpt else out_dir / "ckpt_last.pt"
+        blob = torch.load(ckpt_path, map_location=device, weights_only=False)
+        model.load_state_dict(blob["model_state"])
+        model.eval()
+        res = evaluate(model, charset, device, list(EVAL_SETS), limit=args.eval_limit)
+        by_tag = {r["tag"]: r for r in res}
+        card = {
+            "stage": "0.5d (B1') eval-only", "ckpt": str(ckpt_path),
+            "checkpoint_step": blob.get("step"), "params": n_params,
+            "results": res,
+            "gates": {"G1_khatt_test_raw_le_20.00": by_tag["khatt_teklia_test"]["cer"] <= 20.00,
+                      "G2_muharaf_test_raw_le_23.11": by_tag["muharaf_test"]["cer"] <= 23.11},
+            "baselines_zero_shot_raw": {"muharaf_test": 22.11, "khatt_teklia_test": 40.79},
+        }
+        (out_dir / "scorecard_eval.json").write_text(
+            json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
+        print("GATES " + json.dumps(card["gates"]), flush=True)
+        (out_dir / "scorecard_eval.json").write_text(
+            json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
+        return
+
     items = []
     audit = {}
     for name, folder, _default in TRAIN_SETS:
@@ -219,9 +270,10 @@ def main():
         audit[name] = stats
         if rep > 0:
             items.extend(got)
-        print("train %-18s kept=%-7d included=%s (repeat x%d, oov=%d, too_short=%d)" %
-              (name, stats["kept"], stats["included"], rep, stats["oov"],
-               stats["too_short"]), flush=True)
+        print("train %-18s kept=%-7d included=%s (repeat x%d, oov=%d, repaired=%d, "
+              "too_short=%d)" % (name, stats["kept"], stats["included"], rep,
+                                 stats["oov"], stats["diacritics_repaired"],
+                                 stats["too_short"]), flush=True)
     if not items:
         raise SystemExit("no training items")
     print("total train items: %d" % len(items), flush=True)
@@ -329,8 +381,12 @@ def main():
                                      "train, so further fine-tuning on Muharaf train alone "
                                      "cannot beat its own 22.11 - the actionable gap is the "
                                      "cross-domain KHATT one"),
-            "reallines": ("excluded: fully diacritized text -> charset OOV vs the 166-char "
-                          "Muharaf charset"),
+            "reallines": ("excluded on this rung: outside the Muharaf/KHATT pair under "
+                          "test, and it would change two things at once"),
+            "label_repair": ("the checkpoint charset is 165 chars and has NO diacritics "
+                             "(verified), so diacritized labels are repaired by stripping "
+                             "U+064B-U+065F/U+0670 instead of being dropped - dropping "
+                             "would discard 7,472 of 22,091 Muharaf train lines (34%)"),
         },
         "gates": {"G1_khatt_test_le": 20.00, "G2_muharaf_test_le": 23.11},
         "scorecards": scorecards,
