@@ -44,6 +44,19 @@ greedy teacher); **G2** no eval set worse than its own greedy baseline by more t
 +0.50 pp; **G3** the ckpt-11700 artifact decoded with the same decoder, reported
 only. Cached logits: `arabic_ocr/runs/stage05e/logits/teacher/`.
 
+Decoder bugs caught by the first beta=0 smoke pass, before any gate was read:
+greedy-from-cache must call `greedy_ctc_decode` (a bare argmax over cached logits
+scores 44.55 on `muharaf_test` where the verified harness scores 22.11),
+`beam_search` must return mutable candidate records because the LM score is
+appended in place, and the greedy hypothesis is now always injected into the
+N-best so the decoder cannot lose the greedy answer by construction.
+
+Leakage audit before using the external pool (`data/ocr_textpool/texts.jsonl`,
+10,400 distinct texts / 5.26M normalised chars): verbatim line overlap with the
+eval splits is 0/1,069 Muharaf validation, **2/1,334** Muharaf test, 0/1,038 KHATT
+teklia test, 1/500 ISIPPT, 0/200 KHATT bench (<= 0.15%), so `--pool` is safe as an
+external corpus. `arabic_ocr/scripts/audit_textpool_leakage.py` reproduces it.
+
 ## (q) 2026-10-06 -- Stage 0.5d (B1') RESULT: both pre-registered gates FAIL
 
 The (p) run trained but was **cut by the session boundary at step 12,250 of

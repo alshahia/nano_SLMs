@@ -32,7 +32,8 @@ ROOT = Path(__file__).resolve().parents[2]
 MODEL_DIR = ROOT / "arabic_ocr" / "models" / "muharaf_ocr"
 sys.path.insert(0, str(MODEL_DIR))
 
-from submission_code.ocr_helpers import ImageConfig, preprocess_image       # noqa: E402
+from submission_code.ocr_helpers import (ImageConfig, greedy_ctc_decode,   # noqa: E402
+                                         preprocess_image)
 from submission_code.torch_models import load_ctc_backbone                  # noqa: E402
 
 DEFAULT_CKPT = MODEL_DIR / "models" / "ctc_backbone" / "model.pt"
@@ -108,7 +109,7 @@ def beam_search(logp: np.ndarray, blank: int, topk: int, beam: int, nbest: int):
         ranked = sorted(new.items(), key=lambda kv: -lse(kv[1][0], kv[1][1]))[:beam]
         beams = dict(ranked)
     out = sorted(beams.items(), key=lambda kv: -lse(kv[1][0], kv[1][1]))[:nbest]
-    return [(list(k), lse(v[0], v[1])) for k, v in out]
+    return [[list(k), lse(v[0], v[1])] for k, v in out]
 
 
 def cache_logits(args, model, charset, device):
@@ -139,11 +140,36 @@ def cache_logits(args, model, charset, device):
         print("cache %-20s n=%d T=%d %.1fs" % (tag, len(refs), data.shape[0], time.time() - t0), flush=True)
 
 
+def ctc_viterbi(logp, labels, blank):
+    """Best-path CTC score of a FIXED label sequence, in log space."""
+    neg = -math.inf
+    length = len(labels)
+    if length == 0:
+        return float(np.sum(logp[:, blank]))
+    labels = np.asarray(labels, dtype=np.int64)
+    diff = np.array([labels[j] != labels[j - 1] for j in range(1, length)], dtype=bool)
+    prev = np.full(length, neg)
+    prev[0] = logp[0][labels[0]]
+    prev_blank = logp[0][blank]
+    for t in range(1, logp.shape[0]):
+        row = logp[t]
+        from_prev = np.empty(length)
+        from_prev[0] = prev_blank
+        if length > 1:
+            from_prev[1:] = np.where(diff, prev[:-1], neg)
+        np.maximum(prev, from_prev, out=from_prev)
+        cur = from_prev + row[labels]
+        cur_blank = max(prev_blank, float(prev.max())) + row[blank]
+        prev, prev_blank = cur, cur_blank
+    return float(max(prev[length - 1], prev_blank))
+
+
 def greedy_from_cache(data, offs, blank):
+    """Collapsed CTC greedy path per line (must use the harness decoder)."""
     hyps = []
     for i in range(len(offs) - 1):
-        ids = np.argmax(data[offs[i]:offs[i + 1]], axis=-1).tolist()
-        hyps.append(ids)
+        raw = np.argmax(data[offs[i]:offs[i + 1]], axis=-1).tolist()
+        hyps.append(greedy_ctc_decode(raw, blank_id=blank))
     return hyps
 
 
@@ -190,8 +216,12 @@ def run(args, charset):
         t0 = time.time()
         rows = []
         for i in range(len(offs) - 1):
-            rows.append(beam_search(data[offs[i]:offs[i + 1]].astype(np.float32),
-                                    charset.blank_id, args.topk, args.beam, args.nbest))
+            seg = data[offs[i]:offs[i + 1]].astype(np.float32)
+            row = beam_search(seg, charset.blank_id, args.topk, args.beam, args.nbest)
+            greedy_ids = list(hyps[i])
+            if greedy_ids and not any(list(c[0]) == greedy_ids for c in row):
+                row.append([greedy_ids, ctc_viterbi(seg, greedy_ids, charset.blank_id)])
+            rows.append(row)
         nbest[tag] = {"refs": refs, "rows": rows}
         print("beam %-20s n=%d %.1fs (avg cands %.2f)" % (
             tag, len(rows), time.time() - t0,
@@ -296,7 +326,7 @@ def main():
     ap.add_argument("--betas", default="0,0.2,0.4,0.6,0.8,1.0,1.4")
     ap.add_argument("--gammas", default="0,0.5,1.0,2.0")
     ap.add_argument("--beam", type=int, default=12)
-    ap.add_argument("--topk", type=int, default=6)
+    ap.add_argument("--topk", type=int, default=8)
     ap.add_argument("--nbest", type=int, default=12)
     ap.add_argument("--height", type=int, default=96)
     ap.add_argument("--device", default="cuda")

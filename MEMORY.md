@@ -856,3 +856,21 @@ duplicated, and several (`training__labels.json` 480 rows / 1 distinct,
 template, not corpus text. The real char-LM corpus is
 `data/ocr_textpool/texts.jsonl` (31 MB). Read `data/ocr_textpool/README.md`
 before using this directory.
+
+## 2026-10-06 - data/ocr_textpool is leakage-free for the OCR char LM
+
+Before using the harvested text pool as an external LM corpus, measured the
+verbatim line overlap with every eval split: 0/1,069 Muharaf validation,
+2/1,334 Muharaf test, 0/1,038 KHATT teklia test, 1/500 ISIPPT, 0/200 KHATT
+bench. The pool is 10,400 distinct texts / 5.26M normalised chars and is safe to
+add with `train_char_lm.py --pool`; `arabic_ocr/scripts/audit_textpool_leakage.py`
+reproduces the audit.
+
+## 2026-10-06 - Cached CTC logits still need the harness collapse step
+
+Decoding cached CTC logits with a bare `argmax` plus the charset decoder gave
+44.55 CER where the verified harness gave 22.11 on the same lines: CTC needs
+repeat-collapse and blank removal before charset decoding. Related: a beam-search
+function must return mutable candidate records because the LM score is appended in
+place (tuples raised AttributeError). Both were caught by a beta=0 smoke pass
+before any gate was read - always smoke a new decoder against the known number.
