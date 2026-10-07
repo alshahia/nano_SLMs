@@ -1026,3 +1026,34 @@ identically from the args. A resumed run continues the cosine ramp - the live LR
 1.46e-5 at step 6800 matches the OneCycleLR cosine formula (2e-6 + 4.8e-5 * 0.262), not the
 initial 2.00e-6.
 
+## `decode_ctc_lm.py` "GATES" are NOT the OCR project gates
+
+`decode_ctc_lm.py --run` prints a line starting `GATES {...}` whose keys reuse the names
+G1/G2/G3 but mean something else entirely:
+
+    G1_muharaf_test_le_<G1_LIMIT>            muharaf_test LM-decoded CER
+    G2_no_set_worse_than_greedy_by_<SLACK>
+    G3_reported_only: True
+
+The Arabic-OCR project gates are different, and are NOT what that line reports:
+
+    G1   khatt_teklia_test raw CER <= 21.00
+    G2   muharaf_test      raw CER <= 23.11
+    G3   khatt_bench raw CER <= 29.54  AND  isippt_bench raw CER <= 58.34
+
+Reading the decoder's GATES line as the verdict would report the wrong numbers against the
+wrong sets. Compute the project gates from `blank_penalty_tune.py`'s per-set output instead.
+
+## Verdict workflow for a CTC checkpoint (delta tuned on muharaf_val ONLY)
+
+1. `decode_ctc_lm.py --cache --ckpt <ckpt> --tag <tag>` - caches log-softmax for all five
+   sets under `arabic_ocr/runs/stage05e/logits/<tag>/`.
+2. `blank_penalty_tune.py --tags <tag> --out <json>` - CPU only, reads that cache. It sweeps
+   delta on **muharaf_val only** (`min` of raw CER) and then applies that single delta
+   unchanged to every other set, printing raw / norm_ar / emit per set.
+3. Compare the `delta_star` raw CERs to the project gates above.
+
+`blank_penalty_tune.py` loads its charset from `--ckpt` (default: the teacher). Every
+checkpoint in this line shares the teacher's 166-symbol charset, so the default is correct -
+but pass `--ckpt` explicitly if a model ever changes its label space.
+
