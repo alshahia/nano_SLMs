@@ -1007,3 +1007,22 @@ architecture. "Same architecture + same data" is not the same experiment when th
 came out of a warm start. Two recipe mechanisms were also missing and are cheap to restore:
 `augmentation_mode: "light"` (ours is `"augmentation": "none"`) and `train_blank_logit_penalty:
 0.2` (ours applies the blank penalty only at decode, never during training).
+
+## `--smoke N` means "stop at step N", not "run N steps"
+
+`finetune_muharaf.py --smoke N` runs the training loop until the step counter reaches N,
+then stops. With `--resume` from a checkpoint already past N it therefore executes exactly
+ONE more step and still reports success. On 2026-10-07 this twice produced
+`SMOKE OK: 6001 optimizer steps in 6.3s (0.00s/step, batch=8, target_h=96)` - a line that
+reads like a passed 20-step resume test but was a single step. To run K steps after
+resuming at step S, pass `--smoke (S + K)`. Smoke mode also suppresses the per-step
+`loss=... lr=...` lines, so a resumed scheduler's learning rate cannot be read from its
+output at all; read `scheduler_state` from a written checkpoint instead.
+
+**Verified 2026-10-07: the OneCycleLR resume path is sound.** `ckpt_last.pt` carries both
+`optimizer_state` and `scheduler_state`; `finetune_muharaf.py` restores both
+(`scheduler.load_state_dict(blob["scheduler_state"])`), and `total_steps=66240` is rebuilt
+identically from the args. A resumed run continues the cosine ramp - the live LR of
+1.46e-5 at step 6800 matches the OneCycleLR cosine formula (2e-6 + 4.8e-5 * 0.262), not the
+initial 2.00e-6.
+
