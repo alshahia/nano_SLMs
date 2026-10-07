@@ -20,6 +20,30 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (r) 2026-10-06 -- Stage 4 decoder (TASKS 139) STARTED: beam + char-LM rescoring
+
+Training-free CER, pre-registered in TASKS 139 before any decode. Rationale: the
+teacher card shows its own greedy 16.95 -> 13.31 with a decoder/lexicon (~21%
+relative) and this applies to every checkpoint we own, including the Stage 0.5d
+artifact.
+
+Built and running now:
+
+- `arabic_ocr/scripts/char_lm_common.py` -- char LM + charset mapping (the LM lives
+  in the 165-char acoustic charset, so its scores are directly comparable to CTC).
+- `arabic_ocr/scripts/train_char_lm.py` -- GRU char LM over TRAIN-ONLY text
+  (muharaf train + khatt teklia train + hflines train). `--pool` adds
+  `data/ocr_textpool/texts.jsonl` but is opt-in and needs an overlap audit first.
+- `arabic_ocr/scripts/decode_ctc_lm.py` -- `--cache` stores fp16 log-softmax logits
+  per line (46 s for all 4,141 dev+test lines) so the sweeps never touch the GPU;
+  `--run` does CTC prefix beam search (beam 12, top-k 6, N-best 12) then rescores
+  with `score = acoustic + beta*lm + gamma*len`, tuning on `muharaf_val` only.
+
+Gates: **G1** `muharaf_test` raw CER <= 20.61 (>= 1.5 pp better than the 22.11
+greedy teacher); **G2** no eval set worse than its own greedy baseline by more than
++0.50 pp; **G3** the ckpt-11700 artifact decoded with the same decoder, reported
+only. Cached logits: `arabic_ocr/runs/stage05e/logits/teacher/`.
+
 ## (q) 2026-10-06 -- Stage 0.5d (B1') RESULT: both pre-registered gates FAIL
 
 The (p) run trained but was **cut by the session boundary at step 12,250 of
