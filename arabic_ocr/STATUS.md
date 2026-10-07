@@ -20,6 +20,36 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (z) 2026-10-07 -- Option (D) LAUNCHED: 15.3M from scratch at height 128 (pre-registered)
+
+User chose (D). The pre-registration is in TASKS 146, written BEFORE the launch:
+
+- **Architecture** `d_model 384, 8 encoder layers, 8 heads, ffn 1536` = **15,336,743 params,
+  measured** with `arch_param_probe.py` (repo rule R5) - 3.61x the 4.25M teacher and the same
+  scale as the 15.06M FixFips CRNN. Trained **from scratch** (dims differ from the teacher,
+  so no warm start is possible); the charset is still inherited from the published checkpoint
+  because it is the label space, not a learned parameter.
+- **Height 128.** E-102 proved a height change is only valid at training time; E-100 measured
+  that 98%/93% of KHATT lines are downscaled 1.55x at height 96, while the Muharaf source is
+  only 60 px and is already upscaled 1.6x at 96. KHATT therefore has real resolution to win
+  back and Muharaf has none - 128 is the compromise.
+- **Speed 0.72 s/step measured** by `--smoke 30` at h128 -> 3312 steps/epoch -> ~40 min/epoch
+  -> **~10.8 h for 16 epochs**. 26,490 training items.
+- **P2 is the hypothesis**: beat the best adapted KHATT (21.82) so G1 (<= 21.00) finally
+  passes. **P4 is the stated risk**: 26,490 lines is thin for 15.3M from scratch, so Muharaf
+  may regress - that would be a genuine trade-off, not a bug. A stop rule is pre-registered:
+  if KHATT raw is still > 35 after ~3 h, stop and report.
+
+`finetune_muharaf.py` gained `--target-height/--scratch/--arch-*/--warmup-steps/--resume` and a
+`--stage` label; every one defaults to the pre-(D) behaviour, and a regression check confirmed
+the teacher still scores the same (G2 true, G1 false at 100 lines/set). `--resume` restores
+model + optimizer + scheduler + step, with a deterministic per-epoch batch order so a resumed
+run reproduces the same batches. The old `evaluate()` silently scored at height 96 via
+`recognise_line`'s default - that would have mis-scored every intermediate eval of this run,
+and is now threaded through.
+
+Probe: `arabic_ocr/scripts/arch_param_probe.py`.
+
 ## (y) 2026-10-07 -- Steps 2 and 4 report: the resolution knob is dead at inference, the bottleneck is capacity
 
 **Step 2 FAIL (E-102).** The backbone *looks* height-agnostic (height is attention-pooled,

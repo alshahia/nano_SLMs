@@ -17,6 +17,14 @@ GATES (checked by hand against the scorecard, not by this script):
 If G2 fails, the recipe is re-run at lower lr / fewer KHATT-oversampled steps.
 
 Metric is imported from the verified TASKS 134 harness - no duplicated metric.
+
+OPTION (D) EXTENSION (2026-10-07). The same script also supports a from-scratch, scaled
+architecture at a taller input: `--scratch --arch-d-model 384 --arch-layers 8 --arch-ffn
+1536 --target-height 128 --warmup-steps N`. Every one of those defaults to the pre-(D)
+behaviour, so the B1'/B2 recipes above stay reproducible. E-102 proved that a height
+change is only valid at TRAINING time (re-decoding the same weights at a taller input
+destroys them); E-103 measured the 4.25M model to be underfit on its own training labels,
+which is why (D) scales capacity.
 """
 from __future__ import annotations
 
@@ -73,12 +81,12 @@ EVAL_SETS = {
 PRIMARY = ["muharaf_test", "khatt_teklia_test"]
 
 
-def estimate_width(rec: dict, folder: Path) -> int:
+def estimate_width(rec: dict, folder: Path, target_h: int = TARGET_H) -> int:
     w, h = rec.get("w"), rec.get("h")
     if isinstance(w, (int, float)) and isinstance(h, (int, float)) and h:
-        return max(1, int(round(float(w) * TARGET_H / float(h))))
+        return max(1, int(round(float(w) * target_h / float(h))))
     with Image.open(folder / rec["image"]) as im:
-        return max(1, int(round(im.width * TARGET_H / max(1, im.height))))
+        return max(1, int(round(im.width * target_h / max(1, im.height))))
 
 
 def encode_label(charset, text: str):
@@ -107,7 +115,7 @@ def strip_diacritics(text: str) -> str:
     return normalize_arabic_text(kept)
 
 
-def build_items(charset, folder: Path, repeat: int, limit: int):
+def build_items(charset, folder: Path, repeat: int, limit: int, target_h: int = TARGET_H):
     labels = json.loads((folder / "labels.json").read_text(encoding="utf-8"))
     if limit:
         labels = labels[:limit]
@@ -122,7 +130,7 @@ def build_items(charset, folder: Path, repeat: int, limit: int):
             continue
         repaired += 1 if was_repaired else 0
         item = {"path": str(folder / rec["image"]), "ids": ids,
-                "est_w": estimate_width(rec, folder)}
+                "est_w": estimate_width(rec, folder, target_h)}
         for _ in range(max(1, repeat)):
             items.append(item)
     return items, {"oov": oov, "too_short": short,
@@ -130,8 +138,9 @@ def build_items(charset, folder: Path, repeat: int, limit: int):
 
 
 class LineDataset(torch.utils.data.Dataset):
-    def __init__(self, items):
+    def __init__(self, items, target_h: int = TARGET_H):
         self.items = items
+        self.target_h = target_h
 
     def __len__(self):
         return len(self.items)
@@ -139,7 +148,7 @@ class LineDataset(torch.utils.data.Dataset):
     def __getitem__(self, index):
         item = self.items[index]
         with Image.open(item["path"]) as im:
-            arr = preprocess_image(im, ImageConfig(target_height=TARGET_H,
+            arr = preprocess_image(im, ImageConfig(target_height=self.target_h,
                                                    grayscale=True, normalize=True))
         return {"img": torch.from_numpy(arr[None, :, :].astype("float32")),
                 "ids": torch.tensor(item["ids"], dtype=torch.long),
@@ -162,7 +171,7 @@ def collate(batch):
 
 
 @torch.no_grad()
-def evaluate(model, charset, device, sets, limit=0):
+def evaluate(model, charset, device, sets, limit=0, target_h: int = TARGET_H):
     was_training = model.training
     model.eval()
     out = []
@@ -174,7 +183,8 @@ def evaluate(model, charset, device, sets, limit=0):
         edits = ref_chars = edits_norm = ref_chars_norm = 0
         cers = []
         for rec in labels:
-            hyp = recognise_line(model, charset, str(folder / rec["image"]), device=device)
+            hyp = recognise_line(model, charset, str(folder / rec["image"]),
+                                 image_height=target_h, device=device)
             ref = rec.get("text", "")
             e = edit_distance(hyp, ref)
             edits += e
@@ -190,6 +200,33 @@ def evaluate(model, charset, device, sets, limit=0):
     if was_training:
         model.train()
     return out
+
+
+def load_charset_and_config():
+    """Charset + base model_config, both taken from the published checkpoint.
+
+    The charset is the LABEL SPACE (165 characters + blank), not a learned parameter, so
+    even a from-scratch model must inherit it from here.
+    """
+    from submission_code.ocr_helpers import Charset
+
+    blob = torch.load(CKPT_PATH, map_location="cpu", weights_only=False)
+    return Charset(blob["charset"]), dict(blob.get("model_config", {}))
+
+
+def build_model_from_config(cfg, charset, device):
+    from submission_code.torch_models import CNNTransformerCTC
+
+    model = CNNTransformerCTC(
+        num_classes=charset.vocab_size,
+        d_model=cfg["d_model"],
+        num_encoder_layers=cfg["transformer_layers"],
+        num_heads=cfg["transformer_heads"],
+        dim_feedforward=cfg["dim_feedforward"],
+        dropout=cfg.get("dropout", 0.1),
+        height_pooling=cfg.get("height_pooling", "attention"),
+    )
+    return model.to(device)
 
 
 def main():
@@ -216,10 +253,27 @@ def main():
     ap.add_argument("--eval-only", action="store_true",
                     help="score --ckpt on all eval sets and exit (no training)")
     ap.add_argument("--ckpt", default="", help="checkpoint for --eval-only")
+    # --- option (D): all default to the pre-(D) behaviour ---
+    ap.add_argument("--target-height", type=int, default=0,
+                    help="0 = the 96 default. Option (D) trains at 128: E-102 showed a "
+                         "height change is only valid at TRAINING time")
+    ap.add_argument("--scratch", action="store_true",
+                    help="random-init a new architecture instead of warm-starting")
+    ap.add_argument("--arch-d-model", type=int, default=0)
+    ap.add_argument("--arch-layers", type=int, default=0)
+    ap.add_argument("--arch-heads", type=int, default=0)
+    ap.add_argument("--arch-ffn", type=int, default=0)
+    ap.add_argument("--warmup-steps", type=int, default=0,
+                    help="linear LR warmup before the cosine decay (0 = off, the "
+                         "pre-(D) behaviour); a from-scratch run needs it")
+    ap.add_argument("--resume", action="store_true",
+                    help="continue from <out>/ckpt_last.pt (model + optimizer + step)")
+    ap.add_argument("--stage", default="0.5d-b1prime")
     args = ap.parse_args()
 
     random.seed(args.seed)
     torch.manual_seed(args.seed)
+    target_h = args.target_height or TARGET_H
 
     device = torch.device(args.device) if args.device != "auto" else \
         torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -228,34 +282,58 @@ def main():
 
     if not CKPT_PATH.exists():
         raise SystemExit("checkpoint missing: %s" % CKPT_PATH)
-    model, charset, cfg = load_ctc_backbone(str(args.init_ckpt or CKPT_PATH), device=device)
-    model.train()
-    n_params = sum(p.numel() for p in model.parameters())
-    print("init: %s  params=%d  charset=%d  height_pooling=%s  device=%s" %
-          (CKPT_PATH.name, n_params, charset.vocab_size,
-           cfg.get("height_pooling"), device), flush=True)
 
     if args.eval_only:
         ckpt_path = Path(args.ckpt) if args.ckpt else out_dir / "ckpt_last.pt"
-        blob = torch.load(ckpt_path, map_location=device, weights_only=False)
-        model.load_state_dict(blob["model_state"])
+        # the checkpoint carries its own dims - never trust --arch-* on this path
+        model, charset, cfg = load_ctc_backbone(str(ckpt_path), device=device)
+        blob = torch.load(ckpt_path, map_location="cpu", weights_only=False)
         model.eval()
-        res = evaluate(model, charset, device, list(EVAL_SETS), limit=args.eval_limit)
+        n_params = sum(p.numel() for p in model.parameters())
+        res = evaluate(model, charset, device, list(EVAL_SETS), limit=args.eval_limit,
+                       target_h=target_h)
         by_tag = {r["tag"]: r for r in res}
         card = {
-            "stage": "0.5d (B1') eval-only", "ckpt": str(ckpt_path),
+            "stage": "%s eval-only" % args.stage, "ckpt": str(ckpt_path),
             "checkpoint_step": blob.get("step"), "params": n_params,
+            "target_height": target_h,
             "results": res,
-            "gates": {"G1_khatt_test_raw_le_20.00": by_tag["khatt_teklia_test"]["cer"] <= 20.00,
-                      "G2_muharaf_test_raw_le_23.11": by_tag["muharaf_test"]["cer"] <= 23.11},
+            "gates": {
+                "G1_khatt_test_raw_le_20.00": by_tag["khatt_teklia_test"]["cer"] <= 20.00,
+                "G1_khatt_test_raw_le_21.00": by_tag["khatt_teklia_test"]["cer"] <= 21.00,
+                "G2_muharaf_test_raw_le_23.11": by_tag["muharaf_test"]["cer"] <= 23.11,
+                "G3_khatt_bench_raw_le_29.54": by_tag["khatt_bench"]["cer"] <= 29.54,
+                "G3_isippt_raw_le_58.34": by_tag["isippt_bench"]["cer"] <= 58.34,
+            },
             "baselines_zero_shot_raw": {"muharaf_test": 22.11, "khatt_teklia_test": 40.79},
+            "baselines_adapted_raw": {"muharaf_test": 22.57, "khatt_teklia_test": 21.82,
+                                      "isippt_bench": 53.63, "khatt_bench": 28.47},
         }
         (out_dir / "scorecard_eval.json").write_text(
             json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
         print("GATES " + json.dumps(card["gates"]), flush=True)
-        (out_dir / "scorecard_eval.json").write_text(
-            json.dumps(card, ensure_ascii=False, indent=2), encoding="utf-8")
         return
+
+    if args.scratch:
+        charset, cfg = load_charset_and_config()
+        for key, val, default in (("d_model", args.arch_d_model, 256),
+                                  ("transformer_layers", args.arch_layers, 4),
+                                  ("transformer_heads", args.arch_heads, 8),
+                                  ("dim_feedforward", args.arch_ffn, 1024)):
+            cfg[key] = val or default
+        model = build_model_from_config(cfg, charset, device)
+        init_label = "scratch d=%d L=%d H=%d F=%d" % (
+            cfg["d_model"], cfg["transformer_layers"], cfg["transformer_heads"],
+            cfg["dim_feedforward"])
+    else:
+        model, charset, cfg = load_ctc_backbone(str(args.init_ckpt or CKPT_PATH),
+                                                device=device)
+        init_label = CKPT_PATH.name
+    model.train()
+    n_params = sum(p.numel() for p in model.parameters())
+    print("init: %s  params=%d  charset=%d  height_pooling=%s  target_h=%d  device=%s" %
+          (init_label, n_params, charset.vocab_size, cfg.get("height_pooling"),
+           target_h, device), flush=True)
 
     items = []
     audit = {}
@@ -266,7 +344,7 @@ def main():
             rep = args.khatt_repeat
         else:
             rep = 1
-        got, stats = build_items(charset, folder, max(1, rep), args.limit)
+        got, stats = build_items(charset, folder, max(1, rep), args.limit, target_h)
         stats["repeat"] = rep
         stats["included"] = rep > 0
         audit[name] = stats
@@ -288,24 +366,54 @@ def main():
     batches = [order[i:i + args.batch] for i in range(0, len(order), args.batch)]
     batches = [b for b in batches if len(b) > 1]
     steps_per_epoch = len(batches)
-    total_steps = max(1, steps_per_epoch * args.epochs)
-    print("steps/epoch=%d  total_steps=%d  lr=%g  batch=%d  accum=%d" %
-          (steps_per_epoch, total_steps, args.lr, args.batch, args.accum), flush=True)
+    opt_steps_per_epoch = max(1, steps_per_epoch // max(1, args.accum))
+    total_steps = max(1, opt_steps_per_epoch * args.epochs)
+    print("steps/epoch=%d  opt_steps/epoch=%d  total_steps=%d  lr=%g  batch=%d  accum=%d" %
+          (steps_per_epoch, opt_steps_per_epoch, total_steps, args.lr, args.batch,
+           args.accum), flush=True)
 
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=total_steps)
-    ds = LineDataset(items)
+    warmup = max(0, min(args.warmup_steps, max(0, total_steps - 1)))
+    cosine = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, T_max=max(1, total_steps - warmup))
+    if warmup:
+        linear = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1e-3,
+                                                   total_iters=warmup)
+        scheduler = torch.optim.lr_scheduler.SequentialLR(
+            optimizer, schedulers=[linear, cosine], milestones=[warmup])
+    else:
+        scheduler = cosine
+
+    ds = LineDataset(items, target_h)
     log_path = out_dir / "train_log.jsonl"
-    log = log_path.open("w", encoding="utf-8")
+    log = log_path.open("a", encoding="utf-8")
 
     step = 0
+    start_epoch, start_batch = 0, 0
+    if args.resume and (out_dir / "ckpt_last.pt").exists():
+        blob = torch.load(out_dir / "ckpt_last.pt", map_location=device,
+                          weights_only=False)
+        model.load_state_dict(blob["model_state"])
+        if "optimizer_state" in blob:
+            optimizer.load_state_dict(blob["optimizer_state"])
+        if "scheduler_state" in blob:
+            scheduler.load_state_dict(blob["scheduler_state"])
+        step = int(blob.get("step", 0))
+        start_epoch = int(blob.get("epoch", 0))
+        start_batch = int(blob.get("batch_idx", -1)) + 1
+        print("RESUME %s: epoch %d batch %d step %d" % (out_dir / "ckpt_last.pt",
+              start_epoch, start_batch, step), flush=True)
+
     t0 = time.perf_counter()
     running = 0.0
     running_n = 0
     scorecards = []
     stop = False
-    for epoch in range(args.epochs):
-        random.shuffle(batches)
-        for batch_idx, idxs in enumerate(batches):
+    for epoch in range(start_epoch, args.epochs):
+        # deterministic per-epoch order, so a resumed run reproduces the same batches
+        random.Random(args.seed + epoch).shuffle(batches)
+        begin = start_batch if epoch == start_epoch else 0
+        for batch_idx in range(begin, steps_per_epoch):
+            idxs = batches[batch_idx]
             pixel_batch = collate([ds[i] for i in idxs])
             images = pixel_batch["images"].to(device)
             widths = pixel_batch["input_widths"].to(device)
@@ -327,24 +435,33 @@ def main():
 
             if running_n % 50 == 0:
                 el = time.perf_counter() - t0
-                print("  ep%d step%-6d loss=%.4f  %.2f steps/s" %
-                      (epoch, step, running / running_n, step / max(el, 1e-9)), flush=True)
+                print("  ep%d step%-6d loss=%.4f  lr=%.2e  %.2f steps/s" %
+                      (epoch, step, running / running_n,
+                       optimizer.param_groups[0]["lr"], step / max(el, 1e-9)),
+                      flush=True)
             if args.smoke and step >= args.smoke:
                 el = time.perf_counter() - t0
-                print("SMOKE OK: %d optimizer steps in %.1fs (%.2fs/step, batch=%d)"
-                      % (step, el, el / max(step, 1), args.batch), flush=True)
+                print("SMOKE OK: %d optimizer steps in %.1fs (%.2fs/step, batch=%d, "
+                      "target_h=%d)" % (step, el, el / max(step, 1), args.batch,
+                                        target_h), flush=True)
                 log.close()
                 return
             if args.eval_every and step and step % args.eval_every == 0:
-                res = evaluate(model, charset, device, PRIMARY, limit=args.eval_limit)
-                card = {"step": step, "epoch": epoch, "results": res}
+                res = evaluate(model, charset, device, PRIMARY, limit=args.eval_limit,
+                               target_h=target_h)
+                card = {"step": step, "epoch": epoch, "batch_idx": batch_idx,
+                        "results": res}
                 scorecards.append(card)
                 print("  EVAL %s" % json.dumps(card), flush=True)
-                log.write(json.dumps(card) + "\n")
+                log.write(json.dumps(card) + chr(10))
                 log.flush()
                 torch.save({"model_state": model.state_dict(),
+                            "optimizer_state": optimizer.state_dict(),
+                            "scheduler_state": scheduler.state_dict(),
                             "charset": getattr(charset, "characters", None),
-                            "model_config": cfg, "step": step, "stage": "0.5d-b1prime"},
+                            "model_config": cfg, "step": step, "epoch": epoch,
+                            "batch_idx": batch_idx, "stage": args.stage,
+                            "target_height": target_h},
                            out_dir / "ckpt_last.pt")
             if args.smoke and batch_idx + 1 >= args.smoke:
                 stop = True
@@ -353,31 +470,48 @@ def main():
             break
 
     elapsed = time.perf_counter() - t0
-    final = evaluate(model, charset, device, list(EVAL_SETS), limit=args.eval_limit)
+    final = evaluate(model, charset, device, list(EVAL_SETS), limit=args.eval_limit,
+                     target_h=target_h)
     card = {"step": step, "epoch": args.epochs - 1, "final": True, "results": final}
     scorecards.append(card)
-    log.write(json.dumps(card) + "\n")
+    log.write(json.dumps(card) + chr(10))
     log.close()
     torch.save({"model_state": model.state_dict(),
+                "optimizer_state": optimizer.state_dict(),
+                "scheduler_state": scheduler.state_dict(),
                 "charset": getattr(charset, "characters", None),
-                "model_config": cfg, "step": step, "stage": "0.5d-b1prime"},
+                "model_config": cfg, "step": step, "stage": args.stage,
+                "target_height": target_h},
                out_dir / "ckpt_final.pt")
 
+    by_tag = {r["tag"]: r for r in final}
     summary = {
-        "stage": "0.5d (B1')",
-        "init_checkpoint": str(CKPT_PATH.relative_to(ROOT)).replace("\\", "/"),
+        "stage": args.stage,
+        "init": init_label,
         "params": n_params,
         "recipe": {"epochs": args.epochs, "lr": args.lr, "batch": args.batch,
                    "accum": args.accum, "khatt_repeat": args.khatt_repeat,
                    "weight_decay": args.weight_decay, "clip": args.clip,
-                   "scheduler": "cosine", "seed": args.seed,
-                   "target_height": TARGET_H, "augmentation": "none",
+                   "scheduler": "cosine" if not warmup else "linear-warmup+cosine",
+                   "warmup_steps": warmup, "seed": args.seed,
+                   "target_height": target_h, "augmentation": "none",
+                   "arch": {k: cfg[k] for k in ("d_model", "transformer_layers",
+                                               "transformer_heads",
+                                               "dim_feedforward")},
                    "loss": "CTC (blank=0, zero_infinity)", "precision": "fp32"},
         "train_audit": audit,
         "train_items": len(items),
         "total_steps": step,
         "seconds": round(elapsed, 1),
+        "gates": {
+            "G1_khatt_test_raw_le_21.00": by_tag["khatt_teklia_test"]["cer"] <= 21.00,
+            "G2_muharaf_test_raw_le_23.11": by_tag["muharaf_test"]["cer"] <= 23.11,
+            "G3_khatt_bench_raw_le_29.54": by_tag["khatt_bench"]["cer"] <= 29.54,
+            "G3_isippt_raw_le_58.34": by_tag["isippt_bench"]["cer"] <= 58.34,
+        },
         "baselines_zero_shot_raw": {"muharaf_test": 22.11, "khatt_teklia_test": 40.79},
+        "baselines_adapted_raw": {"muharaf_test": 22.57, "khatt_teklia_test": 21.82,
+                                  "isippt_bench": 53.63, "khatt_bench": 28.47},
         "notes": {
             "why_not_muharaf_only": ("the init checkpoint was itself trained on Muharaf "
                                      "train, so further fine-tuning on Muharaf train alone "
@@ -390,7 +524,6 @@ def main():
                              "U+064B-U+065F/U+0670 instead of being dropped - dropping "
                              "would discard 7,472 of 22,091 Muharaf train lines (34%)"),
         },
-        "gates": {"G1_khatt_test_le": 20.00, "G2_muharaf_test_le": 23.11},
         "scorecards": scorecards,
     }
     (out_dir / "scorecard.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2),
