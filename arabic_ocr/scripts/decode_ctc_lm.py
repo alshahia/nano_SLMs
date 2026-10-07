@@ -64,23 +64,47 @@ _M = _load_sibling("ocr_eval_metrics", Path(__file__).with_name("eval_muharaf_hf
 edit_distance, norm_ar = _M.edit_distance, _M.norm_ar
 
 
-def beam_search(logp: np.ndarray, blank: int, topk: int, beam: int, nbest: int):
-    """CTC prefix beam search -> [(ids, log P_acoustic)] best first."""
+def _lev(a, b):
+    """Levenshtein distance (self-contained; used only for the oracle diagnostic)."""
+    if a == b:
+        return 0
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        cur = [i]
+        for j, cb in enumerate(b, 1):
+            cur.append(min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (ca != cb)))
+        prev = cur
+    return prev[-1]
+
+
+def beam_search(logp: np.ndarray, blank: int, topk: int, beam: int, nbest: int,
+                len_bonus: float = 0.0, viterbi: bool = False):
+    """CTC prefix beam search -> [[ids, log P_acoustic]] best first.
+
+    viterbi=True aggregates each prefix by its BEST alignment (max) instead of the
+    sum over alignments. A peaky CTC model ranks better by best path than by summed
+    probability, so the summed form loses to greedy; the Viterbi form equals greedy
+    at beam=1 and only explores near-miss paths at larger beams.
+
+    len_bonus adds N*len(prefix) to the score used for PRUNING and RANKING. Without
+    it P(prefix) strictly decreases as a prefix grows, so a small beam fills with
+    short prefixes and loses to greedy; the returned acoustic score stays unmodified.
+    """
     beams = {(): [0.0, -math.inf]}
-    lse = C.lse
+    agg = max if viterbi else C.lse
     for t in range(logp.shape[0]):
         row = logp[t]
         cand = [(int(c), float(row[c])) for c in np.argpartition(row, -topk)[-topk:]]
         blank_lp = float(row[blank])
         new = {}
         for prefix, (pb, pnb) in beams.items():
-            total = lse(pb, pnb)
+            total = agg(pb, pnb)
             cur = new.get(prefix)
             v = total + blank_lp
             if cur is None:
                 new[prefix] = [v, -math.inf]
             else:
-                cur[0] = lse(cur[0], v)
+                cur[0] = agg(cur[0], v)
             for c, lp in cand:
                 if c == blank:
                     continue
@@ -90,14 +114,14 @@ def beam_search(logp: np.ndarray, blank: int, topk: int, beam: int, nbest: int):
                     if cur is None:
                         new[prefix] = [-math.inf, v2]
                     else:
-                        cur[1] = lse(cur[1], v2)
+                        cur[1] = agg(cur[1], v2)
                     nxt = prefix + (c,)
                     cur2 = new.get(nxt)
                     v3 = total + lp
                     if cur2 is None:
                         new[nxt] = [-math.inf, v3]
                     else:
-                        cur2[1] = lse(cur2[1], v3)
+                        cur2[1] = agg(cur2[1], v3)
                 else:
                     nxt = prefix + (c,)
                     cur2 = new.get(nxt)
@@ -105,11 +129,11 @@ def beam_search(logp: np.ndarray, blank: int, topk: int, beam: int, nbest: int):
                     if cur2 is None:
                         new[nxt] = [-math.inf, v3]
                     else:
-                        cur2[1] = lse(cur2[1], v3)
-        ranked = sorted(new.items(), key=lambda kv: -lse(kv[1][0], kv[1][1]))[:beam]
+                        cur2[1] = agg(cur2[1], v3)
+        ranked = sorted(new.items(), key=lambda kv: -(agg(kv[1][0], kv[1][1]) + len_bonus * len(kv[0])))[:beam]
         beams = dict(ranked)
-    out = sorted(beams.items(), key=lambda kv: -lse(kv[1][0], kv[1][1]))[:nbest]
-    return [[list(k), lse(v[0], v[1])] for k, v in out]
+    out = sorted(beams.items(), key=lambda kv: -(agg(kv[1][0], kv[1][1]) + len_bonus * len(kv[0])))[:nbest]
+    return [[list(k), agg(v[0], v[1])] for k, v in out]
 
 
 def cache_logits(args, model, charset, device):
@@ -217,12 +241,33 @@ def run(args, charset):
         rows = []
         for i in range(len(offs) - 1):
             seg = data[offs[i]:offs[i + 1]].astype(np.float32)
-            row = beam_search(seg, charset.blank_id, args.topk, args.beam, args.nbest)
+            row = beam_search(seg, charset.blank_id, args.topk, args.beam, args.nbest,
+                              args.len_bonus, args.viterbi)
             greedy_ids = list(hyps[i])
             if greedy_ids and not any(list(c[0]) == greedy_ids for c in row):
                 row.append([greedy_ids, ctc_viterbi(seg, greedy_ids, charset.blank_id)])
             rows.append(row)
         nbest[tag] = {"refs": refs, "rows": rows}
+        if args.save_nbest:
+            nb_dir = Path(args.out)
+            nb_dir.mkdir(parents=True, exist_ok=True)
+            with open(nb_dir / ("nbest_%s.jsonl" % tag.replace("/", "_")), "w",
+                      encoding="utf-8") as fh:
+                for r, ref in zip(rows, refs):
+                    fh.write(json.dumps({"ref": ref,
+                                         "cands": [[list(c[0]), c[1]] for c in r]},
+                                        ensure_ascii=False) + "\n")
+        if args.oracle:
+            tot_d = 0
+            tot_n = 0
+            distinct = 0
+            for r, ref in zip(rows, refs):
+                texts = [charset.decode(c[0]) for c in r]
+                distinct += len(set(texts))
+                tot_d += min(_lev(t, ref) for t in texts)
+                tot_n += len(ref)
+            print("oracle %-20s %.2f  (distinct cands/line %.2f)" % (
+                tag, 100.0 * tot_d / max(1, tot_n), distinct / max(1, len(refs))), flush=True)
         print("beam %-20s n=%d %.1fs (avg cands %.2f)" % (
             tag, len(rows), time.time() - t0,
             sum(len(r) for r in rows) / max(1, len(rows))), flush=True)
@@ -271,10 +316,13 @@ def run(args, charset):
                "lm_cer": lm_res["cer"], "lm_cer_norm": lm_res["cer_norm"],
                "lm_cer_median": lm_res["cer_median"]}
         row["delta_vs_greedy"] = round(row["lm_cer"] - row["greedy_cer"], 2)
+        row["len_hyp"] = round(sum(len(h) for h, _ in pairs) / max(1, len(pairs)), 1)
+        row["len_ref"] = round(sum(len(r) for _, r in pairs) / max(1, len(pairs)), 1)
         results.append(row)
         print("%-20s greedy %6.2f -> beam %6.2f -> lm %6.2f (%+0.2f) norm %6.2f" % (
             tag, row["greedy_cer"], row["beam_cer"]["cer"], row["lm_cer"],
             row["delta_vs_greedy"], row["lm_cer_norm"]), flush=True)
+        print("   mean len hyp %.1f vs ref %.1f" % (row["len_hyp"], row["len_ref"]), flush=True)
 
     gates = {"G1_muharaf_test_le_%.2f" % G1_LIMIT: None,
              "G2_no_set_worse_than_greedy_by_%.2f" % G2_SLACK: None,
@@ -328,6 +376,12 @@ def main():
     ap.add_argument("--beam", type=int, default=12)
     ap.add_argument("--topk", type=int, default=8)
     ap.add_argument("--nbest", type=int, default=12)
+    ap.add_argument("--len-bonus", type=float, default=0.0)
+    ap.add_argument("--oracle", action="store_true",
+                    help="report the best-CER candidate per line (N-best upper bound)")
+    ap.add_argument("--save-nbest", action="store_true")
+    ap.add_argument("--viterbi", action="store_true",
+                    help="rank prefixes by best alignment (max), not the sum")
     ap.add_argument("--height", type=int, default=96)
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--cache", action="store_true")

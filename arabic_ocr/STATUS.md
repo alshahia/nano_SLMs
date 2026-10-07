@@ -20,6 +20,40 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (s) 2026-10-07 -- Stage 4 decoder RESULT: FAIL, and now oracle-bounded (TASKS 139 -> 140)
+
+Beam search + char-LM rescoring does **not** beat greedy on this model, and the
+failure is bounded rather than merely observed:
+
+| muharaf_test raw CER | greedy | beam | + char LM |
+|---|---|---|---|
+| summed-probability beam (logsumexp), beam 12 | 22.11 | 24.58 | 23.72 |
+| Viterbi (max) beam, beam 32 | 22.11 | 22.11 | 22.11 |
+
+- The Viterbi beam equals greedy **exactly** at beam 1 (21.48 on `muharaf_val`), so
+  the best-path ranking is preserved; the summed-probability ranking is *worse* than
+  greedy because this CTC model is peaky - prefix probability favours hypotheses the
+  best path rejects. The length bonus is not the cause (beam 32 keeps hypothesis
+  length at 49.4 vs the 52.7-char reference; a bonus of 1.0 only inflates it to 65.7
+  and doubles the error).
+- **Oracle CER** (best candidate per line, i.e. a perfect reranker): Viterbi beam 32
+  = **21.92** test / **21.27** val; summed beam 32 = **20.98** val; beam 64 = **20.95**
+  val. Against greedy 22.11 / 21.48 that is **0.19-0.53 pp** of headroom, and
+  doubling the beam buys 0.03 pp.
+- Consequence: **G1 (<= 20.61 raw) is unreachable by any reranker over this N-best
+  family**, and G2 passes only because the Viterbi decoder cannot lose to greedy.
+  Both gates FAIL. The card's published 16.95 -> 13.31 gain is therefore *not*
+  reproducible by N-best rescoring; it requires a search space that generates new
+  hypotheses (word-constrained/lexicon decoding or a seq2seq rescorer) - TASKS 140.
+- The char LM (3.5 MB GRU, val ppl 4.29 on 7.87M train-only chars) contributed at
+  most -0.02 pp. The external pool is leakage-free (<= 0.15% verbatim overlap,
+  `audit_textpool_leakage.py`) but the oracle bound says a stronger LM cannot matter
+  for this decoder.
+
+Artifacts: `arabic_ocr/runs/stage05e/scorecard_teacher.json`,
+`adapt/scorecard_adapt11700.json`, `probe_*` sweeps, `nbest/nbest_*.jsonl` (gitignored);
+logit caches under `logits/` (gitignored).
+
 ## (r) 2026-10-06 -- Stage 4 decoder (TASKS 139) STARTED: beam + char-LM rescoring
 
 Training-free CER, pre-registered in TASKS 139 before any decode. Rationale: the

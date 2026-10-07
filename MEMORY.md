@@ -874,3 +874,19 @@ repeat-collapse and blank removal before charset decoding. Related: a beam-searc
 function must return mutable candidate records because the LM score is appended in
 place (tuples raised AttributeError). Both were caught by a beta=0 smoke pass
 before any gate was read - always smoke a new decoder against the known number.
+
+## 2026-10-07 - Measure the N-best oracle before building a reranker
+
+Beam search + LM rescoring gained nothing on the Muharaf CTC model (greedy 22.11 ->
+summed beam 24.58 -> char LM 23.72 on muharaf_test; a Viterbi beam ties greedy at
+22.11). The decisive number is the **oracle CER** - the best candidate per line,
+i.e. what a PERFECT reranker would score: 21.92 against 22.11 greedy, only 0.19 pp
+of headroom (summed beam 32/64: 20.98/20.95, <= 0.53 pp). No LM, lexicon or reranker
+could have delivered the published 16.95 -> 13.31 gain. One beam pass buys this
+number and can cancel a multi-day decoder project - compute it first.
+
+Also: a peaky CTC model ranks better by BEST PATH than by summed probability. CTC
+prefix beam search with logsumexp scored 24.58 where greedy scored 22.11 on the same
+logits; switching the prefix aggregation to max (Viterbi) restored 22.11 exactly.
+Greedy must always be injected into the N-best, and a length bonus is not a fix for
+the summed form (it inflates hypotheses and doubles the error).
