@@ -20,6 +20,31 @@
 > merged 2026-10-06. [PROJECT_REPORT.md](PROJECT_REPORT.md)
 > and [COMPARISON.md](COMPARISON.md) are superseded.
 
+## (w) 2026-10-07 -- Error attribution: 29% of our headline CER is evaluation convention (E-99)
+
+Before choosing data / model / strategy, measured how much of raw CER 22.11 is even
+model error. Teacher, cached logits, CPU only:
+
+| set | raw CER | norm_ar (published convention) | emit-able ref chars only |
+|---|---|---|---|
+| muharaf_test | 22.11 | **15.79 (-6.32)** | 21.03 (-1.08) |
+| muharaf_val | 21.48 | 17.23 (-4.25) | 20.34 (-1.14) |
+| khatt_teklia_test | 40.79 | 38.69 (-2.11) | 40.59 (-0.20) |
+
+- **~6.3 pp of the 22.11 headline (29%) is evaluation convention**, not model error:
+  ~1.08 pp is reference characters the 165-symbol charset cannot emit (diacritics are
+  dropped 86-89%), the rest is alef/hamza/yeh normalization. Published cards report the
+  normalized number, so our line has been compared ~6 pp unfairly against them.
+- **The dot-loss hypothesis is REFUTED**: dot-bearing vs dotless letters are dropped at
+  9.4% vs 8.5% (muharaf_test) and 23.5% vs 20.7% (KHATT). The real acuity signature is
+  glyph HEIGHT/PROFILE - tooth rows and small loops (th 16%, s 15%, b 13%, t 12%, h 12%,
+  m 12%, "." 14%) drop far more than tall/distinctive strokes (t. 5%, dh 5%, z 5%,
+  ta-marbuta 5%, w 6%, a 6%, l 6%). That points at input resolution, not dot rendering.
+- Data-side contribution is small (~1.1 pp) but has two concrete defects: train labels
+  were diacritic-stripped while test references keep diacritics, and the union is 82/18
+  Muharaf/KHATT with only 4,671 KHATT train lines.
+- Probe: `arabic_ocr/scripts/error_attribution.py`.
+
 ## (v) 2026-10-07 -- REVISION of (u): the error mode is character UNDER-EMISSION, and a CTC blank penalty is a free gain (E-97, E-98)
 
 `(u)` declared Plan A exhausted. Two CPU probes revise that: the DECODER lever was not

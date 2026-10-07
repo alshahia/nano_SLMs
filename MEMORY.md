@@ -935,3 +935,15 @@ trained B2 rung on 3 of 4 sets at zero training cost and makes G3 pass. The teac
 val-tuned penalty HURTS KHATT (+0.27), so the optimum does not transfer across domains;
 always tune it on the target domain val split. Reproduce with
 `arabic_ocr/scripts/blank_penalty_tune.py`.
+
+## 2026-10-07 - Arabic OCR: 29% of our headline CER is evaluation convention
+
+Measured on the teacher: muharaf_test raw CER 22.11 but norm_ar CER 15.79 - a 6.32 pp
+gap (muharaf_val 21.48 -> 17.23, khatt_teklia_test 40.79 -> 38.69). About 1.08 pp of
+that is reference characters the 165-symbol charset cannot emit (diacritics are dropped
+86-89%); the rest is alef/hamza/yeh normalization. Published OCR cards report the
+NORMALIZED number, so always compare like with like or our line looks ~6 pp worse than
+it is. The dot-loss hypothesis is REFUTED: dot-bearing vs dotless letters are dropped at
+9.4% vs 8.5%. The real acuity signature is glyph HEIGHT/PROFILE - tooth rows and small
+loops drop far more than tall/distinctive strokes - which points at input resolution,
+not at dot rendering.
