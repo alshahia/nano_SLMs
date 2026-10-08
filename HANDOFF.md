@@ -1,3 +1,55 @@
+# 2026-10-07 (ac) (Arabic OCR Plan A verdict: PASS on all three gates - the authors' recipe beat capacity)
+
+> Follows (ab), same session. Plan A finished; the verdict is in and it is a clean PASS.
+> Plan B is now training.
+
+**Plan A verdict: PASS on all three project gates** (`arabic_ocr/runs/stage06b/blank_penalty_verdict.json`,
+E-110). The pre-registered selection rule was executed exactly: shortlist = the FINAL checkpoint
+plus the three checkpoints with the lowest `khatt_teklia_test` card raw (61,000 / 59,000 / 63,000,
+subject to a muharaf card <= 30.00), each scored on the FULL sets with the blank-penalty delta
+tuned on `muharaf_val` ONLY.
+
+| tag (step) | delta (val) | muharaf_test | khatt_teklia_test | khatt_bench | isippt_bench |
+|---|---|---|---|---|---|
+| **planA_final (66,240)** | **1.00** (val 21.00) | **21.66** / 16.32 | **18.47** / 17.06 | **27.15** / 25.84 | **52.68** / 52.14 |
+| planA_s61000 | 1.00 (21.09) | 21.88 / 16.56 | 18.13 / 16.68 | 26.23 / 24.99 | 52.56 / 52.03 |
+| planA_s59000 | 1.25 (21.01) | 21.96 / 16.65 | 18.27 / 16.82 | 26.52 / 25.24 | 53.03 / 52.43 |
+| planA_s63000 | 1.25 (21.00) | 21.99 / 16.68 | 18.15 / 16.70 | 26.45 / 25.13 |
+
+(raw / `norm_ar`; G1 khatt_teklia_test <= 21.00, G2 muharaf_test <= 23.11, G3 khatt_bench <= 29.54 and isippt_bench <= 58.34.)
+
+`planA_final` = `ckpt_last.pt` (step 66,240) is **best on all four sets simultaneously**, so
+selection was unambiguous - nothing was traded away to win something else. Margins: G1 **2.53 pp**,
+G2 1.45 pp, khatt_bench 2.39 pp, isippt 5.66 pp.
+
+**The honest framing of the win.** Against the teacher's full-set delta-tuned reference (E-109:
+21.47 / 41.07 / 41.85 / 59.06) the deltas are **+0.19 / -22.60 / -14.70 / -6.38**. In-domain
+muharaf is essentially unchanged - it is 0.19 pp WORSE, and still inside G2. Every out-of-domain
+set improves enormously. So the recipe did not buy domain transfer at the cost of in-domain
+accuracy; it bought generalisation. Training loss ended at **0.6217** nats per target character
+against option (D)'s ~3.78 asymptote (E-104) - the same architecture reaching a reachable optimum
+instead of an unreachable plateau. **This is the largest OCR win in the line, and it came from the
+schedule, not from capacity.**
+
+**TASKS 149 (the h128 "recover KHATT resolution" rung) is CLOSED, not executed.** Its only purpose
+was to close G1, which E-101 left at 21.82 (a 0.82 pp miss). Plan A closed G1 at 18.47; launching it
+now would spend GPU time on an answered question.
+
+**Plan B is training** (background job `pwsh-2`, launched 2026-10-07). Init =
+`arabic_ocr/runs/grow_test/planA_final_L14.pt`, grown from the Plan A winner depth-only, 4 -> 14
+encoder layers, 4,245,671 -> 12,143,271 params. The surgery was verified before use:
+`grow_ctc_model.py --verify` reported `exact=86 block=0 fresh=120 max|delta| 0.000e+00` (shared
+layers bit-exact, as they must be for a pre-norm stack) and `check_ckpt_reload.py` returned
+`verdict PASS` with `forward_logits_shape [64,1,166]`. A 20-step smoke ran clean at **0.25 s/step**
+with `total_steps=26496`, so the expected wall time is ~1.8-2.5 h (the earlier 3.9 h estimate
+assumed a larger slowdown than 14 layers actually cost). Per TASKS 148 the epoch count was NOT
+pre-shrunk; if the round budget runs out, B is evaluated at the latest checkpoint reached and
+reported plainly as PARTIAL.
+
+**Carry-forward caveat, unchanged:** published OCR numbers are NORMALISED CER; ours are RAW. Plan A's
+21.66 raw / 16.32 norm on muharaf_test is at or beyond the published Muharaf CTS reference (22.11
+normalised) only under that stated caveat - do not claim SOTA without it.
+
 # 2026-10-07 (ab) (Arabic OCR Plan A in flight: the verdict path is validated and the stop rule was recalibrated twice)
 
 > Follows (aa), same session. The user ordered "A then B": (A) fine-tune the 4.25M Muharaf teacher
