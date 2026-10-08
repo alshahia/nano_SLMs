@@ -659,7 +659,7 @@ the state-of-the-run narrative; this file owns durable knowledge from now on.
 
   66. **The train-time cache idea is TESTED and FALSIFIED** (2026-09-17, E-21): the user's hypothesis - build the word-cache as part of the training process so the model 'stores its knowledge in it' - measured on BOTH micro arms (2.98M scratch + warm-start): cache-merged eval = -0.00..-0.03 DER (zero). Majority-vote word priors exist in ANY model of this class at 10% of gold's params; do not spend more runs on cache-in-training for this task. Also: warm-starting a bidirectional diacritizer from a causal LM stack (micro_a_lm val 1.6177 -> SFT val 0.2911 < scratch's 0.3228) made SFT validation better but GATES 5.7 mean-DER worse - SFT val_loss is not a gate-quality proxy.
 
-  67. **Machine-labeled weak data HELPS a small train pool (unlike gate refs, it just needs to be plentiful and on-domain)** (2026-09-17, E-22): +362k gate-deduped QCRI machine-vocalized wiki windows cut the micro's gate mean-DER -2.7 (36.44/48.67/58.13/50.11 vs 38.16/51.40/60.96/53.87). Over-marked, model-output labels are fine as SUPPLEMENT; never treat them as refs or mix them into val (val stayed byte-identical for the A/C comparison). Workflow that works: 10-word-shingle gate-dedup with a >=1% threshold -> space-window -> passthrough.parse inside the existing pack pipeline.
+  67. **Machine-labeled weak data HELPS a small train pool (unlike gate refs, it just needs to be plentiful and on-domain)** (2026-09-17, E-22): +362k gate-deduped QCRI machine-vocalized wiki windows cut the micro's gate mean-DER -2.7 (36.44/48.67/58.13/50.11 vs 38.16/51.40/60.96/53.87). Over-marked, model-output labels are fine as SUPPLEMENT; never treat them as refs or mix them into val (val stayed weights-identical (the FILES differ - `ckpt_last.pt` also stores optimizer state) for the A/C comparison). Workflow that works: 10-word-shingle gate-dedup with a >=1% threshold -> space-window -> passthrough.parse inside the existing pack pipeline.
 
   68. **Weak machine-labeled supplements help capacity-limited training REVERSibly, then hurt saturated models** (2026-09-17, E-23a): +362k gate-deduped QCRI windows cut the micro mean-DER -2.7 (E-22) but the 30M gold REGRESSED +1.45 mean (wn2024 +7.06 collapse) on the same v3q tokens and same recipe. A small model soaks up extra (even machine-marked) supervision; a big model has already saturated what multi-source wiki-style labels offer and gets poisoned by distribution shift (QCRI over-marking + Wikipedia style). Takeaway: gate supplements by MODEL SIZE, not just by data gain on one cap; treat E-22-style positive deltas as scoped to small caps until proven otherwise.
 
@@ -1089,4 +1089,33 @@ fails with `FileNotFoundError: <out>/ckpt_last.pt`.
 - **Capacity growth is domain-selective, not a rising tide** (2026-10-07, E-111). Growing 4.25M -> 12.14M params (depth-only 4 -> 14 layers) at the same recipe improved the binding gate G1 by **-2.01 pp** and khatt_bench by **-1.57 pp**, left in-domain muharaf flat (-0.02 pp), and made `isippt_bench` **+1.47 pp WORSE** - the 27px-resolution set. Measure the per-set effect; never assume "bigger = better everywhere".
 - **A pre-registered shortlist beats trusting the final checkpoint.** On Plan B the FINAL checkpoint was NOT the best: step 24,000 dominated it on 3 of 4 sets. The shortlist rule is what surfaced that.
 - **Verify an "impossible" measurement before believing or dismissing it** (2026-10-07, E-111). Two different tags produced bit-identical results on all 5 sets; the cause was that the two files held the same weights, not a pipeline bug - and checking it also exposed the `ckpt_last` persistence gap.
+## 2026-10-07 - OCR disk reclaim executed, an exposed HF token, and two agent-tooling traps
+
+- **HF token was hard-coded in `arabic_ocr/scripts/download_data.py`** (`os.environ['HF_TOKEN'] = 'hf_...'`, line 3).
+  Found by the TASKS 154 audit. REMOVED from the source 2026-10-07 (the script now loads the gitignored
+  project-root `.env` via dotenv, the `scripts/prepare_data.py` pattern; `py_compile` PASS). **The token is
+  still exposed: the file is TRACKED by git and 1 commit touches it, so the secret is in git HISTORY.
+  Rotation at huggingface.co/settings/tokens is the ONLY real fix - history rewrite was NOT authorised and
+  was NOT attempted (TASKS 156, `blocked` on the user).** Never hard-code a credential; `os.environ[...] =`
+  a literal is the same class of mistake as committing `.env`.
+- **`tools.read` is budget-limited: it returns FEWER lines than `limit` on large files** and `totalLines` is
+  the true count. Observed 2026-10-07: `TASKS.md` (309 lines) returned 93 lines; `MEMORY.md` (1092) returned
+  182. Chunking by a fixed `offset += 2000` therefore SKIPS the middle of the file and silently finds nothing
+  (this caused 4 anchored edits to report "0 matches" while the text was plainly present). Chunk by the LAST
+  RETURNED LINE NUMBER: `off = lines[lines.length-1].number + 1`. Never assume `lines.length === limit`.
+- **Never run a bare `git commit`.** With nothing staged it fails and prints the ENTIRE dirty tree - here
+  ~1,446 entries / ~25 KB of noise (the pre-existing `runs/mex/` + `data/catalog/` staged deletions). Always
+  `git add <exact paths>`, then verify `git diff --cached --name-only` is non-empty, then commit. Scope
+  `git diff`/`git add` to exact paths for the same reason.
+- **`ckpt_last.pt` and `ckpt_stepNNNNNN.pt` have IDENTICAL MODEL WEIGHTS but are NOT byte-identical files:**
+  `ckpt_last.pt` also stores optimizer state (stage06c: 145,967,307 B vs 48,657,283 B; 0 of 206 tensors
+  differ). "Byte-identical" was wrong in the E-111 write-up and is corrected in HANDOFF/MEMORY.
+- **Font-rendered synthetic Arabic text does NOT transfer to handwriting.** The repo owns a validated
+  renderer (`arabic_ocr/src/data/synthetic.py`, HarfBuzz+FreeType, Stage-1 gate PASS) but E-87 already
+  measured 16,000 synthetic lines as pretrain + real fine-tune = CER 0.9100 vs 0.5780 baseline (**+33.2 pp
+  WORSE**). Do not repeat that shape; the plausible synthetic half is PRINTED text, and the cheapest attack
+  on the 27 px regime is resolution degradation of REAL lines (TASKS 151 amendment).
+- **Disk reclaim 2026-10-07:** 113 files / 4,866,367,883 B (4.53 GiB) deleted under hard gates (exact byte
+  total + live-file presence + per-category counts all asserted BEFORE the first `Remove-Item`); E: 5.19 ->
+  9.73 GiB. Full inventory and the never-delete list: `research/arabic_ocr_cleanup_audit.md`.
 

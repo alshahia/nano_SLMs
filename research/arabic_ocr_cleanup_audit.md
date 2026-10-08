@@ -172,3 +172,14 @@ The safe-first-pass figure is **4,866,367,883 B, about 4.53 GiB**, i.e. roughly 
 - References: grep over the six durable docs, all scorecard*.json, both blank_penalty_verdict.json, *.py, *.md.
 - Disk: Get-PSDrive E.
 - Written file: this report only. No other file was created, modified, deleted or committed.
+
+## EXECUTED 2026-10-07 (user-approved)
+
+The risk-**none** + risk-**low** tier was deleted in one gated pass: **113 files / 4,866,367,883 B (4.53 GiB)**,
+exactly matching this report's subtotal. Gates asserted before the first `Remove-Item`: the byte total equalled
+4,866,367,883; stage06b/stage06c/grow_test counts were 63/23/6; all 13 named never-delete `.pt` files were present;
+and no never-delete path appeared in the delete list. Drive E: free 5.19 -> **9.73 GiB**.
+
+Deliberately NOT deleted (still on disk): the risk-**medium** tier (`stage06a/ckpt_last.pt` 184,201,483;
+`stage06b/ckpt_final.pt` 51,050,949; `stage06c/ckpt_final.pt` 145,968,037 = 381,220,469 B total), all LIVE
+checkpoints, all LIVE logits tags, `data/hf`, `data/ocr_textpool/raw`, `arabic_ocr/models`, and `checkpoint_backup/`.
