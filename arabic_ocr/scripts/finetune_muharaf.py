@@ -73,6 +73,20 @@ TRAIN_SETS = [
     ("reallines_train", ROOT / "data" / "reallines" / "train", 0),   # repeat from args
 ]
 
+# AMIDDA sub-sets (TASKS 155), discovered at import time so a partially-ingested
+# corpus cannot be trained on by accident. Every split of every sub-set is used:
+# AMIDDA's own train/validation/test split is internal to AMIDDA's benchmark, has no
+# meaning for us, and we never report an AMIDDA number. The leakage audit
+# (arabic_ocr/scripts/audit_amidda_leakage.py) is a HARD gate in main() - the run
+# refuses to start without it, because these corpora are third-party copies of
+# manuscript pages and may share pages with our own eval splits.
+for _amidda_dir in sorted((ROOT / "data" / "hf").glob("amidda_*")):
+    for _split in ("train", "validation", "test"):
+        if (_amidda_dir / _split / "labels.json").exists():
+            TRAIN_SETS.append(("%s_%s" % (_amidda_dir.name, _split),
+                               _amidda_dir / _split, 0))
+AMIDDA_AUDIT = ROOT / "data" / "hf" / "amidda_audit.json"
+
 EVAL_SETS = {
     "muharaf_test": ROOT / "data" / "hf" / "muharaf" / "test",
     "khatt_teklia_test": ROOT / "data" / "hf" / "khatt_teklia" / "test",
@@ -149,6 +163,25 @@ def light_augment(im, rng):
     return im
 
 
+def degrade_resolution(im, rng, band):
+    """Simulate a lower-resolution SOURCE scan (E-100: ISIPPT lines are 27 px).
+
+    The line is shrunk to a randomly chosen source height inside @@band@@ and
+    preprocess_image then resamples it back up to target_h, so the network sees the
+    real blur/aliasing of a low-res scan while the tensor geometry stays fixed. That
+    is why this lever needs NO change to the batching code - unlike a target-height
+    change, which moves every width and the whole memory profile with it.
+    """
+    lo, hi = band
+    w, h = im.size
+    top = min(int(hi), int(h))
+    if int(lo) >= top:
+        return im
+    src_h = rng.randint(int(lo), top)
+    src_w = max(1, int(round(w * src_h / float(h))))
+    return im.resize((src_w, src_h), Image.BILINEAR)
+
+
 def build_items(charset, folder: Path, repeat: int, limit: int, target_h: int = TARGET_H):
     labels = json.loads((folder / "labels.json").read_text(encoding="utf-8"))
     if limit:
@@ -173,11 +206,14 @@ def build_items(charset, folder: Path, repeat: int, limit: int, target_h: int = 
 
 class LineDataset(torch.utils.data.Dataset):
     def __init__(self, items, target_h: int = TARGET_H, augment: str = "none",
-                 seed: int = 1234):
+                 seed: int = 1234, res_prob: float = 0.0,
+                 res_band=(27, TARGET_H)):
         self.items = items
         self.target_h = target_h
         self.augment = augment
         self.seed = seed
+        self.res_prob = res_prob
+        self.res_band = res_band
         self.epoch = 0
 
     def __len__(self):
@@ -185,13 +221,16 @@ class LineDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, index):
         item = self.items[index]
+        # seeded per (seed, epoch, index) so a resumed run reproduces the exact same
+        # augmentation instead of a fresh random draw
+        rng = random.Random("%d-%d-%d" % (self.seed, self.epoch, index))
         with Image.open(item["path"]) as im:
             if self.augment == "light":
-                # seeded per (seed, epoch, index) so a resumed run reproduces the
-                # exact same augmentation instead of a fresh random draw
-                im = light_augment(im.convert("L"),
-                                   random.Random("%d-%d-%d" % (self.seed, self.epoch,
-                                                               index)))
+                im = light_augment(im.convert("L"), rng)
+            if self.res_prob and rng.random() < self.res_prob:
+                # order matters: geometric jitter at full resolution first, THEN the
+                # low-res scan simulation, then preprocess_image upsamples to target_h
+                im = degrade_resolution(im.convert("L"), rng, self.res_band)
             arr = preprocess_image(im, ImageConfig(target_height=self.target_h,
                                                    grayscale=True, normalize=True))
         return {"img": torch.from_numpy(arr[None, :, :].astype("float32")),
@@ -313,6 +352,21 @@ def main():
     ap.add_argument("--resume", action="store_true",
                     help="continue from <out>/ckpt_last.pt (model + optimizer + step)")
     ap.add_argument("--stage", default="0.5d-b1prime")
+    # --- step 1 (TASKS 151): multi-scale + resolution degradation + AMIDDA ---
+    ap.add_argument("--amidda-repeat", type=int, default=1,
+                    help="0 = exclude the discovered AMIDDA sub-sets from this run")
+    ap.add_argument("--height-band", default="0",
+                    help="multi-scale target height as LO,HI (e.g. '80,128'); sampled "
+                         "per BATCH so the collated tensor stays uniform. 0 = fixed "
+                         "--target-height. E-102: height is a TRAINING-time contract, "
+                         "and --eval-only still scores at --target-height")
+    ap.add_argument("--res-degrade-prob", type=float, default=0.0,
+                    help="per-image probability of shrinking the line to a lower "
+                         "'source' resolution before preprocess_image resamples it to "
+                         "target_h - the E-100 failure mode (ISIPPT lines are 27 px) "
+                         "turned into training data")
+    ap.add_argument("--res-degrade-band", default="27,96",
+                    help="source-height band for --res-degrade-prob")
     # --- plan (A): the authors' fine-tune recipe; every default preserves the
     # pre-(A) behaviour, so the B1'/B2 recipes stay reproducible ---
     ap.add_argument("--augment", choices=("none", "light"), default="none",
@@ -331,6 +385,32 @@ def main():
     random.seed(args.seed)
     torch.manual_seed(args.seed)
     target_h = args.target_height or TARGET_H
+
+    height_band = None
+    if args.height_band and args.height_band != "0":
+        lo_s, _, hi_s = args.height_band.partition(",")
+        height_band = (int(lo_s), int(hi_s or lo_s))
+        if height_band[0] > height_band[1]:
+            raise SystemExit("--height-band LO,HI needs LO <= HI")
+
+    lo_s, _, hi_s = args.res_degrade_band.partition(",")
+    res_band = (int(lo_s), int(hi_s or lo_s))
+
+    amidda_sets = [t for t in TRAIN_SETS if t[0].startswith("amidda")]
+    if amidda_sets and args.amidda_repeat > 0:
+        if not AMIDDA_AUDIT.exists():
+            raise SystemExit("AMIDDA sets %s are present but %s is missing - run "
+                             "arabic_ocr/scripts/audit_amidda_leakage.py first"
+                             % ([t[0] for t in amidda_sets], AMIDDA_AUDIT))
+        _blob = json.loads(AMIDDA_AUDIT.read_text(encoding="utf-8"))
+        _leaks = _blob.get("leaks", {})
+        _n_leak = sum(len(v) for v in _leaks.values()) if isinstance(_leaks, dict) else 0
+        if _n_leak:
+            raise SystemExit("AMIDDA leakage audit found %d leaked line(s) - filter the "
+                             "corpus before training (see %s)" % (_n_leak, AMIDDA_AUDIT))
+        print("amidda audit: PASS rows=%s unique_text=%s dup_text=%s dup_page=%s" %
+              (_blob.get("rows"), _blob.get("unique_text"), _blob.get("dup_text"),
+               _blob.get("dup_page")), flush=True)
 
     device = torch.device(args.device) if args.device != "auto" else \
         torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -391,6 +471,9 @@ def main():
     print("init: %s  params=%d  charset=%d  height_pooling=%s  target_h=%d  device=%s" %
           (init_label, n_params, charset.vocab_size, cfg.get("height_pooling"),
            target_h, device), flush=True)
+    print("step1 knobs: height_band=%s  res_degrade_prob=%g  res_degrade_band=%s  "
+          "amidda_repeat=%d" % (height_band, args.res_degrade_prob, res_band,
+                                args.amidda_repeat), flush=True)
 
     items = []
     audit = {}
@@ -399,6 +482,8 @@ def main():
             rep = args.reallines_repeat
         elif name.startswith("khatt"):
             rep = args.khatt_repeat
+        elif name.startswith("amidda"):
+            rep = args.amidda_repeat
         else:
             rep = 1
         got, stats = build_items(charset, folder, max(1, rep), args.limit, target_h)
@@ -413,7 +498,8 @@ def main():
                                  stats["too_short"]), flush=True)
     if not items:
         raise SystemExit("no training items")
-    print("total train items: %d" % len(items), flush=True)
+    print("total train items: %d  widest_est_w=%d (reference height)" %
+          (len(items), max(i["est_w"] for i in items)), flush=True)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr,
                                   weight_decay=args.weight_decay)
@@ -452,7 +538,8 @@ def main():
             scheduler = cosine
             sched_label = "cosine"
 
-    ds = LineDataset(items, target_h, augment=args.augment, seed=args.seed)
+    ds = LineDataset(items, target_h, augment=args.augment, seed=args.seed,
+                     res_prob=args.res_degrade_prob, res_band=res_band)
     log_path = out_dir / "train_log.jsonl"
     log = log_path.open("a", encoding="utf-8")
 
@@ -484,6 +571,13 @@ def main():
         begin = start_batch if epoch == start_epoch else 0
         for batch_idx in range(begin, steps_per_epoch):
             idxs = batches[batch_idx]
+            if height_band:
+                # ONE height per batch (the collated tensor must stay uniform), derived
+                # from (seed, epoch, batch_idx) so a resume reproduces the same batch
+                ds.target_h = random.Random("%d-%d-%d" % (args.seed, epoch,
+                                                          batch_idx)).randint(*height_band)
+            else:
+                ds.target_h = target_h
             pixel_batch = collate([ds[i] for i in idxs])
             images = pixel_batch["images"].to(device)
             widths = pixel_batch["input_widths"].to(device)
@@ -517,6 +611,15 @@ def main():
                 print("SMOKE OK: %d optimizer steps in %.1fs (%.2fs/step, batch=%d, "
                       "target_h=%d)" % (step, el, el / max(step, 1), args.batch,
                                         target_h), flush=True)
+                print("SMOKE last batch shape=%s  last_h=%d" %
+                      (tuple(pixel_batch["images"].shape), ds.target_h), flush=True)
+                if device.type == "cuda":
+                    print("SMOKE peak_vram allocated=%.2f GiB reserved=%.2f GiB  "
+                          "total=%.2f GiB" % (
+                              torch.cuda.max_memory_allocated() / 2 ** 30,
+                              torch.cuda.max_memory_reserved() / 2 ** 30,
+                              torch.cuda.get_device_properties(0).total_memory / 2 ** 30),
+                          flush=True)
                 log.close()
                 return
             if args.eval_every and step and step % args.eval_every == 0:
@@ -574,6 +677,9 @@ def main():
                    "scheduler": sched_label,
                    "warmup_steps": warmup, "seed": args.seed,
                    "target_height": target_h, "augmentation": args.augment,
+                   "height_band": height_band, "res_degrade_prob": args.res_degrade_prob,
+                   "res_degrade_band": list(res_band),
+                   "amidda_repeat": args.amidda_repeat,
                    "train_blank_logit_penalty": args.train_blank_penalty,
                    "arch": {k: cfg[k] for k in ("d_model", "transformer_layers",
                                                "transformer_heads",
