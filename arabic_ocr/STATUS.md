@@ -18,6 +18,14 @@ TASKS 150 / 151 / 155. Not a verdict yet: this records the pre-launch state only
   khatt_teklia_test <= 16.46, khatt_bench <= 25.25, isippt_bench <= 52.68 - delta tuned on
   `muharaf_val` only.
 
+- **Leakage audit executed**: 135 exact + 2 blob + 0 hard hits out of 30,404 lines. They are
+  coincidental short-string collisions (median matched length 2 chars; the only 20+ char hits are
+  the Basmala), not a shared corpus. All 137 are dropped from training via the audit's drop list,
+  applied by `finetune_muharaf.py` and confirmed in the launch log. Dedupe: 1,003 duplicate lines
+  across sub-sets (3.3%), 0 duplicate pages. Median ingested image height 123 px.
+- **Launched 2026-10-07** (job `pwsh-43`): 56,528 optimizer steps (~3.7 h), loss 1.50 -> 1.28 over
+  the first 1,000 steps at 0.22 s/step, 7.3 GiB allocator ceiling armed. Verdict pending.
+
 ## (aa) Option (D) VERDICT: FAIL - from scratch never escaped the CTC blank plateau
 
 Stopped at step **4,250 of 52,992** (~1 h 15 m). **G1 FAIL, G2 FAIL, G3 not reached.**

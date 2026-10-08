@@ -182,12 +182,16 @@ def degrade_resolution(im, rng, band):
     return im.resize((src_w, src_h), Image.BILINEAR)
 
 
-def build_items(charset, folder: Path, repeat: int, limit: int, target_h: int = TARGET_H):
+def build_items(charset, folder: Path, repeat: int, limit: int, target_h: int = TARGET_H,
+                skip=None):
     labels = json.loads((folder / "labels.json").read_text(encoding="utf-8"))
     if limit:
         labels = labels[:limit]
-    items, oov, short, repaired = [], 0, 0, 0
+    items, oov, short, repaired, dropped = [], 0, 0, 0, 0
     for rec in labels:
+        if skip and rec.get("image") in skip:
+            dropped += 1
+            continue
         ids, was_repaired = encode_label(charset, rec.get("text", ""))
         if ids is None:
             if len(normalize_arabic_text(rec.get("text", ""))) < 2:
@@ -201,7 +205,8 @@ def build_items(charset, folder: Path, repeat: int, limit: int, target_h: int = 
         for _ in range(max(1, repeat)):
             items.append(item)
     return items, {"oov": oov, "too_short": short,
-                   "diacritics_repaired": repaired, "kept": len(items)}
+                   "diacritics_repaired": repaired, "kept": len(items),
+                   "leak_dropped": dropped}
 
 
 class LineDataset(torch.utils.data.Dataset):
@@ -355,6 +360,9 @@ def main():
     # --- step 1 (TASKS 151): multi-scale + resolution degradation + AMIDDA ---
     ap.add_argument("--amidda-repeat", type=int, default=1,
                     help="0 = exclude the discovered AMIDDA sub-sets from this run")
+    ap.add_argument("--vram-cap-gib", type=float, default=0.0,
+                    help="hard allocator ceiling in GiB; turns a WDDM shared-memory "
+                         "spill into a loud CUDA OOM (AGENTS 20.3). 0 = off")
     ap.add_argument("--height-band", default="0",
                     help="multi-scale target height as LO,HI (e.g. '80,128'); sampled "
                          "per BATCH so the collated tensor stays uniform. 0 = fixed "
@@ -396,6 +404,7 @@ def main():
     lo_s, _, hi_s = args.res_degrade_band.partition(",")
     res_band = (int(lo_s), int(hi_s or lo_s))
 
+    amidda_drop = {}
     amidda_sets = [t for t in TRAIN_SETS if t[0].startswith("amidda")]
     if amidda_sets and args.amidda_repeat > 0:
         if not AMIDDA_AUDIT.exists():
@@ -405,15 +414,25 @@ def main():
         _blob = json.loads(AMIDDA_AUDIT.read_text(encoding="utf-8"))
         _leaks = _blob.get("leaks", {})
         _n_leak = sum(len(v) for v in _leaks.values()) if isinstance(_leaks, dict) else 0
-        if _n_leak:
-            raise SystemExit("AMIDDA leakage audit found %d leaked line(s) - filter the "
-                             "corpus before training (see %s)" % (_n_leak, AMIDDA_AUDIT))
-        print("amidda audit: PASS rows=%s unique_text=%s dup_text=%s dup_page=%s" %
-              (_blob.get("rows"), _blob.get("unique_text"), _blob.get("dup_text"),
-               _blob.get("dup_page")), flush=True)
+        for _d in _blob.get("drop", []):
+            amidda_drop.setdefault((_d["name"], _d["split"]), set()).add(_d["image"])
+        if _n_leak and not amidda_drop:
+            raise SystemExit("AMIDDA audit reports %d leak(s) but carries no drop list - "
+                             "re-run arabic_ocr/scripts/audit_amidda_leakage.py"
+                             % _n_leak)
+        print("amidda audit: rows=%s dup_text=%s dup_page=%s leaks=%d -> DROPPING %d row(s) "
+              "from training" % (_blob.get("rows"), _blob.get("dup_text"),
+                                 _blob.get("dup_page"), _n_leak, len(_blob.get("drop", []))),
+              flush=True)
 
     device = torch.device(args.device) if args.device != "auto" else \
         torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if args.vram_cap_gib > 0:
+        _tot = torch.cuda.get_device_properties(device).total_memory / (1024 ** 3)
+        _frac = min(0.97, float(args.vram_cap_gib) / _tot)
+        torch.cuda.set_per_process_memory_fraction(_frac, torch.cuda.current_device())
+        print("vram cap: %.2f GiB = %.3f of %.2f GiB device (a spill now raises OOM)" %
+              (_frac * _tot, _frac, _tot), flush=True)
     out_dir = Path(args.out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -486,7 +505,11 @@ def main():
             rep = args.amidda_repeat
         else:
             rep = 1
-        got, stats = build_items(charset, folder, max(1, rep), args.limit, target_h)
+        skip = None
+        if name.startswith("amidda"):
+            _base, _, _split = name.rpartition("_")
+            skip = amidda_drop.get((_base, _split))
+        got, stats = build_items(charset, folder, max(1, rep), args.limit, target_h, skip)
         stats["repeat"] = rep
         stats["included"] = rep > 0
         audit[name] = stats

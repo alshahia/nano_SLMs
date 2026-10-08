@@ -39,6 +39,27 @@ khatt_bench <= 25.25, isippt_bench <= 52.68 - with the blank-penalty delta tuned
 `init: model.pt` regardless - that label is hardcoded to `CKPT_PATH.name`). A non-Pareto
 result is a reportable FAIL.
 
+**Leakage audit executed - and the leak is COINCIDENTAL, not structural.** `audit_amidda_leakage.py`
+matched the 30,404 ingested lines against all four FULL eval reference sets: **135 exact hits
+(128 `muharaf_test`, 10 `isippt_bench`), 2 blob hits, 0 hard hits**. The exact hits are not a
+shared corpus - the matched reference length is **median 2 chars**, 130 of 135 are under 10 chars,
+and the only five that reach 20+ chars are the Basmala `بسم الله الرحمن الرحيم`, a formula written
+on manuscript pages everywhere and therefore present in almost any collection. The strongest test,
+whitespace-free >=12 chars (hard), is **0**. Dedupe: `unique_text` 29,401 of 30,404 (1,003
+duplicates across sub-sets = 3.3%), `dup_page` 0. Conservative decision costing 0.45%: all **137**
+hits are dropped from training. The audit writes `drop[]` and `finetune_muharaf.py` applies it as
+a row-level skip, confirmed in the launch log (`amidda audit: rows=30404 dup_text=1003 dup_page=0
+leaks=137 -> DROPPING 137 row(s)`). The eval sets themselves are untouched, so the gates stay
+honest. Measured at ingest: median image height **123 px**, 46% above 128 px, 14% in 33-64 px, 0.3%
+at <=32 px - the 64-112 band plus 27-96 degradation covers the corpus' real distribution.
+
+**Step 1 LAUNCHED** (job `pwsh-43`, 56,528 optimizer steps = ~3.7 h plus 57 evals). Startup
+verified: audit gate fired, 56,528 train items, `widest_est_w=3323` (unchanged by the 30,404 new
+rows), loss 1.50 -> 1.28 nats/char over the first 1,000 steps at 4.3-4.75 steps/s (0.22 s/step) -
+the healthy rate, not the 2.75 s/step spill signature. New `--vram-cap-gib 7.3` flag (AGENTS 20.3)
+arms a hard allocator ceiling so a WDDM spill raises a loud OOM instead of silently crawling.
+Verdict pending; gates are the TASKS 150 Pareto row.
+
 # 2026-10-07 (ad) (Arabic OCR Plan B verdict: PASS on all three gates - growth helps G1 but is domain-selective, and a checkpoint-persistence bug surfaced)
 
 > Follows (ac), same session. Plan B finished; both plans are now verdicted.
