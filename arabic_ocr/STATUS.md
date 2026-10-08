@@ -26,6 +26,11 @@ TASKS 150 / 151 / 155. Not a verdict yet: this records the pre-launch state only
 - **Launched 2026-10-07** (job `pwsh-43`): 56,528 optimizer steps (~3.7 h), loss 1.50 -> 1.28 over
   the first 1,000 steps at 0.22 s/step, 7.3 GiB allocator ceiling armed. Verdict pending.
 
+- **STOPPED 2026-10-07 by explicit user request** at step 6,000 / 56,528 (loss 1.1109).
+  No verdict - the Pareto gates are UNTESTED. State preserved: `arabic_ocr/runs/stage06d/ckpt_last.pt`
+  (step 5,000, + optimizer state), `ckpt_step001000..005000.pt`, `train_log.jsonl`. GPU released
+  (211 MiB used, 0% util).
+
 ## (aa) Option (D) VERDICT: FAIL - from scratch never escaped the CTC blank plateau
 
 Stopped at step **4,250 of 52,992** (~1 h 15 m). **G1 FAIL, G2 FAIL, G3 not reached.**

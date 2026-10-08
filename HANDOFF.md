@@ -60,6 +60,17 @@ the healthy rate, not the 2.75 s/step spill signature. New `--vram-cap-gib 7.3` 
 arms a hard allocator ceiling so a WDDM spill raises a loud OOM instead of silently crawling.
 Verdict pending; gates are the TASKS 150 Pareto row.
 
+**STOPPED by explicit user request** at step 6,000 of 56,528 (~11%), after
+~25 min, loss 1.1109 nats/char (down from 1.498 at step 50). Background job killed; verified no
+`finetune_muharaf` python process survived and the GPU returned to 211 MiB used / 7,784 MiB free / 0%
+util. Last durable state: `arabic_ocr/runs/stage06d/ckpt_last.pt` (step 5,000 eval boundary, weights
++ optimizer), `ckpt_step001000..005000.pt`, and `train_log.jsonl` (1,211 B - it IS flushed on exit, so
+the per-step history is recoverable; the earlier "0 B" reading was just mid-run buffering). Up to
+~1,000 steps after the last checkpoint were lost, which is the eval-boundary granularity by design.
+**No verdict was produced**: the TASKS 150 Pareto gates remain UNTESTED and Step 1 is an open
+question - NOT a failure. The corpus, the leakage audit, the augmentation knobs and a usable
+checkpoint are all in place and committed, so a resume is cheap once the user decides.
+
 # 2026-10-07 (ad) (Arabic OCR Plan B verdict: PASS on all three gates - growth helps G1 but is domain-selective, and a checkpoint-persistence bug surfaced)
 
 > Follows (ac), same session. Plan B finished; both plans are now verdicted.
