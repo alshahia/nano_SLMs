@@ -29,7 +29,7 @@ overfitting the 96px upscaled regime at the expense of the 27px one. **Growth is
    <`eval_every` steps of a run are never persisted. Both runs show it: Plan A's `ckpt_last` carries
    `step = 66,000` (not 66,240) and Plan B's carries `step = 26,000` (not 26,496). The (ac) entry
    and E-110 were corrected to say 66,000. Consequences: the Plan B shortlist had 4 tags but only
-   **3 distinct checkpoints** (`ckpt_last.pt` is byte-identical to `ckpt_step026000.pt` - 0 of 206
+   **3 distinct checkpoints** (`ckpt_last.pt` holds IDENTICAL MODEL WEIGHTS to `ckpt_step026000.pt` - the FILES are NOT byte-identical (`ckpt_last.pt` is 145,967,307 B and also stores optimizer state, vs 48,657,283 B) - 0 of 206
    tensors differ, `max|delta| 0.000e+00`), and the scorecard's `final: true` row is from in-memory
    weights that cannot be reproduced from disk. Harmless here (the tail ran at lr ~1e-9), but it would
    bite with a large `eval_every`.

@@ -1,6 +1,15 @@
 """Download additional Arabic OCR datasets from Hugging Face."""
 import os
-os.environ['HF_TOKEN'] = 'REDACTED_HF_TOKEN'
+from pathlib import Path
+
+# HF_TOKEN comes from the gitignored project-root .env - NEVER hard-code it here.
+# hf_hub/datasets do NOT auto-load .env, so load it explicitly (same pattern as
+# scripts/prepare_data.py). The previously hard-coded token must be ROTATED.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parents[2] / '.env')
+except ImportError:
+    pass
 
 from datasets import load_dataset
 import json
