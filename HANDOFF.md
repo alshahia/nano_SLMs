@@ -1,3 +1,50 @@
+# 2026-10-07 (ad) (Arabic OCR Plan B verdict: PASS on all three gates - growth helps G1 but is domain-selective, and a checkpoint-persistence bug surfaced)
+
+> Follows (ac), same session. Plan B finished; both plans are now verdicted.
+
+**Plan B verdict: PASS on all three gates** (`arabic_ocr/runs/stage06c/blank_penalty_verdict.json`,
+E-111). Grown depth-only 4 -> 14 encoder layers, 4,245,671 -> 12,143,271 params (2.86x), authors'
+recipe, 8 epochs / 26,496 steps, 7,939.3 s. Pre-registered rule executed: on-disk FINAL + the 3
+lowest `khatt_teklia_test` cards, delta tuned on `muharaf_val` ONLY (delta 1.00 for all three).
+
+| tag (step) | delta (val) | muharaf_test | khatt_teklia_test | khatt_bench | isippt_bench |
+|---|---|---|---|---|---|
+| planB step 26,000 | 1.00 (20.68) | 21.64 / 16.30 | **16.46** / 14.97 | **25.58** / 24.23 | 54.15 / 53.66 |
+| planB step 24,000 | 1.00 (20.79) | **21.58** / 16.21 | 16.51 / 15.01 | 25.53 / 24.19 | **53.93** / 53.34 |
+| planB step 23,000 | 1.00 (20.89) | 21.79 / 16.45 | 16.65 / 15.18 | **25.25** / 23.90 | 54.42 / 53.99 |
+
+(raw / `norm_ar`.) All PASS: G1 16.46 (margin 4.54 pp), G2 21.58-21.79, khatt_bench 25.25-25.58, isippt 53.93-54.42.
+
+**B vs A - a net gain, not a Pareto gain.** Against the Plan A final (21.66 / 18.47 / 27.15 / 52.68):
+khatt_teklia_test **-2.01**, khatt_bench **-1.57**, muharaf_test -0.02, isippt_bench **+1.47 WORSE**.
+So 2.86x the parameters bought a large improvement on the binding gate G1 and on khatt_bench, and cost
+1.47 pp on `isippt_bench` - the 27px-resolution set (E-100), the smallest source images. Training
+loss fell 0.6217 -> 0.5483 and the test gains followed on 3 of 4 sets, so the deeper model is
+genuinely fitting better rather than merely memorising; the isippt regression is consistent with
+overfitting the 96px upscaled regime at the expense of the 27px one. **Growth is domain-selective.**
+
+**Two record corrections and one real bug, all found by verifying instead of assuming.**
+
+1. **`ckpt_last.pt` is NOT the final model.** It is written at EVAL BOUNDARIES, so the last
+   <`eval_every` steps of a run are never persisted. Both runs show it: Plan A's `ckpt_last` carries
+   `step = 66,000` (not 66,240) and Plan B's carries `step = 26,000` (not 26,496). The (ac) entry
+   and E-110 were corrected to say 66,000. Consequences: the Plan B shortlist had 4 tags but only
+   **3 distinct checkpoints** (`ckpt_last.pt` is byte-identical to `ckpt_step026000.pt` - 0 of 206
+   tensors differ, `max|delta| 0.000e+00`), and the scorecard's `final: true` row is from in-memory
+   weights that cannot be reproduced from disk. Harmless here (the tail ran at lr ~1e-9), but it would
+   bite with a large `eval_every`.
+2. **`scorecard.json.init` is hardcoded to the default `model.pt`** and is therefore WRONG on the
+   `--init-ckpt` path - Plan B's scorecard says `\"init\": \"model.pt\"` while actually initialising
+   from the grown 14-layer checkpoint. The `params: 12143271` field is the trustworthy one.
+3. **The scorecard's `gates` block reads the 400-line CARD, not the full set.** Plan B's scorecard
+   reports `G2_muharaf_test_raw_le_23.11: false` (card 26.25) while the full-set verdict is 21.64 -
+   a PASS. The muharaf card runs ~+4.3 pp harsher (E-109); never read the scorecard's G2 as the gate.
+
+**State of the OCR line: both plans pass all three gates.** The best single model is Plan B at step
+24,000 (21.58 / 16.51 / 25.53 / 53.93), which beats Plan A on three of four sets; Plan A remains
+better on `isippt_bench` (52.68 vs 53.93). G1 travelled 40.79 (zero-shot teacher) -> 18.47 (A) ->
+16.46 (B). Carry-forward caveat unchanged: published OCR numbers are NORMALISED CER, ours are RAW.
+
 # 2026-10-07 (ac) (Arabic OCR Plan A verdict: PASS on all three gates - the authors' recipe beat capacity)
 
 > Follows (ab), same session. Plan A finished; the verdict is in and it is a clean PASS.
@@ -11,7 +58,7 @@ tuned on `muharaf_val` ONLY.
 
 | tag (step) | delta (val) | muharaf_test | khatt_teklia_test | khatt_bench | isippt_bench |
 |---|---|---|---|---|---|
-| **planA_final (66,240)** | **1.00** (val 21.00) | **21.66** / 16.32 | **18.47** / 17.06 | **27.15** / 25.84 | **52.68** / 52.14 |
+| **planA_final (66,000)** | **1.00** (val 21.00) | **21.66** / 16.32 | **18.47** / 17.06 | **27.15** / 25.84 | **52.68** / 52.14 |
 | planA_s61000 | 1.00 (21.09) | 21.88 / 16.56 | 18.13 / 16.68 | 26.23 / 24.99 | 52.56 / 52.03 |
 | planA_s59000 | 1.25 (21.01) | 21.96 / 16.65 | 18.27 / 16.82 | 26.52 / 25.24 | 53.03 / 52.43 |
 | planA_s63000 | 1.25 (21.00) | 21.99 / 16.68 | 18.15 / 16.70 | 26.45 / 25.13 |
