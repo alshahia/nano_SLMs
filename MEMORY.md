@@ -1119,3 +1119,39 @@ fails with `FileNotFoundError: <out>/ckpt_last.pt`.
   total + live-file presence + per-category counts all asserted BEFORE the first `Remove-Item`); E: 5.19 ->
   9.73 GiB. Full inventory and the never-delete list: `research/arabic_ocr_cleanup_audit.md`.
 
+## 2026-10-07 - A training run can SPILL into WDDM shared memory and still exit 0
+
+Step 1 of the routed OCR system (TASKS 151) pre-registered a 64-160 px multi-scale
+height band. Before launching, the top of that band was smoked on this 8 GiB Quadro
+RTX 4000 and measured with `torch.cuda.max_memory_allocated()` (batch 8, the Plan B
+batch size):
+
+    band      allocated   reserved   s/step
+    160,160    9.94 GiB   16.08 GiB   2.75    <- allocated EXCEEDS the 8.00 GiB device
+    128,128    6.61 GiB    9.49 GiB   0.44
+     96,96     4.06 GiB    5.41 GiB   0.23
+     64,64     2.15 GiB    2.75 GiB   0.17
+     64,112    5.23 GiB    6.55 GiB   0.21    <- the band actually used
+
+Lessons:
+
+- **`allocated > total_memory` is the only reliable spill detector.** Windows/WDDM
+  over-commits into system RAM instead of raising CUDA OOM, so the 160 px smoke ran 40
+  steps and **exited 0**. A green exit code is NOT evidence that a run fits, and the
+  trainer prints no memory line by itself - the smoke branch (or an external
+  `nvidia-smi` sampler) has to report it. This is the AGENTS 20.3 incident pattern;
+  the 12x slowdown (2.75 s/step vs 0.23 s/step) is the observable symptom.
+- **Memory scales ~h^2, not ~h.** `preprocess_image` preserves the aspect ratio, so a
+  taller target height also makes the line WIDER: cost ~ h x W ~ h^2. 160/96 = 1.67x
+  taller is 2.78x the memory. Never extrapolate VRAM from one height.
+- **A height band must be set from a measured curve**, with the ceiling chosen against
+  the ~7.4 GiB usable line (8.00 GiB card minus what the Windows desktop already
+  holds), not against what the architecture tolerates.
+- The per-batch training height is sampled from `(seed, epoch, batch_idx)` instead of a
+  global RNG, so a resumed run reproduces the identical batch geometry.
+- Two OCR-only traps met in the same window: `finetune_muharaf.py --init-ckpt` reports
+  `init: model.pt` regardless of the checkpoint actually loaded (the label is the
+  hardcoded `CKPT_PATH.name`; the WEIGHTS are correct - confirm via the param count,
+  e.g. 12,143,271 = the grown L14 model, not the 4.25M teacher), and `data/hf` is
+  untracked-but-UNIGNORED, so a new corpus shows up in `git status` (collapsed to one
+  directory entry) and must never be swept up by a broad `git add`.

@@ -1,5 +1,23 @@
 # Arabic OCR — honest status (2026-10-01)
 
+## (ab) Routed system, Step 1 PRE-LAUNCH - AMIDDA in, band measured down to 64-112, objective Pareto-only
+
+TASKS 150 / 151 / 155. Not a verdict yet: this records the pre-launch state only.
+
+- **Data**: the 4 licence-verified AMIDDA sub-sets (30,404 lines) are streamed in via
+  `fetch_hf_lines.py`. Measured **~118 KB/line** (baybars/train), 2.2x the Muharaf
+  precedent, so ~3.6 GB lands on E:. The aggregate `calfa-ai/AMIDDA` is deliberately NOT
+  used - its card says "other" and it also contains our own KHATT/Muharaf test splits.
+- **Leakage gate**: `arabic_ocr/scripts/audit_amidda_leakage.py` writes
+  `data/hf/amidda_audit.json`; the trainer now REFUSES to start without a clean one.
+- **Augmentation**: multi-scale height **64-112** (measured; the pre-registered 64-160
+  spilled into WDDM shared memory at 9.94 GiB on an 8 GiB card WHILE EXITING 0) plus
+  resolution degradation 27 -> 96 px at p=0.5, the direct counter to the E-100 27 px
+  ISIPPT regime.
+- **Objective**: Pareto over Plan A and Plan B on all four full sets - muharaf_test <= 21.58,
+  khatt_teklia_test <= 16.46, khatt_bench <= 25.25, isippt_bench <= 52.68 - delta tuned on
+  `muharaf_val` only.
+
 ## (aa) Option (D) VERDICT: FAIL - from scratch never escaped the CTC blank plateau
 
 Stopped at step **4,250 of 52,992** (~1 h 15 m). **G1 FAIL, G2 FAIL, G3 not reached.**

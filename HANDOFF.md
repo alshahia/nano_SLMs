@@ -1,3 +1,44 @@
+# 2026-10-07 (ae) (Routed OCR step 1: AMIDDA ingested, and the pre-registered 64-160 px band was measured OUT at batch 8)
+
+> Follows (ad), same session. Task rows: TASKS 150 / 151 / 155. This is the PRE-LAUNCH
+> state; the verdict lands in a later entry.
+
+The routed system (TASKS 150) is closed for design and open for execution. Step 1 is the
+first rung that adds real DATA rather than re-using the Muharaf/KHATT pair.
+
+**Data (TASKS 155) - ingestion executed, streaming.** The four licence-verified AMIDDA
+sub-sets (`calfa-ai/baybars` 15,567 etalab-2.0, `iskandar` 5,221 etalab-2.0, `RASAM-1`
+7,331 apache-2.0, `tarima` 2,285 apache-2.0 = **30,404 lines**) are fetched DIRECTLY, not
+through the `calfa-ai/AMIDDA` aggregate whose own card is "other" and which also carries our
+own KHATT/Muharaf test splits. `fetch_hf_lines.py` needed a new per-dataset text column: the
+AMIDDA family calls it `transcription`, not `text`. Streaming keeps the 5.71 GiB of parquet
+off **C:** (where the HF cache lives) and lands only the PNGs on E:. First measurements:
+baybars/train = 12,483 rows / 1,480,965,654 B = **~118 KB/line**, 2.2x the 53.7 KB/line
+Muharaf precedent, so the corpus projects to ~3.6 GB.
+
+**Code (TASKS 151).** `arabic_ocr/scripts/finetune_muharaf.py` gained `--height-band LO,HI`
+(one height per BATCH, derived from `(seed, epoch, batch_idx)` so a resume reproduces the
+batch geometry), `--res-degrade-prob/--res-degrade-band` (shrink the line to a low-res
+"source" height, then let `preprocess_image` upsample it back - the E-100 27 px ISIPPT
+regime as training data), and `--amidda-repeat`. The AMIDDA sub-sets are auto-discovered into
+`TRAIN_SETS` and gated on `data/hf/amidda_audit.json`: the trainer now RAISES on a missing or
+dirty audit (verified: exit 1 with the exact missing-path message).
+
+**The band is 64-112, not the pre-registered 64-160 - MEASURED, not guessed.** A smoke at a
+fixed 160 px peaked at **9.94 GiB allocated / 16.08 GiB reserved on an 8.00 GiB device**: it
+spilled into WDDM shared memory at 2.75 s/step and **still exited 0**, so no OOM was raised.
+Curve at batch 8: h64 2.15 GiB / 0.17 s/step, h96 4.06 / 0.23, h128 6.61 / 0.44, h160 9.94 /
+2.75; the band actually used (64-112) measures 5.23 GiB / 0.21 s/step. Memory is ~h^2 because
+aspect-preserving resizing widens the line as it grows taller. See MEMORY.md 2026-10-07.
+
+**Gates: unchanged and pre-registered (TASKS 150).** Pareto dominance over BOTH Plan A and
+Plan B on all four FULL sets - muharaf_test <= 21.58 raw, khatt_teklia_test <= 16.46,
+khatt_bench <= 25.25, isippt_bench <= 52.68 - with the blank-penalty delta tuned on
+`muharaf_val` ONLY and both raw and `norm_ar` reported. Init = the Plan B best
+`arabic_ocr/runs/stage06c/ckpt_step024000.pt` (12,143,271 params; the trainer prints
+`init: model.pt` regardless - that label is hardcoded to `CKPT_PATH.name`). A non-Pareto
+result is a reportable FAIL.
+
 # 2026-10-07 (ad) (Arabic OCR Plan B verdict: PASS on all three gates - growth helps G1 but is domain-selective, and a checkpoint-persistence bug surfaced)
 
 > Follows (ac), same session. Plan B finished; both plans are now verdicted.
