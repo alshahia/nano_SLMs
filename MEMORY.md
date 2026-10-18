@@ -1155,3 +1155,1110 @@ Lessons:
   e.g. 12,143,271 = the grown L14 model, not the 4.25M teacher), and `data/hf` is
   untracked-but-UNIGNORED, so a new corpus shows up in `git status` (collapsed to one
   directory entry) and must never be swept up by a broad `git add`.
+
+## 2026-10-08 - An external repo's committed receipts are the cheapest, strongest validation target (glm-5.3-flash clone)
+
+Cloned `glm-5.3-flash-from-scratch` (nested gitlink, HEAD 96d9c7c) and re-ran its
+published 25.7M pretrain->RL result on this machine after porting it into the parent
+`.venv` (bf16 -> fp16 + GradScaler, `torch==2.5.1` unpinned, zero-flag auto-resume).
+What made the validation cheap was not the re-run, it was the repo's own
+`artifacts/receipts/`:
+
+- `system-receipt.json` pins the reference machine (RTX 3080 Ti 12 GiB, torch
+  2.5.1+cu121, py 3.12.3) and the exact parameter counts.
+- `pretraining-gpu-checkpoint-generation.json` pins, per checkpoint, the weights
+  sha256 AND the exact greedy completion for one frozen task.
+- `checkpoints.sha256` pins the trained checkpoint hashes.
+
+Replaying those turned a fuzzy "does the port work?" into hard numbers: the token
+stream (1,381,760), total/active params (25,730,592 / 9,805,344), RL trainable params
+(2,190,152), RL rollouts (1,536), pretrain peak VRAM (2.141 vs 2.139 GiB) and RL peak
+(0.939 vs 0.936 GiB) all reproduced exactly; two of three greedy completions matched
+byte-for-byte.
+
+Lessons:
+
+- **A file-level sha256 of a `.pt` is not a weights comparison.** All three
+  checkpoint hashes differed, including step 0 (before any training), because
+  `torch.save`'s container bytes differ between torch 2.5.1 and 2.14. Compare
+  tensors or decoded behaviour, never the file hash across versions.
+- **A port can be exactly right and still miss the headline magnitude.** Ours
+  reached the same infrastructure and the same *direction* (7 gains / 0 losses on
+  greedy confirm, exact McNemar p=0.0156) but half the gain, because fp16 + torch
+  2.14 pretraining at step 100 was ahead of the upstream bf16 step 100 (dev 3/8 vs
+  2/8, confirm greedy 5/24 vs 0/24). The published result depends on the RL init
+  checkpoint still having headroom; reproducing the *step* is not reproducing the
+  *regime*.
+- **Pre-register thresholds before the launch** (TASKS 157). Two of four thresholds
+  failed, and that is the honest record: a partial replication, not a pass.
+- The port itself: `--vram-cap-gib` (allocator ceiling) + `allocated > total` spill
+  detection + a `state.pt` carrying optimizer/GradScaler/RNG make a zero-flag resume
+  work on an 8 GiB Turing card that has no bf16 at all. `--amp-dtype bf16` now
+  RAISES below sm_80 instead of silently downgrading.
+## 2026-10-08 - Match an RL regime by its reward signal, not by a small-sample score (glm-5.3-flash E-113)
+
+- **The number that identifies an RL init's regime is its exact-rollout rate on the RL schedule, not its dev score** (2026-10-08, E-113). E-112 blamed its halved RL gain on headroom. E-113 re-ran the identical RL recipe from an init selected to match the published dev headroom (step 90, dev 1/8, greedy confirm 0/24 - exactly the published baseline) and still got **+8** greedy tasks against the published **+16**. The decisive evidence is in the receipts: the published step-100 init produces **417/1,536** exact rollouts, our step-100 init (E-112) **406/1,536** - matched to 2.6% - and that arm's greedy gain was **+7** vs +16, while the extra-headroom step-90 init (**150/1,536**) gained +8. Two arms with 2.7x different reward signal both land at half the published gain, so the init is not the explanation. What fails to reproduce is the RL *endpoint* (greedy 8-12/24, pass@8 exact 41-75/192, solved 13-15/24 against 16/24, 88/192, 19/24); the leading remaining suspect is the RL step itself under fp16/torch-2.14.
+- **Dev pass@1 on 8 tasks cannot place a checkpoint in a regime** (2026-10-08, E-113). The dense scan read 1/8 at step 90 and 3/8 at step 100 while the RL-time exact count differed 150 vs 406 of 1,536. Log the init's exact-rollout rate on the actual RL schedule next to the dev score - it is free (the RL run computes it) and it is the quantity RL actually consumes.
+- **Headroom is real, but only within one pretrain family** (2026-10-08, E-113). Greedy gain fell monotonically across our own checkpoints: step 90 (dev 1/8) +8, step 100 (dev 3/8) +7, step 200 (dev 7/8) +0. It does not explain the cross-implementation gap.
+- **A saturated init makes an RL arm a silent no-op** (2026-10-08, E-113). From `runs/pretrain/checkpoint-0200` all 96 groups x 16 samples were already exact (1,536/1,536, `reward_spread` 0.0), so RLOO advantages were identically zero, **0 groups were updated**, and the run exited 0 while training nothing. Always read `exact_rollouts` and `updated` from the RL receipt before interpreting a flat arm as a negative result.
+- **`job_output` on a settled background job returns only the delta since the previous read** (2026-10-08, E-113). The second read came back empty even though the first had shown only the first 4,000 characters. Keep a durable log inside the run directory (`runs/regime/regime.log`) and read that.
+- **A fail-closed CLI check can kill an unattended pipeline in 2.4 s** (2026-10-08, E-113). `train_pretrain.py` requires the final `--checkpoints` entry to equal `--steps`; the driver's dense list had to be extended with the run's own final step. A `--help` smoke does not catch it - only a real launch does.
+
+## 2026-10-08 - Exonerate a suspect by controlling it (glm-5.3-flash E-114)
+
+- **A dtype/optimizer change is a one-field A/B, and here it was null: fp32 reproduces fp16 to the task** (2026-10-08, E-114). Same init (`runs/pretrain/checkpoint-0100`, sha256 44d740f7...), same 96-group schedule (`schedule_sha256` 0c2327ee...), same seed, only `--amp-dtype fp16 -> fp32`: greedy 5/24 -> 12/24 (+7), pass@8 3 families 10/24 -> 15/24 (+5), all-8 30/64 -> 30/64 (0) - identical to the fp16 arm - with 407 vs 406 exact rollouts of 1,536. The control cost 5% wall-clock (464.5 s vs 440.9 s) and +0.56 GiB peak (1.495 vs 0.939). At 25.7M params generation dominates, so 'fp32 is 2-4x slower' does not transfer - run the control instead of assuming it is expensive.
+- **Controlling the dtype kills a mechanism, not just a variable** (2026-10-08, E-114). E-113 proposed that fp16's activation range in the last block limited what a head-only RL update could express. fp32 has fp32's exponent range - strictly wider - and changed nothing, so the representational mechanism is dead, not merely unconfirmed. When a proposed cause is about *range*, control with the widest available precision.
+- **Match the manipulation checks before reading an arm** (2026-10-08, E-114). Init sha256, schedule sha256, the init's exact-rollout count and the updated-group count together proved A4 and A2 differed only in `amp_dtype`; a recipe match alone would have left the comparison open.
+- **Two arms can share a total and differ in allocation** (2026-10-08, E-114). A2 and A4 both gained +7 greedy, but A2 put all 7 in `double` while A4 put 5 in `increment` and 2 in `double`. Report per-family numbers, or identical totals will hide a real behavioural difference.
+- **The RL receipt has no top-level exact/updated totals** (2026-10-08, E-114). They exist only inside `groups_detail`; the driver's log line printed `exact=None updated=None` and the totals had to be summed. Promote them into the receipt when touching `train_rl.py`.
+
+## 2026-10-08 - User decision: the published-torch control is OFF the table (glm-5.3-flash line)
+
+- **Never pursue the torch-2.5.1 (published-stack) control** (2026-10-08, explicit user decision). Asked to choose between the cheap eval-only learning-curve read (option A) and a second-venv control reproducing the published torch 2.5.1+cu121 (option B), the user said: proceed with A, and "never proceed with option B". So this line must not add a second environment for that purpose, and the residual stack difference (torch 2.14.0+cu126 vs the published 2.5.1+cu121) stays permanently unexplained by choice. Do not re-propose it. The surviving explanations for the halved RL endpoint are the recipe/scale itself or the bf16 device, which sm_75 cannot test.
+
+## 2026-10-08 - A monotonicity clause is the wrong pre-registration for a small-sample curve (glm-5.3-flash E-115)
+
+- **Pre-register the final-window gain, not a monotonicity boolean** (2026-10-08, E-115). My E-115 rule said 'PLATEAU if greedy(96) == greedy(72) or the curve is non-monotone'; the curve was 8, 8, 7, 12 over 24/48/72/96 groups, so a single one-task dip at 72 fired PLATEAU even though the final window delivered the largest greedy jump of the whole curve (7 -> 12, +5). One task is 4.2 pp on a 24-task confirm set, so a monotonicity test is dominated by noise. Pre-register 'gain in the final window > 0 with its paired test' and, when the literal label and the substantive reading disagree, report both explicitly.
+- **pass@8 can lead greedy by a whole checkpoint interval** (2026-10-08, E-115). On the A4 curve the increment family's pass@8 solved jumped 2 -> 7 by 72 groups while its greedy solved was still 0; greedy only moved 0 -> 5 at 96. The 3-family pass@8 endpoint (15/24) was reached at 72, 24 groups before the greedy endpoint (12/24). When a greedy endpoint looks saturated, read pass@8 at the earlier checkpoints before concluding the policy stopped improving - and vice versa.
+- **An RL gain can migrate between families along the curve** (2026-10-08, E-115). Greedy double solved went 5 -> 8 by 24 groups, held 8 at 48, then fell to 7 at 72/96, while increment stayed 0 until it jumped 0 -> 5 at 96. The total 7 -> 12 hides a handoff between families, so per-family curves are needed to see that the endpoint gain is a late increment event rather than broad improvement.
+- **A learning-curve read costs 11 minutes and no training** (2026-10-08, E-115). Six evals (3 greedy + 3 pass@8) over checkpoints the arm had already saved answered the step-budget question; regime_match.py --stage a5 reuses E-114's own endpoint receipts so the curve's last point and the endpoint are the same measurement.
+
+## 2026-10-08 - A step budget can masquerade as a recipe ceiling (glm-5.3-flash E-116)
+
+- **When a reproduction undershoots a published metric, buy the next doubling of the step budget before blaming the recipe** (2026-10-08, E-116). A4 (96 groups) ended at greedy 12/24 against the published 16/24, and E-114 had already exonerated the dtype path. Doubling the identical recipe/init/seed to 192 groups reached **16/24 exactly** (12 -> 13 -> 16; 11 gains / 0 losses, p=0.00098). The shortfall was a step-budget gap. Cost of the answer: 907.7 s of RL plus four evals, ~21.6 min.
+- **Prove a pure continuation by hashing the shared checkpoint** (2026-10-08, E-116). sha256(a6/checkpoint-0096) == sha256(a4/checkpoint-0096) showed the 192-group arm's first 96 groups were the same trajectory, which licensed reusing E-114's step-96 receipts and saved two evals. A recipe match alone would not have proven it.
+- **A flat stretch is not saturation - extend before labelling** (2026-10-08, E-116). E-115 read 3-family pass@8 as 'saturated at 72 groups' from 12, 12, 15, 15. At 192 groups it was **17/24**, so the label was an artefact of the short budget. Twenty-four groups is 24 confirm tasks - far too few to call a plateau.
+- **A 3-family gain can be a redistribution, not a win** (2026-10-08, E-116). The post-hoc all-8 probe at 192 was flat (30/64 -> 30/64, 8 gains / 8 losses, p=1.0) while the trained families gained 8: the untrained families lost the same 8 (square 8 -> 3, reverse 3 -> 0). Read the all-8 probe before calling a 3-family arm a win, and label it post-hoc when the pre-registration covered only 3 families.
+- **schedule_sha256 is budget-scoped, not trajectory-scoped** (2026-10-08, E-116). A4 0c2327ee... vs A6 8da15758... differ even though the first 96 groups are bit-identical, because the hash covers all 192 groups. Compare checkpoint hashes across budgets; a schedule-hash mismatch is not evidence that the trajectory diverged.
+## 2026-10-10 - fp16 byte-level forward overflow (E-117 incident)
+
+- Symptom: FloatingPointError 'non-finite loss at step 334 micro 2' after a healthy
+  trajectory (loss 4.99 -> 1.97 by step 330, gradient_norm < 1.1). The arm checkpointed at
+  1000/2500/5000, so nothing had been written and the whole attempt was lost.
+- Cause: the loss was non-finite *before* scaler.scale - an fp16 forward overflow on one
+  micro-batch (autocast fp16; Turing sm_75 has no bf16). GradScaler and
+  clip_grad_norm_(error_if_nonfinite=True) guard the backward, not the forward.
+- Fix: train_pretrain.py now skips a non-finite micro-batch, logs
+  {"event": "skip_nonfinite", ...}, divides the step loss by the number of *used*
+  micro-batches, and aborts after --max-skipped-micros (default 32) so systemic instability
+  still fails loudly.
+- Determinism: the restarted run reproduced step-1 loss 4.986262798309326 exactly (same seed,
+  same corpus index), so the overflow recurs at step 334 and is now skipped.
+- Lesson: size checkpoint cadence for the failure, not the happy path - <=250 steps on a 4 h
+  arm keeps a hard numerical failure under ~15 min of lost work.
+## 2026-10-10 - a skipped micro-batch keeps its forward graph alive (CUDA OOM at the cap)
+
+Symptom: the E-117 byte arm skipped one non-finite fp16 micro-batch at step 334 and then died of
+CUDA OOM on the very next micro-batch, at 4.01 GiB allocated against a 4.10 GiB cap.
+
+Cause: the skip branch did `continue` without dropping the tensors it abandoned. At the next micro,
+`micro_loss = (...)` evaluates the new forward (allocating the next graph) BEFORE the assignment
+rebinds the name and releases the old one - so the skipped micro-batch's ~536 MB of linear-attention
+activations overlapped its successor. Allocator fragmentation after 334 steps supplied the rest.
+
+Lesson: every 'skip this micro-batch' path must `del` the abandoned tensors before `continue` and
+empty the CUDA cache. Separately, halving the micro-batch (4 -> 2) while doubling accumulation
+(8 -> 16) leaves the effective batch, the per-step data range and the gradient mathematically
+unchanged - only the float summation order differs - while halving the transient chunks; it is the
+cheapest safe response to an own-job OOM. (It was applied during the incident and then reverted:
+once the abandoned graph was deleted the arm returned to micro-batch 4, because batch 2 measured
+6.26 s/step against 3.0 s/step - the deletion, not the batch size, was the fix.)
+## 2026-10-10 - a deleted redundant copy is only redundant while the other copy is verified present (e1/e2 weights lost)
+
+TASKS row 19 shipped `runs/sft_v2_e1/final` (e1) as the SFT v2 deliverable and kept
+`runs/sft_v2/final` (e2) as overfit evidence. Today **both are absent from disk**, and the
+2026-09-09 machine-move resume pack that held all ten weights-bearing finals (sha256
+`ceda94adbce10e7af5bcd85a7b58fbbe550072bd1f02bf0c91d68437f705bd4e`) is also absent from
+`checkpoint_backup/`, which now holds only the glm53-flash E116 pack.
+
+The 2026-09-09 deletion of `checkpoint-sft_v2_e1-final.zip` was user-approved on the stated
+grounds that it was "CRC-verified redundant vs disk + pack". That was true that day and false
+later: the disk copy was cleaned up and the pack left the machine. Redundancy is a property of a
+moment, not of an artifact.
+
+Rule: before deleting any artifact as redundant, name the surviving copy AND record where it lives
+in TASKS/MEMORY; if the survivor is a machine-move pack, record that its location is the other
+machine. A "deliverable" row in TASKS must carry the artifact's on-disk path plus a verification
+date, or it is not a deliverable - it is a claim. Evidence survives (numbers reproducible, weights
+not) under runs/evidence/2026-09-08_cleanup/sft_v2/ and runs/evidence/2026-09-16-tierA-cleanup/sft_v2/;
+recipes = configs/sft_v2_e1.yaml + configs/sft_v2.yaml; the corpus is still on disk.
+
+## 2026-10-10 - autocast is a dispatch-time cast, not a suggestion: an "fp32 accumulator" under autocast is still fp16
+
+E-117 died four times at the same step with a non-finite loss while every module output in the
+forward stayed below 8.3. The tempting reading was "fp16 range overflow in the prefix
+accumulator", and casting the accumulator to fp32 looked like the fix - it changed nothing,
+because `einsum` and `bmm` are matmul-family ops: autocast casts their inputs to the autocast
+dtype at dispatch time, silently undoing an explicit `.to(torch.float32)`. The reduction then
+overflowed exactly as before, at the same step, in the same micro-batch. Only
+`torch.autocast(device_type=..., enabled=False)` (or `torch.amp.custom_fwd(cast_inputs=...)`)
+actually changes the arithmetic dtype.
+
+Diagnostics that found it, in order of value:
+1. A `TorchDispatchMode.__torch_dispatch__` that checks every op output with `torch.isfinite`
+   names the FIRST non-finite ATen op plus its input dtypes and output shape
+   (`aten.bmm.default`, [fp16, fp16], [3072,1,1]) - far more decisive than module hooks, which
+   only say which module. Guard the check with a `busy` flag or the `isfinite` call re-enters
+   the mode.
+2. Forward hooks on every named module recording `type(module).__name__`, dtype, finiteness and
+   `max_abs`, plus a forward PRE-hook on each attention `out` Linear: that exposes the attention
+   result itself and separates "inside the attention math" from "the projection".
+3. A `torch.cumsum` of a non-negative tensor is a running prefix: its magnitude grows with
+   position, so any contraction against it is a range hazard in fp16 even when the inputs are
+   ~O(1). Bound the dtype where the growth happens, not where the inputs are.
+
+Rule: when a numerics fix "should have worked" but changed nothing, suspect a dispatch-time
+cast before re-deriving the math. And redirect every probe's stdout to a file - a background
+job's stream is consumed by the first read, which is how the one confirming fp32 control value
+was lost.
+## 2026-10-10 - sampling regime is part of the measurement: BOS, special-token masking, and the project's temperatures
+
+Two battery/pass@k measurements were void because the harness re-implemented sampling instead of
+calling the project's own. runtime.generate_group (glm53_flash/runtime.py:259) is the authority, and
+it does three things a naive loop forgets:
+  1. encode(prompt, bos=True) - the prompt carries BOS.
+  2. next_logits[:, [pad_id, bos_id, sep_id]] = -inf - pad/bos/sep can never be sampled. Sampling
+     them in a byte model decodes to non-byte ids, i.e. garbage.
+  3. generation stops as soon as the completion is parseable (completion_is_parseable), not at a
+     byte budget.
+Temperatures are conventions, not preferences: evaluate_passk.py defaults to 0.35, regime_match.py
+uses 0.35, and train_rl.py rolls out at 0.8. Measuring capability at T=1.0 on a 25.7M byte model
+produces pure noise (0/8 on a family the same checkpoint solves greedily), which reads exactly like
+"RL has no signal" and is false. Rule: never re-implement the sampler; import generate_group.
+
+## 2026-10-10 - no-repeat n-gram blocking is incompatible with byte-level Python
+
+Blocking repeated n-grams to cure degenerate repetition made things worse (rl-0096 9/32 -> 4/32 on
+the aspect battery). The reason is structural: Python's 4-space indent IS a repeated n-gram. '  '
+occurs three times inside four spaces, so an ngram=3 blocker bans the fourth space; the completion
+begins "\n   return" (three spaces) instead of "\n    return" and the model degenerates
+off-distribution. Any byte-level repetition control must be whitespace-aware or word-level. A
+CTRL-style repetition penalty is worse still on a byte model - it penalises e, t and space
+everywhere. Coherence has to be fixed in training, not at decoding.
+
+## 2026-10-10 - pass@k gates every aspect before any RL spend
+
+RL (policy gradient) and RFT both need positive samples: RL to amplify, RFT to keep. If pass@k = 0
+for an aspect, neither can work and the aspect needs SFT on the reference solutions - the only stage
+that does not require pass@k > 0. scratch/passk_preflight.py measures this per aspect via
+generate_group and reports the RFT yield (fraction of samples correct) as the SFT dataset size.
+Measured on rl-0096 (dev, 16 tasks x 8 samples): T=0.35 gives pass@k 1.00 for list_sum/double/
+increment, 0.50 for square/reverse, 0.00 for absolute/nonnegative/even; T=0.80 keeps 1.00 for
+list_sum and 0.50 for increment/double/square. Temperature is a per-aspect hyperparameter (reverse
+is 0.50 at 0.35 and 0.00 at 0.80), so the pre-flight should sweep it rather than assume a global
+value.
+
+## 2026-10-10 - strict vs extracted scoring separates stopping from ability
+
+External models ramble past the function body: smollm2-135m scores strict 1/32 but 13/32 when the
+completion is scored on its longest valid line-prefix. Our own arms score strict == extracted
+(9/32) because they learned to stop. Report both - strict is the project's own metric, extracted
+isolates python ability from format compliance - and never compare a rambler's strict score to a
+stopper's.
+
+## 2026-10-10 - the byte corpus is already 100% code; the lever is shape, not volume
+
+data/target/bytes/meta.json: CodeSearchNet Python, 150k extracted single functions, 47.94M BPE
+tokens -> 163,296,228 bytes, 6 shards, roundtrip_match_fraction 1.0, epochs_at_5000_steps 1.0033. So
+E-117's G4 continuation to 17,100 steps is 3.4 epochs of the SAME 163 MB - more passes, not more
+data, i.e. the memorisation regime. The corpus contains no multi-function files, classes, imports or
+tests, so module structure was never in the data. Chinchilla check: 163.3M byte-tokens / 20 ~ 8.2M
+params vs our 9.8M active - the byte arm is already right-sized for one epoch, so shrinking the
+model is the wrong direction and re-shaping the corpus is the cheap lever.
+
+## 2026-10-10 - the bigcode stacks are gated; codeparrot/codeparrot-clean is the ungated whole-file source
+
+bigcode/the-stack-smol, bigcode/starcoderdata and bigcode/the-stack-dedup all raise
+DatasetNotFoundError "is a gated dataset on the Hub" for this token (whoami = ahmadsyy, so the token
+itself is valid - the per-dataset grant is missing). data/md_measure/starcoderdata/prepare.log shows
+the same dataset streaming 2,000 rows successfully earlier, so the grant has lapsed since. Their HF
+cache dirs hold 3-90 KB of metadata only - no data.
+
+Ungated substitutes, probed 2026-10-10 (scratch/probe_wholefile_sources.py):
+  codeparrot/codeparrot-clean      OK  whole python files (content/path/repo_name/license), deduped
+  Nan-Do/code-search-net-python    OK  a CSN mirror - FUNCTION level (code/original_string/func_name)
+  TheGamingMahi/TinyCode           OK  but multilingual and generated, not real repos
+  flytech/python-codes-25k         OK  but instruction-shaped, not whole files
+  codeparrot/github-code           FAIL a loading script; datasets no longer runs those
+datasets>=3 also rejects trust_remote_code for these, so do not pass it.
+
+## 2026-10-10 - USER RULE: checkpoint at ~5% of the run, then keep only the best and the newest
+
+Three parts, all now automatic.
+
+(1) DENSITY. Both trainers derive the schedule when --checkpoints is empty:
+      train_pretrain.py  interval = max(1, round(--steps  * --checkpoint-fraction))  (default 0.05)
+      train_rl.py        interval = max(1, round(--groups * --checkpoint-fraction))  (default 0.05)
+    plus the final step (both require max(checkpoints) == steps/groups). A crash therefore costs at
+    most the last ~5%. The resolved list is printed in the "start" event, so a receipt always shows
+    the schedule actually used. The old defaults were the literal "100,200,400" / "8,16,32" - each
+    only ever validated for steps=400 / groups=32, so every other run had to pass --checkpoints by
+    hand. Explicit --checkpoints still wins, so the pre-registered E-114/E-117 recipes are unaffected.
+    Exception the user allowed: a run that takes only a couple of minutes does not need 5% density -
+    pass a larger --checkpoint-fraction (0.25 for a 100-step fine-tune) instead of 20 needless saves.
+
+(2) RETENTION. Keeping every checkpoint is not affordable: model.pt is 98.3 MB for the 25.7M-param
+    byte model, so 5% of 5000 = 20 checkpoints = ~2.4 GB per run, and a 100-step run would hold the
+    same 20 for a 15-minute job. runtime.prune_checkpoints keeps the BEST (ranked on a metadata key)
+    plus the newest --keep-checkpoints (default 2); keep_last < 0 keeps everything. THE NEWEST IS
+    ALWAYS KEPT, otherwise zero-flag auto-resume has nothing to resume from. A dry run is available
+    (apply=False), and scripts/prune_checkpoints.py exposes it post-hoc - DRY RUN BY DEFAULT, --apply
+    to delete. That tool is the one destructive thing in the trainer family: a checkpoint directory
+    holds the only copy of those weights.
+    Verified 2026-10-10: a 20-step smoke with --checkpoint-fraction 0.25 --keep-checkpoints 1 saved
+    checkpoints 5/10/15/20, pruned each predecessor, and left ONLY checkpoint-0020.
+
+(3) THE METRIC THAT MAKES "BEST" MEANINGFUL. Neither trainer had ANY validation signal before today -
+    pretraining logged only train loss, and every "val" grep hit in it was values/evaluates. "Keep the
+    best" therefore had nothing to select on, which matters because the target's own best checkpoint
+    was step 4000, NOT its final 5000 - a keep-the-last policy would have discarded the better model.
+    train_pretrain.py gained --val-corpus/--val-windows: a deterministic mean cross-entropy over the
+    first N held-out windows, computed at each checkpoint and recorded as metadata.val_loss. Cost is
+    negligible (32 windows ~ 1-2 s on GPU) and it is what makes the retention rule safe rather than
+    destructive. train_rl.py records metadata.exact_fraction, the rolling mean exact-rollout fraction
+    over --best-window groups (default 16), ranked high-is-better.
+    E-117 predates this, so its 20 checkpoints carry no val_loss and the tool reports best_step=null.
+    Rank that run by a post-hoc BPB evaluation instead, and pass --keep-steps 5000 to protect the
+    donor checkpoint the E-121 arms will --init-from.
+
+## 2026-10-11 - a held-out bits/byte curve, not the train loss, is what closes a pretrain gate
+
+E-117's train loss was unreadable (step 2000 0.65, 2500 1.17, 4500 1.53, 5000 1.26 - it swings by
+0.9 nats between adjacent checkpoints), yet the run's actual quality was a smooth function of step.
+Scoring all 20 checkpoints against a held-out byte corpus (scripts/evaluate_corpus.py, 256 windows
+each) gave a clean curve: 7.13 at step 0, 2.01 at 1000, 1.66 at 3000, 1.5335 at 5000. Consequences:
+
+  (1) Close the gate on the held-out curve. The noisy train loss would have said "still moving" at
+      every point; the curve says the model is flat (0.029 bits over the last 1000 steps), which is
+      what refuted the 17,100-step byte-parity continuation before any GPU was spent on it.
+  (2) A run's best checkpoint is not necessarily its last. The target's own best was step 4000, not
+      5000; E-117's was 5000. You cannot know without measuring - which is why retention ranks on a
+      metadata metric rather than on recency (see the checkpoint-policy lesson above).
+
+The curve also refuted "our arch can out-train the target" on capacity grounds, not recipe grounds:
+at identical 1.0033 epochs the 25.7M-total / 9.8M-active byte model sits 2.01x worse in bits/byte
+than the ~226M dense target. bits/byte is the only scalar that survives a tokenizer change - the
+byte arm is 1 token = 1 byte, so its bits/position IS bits/byte directly; for the BPE target divide
+by bytes_per_token = 3.5281223489345717. Report both arms in bits/byte or the comparison is noise.
+
+Non-monotonicity is real: 1250 (1.88) -> 1500 (1.96) -> 1750 (1.78), and 2000 (2.02) spikes ABOVE
+the 1250 value. With a fixed evaluation subset this is model noise (MoE routing / LR phase), not a
+measurement artifact - do not smooth it away, and never read a trend from two adjacent checkpoints.
+
+## 2026-10-11 - pass@k = 0 is a hard wall: neither RL nor RFT can move an aspect the base never solves
+
+Measured on E-121 arm A against its own donor (E-117 checkpoint-5000), identical protocol (rl split,
+16 tasks x 8 samples, T=0.35, generated through glm53_flash.runtime.generate_group so the sampling
+regime matches train_rl.py exactly):
+
+  donor, pretrain only                       8/8 aspects DEAD - not one positive sample in 128 draws
+  arm A, 3 epochs SFT on reference solutions 7/8 aspects viable; only 'even' still dead
+
+Both RL and RFT need a positive sample to exist before they can act. RL multiplies the probability of
+an already-reachable success; RFT/STaR samples-and-keeps correct completions and SFTs on those. If
+pass@k = 0 for an aspect, the reward is uniform across the whole group (nothing to sharpen) and
+rejection sampling returns the empty set. No amount of RL tuning, temperature search or longer
+training fixes it - the aspect must be INSTALLED first, and SFT on reference solutions is the lever.
+
+Practical rule: run the pass@k pre-flight on every aspect BEFORE spending RL budget (scratch/
+passk_preflight.py), then route each aspect by its reading:
+  pass@k > 0  -> RL is viable now (sharpen) and RFT is viable (amplify)
+  pass@k = 0  -> route to reference SFT; RL/RFT will burn budget for exactly zero gain
+
+The install is not all-or-nothing, so re-run the pre-flight after the SFT instead of assuming one
+pass fixed the family: 3 epochs (100 steps, 8 minutes) took 'nonnegative' 0 -> 16/16 while leaving
+'even' at 0/16.
+
+Corollary for measurement: always report pass@k and the greedy battery separately. Arm A scores 9/32
+on the greedy battery - the SAME total as rl-0096 - but the per-family composition is inverted and it
+is 7/8 vs 5/8 viable. A single total would have declared those two models equivalent.
+
+## 2026-10-12 - RFT/STaR trainer (scripts/train_rft.py): the loss must be causally shifted, and ln(vocab) is the tell
+
+scripts/train_rft.py is the missing RFT/STaR half of the E-118 ladder: each round samples every task
+with generate_group(sample=True), keeps ONLY the completions whose evaluate_source(...).passed is true,
+and takes a masked completion-only supervised step on those. It mirrors train_rl.py's scaffold exactly
+(5%-density auto checkpoints, best+newest retention, tasks.json resume guard, training-receipt.json) and
+records the per-family keep-rate - that curve is the reading, not the loss.
+
+The bug worth remembering: a causal LM loss needs logits[:, :-1] shifted against labels[:, 1:]. Both
+other trainers hide this by pre-shifting in their loader (train_pretrain.py line 69:
+inputs, labels = values[:, :-1], values[:, 1:]), so a NEW trainer that builds a raw batch and calls
+F.cross_entropy on it silently optimises the wrong objective. It does not crash - it reports a loss
+ABOVE ln(vocab), which is impossible for a mean CE over V classes. Measured: 8.24 on a vocab-260 byte
+model (ceiling ln 260 = 5.56); after the shift, 0.037 on the same batch.
+
+Rule: if a mean cross-entropy exceeds ln(vocab_size), the labels are not shifted. Check that first.
+
+Verified on CPU (runs/_smoke_rft, since deleted): keep_rate 1.0 (8/8 kept), 4 supervised steps,
+retention left checkpoint-0001+checkpoint-0003 and pruned 0002, and a re-run with --rounds 3
+auto-resumed from round 2 without redoing rounds 1-2. Note --max-new-tokens must clear the body
+length: a 12-token smoke scored keep_rate 0.0 for a body needing ~30 tokens, so a zero keep-rate is a
+sampling-budget bug before it is a model verdict.
+
+Also added the "pretrain" seed (9319) to tasks.frozen_tasks so the legacy pool supports
+--split pretrain the way the aspects pool already did; without it select_tasks(pool=legacy|all,
+split=pretrain) raised, which silently restricted RFT to the aspects pool.
+## 2026-10-12 - RFT's real limit, measured: 5 of 12 core aspects yield ZERO keep-rate even on the pool the model was SFT'd on
+
+scripts/train_rft.py --rounds 1 --samples 8 --tasks-per-family 4 --pool aspects --tier core --split
+pretrain on arm A (checkpoint-0100): 48 tasks x 8 samples at T=0.35, CPU, 18.8 min, keep_rate 0.4453
+(171/384 pairs). Per aspect:
+
+  is_palindrome 1.00   repeat_text 1.00   has_key 0.97   key_count 0.84   clamp 0.78
+  sign 0.44            contains_zero 0.31
+  count_even 0.00      count_positive 0.00  first_or_empty 0.00  grade 0.00  lookup 0.00
+
+Ruled out FIRST, because it would have changed the conclusion: all 12 core aspect references PASS under
+the CORE capability tier (scratch/check_aspect_refs.py), so the evaluator is not rejecting correct
+answers - the zeros are real sampling failures, not a capability-gating artifact.
+
+What the zeros share is the CONSTRUCT, not the aspect:
+  count_even      sum(1 for value in values if value % 2 == 0)    generator expression
+  count_positive  len([value for value in values if value > 0])   list comprehension
+  grade           multi-branch if/elif with string returns
+  lookup          mapping[key] if key in mapping else default     conditional expression + subscript
+  first_or_empty  text[:1]
+against what arm A does solve: operators and plain calls (text * times, min(max(x, low), high),
+key in mapping, len(mapping), text[::-1]).
+
+So the next reference-SFT batch should target those constructs, not more aspect families.
+
+Rule: RFT cannot train an aspect whose keep-rate is 0 - the kept set is empty and the supervised step is
+skipped by design. Measure keep-rate per aspect BEFORE spending RFT budget, exactly as pass@k gates RL.
+The two gates cover different pools: the rl-split pass@k pre-flight covers the 8 legacy families (7/8
+viable); this covers the 12 core aspects (7/12 viable). Do not quote one as the other.
+## 2026-10-12 - Arm B crash-safety, verified on disk: 5% auto-save, best+newest retention, atomic writes - plus a torn-directory hole now fixed
+
+Answered by inspecting runs/e121_whole and glm53_flash/runtime.py rather than assuming:
+
+  auto-save interval   max(1, round(5000 * 0.05)) = 250 steps -> saves at 250, 500, ..., 5000, so a
+                       kill costs at most 5% (the user rule)
+  retention            prune_checkpoints(keep_last=2, metric_key="val_loss"); protected =
+                       newest keep_last | {newest} | {best} | explicit keep_steps
+                       = best + last 2 (user rule 2026-10-12), verified by simulation: with the best
+                       val_loss at the OLDEST step (200) over steps 100..600, kept = [200, 500, 600]
+                       and removed = [100, 300, 400]. It is 3 directories when the best is older than
+                       the last 2, and 2 when the best is itself one of the last 2 (the sets overlap).
+                       Default --keep-checkpoints is 2 in all three trainers (pretrain, rl, rft).
+  on disk now          checkpoint-1000 val_loss 1.43 (newest AND best): model.pt 98.27 MiB + state.pt
+                       196.56 MiB; checkpoint-0750 val_loss 1.52: model.pt only
+  resume               latest_checkpoint() -> 1000, and state.pt restores optimizer + GradScaler + RNG,
+                       so the zero-flag relaunch continues with momentum rather than cold
+  atomicity            model.pt and state.pt are both written to *.tmp then os.replace()d;
+                       progress.jsonl tolerates a torn last line; the save runs BEFORE the prune, so a
+                       kill between them leaves extra checkpoints, never fewer
+
+THE HOLE (found while verifying, now fixed): a hard kill between save_checkpoint's mkdir and the
+os.replace of model.pt leaves checkpoint-NNNN containing only model.tmp.pt. list_checkpoints saw it,
+latest_checkpoint returned it, and load_checkpoint then raised FileNotFoundError on config.json - i.e.
+the zero-flag auto-resume would fail in exactly the situation it exists for. latest_checkpoint now skips
+any directory without model.pt, so resume falls back to the newest complete checkpoint; the torn
+directory stays visible to prune_checkpoints and is cleaned up by the next retention pass.
+
+Pinned by tests/test_resume.py::test_latest_checkpoint_skips_a_directory_torn_by_a_hard_kill. The
+prune fixture was also made realistic - it had been creating checkpoints with only state.pt and no
+model.pt, which is why the first, broader guard attempt broke it. 13 passed (19 with test_lab).
+
+Nuance: --keep-state 1 means only the NEWEST checkpoint carries state.pt (196 MiB each). Resume is
+therefore always from the newest - the right choice for continuing training - while an older retained
+checkpoint is weights-only, which is fine for evaluation. Raise --keep-state 2 to pay ~196 MiB for a
+second resumable point.
+
+## 2026-10-13 - Cross-arm bits/byte claims need a same-evaluator control; a 128-window in-training val_loss is NOT a bits/byte
+
+E-121 arm B (whole-file pretraining) finished at 5,000 steps and lost to E-117 by 5.29% bits/byte. That
+number is trustworthy only because both checkpoints were scored by the SAME script on the SAME corpus in
+the same session:
+
+    scripts/evaluate_corpus.py --corpus data\target\bytes\val.bin --corpus-dtype uint16
+      E-117  runs/e117_byte/checkpoint-5000  -> bits_per_position 1.5519592812129073  (ppl 2.9322)
+      arm B  runs/e121_whole/checkpoint-5000 -> bits_per_position 1.6339968610673714  (ppl 3.1037)
+      identical: 843 batches, 3,452,928 positions, corpus digest 6f6629ed0775dba81077c8be6004f3374649e68e3426779ccd84d1f8ea41ce13
+
+THE TRAP: arm B's in-training --val-windows 128 val_loss read 1.0759 nats/byte at step 5000, i.e. 1.5521
+bits/byte - apparently a dead heat with E-117's published 1.5335. The full corpus then measured 1.1326
+nats/byte, a 0.057 nat / 0.082 bit gap. E-117 showed no gap at all (1.075736 measured vs 1.0757
+in-training) because it was trained on the very corpus it was validated on. So a 128-window in-training
+val_loss is an optimistic, arm-dependent proxy: fine for checkpoint selection WITHIN a run, worthless for
+comparing runs whose training data differs from the validation corpus, and never to be quoted as a
+bits/byte figure.
+
+Corollary for the pipeline: any cross-arm or cross-corpus comparison must re-score BOTH checkpoints with
+evaluate_corpus.py on one shared corpus, even when both runs already logged a val_loss on that corpus.
+
+Capacity, not corpus, binds held-out bits/byte: with a 5% different data distribution the two byte arms
+land within 5% of each other and both go flat over the last 1,000 steps (~1.55 bits/byte).
+
+## 2026-10-13 - An SFT val_loss is not a proxy for executable performance; the pretraining base sets the RFT/RL ceiling
+
+E-121 arm B's downstream test (identical 100-step reference SFT, only --init-from changed) produced:
+
+    SFT val_loss (16 windows)    arm A 0.277184    arm B 0.278241    <- 0.4% apart
+    greedy battery (dev, 32)     arm A 9/32        arm B 1/32        <- 9x apart
+    invalid-Python completions   arm A 1/32        arm B 19/32
+    pass@k viable families       arm A 7/8         arm B 1/8
+    RFT yield (rl, 128 samples)  arm A 0.38281     arm B 0.00781     <- 49x apart
+
+Both arms were scored in ONE session by the same harnesses, and the arm A controls reproduced exactly (9/32
+with the same nine task ids; 7/8 viable with only `even` dead), so the gap is real and not a harness artefact.
+The two models predict the reference corpus almost identically and GENERATE completely differently: arm B
+emits `return x > 0)` and `return even into values are even.` (invalid syntax) where arm A emits well-formed
+but wrong expressions (`return x * x` for increment).
+
+Rules:
+- Never judge a pretraining base by its SFT val_loss. 100 supervised steps at lr 1e-4 do not overwrite the
+  base's generation behaviour even when the loss on the SFT distribution matches to 0.4%.
+- Judge a base by the greedy task battery AND pass@k, always reported together.
+- Choose the RFT/RL base by pass@k viability. A base at 1/8 viable families and 0.008 RFT yield has nothing
+  for RFT/RL to learn from - route it back to reference SFT, never to RL.
+- A 5% bits/byte deficit after 5,000 pretraining steps is not small downstream: it became 9x on greedy
+  accuracy. Bits/byte ranks bases in the right order but does not predict the size of the task-level gap.
+- Re-score the CONTROLS in the same session as any new arm. Arm A's re-measured 9/32 and 7/8-viable
+  reproducing exactly is what makes the arm B numbers trustworthy.
+
+## 2026-10-13 - RFT/STaR on a task pool disjoint from the evaluation families FORGETS the base; and the greedy battery is deterministic while 8-sample pass@k is not
+
+Rung 2 of the ladder (scripts/train_rft.py, runs/e121b_rft) trained arm A's last block (2,140,232 of 25.7M
+params) at lr 1e-5 for 4 rounds on the 12 CORE ASPECTS. Its own retention metric looked like a clean win -
+keep_rate climbed monotonically 0.4245 -> 0.4909 -> 0.5339 -> 0.5482 (+29% relative) with the supervised loss
+falling 0.0306 -> 0.0209. Held out, it was a loss:
+
+    greedy dev battery (32)    arm A 9/32    RFT 5/32    <- IDENTICAL on cpu and cuda
+    pass@k yield (rl split)    arm A 0.23047 (8/8 viable)     RFT 0.12500 (7/8, reverse dead)      [cpu]
+                               arm A 0.19141 (7/8, even dead) RFT 0.11328 (5/8, absolute/even/reverse dead) [cuda]
+
+The RFT lost increment (1->0), list_sum (2->0) and square (2->0) and gained only double (0->1). The 12 core
+aspects (is_palindrome, repeat_text, has_key, key_count, clamp, sign, contains_zero, count_even,
+count_positive, first_or_empty, grade, lookup) are DISJOINT from the 8 evaluated legacy families (absolute,
+double, even, increment, list_sum, nonnegative, reverse, square), so 194 supervised steps bought aspect-pool
+recall by overwriting legacy competence. The keep_rate climb was pool memorization, not transfer.
+
+Rules:
+- A keep_rate measured on the pool the RFT trains on is NOT evidence of transfer. Evaluate on held-out
+  families before believing any RFT round.
+- Before any RFT, check that the harvest pool COVERS the families you intend to keep - or isolate training
+  per aspect (one adapter per aspect, S10). A frozen-but-trained last block is not protection: last-block
+  scope still destroyed 4 of the 9 solved tasks.
+- Freezing reduces how much can drift; it does not decide WHICH way it drifts.
+
+Measurement discipline, learned the same day from the same four runs:
+- The greedy battery (bench_aspects.py, dev 32, 48-byte budget, deterministic decoding) returned BIT-IDENTICAL
+  per-family results on cpu and cuda (arm A 9/32: increment 1, list_sum 2, nonnegative 4, square 2), and the
+  arm A control reproduced its recorded numbers exactly. Trust it for verdicts.
+- 8-sample pass@k at T=0.35 is NOT reproducible run-to-run: the SAME arm A checkpoint read 8/8 viable with
+  yield 0.23047 on cpu and 7/8 with 0.19141 on cuda, and "even" flipped dead -> alive between the two. Use
+  pass@k for ORDER (0 vs >0, large gaps) and for the RFT/RL go/no-go, never for a fine-grained arm ranking;
+  repeat it or corroborate with the battery.
+
+CORRECTION / COMPLETION, same day: the damage was the POOL, not RFT itself. The identical RFT command with
+ONE flag changed (--pool all: aspects + legacy pretrain, 80 tasks) scored 12/32 on the same battery against
+arm A's 9/32 and the aspects-only RFT's 5/32 - the first ladder rung to IMPROVE the base on held-out tasks.
+
+    greedy dev battery (32)   arm A 9/32    RFT aspects-only 5/32    RFT pool-all 12/32
+    per family (pool-all)     list_sum 4/4 (arm A 2/4), square 3/4 (2/4), double 1/4 (0/4), nonnegative 4/4,
+                              increment 0/4 (arm A 1/4)
+
+So the rule is not "RFT is dangerous", it is "an RFT harvest pool must COVER the families you intend to keep".
+A pool that excludes them buys its own recall by overwriting them; a pool that includes them nets a gain.
+Note the trade-off that came with it: the pool-all RFT narrowed the sampling distribution - 5/8 families
+viable at T=0.35 (double/even/increment dead) vs arm A's 7-8/8 - while its greedy score rose. Sharper is not
+strictly better when the next rung (RL) needs within-family sampling diversity; run RL hotter, or from the
+broader base, and check viability per family before spending RL budget.
+
+WHICH SPLIT EACH STAGE USES - read this before interpreting any RL number:
+- scripts/train_rl.py HARDCODES select_tasks("rl", ...) - it has no --split flag (train_rft.py does, and
+  accepts --split pretrain). Passing --split to train_rl.py is an argparse error (exit 2).
+- scratch/passk_preflight.py --split rl measures the SAME pool RL trains on. A pass@k gain after RL is
+  therefore partly in-pool and cannot be quoted as held-out evidence.
+- scratch/bench_aspects.py --split dev (the 32-task battery) is a DIFFERENT pool: that is the held-out
+  measure, and it is the one that carries the verdict. RFT used --split pretrain, also disjoint from dev.
+So: battery = held-out verdict; pass@k(rl) = the RL training pool, usable for order and go/no-go only.
+
+## 2026-10-13 - The three-rung ladder is confirmed end to end: 9/32 -> 12/32 -> 16/32, and RL transferred to a family nothing else could solve
+
+On the deterministic held-out dev battery (32 tasks, greedy), all measured in one session:
+
+    arm A (reference SFT)        9/32
+    RFT aspects-only             5/32   <- destructive; disjoint pool
+    RFT pool-all                12/32   <- the same command with ONLY --pool all changed
+    RL (RLOO) from pool-all     16/32   <- +4, including reverse 0/4 -> 3/4
+
+The reverse gain is the headline: neither the SFT base nor the RFT solved a single reverse task, so RL created
+a capability rather than amplifying one, and it did so while training only on the rl split - i.e. it
+transferred to dev. RL config that produced it: RLOO, 96 groups x 4, T=0.8, lr 2e-5, last-block (2.14M
+trainable), reward-mode case-fraction, invalid-penalty -0.1, brevity-weight 0.0, --pool all.
+
+Rules:
+- The order reference-SFT -> RFT -> RL is now empirically supported on held-out tasks, not just designed.
+- A pool-covering RFT is a prerequisite: the same RFT on a disjoint pool cost 4 tasks while its in-pool
+  keep_rate rose. Never judge RFT by keep_rate; judge it by the held-out battery.
+- Run RL HOTTER than the pass@k convention (T=0.8 vs 0.35): RLOO needs within-group reward variance, and the
+  pool-all RFT had sharpened the policy enough that 5/8 families were pass@k-dead at T=0.35.
+
+## 2026-10-13/14 - The reference-SFT rung was 6x UNDER-TRAINED, and that mis-set the floor for the whole ladder
+
+Same corpus, same init, same lr schedule; only steps 100 -> 600:
+
+    arm A  (100 steps)   9/32 on the held-out legacy battery
+    E-122  (600 steps)  32/32 - every one of the eight families 4/4
+
+So the RFT and RL rungs were all measured against a base that had seen its own reference corpus for barely
+1.5 epochs. Before tuning a rung, check the rung below it is trained to convergence on its own data.
+
+Three rules this earned:
+- A PERFECT score needs a leakage control, not a celebration. The control here (scratch/leak_check_e122.py)
+  checks three things against the corpus: dev prompt-in-corpus 0/32, prompt+body-in-corpus 0/32, and
+  body-in-corpus 32/32. That last number is EXPECTED and harmless - a family's reference body is a CONSTANT
+  string such as "return x[::-1]", so any corpus of that family contains it. Only prompt or prompt+body
+  presence would be a leak.
+- val loss still does not predict executable performance. 0.2772 vs 0.2052 is a 26% gap; 9/32 vs 32/32 is a
+  3.6x gap. This is the third independent confirmation on this line.
+- A saturated battery stops being evidence. At 32/32 the legacy 8-family battery cannot discriminate any
+  more; the frontier moved to the aspect pool (grade, count_even, count_positive, lookup at 0/4).
+
+## 2026-10-14 - E-122e: a GENERATION CAP silently invalidated every rung measurement
+
+The rung battery's --max-tokens defaulted to 64 while its documented budget was 160 bytes. Because the byte model
+emits 1 token = 1 byte, EVERY completion came back exactly 64 bytes and the 160-byte budget never bound (measured:
+len(completion) min=med=max=64 across all 216 completions). 12 of 27 rungs have reference bodies longer than 64
+bytes (69-133 B) and those scored ~0/4 - not because the model cannot do them, but because the harness truncated
+the answer. Pass/fail tracks body length almost monotonically: <=59 B rungs pass, >=69 B rungs are ~0/4. The single
+exception proves the mechanism: count_even_loop_plus_equals (107 B) passes 4/4 only because a COMPACT equivalent
+(sum(1 for x in xs if ...)) fits under the cap - so the cap does not merely fail long answers, it REWARDS a
+different solution style.
+Lessons: (1) a generation cap is an instrument setting, not a decoding detail - assert that no completion reaches
+it, or the battery silently measures the harness instead of the model; (2) fix the class, not the instance - the
+48-byte budget bug was found the same day and the 64-token cap survived underneath it, so when one cap is found
+audit EVERY cap in the same tool; (3) relative comparisons survive (both arms shared the cap, so E-122d's
+forgetting verdict stands) but every pre-2026-10-14 absolute rung number understates capability and must be
+re-measured; (4) genuine failures exist independent of the cap (lookup_subscript at 25 B is 0/4 for both arms).
+
+## 2026-10-14 - E-122f: the model was NEVER TAUGHT TO STOP (no EOS in the corpus)
+
+Raising the generation cap to 1000 exposed the real defect underneath the cap bug. scripts/reference_sft_bytes.py has
+NO reference to eos/bos anywhere - every training example is a bare "def name(args): body" string with no
+terminator - and ByteTokenizer defines eos_id/bos_id that nothing ever writes. runs/e122_ref600/checkpoint-0330's
+config.json carries no eos_token_id. So generation has no stop condition: every completion runs to max_tokens.
+Measured proof: all 216 completions in the Phase 1.3 run were EXACTLY 64 bytes = the cap, never fewer.
+Consequences:
+- Any absolute "capability" number measured with a generation cap is a lower bound on the model AND an artifact of
+  the cap; a model that cannot terminate cannot express "I am done", which is itself a fluency defect for a coding
+  model (real completions should end at the end of the function, not at the harness limit).
+- Cost: at a 1000-token cap every completion is ~15x longer to generate than at 64, so batteries get ~15x slower
+  until termination is learned.
+- The FIX is in the data, not the decoder: append the EOS id to each packed training example (packer change), so
+  the model learns to emit it, then generation stops naturally and the byte budget becomes an extraction setting
+  rather than a crutch.
+- The battery's --budget-bytes (160) has been silently standing in for termination all along: it cuts the rambling
+  text AFTER generation. That is why the 48-byte budget looked like a capability ceiling.
+
+## 2026-10-14 - INCIDENT: deleted on a blanket approval BEFORE the evidence I commissioned landed
+
+I commissioned the UNKNOWN-set dossier, then the user said "clean them" and I deleted all nine items immediately.
+The dossier landed minutes LATER and said **KEEP** for two of them: runs/s10_merged_average + runs/s10_merged_ties
+(196 MiB, the measured S10 LoRA merges) and glm-5.3-flash-from-scratch/runs/regime (E-113 logs/curves). Both are gone.
+Hard facts learned:
+- **Remove-Item -Recurse -Force BYPASSES the Recycle Bin.** There is no OS-level undo. No shadow copy existed.
+- **Check git tracking BEFORE deleting, not after.** Those paths were tracked=0 (not in git), so git checkout could
+  not recover them. By contrast runs/stage05_pilot_gpu (32/76) and runs/stage05b (35/52) WERE tracked and I restored
+  them with git checkout - do that check first and the option exists; do it after and it may not.
+- Recovery status: s10_merged_* is regenerable only by retraining the 12 aspect LoRAs (train_aspect_lora.py, GPU)
+  then merge_loras.py (CPU seconds); runs/regime needs regime_match.py --stage all (re-runs pretrain+RL, expensive).
+  The adapter inputs (runs/s10_adapters, s10_adapters_big) were deleted in the same pass, so the merge is not
+  reproducible from disk as it stood.
+- **RULE: when a deletion is approved AND a verification task for those same paths is in flight, WAIT for it.**
+  An approval given against a list of paths and sizes is not informed consent about their contents. I flagged this
+  risk for data/distillation_data and held it back, then failed to apply the same rule to the other eight.
+
+## 2026-10-14 - STANDING USER RULE: always batch tasks/processes when possible
+
+User instruction, verbatim: "always use batch for task/process when its possible". Treat as a default for ALL future work,
+not a one-off: generate in batches, run independent tasks/arms as concurrent processes, process-pool CPU work, and batch
+tool calls per CLAUDE.md 19. Evidence for why: the playground rung battery went from ~17 s/task to 2.45 s/task on GPU
+with --batch-size 8 (142 tasks in 5 min 48 s vs ~40 min sequential) - 6.9x - because the sequential path was
+latency-bound at 16% GPU utilization, not compute-bound. CPU gain is much smaller (1.4-1.6x).
+MANDATORY CAVEAT: batching must be validated for parity, never assumed. scratch/bench_playground_batched.py was gated on
+--batch-size 1 vs 8 producing character-identical per-task completions (6/6 identical, verified). A batched path that
+silently changes results is worse than a slow one. Also note the GLM model needs RIGHT padding (its forward takes no
+attention_mask and RoPE uses arange(length), so left-padding shifts every token's phase) - not the usual left-pad.
+
+### Where the raw completion text lives (corrects an earlier mistaken probe)
+
+The per-task raw completion IS in the battery report JSON written by --out: under arms.<name> the entries are
+per-task ROWS carrying {task_id, construct, part, tier, pool, rung, name, key, completion, kept, strict, extracted}.
+An earlier probe looked at arms.<name> expecting a list of rows and found only aggregate keys, concluded "the JSON has
+no completion text", and went off writing an import-the-bench hack. The rows are there; check the nesting before
+concluding a field is absent. Verified 2026-10-14 by an independent batch-1-vs-3 parity run whose per-task rows were
+byte-identical including the completion field.
+
+### OPERATIONAL GOTCHA: a long job owned by a subagent dies when the subagent's turn ends (2026-10-14)
+
+Cost: the E-122g example-level EOS training run (800 steps, ~70 min) was launched by a subagent as its background job.
+The subagent ended its turn reporting "training running, awaiting completion (not polling)" - correct-sounding, and it
+killed its own job. Evidence: no python process, GPU 321 MiB / 3% idle, log frozen at step 10 with NO traceback, and
+progress.jsonl last written at the moment the subagent finished. It is not a crash; it is an owner-lifetime kill.
+A first liveness check at log age 65 s showed the job ALIVE and step 10 progressing - because the subagent's turn was
+still running. Liveness of a subagent-owned job is only meaningful WHILE that subagent is active.
+
+RULE: the Lead must own every long-running job. A subagent may launch work only if it stays active until the job
+finishes, or (preferred) the Lead launches the training and the subagent does the analysis on the finished artifacts.
+Before trusting "job launched" from any subagent, the Lead verifies the job survives after that subagent goes inactive:
+re-check process + GPU + log mtime once the subagent is no longer running.
+
+## 2026-10-15 - BREAKTHROUGH: example-level EOS fixed termination, and with it the capability (E-122g)
+
+RESULT (dev split, core tier, 71 rungs, 16 constructs, budget 160 B, max-tokens 256, batch 8):
+  base   (runs/e122_ref600/checkpoint-0330)          strict  3/71 (4%)   extracted 11/71
+  eos_ex (runs/e122g_eos_ex/checkpoint-0800)         strict 59/71 (83%)  extracted 59/71
+19.7x more rungs solved, spanning ALL 16 constructs. Command receipt in turn 105 of session 7e105ad5;
+report JSON research/raw/e122g_eos_ex_vs_base.json (per-task rows live at arms.<name>.rows).
+
+MECHANISM PROVEN BY LENGTH, not by score: base completions are ALL exactly 160 bytes (71/71 at budget = it never
+stopped even once). eos_ex: min 21, median 57, max 141, and 0/71 at budget. It learned to terminate, and its output is
+VALID PYTHON - not the degenerate repetition that the earlier file-level attempt produced.
+
+WHY THIS ONE WORKED WHEN THE FILE-LEVEL ATTEMPT FAILED (E-122f, which went 11/71 -> 0/71 and collapsed):
+  1. On-distribution. Step-1 loss 1.2257 on the replay-EOS corpus vs 2.6719 on codeparrot-EOS, from the IDENTICAL
+     init. EOS was not an alien high-loss token whose gradient collapsed the output distribution.
+  2. Right semantic unit. One EOS per FUNCTION matches what the task asks for; one per ~8.9 KB source file does not.
+Recipe that works: train_pretrain.py --corpus <example-level EOS .bin> --init-from <ckpt>, lr 3e-5, 800 steps.
+
+THE REFRAME (important): the model was never incapable - it was never taught to STOP. eos_id == 2 sits BELOW
+byte_offset == 4, so every packed corpus contained only ids >= 4 and the model had literally never seen its own stop
+token. This artifact confounded EVERY prior measurement: Phase 1.3 "catastrophic forgetting" (95/188 -> 41/188 ->
+42/188), the Phase 1.2b replay A/B (lr1e4 1/71, lr3e5 4/71 vs base 3/71), and the "corpus bought +1 grade rung and
+cost 54 task-passes" verdict. Those must be RE-BASELINED on EOS corpora before any of them is trusted again.
+
+PARSING GOTCHA (cost two turns of reporting zeros): in the battery JSON, per-task strict/extracted are NOT booleans -
+they are objects {status, passed, tests_passed, tests_total, pass_fraction}. Use .strict.passed, or read the arm
+aggregate arms.<name>.grand_total / solved_strict. An "-eq $true" test silently matches nothing and reports 0/0.
+
+### SPECIAL-TOKEN TRAPS found 2026-10-15 (survey: research/2026-10-15_special_tokens.md)
+
+1. runtime.py (~line 357) MASKS [pad, bos, sep] to -inf at generation. Two consequences: (a) any corpus that writes BOS
+   trains a token the model can never emit - wasted gradient, and BOS is therefore FREEZE, not "free to enable"; (b) if
+   we ever add new special ids (e.g. FIM), they MUST be removed from that mask or the model will never emit them.
+2. sep_id has no writer anywhere in the repo - SEP (id 3) is dead weight; EOS already delimits examples.
+3. Adding a NEW special id means a RANDOM new embedding row = an alien high-loss token = exactly the E-122f collapse
+   mechanism (11/71 -> 0/71). It is survivable ONLY if the new token is frequent in the data (E-122f had ~276 EOS
+   tokens in 600 steps). A zero-risk alternative for FIM: use byte-string sentinels, which need NO vocab change, NO
+   embedding resize, and NO mask edit.
+4. Ranked: KEEP EOS and make it mandatory everywhere; FIM sentinels = the one worthwhile new-token experiment (data
+   already exists as a programmatic transform of existing examples); DROP UNK (a byte model has no OOV), MASK (encoder
+   token), chat/role, thinking, and tool tokens.
+5. HONEST GAP: no controlled special-token ablation below ~100M params was found (TinyStories, SmolLM2-135M, BabyLM,
+   vocab-scaling at 33M+ are adjacent, not direct). FIM evidence is 1.1B-15.5B only - at 25.7M it is an UNTESTED
+   hypothesis, so run it as an A/B with EOS present in BOTH arms.
+
+### OPERATIONAL TRAP: Tee-Object piped into Select-Object -Last N never writes the log (2026-10-15)
+
+Command used:  & $PY train.py ... 2>&1 | Tee-Object -FilePath scratch/<name>_train.log | Select-Object -Last 2
+Select-Object -Last BUFFERS the entire upstream pipeline until it completes, so Tee-Object receives nothing to write
+until the run ends. Result: the log file existed but was EMPTY for the whole run - no live progress, and a kill would
+lose the log entirely (the same failure mode that cost the E-122g run). The training was fine; only the log was blind.
+Correct pattern:  ... 2>&1 | Tee-Object -FilePath <log>            (no -Last), then read the tail with
+Get-Content <log> -Tail N. Use -Tail on the way out, never -Last after Tee.
+Reliable progress signal while a log is unavailable: the run dir's checkpoint-* mtimes and progress.jsonl tail.
+
+### OPERATIONAL TRAP: backslashes eaten in transport + exit 0 does NOT mean every stage ran (2026-10-15)
+
+A two-arm job (arm A noeos, arm B eos) launched with a String.raw command. The job reported exit 0. Arm A really did
+complete (checkpoint-0800, loss 0.1749, lr 0.0), but arm B NEVER RAN: its --output/--corpus paths arrived mangled
+("unse122h_eos", i.e. runs\e122h_eos with \r collapsed to a carriage return, and glm-5.3-flash-from-scratchscripts\
+train_pretrain.py). PowerShell threw "The term 'unse122h_eos' is not recognized"; the script still ended with exit 0
+because the final statement was a Write-Output.
+Two lessons:
+1. NEVER rely on backslashes surviving a long command string. Use FORWARD SLASHES in paths (Python accepts them on
+   Windows) and put a preflight loop INSIDE the command: foreach ($p in @(...)) { if (-not (Test-Path $p)) { throw ... } }
+   so a bad path fails LOUDLY at the top instead of silently killing a stage.
+2. A job's exit 0 is NOT evidence that every stage ran. Verify each stage's ARTIFACTS (the run dir + its checkpoints),
+   never the job status alone. I initially dismissed the mangled command as a display artifact and told the user so -
+   the disk proved otherwise (e122h_eos had n_ckpt=0).
+
+## 2026-10-15 E-122h: EOS CONTROL - EOS CONFIRMED AS THE ACTIVE INGREDIENT (decisive)
+
+The missing single-variable control. Two arms trained 800 steps from the SAME init (runs/e122_ref600/checkpoint-0330),
+lr 3e-5, seed 42, identical hyperparameters, on corpora whose ONLY difference is example-level EOS:
+  data/reference/bytes_playground_noeos  (16,363,568 B)   vs   data/reference/bytes_playground_eos (16,449,968 B)
+The 86,400-byte delta is exactly 43,200 examples x 2 bytes = ONE EOS per example. 43,200 examples, 3.2 epochs.
+
+BENCH (scratch/bench_playground_batched.py, --split dev --tier core --per-rung 1 --budget-bytes 160 --max-tokens 256
+--batch-size 8, report research/raw/e122h_eos_control.json):
+  base   strict= 3/71  ext=11/71  at_budget=71/71  med_len=160  max=160
+  noeos  strict= 0/71  ext= 0/71  at_budget=71/71  med_len=160  max=160
+  eos    strict=64/71  ext=64/71  at_budget= 0/71  med_len= 56  max=139
+
+VERDICT: EOS is the active ingredient, not the SFT. Same content, same steps, same init -> 0/71 without EOS,
+64/71 with it (90%). The length signature is unambiguous: both non-EOS arms are pinned at the 160-byte budget
+(71/71), the EOS arm is 0/71 at budget. 64/71 also beats the original 59/71 (larger 43,200-example corpus).
+SECOND FINDING (not predicted): noeos = 0/71 is WORSE than base = 3/71. 800 steps of task SFT on an EOS-less corpus
+actively DEGRADES the model, because it trains it to continue on exactly the task distribution. This retroactively
+explains the Phase 1.3 "catastrophic forgetting" (95/188 -> 41/188): the MISSING EOS caused it, not the corpus.
+METHOD NOTE: final losses were near-identical (noeos 0.174935 vs eos 0.174486) - loss CANNOT distinguish these arms,
+because one EOS per example is a rounding error in the average. Only the executable benchmark resolves it.
+
+S10 (per-aspect LoRA + merge) is structurally SAFE but not yet EFFECTIVE: merging twelve adapters left the
+base intact (9/32 -> 10/32, both average and TIES) whereas the aspects-only RFT cost 4 tasks - so the
+"one adapter per aspect, then combine" design is confirmed interference-free. But on the new aspect-pool
+battery (scratch/bench_aspect_pool.py, 12 aspects x 4 = 48 tasks, deterministic, Lead-reproduced) arm A,
+both merges and RL all scored 26/48 IDENTICAL per aspect. Cause: each adapter saw only 12 training examples per aspect.
+
+### The five zero-keep-rate aspects split in two, and that split is the roadmap
+
+Running the same aspect-pool battery on E-122's best checkpoint (32/48 vs arm A's 26/48) separated them:
+
+    FIXED by 6x exposure   first_or_empty 2->4, contains_zero 1->4, is_palindrome 3->4
+                           -> all three have a SINGLE-EXPRESSION body (text[:1], 0 in x, x == x[::-1])
+    STILL ZERO             grade, count_even, count_positive, lookup
+                           -> all four need a multi-statement / comprehension /
+                              conditional-expression form
+
+So more of the same data cannot fix them; the construct itself has to be taught. That is the argument for
+per-part task templates (a playground per Python part) rather than a bigger dose of the current corpus.
+Note also that the best checkpoint beat the last on this battery (32/48 vs 29/48, with sign, clamp and
+is_palindrome each dropping a task), so retention-by-val_loss picked the right artifact - and that the
+ legacy battery was saturated at 32/32 while the aspect pool still discriminated.
+
+### 2026-10-14 - The evaluator's capability default was silently forbidding the constructs we wanted
+
+train_rft.py (and train_rl.py) build their evaluator capabilities from TWO SEPARATE flags:
+
+    capabilities = Capabilities(allow_loops=args.allow_loops, allow_attributes=args.allow_attributes)
+
+with both defaulting to False. `--tier` is NOT the switch - it only chooses which tasks are in the pool.
+So every RFT/RL harvest up to this date evaluated candidates with loops and attributes DENIED. A correct
+loop-based count_even, or a lookup using subscript or .get, would be scored as invalid and thrown away, so
+keep_rate stayed 0 and no positive sample could ever be harvested. That is a mechanical reason RL could not
+learn those constructs, independent of how sharp the policy was - the pass@k=0 reading was partly the
+evaluator refusing the construct, not proof the model could not emit it.
+
+Before concluding "the model cannot learn X", check the evaluator is allowed to accept X. Two flags, easy to
+miss, and the failure is silent: the harvest simply reports zero positives.
+
+The corrected recipe is --allow-loops --allow-attributes (plus --sandbox on --sandbox-timeout for isolation).
+
+CORRECTION (same day): the hypothesis above was WRONG. Re-running with both flags enabled still produced 0/32 for
+count_even, count_positive, grade and lookup, with 640 sandbox requests, 0 timeouts and 0 restarts. The evaluator
+was never the obstacle - the model simply cannot emit those constructs. So pass@k=0 there is a property of the
+MODEL, RFT/RL cannot fix it (all-zero groups carry no gradient), and only a reference-style corpus can. The lesson
+that survives is narrower but real: check the capability flags before trusting a zero, then check the model.
+
+### Never use a full-file write to append
+
+On 2026-10-14 the Lead destroyed the body of a durable design document by calling the write tool to "append" a new
+section: write REPLACES the file, so everything outside the window that had been read was lost. The content was
+recoverable only because the module it documented (playground.py) was the real source of truth.
+
+Rule: to append, use the edit tool with an anchor - or, when the anchor is not in context, concatenate on disk
+(Get-Content -Raw old + new -> Set-Content). A read before a write satisfies the file policy but does NOT make the
+write safe: the policy checks that you looked, not that you kept everything.
+
+### A completion budget can erase 87% of real capability - fix the instrument before reading it
+
+The per-part playground rung battery (scratch/bench_playground.py, 27 rungs x 4 tasks = 108, greedy, deterministic)
+scored 31/108 for E-122 best at a 160-byte budget and only 4/108 at the inherited 48-byte budget: 27 of 31 passes
+were a truncation artifact, because 21 of the 27 rung bodies exceed 48 bytes (max 133). The aspect-pool battery
+still runs at 48 bytes, so ITS numbers for multi-statement constructs may understate the model - an open finding.
+Rule: before trusting any zero on a new battery, print the byte length of every reference body and set the budget
+above the maximum. Two fair runs were byte-identical after masking elapsed seconds, so the instrument is sound.
+
+### More exposure is not uniformly better - it can specialise a construct away
+
+Same corpus, same init, same schedule, only 100 -> 600 steps: E-122 best scores 31/108 on the rung battery while
+arm A (100 steps) scores 35/108. The trade is per construct: E-122 gains count_even 11 -> 14 and lookup 10 -> 14,
+but COLLAPSES count_positive 14 -> 3. grade is 0/28 for BOTH arms at every rung, with the literal evaluator error
+"expected an indented block" - so the grade blocker is the indentation syntax itself, is not exposure-dependent,
+and is exactly what the playground corpus should fix first.
+
+## 2026-10-15 E-122i: FIM AR REGRESSION GUARD (measured before judging FIM)
+
+Both FIM arms trained 400 steps from e122h_eos/checkpoint-0800 (EOS present in BOTH arms; FIM is the only variable).
+AR bench, same protocol (research/raw/e122i_ar_guard.json):
+  eos (FIM's init)  strict=64/71  ext=64/71  at_budget=0/71  med=56  max=139
+  fim               strict=60/71  ext=63/71  at_budget=2/71  med=56  max=160
+  nofim             strict=68/71  ext=68/71  at_budget=0/71  med=56  max=133
+READINGS: (a) nofim 64 -> 68 (+4): 400 more steps of plain task SFT still helps. (b) fim 68 -> 60 (-8, -11.8%
+relative): FIM COSTS 8 task-passes on plain completion and mildly degrades termination (2/71 hit the cap where both
+controls were 0/71). FIM trades AR performance for infilling; whether that is worth paying depends ENTIRELY on the
+infilling win (pre-registered bar: factor >=2 and >=20 pp exact-middle match).
+HONEST GAP: the pre-registration specified the infilling bar but NO AR-cost tolerance. Report both numbers and the
+trade explicitly; do not declare a pass by ignoring the -8.
+
+## PROTECTED-FILE HASHES (corrected 2026-10-15 - my earlier note had a 1-char transcription error)
+
+  scratch/bench_playground.py          sha256 E3C4F50066C575068349536CF081B01C9F83C27E6BDC9FFC2367C7A5FEDB2520
+  scratch/bench_playground_batched.py  sha256 79956C236085CF8F5B84AE712B2240AFBC6975AD30C19D819728AA38C6116DCA
+Both git-clean/unmodified (blob c84938f16e42f8f51229f6e3e8fa8b041d9c9606). A subagent correctly caught that I had
+attached the FIRST file's hash to the SECOND file in a task brief. Verify with Get-FileHash, not from memory.
+
+## 2026-10-15 E-122i: FIM VERDICT = NEGATIVE / NOT ESTABLISHED (research/raw/e122i_infilling.json)
+
+Held-out infilling eval, 403 transformed val cases per arm, byte budget 160, batch 8, GPU:
+  arm     exact_match   edit_similarity   line_exact   EOS_emitted
+  fim      0/403 (0.0)     0.1587          0/403       71/403 (17.6%)
+  nofim    0/403 (0.0)     0.1291          0/403      304/403 (75.4%)
+Pre-registered bar was "factor >= 2 AND >= 20 pp" -> 0 vs 0 FAILS the >= 20 pp half. FIM is NOT established.
+Combined with the AR guard (fim 60/71 vs nofim 68/71), FIM costs twice: -8 AR and a termination collapse on the
+FIM task itself (EOS emitted 17.6% vs 75.4%).
+
+LESSONS (the important part):
+1. THE CONTROL ALSO SCORED ZERO. A model that never saw FIM also cannot infill, so 0/403 is NOT evidence that FIM
+   training failed - it is evidence that INFILLING IS OUT-OF-DISTRIBUTION FOR BOTH MODELS at this budget. The
+   primary metric is DEGENERATE: it cannot separate the arms. ALWAYS read the control's ABSOLUTE performance before
+   trusting any relative comparison. A benchmark where both arms score 0 measures the EVAL'S DIFFICULTY, not the
+   treatment - the same class of error as the EOS artifact (invalid measurement -> invalid conclusion).
+2. A ">= 2x the control" bar is DEGENERATE when the control is 0. Pre-registration needs an ABSOLUTE FLOOR
+   (e.g. exact >= 0.10) alongside any relative factor. Writing that bar was my design error.
+3. TERMINATION IS THE SENSITIVE VARIABLE. FIM damaged EOS emission (75% -> 18%) BEFORE any capability appeared.
+   Every intervention in this project so far has moved TERMINATION FIRST. Instrument EOS-emission rate on every
+   eval from now on, not just pass/fail.
+4. LOSS NEVER DISTINGUISHES ARMS. fim 0.2886 vs nofim 0.1742 was a task-mix artifact, not a quality signal. Same
+   as the EOS control (0.174935 vs 0.174486). Only executable evals decide.
+5. FIM IS UNTESTED, NOT DISPROVEN. 400 steps / ~4 epochs is HALF the EOS experiment's budget (800), and the
+   sentinels are 14-byte patterns a BYTE model must learn from scratch - a single vocab id would be 1 token but
+   carries the alien-embedding-row risk that collapsed E-122f. edit_similarity moved the right way (0.1587 vs
+   0.1291) - weak but real. A retry needs 800+ steps and an absolute floor in the bar.
+
+## NEXT (ranked, after E-122h/E-122i)
+1. RE-BASELINE THE THREE INVALIDATED CLAIMS ON EOS CORPORA (cheap, CPU, unblocks everything): Phase 1.3
+   "catastrophic forgetting" (95/188 -> 41/188), the Phase 1.2b replay A/B, and "corpus bought +1 grade rung and
+   cost 54 task-passes". All were measured with a model that could not stop, so all three are suspect.
+2. EOS-SCALE THE WINNING RECIPE: example-level EOS on the LARGEST task corpus (corpus_codeparrot_v1, 350M ids) -
+   this is E-117's actual goal (beat target/checkpoint-4000). 64/71 came from only 43,200 examples / 3.2 epochs.
+3. RL SECTION: the reward design is now VIABLE in a way it was not before - a model that cannot stop cannot do RL
+   at all. Evaluator v3 + 4 new aspects already landed (E-118). Next is the reward (Phi_budget from reference
+   token counts, prefix-validity Phi, annealed dense reward) + RFT/RLOO.
+4. FIM RETRY (low priority): 800+ steps, absolute floor in the bar, and test byte-string sentinels vs a single
+   vocab id as a separate A/B.
+
+## 2026-10-15 EOS RE-BASELINE VERDICTS (research/2026-10-15_rebaseline_verdicts.md)
+
+Deliverable + research/2026-10-15_rebaseline_gpu_commands.ps1 (ready-to-run, parse-checked, NOT run - GPU was busy).
+
+C1 Phase 1.3 "catastrophic forgetting" 95/188 -> 41/188 -> 42/188:
+  ALREADY-ANSWERED (mechanism) / NEEDS-GPU (exact 188 totals). Totals re-derived from disk: rung 31/108->4/108,
+  aspect 32/48->23/48->24/48, legacy 32/32->14/32. Corpus bytes_playground (NO-EOS, 47 sources/18,800 ex), base
+  e122_ref600/checkpoint-0330 also NO-EOS, 600 steps lr 1e-4, 188-task battery. E-122h is ANALOGOUS ONLY, NOT the
+  same experiment: same init but 108 vs 47 sources, 43,200 vs 18,800 ex, 800/3e-5 vs 600/1e-4, 71 vs 188 tasks.
+  E-122h answers the MECHANISM, not the magnitude. DO NOT substitute 64/71 for the 188 totals. (I overstated this
+  earlier and had to correct it - exactly why the subagent was told to check same-vs-analogous.)
+C2 replay A/B (base 3/11, lr1e4 1/5, lr3e5 4/7): NEEDS-GPU. CONFOUND PROVEN: all three arms produced exactly
+  160-byte completions on all 71/71 tasks - none terminated. The 3/1/4 deltas are cap noise. Both trained arms used
+  bytes_pg_replay (NO-EOS); no EOS replay arm exists. "Replay hurts" must NOT be used.
+C3 "+1 grade rung / cost 54 task-passes": numbers RE-MEASURED (grade 0/28 -> 1/28 both pg510/pg600; 95-41=54,
+  pg600 95-42=53; losses rung -27, aspect -9, legacy -18), corrected verdict NEEDS-GPU. Both halves confounded:
+  NO-EOS plus a 48-byte budget on the aspect/legacy batteries. Report only with the confound label.
+
+KEY FACT: the ONLY clean single-variable EOS pair on disk is bytes_playground_noeos vs bytes_playground_eos
+(same 108 sources / 43,200 ex, differ only by append_eos). Section 1 of the verdicts doc has the run->corpus-EOS map.
+GPU-LIST TRAPS encoded in the .ps1: --arm MUST be name=glm:<path> (the rebaseline doc template omitted glm:);
+corpus superset caveat (108 vs 47 sources); bench_aspects.py HARDCODES its budget; single-GPU guard via nvidia-smi.
+
+## 2026-10-15 EXAMPLE-LEVEL EOS CORPUS AT SCALE (data/reference/corpus_codeparrot_v1_ex) - PASS
+
+Built by scripts/corpus_pipeline.py --stage pack --split-units python-top-level --append-eos (document level stays
+the DEFAULT). Verifier: scripts/verify_corpus_examples.py. Tests: tests/test_corpus_split_units.py.
+  39,345 docs -> 230,875 examples, EXACTLY ONE EOS each (old file-level: 39,345 EOS). EOS/1e6 ids 658.2 vs 112.2 =
+  5.87x denser. ids 350,793,745 (+0.043% vs old 350,641,560). ids/example 1519 vs 8912.
+  Mix: class 76,036 / function 94,092 / module 60,747. train.bin 690,709,052 B; val.bin 10,878,438 B.
+  VERIFY exit 0, 8 checks: eos_equals_examples 230875==230875; ast 230875/230875 = 1.0 (function/class fail 0);
+  no_interior_eos; outputs_sha256_ok; text_twin_matches; no_empty_examples.
+  Lengths: min 1B, median 521B, p90 3176B, max 509704B; 3,920 units <20B kept (only empty dropped).
+  Original corpus_codeparrot_v1 UNTOUCHED (input sha ba7e3d31b995c76c7a9a700b6ca408d2821957cdb4afca8f523fe7bba1432ab4).
+
+### LESSONS (new, hard-won)
+1. NEVER use str.splitlines() to slice Python against ast lineno/end_lineno. It also splits on FORM FEED, which
+   shifts indices and produced mid-body units in vendored email.* code. Split only on LF, CRLF, CR.
+2. ast.end_lineno can be ONE SHORT for a statement ending in a backslash continuation + blank line; repair via
+   tokenizer NEWLINE lines.
+3. RESOLVES TASKS 178: the manifest uint16_values/utf8_bytes/train_bytes fields are BYTES, not id counts
+   (ids = bytes/2). They were never double-counted - the KEY NAMES are misleading. My earlier "2x mislabel" note
+   was wrong about the cause: the numbers are correct byte counts.
+4. The manifest reports bytes; always divide by 2 to get uint16 id counts.
+
+## 2026-10-15 SmolLM2-135M PATH PREPARED (research/2026-10-15_smollm2_path.md + _eval_harness.md)
+
+ACCESS: HuggingFaceTB/SmolLM2-135M rev 93efa2f097d58c2a74874c7e644dbc9b0cee75a2, NOT gated, apache-2.0, staged to
+models/hf/SmolLM2-135M (269,060,552 B). HF_TOKEN read from .env, never printed.
+TOKENIZER: GPT2TokenizerFast, vocab 49152, eos = bos = unk = '<|endoftext|>' = id 0, pad None, ctx 8192.
+  EOS audit is UNAMBIGUOUS here: ordinary text encodes to ZERO id-0 tokens, so the count cannot be inflated.
+  Packed + verified by count: 43,200/43,200 train, 2,160/2,160 val. (Contrast our byte model, whose EOS sat BELOW
+  the byte offset and was silently absent for weeks.)
+RE-PACK: data/reference/smollm2_pg_eos/ - 8,224,984 -> 2,386,306 ids (ratio 0.2902) = 3.45x fewer tokens for the
+  same text. KEEP SMoLLM2'S OWN TOKENIZER - swapping it would destroy the borrowed knowledge.
+TRAINER: train_aspect_lora.py is NOT reusable (hardwired ByteTokenizer/load_checkpoint/2-tuple forward). scripts/sft.py
+  IS (model-agnostic, already has the 5.16.1 fixes). CPU-validated: base 134,515,008 params, trainable 1,843,200
+  (1.35%) as PeftModelForCausalLM. Blocker A CLOSED: added --vram-cap-gib (default 0.0 = unchanged) calling
+  set_per_process_memory_fraction before from_pretrained; tests/test_sft_vram_cap.py 6/6 PASS.
+VRAM: batch 4 / seq 1024 / fp16 WITH grad-ckpt peaks ~2.5-3.0 GiB -> fits when the GPU is idle. batch 2 ultra-safe,
+  batch 8 over cap. grad_ckpt MUST stay true. At high occupancy the 60% cap is too small - do not launch.
+PREDICTION (pre-registered): H_data if SmolLM2-LoRA strict >= 65/71 AND fixes >=2 of {grade, count_even,
+  count_positive, lookup} (our byte model scores 0 on ALL FOUR); H_pretraining if strict <= 64/71 or no gain there.
+
+### TWO DEFECTS FOUND IN THE PROTECTED HfArm (it had NEVER been executed)
+1. EOS LEAK: generate returns eos and pads with pad_token_id (= eos = 0 for SmolLM2); the protected code decoded those
+   pads into the scored text, so 13 bytes of '<|endoftext|>' counted against the 160-byte budget and corrupted
+   scoring. This is the SAME BUG CLASS as our byte-side EOS artifact - an EOS silently distorting measurements.
+   Proof: scratch/bench_hf_protected_probe.json.
+2. DTYPE: from_pretrained with config torch_dtype=bfloat16 is invalid on sm_75 (fp16 only).
+Both fixed in the WRAPPER scratch/bench_hf.py; the protected file stays byte-identical (79956C...6DCA).
+LESSON: code paths that have never been RUN hide the same class of trap as data paths that were never packed.
+"Implemented but never runtime-tested" is a red flag, not a status.
+INSTRUMENT LESSON: read EOS from a DIRECT instrument, never derive it from at_budget. HF can hit the 256-token cap
+  at ~158 bytes, so byte-length inference UNDERCOUNTS termination for HF.
+STILL UNVERIFIED ON CPU: real CUDA cap enforcement (unit test monkeypatches torch.cuda); the full 71-task A/B; the
+  LoRA arm does not exist yet; batch-8/fp16 GPU generation; --no-repeat-ngram>0 with left padding; byte arm trims
+  >=budget vs HF <=budget.
+READY: scratch/bench_hf.py --arm "byte=glm:.../e122h_eos/checkpoint-0800" --arm "smol=hf:models/hf/SmolLM2-135M"
+  --split dev --tier core --per-rung 1 --budget-bytes 160 --max-tokens 256 --batch-size 8 --device cuda
+  --out research/raw/smollm2_vs_byte_core71.json
+  LoRA SFT first: scripts/sft.py --config configs/sft_smollm2_pg.yaml --vram-cap-gib 3.0
+
+## 2026-10-15 FIM VERDICT AT 800 STEPS - DISPROVEN, AND FIM DROPPED BY USER DECISION
+
+Setup: both arms 800 steps from runs/e122h_eos/checkpoint-0800, lr 3e-5, bs 4 x accum 8, seq 1024, seed 42.
+  runs/e122i_fim800 (FIM-transformed corpus) vs runs/e122i_nofim800 (control, same corpus untransformed).
+  Eval: scratch/bench_infilling.py, 403 held-out byte-level infilling cases, budget 160 B.
+  JSON: research/raw/e122i_infilling800.json.
+
+RESULT (exact | edit_sim | EOS emitted | median bytes | stopped-at-budget):
+  fim    0/403 | 0.1640 | 13.9% (56/403) | 160 | 347/403
+  nofim  0/403 | 0.1355 | 78.4% (316/403) |  63 |  87/403
+  line_exact 0/403 BOTH. Doubling 400 -> 800 steps did NOT move exact off zero.
+  ABSOLUTE FLOOR (exact >= 0.10) FAILS -> FIM is DISPROVEN, not merely untested (closes lesson 5).
+BUT it is not noise, and the failure SHAPE is the finding:
+  edit_similarity 0.1355 -> 0.1640 = +21% relative. FIM genuinely improves PARTIAL infilling.
+  EOS emission COLLAPSES 78.4% -> 13.9%; median completion 63 -> 160 B; 347/403 hit the budget cap
+  instead of stopping. FIM BUYS PARTIAL INFILLING BY DESTROYING TERMINATION - lesson 3 again:
+  termination is the sensitive variable and every intervention moves it first.
+  MECHANISM IS COHERENT: by middle shape, multi_line 0.2044 vs single_line 0.0628 = 3.3x. FIM helps
+  multi-line middle-filling far more, which is what theory predicts - so the signal is credible, not random.
+DECISION (user, 2026-10-15): DROP FIM. 14-byte sentinels a byte model must learn from scratch cost
+  termination and buy only partial credit. Clean negative result with a measured mechanism.
+
+### SINGLE-GPU GUARD BUG (fixed) - it blocked a legitimate launch
+research/2026-10-15_rebaseline_gpu_commands.ps1 stage 0 threw "GPU has active compute apps" because
+  nvidia-smi --query-compute-apps listed msedgewebview2.exe, WidgetBoard.exe, LockApp.exe,
+  PhoneExperienceHost.exe, WindowsTerminal.exe, PrintDialog.exe - desktop/WebView processes holding
+  STALE CUDA CONTEXTS, not compute jobs. The old guard threw on ANY app.
+FIX: block only when a match for "python" is present (a repo train job); REPORT foreign non-python apps
+  and proceed. This is MEMORY lessons 9/16 + CLAUDE.md 20 rule 9. The old version would have blocked
+  EVERY future launch from that file.
+
+## 2026-10-17 SmolLM2 A/B RESULTS + THE CPT DATA ASSET
+
+### THE A/B (all arms, same 71-task battery, budget 160 B, max-tokens 256)
+  byte (ours, 25.7M from scratch)      strict 64/71  ext --    eos 1.000
+  SmolLM2-135M BASE, no LoRA           strict  1/71  ext 11/71 eos 0.2254
+  SmolLM2 + LoRA,  3 epochs (219 st)   strict 37/71  ext 39/71 eos 0.9859
+  SmolLM2 + LoRA, 12 epochs (876 st)   strict 67/71  ext 67/71 eos 1.000
+VERDICT: the 12-epoch LoRA BEATS our byte model (67 vs 64). LoRA earned +66 tasks (1 -> 67): the
+  base is useless on this format, so this is genuine ADAPTATION, not leaked knowledge.
+  THE 3-EPOCH A/B WAS UNDER-TRAINED (37 -> 67 by extending). THIRD time an under-budget run nearly
+  produced a false verdict (400-step FIM, 3-epoch LoRA, EOS artifact). Never conclude from one budget.
+  Termination tracks capability: EOS 0.2254 -> 0.9859 -> 1.000. Long run eval loss 0.5932 best /
+  0.5934 final = NO overfitting, still improving when it stopped.
+  Why 12 epochs sufficed where our byte model needed 800 steps: SmolLM2's BPE makes 'def', 'return',
+  ':' single tokens. It already knows grammar, so adaptation only had to teach task format.
+  COMPLEMENTARITY: SmolLM2 scores grade 4 / count_even 3 / count_positive 2 / lookup 3 - ALL FOUR
+  that our model scores 0 on - while losing the overall total. Two different capability profiles.
+
+### RATE-UNIT TRAP (my error, cost a wrong diagnosis)
+I read "5.63 it/s" from a progress bar and called it the TRAINING rate. It was the EVAL bar (30 eval
+  batches). Real training rate is ~6-8 s/step. I then diagnosed the next run as "47x thrashing" and
+  killed a job for it. NOTHING was thrashing. ALWAYS confirm which loop a progress bar belongs to
+  before comparing rates, and prefer wall-clock over a bar's it/s.
+
+### SmolLM2 CPT DATA ASSET (research/2026-10-17_smollm2_cpt_corpus.md)
+data/reference/smollm2_corpus_ex/ - corpus_codeparrot_v1_ex re-tokenized into SmolLM2 BPE.
+  350,793,745 byte ids -> 100,754,998 BPE ids (0.287220; 3.48 byte-ids per BPE id).
+  train 227,401 ex / 99,194,717 ids; val 3,474 ex / 1,560,281 ids; bad_utf8 0.
+  EOS PROOF (strongest yet): id-0 count == example count in BOTH splits (227,401 / 3,474, total
+  230,875), AND the zero-control (raw text encoded WITHOUT the appended EOS) gives 0 id-0 tokens.
+  ds/: ctx 1024, labels == input_ids, PARTIAL FINAL ROW KEPT (train 861, val 729) or tail EOS is lost.
+  SIZING: 1 epoch = ceil(96,870/32) = 3,028 optimizer steps = 4.21-7.57 h at 5-9 s/step.
+TRAINER VERDICT: scripts/sft.py with NO peft block IS the correct CPT trainer (labels == input_ids
+  gives plain CLM loss; maybe_wrap_peft is a no-op without cfg['peft'] -> full-parameter CPT).
+  scripts/train.py is the custom byte-model/memmap trainer and CANNOT load HF SmolLM2.
+  configs/cpt_smollm2_ex.yaml prepared (lr 3e-5, 1 epoch, ctx 1024, batch 4, accum 8, warmup 100,
+  fp16, grad ckpt, eval/save 500). Run with --vram-cap-gib 3.5; LoRA is the OOM fallback.
+CORPUS PATH IS THE CEILING: the 67/71 came from a NARROW playground-only corpus (18,800 ex). This
+  230k-example / 100M-BPE-token asset has never been trained on. That is the next real experiment.
+
+### CPT OOM AT batch 4 / accum 8 - the CAP was the binding constraint, not the GPU
+Both CPT attempts (pilot AND full) died at STEP 1 with torch.OutOfMemoryError:
+  "Tried to allocate 768.00 MiB ... 4.00 GiB allowed; 3.36 GiB allocated by PyTorch".
+THE ARITHMETIC NAMES THE BUFFER: 4 x 1024 x 49152 x 4 B = 768 MiB EXACTLY. That is the fp32 LOGITS
+  upcast for cross-entropy, and it is the LAST allocation of the step. Compute the failing tensor's
+  size before theorising about fragmentation.
+FULL-PARAMETER CPT FIXED COST (fp32 master weights = the AMP contract): weights 538 MiB + grads
+  538 MiB + Adam m/v 1076 MiB = ~2.15 GiB BEFORE any activation. LoRA carries only ~1M optimizer
+  params, which is exactly why batch 4 fit under a 3.0 GiB cap for LoRA and does NOT fit for CPT.
+  SAME config, SAME batch: the optimizer state is what changed.
+FIX = reduce DEMAND, not raise the cap: batch 4 -> 2, eval_batch 4 -> 2, accum 8 -> 16. Effective
+  batch stays 32, so step count (3,028) and the LR schedule are unchanged; the logits buffer halves.
+  Cap 4.0 -> 4.5 GiB only as headroom. NEVER raise a cap to make an OOM "go away" - fix demand first.
+
+### REAL STEP RATE (from tfevents, never from a progress bar)
+  LoRA long (12 ep, bs 4, accum 8, ctx 1024): 5.38 s/step steady - 876 steps in 4,623 s = 1.28 h.
+  LoRA 3-ep: 6.26 s/step. eval 18-23 s per eval_steps=500 window.
+The "20.6 s/it" in the crashed CPT bar was FIRST-STEP overhead (kernel autotune + dataloader warmup);
+  taken at face value it implied a bogus 17.3 h for 3,028 steps. Read rates from tfevents
+  (train/train_steps_per_second, or dt/dstep on train/loss). This is the RATE-UNIT TRAP again in a
+  new costume: the bar's first sample is not the steady state.
+CPT ESTIMATE at batch 2 x accum 16: ~6-7 s/step -> 3,028 steps = ~5-6 h.
+
+### EXIT CODE 0 LIED AGAIN
+pwsh-38 reported exit 0 while BOTH of its python invocations had already crashed with OOM.
+  The only evidence of failure was the traceback in the log + ZERO checkpoint dirs (runs/cpt_smollm2_ex
+  contained just an empty tfevents stub). Verify ARTIFACTS. An exit code is not a result.
+
+
+
+
+
+
+
+
+
+
+## 2026-10-18 SmolLM2 PASS@1 HARNESS TRAPS + BATTERY SATURATION
+
+### TRAILING-NEWLINE EOS TRAP (cost a whole invalid benchmark run)
+HumanEval prompts end in "\n". SmolLM2's BPE merges "\n" with the following indent, so a prompt
+  that ENDS in a bare "\n" token looks like end-of-file, and greedy decoding emits EOS at once.
+  Result: 0/164 for ALL four arms. The cause was the harness, not the models.
+Fix: rstrip the prompt (bigcode-evaluation-harness does the same), and score model_prompt + completion.
+Rule: before trusting any 0 % or 100 % pass@k, run the canned self-test AND look at a few raw
+  completions. An all-empty column is a harness bug until proven otherwise.
+
+### `from __future__` IN COMPLETIONS
+Any prelude placed before the completion (a sandbox guard) makes a `from __future__` line a
+  SyntaxError: 41 CPT MBPP failures. Drop those lines from the completion before you assemble the program.
+
+### BATTERY SATURATION -> LADDER
+CPT+LoRA scores 71/71, so the core battery can no longer tell arms apart.
+  scripts/bench_ladder.py steps through 71 -> 88 -> 264 -> 528 -> 1,056 dev tasks, with a pass-rate gate between levels.
+  L2-L4 are more INSTANCES of the same 88 sub-skills: they measure robustness, not breadth.
+  Breadth needs new sub-skills (PLAN §11.2, SA-B). Never report L4 as "1,000 skills".
+
+### PLAYGROUND SFT COLLAPSES GENERAL CODING (2026-10-18, research/raw/smollm2_passk.json)
+On the playground, LoRA SFT (pg_long recipe) took the battery to 71/71. On held-out benchmarks it LOST ground:
+- HumanEval: base 4.3% -> LoRA 2.4%; CPT 4.9% -> CPT+LoRA 0.6%.
+- MBPP: base 3.0% / CPT 2.6% -> 0/427 for both LoRA arms.
+Raw completions: the LoRA arms ignore the spec and emit playground-shaped functions with random-suffix names.
+Rule: a single-distribution SFT set is a battery-overfit trap. Every SFT/RFT/RL stage must
+  (a) mix in diverse instruction->code data (SA-2/SA-3) and
+  (b) gate on HumanEval/MBPP alongside the ladder.
+  Ladder gains alone are NOT evidence of fluency.
+
+
+## FULL-PARAM CPT OF SmolLM2-135M DOES NOT FIT A 4.4 GiB CAP AT BATCH 4 (2026-10-18)
+- Run C OOM'd at step 0: fixed ~2.15 GiB (fp32 weights+grads+Adam) + 768 MiB fp32 logits + activations, with 882 MiB lost to fragmentation. A redirected background launch reports exit 0 even when training crashed. Always grep the log for `OutOfMemoryError`/`Traceback` and check that `final/` exists before treating a run as finished.
+- Before a long launch under a cap, run a `--pilot` at the SAME batch and cap; the 2026-10-17 pilot passed at batch 2 only.
+
+## SA-B BREADTH BATTERY: EXTEND BESIDE, NEVER INSIDE, THE ORIGINAL LADDERS (2026-10-18)
+- New sub-skills live in a separate `BREADTH` dict with their own pools (`breadth`/`wide`/`fix`/`tool`). Adding them to `PLAYGROUND` would shift every original seed and task id. A sha256 fingerprint test over the 88 originals (5 splits × 12 indices) is the guard.
+- The protected `scratch/bench_playground_batched.py` hard-codes the `--tier` choices. `scratch/bench_hf.py` rewrites `--tier` to `all` and swaps `bench.playground_pool`, which keeps the protected file unedited.
+- The sandbox ships cases as JSON, so tuples come back as lists. A strict-type check then fails any reference that returns tuples. In-process `evaluate_source` passes it. Fixed 2026-10-18 (SA-6a): the sandbox child calls `evaluate_source(json_normalise=True)`, while in-process strict typing is unchanged. Still always dry-run RL rewards with `--sandbox on`, the path RL actually uses.

@@ -162,3 +162,84 @@ nano_SLMs/
 
 ## 10) Out of scope (for now)
 MoE, Flash-Next GDN/QSA hybrid blocks (upgrade path after M3), custom tokenizer training, distributed training, HumanEval-style benchmarking, inference server.
+(HumanEval/MBPP benchmarking came into scope for the SmolLM2 line — see §11.)
+
+---
+
+## 11) SmolLM2-135M — fluent Python sub-agent (user-approved 2026-10-18)
+
+**Goal (user):** a *fluent Python sub-agent* on SmolLM2-135M, with no switch to a bigger base.
+
+**Definition (what "fluent" means here, so it can be measured):**
+- The model is a *worker*, not a planner.
+- **Input:** a scoped request, such as a signature + docstring + examples, a traceback to fix, or a tool request.
+- **Output:** correct Python, or ONE strict tool-call format.
+- **Loop:** inside a runtime loop (`run_python` / `run_tests` / `read_file`) it uses tool output to self-correct.
+- **Context:** short, ≤ ~2k tokens.
+- Planning stays with an orchestrator: a bigger model or plain code.
+
+### 11.1 Gates (targets to measure against, not promises)
+
+| Metric | Baseline (SA-0) | Target |
+|---|---|---|
+| HumanEval / MBPP-sanitized pass@1, greedy (`scripts/bench_passk.py`) | SA-0 re-run | 10–15 % |
+| pass@10 with test filtering | SA-0 | 25–35 % |
+| Playground ladder (`scripts/bench_ladder.py`, dev) | L0 71/71 (CPT+LoRA) | L4 ≥ 90 % of 1,056 |
+| Breadth ladder (SA-B, new sub-skills, held-out `final` split) | — | ≥ 70 % on ≥ 1,000 tasks / ≥ 200 sub-skills |
+| Tool-call format validity | — | ≥ 98 % (100 % with constrained decoding) |
+| Fix-from-traceback success (own held-out set) | — | ≥ 40 % |
+| English forgetting (BPB on `val_en.bin`) | base | ≤ +3 % vs base |
+
+### 11.2 Battery ladder (≥ 1,000 tasks, stepped to save compute)
+
+There are two axes. Both are stepped, so a weak checkpoint never pays for 1,000 tasks.
+
+**Robustness ladder** (`scripts/bench_ladder.py`, built 2026-10-18):
+- Same 88 sub-skills, more instances: fresh entry points, descriptions and generated cases.
+- Levels: L0 core×1 = 71 → L1 all×1 = 88 → L2 all×3 = 264 → L3 all×6 = 528 → L4 all×12 = 1,056.
+- An arm climbs to the next level only while its strict pass rate is ≥ `--gate` (default 0.90).
+- `--reuse` skips levels already on disk.
+
+**Breadth ladder** (SA-B):
+- New construct ladders in `glm53_flash/playground.py`:
+  - classes, exceptions, f-strings/formatting
+  - dict/set comprehensions, generators, sorting/bisect
+  - stdlib `collections`/`itertools`/`re`, string parsing, multi-function tasks
+- Two agent tiers: *fix-from-traceback* and *tool-call*.
+- Target: ≥ 200 sub-skills × 5 instances = ≥ 1,000 tasks.
+- **Built 2026-10-18:**
+  - 33 `BREADTH` constructs / 192 new sub-skills (150 write + 22 fix + 20 tool). Pools: `breadth`, `wide` (280 = 88 + 192), `fix`, `tool`.
+  - `bench_ladder.py` levels: B1 breadth×1 = 192, W2 wide×2 = 560, W4 wide×4 = 1,120. W4 is the ≥ 1,000-task / ≥ 200-sub-skill battery, at 4 instances rather than 5.
+  - The original 88 sub-skills (L0-L4) stay byte-identical.
+
+**Compute policy:**
+- During a run, checkpoints get L0 + L1 only (≤ 159 tasks).
+- L2–L4, HumanEval/MBPP and the breadth ladder run only at stage ends.
+- The `final` split is touched ONLY for stage gates, never for tuning.
+- Training draws from the `rl` / `pretrain` splits and MBPP-train.
+
+### 11.3 Stages (TASKS.md rows SA-0 … SA-7)
+
+| Stage | What | Reuses | Exit gate |
+|---|---|---|---|
+| SA-0 | Baselines: clean pass@1 (idea D) + ladder L0–L4 on base / CPT / LoRA / CPT+LoRA | bench_passk, bench_ladder | numbers recorded |
+| SA-1 | CPT + 15 % English replay (idea C), so the model keeps reading instructions | smollm2_mix_english, sft.py | code BPB ≤ CPT; English BPB ≤ +3 % |
+| SA-B | Breadth battery (≥ 1,000 tasks, agent tiers) | playground.py, evaluator, sandbox | battery tests pass; base and checkpoints scored |
+| SA-2 | Data: textbook-quality Python (each download needs user OK) + own generator (bug injection → traceback → fix; tool-call traces); execution-verified, decontaminated | corpus_pipeline, bench_decontam | 0 benchmark leakage; every sample's tests pass |
+| SA-3 | Instruction SFT on verified instruction→code | sft.py (LoRA) | pass@1 > SA-0 best |
+| SA-4 | Agent-format SFT (strict tool-call JSON, multi-turn fix traces) | sft.py | format validity ≥ 98 %; fix ≥ 25 % |
+| SA-5 | Expert iteration / RFT: sample k, keep the passing ones, retrain; 2–3 rounds | train_rft.py idea, bench_passk executor | pass@1 up each round; no L0 regression |
+| SA-6 | **RL (mandatory, user 2026-10-18).** Details below. | train_rl.py, sandbox.py | pass@1 and ladder ≥ SA-5 on `final` split; forgetting within gate |
+| SA-7 | Runtime: constrained tool-call decoding, sample-k + test filter, retry-with-traceback; agent-loop eval | sandbox | tool validity 100 %; agent-loop success reported |
+
+**SA-6 RL details:**
+- **Port:** the RL playground (`glm-5.3-flash-from-scratch/scripts/train_rl.py`, RLOO with a sandboxed unit-test reward) to HF SmolLM2 + LoRA.
+- **Reward:** case-fraction / binary from `glm53_flash.evaluator`.
+- **Tasks:** playground `rl` split, MBPP-train, generated fix tasks.
+- **Reporting:** the model result on every gate.
+
+**Honest limits:**
+- A 135M model stays a worker: no long-horizon planning, no large codebases, weak recall of rarely-seen library APIs.
+- The ceiling is set by data quality and the test/retry loop, not by the model's own reasoning.
+
+**References:** phi-1 (data quality at small scale), replay vs forgetting (Ibrahim et al. 2024), RLOO (Ahmadian et al. 2024).
