@@ -70,7 +70,7 @@ def main() -> int:
     ap.add_argument("--split", default="dev")
     ap.add_argument("--budget-bytes", type=int, default=160)
     ap.add_argument("--max-tokens", type=int, default=256)
-    ap.add_argument("--batch-size", type=int, default=4)
+    ap.add_argument("--batch-size", type=int, default=32)  # every baseline ladder ran at 32; ~6x faster than 4
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--out-dir", type=Path, default=Path("research/raw/ladder"))
     ap.add_argument("--reuse", action="store_true", help="reuse a level report already on disk")

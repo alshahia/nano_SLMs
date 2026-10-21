@@ -15,6 +15,22 @@ Safety: --vram-cap-gib is a hard allocator ceiling (no shared-memory spill); the
 aborts before host RAM gets tight. Auto-resume: re-run the same command and it continues from
 <output>/state.pt (adapter + optimizer + scaler + group index).
 
+Anti-collapse (SA-6 run 2, after run 1 collapsed to one-line `return` bodies):
+  --kl-beta B          adds B * KL(policy || init) to the loss. The reference is the init itself
+                       (the LoRA adapter disabled), and KL uses the k3 per-token estimator on the
+                       sampled tokens.
+  --checkpoint-every N writes a merged <output>/checkpoint-G every N groups and, with
+                       --probe-limit K > 0, runs a greedy HumanEval/MBPP pass@1 probe on the first K
+                       tasks of each set (scripts/bench_passk.py subprocess, training paused, its own
+                       VRAM cap = fresh free - 0.75 GiB). Results go to <output>/probe_log.jsonl.
+
+Task distribution (SA-6 run 3: KL alone only traded MBPP for HumanEval; the bodies stayed one-line):
+  --docstring-tasks N  adds N extra rl-split instances of every multi-line `write` sub-skill,
+                       rendered HumanEval-style: `def` header, then a docstring holding the
+                       description and one `>>>` example, and the completion is the indented body.
+                       The example is an extra case that is not graded, so hardcoding it earns
+                       nothing. With 0 (the default), the pool is exactly what run 2 used.
+
   & .\\.venv\\Scripts\\python.exe scripts\\rl_smollm2.py --init runs/sft_smollm2_cpt_pg/final `
       --output runs/rl_smollm2 --groups 2000 --vram-cap-gib 4.5
   & .\\.venv\\Scripts\\python.exe scripts\\rl_smollm2.py --init ... --output scratch/rl_dry --dry-run
@@ -22,10 +38,13 @@ aborts before host RAM gets tight. Auto-resume: re-run the same command and it c
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import random
+import subprocess
 import sys
 import time
+from dataclasses import replace
 from pathlib import Path
 
 import psutil
@@ -42,12 +61,32 @@ from train_rl import leave_one_out, reward_for  # noqa: E402
 MIN_FREE_RAM_GIB = 8.0
 
 
-def build_tasks(tier: str, per_sub_skill: int) -> list[tuple]:
+DOCSTRING_INDEX_OFFSET = 500  # docstring instances never reuse a comment-format instance's cases
+
+
+def docstring_task(sub_skill, index: int):
+    """A HumanEval-shaped instance: case 0 becomes the docstring example; cases 1-3 are graded."""
+    base = make_playground_task(sub_skill, split="rl", index=DOCSTRING_INDEX_OFFSET + index, cases=4)
+    (example_args, example_value), graded = base.cases[0], base.cases[1:]
+    description = base.prompt.split("\n")[1].removeprefix("# ")
+    call = f"{base.entry_point}({', '.join(repr(arg) for arg in example_args)})"
+    prompt = (f"def {base.entry_point}({sub_skill.arguments}):\n"
+              f'    """{description}\n\n    >>> {call}\n    {example_value!r}\n    """')
+    # No trailing "\n": the SmolLM2 tokenizer merges "\n" with the next indent, so a prompt that
+    # ends in a bare newline makes the model emit EOS at once (same rule as bench_passk.model_prompt).
+    return replace(base, task_id=base.task_id.replace("rl-", "rl-doc-", 1), prompt=prompt,
+                   reference_completion=sub_skill.body, cases=graded)
+
+
+def build_tasks(tier: str, per_sub_skill: int, docstring_tasks: int = 0) -> list[tuple]:
     entries = []
     for sub_skill in playground_pool(tier):
         for index in range(per_sub_skill):
             entries.append((make_playground_task(sub_skill, split="rl", index=index),
                             sub_skill.capabilities()))
+        if sub_skill.kind == "write" and sub_skill.body.strip("\n").count("\n") >= 1:
+            for index in range(docstring_tasks):
+                entries.append((docstring_task(sub_skill, index), sub_skill.capabilities()))
     return entries
 
 
@@ -78,8 +117,8 @@ def cut_at_eos(ids: list[int], eos_id: int) -> list[int]:
 
 
 def completion_log_probs(model, prompt: list[int], completions: list[list[int]], pad_id: int,
-                         device) -> torch.Tensor:
-    """Mean per-token log-probability of each completion, one forward pass per group."""
+                         device) -> tuple[torch.Tensor, torch.Tensor]:
+    """Per-token log-probabilities of each completion and their mask, one forward pass per group."""
     width = max(map(len, completions))
     rows = [prompt + c + [pad_id] * (width - len(c)) for c in completions]
     sequence = torch.tensor(rows, dtype=torch.long, device=device)
@@ -93,13 +132,31 @@ def completion_log_probs(model, prompt: list[int], completions: list[list[int]],
     selected = logits[:, start:start + width].float()
     targets = sequence[:, len(prompt):]
     token_lp = torch.log_softmax(selected, dim=-1).gather(-1, targets.unsqueeze(-1)).squeeze(-1)
-    return (token_lp * mask).sum(dim=1) / lengths
+    return token_lp, mask
 
 
-def ram_guard() -> None:
+def probe(checkpoint: Path, limit: int, device) -> dict:
+    """Greedy pass@1 on the first `limit` HumanEval / MBPP-sanitized tasks (training is paused)."""
+    free = torch.cuda.mem_get_info(device)[0] / 2 ** 30 if device.type == "cuda" else 0.0
+    cap = round(free - 0.75, 2)
+    if device.type == "cuda" and cap < 1.0:
+        return {"skipped": f"free VRAM {free:.2f} GiB too low for a probe"}
+    out = checkpoint / "probe_passk.json"
+    cmd = [sys.executable, str(ROOT / "scripts" / "bench_passk.py"), "--arm", f"ckpt={checkpoint}",
+           "--limit", str(limit), "--device", device.type, "--batch", "16", "--workers", "4",
+           "--out", str(out)] + (["--vram-cap-gib", str(cap)] if device.type == "cuda" else [])
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=1800)
+    if result.returncode != 0 or not out.is_file():
+        return {"error": (result.stderr or result.stdout)[-400:]}
+    per_set = json.loads(out.read_text(encoding="utf-8"))["arms"]["ckpt"]["per_set"]
+    return {name: {"passed": row["passed"], "tasks": row["tasks"], "eos_rate": row["eos_rate"]}
+            for name, row in per_set.items()} | {"vram_cap_gib": cap}
+
+
+def ram_guard(floor: float = MIN_FREE_RAM_GIB) -> None:
     free = psutil.virtual_memory().available / 2 ** 30
-    if free < MIN_FREE_RAM_GIB:
-        raise SystemExit(f"free RAM {free:.1f} GiB < {MIN_FREE_RAM_GIB} GiB guard; aborting")
+    if free < floor:
+        raise SystemExit(f"free RAM {free:.1f} GiB < {floor} GiB guard; aborting")
 
 
 def main() -> int:
@@ -110,6 +167,8 @@ def main() -> int:
     ap.add_argument("--group-size", type=int, default=8)
     ap.add_argument("--tier", choices=POOL_TIERS, default="all")  # SA-B: + breadth/wide/fix/tool
     ap.add_argument("--per-sub-skill", type=int, default=8, help="rl-split instances per sub-skill")
+    ap.add_argument("--docstring-tasks", type=int, default=0,
+                    help="HumanEval-style instances per multi-line write sub-skill (0 = off)")
     ap.add_argument("--max-new-tokens", type=int, default=128)
     ap.add_argument("--temperature", type=float, default=0.8)
     ap.add_argument("--learning-rate", type=float, default=2e-5)
@@ -122,6 +181,11 @@ def main() -> int:
     ap.add_argument("--sandbox", choices=("off", "on"), default="on")
     ap.add_argument("--sandbox-timeout", type=float, default=2.0)
     ap.add_argument("--save-every", type=int, default=100, help="groups between state saves")
+    ap.add_argument("--min-free-ram-gib", type=float, default=MIN_FREE_RAM_GIB,
+                    help="abort when available host RAM drops below this")
+    ap.add_argument("--kl-beta", type=float, default=0.0, help="KL(policy || init) weight, 0 = off")
+    ap.add_argument("--checkpoint-every", type=int, default=0, help="groups between merged checkpoints")
+    ap.add_argument("--probe-limit", type=int, default=0, help="HumanEval/MBPP tasks per set per probe")
     ap.add_argument("--seed", type=int, default=31415)
     ap.add_argument("--vram-cap-gib", type=float, default=0.0)
     ap.add_argument("--max-seconds", type=float, default=0.0)
@@ -131,7 +195,7 @@ def main() -> int:
     if args.group_size < 2:
         raise SystemExit("--group-size must be >= 2 (leave-one-out baseline)")
 
-    tasks = build_tasks(args.tier, args.per_sub_skill)
+    tasks = build_tasks(args.tier, args.per_sub_skill, args.docstring_tasks)
     runner = SandboxRunner(timeout=args.sandbox_timeout) if args.sandbox == "on" else None
     if args.dry_run:  # the reward must give the reference full marks, or RL chases noise
         bad = []
@@ -168,6 +232,7 @@ def main() -> int:
 
     args.output.mkdir(parents=True, exist_ok=True)
     state_path, log_path = args.output / "state.pt", args.output / "rl_log.jsonl"
+    probe_path = args.output / "probe_log.jsonl"
     order = schedule(len(tasks), args.groups, args.seed)
     start = 0
     if state_path.is_file():
@@ -186,6 +251,22 @@ def main() -> int:
                         "init": str(args.init), "output": str(args.output)}}, tmp)
         tmp.replace(state_path)
 
+    def checkpoint(group: int) -> None:
+        target = args.output / f"checkpoint-{group}"
+        merged = copy.deepcopy(model).merge_and_unload()  # the live adapter stays unmerged
+        merged.config.use_cache = True
+        merged.save_pretrained(str(target))
+        tokenizer.save_pretrained(str(target))
+        del merged
+        if device.type == "cuda":
+            torch.cuda.empty_cache()
+        row = {"group": group, "checkpoint": str(target)}
+        if args.probe_limit > 0:
+            row |= probe(target, args.probe_limit, device)
+        with open(probe_path, "a", encoding="utf-8") as handle:
+            handle.write(json.dumps(row) + "\n")
+        print(f"[checkpoint {group}] {json.dumps(row)}", flush=True)
+
     began = time.time()
     group = start
     with open(log_path, "a", encoding="utf-8") as log:
@@ -193,7 +274,7 @@ def main() -> int:
             if args.max_seconds and time.time() - began > args.max_seconds:
                 break
             if group % 25 == 0:
-                ram_guard()
+                ram_guard(args.min_free_ram_gib)
             task, caps = tasks[order[group]]
             prompt = encode(tokenizer, task.prompt)
             model.eval()
@@ -215,12 +296,20 @@ def main() -> int:
                 rewards.append(reward)
                 statuses.append(ev["status"] if not ev["passed"] else "passed")
             advantages = leave_one_out(rewards)
-            loss_value = None
+            loss_value, kl_value = None, None
             if any(abs(a) > 1e-8 for a in advantages):  # a flat group carries no gradient
                 model.train()
-                log_probs = completion_log_probs(model, prompt, completions, pad_id, device)
+                token_lp, mask = completion_log_probs(model, prompt, completions, pad_id, device)
+                lengths = mask.sum(dim=1)
                 adv = torch.tensor(advantages, device=device, dtype=torch.float32)
-                objective = -(adv * log_probs).mean()
+                objective = -(adv * (token_lp * mask).sum(dim=1) / lengths).mean()
+                if args.kl_beta > 0:
+                    with torch.no_grad(), model.disable_adapter():
+                        ref_lp, _ = completion_log_probs(model, prompt, completions, pad_id, device)
+                    delta = ref_lp - token_lp  # k3: exp(d) - d - 1 >= 0, unbiased for KL(pi || ref)
+                    kl = (((torch.exp(delta) - delta - 1) * mask).sum(dim=1) / lengths).mean()
+                    objective = objective + args.kl_beta * kl
+                    kl_value = float(kl.detach())
                 optimizer.zero_grad(set_to_none=True)
                 scaler.scale(objective).backward()
                 scaler.unscale_(optimizer)
@@ -230,12 +319,16 @@ def main() -> int:
                 loss_value = float(objective.detach())
             log.write(json.dumps({"group": group, "task_id": task.task_id, "rewards": rewards,
                                   "passed": statuses.count("passed"), "statuses": statuses,
-                                  "policy_loss": loss_value, "seconds": round(time.time() - began, 1)}) + "\n")
+                                  "policy_loss": loss_value, "kl": kl_value, "seconds": round(time.time() - began, 1)}) + "\n")
             log.flush()
             if (group + 1) % args.save_every == 0:
                 save(group + 1)
                 print(f"[group {group + 1}] saved; last pass {statuses.count('passed')}/{args.group_size}",
                       flush=True)
+            if args.checkpoint_every and (group + 1) % args.checkpoint_every == 0 \
+                    and not (args.output / f"checkpoint-{group + 1}").is_dir():
+                save(group + 1)
+                checkpoint(group + 1)
     done = group + 1 if args.groups > start else start
     save(done)
     if done >= args.groups:

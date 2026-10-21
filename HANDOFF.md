@@ -1,3 +1,17 @@
+# 2026-10-18 - B1 breadth scored: no arm transfers; VRAM rule now free - 0.75 GiB
+
+- **B1 (192 NEW sub-skills, dev, greedy, batch 32)**, strict / 192:
+  | Arm | write /150 | fix /22 | tool /20 | total | EOS rate |
+  |---|---|---|---|---|---|
+  | base | 2 | 6 | 0 | 8 | 0.13 |
+  | CPT | 16 | 5 | 1 | **22** | 0.65 |
+  | LoRA (pg_long) | 9 | 5 | 0 | 14 | 1.00 |
+  | CPT+LoRA | 3 | 3 | 0 | 6 | 1.00 |
+  CPT+LoRA is 98.8% on L4 (in-distribution) and 3.1% here: the playground SFT memorised the 88 original sub-skills. CPT alone transfers best. Next: diverse data (SA-2/SA-3) and SA-6 RL on the `wide` pool, gated on B1/W2 plus HumanEval/MBPP.
+- **Speed:** batch 4 -> 32 made the bench ~6x faster (16 -> ~100 rows/min); it is overhead-bound (1.4 GiB, ~30% util), so stop-at-budget is the next lever.
+- **User decision:** CLAUDE.md §20 rule 2 is now "ceiling = fresh free VRAM - 0.75 GiB" (~7 GiB here), still enforced in-process so overshoot is an own-job OOM, never a spill. SA-1 (needs ~5.5 GiB at batch 4) fits now.
+- Commits: nested a7e7bd4, outer 37ae58a (SA-B + SA-6a).
+
 # 2026-10-18 - SA-B breadth battery BUILT: 280 sub-skills, W4 = 1,120 tasks (CPU, not committed)
 
 **What changed:**
@@ -22,7 +36,17 @@
 **Next:**
 - Score the arms on B1/W2/W4 when the GPU is idle at a stage end.
 - Use the `fix`/`tool`/`wide` pools for SA-6 RL signal.
-- SA-1 is still blocked on the user's choice.
+- SA-1 DONE 2026-10-19 (gates split): English BPB 0.5149 vs base 0.5132 (+0.3 %, PASS; CPT is +4.5 %); code BPB 0.5451 vs CPT 0.5240 (FAIL, +4.0 %); B1 strict 22/192, the same as CPT. Init is runs/cpt_smollm2_mix_en/final. Details: TASKS SA-1, research/raw/sa1_bpb.json, research/raw/ladder_mixen.
+- SA-6 RL run 1 DONE 2026-10-19 (init SA-1, `wide`, runs/rl_mixen_wide/final). Compared with SA-1: B1 22 -> 56/192; W2 70 -> 154/560; MBPP-san 9 -> 24/427 (best arm); HumanEval 9 -> 3/164 (regression). EOS 0.61 -> 0.99. HumanEval drop DIAGNOSED: not truncation, not format. RL collapsed to one-line `return <expr>` bodies (164/164 single-line, median 135 -> 28 chars) and loses 6 of SA-1's 9 passes to over-simplified expressions. Next RL run needs an anti-collapse lever (KL/ref penalty or lower lr, multi-line pool tasks, intermediate checkpoint eval). The PLAN gate waits on SA-5.
+- **SA-6 RL run 3 DONE 2026-10-21 (GPU FREE); its `final` is the SA-6 INCUMBENT (user 2026-10-21); run 4 is in design.** Full eval at batch 16 for pass@k and batch 32 for the ladder. Columns: HumanEval /164, MBPP /427, B1 /192, W2 /560.
+  - `runs/rl_mixen_wide_doc2/final` = **8 / 13 / 53 / 156**: best W2 of any arm, and better than run 2 final (7/15/50/140) and run 2 ckpt-1500 (8/11/51/142) on HumanEval, B1 and W2.
+  - ckpt-1750 = 7/15/52/146; ckpt-750 = 6/12/49/126.
+  - The other references are SA-1 9/9/22/70 and run 1 3/24/56/154.
+  - Reports: research/raw/sa6_doc_passk.json, ladder_sa6_doc_b1/, ladder_sa6_doc_w2/.
+  - In training, the invalid rate fell from 58–65 % to 18–21 %. KL was still climbing at the end (0.168), and HumanEval stays just under SA-1.
+  - Previous run-3 status, kept for history: `rl_smollm2.py --init runs/cpt_smollm2_mix_en/final --output runs/rl_mixen_wide_doc2 --tier wide --docstring-tasks 16 --max-new-tokens 256 --kl-beta 0.05 --checkpoint-every 250 --probe-limit 50 --vram-cap-gib 6.75`, log scratch/rl_mixen_wide_doc2.log (RELAUNCHED 2026-10-20: the first attempt in runs/rl_mixen_wide_doc had docstring prompts ending in a bare "\n", so SA-1 emitted EOS at once and every docstring group scored a flat 0.0; that dir is stale, kept and not resumed). The process died silently (exit 4, no traceback) twice, each time at a checkpoint probe: at group 500 (2026-10-20 16:29) and at group 750 (2026-10-21 08:34, while the Claude app was updating). It was RESUMED from 750 on 2026-10-21 as a WMI-detached process (`Win32_Process.Create` → cmd → python, `--vram-cap-gib 6.55` from a fresh 7478 MiB reading) so that app restarts can't kill it, auto-resumes on re-run. It adds HumanEval-style docstring tasks (39 % of the 3696-task pool) and 256 new tokens at KL 0.05. Then: eval the best probe checkpoint (pass@k + B1/W2 at batch 32) vs run 2 ckpt-1500.
+- SA-6 RL run 2 EVALUATED 2026-10-20. ckpt-1500 / final: HumanEval 8 / 7 of 164, MBPP 11 / 15 of 427, B1 51 / 50 of 192, W2 142 / 140 of 560 (SA-1: 9, 9, 22, 70; run 1: 3, 24, 56, 154). KL trades MBPP for HumanEval and fixes neither; one-line collapse persists. Next: run 3 with a multi-line task distribution, awaiting user approval. Ladder grader now has a 5 s out-of-process timeout (scratch/bench_hf.py); the bench_ladder batch default is now 32. Outputs: research/raw/sa6_kl_passk.json, ladder_sa6_kl_b1, ladder_sa6_kl_w2.
+- SA-6 RL run 2 DONE 2026-10-20 (runs/rl_mixen_wide_kl: final plus checkpoint-250…2000). On the first-50 probe: HumanEval 5–7/50 (SA-1 9, run 1 3); MBPP 1–2/50 (SA-1 2, run 1 5). Full pass@k + B1/W2 on ckpt-1500 and final is running (scratch/sa6_kl_eval.log); the GPU is busy with it. Before that: RESUMED 2026-10-19 from group 300 with `--min-free-ram-gib 3` (user decision) and cap 6.55 GiB. GPU busy, no other GPU jobs. Earlier it STOPPED at group 325 under the 8 GiB free-RAM guard (other desktop apps leave only ~9.1 GiB available). state.pt is at group 300; checkpoint-250 probe: HumanEval 6/50, MBPP-san 2/50. Resume by rerunning the same command once RAM is freed. GPU is free. Original launch: started 2026-10-19 13:50. Init SA-1, `wide`, `--kl-beta 0.05 --checkpoint-every 250 --probe-limit 50`, cap 6.6 GiB, output runs/rl_mixen_wide_kl (merged checkpoint-250…2000 plus probe_log.jsonl with HumanEval/MBPP first-50 pass@1), log scratch/rl_mixen_wide_kl.log. It auto-resumes on re-run. Expected ~2.5–3 h. Then: choose a checkpoint from probe_log, run the full bench_passk + B1/W2, and compare with run 1 (HE 3/164, MBPP 24/427).
 
 # 2026-10-18 - SmolLM2 sub-agent line APPROVED (PLAN §11); CPT+LoRA 71/71; pass@1 harness fixed
 
