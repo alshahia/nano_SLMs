@@ -218,12 +218,19 @@ There are two axes. Both are stepped, so a weak checkpoint never pays for 1,000 
 - The `final` split is touched ONLY for stage gates, never for tuning.
 - Training draws from the `rl` / `pretrain` splits and MBPP-train.
 
+**SA dev gate (SA-V.1, 2026-10-27):**
+- Primary for code: the clean gate, 370 he/mbpp val tasks (he 180, mbpp 190) in research/raw/sa_v_clean_gate.json. Run it with `sa5_rft.py --split val --task-ids research/raw/sa_v_clean_gate.json --code 370 --fix 0 --tool 0`.
+  - Rule: whole duplicate cluster in val, 13-gram coverage < 0.5 against sa2 + sa4 train. Built by scratch/sa_v_clean_gate.py; audit: research/raw/sa_v_clean_gate_audit.json.
+- The old 567-task gate (code 300 / fix 267) is still reported, for continuity only: 424 of its tasks have a train twin.
+- Fix signal: the tier-fix eval only, since no fix/repair val task passes the clean rule.
+- Grader: a timeout or RSS kill is retried once at 4× the timeout. A retry that passes marks the sample NOT_EVALUATED: it is left out of the gate mean and the RLOO group. A retry that fails scores 0.
+
 ### 11.3 Stages (TASKS.md rows SA-0 … SA-7)
 
 | Stage | What | Reuses | Exit gate |
 |---|---|---|---|
 | SA-0 | Baselines: clean pass@1 (idea D) + ladder L0–L4 on base / CPT / LoRA / CPT+LoRA | bench_passk, bench_ladder | numbers recorded |
-| SA-1 | CPT + 15 % English replay (idea C), so the model keeps reading instructions | smollm2_mix_english, sft.py | code BPB ≤ CPT; English BPB ≤ +3 % |
+| SA-1 | CPT + 15 % English replay (idea C), so the model keeps reading instructions | smollm2_mix_english, sft.py | code BPB ≤ CPT; English BPB ≤ +3 % (2026-10-19: English PASS +0.3 %; code FAIL +4.0 % vs CPT; B1 22/192 = CPT) |
 | SA-B | Breadth battery (≥ 1,000 tasks, agent tiers) | playground.py, evaluator, sandbox | battery tests pass; base and checkpoints scored |
 | SA-2 | Data: textbook-quality Python (each download needs user OK) + own generator (bug injection → traceback → fix; tool-call traces); execution-verified, decontaminated | corpus_pipeline, bench_decontam | 0 benchmark leakage; every sample's tests pass |
 | SA-3 | Instruction SFT on verified instruction→code | sft.py (LoRA) | pass@1 > SA-0 best |
@@ -231,6 +238,14 @@ There are two axes. Both are stepped, so a weak checkpoint never pays for 1,000 
 | SA-5 | Expert iteration / RFT: sample k, keep the passing ones, retrain; 2–3 rounds | train_rft.py idea, bench_passk executor | pass@1 up each round; no L0 regression |
 | SA-6 | **RL (mandatory, user 2026-10-18).** Details below. | train_rl.py, sandbox.py | pass@1 and ladder ≥ SA-5 on `final` split; forgetting within gate |
 | SA-7 | Runtime: constrained tool-call decoding, sample-k + test filter, retry-with-traceback; agent-loop eval | sandbox | tool validity 100 %; agent-loop success reported |
+
+**Many-ways principle (user-approved 2026-10-25, TASKS SA-C):** grade the result, not the style.
+- The sandbox has two layers. The safety layer is always on: no dunders, the call and import allowlists, the size cap, and the out-of-process timeout. The style layer is lifted by the named preset `evaluator.OUTCOME_TIER`; evaluator defaults never change.
+- Diversity is measured, not only pass@1: `bench_passk --samples N` reports pass@k and AST-distinct correct solutions.
+- Training data carries several verified solutions per task, starting with the next teacher batch.
+- RL can use an outcome-only reward (`rl_smollm2 --policy outcome`).
+- SA-4 adds repair loops with real sandbox errors as feedback.
+- SA-7 samples N answers and returns the first one that passes the tests.
 
 **SA-6 RL details:**
 - **Port:** the RL playground (`glm-5.3-flash-from-scratch/scripts/train_rl.py`, RLOO with a sandboxed unit-test reward) to HF SmolLM2 + LoRA.

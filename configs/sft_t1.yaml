@@ -63,7 +63,7 @@ train:
   fp16: true
   grad_ckpt: true
   optim: adamw_torch
-  dataloader_num_workers: 0
+  dataloader_num_workers: 2
   seed: 42
 
 eval:

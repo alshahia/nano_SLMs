@@ -62,7 +62,6 @@ def main() -> None:
     from src.data import PackedDataset
     from src.model import (apply_rope_scaling, build_streaming_sink_mask,
                            streaming_position_ids)
-    from sft_data import extract_code, parses_as_python
 
     cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
     seq_len = int(cfg["model"]["ctx"])
@@ -138,8 +137,9 @@ def main() -> None:
                 print(f"[eval] --quick {args.quick}: partial probe only, stopped after {i + 1} batches", flush=True)
                 break
     avg_nll = total_nll / max(total_tok, 1)
-    ppl = math.exp(min(avg_nll, 20))  # clamp: untrained models overflow exp()
-    print(f"[eval] val_loss={avg_nll:.4f} perplexity={ppl:.2f} tokens={total_tok}",
+    ppl_raw = math.exp(avg_nll) if avg_nll < 20 else float('inf')
+    ppl = math.exp(min(avg_nll, 20))
+    print(f"[eval] val_loss={avg_nll:.4f} perplexity={ppl:.2f} (raw={ppl_raw})",
           flush=True)
 
     samples = {}
@@ -158,6 +158,7 @@ def main() -> None:
     instr_rel = cfg["eval"].get("instructions_file")
     template = cfg["data"].get("template")
     if not args.skip_gen and instr_rel and template:
+        from sft_data import extract_code, parses_as_python
         instr_path = ROOT / instr_rel
         if not instr_path.exists():
             print(f"[eval] instructions file missing, skipping instruction eval: "

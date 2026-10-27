@@ -28,6 +28,7 @@ def main() -> None:
     tcfg, d = cfg["tokenizer"], cfg["data"]
     seq_len = int(cfg["model"]["ctx"])
     shard_tokens = int(d.get("shard_tokens", 8_000_000))
+    shuffle = bool(d.get("shuffle_before_pack", False))
 
     raw_dir = ROOT / d["raw_dir"]
     if not (raw_dir / "source.txt").exists():
@@ -56,7 +57,8 @@ def main() -> None:
             state["buf"] = []
 
         with src.open(encoding="utf-8") as f:
-            for line in f:
+            from tqdm import tqdm
+            for line in tqdm(f, desc=f"[tokenize] {prefix}"):
                 text = json.loads(line)["text"]
                 ids = tok(text, add_special_tokens=False)["input_ids"]
                 state["buf"].append(bos)
@@ -64,6 +66,10 @@ def main() -> None:
                 state["buf"].append(eos)
                 if len(state["buf"]) >= shard_tokens:
                     flush()
+        if shuffle:
+            import random
+            random.seed(int(d.get("seed", 42)))
+            random.shuffle(state["buf"])
         flush()
         return state["total"]
 

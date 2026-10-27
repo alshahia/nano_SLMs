@@ -85,8 +85,8 @@ def main() -> None:
 
     import torch
     import yaml
-    from transformers import (AutoTokenizer, Trainer, TrainingArguments,
-                              default_data_collator)
+    from transformers import (AutoTokenizer, EarlyStoppingCallback, Trainer,
+                              TrainingArguments, default_data_collator)
 
     from src.data import PackedDataset
     from src.model import (build_model, load_finetune_init, maybe_wrap_peft,
@@ -95,6 +95,19 @@ def main() -> None:
     cfg = yaml.safe_load((ROOT / args.config).read_text(encoding="utf-8"))
     tcfg, d, t = cfg["tokenizer"], cfg["data"], cfg["train"]
     seq_len = int(cfg["model"]["ctx"])
+
+    # Hard VRAM ceiling (config key vram_cap_gib, same pattern as
+    # diacritizer/scripts/train_lm.py). The torch allocator is pinned so the
+    # process NEVER allocates past the dedicated VRAM - otherwise Windows WDDM
+    # silently spills the tail into shared iGPU memory (~10x slowdown, the
+    # 2026-09-14 WDDM incident). Set BEFORE the model/dataset touch CUDA.
+    cap = t.get("vram_cap_gib")
+    if cap and torch.cuda.is_available():
+        total_gib = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3)
+        frac = min(0.999, float(cap) / total_gib)
+        torch.cuda.set_per_process_memory_fraction(frac)
+        print(f"[VRAM-CAP] {round(frac * total_gib, 2)} GiB of {round(total_gib, 2)} GiB",
+              flush=True)
 
     tok = AutoTokenizer.from_pretrained(tcfg["name"])
     train_ds = PackedDataset((ROOT / d["tokens_dir"]).glob("train_*.bin"), seq_len)
@@ -137,11 +150,30 @@ def main() -> None:
     print(f"[train] params={n_params / 1e6:.1f}M vocab={vocab} fp16={t['fp16']} "
           f"grad_ckpt={t['grad_ckpt']}", flush=True)
 
+    print(f"[train] model summary:")
+    print(f"  layers={model.config.num_hidden_layers} hidden={model.config.hidden_size}")
+    print(f"  heads={model.config.num_attention_heads} kv_heads={model.config.num_key_value_heads}")
+    print(f"  ffn={model.config.intermediate_size} ctx={model.config.max_position_embeddings}")
+    print(f"  vocab={model.config.vocab_size} tie={model.config.tie_word_embeddings}")
+    print(f"  params={n_params/1e6:.1f}M")
+
+    import shutil
+    free_gb = shutil.disk_usage(ROOT).free / (1024**3)
+    estimated_need_gb = int(t["save_total_limit"]) * (n_params * 6 / 1e9) + 2.0
+    if free_gb < estimated_need_gb:
+        raise SystemExit(f"[train] LOW DISK: {free_gb:.1f} GB free, need ~{estimated_need_gb:.1f} GB for checkpoints")
+    print(f"[train] disk check: {free_gb:.1f} GB free, need ~{estimated_need_gb:.1f} GB")
+
     output_dir = ROOT / t["output_dir"]
     os.environ.setdefault("TENSORBOARD_LOGGING_DIR", str(output_dir / "logs"))
     resume_from = find_latest_checkpoint(output_dir)
     if resume_from is not None:
         print(f"[resume] found {resume_from.name} -> auto-resume enabled", flush=True)
+        ckpt_config = json.loads((resume_from / "config.json").read_text())
+        current_config = model.config.to_dict()
+        for key in ["hidden_size", "num_hidden_layers", "num_attention_heads", "intermediate_size"]:
+            if ckpt_config.get(key) != current_config.get(key):
+                raise SystemExit(f"[train] CONFIG MISMATCH on resume: {key} differs")
     if clear_stop_flag(output_dir):
         print("[stop] cleared stale STOP flag -> continuing", flush=True)
 
@@ -174,10 +206,14 @@ def main() -> None:
         optim=t.get("optim", "adamw_torch"),
         dataloader_num_workers=int(t.get("dataloader_num_workers", 0)),
         report_to=["tensorboard"],
+        remove_unused_columns=False,
+        label_names=['input_ids'],
+        data_seed=int(t.get("seed", 42)),
     )
 
     trainer = Trainer(
-        callbacks=[CoopStopCallback()],
+        callbacks=[CoopStopCallback(), EarlyStoppingCallback(
+            early_stopping_patience=int(t.get("early_stopping_patience", 3)))],
         model=model,
         args=targs,
         train_dataset=train_ds,
@@ -189,8 +225,12 @@ def main() -> None:
     # Pass the PATH, not True: HF's internal discovery ignores the
     # completeness guard and would pick a partial checkpoint (seen live
     # 2026-09-08: sleep killed a save mid-write -> FileNotFoundError).
-    trainer.train(resume_from_checkpoint=str(resume_from)
-                  if resume_from is not None else None)
+    try:
+        trainer.train(resume_from_checkpoint=str(resume_from)
+                      if resume_from is not None else None)
+    except torch.cuda.OutOfMemoryError:
+        print("[train] OOM ERROR: Try reducing batch size, or set optim='adamw_bnb_8bit' in config")
+        raise
 
     # §5.3.5 keep-final-forever: in-memory model is the BEST checkpoint
     # (load_best_model_at_end). PeftModel is merged to a full model first;
@@ -198,9 +238,18 @@ def main() -> None:
     final_dir = ROOT / t["final_dir"]
     final_dir.mkdir(parents=True, exist_ok=True)
     save_final(trainer, final_dir)
+    from safetensors.torch import load_file
+    final_ckpt = trainer.state.best_model_checkpoint
+    if final_ckpt:
+        shards = list(Path(final_ckpt).glob("*.safetensors"))
+        for s in shards:
+            _ = load_file(str(s))
+        print(f"[train] checkpoint verification: {len(shards)} shards OK")
     tok.save_pretrained(str(final_dir))
 
     final_metrics = trainer.evaluate()
+    metrics = trainer.state.log_history
+    (final_dir / "training_metrics.json").write_text(json.dumps(metrics, indent=2), encoding="utf-8")
     summary = {
         "phase": cfg["name"],
         "params_m": round(n_params / 1e6, 2),

@@ -20,9 +20,10 @@ target_rows, rows_seen, rows_kept, dups_dropped} + totals (kept rows,
 overall dedupe rate). Phase dir follows the existing convention: raw_dir
 comes from data.raw_dir, so stats land in data/<phase>/raw/.
 
-Backward compatibility is sacred: a config WITHOUT any target_rows behaves
-exactly as before (first-hit fallback chain, single data.rows cap, fresh
-per-candidate dedupe set, identical console lines). source_stats.json is
+Backward compatibility is sacred: a config WITHOUT any target_rows keeps the
+first-hit fallback chain, single data.rows cap, fresh per-candidate dedupe
+set and identical console lines; the only behavioral change is the val
+split, now a seeded random sample in both modes. source_stats.json is
 additive metadata written in both modes; it changes no data output.
 
 Run: .venv/Scripts/python scripts/prepare_data.py --config configs/smoke.yaml
@@ -131,7 +132,8 @@ def _new_rec(name: str, sub, target_rows, requested: int) -> dict:
 
 
 def _stream_rows(ds, cap: int, seen: set, f_train, f_val, n_train: int,
-                 min_chars: int, dedupe: bool, label: str, rec: dict) -> None:
+                 min_chars: int, dedupe: bool, label: str, rec: dict,
+                 val_indices=None, d=None) -> None:
     """Stream up to 'cap' kept rows into the OPEN train/val handles.
 
     Updates rec in place as rows flow, so a mid-stream failure still leaves
@@ -140,6 +142,11 @@ def _stream_rows(ds, cap: int, seen: set, f_train, f_val, n_train: int,
     mix mode (cross-source exact-dup, proposal §4.2/§5.11).
     """
     written = 0
+    max_chars = int(d.get("max_chars", 0)) if d else 0
+    require_code_keywords = bool(d.get("require_code_keywords", False)) if d else False
+    code_keywords = ("def ", "class ", "import ", "return ", "for ", "if ", "print(")
+    from tqdm import tqdm
+    pbar = tqdm(total=cap, desc=f"[prepare] {label}")
     for ex in ds:
         if written >= cap:
             break
@@ -148,13 +155,20 @@ def _stream_rows(ds, cap: int, seen: set, f_train, f_val, n_train: int,
         if len(text) < min_chars:
             rec["too_short"] += 1
             continue
+        if max_chars and len(text) > max_chars:
+            rec["too_long"] = rec.get("too_long", 0) + 1
+            continue
+        if require_code_keywords and not any(kw in text for kw in code_keywords):
+            rec["no_code_keywords"] = rec.get("no_code_keywords", 0) + 1
+            continue
         if dedupe:
             h = hashlib.sha1(text.encode("utf-8")).hexdigest()
             if h in seen:
                 rec["dups_dropped"] += 1
                 continue
             seen.add(h)
-        if written >= n_train:
+        is_val = written in val_indices if val_indices is not None else written >= n_train
+        if is_val:
             f_val.write(json.dumps({"text": text}, ensure_ascii=False) + "\n")
             rec["val_rows"] += 1
         else:
@@ -162,8 +176,10 @@ def _stream_rows(ds, cap: int, seen: set, f_train, f_val, n_train: int,
             rec["train_rows"] += 1
         written += 1
         rec["rows_kept"] = written
+        pbar.update(1)
         if written % 250 == 0:
             print(f"[prepare] {label}: {written}/{cap} rows", flush=True)
+    pbar.close()
 
 
 def main() -> None:
@@ -195,6 +211,9 @@ def main() -> None:
     val_fraction = float(d.get("val_fraction", 0.02))
     n_val = max(1, round(n_rows * val_fraction))
     n_train = n_rows - n_val
+    import random
+    random.seed(int(d.get("seed", 42)))
+    val_indices = set(random.sample(range(n_rows), n_val))
     min_chars = int(d.get("min_chars", 60))
     dedupe = bool(d.get("dedupe", True))
     # U7 data modes (WEBUI_PRD.md 2): "stream" (default) bounds disk by
@@ -255,6 +274,9 @@ def main() -> None:
                 target = int(cand["target_rows"])
                 n_val_s = max(1, round(target * val_fraction))
                 n_train_s = target - n_val_s
+                import random
+                random.seed(int(d.get("seed", 42)))
+                val_indices = set(random.sample(range(target), n_val_s))
                 print(f"[prepare] mix source: {name}"
                       + (f" ({sub})" if sub else "")
                       + f" target_rows={target}", flush=True)
@@ -263,7 +285,8 @@ def main() -> None:
                 try:
                     ds = _open_source(cand, loc, name, sub, mode, raw_dir)
                     _stream_rows(ds, target, seen, f_train, f_val, n_train_s,
-                                 min_chars, dedupe, name, rec)
+                                 min_chars, dedupe, name, rec,
+                                 val_indices=val_indices, d=d)
                     kept = rec["rows_kept"]
                     if kept < target:
                         print(f"[prepare] mix WARNING {name}: stream ended "
@@ -322,7 +345,8 @@ def main() -> None:
             f_val = out_val.open("w", encoding="utf-8")
             try:
                 _stream_rows(ds, n_rows, seen, f_train, f_val, n_train,
-                             min_chars, dedupe, name, rec)
+                             min_chars, dedupe, name, rec,
+                             val_indices=val_indices, d=d)
             finally:
                 f_train.close()
                 f_val.close()

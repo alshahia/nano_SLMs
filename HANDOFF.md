@@ -1,3 +1,485 @@
+# 2026-10-27d - SA-V.1 clean dev gate built (370 tasks) + grader timeout fix; CPU acceptance PASS
+
+- **Approved scope (user):** SA-V.1 steps 1-3 with a 0.5 coverage cut, plus the grader timeout fix. SA-V.2 is deferred. data/sa2 and data/sa4 are untouched. Everything ran on CPU; the GPU was not used.
+- **Clean gate:** research/raw/sa_v_clean_gate.json, 370 ids (he 180, mbpp 190), built by scratch/sa_v_clean_gate.py. The proposal said 378; it is 370 for two reasons:
+  - `teacher/0/1528` and `teacher/0/1642` each name two val rows, so `--task-ids` cannot address them. They are excluded, and `pools()` now refuses ids that match more than one row.
+  - Boilerplate n-grams are the ones shared by 2+ members, so coverage depends on the member set. The first build measured against 418 candidates, and its audit of the final ids flagged 3 borderline rows (0.41-0.48 → 0.50-0.51). The builder now re-measures on the kept set until it is stable: 374 → 371 → 370, 4 passes.
+- **Acceptance:**
+  - Audit `scratch/sa_val_leak_audit.py --ids` → research/raw/sa_v_clean_gate_audit.json: exact_prompt 0, exact_ref 0, same_tests 0, coverage ≥ 0.5 0 (≥ 0.2: 143). PASS.
+  - Dry-run of the clean gate, `sa5_rft.py --dry-run --split val --task-ids research/raw/sa_v_clean_gate.json --code 370 --fix 0 --tool 0`: 370/370 references pass, 0 not_evaluated, 28.5 s. PASS.
+  - The 567 gate dry-run is unchanged: 567/567. Using `--task-ids` with a non-val split is rejected. PASS.
+- **Grader fix:**
+  - `sa5_rft.score`: a timeout or RSS kill is retried once at 4× TIMEOUT (24 s). If the retry passes, `why = "not_evaluated"` and passed=False. The sample is left out of the pass-rate denominator (`passed / evaluated`) and does not block full-solve.
+  - `rl_smollm2.score_batch` skips such samples: no reward and no train row. A group with one reward gets advantage 0. The tally counts evaluated samples only.
+- **Gate policy:** PLAN §11 "SA dev gate". The clean 370 gate is primary for code. The 567 gate is reported for continuity. Fix signal comes from tier-fix only.
+- **GPU re-baseline (user-approved, done):** scratch/sa_v_gate.cmd ran both arms on the 370-task clean gate: k=4, temperature 0.8, grader fix on, cap 6.48 GiB (7400 MiB free − 0.75), peak 1.35 GiB. Both arms exited 0, in 15.6 and 13.6 min. Reports: scratch/sa_v_gate/<arm>/report.json. Paired comparison: scratch/sa_v_gate_compare.py → research/raw/sa_v_gate_rebaseline.json.
+
+  | arm | pass rate (he / mbpp) | solved@4 |
+  |---|---|---|
+  | c107 (run 5 part 3) | **7.23 %** (6.39 / 8.03) | **18.1 %** (67/370) |
+  | sa4_scale075 | 6.69 % (5.83 / 7.50) | 15.4 % (57/370) |
+
+  - Paired task bootstrap, 95 % CI of c107 − sa4: pass rate −0.74 to +1.82 pp; solved@4 −0.54 to +5.95 pp. Both CIs include 0. c107 solves 23 tasks that sa4 does not; sa4 solves 13 that c107 does not.
+  - Verdict: on leak-free tasks c107 leads in the same direction as on the 567 gate, but the lead is not significant at n=370, k=4. 0 samples were NOT_EVALUATED: every timeout/RSS kill (c107 13, sa4 10) also failed its 4× retry.
+  - Absolute pass rates are low (~7 %). The old 567 gate's higher numbers came mostly from train twins.
+
+# 2026-10-27c - RL run 5 paused (user); SA-V val rebuild proposal drafted for approval
+
+- **RL run 5 paused (user 2026-10-27).** Nothing is running. Part 3 stopped at its time cap at step 107. The resume state is runs/sa6_r5_part3/state.pt. No more RL launches until the SA-V clean gate exists and both arms are re-baselined on it.
+- **Proposal:** research/2026-10-27_sa_v_val_rebuild_proposal.md (DRAFT, not approved). data/sa2 and data/sa4 are untouched. All measurement was CPU and read-only; the simulation scripts live in the session scratchpad.
+- **Key finding.** Union-find of the 141,338 sa2 rows over four keys (parent id, assert set, reference, prompt) gives 80,282 clusters.
+  - The largest are OCI classic-problem families: fibonacci 1,738 rows, factorial 1,713.
+  - 60 % of old-val rows sit in clusters that straddle train and val.
+  - Every existing checkpoint trained on the old train split, which holds ~99 % of any re-split val. So a re-split can only gate models retrained on the new train.
+- **Recommended now: SA-V.1.** A clean gate carved from the current val: he/mbpp rows with ≥ 3 asserts, whole cluster in val, and 13-gram coverage < 0.5 against train. That gives 378 tasks (he 182, mbpp 196); 415 at < 0.8. No fix/repair row survives the rule, so tier-fix stays the fix signal.
+  - Code change: an additive `--task-ids` flag in sa5_rft.
+  - After that, a GPU re-baseline (separately gated).
+- **Deferred: SA-V.2.** A cluster re-split into new data/sa2v and data/sa4v (2 % val, cluster cap 50, near-dup pass at 0.5, hard train↔val guard). It runs only together with the next SFT-chain retrain.
+- **Optional bundle:** the grader timeout/RSS fix (NOT_EVALUATED), applied before the re-baseline.
+
+# 2026-10-27b - SA-6 run 5 step 107 gate, full vs clean: no significant gain; 424/567 dev-gate val tasks leak from train
+
+- **Merge + eval.** The part 3 step-107 adapter was merged to runs/sa6_r5_part3/checkpoint-107 (240 adapter keys; 120/273 tensors changed). The eval chain is `scratch/sa6_r5_eval.cmd` (cap 6.53 GiB = fresh free − 0.75; log scratch/sa6_r5_eval.log). All 9 steps exited 0 (done 9:34).
+- **Rest of the eval chain vs sa4_scale075 (s075).** Outputs: research/raw/sa6r5_*, ladder_sa6r5_{b1,w2}/.
+
+  | Eval | s075 | c107 |
+  |---|---|---|
+  | HumanEval greedy pass@1 /164 | 14 | 14 |
+  | MBPP-san greedy pass@1 /427 | 57 | 56 |
+  | EOS rate HE / MBPP | .878 / .951 | .909 / .974 |
+  | bpb val / val_en (lower is better) | .5703 / .5269 | .5733 / .5279 |
+  | Format valid / exact /146 | 140 / 50 | 141 / 52 |
+  | Constrained format valid / exact /146 | 146 / 50 | 143 / 52 |
+  | Constrained interventions | 12 | 40 |
+  | Tier fix strict / extracted /110 | 27 / 30 | 30 / 33 |
+  | Tier tool strict /100 | 13 | 14 |
+  | Ladder B1 /192 | 70 | 68 |
+  | Ladder W2 /560 | 245 | 243 |
+
+  Everything is within a few tasks of the baseline. The only changes beyond that are small regressions: bpb +.003, and 3 constrained rows that ran out of budget (interventions 12 → 40). EOS rates went up.
+- **Leak audit** (`scratch/sa_val_leak_audit.py`, CPU-only, read-only; output research/raw/sa_val_leak_audit.json). It compares the 567 §5 gate tasks against 162,963 sa2+sa4 train rows.
+  - Flagged 444 tasks: same asserts 400, same reference completion 192, same prompt 16; 13-gram coverage ≥ 0.5 on 150.
+  - "Strong" leak means same asserts, same reference, or coverage ≥ 0.8. That covers 424 tasks, leaving **143 clean** (he 66, mbpp 74, fix 2, repair 1).
+  - Cause: the val split is a 1 % id-hash cut (sa2_build.py:634). A val fix/repair task's clean parent function sits in train as an he/mbpp row (oci-fix → oci, opc-fix → opc), and sibling fix/repair variants land on both sides. OCI/OPC also contain the same problem under different ids, e.g. val opc/50513 = train opc/19948, opc/19948/fix and opc/19948/repair. sa2_build decontaminates only against HumanEval/MBPP/playground, never train vs val.
+  - Practical effect: the fix/repair 45–52 % numbers mostly measure recall of a seen function.
+- **Gate result.** Sampled pass@1, 4 samples/task, paired task-level bootstrap (10k; research/raw/sa6r5_gate_clean_split.json, which also lists the clean ids):
+
+  | Subset | n | sa4_scale075 | c107 | Δ | 95 % CI | P(Δ ≤ 0) |
+  |---|---|---|---|---|---|---|
+  | Full gate | 567 | .295 | .300 | +.005 | [−.009, +.019] | .26 |
+  | Clean | 143 | .100 | .110 | +.010 | [−.002, +.023] | .05 |
+  | Leaked | 424 | .361 | .364 | +.003 | [−.015, +.021] | .39 |
+
+  Clean by shape: he .057 → .061, mbpp .118 → .132.
+- **Grader finding** (no code changed). Sandbox timeouts and RSS kills score 0, the same as a wrong answer, in both `sa5_rft.score` and the RL reward (`rl_smollm2.sa5_reward`). Counts: baseline 19 timeouts + 2 RSS kills of 2268 samples, c107 17 + 0 (~1 %). Proposed fix: retry once with a longer limit; if it still fails, it's a fail; a retry pass is NOT_EVALUATED and leaves the RLOO group.
+- **Verdict.** Step 107 shows no significant gain on either gate subset or on any held-out eval, so it does not replace sa4_scale075. The clean subset leans positive (+1.0 pp, P(Δ ≤ 0) .05) but 143 tasks × 4 samples is small. Until val is rebuilt, report the gate as **full + clean**. The leaked 424 should not drive decisions.
+- **Next.** (1) A duplicate-aware val rebuild (TASKS SA-V; needs user approval before any data rebuild). (2) The grader timeout fix. (3) Decide whether RL run 5 continues; on this evidence, more RL at lr 1e-4 is not justified until the gate can measure it.
+
+# 2026-10-27a - SA-6 run 5 RL part 3: lr 1e-4 moves KL 10×, code pass rate dips
+
+- **Launch.** Copied runs/sa6_r5_part1 (state.pt at step 66, rl_log) to runs/sa6_r5_part3; part 1 untouched as the fallback. Same flags plus `--learning-rate 1e-4`. KL β stayed 0.05. VRAM cap 6.57 GiB (free 7,493 MiB − 0.75). rc=0.
+- **New flag behaviour.** rl_smollm2.py now overrides the lr restored by `optimizer.load_state_dict` with `--learning-rate` on resume. It was checked on CPU first; the run log shows `[resume] lr 2e-05 -> 0.0001`.
+- **Result.** Time cap reached at step 107 (41 new steps, ~88 s/step). state.pt saved at exit (group 107); no merged final.
+  - Memory: peak 6,418 MiB.
+  - GPU: util ~28 %, max 86 °C.
+- **Comparison** (training-sample pass rates, not an eval):
+
+  | Window | KL mean | KL max | Entropy | code | fix | tool |
+  |---|---|---|---|---|---|---|
+  | Part 2, steps 46–65 (lr 2e-5) | 9.5e-5 | 3.1e-4 | 0.134 | .15 | .49 | .30 |
+  | Part 3, steps 66–85 (lr 1e-4) | 6.4e-4 | 1.3e-3 | 0.129 | .14 | .54 | .33 |
+  | Part 3, steps 86–106 | 1.1e-3 | 2.0e-3 | 0.149 | .11 | .50 | .27 |
+
+  Length was steady (mean ~70, largest p90 205 against the 384 cap). Flat share was 0.52.
+- **Stop rules.** A background guard (scratchpad part3_guard.py) tripped at step 101 on "all buckets down over 20 steps": code .15 → .09, fix .49 → .49, tool .30 → .26. It was a notify-only guard and the run had ~8 min left, so it was let finish. KL, entropy and length rules did not trip.
+- **Verdict.** lr 1e-4 moves the policy as intended (KL 10×), with no collapse. The only bad sign is code dropping .15 → .11 (≈2σ on correlated samples). Fix and tool are within noise. The training-sample signal can't settle this.
+- **Next (user decision).** Recommended: merge the step-107 adapter and run the held-out eval vs runs/sa4_scale075. The alternative is another hour at lr 1e-4 with the code bucket watched.
+
+# 2026-10-26i - SA-6 run 5 RL part 2: resumed to 66 steps, no OOM, KL still tiny
+
+- **Launch.** Resumed runs/sa6_r5_part1 from state.pt (step 33, task 411) with the same flags. VRAM cap 6.52 GiB (free 7,440 MiB − 0.75). New files `train2.log`, `gpu_samples2.csv`, `.done2`; part 1's `.done` was left in place. rc=0.
+- **Result.** Time cap reached at 66 steps total. state.pt saved; still no merged final.
+  - Speed: 110 s/step.
+  - Memory: peak 5,137 MiB total.
+  - GPU: util 23 %, max 86 °C.
+- **Comparison** (training-sample pass rates, not an eval):
+
+  | Window | KL mean | KL max | Entropy | code | fix | tool |
+  |---|---|---|---|---|---|---|
+  | Part 1 (33 steps) | 2.2e-5 | 7e-5 | 0.141 | .10 | .47 | .29 |
+  | Part 2, steps 34–49 | 5.4e-5 | 1.3e-4 | 0.105 | .09 | .50 | .34 |
+  | Part 2, steps 50–66 | 9.8e-5 | 3.1e-4 | 0.133 | .15 | .46 | .30 |
+
+  Flat share stayed ~0.55. KL is growing but is still about 1e-4, so the policy has moved very little. The pass-rate differences are within noise because tasks vary by step.
+- **Next (user decision).** Options:
+  - Retune: raise lr or lower KL β before more GPU hours.
+  - Merge state.pt to a final and run the held-out eval to check for any real gain.
+
+# 2026-10-26h - SA-6 run 5 RL part 1: 33 steps in 1 h, max-refills 1, no OOM
+
+- **New flag.** `--max-refills` in scripts/rl_smollm2.py (default 3 = old MAX_REFILLS constant, so older runs are unchanged). CPU check: ast parse + `--help` only; the equivalence check was not re-run because that code path is unchanged.
+- **Launch.** runs/sa6_r5_part1. Init runs/sa4_scale075, P=8, micro-rows 4, `--max-refills 1`, const norm, KL β 0.05, T 0.8 (log-probs at T), max_new 384/256, save-every 10, max-seconds 3600. VRAM cap 6.46 GiB (free 7,387 MiB − 0.75). rc=0.
+- **Result.** Time cap reached at 33 steps. state.pt saved; there is no merged final (a time-capped run never merges).
+  - Speed: 109 s/step (58–183), down from the probe's ~160.
+  - Memory: peak 6,646 MiB total by nvidia-smi.
+  - GPU: util 25 %, max 86 °C.
+  - KL max 7e-5.
+  - Flat share 0.53 / 0.60 / 0.53 by thirds.
+  - Entropy ~0.13–0.16; len_mean 69–82.
+- **Pass rate by thirds** (training samples, not an eval; tasks differ by step):
+
+  | Bucket | Steps 1–11 | Steps 12–22 | Steps 23–33 |
+  |---|---|---|---|
+  | code | .12 | .06 | .12 |
+  | fix | .47 | .51 | .42 |
+  | tool | .33 | .24 | .32 |
+
+  No trend is visible yet. KL is tiny, so the policy has barely moved.
+- **Next (user-gated GPU).** Either continue part 2 from state.pt (same flags and output dir; it auto-resumes) or reconsider lr/steps. A held-out eval of the merged adapter is needed before any claim.
+
+# 2026-10-26g - SA-6 run 5: logits/T flag, --micro-rows, GPU probe (16 steps, time cap)
+
+- **New flags in scripts/rl_smollm2.py.**
+  - `--logprob-temperature {auto,on,off}`: the training log-probs (policy and KL reference) use logits / T, so the update scores the distribution that was actually sampled. `auto` = on for `--source sa5`, off for playground. The division is in place: a full-vocab copy is ~0.6 GiB at 8 × 384.
+  - `--micro-rows N` (default 0 = whole group): forward/backward over N rows of a group at a time. Every row term is already divided by the step's total rows, so the gradient is unchanged.
+  - The KL reference forward now runs before the policy forward, so its logits are freed first.
+- **CPU checks PASS** (equivalence script in the session scratchpad):
+  - tempered log-probs equal both a manual log_softmax(logits/T) and HF's TemperatureLogitsWarper (diff 0);
+  - micro-rows 3 vs whole group: objective equal, max grad diff 7.5e-9;
+  - the P=1 equivalence still passes (4.8e-7);
+  - sa5 dry run: 0 of 704 rl-split reference tasks fail.
+- **Two OOM launches before the fix.**
+  - `runs/sa6_r5_probe`: ref forward at step 4, from the out-of-place `/ T` copy.
+  - `runs/sa6_r5_probe2`: backward at step 2, cap 6.59 GiB.
+  - Both dirs are kept; deleting them needs the user's OK.
+  - `runs/sa6_r5_probe/gpu_samples.csv`: a stray sampler kept appending to it until 2026-10-26 13:23. Rows after launch 1 ended are not from that run.
+- **Probe 3** `runs/sa6_r5_probe3`: P=8, `--micro-rows 4`, const norm, dynamic sampling, KL 0.05, T 0.8, max_new 384/256, cap 6.56 GiB (fresh free 7.49 − 0.75).
+  - No OOM. It hit `--max-seconds 2400` after **16 of 40 steps**; state.pt is saved and no final was merged.
+  - **~160 s/step** (108–251). Refills hit the max of 3 on almost every step (mean 2.8), so one step generates up to 4 × 64 samples.
+  - Flat share 0.57 mean (0.56–0.71). ~17 groups were generated per step, ~7 of them kept.
+  - Entropy 0.066 → 0.17 (no collapse). len_mean 70 → 82, p90 ~143. KL ~1e-5. GPU util ~26 % mean, 86 °C max, nvidia-smi peak 7.2 GiB total including the desktop.
+  - Pass rate by bucket over the sampled groups (refill tasks vary, so this is not a trend): code 0.14 → 0.07, fix 0.50 → 0.48, tool 0.35 → 0.23.
+  - **Budget impact:** the proposal's "40 steps ≈ 10 min" is ~10× too low. At this pace 1 h ≈ 22 steps and 5 h ≈ 110 steps. Generation dominates (low GPU util), and refills multiply it.
+- **Next (user decision):** the P / refill setting for RL part 1, then launch it (GPU, user-gated).
+
+# 2026-10-26f - SA-6 run 5: grammar fix + rl_smollm2.py flags built, CPU checks PASS (no GPU used)
+
+- **User approved** research/2026-10-26_sa6_rl_proposal.md as proposed: SA-5 pool, grammar fix first (CPU), batched prompts per step.
+- **Grammar fix** (scratch/sa4_format_check.py, SA-7 grammar): `MAX_CALLS = 8` per call list and exact-duplicate calls are rejected.
+  - SA-4 tool val: 146/146 references are still accepted.
+  - Train: 33 of 14,854 rejected (14 with more than 8 calls, 8 duplicates, 7 max_str, 3 max_run, 1 max_depth). Train rows are only references; nothing is retrained.
+  - The xlam/49334 repeat loop now dies when the repeated call closes.
+  - The GPU re-score of init and candidate under the fixed grammar is not done yet; it goes into the SA-6 gate.
+- **scripts/rl_smollm2.py new flags** (all off by default, so runs 1–4 behave as before):
+  - `--source sa5`: pool and scorer imported from scripts/sa5_rft.py. Pool knobs: `--sa2/--sa4/--min-asserts/--pool-seed`, `--slice-code/fix/tool`, `--slice-start`, `--mix 0.4,0.35,0.25`.
+  - Generation and scoring: `--max-new-tool`, `--workers`.
+  - Training: `--prompts-per-step P`, `--loss-norm const`, `--dynamic-sampling` (≤ 3 refill rounds).
+  - Stop rules: `--stop-entropy F`, `--stop-length F`.
+  - New per-step log keys: entropy, len_mean, len_p90, flat_share, refills, pass per bucket.
+  - state.pt now also stores the task cursor and the history.
+  - Fixed: the step count saved after a `--max-seconds` break was off by one.
+- **Validation (CPU):**
+  - `--source sa5 --dry-run`: PASS.
+    - Pools: code 97,015, fix 27,544, tool 14,854.
+    - All 1,100/1,100 slice-1 references score 1.
+    - Every half reference fed with eos=False scores nostop −0.1, tool included.
+    - The first 1,100 draws split code 405 / fix 395 / tool 300.
+  - Playground `--dry-run`: 704/704 PASS.
+  - ast.parse: PASS.
+  - Equivalence, with P=1, seq loss, on a tiny random Llama + LoRA, against the pre-edit file. Script: scratchpad equiv_check.py.
+    - Log-probs, objective and grads match the old lines, max diff 4.8e-7. With and without KL.
+    - The rows scaling, the const normalisation and token_prefix check out.
+  - tests/: test_reference_sft_bytes 5/5 and test_sft_vram_cap 6/6 PASS. test_artifacts, test_explorer and test_simulator FAIL because runs/smoke and runs/kd-t2p-baseline artifacts are missing. They don't import rl_smollm2, and this change doesn't cause them.
+- **Open point (pre-existing, unchanged):** rollouts sample at T = 0.8, but log-probs use T = 1 logits, so the update is slightly off-policy. A logits/T option needs a user decision before the GPU probe.
+- **Next (user-gated GPU):** probe of 40 steps, P = 8, cap = fresh free − 0.75 GiB. It measures s/step, peak VRAM, flat share and entropy.
+
+# 2026-10-26e - SA-5 round 1 SFT + merge + gate DONE: gate FAILS, SA-5 stops (log scratch/sa5_r1_train_gate.log)
+
+- **Chain:** scratch/sa5_r1_train_gate.cmd (launcher scratch/launch_sa5_r1_train_gate.ps1), cap 6.62 GiB (free 7.37 − 0.75). Every step exited 0; 11:17 → 12:26.
+- **SFT:** configs/sft_sa5_r1.yaml, 48 steps in 5 min → runs/sft_sa5_r1/final. Merged onto runs/sa4_scale075 at 0.75 → runs/sa5r1_scale075 and at 1.0 → runs/sa5r1_scale100.
+- **Primary metric:** new `scripts/sa5_rft.py --split val` (sample + score only, no train files). Fixed val subset: code 300 (he 159, mbpp 141) + fix/repair 267, k=4, the same tasks for all three arms. This is reduced from the proposal's ~1.2k × 8 to fit the budget. Output scratch/sa5_gate_r1/<arm>/report.json, ≈ 10 min per arm.
+
+| metric (vs init s075) | init s075 | r1 s0.75 | r1 s1.0 | rule | result |
+|---|---|---|---|---|---|
+| sampled pass@1, pooled 567 tasks | 29.5 % | 29.8 % | 29.3 % | up | flat (within noise) |
+| per shape he / mbpp / fix / repair | 11.2 / 13.5 / 45.3 / 52.3 | 12.6 / 13.8 / 46.5 / 50.4 | 12.3 / 13.1 / 46.7 / 49.3 | | |
+| greedy HE + MBPP | 14 + 57 = 71 | 14 + 53 = 67 | 14 + 52 = 66 | not down | **FAIL** |
+| English BPB | 0.5269 | 0.5276 (+0.1 %) | 0.5279 (+0.2 %) | ≤ +3 % | PASS |
+| constrained format valid | 146 | 145 | 145 | 146/146 | **FAIL** |
+| unconstrained valid / exact | 140 / 50 | 142 / 52 | 142 / 51 | not down | PASS |
+| ladder fix tier | 27 | 30 | 30 | ≥ 27 | PASS |
+| tool exact (constrained) | 50 | 52 | 51 | ≥ 50 | PASS |
+| tool tier / B1 / W2 (info) | 13 / 70 / 245 | 12 / 65 / 241 | 13 / 64 / 242 | | slightly down |
+
+- **Constrained miss:** xlam/49334 on both arms is a 695-char list of repeated `options_historical` calls that hits the budget. The SA-7 grammar caps string length and runs inside a value, but not the number of repeated calls; a max-calls/duplicate-call rule would catch it.
+- **Verdict:** per proposal §5, the first failing round stops SA-5, and runs/sa4_scale075 stays the SA-5 output. Even without the two hard fails, round 1 gave no real lift: 767 self-generated rows over 48 steps moved the primary metric by about 0.3 pp, which is noise.
+- **Cosmetic:** inside the cmd's `for (...)` block, `%date% %time%` expands once at parse time, so the three pass@1 step lines show the same timestamp. Results are unaffected.
+- Raw: research/raw/sa5r1_{format,passk,tier_fix,tier_tool,bpb}.json, sa5r1c_format.json, ladder_sa5r1_{b1,w2}/.
+
+# 2026-10-26d - SA-5 round 1 sampling DONE (data/sa5_r1; logs scratch/sa5_r1.log, sa5_r1_resume.log)
+
+- **Run:** 1,100 tasks × 8 from runs/sa4_scale075, cap 6.62 / 6.63 GiB, ≈ 37 min total.
+- **OOM:** the first pass at batch 256 hit a clean own-job OOM inside the cap after 736 tasks (4.38 GiB allocated + 2.10 GiB reserved-unallocated). The tool group's long schema prompts caused it.
+  - Resumed from samples.jsonl at `--batch 64` with `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`; peak 1.77 GiB; 364 tasks in 13 min.
+  - **Lesson:** batch 256 is safe for code/fix and not for tool. Future rounds should use a per-group batch, or batch 64 for tool.
+- **Pass rates:**
+
+  | shape | pass rate | 0/8 tasks | 8/8 tasks |
+  |---|---|---|---|
+  | he | 13.9 % | 120/169 | — |
+  | mbpp | 11.6 % | 96/131 | — |
+  | fix | 51.5 % | — | 72/260 |
+  | repair | 50.1 % | — | 68/240 |
+  | tool | 33.3 % | 136/300 | — |
+
+  - Tool failures: mismatch 1,445, unknown_tool 70, json 47, nostop 37.
+- **Selection:** 441 learn tasks + 44 anchors → 575 rows, plus 192 replay → 767 train rows.
+  - Train shapes: fix 193, repair 205, tool 191, he 86, mbpp 64, replay 28.
+- **ds:** `sa3_data.py` → data/sa5_r1/ds. 767 train rows, 188k tokens, 0 over ctx; val = SA-4 val, 748 rows.
+- **Proposed config:** configs/sft_sa5_r1.yaml (not run). Base runs/sa4_scale075, LoRA r16, lr 1e-4, 2 epochs, effective batch 32 (≈ 48 steps, a few minutes), eval/save every 12 steps.
+  - Then merge at 0.75 / 1.0 and run the SA-5 gate.
+
+# 2026-10-26c - SA-5 batch probe + proposed round-1 size (scratch/sa5_b64, sa5_b256; log scratch/sa5_batch_probe.log)
+
+- **Setup:** the same 40 round-1 tasks (24 code, 10 fix, 6 tool) × 8, cap 6.66 GiB, both exit 0.
+
+  | batch | gen | score | peak VRAM | gen per sample |
+  |---|---|---|---|---|
+  | 64 | 81 s | 24 s | 1.08 GiB | 0.25 s |
+  | 256 | 58 s | 30 s | 3.35 GiB | 0.18 s |
+
+  - Speed-up: 1.4×.
+  - Pass rates agree within sampling noise.
+  - Batch 512 would be about 6.5 GiB, too close to the cap, so batch 256 is the setting.
+- **Estimate at batch 256:** about 0.22 s generation plus 0.06 s scoring per sample, scaled from the 200-task probe. With ≈ 50 min of SFT plus merge/gate, sampling gets ≈ 40 min, which is ≈ 8.5k samples ≈ 1,100 tasks × 8.
+- **Proposed round 1:** `--code 300 --fix 500 --tool 300 --batch 256` (fix covers fix + repair).
+  - Expected yield from the probe rates: about 700 kept rows plus about 230 replay, ≈ 0.9k train rows.
+  - That is thin for SFT (≈ 15 optimizer steps at 64 rows per step). It is still a real signal on the fix tier, which is the main SA-5 watch point.
+
+# 2026-10-26b - SA-5 GPU probe: 200 tasks × 8 from runs/sa4_scale075 (scratch/sa5_probe/, log scratch/sa5_probe.log)
+
+- **Run:** cap 6.65 GiB (fresh free 7.40 − 0.75), batch 64 rows/step, exit 0, 573 s total.
+  - Generation: 502 s for 1,600 samples, ≈ 0.31 s per sample.
+  - Sandbox: 70 s, ≈ 0.044 s per sample at 4 workers.
+  - Peak VRAM was not logged.
+- **Per-sample pass rate and tasks solved (0/8 … 8/8):**
+
+  | shape | pass rate | 0/8 | 8/8 | other failures |
+  |---|---|---|---|---|
+  | he | 13.5 % | 50 of 72 | 2 | — |
+  | mbpp | 10.2 % | 35 of 48 | — | — |
+  | fix | 53 % | 5 of 26 | 9 | — |
+  | repair | 52 % | 6 of 24 | 9 | — |
+  | tool | 38 % | 13 of 30 | 4 | 10 json, 10 unknown_tool |
+
+  nostop/timeout failures are rare (≤ 15 per shape).
+- **Selection:** 66/200 tasks (33 %) in 1–7/8 plus 6 anchors → 95 kept rows, about 0.48 per task. Adding replay gives 127 train rows.
+- **Budget verdict: the planned round does not fit.**
+  - 4,000 tasks × 8 at this pace is ≈ 2.8 h of generation plus ≈ 23 min of scoring per round, against the 45 min planned.
+  - Yield would be ≈ 1.9k rows, below the 3–5k estimate.
+  - Code tasks are mostly 0/8: the signal there is thin. Fix and tool tasks are rich.
+- **Options:**
+  - A larger generation batch, measured first.
+  - A smaller or fix-weighted slice.
+  - Accepting about 3 h per round, which goes over the 5 h SA-5 budget and is the user's decision.
+
+# 2026-10-26 - SA-5 RFT builder + CPU dry run PASS (no GPU used)
+
+- **Script:** `scripts/sa5_rft.py` builds one RFT round.
+  - Pool: he/mbpp from data/sa2, fix/repair/tool from data/sa4. Code and fix rows need ≥ 3 asserts.
+  - Each pool is shuffled once by seed, and round r takes slice r.
+  - Sampling: k samples per task. Code/fix text is cut with bench_passk `truncate`.
+  - Reward: code/fix use sa2_build `run_guarded`; tool uses an exact call-set match.
+  - Selection:
+    - Keep tasks with 1..k−1 passes.
+    - Add ≤ 10 % anchors from 8/8 tasks.
+    - Keep ≤ 2 AST-distinct passing samples per task, shortest first.
+  - Mix: 25 % SA-4 replay; val = data/sa4/val.jsonl.
+  - samples.jsonl is appended per task, so a rerun resumes.
+  - torch is imported only on the GPU path. The GPU path sets the VRAM cap with `--vram-cap-gib`.
+- **Dry run:** `--dry-run --code 300 --fix 125 --tool 75 --out scratch/sa5_dry`. It scores each reference once.
+  - Result: 500/500 pass (he 169, mbpp 131, fix 68, repair 57, tool 75). Every tool reference matches itself.
+  - 425 sandbox programs took 45.7 s serial (≈ 0.11 s each).
+  - `sa3_data.py` tokenizes the output: 667 train rows (167 replay), 0 over ctx, 152k tokens. val is 748 rows.
+- **Cost estimate:** a round has ≈ 27k code/fix programs. At 4 workers that is ≈ 13 min of sandbox time, plus the timeout cost of wrong samples (6 s each when they hang). Generation time is still unmeasured.
+- **Not tested:** the GPU sampling path, which needs the user-gated 200 × 8 probe.
+
+# 2026-10-25 - SA-4 data + config READY (not launched; GPU launch is user-gated)
+
+- **Build:** `scripts/sa4_data.py` (new) reads data/sa2 and adds playground replay, writing data/sa4/{train,val}.jsonl plus report.json. `scripts/sa3_data.py --src data/sa4 --shapes fix,repair,tool,replay,he,mbpp --out data/sa4/ds` tokenizes it (prompt-masked).
+- **Shapes:**
+  - fix: half of the SA-2 fix rows, unchanged. The buggy code is shown commented out with its real sandbox outcome.
+  - repair: the other half of the fix rows, split by a sha256 bucket of the row id, so no source appears in both (checked: 0 overlap). Each is re-rendered as an SA-7 retry turn: `# Complete this Python function.`, the task line, the attempt as live code, the real `# >>> call` with its Traceback or "returned X but expected Y", then `# That attempt is wrong. Write the fixed function.` and the header. The attempt keeps its own header, because some mutations change a default argument.
+  - tool: all SA-2 xLAM rows.
+  - he/mbpp: a 10 % sample of the SA-2 instruction rows, against forgetting.
+  - replay: playground reference solutions, 40 per write-kind skill from the wide pool, on the held-out `pretrain` split (val uses index 40). The fix- and tool-kind skills are left out, so the SA-4 ladder fix/tool gates are never measured on replayed skills. 0 exact prompt overlap with 4,480 dev/final/rl/confirm prompts.
+- **Counts:**
+  - Train: 61,729 rows (fix 13,837, repair 13,769, tool 14,854, replay 9,520, he 5,531, mbpp 4,218).
+  - Val: 748 rows (fix 127, repair 141, tool 146, replay 238, he 52, mbpp 44).
+  - Tokenized: 61,723 train rows (6 dropped over ctx 1024); 14.67 M tokens, 3.90 M of them target; p50 206, p99 701 tokens.
+- **CPU validation PASS:**
+  - Every row: input_ids and labels have equal length, end in EOS, fit within ctx, and the labels are a -100 prompt mask followed by an exact copy of the completion.
+  - All tool completions parse as JSON lists of {name, arguments}.
+  - All fix, repair, replay, he and mbpp code parses.
+  - The attempt shown in every repair prompt parses.
+- **Config `configs/sft_sa4.yaml`:**
+  - A clone of sft_sa3: LoRA r16/α32 on all 7 projection modules, lr 1e-4 cosine, warmup 30, bs8 × accum8, fp16, gradient checkpointing, ctx 1024.
+  - `base_model: runs/sa3_scale075`, `dataset_dir: data/sa4/ds`, output to runs/sft_sa4/final, eval/save every 200 steps.
+  - About 965 steps; at SA-3's ~6.8 s/step that is ~1.8 h, inside the ≤ 3 h SA-4 budget.
+- **Launch (user-gated):** `.venv/Scripts/python.exe scripts/sft.py --config configs/sft_sa4.yaml --vram-cap-gib <fresh free − 0.75>`. `--pilot` first runs 2,048 rows into runs/sft_sa4_pilot.
+- **Gate:** format ≥ 98 %, fix ≥ 25 % (ladder fix/tool tiers, dev split). Also re-check HE/MBPP/B1/W2 against the sa3_scale075 init.
+- **Pilot PASS (2026-10-25, user-approved):**
+  - `--pilot --vram-cap-gib 6.54` (fresh free 7.29 − 0.75). 2,048 rows, 32 steps, no OOM.
+  - Train loss 0.341 → 0.267; eval_loss 0.276; ~5.5 s/step. Output: runs/sft_sa4_pilot.
+- **Full run LAUNCHED (2026-10-25):**
+  - `sft.py --config configs/sft_sa4.yaml --vram-cap-gib 6.44` (fresh free 7.19 − 0.75).
+  - Log scratch/sft_sa4.log, output runs/sft_sa4/final. ETA ~1.5–1.8 h.
+  - The train script auto-resumes: re-run the same command if it stops.
+- **Full run DONE (2026-10-25):**
+  - 965/965 steps in 6,391 s (1.78 h); exit 0, no OOM.
+  - Train loss 0.336 → 0.171. eval_loss by step: 200 0.2049, 400 0.1834, 600 0.1727, 800 0.1688, 965 **0.1684** (best).
+  - Merged model in runs/sft_sa4/final. Gate eval below.
+- **Gate eval DONE 2026-10-25** (cap 6.72 GiB from 7.47 free, 24 min; `scratch/sa4_gate_eval.cmd`, log `scratch/sa4_gate_eval.log`). The ladder "tool" tier scores Python that builds call dicts, not the JSON reply, so format is measured by the new `scratch/sa4_format_check.py` on the 146 held-out data/sa4/val tool rows (valid = one JSON list of {name, arguments:{}} with names from the prompt).
+  | metric | sa4 | init sa3_scale075 | gate |
+  |---|---|---|---|
+  | format validity (146 xLAM val) | **143/146 = 97.9 %** (exact 53) | 0/146 | ≥ 98 % → **FAIL by 1 row** |
+  | ladder fix tier, dev ×5 | **30/110 = 27.3 %** | 35/110 = 31.8 % | ≥ 25 % → PASS, but −5 vs init |
+  | ladder tool tier, dev ×5 | 13/100 | 11/100 | – |
+  | HumanEval greedy | **10/164** | 15/164 | regression −5 |
+  | MBPP greedy | 57/427 | 55/427 | flat |
+  | code / En BPB | 0.5772 / 0.5295 | 0.5615 / 0.5228 | +2.8 % / +1.3 % worse |
+  | B1 / W2 | 70/192 / 259/560 | 53/192 / 158/560 | up, **but inflated**: replay trained the same write skills (pretrain-split instances), so this is instance-, not skill-generalisation |
+  - All 3 format failures are runaway repetition with no EOS (digit strings, the same call repeated), not schema errors. Raw: research/raw/sa4_format.json, sa4_tier_{fix,tool}.json, sa4_passk.json, sa4_bpb.json, ladder_sa4_{b1,w2}/.
+  - Verdict: **SA-4 gate NOT met** (format 1 row short; fix passes the bar yet below init; HE −5). Not promoted. Candidate cheap fixes (eval-only, no retrain): LoRA-scale merges as in SA-3 (s=0.5/0.75 of the sa4 delta) to trade format against HE/fix; or a decode-side repetition stop for the 3 runaways.
+- **Constrained-decode format check DONE 2026-10-26** (user-approved). Script: `scratch/sa4_format_check.py --constrained`.
+  - How it works: greedy decoding where each step takes the best token that keeps the reply a valid prefix of `[{"name": <prompt tool>, "arguments": {JSON}}, ...]`.
+  - Grammar is a hand-rolled char-level state machine; no new dependency. EOS is legal only after `]`. Limits: ≤ 8 calls, nesting depth ≤ 8, numbers ≤ 32 chars.
+  - CPU-tested: all 146 references are accepted char- and token-wise; 9 malformed cases are rejected.
+  - Run: `scratch/sa4_constrained_eval.cmd`, cap 6.63 GiB (7.38 free), about 7 min. Raw output: research/raw/sa4c_format.json.
+
+  | arm | valid (unconstrained → constrained) | exact | names | arg keys | argmax rejected | seconds |
+  |---|---|---|---|---|---|---|
+  | s075 | 140 → 144 | 50 → 50 | 84 → 85 | 66 | 8 / 8569 | 92 |
+  | s=1 | 143 → 144 | 53 → 53 | 88 | 67 | 1 / 8319 | 85 |
+  | init | 0 → 35 | 0 | 16 | 9 | 670 / 33419 | 217 |
+
+  - Findings:
+    - The grammar repairs format but never changes content: exact match is +0/−0 per row on both SFT arms.
+    - The 2 failures per arm are budget runaways inside values: a 200+ digit string (`is_id` "1000…", xlam/19472, both arms) and repeated calls that hit 256 tokens before the call cap.
+    - So the proposed ≥ 99 % gate is missed (98.6 %) for both arms.
+    - Reference argument strings are ≤ 54 chars (p99 28), so a per-string cap of about 128 chars plus a runaway-repeat stop would close both failure types.
+    - Init reaches only 35/146 with grammar alone: the format skill comes from SFT, not from the mask.
+- **SA-4 PROMOTED 2026-10-26 (user decision): `runs/sa4_scale075` is the SA-4 output** and the init for SA-5. Format is enforced at decode time in SA-7, so the unconstrained 98 % format bar is replaced by "valid under the grammar". Caveats carried forward: fix tier 27 vs init 35, HE 14 vs 15.
+- **SA-7 grammar repeat stops added 2026-10-26** (`scratch/sa4_format_check.py`, CPU-only; GPU re-run not yet done):
+  - `MAX_STR = 128`: a string (key or value, raw chars incl. escapes) must close by 128 chars.
+  - `MAX_RUN = 16`: no char may repeat more than 16 times in a row inside a string.
+  - No key may repeat within one object (object frames carry their key set; sibling/nested objects are independent).
+  - Data check: SA-4 val refs have no string > 54 chars, no run > 3, no duplicate key; train has 0 duplicate keys, 7 strings > 128 and 3 runs ≥ 20.
+  - CPU tests PASS: 146/146 refs char- and token-wise; 14 negatives rejected (the 9 before plus 129-char string/key, 17-char run, duplicate key flat and nested); 5 edge positives accepted; train refs rejected 25/14,854 (mostly the > 8-call rows).
+  - All 4 constrained failures are now illegal prefixes: 19472 (both arms) and 49142 at the 17th repeated `0`; 49334 at its first duplicate `"type"` key.
+  - **GPU re-run DONE 2026-10-26** (user-approved): `scratch/sa4_constrained_eval2.cmd`, cap 6.59 GiB from 7.34 free, 9:26–9:29. Raw output: research/raw/sa4c2_format.json.
+
+    | arm | valid | exact | names | arg keys | argmax rejected | seconds |
+    |---|---|---|---|---|---|---|
+    | s075 | **146/146** (was 144) | 50 (=) | 85 (=) | 66 (=) | 12 / 8338 | 95 |
+    | s=1 | **146/146** (was 144) | 53 (=) | 89 (+1) | 67 (=) | 4 / 8034 | 81 |
+
+    - All 4 runaways now close, as valid JSON but not exact matches. 19472 stops at `"10000000000000000"`; 49334 renames its second `type` key to `type_of_option`.
+    - 2 other rows changed text without changing their scores (15154 on s075, 30256 on s=1).
+    - Verdict: **the ≥ 99 % format gate under the SA-7 grammar PASSES (100 %) for the promoted s075.** Content accuracy is the remaining gap: exact 50/146 is the SA-5 target.
+- **LoRA-scale check DONE 2026-10-26** (user-approved; `lora_scale_merge.py --base runs/sa3_scale075 --tuned runs/sft_sa4/final --scale 0.50/0.75` → runs/sa4_scale050, runs/sa4_scale075, 210/272 tensors changed each). Eval `scratch/sa4_scale_eval.cmd` (same 7 steps; cap 6.74 GiB from 7.49 free, 45 min; first launch stopped by the user during step 1, relaunched from scratch). Raw: research/raw/sa4s_*.json, ladder_sa4s_{b1,w2}/.
+  | metric | init (s=0) | s=0.5 | s=0.75 | s=1 | gate |
+  |---|---|---|---|---|---|
+  | format validity /146 | 0 | 127 (87.0 %) | 140 (95.9 %) | 143 (97.9 %) | ≥ 98 %: all FAIL |
+  | fix tier /110 | 35 | 29 | 27 | 30 | ≥ 25 %: all PASS |
+  | tool tier /100 | 11 | 11 | 13 | 13 | – |
+  | HumanEval /164 | 15 | 14 | 14 | 10 | – |
+  | MBPP /427 | 55 | **62** | 57 | 57 | – |
+  | code / En BPB | 0.5615 / 0.5228 | 0.5655 / 0.5249 | 0.5703 / 0.5269 | 0.5772 / 0.5295 | – |
+  | B1 /192, W2 /560 | 53, 158 | 62, 203 | 70, 245 | 70, 259 | (inflated by replay) |
+  - Format rises monotonically with scale, so scaling only trades format for HE; no scale meets 98 %. The fix tier stays below init at every scale (27–30 vs 35).
+  - A "cut at the first complete JSON value" stop rescues **0** of the failures at any scale (19/6/3): the JSON never closes (runaway repetition inside the list), so a plain stop rule won't help. That would take grammar-constrained decoding (SA-7) or more format data/steps.
+  - Note: per-arm HE/MBPP counts are in `[result]` lines of scratch/sa4_scale_eval.log and in sa4s_passk.json `arms.*.per_set`.
+
+# 2026-10-25 - SA-3 DONE: HE 7 -> 15/164, MBPP 29 -> 52/427; ladder B1/W2 down ~25-31 %
+
+- The run was stopped by the user at step 1454. It auto-resumed from checkpoint-1250 and finished at step 1501 with best eval_loss 0.4484. Output: runs/sft_sa3/final.
+- Gate eval vs ckpt-750 (scratch/sa3_gate_eval.cmd, launched by scratch/launch_sa3_gate.ps1 with cap = fresh free − 0.75 GiB):
+  | Metric | ckpt-750 | SA-3 | Gate |
+  |---|---|---|---|
+  | HumanEval pass@1 (plain HE; HE+ is not wired) | 7/164 | **15/164** | > 7: PASS |
+  | MBPP-sanitized pass@1 | 29/427 | **52/427** | — |
+  | Body median (non-blank, non-comment lines, HE) | 1 | **5** | > 1: PASS |
+  | English BPB | 0.5172 | 0.5281 (+2.1 %) | ≤ +3 %: PASS |
+  | Code BPB | 0.5534 | 0.5703 (+3.1 %) | — |
+  | Ladder B1 strict | 58/192 | **38/192** | regression |
+  | Ladder W2 strict | 160/560 | **120/560** | regression |
+- **Ladder regression diagnosed (2026-10-25, scratch/rescore_ladder_relaxed.py, CPU re-grade of the saved completions; raw research/raw/ladder_relaxed_rescore.json and ladder_relaxed_builtins_rescore.json):** the drop is REAL, not just the sandbox. With loops/attributes/imports/helpers/exceptions allowed, SA-3 gains only +3 B1 / +12 W2. Adding harmless built-ins to the call allowlist (`--extra-calls range,sorted,set,zip,float,isinstance,dict,list,tuple,map,enumerate,reversed`) gives +4 B1 / +22 W2, so B1 42 vs 58 and W2 142 vs 160 even with everything relaxed. Most re-graded SA-3 answers are wrong (B1 40, W2 110). The rest still break hard rules: recursion (B1 5, W2 23), lambda (B1 6, W2 17), and calls to other playground tasks' entry-point names (memorised from RL). Side finding: `range` is not in the evaluator's SAFE_CALLS. SA-3 calls it 51x in W2 invalids vs 2x for ckpt-750, which suggests RL on this sandbox taught the model to avoid `range`. SA-4 should replay playground-style tasks; a cheap check is WiSE-FT-style LoRA scaling between ckpt-750 and SA-3.
+- The teacher rerun was restarted on 2026-10-25 (1,347 rows before the restart). It stopped at 2,119 candidate rows when every free model's daily quota ran out. SA-2 has been rebuilt with those rows (below); the SA-4 data build is still pending.
+- **LoRA-scaling check DONE (2026-10-25, scratch/sa3_scale_eval.cmd; raw research/raw/sa3_scale_passk.json, sa3_scale_bpb.json, ladder_sa3_scale_b1/, ladder_sa3_scale_w2/).** The SA-3 adapter is applied on top of ckpt-750 at reduced scale `s` (s=1 is SA-3 itself):
+
+  | Arm | HumanEval | MBPP | code BPB | English BPB | B1 | W2 |
+  |---|---|---|---|---|---|---|
+  | ckpt-750 | 7 | 29 | 0.5534 | 0.5172 | 58 | 160 |
+  | s=0.50 | 13 | 49 | 0.5558 | 0.5192 | 54 | 154 |
+  | s=0.75 | 15 | 55 | 0.5615 | 0.5228 | 53 | 158 |
+  | SA-3 (s=1) | 15 | 52 | 0.5703 | 0.5281 | 38 | 120 |
+
+  s=0.75 matches SA-3 on HumanEval and beats it on MBPP, both BPBs and the ladder. That nearly removes the ladder regression: −5 B1 / −2 W2 vs ckpt-750, against −20 / −40 for SA-3. **SA-4 init = `runs/sa3_scale075` (user-approved 2026-10-25).** It is the exact folder evaluated above. A CPU check confirms all 210 changed tensors are base + 0.7500 × (SA-3 − base); sha256 and recipe are in runs/sa3_scale075/merge_info.json. The SA-4 SFT config should set `base_model: runs/sa3_scale075`.
+- **Two-layer sandbox + diversity tooling (user-approved 2026-10-25, TASKS SA-C):**
+  - The safety layer is unchanged and always on: no dunders, a call allowlist, an import allowlist, the 2 KiB cap, and the out-of-process runner with its timeout.
+  - The style layer can now be lifted with the named preset `evaluator.OUTCOME_TIER`. It allows loops, attributes, imports, helpers, exceptions, lambdas and self-recursion, plus pure built-ins such as range, sorted and map.
+  - Defaults (CORE and each rung's own tier) are unchanged. The two new `Capabilities` flags default to False, and sandbox.py ships them to the child process.
+  - Tests: tests/test_aspects_evaluator.py, 56 passed. The preset still rejects print, getattr, eval, `import os`, `__class__` and open.
+  - `scripts/bench_passk.py --samples N --temperature --top-p --seed` reports unbiased pass@1/5/n, AST-distinct correct solutions per solved task, and the EOS rate. The default `--samples 1` stays greedy and unchanged.
+  - `scripts/rl_smollm2.py --policy outcome` grades every RL task under OUTCOME_TIER, so the reward judges only the result. The default `rung` is unchanged. Dry-run: 942 tasks (with 2 docstring and 2 MBPP tasks), 0 reference fails.
+  - `scratch/rescore_ladder_relaxed.py --preset outcome` re-grades saved ladder completions; raw output is in research/raw/ladder_outcome_rescore.json.
+  - Outcome re-grade (strict → outcome-tier passes):
+
+    | Ladder | SA-3 | ckpt-750 | run-3 final |
+    |---|---|---|---|
+    | B1 | 38 → 45 | 58 → 59 | 56 → 57 |
+    | W2 | 120 → 153 | 160 → 162 | 155 → 157 |
+
+    So SA-3 is still behind ckpt-750 even when the result is the only thing graded. Its remaining invalid rows are mostly syntax errors (unclosed brackets, missing indented blocks), i.e. truncated or broken code, not style.
+
+# 2026-10-22 - SA-2 in progress: build rerun at 4 GiB floor; teacher moved to Gemini free tier
+
+- **Cleanup (user-approved):** Tier 1 and Tier 2 checkpoints deleted. Kept: `rl_mixen_wide_mbpp` checkpoint-750 (the incumbent, run 4) and `final`. About 32 GB free on disk afterwards.
+- **`scripts/sa2_build.py` defaults** are now `--min-free-ram-gib 4 --workers 4` (user decision). Chrome had grown to ~11 GiB and the 8 GiB floor aborted the build. Each candidate child is capped at 1 GiB RSS.
+- **Teacher provider:** OpenCode free models are unusable at dataset scale.
+  - Only `minimax-m3.1-flash-free` answers on Go, and it hits a 429 after about 35 requests; the quota lasts hours.
+  - `beam-free` is region-blocked (403).
+  - Every other `-free` id is app-only: Go returns 400 "Model is unavailable" and Zen returns 403 FreeTierError. We do not work around this.
+  - The user approved the **Gemini API free tier** instead (GEMINI_API_KEY is an environment variable, no billing): "free only, use flash or flash lite".
+- **`scripts/teacher_client.py`:**
+  - Supports both providers.
+  - Gemini models are allowlisted and rotated in this order: flash-lite (3.5, 3.1, 2.5), then flash (3.8 down to 2.5).
+  - A per-day FreeTier 429 moves to the next model. A 429 that does not name a FreeTier quota aborts.
+  - Gemini calls use JSON mode.
+- **`scripts/sa2_teacher.py`:**
+  - Rotates models and records `model` per row.
+  - Repairs Gemini's over-escaped `tests` items (`\"...\"`). Before the repair 74 % of replies parsed; after it, 34/35 cached replies did.
+  - Rows still go through sa2_build's execution check and decontamination.
+- **SA-2 build DONE (13:03):** gate PASS, 139,322 verified rows (≥ 30k).
+  - Split: train 137,956 / val 1,366.
+  - By shape: he 54,976, mbpp 42,018, fix 27,328, tool 15,000.
+  - Decontamination dropped 726 rows, mostly mbpp+ / mbpp / signature hits.
+  - Teacher contributed only 27 + 9 fix rows, because the build began before the Gemini batch.
+- **SA-2 rebuild with the teacher rows DONE (2026-10-25 13:31, 7,703 s):** gate PASS, 141,338 verified rows.
+  - Split: train 139,956 / val 1,382.
+  - By shape: he 55,836, mbpp 42,628, fix 27,874, tool 15,000.
+  - Decontamination dropped 738 rows.
+  - Teacher: 2,119 read, 1,933 clean, 1,499 verified (77.5 % of clean; 433 fail, 1 timeout), plus 503 fix rows.
+  - The previous build is backed up in `data/sa2/prev_2026-10-25/`.
+- **sa2_build speed-up (user-approved 2026-10-25):** the build is CPU-bound by Windows process startup, one child per program.
+  - New `verify_cache.jsonl` in the out dir stores pass/fail verdicts keyed by sha256(salt + program). Timeouts and RSS kills are never cached. `--no-cache` turns it off.
+  - The default is now `--workers 8`. At start the build lowers it so workers × 1 GiB fits above the 4 GiB RAM floor, and the floor check is unchanged.
+  - Probe (`--limit 300`): no cache, 4 workers = 50 s; cold cache, 8 workers = 37 s; warm cache = 7 s.
+  - The output matched the no-cache run except one fix row whose witness prints a `set`. That ordering comes from hash randomisation (`-I` ignores PYTHONHASHSEED), so it was nondeterministic before the cache too.
+  - The full-data cache is not built yet: the 13:31 build ran before the cache existed, so the next full build is cold once.
+- **Teacher:** 2,119 rows of the 3,000 target. The free quota is spent for today; rerun after midnight Pacific.
+
 # 2026-10-18 - B1 breadth scored: no arm transfers; VRAM rule now free - 0.75 GiB
 
 - **B1 (192 NEW sub-skills, dev, greedy, batch 32)**, strict / 192:
@@ -38,7 +520,32 @@
 - Use the `fix`/`tool`/`wide` pools for SA-6 RL signal.
 - SA-1 DONE 2026-10-19 (gates split): English BPB 0.5149 vs base 0.5132 (+0.3 %, PASS; CPT is +4.5 %); code BPB 0.5451 vs CPT 0.5240 (FAIL, +4.0 %); B1 strict 22/192, the same as CPT. Init is runs/cpt_smollm2_mix_en/final. Details: TASKS SA-1, research/raw/sa1_bpb.json, research/raw/ladder_mixen.
 - SA-6 RL run 1 DONE 2026-10-19 (init SA-1, `wide`, runs/rl_mixen_wide/final). Compared with SA-1: B1 22 -> 56/192; W2 70 -> 154/560; MBPP-san 9 -> 24/427 (best arm); HumanEval 9 -> 3/164 (regression). EOS 0.61 -> 0.99. HumanEval drop DIAGNOSED: not truncation, not format. RL collapsed to one-line `return <expr>` bodies (164/164 single-line, median 135 -> 28 chars) and loses 6 of SA-1's 9 passes to over-simplified expressions. Next RL run needs an anti-collapse lever (KL/ref penalty or lower lr, multi-line pool tasks, intermediate checkpoint eval). The PLAN gate waits on SA-5.
-- **SA-6 RL run 3 DONE 2026-10-21 (GPU FREE); its `final` is the SA-6 INCUMBENT (user 2026-10-21); run 4 is in design.** Full eval at batch 16 for pass@k and batch 32 for the ladder. Columns: HumanEval /164, MBPP /427, B1 /192, W2 /560.
+- **SA-6 RL run 4 DONE 2026-10-21 16:04 + EVALUATED 2026-10-22. It closes the MBPP format gap. Run 4 ckpt-750 (runs/rl_mixen_wide_mbpp/ckpt-750) is the SA-6 INCUMBENT (user approved 2026-10-22).** GPU is free. RL is paused: next is SA-2 data → SA-3/4 SFT → SA-5 RFT, then RL run 5 (user approved 2026-10-22; see research/2026-10-22_sa_plan_v2.md).
+  - Scores are HumanEval /164, MBPP /427, B1 /192, W2 /560:
+
+    | Arm | HE | MBPP | B1 | W2 |
+    |---|---|---|---|---|
+    | run 4 `final` | 7 | **30** | 56 | 155 |
+    | run 4 ckpt-750 | 7 | 29 | **58** | **160** |
+    | run 3 final (previous incumbent) | 8 | 13 | 53 | 156 |
+    | run 1 final | 3 | 24 | 56 | 154 |
+    | SA-1 | 9 | 9 | 22 | 70 |
+
+  - Run 4 final is the best MBPP of any arm (2.3× run 3); ckpt-750 is the best B1 and W2.
+  - MBPP format failures, run 3 final → run 4 final: test-function only 156 → 36; no def 34 → 2; answers that define the function 237 → 389 of 427.
+  - The remaining MBPP misses are wrong answers (AssertionError 240, TypeError 76), not format.
+  - HumanEval is unchanged (7, vs 8 and SA-1's 9). Bodies are still median 1 line, so the one-line collapse remains the open gap.
+  - Reports: research/raw/sa6_mbpp_passk_final.json, sa6_mbpp_passk_750.json, ladder_sa6_mbpp_b1/, ladder_sa6_mbpp_w2/. Eval log: scratch/sa6_mbpp_eval.log.
+  - The first eval attempt was stopped by the user mid-run, and nothing was written. It was re-run 2026-10-22 as a WMI-detached batch with one arm per step and one output file per step (scratch/sa6_mbpp_eval.cmd), cap 6.70 GiB from a fresh 7629 MiB reading.
+  - Design notes as launched:
+  - Why: ~45 % of run 3 final's MBPP misses are format failures. The model writes tests or `if __name__` instead of the `def` (test-function 156, no def 34 of 427).
+  - New flag `--mbpp-tasks N`: N MBPP-shaped instances per `write` sub-skill. The prompt is `"""\nWrite a function to <description>\nassert <call> == <value>\n"""`, the same text bench_passk feeds for MBPP. The completion must write the whole `def`. The function gets its natural name unless that name is a builtin or appears in the body. Cases 1–3 are graded.
+  - Validation: pool 5124 tasks (1428 MBPP-format, 27.9 %); dry-run 5124/5124 references pass; 3696/3696 without the flag.
+  - CPU sample on run 3 final (8 groups × 8): defines the function 8/64, test-only 11/64, full pass 1/64, groups with reward variance 3/8. The signal is sparse but nonzero.
+  - Command: `rl_smollm2.py --init runs/rl_mixen_wide_doc2/final --output runs/rl_mixen_wide_mbpp --tier wide --docstring-tasks 16 --mbpp-tasks 6 --max-new-tokens 256 --kl-beta 0.05 --groups 1000 --checkpoint-every 250 --probe-limit 50 --vram-cap-gib 6.5` (fresh free 7.33 GiB − 0.75). KL is measured against run 3 final, because the reference is the adapter-disabled init.
+  - Launched WMI-detached (cmd PID 29812). Log runs/rl_mixen_wide_mbpp/train.log; progress in rl_log.jsonl (~11 s/group, so ~3–3.5 h). Re-running the same command resumes it.
+  - Incumbent: run 4 ckpt-750 (user 2026-10-22). It wins B1/W2, ties HE, and is one MBPP task behind final. The HumanEval one-line collapse is now targeted by SFT data first, then RL run 5.
+- **SA-6 RL run 3 DONE 2026-10-21; its `final` is the SA-6 INCUMBENT (user 2026-10-21).** Full eval at batch 16 for pass@k and batch 32 for the ladder. Columns: HumanEval /164, MBPP /427, B1 /192, W2 /560.
   - `runs/rl_mixen_wide_doc2/final` = **8 / 13 / 53 / 156**: best W2 of any arm, and better than run 2 final (7/15/50/140) and run 2 ckpt-1500 (8/11/51/142) on HumanEval, B1 and W2.
   - ckpt-1750 = 7/15/52/146; ckpt-750 = 6/12/49/126.
   - The other references are SA-1 9/9/22/70 and run 1 3/24/56/154.

@@ -36,6 +36,7 @@ train:
   output_dir: runs/pilot
   final_dir: runs/pilot/final
   max_steps: 3000
+  early_stopping_patience: 3
   batch: 1
   eval_batch: 4
   accum: 32
@@ -51,7 +52,7 @@ train:
   fp16: true
   grad_ckpt: true
   optim: adamw_torch          # switch to adamw_bnb_8bit only if OOM
-  dataloader_num_workers: 0
+  dataloader_num_workers: 2
   seed: 42
 
 eval:

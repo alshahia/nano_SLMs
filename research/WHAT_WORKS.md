@@ -10,6 +10,26 @@ evidence accumulates. Cross-reference: [research/EXPERIMENTS.md](EXPERIMENTS.md)
 
 ## Proven levers (ranked by evidence strength)
 
+> **2026-10-08 (external repo, E-112):** *before re-running someone else's training
+> claim, check whether they committed per-checkpoint receipts - replaying them costs
+> minutes and converts "does the port work?" into exact numbers.* The
+> `glm-5.3-flash-from-scratch` clone publishes `system-receipt.json` (reference GPU,
+> torch, parameter counts), `pretraining-gpu-checkpoint-generation.json` (per-checkpoint
+> weights sha256 plus the exact greedy completion for one frozen task) and
+> `checkpoints.sha256`. Our port reproduced the token stream (1,381,760), the parameter
+> counts (25,730,592 / 9,805,344; RL-trainable 2,190,152), the RL rollout count (1,536),
+> the pretrain peak (2.141 vs 2.139 GiB) and the RL peak (0.939 vs 0.936 GiB), and 2 of 3
+> greedy completions byte-for-byte. Conditions: compare *decoded behaviour or tensors*,
+> never a `.pt` file sha256 across torch versions - all three file hashes differed,
+> including the untrained step-0 checkpoint, purely from `torch.save` container bytes.
+> Corollary: a faithfully replicated pipeline can still miss the headline effect size
+> when a hyperparameter (here the RL init step) sits in a different regime - our
+> checkpoint-0100 was ahead of the published one, so RL had less headroom to claim and
+> delivered +7 greedy tasks instead of +16. [E-112]
+> **2026-10-08 (external repo, E-113):** *match an RL regime on the init's reward signal, not on a small-sample score.* E-112 blamed its halved RL gain (+7 greedy vs published +16) on headroom, because our fp16/torch-2.14 step-100 checkpoint was ahead of the published bf16 one (dev 3/8 vs 2/8). Re-running the identical RL recipe from an init SELECTED to match the published headroom (dense grid, highest step with dev <= 2/8 = step 90, greedy confirm 0/24 - exactly the published baseline) still gained only **+8** greedy tasks. The decisive check is in the receipts: the init's exact-rollout rate on the actual RL schedule. Published bf16 step-100 init **417/1,536**; our step-100 init **406/1,536** (matched to 2.6%) and its greedy gain was still **+7** vs +16; the extra-headroom step-90 init **150/1,536** gained +8. Two arms with 2.7x different reward signal both land at half the published gain, so headroom is not the explanation - what fails is the RL *endpoint* (greedy 8-12/24, pass@8 exact 41-75/192, solved 13-15/24 against published 16/24, 88/192, 19/24). Conditions: fingerprint an RL init by its exact-rollout rate (and updated-group count) on the real schedule next to its dev score, and check those numbers before reading a flat arm as a negative result - a saturated init yields reward_spread 0.0, zero advantages, 0 updated groups and a silent no-op (E-113 arm A3). Headroom remains real *within* one pretrain family (+8 / +7 / +0 at dev 1/8 / 3/8 / 7/8, the last a ceiling). Corollary: report greedy, solved@k and exact separately - the same arm that gained half the published greedy gain matched the published pass@8 gain (+11 vs +10). [E-113]
+> **2026-10-08 (external repo, E-114):** *before blaming a stack, control the dtype path - it was free and it was null.* E-113's last suspect was the RL step under fp16/torch-2.14; the same init, schedule and seed with only `--amp-dtype fp32` reproduced the fp16 arm exactly (greedy +7, pass@8 +5, all-8 0; 407 vs 406 exact rollouts of 1,536) at +5% wall-clock and +0.56 GiB peak, so the dtype/optimizer path is exonerated and the fp16-activation-range mechanism is dead (fp32 has the wider exponent range). Remaining suspects for the halved RL endpoint (12/24 vs the published 16/24) are the shared factors - torch 2.14 vs the published 2.5.1 (needs a second env, user-gated) and the bf16 device (absent on sm_75) - or a real plateau of this recipe at this scale. [E-114]
+> **2026-10-08 (external repo, E-115):** *before buying more RL steps, read the curve off the checkpoints you already saved - and read pass@8 as well as greedy.* Six evals and 11 minutes, no training, showed the A4 RL endpoint is not step-capped on greedy (solved/24 = 8, 8, 7, 12 at 24/48/72/96 groups; the final window gained +5, all of it the increment family going 0 -> 5) while 3-family pass@8 was already flat from 72 groups (12, 12, 15, 15) - so the two metrics bound where the policy actually stopped improving, and pass@8 led greedy by 24 groups on the increment family (2 -> 7 at 72 with greedy still 0). Conditions: map the endpoint point to the arm's existing receipt so the curve and the endpoint are one measurement, and report per-family curves - the endpoint gain was a late single-family event, not a broad climb. Pre-register the final-window gain, never a monotonicity flag (a one-task dip is 4.2 pp on 24 tasks). [E-115]
+> **2026-10-08 (external repo, E-116):** *when a reproduction undershoots the published metric, buy the next doubling of the step budget before blaming the recipe - and hash the shared checkpoint to prove it is a pure continuation.* Doubling the A4 RL arm from 96 to 192 groups on the same init/recipe/seed raised greedy solved/24 from 12 to **16** - exactly the published endpoint - while the arm's 96-group checkpoint proved bit-identical to A4's (same trajectory, more steps: 12 -> 13 -> 16). The same arm refuted E-115's 'pass@8 saturated at 72' reading (15 -> 14 -> 17/24). Conditions: the parity is greedy-only - the post-hoc all-8 probe was flat (30/64 -> 30/64) because the untrained families regress as much as the trained ones gain, so a 3-family gain is not automatically a win - and 2x the budget (3,072 vs the published 1,536 rollouts) still leaves a per-group efficiency gap. Reuse the earlier arm's receipts when the shared checkpoint hashes match, and never compare schedule_sha256 across budgets (it covers all groups). [E-116]
 > **2026-10-04 (OCR line, E-84):** *for small, densely packed objects, regress
 > the box instead of reading it off a level set.* A CRAFT Gaussian region score
 > decodes each PAW's size from a level set, so the box inherits the blob's
@@ -373,3 +393,64 @@ exists because skipping it already cost a run or a GPU-day.
   overlaps the teacher training data. E-89 KHATT side-check (12.03%) was flagged as
   probably in-train at the time and then not measured - measuring it was two minutes of
   CPU work and it reversed the conclusion.
+
+## Held-out bits/byte is capacity-bound, not corpus-bound (E-117 vs E-121 arm B, 2026-10-13)
+
+Two byte-level arms of the same 25.7M-param GLM (9.8M active), both 5,000 steps = 163.8M tokens, both
+scored by scripts/evaluate_corpus.py on data/target/bytes/val.bin (843 batches, 3,452,928 positions):
+
+    E-117, pretrained on the target corpus   1.55196 bits/byte
+    E-121 arm B, pretrained on whole files   1.63400 bits/byte   (+5.29%)
+
+- **Adopt:** treat ~1.55 bits/byte as this architecture's plateau on the target corpus. Switching the
+  pretraining distribution to whole files moved the endpoint by 5% and bought nothing; both arms went
+  flat over their last 1,000 steps (-0.029 and -0.028 bits). Spend the next GPU hours on capacity or on
+  post-training (reference SFT -> RFT -> RL), not on further corpus reshuffling.
+- **Adopt:** score every cross-arm bits/byte claim with one evaluator, one corpus, one session - the two
+  JSONs above differ in exactly one field (the checkpoint).
+- **Avoid:** quoting an in-training --val-windows 128 val_loss as bits/byte. Arm B's read 1.5521 against
+  a true 1.6340; E-117's read 1.5520 against a true 1.5520. The error is arm-dependent, so it can invert
+  a comparison.
+- **Avoid:** concluding a data strategy is better because it has broader coverage. Breadth did not
+  transfer to held-out bits/byte here, and the downstream test closed the question the other way
+  (2026-10-13): see the next two bullets.
+- **Avoid:** judging a pretraining base by its SFT val_loss. After the IDENTICAL 100-step reference SFT the
+  two bases read 0.277184 (arm A) and 0.278241 (arm B) - 0.4% apart - yet scored 9/32 vs 1/32 on the greedy
+  dev battery and 7/8 vs 1/8 viable families on pass@k. Measure a base with the task battery + pass@k; its
+  next-token loss on the SFT corpus does not see the difference.
+- **Avoid:** running RFT/STaR whose harvest pool does not cover the families you must keep. RFT on the
+  12 core aspects scored keep_rate 0.4245 -> 0.5482 and DESTROYED the base on the 8 evaluated legacy
+  families: 9/32 -> 5/32 greedy, pass@k yield 0.23047 -> 0.12500 (2026-10-13, E-121d). A trained last block
+  is not protection - include the evaluation families in the pool, or isolate training per aspect (S10).
+- **Adopt:** include the evaluation families in the RFT harvest pool. The identical command with only
+  --pool all changed (80 tasks) scored **12/32** vs arm A's 9/32 and the aspects-only RFT's 5/32 - the first
+  ladder rung to beat the base on held-out tasks (list_sum 2/4 -> 4/4, square 2/4 -> 3/4, double 0/4 -> 1/4).
+- **Avoid:** assuming a sharper policy is strictly better. The pool-all RFT raised the greedy score AND
+  narrowed sampling: 5/8 families viable at T=0.35 (double/even/increment dead) against arm A's 7-8/8. Since
+  RL needs within-family diversity, check per-family viability before spending RL budget.
+- **Avoid:** reading a keep_rate (or any in-pool retention metric) as transfer. It is measured on the pool
+  the model trains on; it climbed monotonically while the model got worse everywhere else.
+- **Adopt:** train each rung to convergence on its own data BEFORE tuning the rung above it. The
+  reference-SFT rung was 6x under-trained (100 vs 600 steps, same corpus, same init): 9/32 -> **32/32** on the
+  held-out legacy battery, every family 4/4 (E-122, 2026-10-13). A mis-set floor invalidated the readings of
+  every rung above it.
+- **Adopt:** require a leakage control for any suspiciously perfect score - dev prompt-in-corpus and
+  prompt+body-in-corpus must both be 0; body-in-corpus will be 32/32 legitimately because a family's
+  reference body is a constant string (scratch/leak_check_e122.py).
+- **Avoid:** quoting a saturated battery as evidence. At 32/32 the 8-family legacy battery cannot discriminate;
+  use the aspect pool (scratch/bench_aspect_pool.py, 48 tasks) for the next frontier.
+- **Adopt:** the ladder order reference-SFT -> RFT -> RL. On the deterministic held-out dev battery it went
+  9/32 -> 12/32 -> 16/32 (2026-10-13, E-121d/e/f), with RL contributing reverse 0/4 -> 3/4 - a family the
+  base and the RFT could not solve at all, so RL transferred rather than amplified.
+- **Adopt:** run RL hotter than the pass@k convention. RLOO needs within-group reward variance; at T=0.8 the
+  pool-all RFT produced healthy spread (1.0 / 0.667 / 0.333 / 0.0 / -0.1 within one group) where T=0.35 left
+  3 of 8 families pass@k-dead. RL then recovered sampling diversity (held-out dev pass@k 5/8 -> 6/8, yield
+  0.25000 -> 0.34375) while adding 4 greedy tasks, so hotter RL did not cost diversity.
+- **Adopt:** measure both axes after every rung - a greedy battery for capability and a held-out pass@k for
+  diversity. The pool-all RFT rose on the first while falling on the second; RL rose on both.
+- **Adopt:** the deterministic greedy battery as the arbiter. It returned bit-identical per-family results on
+  cpu and cuda, while the same arm under 8-sample pass@k at T=0.35 read 8/8 viable / 0.23047 on cpu and
+  7/8 / 0.19141 on cuda. Use pass@k for order and go/no-go, the battery for verdicts.
+- **Adopt:** choose the RFT/RL base by pass@k viability, not by bits/byte. Arm B's 5.3% bits/byte deficit
+  became a 49x RFT-yield deficit (0.38281 vs 0.00781) and 19/32 of its greedy completions were invalid
+  Python against arm A's 1/32. Bits/byte ranks bases in the right order but does not size the task gap.

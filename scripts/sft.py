@@ -54,6 +54,24 @@ def find_latest_checkpoint(output_dir: Path):
     return best[1] if best else None
 
 
+def apply_vram_cap(gib: float) -> dict:
+    """Hard allocator ceiling (AGENTS 20.3 / the 2026-09-14 WDDM spill incident).
+
+    Mirrors glm-5.3-flash-from-scratch/scripts/train_pretrain.py +
+    glm53_flash.runtime.apply_vram_cap: fraction = cap / total device memory,
+    clamped to 1.0. A no-op on CPU or when the cap is unset (0), so the default
+    path is byte-for-byte unchanged. Must run BEFORE the model is moved to the
+    GPU so the ceiling is in place before the first CUDA allocation.
+    """
+    if not gib or gib <= 0 or not torch.cuda.is_available():
+        return {}
+    device = torch.device("cuda", torch.cuda.current_device())
+    total = torch.cuda.get_device_properties(device).total_memory
+    fraction = min(1.0, (gib * 1024**3) / total)
+    torch.cuda.set_per_process_memory_fraction(fraction, device)
+    return {"vram_cap_gib": gib, "vram_cap_fraction": round(fraction, 4)}
+
+
 class SftCollator:
     """Pad input_ids/labels/attention_mask to the longest row in the batch.
 
@@ -87,6 +105,10 @@ def main() -> None:
     ap.add_argument("--config", required=True)
     ap.add_argument("--pilot", action="store_true",
                     help="plumbing-proof run: first sft.pilot_rows pairs, 1 epoch")
+    ap.add_argument("--vram-cap-gib", type=float, default=0.0,
+                    help="hard per-process CUDA allocator ceiling in GiB "
+                         "(0 = no cap, the default; AGENTS 20.3). Applied before "
+                         "the model is moved to the GPU.")
     args = ap.parse_args()
 
     import yaml
@@ -129,8 +151,21 @@ def main() -> None:
         tok.pad_token = tok.eos_token
         print("[sft] tokenizer has no pad token -> pad = eos", flush=True)
 
+    cap = apply_vram_cap(args.vram_cap_gib)
+    if cap:
+        print(f"[sft] VRAM cap: {cap}", flush=True)
+
     model = AutoModelForCausalLM.from_pretrained(str(base_dir),
                                                  attn_implementation="sdpa")
+    # Turing (sm_75) has NO bf16. SmolLM2's config declares torch_dtype=bfloat16 and
+    # from_pretrained honors it, overriding our fp16 setting. Two failures followed:
+    #   (1) model left in bf16  -> NotImplementedError: _amp_foreach_non_finite_check_and_unscale_cuda for 'BFloat16'
+    #   (2) model forced to fp16 -> ValueError: Attempting to unscale FP16 gradients.
+    # The correct AMP contract is fp32 MASTER WEIGHTS + autocast: Trainer(fp16=True) supplies the
+    # autocast and GradScaler, and the scaler requires unscaleable fp32 gradients. So keep the
+    # model in fp32; never cast it to a half precision here.
+    if torch.cuda.is_available():
+        model = model.to(torch.float32)
     model.config.use_cache = False
     model = maybe_wrap_peft(model, cfg)
     n_params = sum(p.numel() for p in model.parameters())
@@ -219,6 +254,7 @@ def main() -> None:
         "best_checkpoint": trainer.state.best_model_checkpoint,
         "final_eval": final_metrics,
         "resumed_from": resume_from.name if resume_from is not None else None,
+        **cap,
     }
     (final_dir / "train_summary.json").write_text(json.dumps(summary, indent=2),
                                                   encoding="utf-8")

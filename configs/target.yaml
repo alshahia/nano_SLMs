@@ -37,6 +37,7 @@ train:
   # 5000 steps @ ctx 1024 = 164M tokens (same budget as 10k @ 512; VRAM probe
   # 2025-11: seq 1024 peak 4.24 GB allocated / 4.4 GB reserved on RTX 3000 6 GB).
   max_steps: 5000
+  early_stopping_patience: 3
   batch: 1
   eval_batch: 2             # 2x1024 = pilot's 4x512 eval tile; keeps mid-train eval VRAM safe on 6 GB
   accum: 32
@@ -57,7 +58,7 @@ train:
   fp16: true
   grad_ckpt: true
   optim: adamw_torch          # 8-bit Adam is the M1-gated fallback
-  dataloader_num_workers: 0
+  dataloader_num_workers: 2
   seed: 42
 
 eval:

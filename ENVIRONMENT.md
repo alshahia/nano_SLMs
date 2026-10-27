@@ -83,6 +83,28 @@ back to TU09FBO; verify at every session start, the box pair-flips).
   bitsandbytes 0.50.2 · tensorboard 2.21.0 · pyyaml · exa-py 2.20.0
 - git-lfs 3.6.0 (system). Git remote: github.com/alshahia/nano_SLMs (main).
 
+### Nested reference repo + dev tools (2026-10-08)
+
+- **E-113 dense re-run (2026-10-08):** the repeat 400-step pretrain in `glm-5.3-flash-from-scratch/runs/pretrain-dense` produced `checkpoint-0100` and `checkpoint-0400` **sha256-identical** to the E-112 run, so this pretrain is bit-reproducible within this venv/torch build (2.14.0+cu126, seed 42). Disk: 11 extra dense checkpoints plus the two E-113 RL run dirs (`runs/rl-regime-a1`, `runs/rl-regime-a3`); all under the nested repo's gitignored `runs/`.
+
+- `glm-5.3-flash-from-scratch/` is a **nested git repo tracked as a gitlink** at parent
+  commit `2bd733b` (no `.gitmodules`, deliberately NOT a submodule; its own HEAD
+  `96d9c7c`, its `origin` = vukrosic - **never push**). It runs INSIDE `.venv`: its
+  `requirements.txt` no longer pins `torch==2.5.1` and a second venv must not be
+  created. From inside it, every run is `..\.venv\Scripts\python.exe scripts\...`.
+- `pytest 9.1.1` (+ iniconfig 2.3.1, pluggy 1.6.0) installed into `.venv` on
+  2026-10-08 via `uv pip install --python .venv pytest`. Its default `--basetemp`
+  under `%TEMP%` hits `WinError 5` in `cleanup_dead_symlinks` on this machine, so pass
+  `--basetemp runs\_pytest_tmp`.
+- GPU free-VRAM observations 2026-10-08 (8 GiB Quadro RTX 4000): 809 MiB free with the
+  desktop + foreign consumers resident; **7,704 MiB free / 291 MiB used / 0% util after
+  the user closed them**. The 25.7M fp16 recipe peaks at 2.141 GiB (pretrain bs32) and
+  0.939 GiB (RL), so it fits comfortably once the desktop is clear - but a 60% cap on
+  the *contended* 809 MiB (0.47 GiB) OOMs at batch 1, so the cap must be recomputed
+  from a fresh reading, never reused.
+- `torch 2.14.0+cu126` / `python 3.12.9` here vs the clone's reference machine
+  (`torch 2.5.1+cu121`, py 3.12.3): the source of every numeric deviation in E-112.
+
 - flow/ dev stack (2026-09-13): fastapi 0.141.1 + uvicorn 0.52.4 already
   present in `.venv` (no install needed, pinned in `flow/server/requirements.txt`);
   Node frontends run through **pnpm 12** (`pnpm approve-builds esbuild`
@@ -108,4 +130,5 @@ See HANDOFF.md §4 — do not improvise. After any rebuild validate with
 | Disk headroom | 36.0 GB free at the step-2000 resume (was ~10 GB on MUO4QK5); rotation keeps ≤3 checkpoints (~2.6 GB each, ~7.8 GB steady state); report before deleting anything; **2026-10-04: 26.52 GB free** after the user-approved cleanup deleted 42 paths / 18.60 GB (audit TIER 0-4: the TrOCR v2 duplicate `checkpoint-189/`, the v1 TrOCR run, the teacher-forced-era OCR runs, superseded checkpoints, and the superseded OCR image mixes - whose Arabic text was harvested to `data/ocr_textpool/` first); was 8.0 GB before it. `data/smoke` (tokens/*.bin) and `data/linecorpus_smoke` were NOT deleted - the audit had mislabeled them as OCR mixes. Later same day the Stage 0 prep (paddlepaddle CPU ~400 MB installed + 49 MB of model weights) brought it to **26.1 GB** |
 | Gated HF datasets | HF_TOKEN in .env WORKS for accepted repos (2026-09-09: user accepted bigcode/starcoderdata terms → content reads OK; the-stack-smol ungated since the namespace moves; both bigcode repos have NO per-language builder config — use `data_dir:`). GatedRepoError 403 with a VALID token = terms not accepted for this account, not a token problem |
 | Network | fast in practice (2026-09-09: starcoderdata 2k-row stream <2 min; 1.7 GB teacher ~3 min; the old ~230 KB/s estimate was wrong) — still never re-download what `data/*/tokens/*.bin` already holds |
+| Teacher APIs (2026-10-22) | GEMINI_API_KEY = environment variable, Gemini free tier (user-confirmed no billing); limits are per project per model, the daily quota resets at midnight Pacific, and exact numbers show only in AI Studio. OPENCODE_GO_API_KEY in .env: only minimax-m3.1-flash-free usable (429 after ~35 requests). Free models only - `scripts/teacher_client.py` allowlist. Disk ~32 GB free after the Tier 1/2 checkpoint cleanup |
 | LFS quota | ~790 MB of 1 GB used — no new >100 MB files to LFS; M3 weights local-only (user decision) |

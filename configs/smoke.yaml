@@ -34,6 +34,7 @@ train:
   output_dir: runs/smoke
   final_dir: runs/smoke/final
   max_steps: 200
+  early_stopping_patience: 3
   batch: 1
   eval_batch: 4
   accum: 32
@@ -49,7 +50,7 @@ train:
   fp16: true
   grad_ckpt: true
   optim: adamw_torch
-  dataloader_num_workers: 0
+  dataloader_num_workers: 2
   seed: 42
 
 eval:
