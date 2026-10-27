@@ -1,3 +1,87 @@
+# 2026-10-27g - SA-7 schema-constrained tool grammar: tool errors 6.1 → 0 per episode, agent success still ≈ 0
+
+- **User request:** "Approved: add schema-constrained tool grammar (tool-name enum + exact argument keys), re-test on CPU, then re-run only the agent arm on GPU with cap = fresh free - 0.75 GiB."
+- **Built (uncommitted):**
+  - `scripts/tool_grammar.py`: `grammar(..., schema=False, values=None)` / `ToolCallGrammar(..., schema, values)`. With schema on, each tool's arguments object takes exactly its declared keys (any order, no extras, none missing), "str" parameters take only JSON strings, and `values[(tool, param)]` narrows a string to a fixed set. Off by default, so the SA-4 format check is unchanged.
+  - `scripts/sa7_agent.py`: `--schema` on by default (`--no-schema` = the old syntax-only grammar). `PATHS`: read_file → solution.py / test_solution.py, write_file → solution.py. An unclosed reply's last 300 chars are saved as `invalid_tail` in the samples.
+- **CPU checks, all PASS:** SA-4 grammar regression (val 146 accepted / 0 rejected, same train rejects as before); tests/test_sa7_agent.py 10/10 (new `schema_grammar`); tests/test_sa7_runtime.py 11/11; oracle dry run 120/120.
+- **GPU agent arm (cap 6.52 GiB = 7.27 free − 0.75; 856 s; exit 0):** research/raw/sa7_agent_schema.json (+ .samples.jsonl, log scratch/sa7_agent_schema.log). The old run research/raw/sa7_agent.json is kept.
+
+  | | syntax-only (old) | schema (new) |
+  |---|---|---|
+  | hidden pass | 1.7 % (2) | 0.8 % (1) |
+  | full / visible pass | 0 / 0 | 0 / 0 |
+  | tool errors per episode | 6.14 | **0** |
+  | episodes never running tests | 100 % | 51 % |
+  | stops: invalid / 8 turns | 54 / 66 | 43 / 77 |
+
+  - Every closed reply is now schema-valid. Calls: write_file 439, read_file 386, run_tests 340, run_python 239.
+  - **The failure is now semantic, not format.** The most common observation is `wrote 16 chars to solution.py`: the model writes the string "test_solution.py" (or other short junk) as the file content, which turns the run_tests that follow into `failed to load: NameError` (152 times). The 135M model does not understand the multi-turn file workflow; nothing like it was in SA-4 training (single-turn xLAM).
+  - **The 43 invalid stops are whitespace loops inside a string value,** e.g. hundreds of `\n` escapes (30 of the 43 tails are 500–999 chars, well under max_str 2048, so they ran out of max_new tokens). MAX_RUN = 16 counts runs of one char, so a repeated 2-char escape like `\n` is never caught.
+  - Gate "tool validity 100 %": closed replies 100 % valid; 43/120 episodes still end on an unclosed reply → **still FAIL** as strictly measured.
+- **Read-out:** the grammar now does all a grammar can. The agent loop is a capability gap of this model, while the plain runtime (sample-k + visible filter) gets 22.5 % on the same 120 tasks. Options: (1) a repeated-escape cap in the grammar (closes the remaining validity gap, will not raise success); (2) multi-turn agent SFT data (new training, out of SA-7 scope); (3) report the agent loop as "reported, ≈ 0 %" per PLAN §11 and close SA-7 on the runtime result.
+- **Decision (user):** "Close SA-7 on the runtime result (22.5 %) and record the agent loop as reported ≈ 0 %; then commit the working tree." SA-7 is `done` in TASKS. The unclosed-reply gap (43/120) is a known limitation. The escape cap and agent SFT data stay unscheduled. PLAN §11 is not edited.
+- **Committed:** the SA-7 code, tests, research notes and result summaries (see git log). Large `*.samples.jsonl` files and unrelated working-tree changes are left out. SA-B decision (a/b) still pending.
+
+# 2026-10-27f - A + B: SA-7 runtime built on CPU (GPU .cmd prepared, not launched); SA-B scope proposal
+
+- **User request:** "Go with A + B: build the SA-7 runtime (CPU first) and narrow the job to in-distribution task families."
+- **§7 defaults used (no answer given):** visible/hidden split defines "runtime pass"; agent tools include write_file; budget N = 12 (k 8, 1 retry round of 4).
+- **A, built (CPU only):**
+  - `scripts/tool_grammar.py`: the grammar moved unchanged out of scratch/sa4_format_check.py; `grammar()`/`ToolCallGrammar` take `max_str` so write_file can carry a whole solution (agent uses 2048). SA-4 format regression: 146 rows, 0 failures. MAX_RUN = 16 still caps runs of one char, which includes indentation (16 spaces = 4 levels).
+  - `scripts/sa7_runtime.py` (`--set gate|he|mbpp`, `--dry-run` = reference model): tests 11/11 (tests/test_sa7_runtime.py). Reference dry runs: gate 370/370, HE 164/164, MBPP 0.9953 (mbpp-san/123 times out and is graded not_evaluated). 94/164 HE tasks have no visible test, so they are vote-only.
+  - `scripts/sa7_agent.py`: tests 9/9 (tests/test_sa7_agent.py). Oracle dry run research/raw/sa7_agent_dry.json: implement 60/60, fix 60/60, full pass 1.0, mean turns 1.0, 68 s. Deviation from the proposal: fix episodes start from real failing k10 samples (clean gate has no fix tier). Ids: research/raw/sa7_agent_ids.json, also valid as `sa7_runtime --task-ids` (dry run 120/120).
+  - Tests import `_common` from tests/, so run them without `-I`: `.venv/Scripts/python.exe tests/test_sa7_agent.py`.
+- **Step 4 prepared, NOT launched:** `scratch\sa7_runtime_gpu.cmd <cap>` runs gate, HE, MBPP, the agent loop and the runtime baseline on the agent ids, one output each under research/raw/sa7_*.json. Launch per the long-eval pattern with cap = fresh free − 0.75 GiB.
+- **B:** research/2026-10-27_sa_b_scope_proposal.md (data: research/raw/sa_b_families.json). Small (≤30 nodes) and import-free tasks are where the model works; proposed scope ≤48 nodes / no imports / single function. Awaiting decision (a) adopt or (b) diagnostics only. PLAN §11 unchanged.
+- **Step 4 GPU run (user-approved, cap 6.33 GiB = 7.09 free − 0.75; 12:41–14:33, all 5 arms exit 0; log scratch/sa7_runtime_gpu.log).** Peak use about 2.1 GiB, no spill.
+
+  | Arm | greedy pass@1 | runtime pass (hidden) | oracle pass@N | runtime − greedy CI95 |
+  |---|---|---|---|---|
+  | clean gate 370 | 9.7 % | **18.4 %** | 22.7 % | [+5.1, +12.2] pt, PASS |
+  | HE 164 | 9.1 % | 10.4 % | 10.4 % | [−1.2, +4.3] pt |
+  | MBPP 427 | 13.6 % | **24.6 %** | 26.2 % | [+7.7, +14.5] pt |
+  | HE+MBPP 591 | 12.4 % | 20.6 % (122) | 21.8 % (129) | — |
+  | agent-id baseline 120 | 9.2 % | 22.5 % | 25.0 % | [+6.7, +20.8] pt |
+
+  - The retry-with-traceback round is nearly useless: 1 (gate), 3 (MBPP) and 0 (baseline) passes from about 500 retried tasks. All the gain comes from sample-k + visible filter.
+  - **Agent loop: hidden pass 1.7 % (2/120, both fix), full pass 0 %**, vs 22.5 % for the plain runtime on the same tasks. Stop reasons: 54 unclosed tool lists within 640 tokens ("invalid"), 66 hit 8 turns.
+  - **Root cause (research/raw/sa7_agent.samples.jsonl):** the grammar enforces JSON syntax only, not tool schemas. All 419 run_tests calls passed arguments and were rejected ("takes no arguments"). 172 write_file calls used wrong argument keys, and 65 tried to write test_solution.py. So `no_run_tests = 1.0` means "never a valid run_tests", not "never tried".
+  - Gate "tool validity 100 %" on the agent loop: **FAIL** as measured (54/120 unclosed, about 6 schema errors per episode).
+- **Not done:** nothing committed. Candidate fix (not applied): schema-constrained grammar (tool name enum + exact argument keys), then re-run only the agent arm (about 12 min).
+
+# 2026-10-27e - E: pass@10 on sa4_scale075 measured (HE+MBPP 22.5 %, clean gate 23.0 %); SA-7 runtime proposal drafted
+
+- **User request:** "Go with E then A: measure pass@10 on the current model, then draft the SA-7 runtime ... proposal. then later decide between B and C based on the result of E and A". B = narrow the job to in-distribution families. C = SA-V.2 re-split + new teacher data + retrain.
+- **E run:** scratch/sa_e_passk10.cmd, WMI-detached, cap 6.5 GiB (free 7424 MiB − 0.75), peak VRAM 2.9 GiB. Both steps exited 0. The whole run took 54 min (10:59 → 11:53).
+  - `bench_passk --samples 10 --batch 160` → research/raw/sa_e_passk10.json:
+
+    | Set | pass@1 | pass@5 | pass@10 | Distinct correct per solved | EOS |
+    |---|---|---|---|---|---|
+    | MBPP (427) | 8.22 % | 19.36 % | 26.23 % (112) | 2.52 | 99.6 % |
+    | HE (164) | 6.34 % | 11.11 % | 12.80 % (21) | 2.81 | 98.3 % |
+    | Combined | | | 22.5 % (133/591) | | |
+
+    PLAN §11.1 pass@10 target is 25–35 %, so the combined number is a FAIL. MBPP alone is in the band; HE is not.
+  - `sa5_rft --split val --task-ids sa_v_clean_gate.json --k 10 --batch 160` → scratch/sa_e_gate_k10:
+    - 3,700 samples, 0 not_evaluated, pass rate 7.03 %.
+    - Unbiased pass@k: @1 7.0, @2 11.1, @4 16.2, @5 17.8, @8 21.3, @10 **23.0 %** (85/370).
+    - Of the solved tasks, 29 pass in only 1 of 10 samples.
+    - 285 of 370 tasks are never solved.
+    - Solved by source: opc 66/264, oci 18/98, teacher 1/6, selfoss 0/2.
+- **SA-7 proposal:** research/2026-10-27_sa7_runtime_proposal.md covers:
+  - sample-k + a visible-test filter + an AST-majority vote;
+  - retry-with-traceback in the SA-4 `repair` prompt shape;
+  - the grammar moved to scripts/tool_grammar.py;
+  - an agent-loop eval of about 120 val tasks (read/write/run_python/run_tests, ≤ 8 turns);
+  - CPU-first build; the GPU step is user-gated.
+
+  Leak rule: the filter uses visible tests only, the score uses hidden tests, and the oracle pass@N is reported separately.
+- **Reading for B vs C (user decides):**
+  - The runtime ceiling is about 23 %, so a realistic runtime result is roughly 7 % → 15–20 % on the clean gate.
+  - 77 % of tasks are out of reach at k = 10. Only data or training (C) moves those.
+- **Next:** the user reviews the proposal's §7 questions and decides B vs C. TASKS SA-7 is now `blocked` on that review.
+
 # 2026-10-27d - SA-V.1 clean dev gate built (370 tasks) + grader timeout fix; CPU acceptance PASS
 
 - **Approved scope (user):** SA-V.1 steps 1-3 with a 0.5 coverage cut, plus the grader timeout fix. SA-V.2 is deferred. data/sa2 and data/sa4 are untouched. Everything ran on CPU; the GPU was not used.
