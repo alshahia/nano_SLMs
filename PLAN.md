@@ -178,6 +178,12 @@ MoE, Flash-Next GDN/QSA hybrid blocks (upgrade path after M3), custom tokenizer 
 - **Context:** short, ≤ ~2k tokens.
 - Planning stays with an orchestrator: a bigger model or plain code.
 
+**Scope (SA-B, user-adopted 2026-10-27; research/2026-10-27_sa_b_scope_proposal.md):**
+- **Product statement:** writes short single-function Python (list, dict, math, string) with tests. It is not a general-purpose coder.
+- **In scope:** tasks whose solution is ≤ 48 AST nodes, needs no imports and is one function.
+- **Out of scope until the model grows:** imports / stdlib APIs (itertools, re, heapq), multi-helper programs, nested-loop algorithms, tasks above ~76 nodes.
+- Size comes from the reference solution, so routing at inference needs a proxy; the evidence is one checkpoint (sa4_scale075).
+
 ### 11.1 Gates (targets to measure against, not promises)
 
 | Metric | Baseline (SA-0) | Target |
@@ -221,6 +227,7 @@ There are two axes. Both are stepped, so a weak checkpoint never pays for 1,000 
 **SA dev gate (SA-V.1, 2026-10-27):**
 - Primary for code: the clean gate, 370 he/mbpp val tasks (he 180, mbpp 190) in research/raw/sa_v_clean_gate.json. Run it with `sa5_rft.py --split val --task-ids research/raw/sa_v_clean_gate.json --code 370 --fix 0 --tool 0`.
   - Rule: whole duplicate cluster in val, 13-gram coverage < 0.5 against sa2 + sa4 train. Built by scratch/sa_v_clean_gate.py; audit: research/raw/sa_v_clean_gate_audit.json.
+- **Scoped gate (SA-B, 2026-10-27), reported next to the clean gate, never instead of it:** the 99 clean-gate tasks whose reference is ≤ 48 nodes, import-free and single-function, in research/raw/sa_b_scoped_gate.json (`ids`, plus `he_mbpp_ids`: HE 55 + MBPP 223). Built by scratch/sa_b_scoped_gate.py; run it with the same sa5_rft command and `--task-ids research/raw/sa_b_scoped_gate.json --code 99`. Baselines (sa4_scale075): E k=10 pass@1 16.1 %, solved@10 43.4 %; SA-7 runtime 39.4 % vs greedy 20.2 % (oracle 45.5 %).
 - The old 567-task gate (code 300 / fix 267) is still reported, for continuity only: 424 of its tasks have a train twin.
 - Fix signal: the tier-fix eval only, since no fix/repair val task passes the clean rule.
 - Grader: a timeout or RSS kill is retried once at 4× the timeout. A retry that passes marks the sample NOT_EVALUATED: it is left out of the gate mean and the RLOO group. A retry that fails scores 0.

@@ -1,3 +1,76 @@
+# 2026-10-28 - SA-B step 3: retrain on the scoped view, judged on the 370 and 99-task gates
+
+- **User request:** "Approved: retrain on data/sa_b_scoped/sa4/ds from runs/sa3_scale075 with the sft_sa4 settings, VRAM cap = fresh free - 0.75 GiB; judge on the 370 clean gate and the 99 scoped gate."
+- **Run:** configs/sft_sa_b.yaml (clone of sft_sa4.yaml; only base_model, dataset_dir and output paths changed), chain scratch/sa_b_retrain.cmd (sft → scratch/lora_scale_merge.py at 0.75 → sa5_rft.py gate, same args as the re-baseline).
+  - First launch on 2026-10-27, cap 6.51 GiB. The user stopped it at step 260, so the log is scratch/sa_b_retrain.log.
+  - Relaunched 2026-10-28 with cap 6.76 GiB (free 7,694 MiB). sft.py auto-resumed from checkpoint-200, and the log is scratch/sa_b_retrain_resume.log.
+  - Train about 1.8 h, merge, then the gate in 15.5 min (peak VRAM 1.35 GiB). All steps exit 0.
+- **Outputs (local):** runs/sft_sa_b/final (eval_loss 0.1648 vs SA-4 0.1683), runs/sa_b_scale075, scratch/sa_v_gate/sa_b_scale075/{report.json,samples.jsonl}, research/raw/sa_b_retrain_gate.json.
+- **Tooling:** scratch/sa_v_gate_compare.py takes an optional third argument, a task-ids file, to score a subset such as the scoped gate.
+
+Results: k=4, T 0.8, seed 5, paired bootstrap with 10k resamples. The diff is sa_b minus the other model.
+
+| gate | sa_b_scale075 | sa4_scale075 | diff CI95 | c107 | diff CI95 |
+|---|---|---|---|---|---|
+| scoped 99, pass rate | **19.7 %** | 14.1 % | [+2.3, +8.8] pt | 17.7 % | [−1.5, +5.6] |
+| scoped 99, solved@4 | **38.4 %** | 29.3 % | [+2.0, +16.2] | 39.4 % | [−9.1, +8.1] |
+| full 370, pass rate | 7.2 % | 6.7 % | [−0.9, +1.8] | 7.2 % | [−1.4, +1.3] |
+| full 370, solved@4 | 15.4 % | 15.4 % | [−3.5, +3.5] | 18.1 % | [−6.2, +0.8] |
+
+- **Reading:**
+  - Scope weighting clearly improves the targeted families over SA-4, and the full gate does not regress.
+  - The retrain is level with the RL incumbent c107 on both gates.
+  - It is the best SFT checkpoint on the scoped target, and a natural RL init.
+- **SA-7 runtime on sa_b_scale075 (user: "SA-7 runtime on it"):**
+  - Gate arm only: `scripts/sa7_runtime.py --set gate --model runs\sa_b_scale075`, the same budget as the sa4 run (k=8 + 1 retry round of 4).
+  - Cap 6.63 GiB (7,562 MiB free − 0.75), 1,781 s, exit 0, log scratch/sa_b_sa7_gate.log.
+  - Outputs: research/raw/sa_b_sa7_gate.json, and the paired comparison research/raw/sa_b_sa7_vs_sa4.json from the new scratch/sa_b_sa7_compare.py.
+  - Self-check: the script on sa4 vs itself reproduces the recorded 9.7/18.4/22.7 and 20.2/39.4/45.5.
+
+  | | sa_b_scale075 | sa4_scale075 | diff CI95 |
+  |---|---|---|---|
+  | scoped 99 greedy / runtime / oracle | 22.2 / 38.4 / 44.4 % | 20.2 / 39.4 / 45.5 % | runtime [−10.1, +8.1] pt |
+  | full 370 greedy / runtime / oracle | 8.9 / 17.3 / 21.1 % | 9.7 / 18.4 / 22.7 % | runtime [−4.6, +2.4] pt |
+
+  - **Reading:** the retrain raises the per-sample pass rate (k=4 gate, scoped +5.6 pt), but not the share of tasks with any passing sample at N≈10.
+  - The runtime picks a visible-test passer, so it is capped by that coverage (oracle), and the runtime result does not improve.
+  - Raising coverage needs new capability: RL from sa_b_scale075, or new data. More sharpening of already-solved tasks will not do it.
+- **Not done:** HE/MBPP runtime arms on sa_b_scale075, and no commit.
+
+# 2026-10-27i - SA-B step 2: scope-weighted SA-2/SA-4 training view (CPU, no retrain)
+
+- **User request:** "Approved: build the scope-weighted SA-2/SA-4 training view under a new directory (CPU only, data/sa2 and data/sa4 untouched)."
+- **Built (uncommitted, data is local):** scratch/sa_b_train_view.py → data/sa_b_scoped/{sa2,sa4}/{train,val}.jsonl + data/sa_b_scoped/report.json (rule, weights, per-shape and per-class counts, source sha256). Same row schema as the sources. The sha256 of data/sa2 and data/sa4 {train,val}.jsonl was checked before and after: unchanged.
+- **Rule:** the same scope as the gate (reference ≤ 48 AST nodes, no imports, one function). Reference = mbpp completion; he prompt + completion; fix/repair the final `def` line of the prompt + completion. No reference failed to parse.
+- **Train weights:** in scope ×2; imports or helper functions keep 50 % (deterministic sha1 of `sa_b:<id>`); larger rows ×1; tool and replay ×1. Val copied unchanged, so val loss stays comparable.
+
+  | | train before | train after | in-scope share of Python rows |
+  |---|---|---|---|
+  | SA-4 | 61,729 | 74,094 | 38 % → 57 % |
+  | SA-2 | 139,956 | 171,054 | 34 % → 54 % |
+
+- **Tokenized (CPU):** `scripts/sa3_data.py --src data/sa_b_scoped/sa4 --shapes fix,repair,tool,replay,he,mbpp --out data/sa_b_scoped/sa4/ds` → 74,089 train / 748 val (5 rows over ctx 1024 dropped). That is about 1,158 steps at the sft_sa4 batch (8 × accum 8), against 965 for SA-4.
+- **Not done:** no retrain and no sft config. A retrain needs its own approval and a base-model choice (runs/sa3_scale075 as SA-4 used, or continue from sa4_scale075). Judge it on both the 370 clean gate and the 99 scoped gate.
+
+# 2026-10-27h - SA-B (a) adopted: scoped in-distribution gate (99 tasks) + PLAN §11 scope
+
+- **User request:** "SA-B: (a) adopt the narrowed in-distribution scope."
+- **PLAN §11 edited (approved by this choice):**
+  - a Scope block after the Definition, with the product statement "writes short single-function Python (list, dict, math, string) with tests" and the out-of-scope list;
+  - a scoped-gate bullet in the §11.2 SA dev gate. The 370-task clean gate stays primary.
+- **Built (CPU, no generation, uncommitted):** scratch/sa_b_scoped_gate.py → research/raw/sa_b_scoped_gate.json. It holds `ids` (99 gate tasks: reference ≤ 48 AST nodes, no imports, one function), `he_mbpp_ids` (HE 55 + MBPP 223) and the re-scores below. The proposal said 103 because its per-task table had no helper flag; with the single-function filter applied, the count is 99. The format works with `sa5_rft.py --task-ids`.
+- **Re-scored on files already on disk (sa4_scale075):**
+
+  | | full gate (370) | scoped gate (99) |
+  |---|---|---|
+  | E k=10 pass@1 / solved@10 | 7.0 % / 23.0 % | **16.1 % / 43.4 %** |
+  | SA-7 greedy / runtime / oracle | 9.7 / 18.4 / 22.7 % | **20.2 / 39.4 / 45.5 %** |
+  | runtime − greedy, paired 95 % CI | [+4.9, +12.4] pt | [+10.1, +28.3] pt |
+
+  HE+MBPP scoped: HE 55 tasks, pass@1 14.9 % / solved@10 25.5 %; MBPP 223 tasks, 11.6 % / 36.3 %. The full-gate numbers match the earlier reports, which confirms the join.
+- **Not done (needs its own approval):** proposal step 2, a scope-weighted SA-2/SA-4 training view under a new directory (data/sa2 and data/sa4 are never modified), and any retrain on it. TASKS SA-B (narrowing) is `in_progress` until then.
+- **Caveats carried over:** topic labels are weak keyword rules; scope is measured on the reference size, so routing at inference needs a proxy; all numbers come from one checkpoint; `final` untouched.
+
 # 2026-10-27g - SA-7 schema-constrained tool grammar: tool errors 6.1 → 0 per episode, agent success still ≈ 0
 
 - **User request:** "Approved: add schema-constrained tool grammar (tool-name enum + exact argument keys), re-test on CPU, then re-run only the agent arm on GPU with cap = fresh free - 0.75 GiB."

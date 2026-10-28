@@ -1,6 +1,6 @@
 # SA-B: narrow the Python job to in-distribution task families (proposal)
 
-Status: PROPOSAL (2026-10-27). Not applied: PLAN §11 is unchanged until the user approves.
+Status: ADOPTED as option (a) by the user (2026-10-27, HANDOFF 2026-10-27h). PLAN §11 carries the scope, and the scoped gate is research/raw/sa_b_scoped_gate.json (99 gate tasks once the single-function filter is applied, not 103). The training-data view (step 2 below) is built in data/sa_b_scoped by scratch/sa_b_train_view.py (HANDOFF 2026-10-27i). No retrain has run on it.
 
 ## Question
 
