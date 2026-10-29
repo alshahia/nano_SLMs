@@ -265,3 +265,14 @@ There are two axes. Both are stepped, so a weak checkpoint never pays for 1,000 
 - The ceiling is set by data quality and the test/retry loop, not by the model's own reasoning.
 
 **References:** phi-1 (data quality at small scale), replay vs forgetting (Ibrahim et al. 2024), RLOO (Ahmadian et al. 2024).
+
+### 11.4 SA-M — usable scoped product (user-approved 2026-10-28)
+
+Ideas A (more samples + better selection) and D (scope router / abstain), on the current models. TASKS.md row SA-M.
+
+- **Step 1 (GPU):** coverage curve. k=64 samples per task, no retry, all samples stored with visible and full results. Score oracle and visible-filter runtime at N = 8 / 16 / 32 / 64 from sample prefixes. Scoped 99 on sa4_scale075 and sa_b_scale075, then the clean 370 on the better one. This also picks the shipped model.
+- **Step 2 (CPU, offline):** selection methods on the stored samples: visible filter; + output-agreement vote on auto-generated extra inputs; + tie-break (most common / shortest). Gate: close ≥ half of the runtime-to-oracle gap.
+- **Step 3 (CPU):** scope router + abstain. Post-hoc abstain (no visible passer, or a small vote group) and a prompt classifier (imports named, arg count, docstring length, example count) trained on reference-size labels. Report coverage vs accuracy-on-answered over the clean 370. Proposed gate: ≥ 75 % accuracy on answered tasks, fixed after step 1.
+- **Step 4:** product eval on the clean 370, scoped 99 and HE/MBPP arms; GPU and CPU latency; frozen runtime config.
+- **Milestone gate:** scoped runtime ≥ 45 % (now 39.4 %) and the accuracy-on-answered gate.
+- **Out of scope:** new data (B), RL (C), model growth (E). Growth stays the last resort; a few cheap layers are acceptable if VRAM and compute hours allow. When B runs later, the teacher is the Gemini API free tier only (user decision 2026-10-28, via scripts/teacher_client.py), execution-verified and decontaminated.

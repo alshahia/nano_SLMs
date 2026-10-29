@@ -1,3 +1,58 @@
+# 2026-10-29b - SA-M step 4b: wide HE docstring example parser (CPU rescore, no new samples)
+
+- **What (user "Parser only (CPU)"):** `sa7_runtime.he_examples_wide` parses prose examples (`f(..) => / ==> / ➞ / -> / → / == / = result`, true/false/null mapped). Opt-in via `load_he(workers, wide=True)`, used only for tasks with no `>>>` examples, with the same reference filter. Default HE loading is unchanged, so SA-7/step-4 numbers stand. `sa_m_product.py` gained a `he_wide` arm: it re-runs the new visible tests on the saved N64 HE samples (nostop kept), then probe/mbr/abstain with the frozen config (threshold 0.7398, unchanged).
+- **Coverage:** HE tasks with visible tests went from 70 to 132 of 164 (62 gained; 374 examples parsed, 13 dropped by the reference). Scoped HE tasks without visible tests went from 26 to 11.
+- **Result** (research/raw/sa_m_product_hewide.json + _tasks.jsonl): held-out scoped answer-all **43.9 % [38.2, 49.8]** (was 43.5; HE scoped 34.5, was 32.7). Two tasks flipped to correct: HumanEval/102 (scoped) and /96 (rest). Confident mode is unchanged: 20.1 % answered at 94.6 %, and HE confident is still 6 tasks. Of 53 HE tasks with a visible passer, only 6 clear p ≥ 0.740; the abstain model is MBPP/gate-fit and stays conservative on HE.
+- **Verdict:** gate still FAIL narrowly (43.9 < 45; confident PASS). Per user instruction, the narrow miss is accepted. SA-M closes with the frozen config as the product (confident mode is the reliable surface; answer-all ≈ 44 % scoped).
+
+# 2026-10-29 - SA-M step 4: frozen product config, held-out HE/MBPP
+
+- **Config (user "Approve N64"):** runs/sa4_scale075, k 64, no retry, mbr selector, B2 abstain (sample scope router logit as feature 0) refit on the clean 370; threshold 0.740 = mean of the step-3 fold thresholds (re-derived and asserted against research/raw/sa_m_route_b2.json). Confident = visible tests and n_pass > 0 and p ≥ 0.740 (HE tasks without visible tests abstain). Saved as research/raw/sa_m_product_config.json. Scorer: scripts/sa_m_product.py.
+- **GPU run:** the user stopped the first run at MBPP 246/427 (log scratch/sa_m_prod.stopped1.log); sa7_runtime has no resume, so it was relaunched from scratch 2026-10-29 08:30 (cap 6.72 GiB of 7.47 free; scratch/sa_m_prod.cmd). MBPP exit 0 (8,147 s), HE exit 0 (3,104 s). Outputs research/raw/sa_m_prod_{mbpp,he}.json (+ .samples.jsonl, untracked).
+- **Pipeline check (in-sample replay on the 370):** lane mismatch 0, mbr mismatch 0; scoped 99 answer-all 54.5 %, confident 23.2 % answered at 95.7 % (scratch/sa_m_product_gate.json).
+- **Held-out results (research/raw/sa_m_product.json, per task _tasks.jsonl):**
+
+  | slice | n | oracle | answer-all | confident answered | confident acc |
+  |---|---|---|---|---|---|
+  | mbpp/scoped | 223 | 54.3 | 46.2 [39.8, 52.7] | 22.4 % | 94.0 [83.8, 97.9] |
+  | he/scoped | 55 | 41.8 | 32.7 [21.8, 45.9] | 10.9 % | 100 (6/6) |
+  | **heldout/scoped** | 278 | 51.8 | **43.5 [37.8, 49.4]** | 20.1 % | **94.6 [85.4, 98.2]** |
+  | heldout/rest | 313 | 23.6 | 16.3 | 3.2 % | 80.0 [49.0, 94.3] |
+  | heldout/all | 591 | 36.9 | 29.1 [25.6, 32.9] | 11.2 % | 92.4 |
+
+- **Gate verdict: FAIL (narrow).** Answer-all 43.5 < 45 (CI includes 45); confident accuracy 94.6 ≥ 75 PASS. MBPP scoped alone passes (46.2); HE scoped pulls the pool down (26/55 HE scoped tasks have no visible tests, so mbr runs without a filter there).
+- **Latency:** GPU N64 ≈ 19 s/task (MBPP 19.1, HE 18.9, includes grading). CPU k 8 on 10 MBPP tasks: 381 s ≈ 38 s/task incl. model load (research/raw/sa_m_cpu_latency.json); k 64 on CPU extrapolates to ~5 min/task — GPU only in practice.
+- **Not done:** SA-M milestone not met; next direction awaits the user (TASKS SA-M).
+
+# 2026-10-28b - SA-M: usable scoped product, step 1 (coverage curve) launched
+
+- **User request:** "approve SA-M plan / stay on Gemini". Plan in PLAN §11.4, row SA-M in TASKS. Teacher for any later data work is the Gemini free tier only.
+- **Step 1:** scratch/sa_m_cov.cmd runs `scripts/sa7_runtime.py --k 64 --retries 0 --batch 128 --workers 8` (no code change needed: the script already takes `--k` and stores every sample's visible kind and full pass in `.samples.jsonl`). Arm `scoped` = scoped 99 on sa4_scale075 then sa_b_scale075 → research/raw/sa_m_cov_{sa4,sa_b}_scoped.json; arms `full_sa4` / `full_sa_b` = clean 370. Log scratch/sa_m_cov_scoped.log.
+- **Scoped result (99 tasks, both arms exit 0, ~21.5 min each, cap 6.53 GiB, peak ~2.2 GiB):** scored by scratch/sa_m_curve.py (first-round sample prefixes; self-test reproduced the old k=8 numbers exactly) → research/raw/sa_m_cov_scoped_curve.json.
+  - sa4_scale075, N 8/16/32/64: oracle 44.4/52.5/64.6/68.7; runtime 40.4/41.4/46.5/49.5 (N64 vs N8 CI [0.0, +18.2]); answered 60.6/69.7/77.8/82.8; accuracy on answered 66.7/59.4/59.7/59.8.
+  - sa_b_scale075: oracle 45.5/51.5/62.6/69.7; runtime 37.4/43.4/47.5/48.5 (N64 vs N8 CI [+4.0, +18.2]); accuracy on answered ~57–61.
+  - Paired sa4 − sa_b CIs straddle 0 at every N (runtime and oracle): tie. Full 370 arm runs on sa4_scale075 (incumbent).
+  - Reading: the ≥ 45 % runtime gate is met at N 32–64 by the point estimate; the runtime→oracle gap grows to ~19–21 pt at N64 (step 2 target); accuracy on answered stays ~60 %, so the 75 % gate needs step 3 (abstain).
+- **Full 370 result (sa4_scale075, exit 0, 2 h 02 min, cap 6.62 GiB, not_evaluated 0)** → research/raw/sa_m_cov_full_curve.json. N 8/16/32/64: oracle 21.4/27.0/31.6/38.6; runtime 16.8/21.6/23.0/27.6 (N64 vs N8 CI [+7.3, +14.3]); answered 47.0/57.3/66.5/73.2; accuracy on answered 35.6/37.7/34.6/37.6. Off-scope tasks are where answered-but-wrong piles up, which is the case for the step 3 router.
+- **Step 2 (CPU selection, "Start step 2"):** new scripts/sa_m_select.py. Every runnable sample (visible pass/wrong/error) also runs on ≤ 16 probe inputs made by mutating the visible call's literal args (outputs unknown, hidden tests never read); 361/370 tasks probed, mean 7.5 probes; 29,665 probe programs, cache scratch/sa_m_probe_cache.jsonl. Methods ast (baseline) / exec (largest identical-output cluster) / mbr (MBR-exec among passers) / mbr_all. Dev = 271 non-scoped ids, check = scoped 99 → research/raw/sa_m_select.json, per-task features research/raw/sa_m_select_features.jsonl.
+  - Runtime at N64, ast → mbr: full 370 27.6 → 29.2 (exec 29.5, CI [0.0, +4.1]); rest 18.5 → 19.9; scoped (sa4 full dump) 52.5 → 54.5 (exec 56.6); scoped_sa4 49.5 → 55.6 (CI [+1.0, +12.1]); scoped_sa_b 48.5 → 51.5. mbr picked on dev (best or tied at every N).
+  - **Gate FAIL:** gap closed at N64 ≈ 0.15 (rest), 0.15–0.17 (all), 0.32 (scoped_sa4), 0.14 (scoped_sa_b) vs ≥ 0.5 required.
+  - Why: of the 35 full-dump N64 gap tasks (oracle yes, mbr no), correct samples are a minority of visible passers in 33 (≤ 10 % in 9). Probes separate correct from wrong passers in 23, so behaviour is visible, but the wrong cluster is larger: consensus selection cannot close the gap; it needs a correctness signal that is not agreement.
+  - Abstain peek (step 3 preview, N64, mbr pick, rank by mbr_agree): scoped answered ~42–43 % → accuracy 76–80 % in all three dumps; rest at 17 % answered only 43.5 %.
+- **SA-M step 3 (2026-10-28, CPU, scripts/sa_m_route.py → research/raw/sa_m_route.json + sa_m_route_tasks.jsonl):** the user accepted the step 2 fail and kept mbr. Milestone runtime is judged in answer-all mode; the 75 % gate is judged in confident mode.
+  - **Prompt router:** numpy logistic regression on 97,496 he/mbpp rows from train. The label is the scoped rule applied to the reference. **Gate-370 AUC is 0.674 (train 0.692): weak.** Module/library mentions and "hard" words carry it. In the abstain model its weight is ~0, so it adds nothing.
+  - **Abstain model:** inputs are pass share, mbr agreement, exec top share, clusters, plus size and imports of the passing samples. It was fit with 5-fold CV grouped by task; the threshold is chosen in inner folds at a 78 % target. Out of fold on the clean 370 it answers 7.8 % at 82.8 % accuracy (Wilson CI 65.5–92.4), with 1.4 % wrong. **Gate PASS on the point estimate only;** the CI lower bound is under 75 % and coverage is tiny.
+  - **Scoped subsets with the same rule:** 17–23 % answered at 82–90 % accuracy.
+  - **Curves:** on the scoped tasks the top ~34–50 % run at 74–82 % accuracy (full / sa4 / sa_b dumps). On the 271 rest, accuracy stays ≤ 46 % even in the top 14 %.
+  - **The real limit:** we cannot tell scoped tasks from the prompt alone. Confident mode only works well where scope is already known.
+  - **Answer-all runtime (milestone):** scoped 54.5 / 55.6 / 51.5 ≥ 45 → **PASS** (mbr from step 2).
+- **Option B (sample-based scope router, CPU), user "Try B first":** `scripts/sa_m_route.py --abstain-features`.
+  - Scope router from the 64 samples (AST size quantiles, imports, helpers, nested loops / recursion, parse and error share), task-grouped 5-fold on the clean 370: out-of-fold scope AUC **0.818** vs prompt router 0.659.
+  - `scope_router` (scope logit replaces the prompt-router input; research/raw/sa_m_route_b2.json): full370 confident **8.4 % answered at 83.9 %** (CI 67.4–92.9) vs 7.8 % / 82.8 % before. Scoped subsets 22–26 % answered at 83–96 %. Curve full370: 14.6 % → 68.5 %, still below 75.
+  - `samples` (raw scope stats added to the abstain model; sa_m_route_b.json): worse, overfits (thresholds up to 0.99, full370 62.5 %).
+  - **Verdict:** B does not move the 370. Per the user's fallback: A (confident mode = user-declared scoped lane) + D (step 4).
+- **Not done:** step 4.
+
 # 2026-10-28 - SA-B step 3: retrain on the scoped view, judged on the 370 and 99-task gates
 
 - **User request:** "Approved: retrain on data/sa_b_scoped/sa4/ds from runs/sa3_scale075 with the sft_sa4 settings, VRAM cap = fresh free - 0.75 GiB; judge on the 370 clean gate and the 99 scoped gate."
@@ -35,7 +90,7 @@ Results: k=4, T 0.8, seed 5, paired bootstrap with 10k resamples. The diff is sa
   - **Reading:** the retrain raises the per-sample pass rate (k=4 gate, scoped +5.6 pt), but not the share of tasks with any passing sample at N≈10.
   - The runtime picks a visible-test passer, so it is capped by that coverage (oracle), and the runtime result does not improve.
   - Raising coverage needs new capability: RL from sa_b_scale075, or new data. More sharpening of already-solved tasks will not do it.
-- **Not done:** HE/MBPP runtime arms on sa_b_scale075, and no commit.
+- **Not done:** HE/MBPP runtime arms on sa_b_scale075. Committed as 09cf090 (local, not pushed).
 
 # 2026-10-27i - SA-B step 2: scope-weighted SA-2/SA-4 training view (CPU, no retrain)
 

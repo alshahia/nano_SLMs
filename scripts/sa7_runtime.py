@@ -137,6 +137,35 @@ def he_examples(prompt: str) -> list[str]:
     return out
 
 
+WIDE_ARROW = re.compile(r"\s*(?:==>|=>|➞|->|→|==|=)\s*")
+WIDE_WORDS = {"true": "True", "false": "False", "none": "None", "null": "None"}
+
+
+def he_examples_wide(prompt: str, entry: str) -> list[str]:
+    """Prose examples `entry(args) => result` (also ==>, ➞, ->, →, ==, =) -> 'assert entry(args) == result'.
+    Opt-in (SA-M step 4b): only for tasks without `>>>` examples; the reference filter in load_he still applies."""
+    out = []
+    for line in prompt.split("\n"):
+        start = line.find(entry + "(")
+        if start < 0:
+            continue
+        text = line[start:].strip()
+        for m in WIDE_ARROW.finditer(text):
+            expr, expected = text[:m.start()].strip().rstrip("#").strip(), text[m.end():].strip().rstrip(".,;")
+            expected = WIDE_WORDS.get(expected.lower(), expected)
+            try:
+                call = ast.parse(expr, mode="eval").body
+                ast.parse(expected, mode="eval")
+                stmt = f"assert {expr} == {expected}"
+                ast.parse(stmt)
+            except SyntaxError:
+                continue
+            if isinstance(call, ast.Call) and isinstance(call.func, ast.Name) and call.func.id == entry:
+                out.append(stmt)
+                break
+    return list(dict.fromkeys(out))
+
+
 def keep_program(code: str, tests: list[str]) -> str:
     parts = [GUARD, code]
     for i, test in enumerate(tests):
@@ -146,13 +175,18 @@ def keep_program(code: str, tests: list[str]) -> str:
     return "\n".join(parts) + "\n"
 
 
-def load_he(workers: int) -> tuple[list[dict], dict]:
+def load_he(workers: int, wide: bool = False) -> tuple[list[dict], dict]:
     tasks = []
     for t in load_humaneval():
         entry = re.search(r"check\((\w+)\)\s*$", t["test"]).group(1)
         prompt = t["prompt"].rstrip()  # bench_passk.model_prompt
+        visible = he_examples(t["prompt"])
+        from_prose = wide and not visible
+        if from_prose:
+            visible = he_examples_wide(t["prompt"], entry)
         tasks.append(make_task(t["task_id"], "he", "body", prompt, entry, t["prompt"][len(prompt):] + t["canned"],
-                               he_examples(t["prompt"]), t["test"]))
+                               visible, t["test"]))
+        tasks[-1]["wide"] = from_prose and bool(visible)
     # Drop the docstring examples the canonical solution itself fails (float reprs, typos in the docstring).
     stats = {"parsed": sum(len(t["visible"]) for t in tasks), "dropped": 0}
     todo = [t for t in tasks if t["visible"]]
@@ -162,6 +196,8 @@ def load_he(workers: int) -> tuple[list[dict], dict]:
         stats["dropped"] += len(task["visible"]) - len(kept)
         task["visible"] = [test for i, test in enumerate(task["visible"]) if i in kept]
     stats["tasks_with_visible"] = sum(bool(t["visible"]) for t in tasks)
+    if wide:
+        stats["wide_tasks"] = sum(t["wide"] and bool(t["visible"]) for t in tasks)
     return tasks, stats
 
 
