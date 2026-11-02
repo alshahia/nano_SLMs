@@ -16,6 +16,10 @@ N-grams shared by two or more benchmark tasks are boilerplate (e.g. a common imp
 line) and are dropped from the index before scanning. A task is FLAGGED when its
 coverage reaches --flag-coverage; a document is a drop candidate when it hits a flagged
 task. Tasks shorter than n tokens cannot be audited and are counted separately.
+
+Never-seen bench (2026-10-29): a set named ns:<stem> reads data/bench/ns/<stem>.jsonl (prompt + reference).
+--docs takes several corpora: {doc_id|id, text} jsonl, task jsonl without `text` (every string field is
+scanned, e.g. data/sa2/train.jsonl), or a plain .txt pack scanned in windows.
 """
 from __future__ import annotations
 
@@ -33,6 +37,7 @@ import psutil
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "bench" / "raw"
+NS_DIR = ROOT / "data" / "bench" / "ns"
 DEFAULT_DOCS = ROOT / "data" / "reference" / "corpus_codeparrot_v1" / "decontaminate" / "docs.jsonl"
 TOKEN_RE = re.compile(r"\w+|[^\w\s]")
 SETS = ("humaneval", "mbpp", "mbpp-sanitized")
@@ -53,7 +58,39 @@ def load_tasks(name: str) -> list[tuple[str, str]]:
     if name == "mbpp-sanitized":
         rows = json.loads((RAW / "sanitized-mbpp.json").read_text(encoding="utf-8"))
         return [(f"mbpp-san/{r['task_id']}", r["prompt"] + "\n" + r["code"]) for r in rows]
-    raise SystemExit(f"unknown set {name!r}; known: {SETS}")
+    if name.startswith("ns:"):
+        with (NS_DIR / f"{name[3:]}.jsonl").open(encoding="utf-8") as handle:
+            rows = [json.loads(line) for line in handle if line.strip()]
+        return [(r["id"], r["prompt"] + "\n" + (r["reference"] or "")) for r in rows]
+    raise SystemExit(f"unknown set {name!r}; known: {SETS} or ns:<stem>")
+
+
+def same_problem(a: str, b: str) -> bool:
+    """mbpp and mbpp-sanitized describe the same problem; only cross-PROBLEM sharing is boilerplate."""
+    return a.startswith("mbpp") and b.startswith("mbpp") and a.split("/")[-1] == b.split("/")[-1]
+
+
+def iter_docs(path: Path):
+    """(doc_id, text) per document; a .txt pack yields overlapping windows instead of documents."""
+    if path.suffix == ".txt":
+        carry = ""
+        with path.open(encoding="utf-8", errors="replace") as handle:
+            offset = 0
+            while chunk := handle.read(MAX_DOC_CHARS):
+                yield f"{path.parent.name}/{path.name}@{offset}", carry + chunk
+                carry = chunk[-2000:]
+                offset += len(chunk)
+        return
+    with path.open(encoding="utf-8") as handle:
+        for n, line in enumerate(handle):
+            if not line.strip():
+                continue
+            doc = json.loads(line)
+            text = doc.get("text")
+            if text is None:
+                text = "\n".join(s for v in doc.values()
+                                 for s in (v if isinstance(v, list) else [v]) if isinstance(s, str))
+            yield f"{path.parent.name}/{path.name}:{doc.get('doc_id') or doc.get('id') or n}", text
 
 
 def ngrams(text: str, n: int) -> set[tuple[str, ...]]:
@@ -71,7 +108,7 @@ def sha256_file(path: Path) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("--docs", type=Path, default=DEFAULT_DOCS, help="corpus docs.jsonl ({doc_id, text})")
+    ap.add_argument("--docs", type=Path, nargs="+", default=[DEFAULT_DOCS], help="corpora: .jsonl or .txt pack")
     ap.add_argument("--sets", default=",".join(SETS), help=f"comma list from {SETS}")
     ap.add_argument("--n", type=int, default=13, help="n-gram length in code tokens")
     ap.add_argument("--flag-coverage", type=float, default=0.5, help="flag a task at this n-gram coverage")
@@ -83,8 +120,9 @@ def main() -> None:
         raise SystemExit("--n below 5 matches generic code; use >= 8 (13 is standard)")
     if not 0.0 < args.flag_coverage <= 1.0:
         raise SystemExit("--flag-coverage must be in (0, 1]")
-    if not args.docs.is_file():
-        raise SystemExit(f"corpus not found: {args.docs}")
+    missing = [p for p in args.docs if not p.is_file()]
+    if missing:
+        raise SystemExit(f"corpus not found: {missing}")
 
     # Build the benchmark index: n-gram -> task index, boilerplate removed.
     tasks: list[str] = []
@@ -100,8 +138,7 @@ def main() -> None:
     for idx, grams in enumerate(task_grams):
         for g in grams:
             prev = owners.setdefault(g, idx)
-            # mbpp and mbpp-sanitized describe the same problem; only cross-PROBLEM sharing is boilerplate.
-            if prev != idx and tasks[prev].split("/")[-1] != tasks[idx].split("/")[-1]:
+            if prev != idx and not same_problem(tasks[prev], tasks[idx]):
                 shared.add(g)
     for g in shared:
         del owners[g]
@@ -119,16 +156,12 @@ def main() -> None:
     t0 = time.time()
     docs = 0
     oversized = 0
-    with args.docs.open(encoding="utf-8") as handle:
-        for line in handle:
-            if not line.strip():
-                continue
-            doc = json.loads(line)
+    for path in args.docs:
+        for doc_id, text in iter_docs(path):
             docs += 1
             # Bounded memory: tokenize huge docs in character windows, never the whole text at once.
             # The 2000-char overlap keeps n-grams that straddle a window edge.
-            text = doc["text"]
-            oversized += len(text) > MAX_DOC_CHARS
+            oversized += len(text) > MAX_DOC_CHARS + 2000
             for i in range(0, max(1, len(text)), MAX_DOC_CHARS):
                 seg = TOKEN_RE.findall(text[i:i + MAX_DOC_CHARS + 2000])
                 for g in zip(*(seg[k:] for k in range(args.n))):
@@ -136,13 +169,15 @@ def main() -> None:
                     if hit is not None:
                         for idx in hit:
                             matched[idx].add(g)
-                            doc_tasks[doc["doc_id"]].add(idx)
+                            doc_tasks[doc_id].add(idx)
             if docs % 500 == 0 and psutil.virtual_memory().available < MIN_FREE_RAM:
                 raise SystemExit(f"[abort] free RAM below {MIN_FREE_RAM >> 30} GiB at doc {docs}; nothing written")
             if docs % 5000 == 0:
                 print(f"[scan] {docs} docs {time.time() - t0:.0f}s", flush=True)
             if args.limit_docs and docs >= args.limit_docs:
                 break
+        if args.limit_docs and docs >= args.limit_docs:
+            break
     seconds = time.time() - t0
 
     coverage = [len(matched[i]) / sizes[i] if sizes[i] else None for i in range(len(tasks))]
@@ -159,8 +194,8 @@ def main() -> None:
 
     report = {
         "metric": f"{args.n}-gram coverage of prompt+solution over code tokens",
-        "docs_path": str(args.docs.relative_to(ROOT)) if args.docs.is_relative_to(ROOT) else str(args.docs),
-        "docs_sha256": sha256_file(args.docs),
+        "docs": [{"path": str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p), "sha256": sha256_file(p)}
+                 for p in args.docs],
         "docs_scanned": docs, "oversized_docs": oversized, "limit_docs": args.limit_docs or None, "scan_seconds": round(seconds, 1),
         "n": args.n, "flag_coverage": args.flag_coverage,
         "index_ngrams": len(index), "boilerplate_dropped": len(shared),

@@ -80,6 +80,7 @@ All Python runs through the venv — never bare `python`, never `pip`:
 & .\.venv\Scripts\python.exe scripts\sft.py           --config configs\sft_t1.yaml --pilot
 & .\.venv\Scripts\python.exe scripts\bench_passk.py   --arm NAME=PATH --device cuda --vram-cap-gib 4.5   # HumanEval+MBPP pass@1 (GPU)
 & .\.venv\Scripts\python.exe scripts\bench_ladder.py  --arm NAME=hf:PATH --device cuda --up-to L4 --out-dir research/raw/ladder_NAME   # stepped battery: L0-L4 71→1,056 robustness; B1 192 / W2 560 / W4 1,120 breadth (PLAN §11.2); --dry-run = counts only
+& .\.venv\Scripts\python.exe -I scripts\bench_ns_eval.py --model PATH --name NAME --quick --batch 128 --vram-cap-gib CAP   # never-seen bench, 11 separate sets (PLAN §12); drop --quick for the full tier; resumes per set; CAP = fresh free VRAM - 0.75 GiB
 & .\.venv\Scripts\python.exe scripts\rl_smollm2.py    --init runs/sft_smollm2_cpt_pg/final --output runs/rl_smollm2 --groups 2000 --vram-cap-gib 4.5   # SA-6 RLOO on playground `rl` split (GPU; auto-resumes); --dry-run = reward self-check
 & .\.venv\Scripts\python.exe laya/scripts/preflight_check.py --script <trainer>.py --config <cfg>.yaml   # REQUIRED gate before ANY unattended long launch (dup-keys, pyflakes, --help, data, GPU smoke)
 & .\.venv\Scripts\python.exe laya/scripts/param_count.py --layers 6 --hidden 512 --ffn 2048 --heads 8 --vocab 30522 --target_m 50   # pre-registration param check (rule R5)

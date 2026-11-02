@@ -276,3 +276,18 @@ Ideas A (more samples + better selection) and D (scope router / abstain), on the
 - **Step 4:** product eval on the clean 370, scoped 99 and HE/MBPP arms; GPU and CPU latency; frozen runtime config.
 - **Milestone gate:** scoped runtime ≥ 45 % (now 39.4 %) and the accuracy-on-answered gate.
 - **Out of scope:** new data (B), RL (C), model growth (E). Growth stays the last resort; a few cheap layers are acceptable if VRAM and compute hours allow. When B runs later, the teacher is the Gemini API free tier only (user decision 2026-10-28, via scripts/teacher_client.py), execution-verified and decontaminated.
+
+## 12) Never-seen bench (NS), user-approved 2026-11
+
+**Purpose:** a fixed test the model never trained on, used to show whether each new model improves or gets worse against plain base SmolLM2 (`models/hf/SmolLM2-135M`, nothing added). Each focused or general task is its own set and is scored separately, never mixed.
+
+**Sets:** A_cruxeval, A_heval_pro, A_lcb, A_mbpp_pro, A_rwpb (from the net); B_body, B_fix, B_general, B_predict, B_tool_call, B_write_fn (ours, via Gemini). Bench data is eval-only.
+
+**Scoring:** greedy plus runtime, with oracle shown as the ceiling.
+
+| Tier | Items | k | max-new | Use | Report |
+|---|---|---|---|---|---|
+| quick | 50 per set, fixed by sha256 of id | 8 | 256 | every new model, about 20 min at batch 128 | `research/raw/bench_ns_<name>_quick.json` |
+| full | all | 16 | default | final numbers for a model worth keeping | `research/raw/bench_ns_<name>.json` |
+
+A tier is compared only with itself; the compare refuses mixed k or max_new. Baselines: `bench_ns_base_quick.json`, `bench_ns_base.json`. Results live in HANDOFF, 2026-11-02 entry.
