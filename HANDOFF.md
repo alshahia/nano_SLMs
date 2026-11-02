@@ -1,3 +1,20 @@
+# 2026-11-02b - Tool-call SFT (tool_scale075): B_tool_call 0 -> 16 greedy; B_fix runtime -8 (CI crosses 0)
+
+- **What (user "Yes, both"):** LoRA SFT on runs/sa_b_scale075 in the NS bench's Python tool-call format (stubs + `handle_request()` body), then merged at 0.75 into runs/tool_scale075. Hypothesis: sa_b's 14,854 xlam tool rows used a JSON format (`# Tools: {json}` -> JSON list), so the bench format was never trained.
+- **Data (scripts/tool_sft_gen.py -> data/tool_sft, build.json):** xlam rows rewritten as Python stubs (7,000 converted, 4,619 pass the sandboxed build_tool check), plus Gemini free-tier rows on TOOL_DOMAINS, which are disjoint from the bench DOMAINS (1,328 generated before the free quota ran out at 1,600; 1,043 pass). Decontamination against data/bench/ns/B_tool_call.jsonl dropped 122 rows (35 Gemini, 87 xlam): any shared tool name (271 names) or any shared request 8-gram. Train: tool_py 5,491, plus replay of fix, repair, he and mbpp (1,500 each) and replay 1,000 from data/sa_b_scoped/sa4. Val: tool_py 171 and 227 replay rows. **Bench data was not trained on.**
+- **Train (configs/sft_tool.yaml, chain scratch/tool_sft_chain.sh):** 12,491 pairs, 1 epoch, 196 steps, 1,140 s, cap 6.52 GiB, no OOM. eval_loss went 0.329 -> 0.305; best is the final checkpoint.
+- **Quick NS, tool_scale075 vs sa_b_scale075 (points, 95 % CI):**
+  - B_tool_call greedy **+16 [6, 26]**, runtime **+8 [2, 16]**, oracle@8 40 (was 0).
+  - A_cruxeval greedy +10 [2, 20], runtime +12 [2, 22].
+  - B_body runtime +10 [2, 18].
+  - B_fix runtime **-8 [-18, 2]**: 30 -> 22, so it is not significant, but it points down.
+  - B_write_fn runtime +2 [-4, 8]; greedy -2.
+  - A_mbpp_pro runtime -4 and B_general runtime -4; both CIs reach 0.
+  - Everything else is within ±2.
+  - Report: research/raw/bench_ns_tool_scale075_quick.json; compare with `bench_ns_eval.py --compare sa_b_scale075_quick,tool_scale075_quick`.
+- **Read:** the format-mismatch hypothesis is confirmed; tool calling went from nothing to a measurable rate. Runtime (8) is below greedy (16) on B_tool_call because the bench gives no visible tests for tool tasks, so runtime's pick among k samples is close to random. Oracle@8 40 shows that right calls are often in the sample set, so selection is the lever there. B_fix is the regression to watch. A full-tier run (k16, all items) would be needed to tell whether the -8 is real.
+- **State:** nothing committed. New files: scripts/tool_sft_gen.py, configs/sft_tool.yaml, scratch/tool_sft_chain.sh. Data in data/tool_sft; models in runs/sft_tool and runs/tool_scale075; Gemini cache in data/teacher/tool_sft_cache.jsonl.
+
 # 2026-11-02 - Never-seen bench (NS) built and baselined; E2 verifier FAILED its gate
 
 - **E1 (done before this entry), N64 gate:** sa4 runtime 27.6, mbr 29.2, oracle 38.6; base 19.7/20.8/26.2; CPT 14.9/14.3/18.4.
