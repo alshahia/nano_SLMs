@@ -13,7 +13,10 @@ from pathlib import Path
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from huggingface_hub.dataclasses import strict
+try:
+    from transformers.configuration_utils import strict
+except ImportError:
+    from huggingface_hub.dataclasses import strict
 
 from transformers import AutoModelForCausalLM, LlamaConfig
 from transformers.configuration_utils import PretrainedConfig

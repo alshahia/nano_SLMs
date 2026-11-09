@@ -173,21 +173,39 @@ def chunk_gated_delta_rule(
         w_dec = wy @ ((k_beta * glog.exp().unsqueeze(-1)).reshape(
             batch, heads, n_chunks, chunk_size, d_k))
 
+        # ---- loop-invariant operands, hoisted out of the chunk scan ----
+        # The per-chunk state recurrence is affine in the incoming state, so
+        # every operand that does not depend on it is computed once (batched)
+        # instead of once per Python iteration. On this GPU the scan is
+        # CPU-dispatch-bound (~17 kernel launches per chunk), so cutting the
+        # per-chunk launch count is the lever that matters; the math is
+        # unchanged (each batched op is the same fp32 computation the
+        # per-chunk loop performed, just issued as a single launch).
+        attn_intra = (q_c @ k_c.transpose(-1, -2)) * decay_mask   # [B,H,NC,C,C]
+        glog_exp = glog.exp()                                     # [B,H,NC,C]
+        glog_last_exp = glog[:, :, :, -1].exp()                   # [B,H,NC]
+        k_decay = k_c * (glog[:, :, :, -1].unsqueeze(-1)
+                         - glog).exp().unsqueeze(-1)              # [B,H,NC,C,Dk]
+        q_glog = q_c * glog_exp.unsqueeze(-1)                     # [B,H,NC,C,Dk]
+        # Concatenate operands that share a matmul so the scan issues two
+        # launches per chunk instead of four (same math, fewer dispatches):
+        #   m1 = [w_dec | q_glog] @ state         (erase + inter-chunk read)
+        #   m2 = [attn_intra | k_decay^T] @ v_new (intra-chunk + state write)
+        wq = torch.cat([w_dec, q_glog], dim=3)                    # [B,H,NC,2C,Dk]
+        ak = torch.cat([attn_intra, k_decay.transpose(-1, -2)], dim=3)  # [B,H,NC,C+Dk,C]
+
         state = (q_c.new_zeros(batch, heads, d_k, d_v)
                  if initial_state is None else initial_state.float())
         out = torch.empty(batch, heads, n_chunks, chunk_size, d_v,
                           dtype=query.dtype, device=query.device)
         for i in range(n_chunks):
-            q_i, k_i = q_c[:, :, i], k_c[:, :, i]
-            attn_intra = (q_i @ k_i.transpose(-1, -2)) * decay_mask[:, :, i]
-            v_new = u0[:, :, i] - w_dec[:, :, i] @ state  # erase incoming state
-            y_inter = (q_i * glog[:, :, i].exp().unsqueeze(-1)) @ state
-            out[:, :, i] = y_inter + attn_intra @ v_new
-            state = (
-                state * glog[:, :, i, -1].exp().unsqueeze(-1).unsqueeze(-1)
-                + (k_i * (glog[:, :, i, -1, None] - glog[:, :, i])
-                   .exp().unsqueeze(-1)).transpose(-1, -2) @ v_new
-            )
+            m1 = wq[:, :, i] @ state                              # [B,H,2C,Dv]
+            v_new = u0[:, :, i] - m1[:, :, :chunk_size]           # erase incoming state
+            y_inter = m1[:, :, chunk_size:]
+            m2 = ak[:, :, i] @ v_new                              # [B,H,C+Dk,Dv]
+            out[:, :, i] = y_inter + m2[:, :, :chunk_size]
+            state = (state * glog_last_exp[:, :, i].unsqueeze(-1).unsqueeze(-1)
+                     + m2[:, :, chunk_size:])
 
         out = out.reshape(batch, heads, total_len, d_v)[:, :, :seq_len]
         final_state = state if output_final_state else None

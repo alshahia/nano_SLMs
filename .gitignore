@@ -222,3 +222,22 @@ arabic_ocr/runs/stage*/probe/*.pt
 # SA-2 downloaded datasets (local only)
 data/hf/sa2/
 data/sa2/
+
+# Local-only artifacts (user decision 2026-11-09): data, run outputs, weights,
+# checkpoints, raw eval samples and logs are never pushed — only code/docs.
+# Files under these paths that are already tracked stay tracked.
+data/
+runs/
+models/
+ui/data/
+research/raw/
+arabic_ocr/runs/
+scratch/
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.npz
+*.parquet
+*.arrow
+/*.log

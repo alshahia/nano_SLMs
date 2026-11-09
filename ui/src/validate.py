@@ -53,7 +53,11 @@ def validate_spec(spec):
             if k in reach:
                 continue
             reach.add(k)
-            stack.extend(els[k].get("children", []))
+            # a child id that is not in els is already reported as L3 missing_child
+            # above; skip it here instead of raising KeyError on untrusted model output
+            node = els.get(k)
+            if isinstance(node, dict):
+                stack.extend(node.get("children", []))
         for key in els:
             if key not in reach:
                 issues.append(["L3", "unreached_element", key, "not reachable from root"])
